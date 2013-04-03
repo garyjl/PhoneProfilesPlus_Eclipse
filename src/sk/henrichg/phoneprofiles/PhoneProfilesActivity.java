@@ -52,7 +52,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	private static DatabaseHandler databaseHandler;
 	private NotificationManager notificationManager;
 	private List<Profile> profileList;
-	private ProfileListAdapter profileListAdapter;
+	private MainProfileListAdapter profileListAdapter;
 	private ListView listView;
 	private TextView activeProfileName;
 	private ImageView activeProfileIcon;
@@ -80,7 +80,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		
 		activeProfileName = (TextView)findViewById(R.id.activated_profile_name);
 		activeProfileIcon = (ImageView)findViewById(R.id.activated_profile_icon);
-		listView = (ListView)findViewById(R.id.profiles_list);
+		listView = (ListView)findViewById(R.id.main_profiles_list);
 		
 		SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
 		actualLanguage = preferences.getString(PhoneProfilesPreferencesActivity.PREF_APPLICATION_LANGUAGE, "system");
@@ -90,10 +90,8 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		showNotification(profile);
 		updateWidget();
 	
-		//profileList = databaseHandler.getAllProfiles();
-		//profileListAdapter = new ProfileListAdapter(this, profileList);
 		profileList = new ArrayList<Profile>();
-		profileListAdapter = new ProfileListAdapter(this, profileList);
+		profileListAdapter = new MainProfileListAdapter(this, profileList);
 		
 		listView.setAdapter(profileListAdapter);
 		
@@ -119,7 +117,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View view, ContextMenuInfo menuInfo) {
 		
-		if (view.getId() == R.id.profiles_list) {
+		if (view.getId() == R.id.main_profiles_list) {
 			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
 			Profile profile;
 			

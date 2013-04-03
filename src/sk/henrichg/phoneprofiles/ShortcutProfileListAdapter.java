@@ -13,14 +13,14 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ProfileListAdapter extends BaseAdapter {
+public class ShortcutProfileListAdapter extends BaseAdapter {
 
 	private Activity activity;
 	private List<Profile> profileList;
 	
 	private static LayoutInflater inflater = null;
 	
-	public ProfileListAdapter(Activity a, List<Profile> pl)
+	public ShortcutProfileListAdapter(Activity a, List<Profile> pl)
 	{
 		activity = a;
 		profileList = pl;
@@ -43,10 +43,10 @@ public class ProfileListAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
         View vi = convertView;
         if (convertView == null)
-        	vi = inflater.inflate(R.layout.list_item, null);
+        	vi = inflater.inflate(R.layout.shortcut_list_item, null);
 		
-        TextView profileName = (TextView)vi.findViewById(R.id.list_item_profile_name);
-        ImageView profileIcon = (ImageView)vi.findViewById(R.id.list_item_profile_icon);
+        TextView profileName = (TextView)vi.findViewById(R.id.shortcut_list_item_profile_name);
+        ImageView profileIcon = (ImageView)vi.findViewById(R.id.shortcut_list_item_profile_icon);
         
         Profile profile = profileList.get(position);
         
@@ -62,7 +62,7 @@ public class ProfileListAdapter extends BaseAdapter {
         	profileIcon.setImageBitmap(BitmapFactory.decodeFile(profile.getIconIdentifier()));
         }
         
-        Log.d("ProfileListAdapter.getView", profile.getName());
+        Log.d("ShortcutProfileListAdapter.getView", profile.getName());
         
 		return vi;
 	}

@@ -87,4 +87,8 @@
     <string name="phone_profiles_pref_applicationLanguage_system">System</string>
     <string name="phone_profiles_pref_applicationLanguage_en">English</string>
     <string name="phone_profiles_pref_applicationLanguage_sk">Slovak</string>
+    <string name="title_activity_shortcut_creator">Shortcut into profile</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+
 </resources>

@@ -8,26 +8,26 @@
         android:minSdkVersion="8"
         android:targetSdkVersion="17" />
 
-    <supports-screens 
-        android:smallScreens="true"
-        android:normalScreens="true"
+    <supports-screens
+        android:anyDensity="true"
         android:largeScreens="true"
-        android:xlargeScreens="true"
-        android:anyDensity="true" />
-    
+        android:normalScreens="true"
+        android:smallScreens="true"
+        android:xlargeScreens="true" />
+
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.SET_WALLPAPER"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
+        android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Sherlock.Light.DarkActionBar"
-        android:allowBackup="true" >
+        android:theme="@style/Theme.Sherlock.Light.DarkActionBar" >
         <activity
             android:name="sk.henrichg.phoneprofiles.PhoneProfilesActivity"
             android:label="@string/title_activity_phone_profiles" >
@@ -47,26 +47,38 @@
             android:name="sk.henrichg.phoneprofiles.PhoneProfilesPreferencesActivity"
             android:label="@string/title_activity_phone_profiles_preferences" >
         </activity>
-        <receiver 
-            android:icon="@drawable/ic_launcher" 
-            android:name="ActivateProfileWidget" 
-            android:label="Phone Profiles">
-            <intent-filter >
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+        <activity
+            android:name="sk.henrichg.phoneprofiles.ShortcutCreatorActivity"
+            android:label="@string/title_activity_shortcut_creator" >
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-            <meta-data 
+        </activity>
+        
+        <receiver
+            android:name="sk.henrichg.phoneprofiles.ActivateProfileWidget"
+            android:icon="@drawable/ic_launcher"
+            android:label="Phone Profiles" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/activate_profile_widget_info" />
         </receiver>
-        <receiver 
-            android:name=".BootUpReceiver"
+        <receiver
+            android:name="sk.henrichg.phoneprofiles.BootUpReceiver"
             android:enabled="true"
-            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
-            <intent-filter >
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
+
     </application>
-    
+
 </manifest>
