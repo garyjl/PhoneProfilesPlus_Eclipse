@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Copyright CMW Mobile.com, 2010. -->
+
+<resources>
+	<declare-styleable name="ImageViewPreference">
+		<attr name="imageSource" format="string" />
+	</declare-styleable>
+    	<declare-styleable name="SeekBarDialogPreference">
+		<attr name="maximumValue" format="integer" />
+		<attr name="minimumValue" format="integer" />
+		<attr name="stepSize" format="integer" />
+		<attr name="units" format="string" />
+	</declare-styleable>
+	<declare-styleable name="VolumeDialogPreference">
+		<attr name="volumeType" format="string" />
+		<attr name="vNoChange" format="integer" />
+	</declare-styleable>
+	<declare-styleable name="BrightnessDialogPreference">
+		<attr name="bNoChange" format="integer" />
+		<attr name="bAutomatic" format="integer" />
+	</declare-styleable>
+</resources>

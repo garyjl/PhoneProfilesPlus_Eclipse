@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <PreferenceCategory
+        android:summary="@string/phone_profiles_pref_category_application"
+        android:title="@string/phone_profiles_pref_category_application" >
+		<CheckBoxPreference 
+		    android:key="applicationActivate"
+		    android:title="@string/phone_profiles_pref_applicationActivate"
+		    android:defaultValue="true" />
+  		<CheckBoxPreference 
+		    android:key="applicationClose"
+		    android:title="@string/phone_profiles_pref_applicationClose"
+		    android:defaultValue="true" />
+  		<CheckBoxPreference 
+		    android:key="applicationAlert"
+		    android:title="@string/phone_profiles_pref_applicationAlert"
+		    android:defaultValue="true" />
+		<ListPreference android:title="@string/phone_profiles_pref_applicationLanguage"
+            android:summary="@string/phone_profiles_pref_applicationLanguage_system"
+            android:key="applicationLanguage"
+            android:defaultValue="system"
+            android:entries="@array/languaugeArray"
+            android:entryValues="@array/languaugeValues" />        
+  	</PreferenceCategory>
+    <PreferenceCategory
+        android:summary="@string/phone_profiles_pref_category_notifications"
+        android:title="@string/phone_profiles_pref_category_notifications" >
+		<CheckBoxPreference 
+		    android:key="notificationsToast"
+		    android:title="@string/phone_profiles_pref_notificationsToast"
+		    android:defaultValue="false" />
+		<CheckBoxPreference 
+		    android:key="notificationStatusBar"
+		    android:title="@string/phone_profiles_pref_notificationStatusBar"
+		    android:defaultValue="true" />
+	</PreferenceCategory>
+</PreferenceScreen>    
