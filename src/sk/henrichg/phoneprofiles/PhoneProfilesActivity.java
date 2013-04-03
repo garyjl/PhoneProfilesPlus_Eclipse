@@ -49,8 +49,6 @@ import android.widget.Toast;
 
 public class PhoneProfilesActivity extends SherlockActivity {
 
-	//
-	
 	private static DatabaseHandler databaseHandler;
 	private NotificationManager notificationManager;
 	private List<Profile> profileList;
