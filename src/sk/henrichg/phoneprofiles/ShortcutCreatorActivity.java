@@ -63,6 +63,8 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 		intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, profile.getName());
 		intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconResource);
 		
+		intent.putExtra(PhoneProfilesActivity.INTENT_START_APP_SOURCE, PhoneProfilesActivity.STARTUP_SOURCE_SHORTCUT);
+		
 		// PhoneProfilesActivity musi toto testovat, a len spravit aktivaciu profilu
 		intent.putExtra("shortcut_profile_id", profile.getID());
 		

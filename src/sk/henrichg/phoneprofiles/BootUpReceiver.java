@@ -16,7 +16,7 @@ public class BootUpReceiver extends BroadcastReceiver {
 		{	
 			Intent i = new Intent(context, PhoneProfilesActivity.class);
 			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			i.putExtra(PhoneProfilesActivity.INTENT_BOOTUPSTART, true);
+			i.putExtra(PhoneProfilesActivity.INTENT_START_APP_SOURCE, PhoneProfilesActivity.STARTUP_SOURCE_BOOT);
 			context.startActivity(i);
 		}
 

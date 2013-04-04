@@ -56,15 +56,19 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	private ListView listView;
 	private TextView activeProfileName;
 	private ImageView activeProfileIcon;
-	private boolean applicationStarted = false;
 	private String actualLanguage;
-	private boolean bootUpStart = false;
+	private int startupSource = 0;
+	private boolean applicationStarted;
 	private Intent intent;
 
 	static final String INTENT_PROFILE_ID = "profile_id";
-	static final String INTENT_STARTED_FROM_NOTIFICATION = "start_from_notif";
-	static final String INTENT_BOOTUPSTART = "bootUpStart";
+	static final String INTENT_START_APP_SOURCE = "start_app_source";
 	static final String PROFILE_ICON_DEFAULT = "ic_profile_default";
+	
+	static final int STARTUP_SOURCE_NOTIFICATION = 1;
+	static final int STARTUP_SOURCE_WIDGET = 2;
+	static final int STARTUP_SOURCE_SHORTCUT = 3;
+	static final int STARTUP_SOURCE_BOOT = 4;
 
 	static final int NOTIFICATION_ID = 700420;
 	
@@ -73,8 +77,11 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_phone_profiles);
 		
+		// na onCreate dame, ze aplikacia este nie je nastartovana
+		applicationStarted = false;
+		
 		intent = getIntent();
-		bootUpStart = intent.getBooleanExtra(INTENT_BOOTUPSTART, false);
+		startupSource = intent.getIntExtra(INTENT_START_APP_SOURCE, 0);
 
 		databaseHandler = new DatabaseHandler(this);
 		notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
@@ -86,10 +93,12 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
 		actualLanguage = preferences.getString(PhoneProfilesPreferencesActivity.PREF_APPLICATION_LANGUAGE, "system");
 		
+		/*
 		Profile profile = databaseHandler.getActivatedProfile();
 		updateHeader(profile);
 		showNotification(profile);
 		updateWidget();
+		*/
 	
 		profileList = new ArrayList<Profile>();
 		profileListAdapter = new MainProfileListAdapter(this, profileList);
@@ -171,31 +180,67 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		
 		updateListView();
 
+
+		Log.d("PhoneProfilesActivity.onStart", "startupSource="+startupSource);
+		
+		boolean actProfile = false;
+		if (startupSource == STARTUP_SOURCE_SHORTCUT)
+		{
+			// aktivita spustena z shortcutu, profil aktivujeme
+			actProfile = true;
+		}
+		else
+		if (startupSource == 0 || startupSource == STARTUP_SOURCE_BOOT)
+		{
+			
+			// aktivita nebola spustena z notifikacie, ani z widgetu
+			// lebo v tychto pripadoch sa nesmie spravit aktivacia profilu
+			// pri starte aktivity
+			
+			if (!applicationStarted)
+			{
+				// aplikacia este nie je nastartovana, takze mozeme
+				// aktivovat profil, ak je nastavene, ze sa tak ma stat 
+				SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
+				if (preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_APPLICATION_ACTIVATE, true))
+				{
+					// je nastavene, ze pri starte sa ma aktivita aktivovat
+					actProfile = true;
+				}
+			}
+		}
+		Log.d("PhoneProfilesActivity.onStart", "actProfile="+String.valueOf(actProfile));
 		
 		Profile profile;
-		SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
-		
-		if ((getIntent().getIntExtra(PhoneProfilesActivity.INTENT_STARTED_FROM_NOTIFICATION, 0) == 0) &&
-			(!applicationStarted))
+		if (startupSource == STARTUP_SOURCE_SHORTCUT)
 		{
-			// nebolo startnute z notifikacnej listy
-			// aktivujeme profil, len ak v nastaveniach je, ze aktivovat
-			if (preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_APPLICATION_ACTIVATE, true))
-				profile = databaseHandler.getActivatedProfile();
-			else
-				profile = null;
+			// TODO - sem pridat ziskanie profilu zo shortcutu, ktory aktivovat
+			profile = null;
 		}
 		else
 		{
-			// bolo startnute z notifikacnej listy
-			// profil aktivujeme
+			// profil, ktory je prave aktivny, treba aktualizovat vsetko, lebo
+			// co ak sa zmenila ikona, nazov aktivneho profilu
 			profile = databaseHandler.getActivatedProfile();
 		}
 		
-		updateHeader(profile);
-		showNotification(profile);
-		updateWidget();
+		if (actProfile)
+		{
+			activateProfile(profile);
+		}
+		else
+		{
+			updateHeader(profile);
+			showNotification(profile);
+			updateWidget();
+		}
 		
+		
+		// reset, aby sa to dalej chovalo ako normalne spustenie z lauchera
+		boolean bootUpStart = startupSource == STARTUP_SOURCE_BOOT;
+		startupSource = 0;
+
+		// na onStart dame, ze aplikacia uz je nastartovana
 		applicationStarted = true;
 		
 		Log.d("PhoneProfileActivity.onStart", "xxxx");
@@ -429,7 +474,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 				// vytvorenie intentu na aktivitu, ktora sa otvori na kliknutie na notifikaciu
 				Intent intent = new Intent(this, PhoneProfilesActivity.class);
 				// nastavime, ze aktivita sa spusti z notifikacnej listy
-				intent.putExtra(INTENT_STARTED_FROM_NOTIFICATION, 1);
+				intent.putExtra(INTENT_START_APP_SOURCE, STARTUP_SOURCE_NOTIFICATION);
 				PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 				// vytvorenie samotnej notifikacie
 				NotificationCompat.Builder notificationBuilder;
@@ -515,10 +560,8 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	}
 	
 	@SuppressWarnings("deprecation")
-	private void activateProfile(int position)
+	private void activateProfile(Profile profile)
 	{
-		Profile profile = profileList.get(position);
-
 		SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
 		
 		databaseHandler.activateProfile(profile);
@@ -866,6 +909,12 @@ public class PhoneProfilesActivity extends SherlockActivity {
 			// zavretie aktivity
 			finish();
 		}
+	}
+	
+	private void activateProfile(int position)
+	{
+		Profile profile = profileList.get(position);
+		activateProfile(profile);
 	}
 	
 	private boolean isAirplaneMode(Context context)
