@@ -24,8 +24,9 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
 		
 	static final String PREFS_NAME = "phone_profile_preferences";
 	
-    static final String PREF_APPLIVATION_ACTIVATE = "applicationActivate";
-    static final String PREF_APPLIVATION_CLOSE = "applicationClose";
+    static final String PREF_APPLICATION_START_ON_BOOT = "applicationStartOnBoot";
+    static final String PREF_APPLICATION_ACTIVATE = "applicationActivate";
+    static final String PREF_APPLICATION_CLOSE = "applicationClose";
     static final String PREF_APPLICATION_ALERT = "applicationAlert";
     static final String PREF_APPLICATION_LANGUAGE = "applicationLanguage";
     static final String PREF_NOTIFICATION_TOAST = "notificationsToast";
@@ -56,7 +57,9 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
 
     	    	// updating activity with selected profile preferences
     	    	Log.d("PhoneProfilesPreferencesActivity.onSharedPreferenceChanged", key);
-	    		setSummary(key, prefs.getString(key, ""));
+    	    	
+    	    	if (key.equals(PREF_APPLICATION_LANGUAGE))
+    	    		setSummary(key, prefs.getString(key, ""));
         	}
 
         };

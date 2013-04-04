@@ -63,6 +63,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 
 	static final String INTENT_PROFILE_ID = "profile_id";
 	static final String INTENT_STARTED_FROM_NOTIFICATION = "start_from_notif";
+	static final String INTENT_BOOTUPSTART = "bootUpStart";
 	static final String PROFILE_ICON_DEFAULT = "ic_profile_default";
 
 	static final int NOTIFICATION_ID = 700420;
@@ -73,7 +74,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		setContentView(R.layout.activity_phone_profiles);
 		
 		intent = getIntent();
-		bootUpStart = intent.getBooleanExtra("bootUpStart", false);
+		bootUpStart = intent.getBooleanExtra(INTENT_BOOTUPSTART, false);
 
 		databaseHandler = new DatabaseHandler(this);
 		notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
@@ -179,7 +180,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		{
 			// nebolo startnute z notifikacnej listy
 			// aktivujeme profil, len ak v nastaveniach je, ze aktivovat
-			if (preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_APPLIVATION_ACTIVATE, true))
+			if (preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_APPLICATION_ACTIVATE, true))
 				profile = databaseHandler.getActivatedProfile();
 			else
 				profile = null;
@@ -860,7 +861,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 			}
 		}	
 		
-		if (preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_APPLIVATION_CLOSE, true))
+		if (preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_APPLICATION_CLOSE, true))
 		{	
 			// zavretie aktivity
 			finish();
