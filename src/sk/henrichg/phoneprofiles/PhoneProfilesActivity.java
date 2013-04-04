@@ -906,8 +906,12 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		
 		if (preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_APPLICATION_CLOSE, true))
 		{	
-			// zavretie aktivity
-			finish();
+			// ma sa zatvarat aktivita po aktivacii
+			if (applicationStarted)
+				// aplikacia je uz spustena, mozeme aktivitu zavriet
+				// tymto je vyriesene, ze pri spusteni aplikacie z launchera
+				// sa hned nezavrie
+				finish();
 		}
 	}
 	
