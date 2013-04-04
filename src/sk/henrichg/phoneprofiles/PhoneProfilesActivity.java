@@ -63,6 +63,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 
 	static final String INTENT_PROFILE_ID = "profile_id";
 	static final String INTENT_START_APP_SOURCE = "start_app_source";
+	
 	static final String PROFILE_ICON_DEFAULT = "ic_profile_default";
 	
 	static final int STARTUP_SOURCE_NOTIFICATION = 1;
@@ -210,34 +211,32 @@ public class PhoneProfilesActivity extends SherlockActivity {
 			}
 		}
 		Log.d("PhoneProfilesActivity.onStart", "actProfile="+String.valueOf(actProfile));
-		
+
 		Profile profile;
+		
+		// pre profil, ktory je prave aktivny, treba aktualizovat aktivitu
+		profile = databaseHandler.getActivatedProfile();
+		updateHeader(profile);
+		showNotification(profile);
+		updateWidget();
+		
 		if (startupSource == STARTUP_SOURCE_SHORTCUT)
 		{
-			// TODO - sem pridat ziskanie profilu zo shortcutu, ktory aktivovat
-			profile = null;
-		}
-		else
-		{
-			// profil, ktory je prave aktivny, treba aktualizovat vsetko, lebo
-			// co ak sa zmenila ikona, nazov aktivneho profilu
-			profile = databaseHandler.getActivatedProfile();
+			long profile_id = intent.getLongExtra(INTENT_PROFILE_ID, 0);
+			if (profile_id == 0)
+				profile = null;
+			else
+				profile = databaseHandler.getProfile(profile_id);
 		}
 		
-		if (actProfile)
+		if (actProfile && (profile != null))
 		{
+			// aktivacia profilu
 			activateProfile(profile);
 		}
-		else
-		{
-			updateHeader(profile);
-			showNotification(profile);
-			updateWidget();
-		}
-		
 		
 		// reset, aby sa to dalej chovalo ako normalne spustenie z lauchera
-		boolean bootUpStart = startupSource == STARTUP_SOURCE_BOOT;
+		boolean finishActivity = (startupSource == STARTUP_SOURCE_BOOT) || (startupSource == STARTUP_SOURCE_SHORTCUT);
 		startupSource = 0;
 
 		// na onStart dame, ze aplikacia uz je nastartovana
@@ -245,7 +244,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		
 		Log.d("PhoneProfileActivity.onStart", "xxxx");
 		
-		if (bootUpStart)
+		if (finishActivity)
 			finish();
 	}
 	

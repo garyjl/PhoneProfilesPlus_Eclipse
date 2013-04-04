@@ -6,6 +6,8 @@ import com.actionbarsherlock.app.SherlockActivity;
 
 import android.content.Intent;
 import android.content.Intent.ShortcutIconResource;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -52,22 +54,44 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 	private void createShortcut(int position)
 	{
 		Profile profile = profileList.get(position);
-		
+		boolean isIconResourceID;
+		String iconIdentifier;
+		String profileName;
+
+		if (profile != null)
+		{
+			isIconResourceID = profile.getIsIconResourceID();
+			iconIdentifier = profile.getIconIdentifier();
+			profileName = profile.getName();
+		}
+		else
+		{
+			isIconResourceID = true;
+			iconIdentifier = PhoneProfilesActivity.PROFILE_ICON_DEFAULT;
+			profileName = getResources().getString(R.string.profile_name_default);
+		}
+
 		Intent shortcutIntent = new Intent(this, PhoneProfilesActivity.class);
-		
-		// tu musime spravit nacitanie ikony z profilu + bacha na ikony z sd karty
-		ShortcutIconResource iconResource = ShortcutIconResource.fromContext(this, R.drawable.ic_profile_default);
+		// PhoneProfilesActivity musi toto testovat, a len spravit aktivaciu profilu
+		shortcutIntent.putExtra(PhoneProfilesActivity.INTENT_START_APP_SOURCE, PhoneProfilesActivity.STARTUP_SOURCE_SHORTCUT);
+		shortcutIntent.putExtra(PhoneProfilesActivity.INTENT_PROFILE_ID, profile.getID());
 		
 		Intent intent = new Intent();
 		intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-		intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, profile.getName());
-		intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconResource);
+		intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, profileName);
 		
-		intent.putExtra(PhoneProfilesActivity.INTENT_START_APP_SOURCE, PhoneProfilesActivity.STARTUP_SOURCE_SHORTCUT);
-		
-		// PhoneProfilesActivity musi toto testovat, a len spravit aktivaciu profilu
-		intent.putExtra("shortcut_profile_id", profile.getID());
-		
+        if (isIconResourceID)
+        {
+        	int iconResource = getResources().getIdentifier(iconIdentifier, "drawable", getPackageName());
+    		ShortcutIconResource shortcutIconResource = ShortcutIconResource.fromContext(this, iconResource);
+    		intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, shortcutIconResource);
+        }
+        else
+        {
+        	Bitmap bitmap = BitmapFactory.decodeFile(iconIdentifier);
+    		intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, bitmap);
+        }
+				
 		setResult(RESULT_OK, intent);
 		
 		finish();
