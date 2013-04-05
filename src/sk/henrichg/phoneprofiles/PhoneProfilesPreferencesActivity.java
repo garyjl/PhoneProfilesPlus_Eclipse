@@ -92,8 +92,8 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
 		if (key.equals(PREF_APPLICATION_LANGUAGE))
 		{
 			String sPrefLanguauge = value.toString();
-			String[] prefLanguages = getResources().getStringArray(R.array.languaugeArray);
-			String[] prefLangValues = getResources().getStringArray(R.array.languaugeValues);
+			String[] prefLanguages = getResources().getStringArray(R.array.languageArray);
+			String[] prefLangValues = getResources().getStringArray(R.array.languageValues);
 			int ilangValue = 0;
 			for (String slangValue : prefLangValues)
 			{

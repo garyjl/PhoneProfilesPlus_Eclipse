@@ -5,9 +5,6 @@
     <string name="menu_settings">Settings</string>
     <string name="title_activity_phone_profiles">Phone Profiles</string>
     <string name="title_activity_profile_preferences">Profile preferences</string>
-    <string name="preferencies_profile_name_edit">Profile name</string>
-    <string name="preferencies_profile_name_label">Profile name</string>
-    <string name="preferencies_profile_name_ebutton">Edit</string>
     <string name="menu_new_profile">New profile</string>
     <string name="profiles_header_label">Last activated profile</string>
     <string name="profiles_header_profile_name_no_activated">No profile activated</string>
@@ -88,8 +85,16 @@
     <string name="phone_profiles_pref_applicationLanguage_en">English</string>
     <string name="phone_profiles_pref_applicationLanguage_sk">Slovak</string>
     <string name="title_activity_shortcut_creator">Shortcut into profile</string>
-    <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
     <string name="phone_profiles_pref_applicationStartOnBoot">Start on phone boot</string>
-
+    <string name="array_pref_value_0">0</string>
+    <string name="array_pref_value_1">1</string>
+    <string name="array_pref_value_2">2</string>
+    <string name="array_pref_value_3">3</string>
+    <string name="array_pref_value_4">4</string>
+    <string name="array_pref_value_5">5</string>
+    <string name="array_pref_value_6">6</string>
+    <string name="array_pref_value_system">system</string>
+    <string name="array_pref_value_en">en</string>
+    <string name="array_pref_value_sk">sk</string>
+    
 </resources>

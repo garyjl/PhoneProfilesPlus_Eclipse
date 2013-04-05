@@ -2,7 +2,7 @@
 	<item android:id="@+id/menu_new_profile"
 	    android:title="@string/menu_new_profile"
 	    android:orderInCategory="100"
-	    android:showAsAction="always"
+	    android:showAsAction="ifRoom"
 	    android:icon="@drawable/ic_action_new_profile" />
     <item android:id="@+id/menu_settings"
         android:title="@string/menu_settings"

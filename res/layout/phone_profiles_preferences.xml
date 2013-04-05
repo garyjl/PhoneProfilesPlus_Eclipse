@@ -23,8 +23,8 @@
             android:summary="@string/phone_profiles_pref_applicationLanguage_system"
             android:key="applicationLanguage"
             android:defaultValue="system"
-            android:entries="@array/languaugeArray"
-            android:entryValues="@array/languaugeValues" />        
+            android:entries="@array/languageArray"
+            android:entryValues="@array/languageValues" />        
   	</PreferenceCategory>
     <PreferenceCategory
         android:summary="@string/phone_profiles_pref_category_notifications"

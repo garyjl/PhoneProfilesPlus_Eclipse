@@ -89,5 +89,15 @@
     <string name="phone_profiles_pref_applicationLanguage_sk">Slovenčina</string>
     <string name="title_activity_shortcut_creator">Odkaz na profil</string>
     <string name="phone_profiles_pref_applicationStartOnBoot">Spusti pri štarte telefónu</string>
+    <string name="array_pref_value_0">0</string>
+    <string name="array_pref_value_1">1</string>
+    <string name="array_pref_value_2">2</string>
+    <string name="array_pref_value_3">3</string>
+    <string name="array_pref_value_4">4</string>
+    <string name="array_pref_value_5">5</string>
+    <string name="array_pref_value_6">6</string>
+    <string name="array_pref_value_system">system</string>
+    <string name="array_pref_value_en">en</string>
+    <string name="array_pref_value_sk">sk</string>
     
 </resources>

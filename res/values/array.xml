@@ -8,11 +8,11 @@
 	<item>@string/array_pref_ringerModeArray_silent</item>
 </string-array>
 <string-array name="ringerModeValues">
-    <item>0</item>
-    <item>1</item>
-    <item>2</item>
-    <item>3</item>
-    <item>4</item>
+    <item>@string/array_pref_value_0</item>
+    <item>@string/array_pref_value_1</item>
+    <item>@string/array_pref_value_2</item>
+    <item>@string/array_pref_value_3</item>
+    <item>@string/array_pref_value_4</item>
 </string-array>
 <string-array name="hardwareModeArray">
 	<item>@string/array_pref_no_change</item>
@@ -21,10 +21,10 @@
 	<item>@string/array_pref_hardwareModeArray_toggle</item>
 </string-array>
 <string-array name="hardwareModeValues">
-    <item>0</item>
-    <item>1</item>
-    <item>2</item>
-    <item>3</item>
+    <item>@string/array_pref_value_0</item>
+    <item>@string/array_pref_value_1</item>
+    <item>@string/array_pref_value_2</item>
+    <item>@string/array_pref_value_3</item>
 </string-array>
 <string-array name="screenTimeoutArray">
 	<item>@string/array_pref_no_change</item>
@@ -36,22 +36,22 @@
 	<item>@string/array_pref_screenTimeoutArray_never_timeout</item>
 </string-array>
 <string-array name="screenTimeoutValues">
-    <item>0</item>
-    <item>1</item>
-    <item>2</item>
-    <item>3</item>
-    <item>4</item>
-    <item>5</item>
-    <item>6</item>
+    <item>@string/array_pref_value_0</item>
+    <item>@string/array_pref_value_1</item>
+    <item>@string/array_pref_value_2</item>
+    <item>@string/array_pref_value_3</item>
+    <item>@string/array_pref_value_4</item>
+    <item>@string/array_pref_value_5</item>
+    <item>@string/array_pref_value_6</item>
 </string-array>
-<string-array name="languaugeArray">
+<string-array name="languageArray">
 	<item>@string/phone_profiles_pref_applicationLanguage_system</item>
 	<item>@string/phone_profiles_pref_applicationLanguage_en</item>
 	<item>@string/phone_profiles_pref_applicationLanguage_sk</item>
 </string-array>
-<string-array name="languaugeValues">
-    <item>system</item>
-    <item>en</item>
-    <item>sk</item>
+<string-array name="languageValues">
+    <item>@string/array_pref_value_system</item>
+    <item>@string/array_pref_value_en</item>
+    <item>@string/array_pref_value_sk</item>
 </string-array>
 </resources>
