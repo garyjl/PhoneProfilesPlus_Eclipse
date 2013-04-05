@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/imageview_pref_label"
-        android:text="XXXX"
+        android:text="@string/empty_string"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="#00000000" />
     
