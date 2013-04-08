@@ -263,15 +263,24 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
 			key.equals(PREF_PROFILE_DEVICE_WIFI) ||
 			key.equals(PREF_PROFILE_DEVICE_BLUETOOTH))
 		{
-			String sPrefDeviceMode = value.toString();
-			int iPrefDeviceMode;
-			try {
-				iPrefDeviceMode = Integer.parseInt(sPrefDeviceMode);
-			} catch (Exception e) {
-				iPrefDeviceMode = 0;
+			if (key.equals(PREF_PROFILE_DEVICE_AIRPLANE_MODE) && (android.os.Build.VERSION.SDK_INT >= 17))
+			{	
+				prefMng.findPreference(key).setEnabled(false);
+				prefMng.findPreference(key).setSummary(getResources().getString(R.string.profile_preferences_airplane_mode_no_allowed));
 			}
-			String[] PrefDeviceModes = getResources().getStringArray(R.array.hardwareModeArray);
-			prefMng.findPreference(key).setSummary(PrefDeviceModes[iPrefDeviceMode]);
+			else
+			{
+				String sPrefDeviceMode = value.toString();
+				int iPrefDeviceMode;
+				try {
+					iPrefDeviceMode = Integer.parseInt(sPrefDeviceMode);
+				} catch (Exception e) {
+					iPrefDeviceMode = 0;
+				}
+				String[] PrefDeviceModes = getResources().getStringArray(R.array.hardwareModeArray);
+				prefMng.findPreference(key).setSummary(PrefDeviceModes[iPrefDeviceMode]);
+			}
+			
 		}
 		if (key.equals(PREF_PROFILE_DEVICE_SCREEN_TIMEOUT))
 		{

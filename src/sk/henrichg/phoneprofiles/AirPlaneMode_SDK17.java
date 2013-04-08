@@ -80,7 +80,7 @@ public class AirPlaneMode_SDK17 {
 				// for normal apps it is only possible to open the system settings dialog
 			/*	Intent intent = new Intent(android.provider.Settings.ACTION_AIRPLANE_MODE_SETTINGS);
 				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				context.startActivity(intent); */
+				context.startActivity(intent); */ 
 			}
 			
 		}
