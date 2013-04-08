@@ -5,9 +5,6 @@
     <string name="menu_settings">Nastavenia</string>
     <string name="title_activity_phone_profiles">Phone Profiles</string>
     <string name="title_activity_profile_preferences">Parametre profilu</string>
-    <string name="preferencies_profile_name_edit">Názov profilu</string>
-    <string name="preferencies_profile_name_label">Názov profilu</string>
-    <string name="preferencies_profile_name_ebutton">Úprava</string>
     <string name="menu_new_profile">Nový profil</string>
     <string name="profiles_header_label">Posledne aktivovaný profil</string>
     <string name="profiles_header_profile_name_no_activated">Žiaden aktivovaný profil</string>
@@ -49,7 +46,7 @@
     <string name="profile_preferences_category_device">Zariadenie</string>
     <string name="profile_preferences_profileName">Názov profilu</string>
     <string name="profile_preferences_profileIcon">Ikona profilu</string>
-    <string name="profile_preferences_volumeRingerMode">Mód zvonenia/vybrovania</string>
+    <string name="profile_preferences_volumeRingerMode">Mód zvonenia/vibrovania</string>
     <string name="profile_preferences_volumeRingtone">Hlasitosť zvonenia</string>
     <string name="profile_preferences_volumeNotification">Hlasitosť notifikácie</string>
     <string name="profile_preferences_volumeMedia">Hlasitosť médií</string>
