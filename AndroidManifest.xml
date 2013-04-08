@@ -47,7 +47,8 @@
         </activity>
         <activity
             android:name="sk.henrichg.phoneprofiles.ShortcutCreatorActivity"
-            android:label="@string/title_activity_shortcut_creator" >
+            android:label="@string/title_activity_shortcut_creator"
+            android:icon="@drawable/ic_shortcut" >
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
 

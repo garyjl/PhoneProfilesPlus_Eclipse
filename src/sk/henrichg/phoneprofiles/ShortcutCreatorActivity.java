@@ -5,9 +5,9 @@ import java.util.List;
 import com.actionbarsherlock.app.SherlockActivity;
 
 import android.content.Intent;
-import android.content.Intent.ShortcutIconResource;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -56,6 +56,9 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 		Profile profile = profileList.get(position);
 		boolean isIconResourceID;
 		String iconIdentifier;
+		Bitmap profileBitmap;
+		Bitmap shortcutOverlayBitmap;
+		Bitmap profileShortcutBitmap;
 		String profileName;
 
 		if (profile != null)
@@ -80,21 +83,46 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 		intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
 		intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, profileName);
 		
+		int iconResource;
         if (isIconResourceID)
         {
-        	int iconResource = getResources().getIdentifier(iconIdentifier, "drawable", getPackageName());
-    		ShortcutIconResource shortcutIconResource = ShortcutIconResource.fromContext(this, iconResource);
-    		intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, shortcutIconResource);
+        	iconResource = getResources().getIdentifier(iconIdentifier, "drawable", getPackageName());
+			profileBitmap = BitmapFactory.decodeResource(getResources(), iconResource);
+        	//ShortcutIconResource shortcutIconResource = ShortcutIconResource.fromContext(this, iconResource);
+    		//intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, shortcutIconResource);
         }
         else
         {
-        	Bitmap bitmap = BitmapFactory.decodeFile(iconIdentifier);
-    		intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, bitmap);
+        	profileBitmap = BitmapFactory.decodeFile(iconIdentifier);
+        	//Bitmap bitmap = BitmapFactory.decodeFile(iconIdentifier);
+    		//intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, bitmap);
         }
+    	shortcutOverlayBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_shortcut_overlay);
+    	profileShortcutBitmap = combineImages(profileBitmap, shortcutOverlayBitmap);
+    	intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, profileShortcutBitmap);
 				
 		setResult(RESULT_OK, intent);
 		
 		finish();
+	}
+	
+	private Bitmap combineImages(Bitmap bitmap1, Bitmap bitmap2)
+	{
+		Bitmap combined;
+		
+		int width;
+		int height;
+		
+		width = bitmap1.getWidth();
+		height = bitmap1.getHeight();
+		
+		combined = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+
+		Canvas canvas = new Canvas(combined);
+		canvas.drawBitmap(bitmap1, 0f, 0f, null);
+		canvas.drawBitmap(bitmap2, 0f, 0f, null);
+
+		return combined;
 	}
 
 }

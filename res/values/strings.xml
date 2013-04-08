@@ -84,6 +84,7 @@
     <string name="phone_profiles_pref_applicationLanguage_system">System</string>
     <string name="phone_profiles_pref_applicationLanguage_en">English</string>
     <string name="phone_profiles_pref_applicationLanguage_sk">Slovak</string>
+    <string name="phone_profiles_pref_applicationLanguage_cs">Czech</string>
     <string name="title_activity_shortcut_creator">Shortcut into profile</string>
     <string name="phone_profiles_pref_applicationStartOnBoot">Start on phone boot</string>
     <string name="array_pref_value_0">0</string>
@@ -96,5 +97,6 @@
     <string name="array_pref_value_system">system</string>
     <string name="array_pref_value_en">en</string>
     <string name="array_pref_value_sk">sk</string>
+    <string name="array_pref_value_cs">cs</string>
     
 </resources>
