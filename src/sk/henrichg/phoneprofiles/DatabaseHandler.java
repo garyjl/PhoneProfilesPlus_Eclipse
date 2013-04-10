@@ -553,5 +553,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 	}
 	
+	public void setPOrders(List<Profile> list)
+	{
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		Profile profile;
+		ContentValues values = new ContentValues();
+		
+		for (int i = 0; i < list.size(); i++)
+		{
 
+			profile = list.get(i);
+			
+			values.put(KEY_PORDER, profile.getPOrder());
+
+			db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
+				        new String[] { String.valueOf(profile.getID()) });
+		}
+		
+        db.close();
+	}
 }

@@ -39,6 +39,18 @@ public class MainProfileListAdapter extends BaseAdapter {
 	public long getItemId(int position) {
 		return position;
 	}
+	
+	public void changeItemOrder(int from, int to)
+	{
+		Profile profile = profileList.get(from);
+		profileList.remove(from);
+		profileList.add(to, profile);
+		for (int i = 0; i < profileList.size(); i++)
+		{
+			profileList.get(i).setPOrder(i+1);
+		}
+		notifyDataSetChanged();
+	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
         View vi = convertView;

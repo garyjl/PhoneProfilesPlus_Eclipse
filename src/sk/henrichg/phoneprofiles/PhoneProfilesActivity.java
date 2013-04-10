@@ -30,11 +30,12 @@ import android.view.ContextMenu.ContextMenuInfo;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.mobeta.android.dslv.DragSortListView;
+
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +46,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	private ActivateProfileHelper activateProfileHelper;
 	private List<Profile> profileList;
 	private MainProfileListAdapter profileListAdapter;
-	private ListView listView;
+	private DragSortListView listView;
 	private TextView activeProfileName;
 	private ImageView activeProfileIcon;
 	private String actualLanguage;
@@ -83,7 +84,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		
 		activeProfileName = (TextView)findViewById(R.id.activated_profile_name);
 		activeProfileIcon = (ImageView)findViewById(R.id.activated_profile_icon);
-		listView = (ListView)findViewById(R.id.main_profiles_list);
+		listView = (DragSortListView)findViewById(R.id.main_profiles_list);
 		
 		SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
 		actualLanguage = preferences.getString(PhoneProfilesPreferencesActivity.PREF_APPLICATION_LANGUAGE, "system");
@@ -113,6 +114,16 @@ public class PhoneProfilesActivity extends SherlockActivity {
 			}
 			
 		});
+		
+        listView.setDropListener(new DragSortListView.DropListener() {
+            public void drop(int from, int to) {
+            	profileListAdapter.changeItemOrder(from, to);
+            	databaseHandler.setPOrders(profileList);
+        		Log.d("PhoneProfileActivity.drop", "xxxx");
+            }
+        });
+        
+        //listView.setRemoveListener(onRemove);
 		
 		
 		Log.d("PhoneProfileActivity.onCreate", "xxxx");
@@ -506,6 +517,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 						.setSmallIcon(R.drawable.ic_launcher);
 		        	}
 		        }
+				@SuppressWarnings("deprecation")
 				Notification notification = notificationBuilder.getNotification();
 				notification.flags |= Notification.FLAG_NO_CLEAR; 
 				notificationManager.notify(NOTIFICATION_ID, notification);

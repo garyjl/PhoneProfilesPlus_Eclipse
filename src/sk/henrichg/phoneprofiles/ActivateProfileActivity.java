@@ -118,6 +118,7 @@ public class ActivateProfileActivity extends Activity {
 		
 	}
 	
+	@SuppressWarnings("deprecation")
 	@SuppressLint("InlinedApi")
 	private void showNotification(Profile profile)
 	{
