@@ -19,7 +19,7 @@ import android.util.Log;
 public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
 	
 	private Profile profile;
-	private long profile_id;
+	private int profile_position;
 	private PreferenceManager prefMng;
 	private SharedPreferences preferences;
 	private Context context;
@@ -58,6 +58,9 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
 	@SuppressWarnings("deprecation")
 	@Override
     public void onCreate(Bundle savedInstanceState) {
+		
+		PhoneProfilesActivity.setLanguage(getBaseContext(), false);
+		
         super.onCreate(savedInstanceState);
 
 		preferenceActivity = this;
@@ -93,7 +96,7 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
         preferences.registerOnSharedPreferenceChangeListener(prefListener);
         
         // getting attached intent data
-        profile_id = intent.getLongExtra(PhoneProfilesActivity.INTENT_PROFILE_ID, 0);
+        profile_position = intent.getIntExtra(PhoneProfilesActivity.EXTRA_PROFILE_POSITION, -1);
 
     	Log.d("ProfilePreferencesActivity.onCreate", "xxxx");
     }
@@ -117,7 +120,7 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
 
     	Log.d("ProfilePreferencesActivity.onPause", "xxxx");
 		
-        if (profile_id != 0) 
+        if (profile_position > -1) 
         {
         	profile.setName(preferences.getString(PREF_PROFILE_NAME, ""));
         	profile.setIcon(preferences.getString(PREF_PROFILE_ICON, ""));
@@ -145,7 +148,9 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
         	else
         		profile.setDeviceWallpaper("-|0");
         	
+        	PhoneProfilesActivity.getProfileListAdapter().updateItem(profile);
         	PhoneProfilesActivity.getDatabaseHandler().updateProfile(profile);
+        	
         	Log.d("ProfilePreferencesActivity.onPause", "updateProfile");
 
 
@@ -199,14 +204,15 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
 
 	private void updateSharedPreference()
 	{
-        if (profile_id != 0) 
+        if (profile_position > -1) 
         {	
 
-           	profile = PhoneProfilesActivity.getDatabaseHandler().getProfile(profile_id);
+           	//profile = PhoneProfilesActivity.getDatabaseHandler().getProfile(profile_id);
+        	profile = (Profile) PhoneProfilesActivity.getProfileListAdapter().getItem(profile_position);
 
 	    	// updating activity with selected profile preferences
 	    	
-           	
+        	Log.d("PhonePreferencesActivity.updateSharedPreference", profile.getName());
 	        setSummary(PREF_PROFILE_NAME, profile.getName());
 	        setSummary(PREF_PROFILE_VOLUME_RINGER_MODE, profile.getVolumeRingerMode());
 	        setSummary(PREF_PROFILE_SOUND_RINGTONE_CHANGE, profile.getSoundRingtoneChange());

@@ -30,8 +30,10 @@ public class ActivateProfileActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		PhoneProfilesActivity.setLanguage(getBaseContext(), false);
+		
 		intent = getIntent();
-		startupSource = intent.getIntExtra(PhoneProfilesActivity.INTENT_START_APP_SOURCE, 0);
+		startupSource = intent.getIntExtra(PhoneProfilesActivity.EXTRA_START_APP_SOURCE, 0);
 		
 		activateProfileHelper = new ActivateProfileHelper(this, getBaseContext());
 
@@ -76,7 +78,7 @@ public class ActivateProfileActivity extends Activity {
 		
 		if (startupSource == PhoneProfilesActivity.STARTUP_SOURCE_SHORTCUT)
 		{
-			long profile_id = intent.getLongExtra(PhoneProfilesActivity.INTENT_PROFILE_ID, 0);
+			long profile_id = intent.getLongExtra(PhoneProfilesActivity.EXTRA_PROFILE_ID, 0);
 			if (profile_id == 0)
 				profile = null;
 			else
@@ -136,7 +138,7 @@ public class ActivateProfileActivity extends Activity {
 				// vytvorenie intentu na aktivitu, ktora sa otvori na kliknutie na notifikaciu
 				Intent intent = new Intent(this, PhoneProfilesActivity.class);
 				// nastavime, ze aktivita sa spusti z notifikacnej listy
-				intent.putExtra(PhoneProfilesActivity.INTENT_START_APP_SOURCE, PhoneProfilesActivity.STARTUP_SOURCE_NOTIFICATION);
+				intent.putExtra(PhoneProfilesActivity.EXTRA_START_APP_SOURCE, PhoneProfilesActivity.STARTUP_SOURCE_NOTIFICATION);
 				PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 				// vytvorenie samotnej notifikacie
 				NotificationCompat.Builder notificationBuilder;

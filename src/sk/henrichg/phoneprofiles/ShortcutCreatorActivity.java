@@ -26,6 +26,9 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		PhoneProfilesActivity.setLanguage(getBaseContext(), false);
+		
 		setContentView(R.layout.activity_shortcut_creator);
 
 		databaseHandler = new DatabaseHandler(this);
@@ -77,8 +80,8 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 	//	Intent shortcutIntent = new Intent(this, PhoneProfilesActivity.class);
 		Intent shortcutIntent = new Intent(this, ActivateProfileActivity.class);
 		// PhoneProfilesActivity musi toto testovat, a len spravit aktivaciu profilu
-		shortcutIntent.putExtra(PhoneProfilesActivity.INTENT_START_APP_SOURCE, PhoneProfilesActivity.STARTUP_SOURCE_SHORTCUT);
-		shortcutIntent.putExtra(PhoneProfilesActivity.INTENT_PROFILE_ID, profile.getID());
+		shortcutIntent.putExtra(PhoneProfilesActivity.EXTRA_START_APP_SOURCE, PhoneProfilesActivity.STARTUP_SOURCE_SHORTCUT);
+		shortcutIntent.putExtra(PhoneProfilesActivity.EXTRA_PROFILE_ID, profile.getID());
 		
 		Intent intent = new Intent();
 		intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);

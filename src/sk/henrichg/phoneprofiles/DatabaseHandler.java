@@ -173,7 +173,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	// Adding new profile
 	void addProfile(Profile profile) {
 	
-		int porder = getMaxPOrder() + 1;
+		//int porder = getMaxPOrder() + 1;
 
 		SQLiteDatabase db = this.getWritableDatabase();
 		
@@ -181,7 +181,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_NAME, profile.getName()); // Profile Name
 		values.put(KEY_ICON, profile.getIcon()); // Icon
 		values.put(KEY_CHECKED, (profile.getChecked()) ? 1 : 0); // Checked
-		values.put(KEY_PORDER, porder); // POrder
+		//values.put(KEY_PORDER, porder); // POrder
+		values.put(KEY_PORDER, profile.getPOrder()); // POrder
 		values.put(KEY_VOLUME_RINGER_MODE, profile.getVolumeRingerMode());
 		values.put(KEY_VOLUME_RINGTONE, profile.getVolumeRingtone());
 		values.put(KEY_VOLUME_NOTIFICATION, profile.getVolumeNotification());
@@ -208,7 +209,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.close(); // Closing database connection
 		
 		profile.setID(id);
-		profile.setPOrder(porder);
+		//profile.setPOrder(porder);
 	}
 
 	// Getting single profile
@@ -424,7 +425,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		return r;
 	}
 	
-	// Getting max(porder)
+/*	// Getting max(porder)
 	public int getMaxPOrder() {
 		String countQuery = "SELECT MAX(PORDER) FROM " + TABLE_PROFILES;
 		SQLiteDatabase db = this.getReadableDatabase();
@@ -449,7 +450,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		return r;
 		
 	}
-	
+*/	
 	public void activateProfile(Profile profile)
 	{
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -553,7 +554,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 	}
 	
-	public void setPOrders(List<Profile> list)
+	public void setPOrder(List<Profile> list)
 	{
 		SQLiteDatabase db = this.getWritableDatabase();
 		
@@ -566,6 +567,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			profile = list.get(i);
 			
 			values.put(KEY_PORDER, profile.getPOrder());
+
+			db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
+				        new String[] { String.valueOf(profile.getID()) });
+		}
+		
+        db.close();
+	}
+	
+	public void setChecked(List<Profile> list)
+	{
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		Profile profile;
+		ContentValues values = new ContentValues();
+		
+		for (int i = 0; i < list.size(); i++)
+		{
+
+			profile = list.get(i);
+			
+			values.put(KEY_CHECKED, profile.getChecked());
 
 			db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
 				        new String[] { String.valueOf(profile.getID()) });

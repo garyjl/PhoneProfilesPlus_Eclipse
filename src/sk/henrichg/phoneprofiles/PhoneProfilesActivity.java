@@ -1,6 +1,5 @@
 package sk.henrichg.phoneprofiles;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -16,6 +15,7 @@ import android.support.v4.app.NotificationCompat;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -45,17 +45,18 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	private NotificationManager notificationManager;
 	private ActivateProfileHelper activateProfileHelper;
 	private List<Profile> profileList;
-	private MainProfileListAdapter profileListAdapter;
+	private static MainProfileListAdapter profileListAdapter;
 	private DragSortListView listView;
 	private TextView activeProfileName;
 	private ImageView activeProfileIcon;
-	private String actualLanguage;
 	private int startupSource = 0;
-	private boolean applicationStarted;
+	private static boolean applicationStarted;
 	private Intent intent;
+	private static boolean languageChanged = false;
 
-	static final String INTENT_PROFILE_ID = "profile_id";
-	static final String INTENT_START_APP_SOURCE = "start_app_source";
+	static final String EXTRA_PROFILE_POSITION = "profile_position";
+	static final String EXTRA_PROFILE_ID = "profile_id";
+	static final String EXTRA_START_APP_SOURCE = "start_app_source";
 	
 	static final String PROFILE_ICON_DEFAULT = "ic_profile_default";
 	
@@ -69,13 +70,16 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		setLanguage(getBaseContext(), false);
+		
 		setContentView(R.layout.activity_phone_profiles);
 		
 		// na onCreate dame, ze aplikacia este nie je nastartovana
 		applicationStarted = false;
 		
 		intent = getIntent();
-		startupSource = intent.getIntExtra(INTENT_START_APP_SOURCE, 0);
+		startupSource = intent.getIntExtra(EXTRA_START_APP_SOURCE, 0);
 		
 		activateProfileHelper = new ActivateProfileHelper(this, getBaseContext());
 
@@ -86,17 +90,8 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		activeProfileIcon = (ImageView)findViewById(R.id.activated_profile_icon);
 		listView = (DragSortListView)findViewById(R.id.main_profiles_list);
 		
-		SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
-		actualLanguage = preferences.getString(PhoneProfilesPreferencesActivity.PREF_APPLICATION_LANGUAGE, "system");
-		
-		/*
-		Profile profile = databaseHandler.getActivatedProfile();
-		updateHeader(profile);
-		showNotification(profile);
-		updateWidget();
-		*/
-	
-		profileList = new ArrayList<Profile>();
+		profileList = databaseHandler.getAllProfiles();
+
 		profileListAdapter = new MainProfileListAdapter(this, profileList);
 		
 		listView.setAdapter(profileListAdapter);
@@ -118,7 +113,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
         listView.setDropListener(new DragSortListView.DropListener() {
             public void drop(int from, int to) {
             	profileListAdapter.changeItemOrder(from, to);
-            	databaseHandler.setPOrders(profileList);
+            	databaseHandler.setPOrder(profileList);
         		Log.d("PhoneProfileActivity.drop", "xxxx");
             }
         });
@@ -181,22 +176,18 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	protected void onStart()
 	{
 		super.onStart();
-
-		setLanguage();
 		
-		updateListView();
-
+		if (applicationStarted && languageChanged)
+		{
+			// zrusenie notifikacie
+			showNotification(null);
+			finish();
+		}
 
 		Log.d("PhoneProfilesActivity.onStart", "startupSource="+startupSource);
 		
 		boolean actProfile = false;
-	/*	if (startupSource == STARTUP_SOURCE_SHORTCUT)
-		{
-			// aktivita spustena z shortcutu, profil aktivujeme
-			actProfile = true;
-		}
-		else */
-		if (startupSource == 0 /*|| startupSource == STARTUP_SOURCE_BOOT*/)
+		if (startupSource == 0)
 		{
 			
 			// aktivita nebola spustena z notifikacie, ani z widgetu
@@ -225,15 +216,6 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		showNotification(profile);
 		updateWidget();
 		
-	/*	if (startupSource == STARTUP_SOURCE_SHORTCUT)
-		{
-			long profile_id = intent.getLongExtra(INTENT_PROFILE_ID, 0);
-			if (profile_id == 0)
-				profile = null;
-			else
-				profile = databaseHandler.getProfile(profile_id);
-		} */
-		
 		if (actProfile && (profile != null))
 		{
 			// aktivacia profilu
@@ -241,7 +223,6 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		}
 		
 		// reset, aby sa to dalej chovalo ako normalne spustenie z lauchera
-	/*	boolean finishActivity = (startupSource == STARTUP_SOURCE_BOOT) || (startupSource == STARTUP_SOURCE_SHORTCUT); */
 		startupSource = 0;
 
 		// na onStart dame, ze aplikacia uz je nastartovana
@@ -249,8 +230,6 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		
 		Log.d("PhoneProfileActivity.onStart", "xxxx");
 		
-	/*	if (finishActivity)
-			finish(); */
 	}
 	
 	@Override
@@ -355,6 +334,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 					         	  false,
 								  "-|0"
 					);
+			profileListAdapter.addItem(profile); // pridame profil do listview a nastavime jeho order
 			databaseHandler.addProfile(profile);
 		}
 
@@ -388,18 +368,10 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		Log.d("PhoneProfilesActivity.startProfilePreferencesActivityFromList", profile.getID()+"");
 		
 		Intent intent = new Intent(getBaseContext(), ProfilePreferencesActivity.class);
-		intent.putExtra(INTENT_PROFILE_ID, profile.getID());
+		intent.putExtra(EXTRA_PROFILE_POSITION, profileListAdapter.getItemId(profile));
 
 		startActivity(intent);
 		
-	}
-
-	private void updateListView()
-	{
-		if (profileList != null)
-			profileList.clear();
-		profileList = databaseHandler.getAllProfiles();
-		profileListAdapter.setList(profileList);
 	}
 
 	private void duplicateProfile(int position)
@@ -408,9 +380,10 @@ public class PhoneProfilesActivity extends SherlockActivity {
 
 		profile.setName(profile.getName()+"_d");
 		profile.setChecked(false);
+		profileListAdapter.addItem(profile);
 		databaseHandler.addProfile(profile);
 		
-		updateListView();
+		//updateListView();
 
 		startProfilePreferencesActivity(profileList.size()-1);
 	}
@@ -426,10 +399,12 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		dialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 			
 			public void onClick(DialogInterface dialog, int which) {
+				profileListAdapter.deleteItem(profile);
 				databaseHandler.deleteProfile(profile);
-				updateListView();
-				// v pripade, ze sa odmaze aktivovany profil
-				Profile profile = databaseHandler.getActivatedProfile();
+				//updateListView();
+				// v pripade, ze sa odmaze aktivovany profil, nastavime, ze nic nie je aktivovane
+				//Profile profile = databaseHandler.getActivatedProfile();
+				Profile profile = profileListAdapter.getActivatedProfile();
 				updateHeader(profile);
 				showNotification(profile);
 				updateWidget();
@@ -478,7 +453,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 				// vytvorenie intentu na aktivitu, ktora sa otvori na kliknutie na notifikaciu
 				Intent intent = new Intent(this, PhoneProfilesActivity.class);
 				// nastavime, ze aktivita sa spusti z notifikacnej listy
-				intent.putExtra(INTENT_START_APP_SOURCE, STARTUP_SOURCE_NOTIFICATION);
+				intent.putExtra(EXTRA_START_APP_SOURCE, STARTUP_SOURCE_NOTIFICATION);
 				PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 				// vytvorenie samotnej notifikacie
 				NotificationCompat.Builder notificationBuilder;
@@ -568,10 +543,11 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	{
 		SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
 		
+		profileListAdapter.activateProfile(profile);
 		databaseHandler.activateProfile(profile);
+		
 		activateProfileHelper.execute(profile);
 
-		updateListView();
 		updateHeader(profile);
 		updateWidget();
 
@@ -604,70 +580,32 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		activateProfile(profile);
 	}
 	
-	private void setLanguage()
+	public static void setLanguage(Context context, boolean restart)
 	{
-		SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
+		SharedPreferences preferences = context.getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
 		
 		// jazyk na aky zmenit
 		String lang = preferences.getString(PhoneProfilesPreferencesActivity.PREF_APPLICATION_LANGUAGE, "system");
 		
-		// jazyk aplikacie
-		String defaultLanguage = getBaseContext().getResources().getConfiguration().locale.getLanguage();
-		
-		// actualLanguage = posledne nastaveny jazyk
+		Log.d("PhoneProfilesActivity.setLanguauge", lang);
 
-		if (actualLanguage.equals("system"))
-			// predpokladam, ze jazyk aplikacie = poslende nastaveny jazyk
-			defaultLanguage = "system";
+		Locale appLocale;
 		
-		Log.d("PhoneProfilesActivity.setLanguauge", actualLanguage);
-		
-		if ((!actualLanguage.equals(lang)) || (!defaultLanguage.equals(actualLanguage)))
+		if (!lang.equals("system"))
 		{
-			Log.d("PhoneProfilesActivity.setLanguauge", lang);
-
-			Locale appLocale;
-			
-			if (!lang.equals("system"))
-			{
-				appLocale = new Locale(lang);
-			}
-			else
-			{
-				appLocale = Resources.getSystem().getConfiguration().locale;
-			}
-			
-			Locale.setDefault(appLocale);
-			Configuration appConfig = new Configuration();
-			appConfig.locale = appLocale;
-			getBaseContext().getResources().updateConfiguration(appConfig, getBaseContext().getResources().getDisplayMetrics());
-			
-			actualLanguage = lang;
-			
-			// zavretie aktivity
-			finish();
-		}	
-	}
-	
-	public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight)
-	{
-		// raw height and width of image
-		final int height = options.outHeight;
-		final int width = options.outWidth;
-		int inSampleSize = 1;
-		
-		if (height > reqHeight || width > reqWidth)
-		{
-			// calculate ratios of height and width to requested height an width
-			final int heightRatio = Math.round((float) height / (float) reqHeight);
-			final int widthRatio = Math.round((float) width / (float) reqWidth);
-			
-			// choose the smalest ratio as InSamleSize value, this will guarantee
-			// a final image with both dimensions larger than or equal to the
-			// requested height and width
-			inSampleSize = (heightRatio < widthRatio) ? heightRatio : widthRatio;
+			appLocale = new Locale(lang);
 		}
-		return inSampleSize;
+		else
+		{
+			appLocale = Resources.getSystem().getConfiguration().locale;
+		}
+		
+		Locale.setDefault(appLocale);
+		Configuration appConfig = new Configuration();
+		appConfig.locale = appLocale;
+		context.getResources().updateConfiguration(appConfig, context.getResources().getDisplayMetrics());
+		
+		languageChanged = restart;
 	}
 	
 	public static DatabaseHandler getDatabaseHandler()
@@ -675,5 +613,9 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		return databaseHandler;
 	}
 	
+	public static MainProfileListAdapter getProfileListAdapter()
+	{
+		return profileListAdapter;
+	}
 
 }

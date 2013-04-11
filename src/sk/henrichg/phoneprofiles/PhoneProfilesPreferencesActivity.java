@@ -21,6 +21,8 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
 	
 	private static Activity preferenceActivity = null;
 	
+	private String activeLanguage;
+	
 		
 	static final String PREFS_NAME = "phone_profile_preferences";
 	
@@ -36,6 +38,9 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
+		PhoneProfilesActivity.setLanguage(getBaseContext(), false);
+
 		super.onCreate(savedInstanceState);
 
 		preferenceActivity = this;
@@ -50,7 +55,7 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
 		addPreferencesFromResource(R.layout.phone_profiles_preferences);
 
         preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-
+        activeLanguage = preferences.getString(PREF_APPLICATION_LANGUAGE, "system");
         
         prefListener = new OnSharedPreferenceChangeListener() {
         	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
@@ -60,7 +65,8 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
     	    	
     	    	if (key.equals(PREF_APPLICATION_LANGUAGE))
     	    		setSummary(key, prefs.getString(key, ""));
-        	}
+    	    		
+    	    }
 
         };
         
@@ -78,6 +84,14 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
 	{
 		super.onStart();
 		updateSharedPreference();
+	}
+	
+	@Override
+	protected void onPause()
+	{
+		super.onPause();
+		if (activeLanguage != preferences.getString(PREF_APPLICATION_LANGUAGE, "system"))
+    		PhoneProfilesActivity.setLanguage(getBaseContext(), true);
 	}
 	
 	@Override

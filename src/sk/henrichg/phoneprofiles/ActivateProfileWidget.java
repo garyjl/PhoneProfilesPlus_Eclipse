@@ -54,7 +54,7 @@ public class ActivateProfileWidget extends AppWidgetProvider {
 			
 			// konfiguracia, ze ma spustit hlavnu aktivitu zoznamu profilov, ked kliknme na widget
 			Intent intent = new Intent(context, PhoneProfilesActivity.class);
-			intent.putExtra(PhoneProfilesActivity.INTENT_START_APP_SOURCE, PhoneProfilesActivity.STARTUP_SOURCE_WIDGET);
+			intent.putExtra(PhoneProfilesActivity.EXTRA_START_APP_SOURCE, PhoneProfilesActivity.STARTUP_SOURCE_WIDGET);
 			PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, Intent.FLAG_ACTIVITY_NEW_TASK);
 			remoteViews.setOnClickPendingIntent(R.id.activate_profile_widget_icon, pendingIntent);
 			remoteViews.setOnClickPendingIntent(R.id.activate_profile_widget_name, pendingIntent);

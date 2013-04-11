@@ -13,7 +13,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class MainProfileListAdapter extends BaseAdapter {
+public class MainProfileListAdapter extends BaseAdapter
+{
 
 	private Activity activity;
 	private List<Profile> profileList;
@@ -28,16 +29,60 @@ public class MainProfileListAdapter extends BaseAdapter {
 		inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}   
 	
-	public int getCount() {
+	public int getCount()
+	{
 		return profileList.size();
 	}
 
-	public Object getItem(int position) {
+	public Object getItem(int position)
+	{
 		return profileList.get(position);
 	}
 
-	public long getItemId(int position) {
+	public long getItemId(int position)
+	{
 		return position;
+	}
+
+	public int getItemId(Profile profile)
+	{
+		for (int i = 0; i < profileList.size(); i++)
+		{
+			if (profileList.get(i).getID() == profile.getID())
+				return i;
+		}
+		return -1;
+	}
+	
+	public void setList(List<Profile> pl)
+	{
+		profileList = pl;
+		notifyDataSetChanged();
+	}
+	
+	public void addItem(Profile profile)
+	{
+		int maxPOrder = 0;
+		int pOrder;
+		for (Profile p : profileList)
+		{
+			pOrder = p.getPOrder();
+			if (pOrder > maxPOrder) maxPOrder = pOrder;
+		}
+		profile.setPOrder(maxPOrder+1);
+		profileList.add(profile);
+		notifyDataSetChanged();
+	}
+
+	public void updateItem(Profile profile)
+	{
+		notifyDataSetChanged();
+	}
+	
+	public void deleteItem(Profile profile)
+	{
+		profileList.remove(profile);
+		notifyDataSetChanged();
 	}
 	
 	public void changeItemOrder(int from, int to)
@@ -51,8 +96,32 @@ public class MainProfileListAdapter extends BaseAdapter {
 		}
 		notifyDataSetChanged();
 	}
+	
+	public Profile getActivatedProfile()
+	{
+		for (Profile p : profileList)
+		{
+			if (p.getChecked())
+			{
+				return p;
+			}
+		}
+		
+		return null;
+	}
+	
+	public void activateProfile(Profile profile)
+	{
+		for (Profile p : profileList)
+		{
+			p.setChecked(false);
+		}
+		if (profile != null)
+			profile.setChecked(true);
+	}
 
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(int position, View convertView, ViewGroup parent)
+	{
         View vi = convertView;
         if (convertView == null)
         	vi = inflater.inflate(R.layout.main_list_item, null);
@@ -77,11 +146,6 @@ public class MainProfileListAdapter extends BaseAdapter {
         Log.d("ProfileListAdapter.getView", profile.getName());
         
 		return vi;
-	}
-
-	public void setList(List<Profile> pl) {
-		profileList = pl;
-		notifyDataSetChanged();
 	}
 
 }
