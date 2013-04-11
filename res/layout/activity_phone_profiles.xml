@@ -65,6 +65,7 @@
 	    dslv:collapsed_height="2dp"
 	    dslv:drag_scroll_start="0.33"
 	    dslv:max_drag_scroll_speed="0.5"
+	    dslv:float_background_color="#00000000"
 	    dslv:float_alpha="0.6"
 	    dslv:slide_shuffle_speed="0.3"
 	    dslv:track_drag_sort="false"
