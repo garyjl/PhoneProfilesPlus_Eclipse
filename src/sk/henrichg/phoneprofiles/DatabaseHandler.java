@@ -607,19 +607,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
 	}
 	
-	@SuppressWarnings("resource")
-	public void importDB()
+	//@SuppressWarnings("resource")
+	public int importDB()
 	{
+		int ret = 0;
+		
 		// Close SQLiteOpenHelper so it will commit the created empty
 		// database to internal storage
-		close();
+		//close();
 
 		try {
 			
 			File sd = Environment.getExternalStorageDirectory();
-			File data = Environment.getDataDirectory();
+			//File data = Environment.getDataDirectory();
 			
-			File dataDB = new File(data, DB_FILEPATH + "/" + DATABASE_NAME);
+			//File dataDB = new File(data, DB_FILEPATH + "/" + DATABASE_NAME);
 			File exportedDB = new File(sd, EXPORT_DBPATH + "/" + EXPORT_FILENAME);
 			
 			if (exportedDB.exists())
@@ -627,17 +629,56 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				// zistenie verzie zalohy
 				SQLiteDatabase exportedDBObj = SQLiteDatabase.openDatabase(exportedDB.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY);
 				Log.d("DatabaseHandler.importDB", "databaseVersion="+exportedDBObj.getVersion());
-				if (exportedDBObj.getVersion() == DATABASE_VERSION)
+				//if (exportedDBObj.getVersion() == DATABASE_VERSION)
+				if (exportedDBObj.getVersion() <= DATABASE_VERSION)
 				{	
-					FileChannel src = new FileInputStream(exportedDB).getChannel();
-					FileChannel dst = new FileOutputStream(dataDB).getChannel();
-					dst.transferFrom(src, 0, src.size());
-					src.close();
-					dst.close();
+					
+					// db z SQLiteOpenHelper
+					SQLiteDatabase db = this.getWritableDatabase();
+					
+					try {
+						db.beginTransaction();
+						
+						db.execSQL("DELETE FROM " + TABLE_PROFILES);
+						
+						// cusor na data exportedDB
+						Cursor cursor = exportedDBObj.rawQuery("SELECT * FROM "+TABLE_PROFILES, null);
+						String[] columnNames = cursor.getColumnNames();
+						ContentValues values = new ContentValues();
+	
+						if (cursor.moveToFirst()) {
+							do {
+									values.clear();
+									for (int i = 0; i < columnNames.length; i++)
+									{
+										values.put(columnNames[i], cursor.getString(i));
+										Log.d("DatabaseHandler.importDB", "cn="+columnNames[i]+" val="+cursor.getString(i));
+									}
+									// Inserting Row do db z SQLiteOpenHelper
+									db.insert(TABLE_PROFILES, null, values);
+							} while (cursor.moveToNext());
+						}
+	
+						cursor.close();
+						
+						db.setTransactionSuccessful();
+						
+						ret = 1;
+					}
+					finally {
+						db.endTransaction();
+					}
+					db.close();
+					
+					//FileChannel src = new FileInputStream(exportedDB).getChannel();
+					//FileChannel dst = new FileOutputStream(dataDB).getChannel();
+					//dst.transferFrom(src, 0, src.size());
+					//src.close();
+					//dst.close();
 					
 					// Access the copied database so SQLiteHelper will cache it and mark
 					// it as created
-					getWritableDatabase().close();
+					//getWritableDatabase().close();
 				}
 				else
 				{
@@ -648,11 +689,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			Log.e("DatabaseHandler.importDB", e.getMessage());
 		}
 		
+		return ret;
 	}
 	
 	@SuppressWarnings("resource")
-	public void exportDB()
+	public int exportDB()
 	{
+		int ret = 0;
+		
 		try {
 			
 			File sd = Environment.getExternalStorageDirectory();
@@ -679,10 +723,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				dst.transferFrom(src, 0, src.size());
 				src.close();
 				dst.close();
+				
+				ret = 1;
 			}
 		} catch (Exception e) {
 			Log.e("DatabaseHandler.exportDB", e.getMessage());
 		}
-		
+
+		return ret;
 	}
 }

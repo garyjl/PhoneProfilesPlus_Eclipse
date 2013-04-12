@@ -260,6 +260,9 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		
+		Toast msg;
+		
 		switch (item.getItemId()) {
 		case R.id.menu_new_profile:
 			Log.d("PhoneProfileActivity.onOptionsItemSelected", "menu_new_profile");
@@ -278,15 +281,34 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		case R.id.menu_export:
 			Log.d("PhoneProfilesActivity.onOptionsItemSelected", "menu_export");
 
-			databaseHandler.exportDB();
+			if (databaseHandler.exportDB() == 1)
+			{
+
+				// toast notification
+				msg = Toast.makeText(this, 
+						getResources().getString(R.string.toast_export_ok), 
+						Toast.LENGTH_LONG);
+				msg.show();
+			
+			}
 			
 			return true;
 		case R.id.menu_import:
 			Log.d("PhoneProfilesActivity.onOptionsItemSelected", "menu_import");
 
-			databaseHandler.importDB();
-			activateProfileHelper.showNotification(null);
-			finish();
+			if (databaseHandler.importDB() == 1)
+			{
+
+				// toast notification
+				msg = Toast.makeText(this, 
+						getResources().getString(R.string.toast_import_ok), 
+						Toast.LENGTH_LONG);
+				msg.show();
+				
+				activateProfileHelper.showNotification(null);
+				finish();
+			
+			}
 			
 			return true;
 		case R.id.menu_exit:
