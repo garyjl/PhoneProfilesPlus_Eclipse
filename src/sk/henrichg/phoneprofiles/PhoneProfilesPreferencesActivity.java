@@ -5,10 +5,12 @@ import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.app.Activity;
+import android.content.Intent;
 //import android.content.Context;
 //import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.content.res.Configuration;
 import android.util.Log;
 
 public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity {
@@ -72,6 +74,15 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
         
         preferences.registerOnSharedPreferenceChangeListener(prefListener);
 	
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig)
+	{
+		getBaseContext().getResources().updateConfiguration(newConfig, getBaseContext().getResources().getDisplayMetrics());
+		Intent intent = getIntent();
+		startActivity(intent);
+		finish();
 	}
 
 	private void updateSharedPreference()

@@ -7,14 +7,7 @@ import com.actionbarsherlock.app.SherlockActivity;
 
 import android.os.Bundle;
 import android.provider.Settings;
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.support.v4.app.NotificationCompat;
-import android.app.PendingIntent;
-import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,7 +15,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -42,7 +34,6 @@ import android.widget.Toast;
 public class PhoneProfilesActivity extends SherlockActivity {
 
 	private static DatabaseHandler databaseHandler;
-	private NotificationManager notificationManager;
 	private ActivateProfileHelper activateProfileHelper;
 	private List<Profile> profileList;
 	private static MainProfileListAdapter profileListAdapter;
@@ -84,7 +75,6 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		activateProfileHelper = new ActivateProfileHelper(this, getBaseContext());
 
 		databaseHandler = new DatabaseHandler(this);
-		notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 		
 		activeProfileName = (TextView)findViewById(R.id.activated_profile_name);
 		activeProfileIcon = (ImageView)findViewById(R.id.activated_profile_icon);
@@ -180,7 +170,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		if (applicationStarted && languageChanged)
 		{
 			// zrusenie notifikacie
-			showNotification(null);
+			activateProfileHelper.showNotification(null);
 			finish();
 		}
 
@@ -213,8 +203,8 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		// pre profil, ktory je prave aktivny, treba aktualizovat aktivitu
 		profile = databaseHandler.getActivatedProfile();
 		updateHeader(profile);
-		showNotification(profile);
-		updateWidget();
+		activateProfileHelper.showNotification(profile);
+		activateProfileHelper.updateWidget();
 		
 		if (actProfile && (profile != null))
 		{
@@ -285,7 +275,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 			Log.d("PhoneProfilesActivity.onOptionsItemSelected", "menu_exit");
 			
 			// zrusenie notifikacie
-			showNotification(null);
+			activateProfileHelper.showNotification(null);
 			
 			finish();
 
@@ -293,6 +283,16 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig)
+	{
+		getBaseContext().getResources().updateConfiguration(newConfig, getBaseContext().getResources().getDisplayMetrics());
+		//setContentView(R.layout.activity_phone_profiles);
+		Intent intent = getIntent();
+		startActivity(intent);
+		finish();
 	}
 
 	private void startProfilePreferencesActivity(int position)
@@ -406,8 +406,8 @@ public class PhoneProfilesActivity extends SherlockActivity {
 				//Profile profile = databaseHandler.getActivatedProfile();
 				Profile profile = profileListAdapter.getActivatedProfile();
 				updateHeader(profile);
-				showNotification(profile);
-				updateWidget();
+				activateProfileHelper.showNotification(profile);
+				activateProfileHelper.updateWidget();
 			}
 		});
 		dialogBuilder.setNegativeButton(android.R.string.no, null);
@@ -434,83 +434,6 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	        	activeProfileIcon.setImageBitmap(BitmapFactory.decodeFile(profile.getIconIdentifier()));
 	        }
 		}
-	}
-	
-	@SuppressLint("InlinedApi")
-	private void showNotification(Profile profile)
-	{
-
-		SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
-		
-		if (preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_NOTIFICATION_STATUS_BAR, true))
-		{	
-			if (profile == null)
-			{
-				notificationManager.cancel(NOTIFICATION_ID);
-			}
-			else
-			{
-				// vytvorenie intentu na aktivitu, ktora sa otvori na kliknutie na notifikaciu
-				Intent intent = new Intent(this, PhoneProfilesActivity.class);
-				// nastavime, ze aktivita sa spusti z notifikacnej listy
-				intent.putExtra(EXTRA_START_APP_SOURCE, STARTUP_SOURCE_NOTIFICATION);
-				PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-				// vytvorenie samotnej notifikacie
-				NotificationCompat.Builder notificationBuilder;
-		        if (profile.getIsIconResourceID())
-		        {
-		        	int iconResource = getResources().getIdentifier(profile.getIconIdentifier(), "drawable", getPackageName());
-		        
-					notificationBuilder = new NotificationCompat.Builder(this)
-						.setContentText(getResources().getString(R.string.active_profile_notification_label))
-						.setContentTitle(profile.getName())
-						.setContentIntent(pIntent)
-						.setSmallIcon(iconResource);
-		        }
-		        else
-		        {
-		        	if (android.os.Build.VERSION.SDK_INT >= 11)
-		        	{
-		        		Bitmap bitmap = BitmapFactory.decodeFile(profile.getIconIdentifier());
-		        		Resources resources = getResources();
-		        		int height = (int) resources.getDimension(android.R.dimen.notification_large_icon_height);
-		        		int width = (int) resources.getDimension(android.R.dimen.notification_large_icon_width);
-		        		bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
-						notificationBuilder = new NotificationCompat.Builder(this)
-							.setContentText(getResources().getString(R.string.active_profile_notification_label))
-							.setContentTitle(profile.getName())
-							.setContentIntent(pIntent)
-							.setLargeIcon(bitmap)
-							.setSmallIcon(R.drawable.ic_launcher);
-		        	}
-		        	else
-		        	{
-						notificationBuilder = new NotificationCompat.Builder(this)
-						.setContentText(getResources().getString(R.string.active_profile_notification_label))
-						.setContentTitle(profile.getName())
-						.setContentIntent(pIntent)
-						.setSmallIcon(R.drawable.ic_launcher);
-		        	}
-		        }
-				@SuppressWarnings("deprecation")
-				Notification notification = notificationBuilder.getNotification();
-				notification.flags |= Notification.FLAG_NO_CLEAR; 
-				notificationManager.notify(NOTIFICATION_ID, notification);
-			}
-		}
-		else
-		{
-			notificationManager.cancel(NOTIFICATION_ID);
-		}
-	}
-	
-	private void updateWidget()
-	{
-		Intent intent = new Intent(this, ActivateProfileWidget.class);
-		intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
-		int ids[] = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), ActivateProfileWidget.class));
-		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
-		sendBroadcast(intent);
 	}
 	
 	private void activateProfileWithAlert(int position)
@@ -549,7 +472,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		activateProfileHelper.execute(profile);
 
 		updateHeader(profile);
-		updateWidget();
+		activateProfileHelper.updateWidget();
 
 		if (preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_NOTIFICATION_TOAST, true))
 		{	
@@ -561,7 +484,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 			msg.show();
 		}
 
-		showNotification(profile);
+		activateProfileHelper.showNotification(profile);
 
 		if (preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_APPLICATION_CLOSE, true))
 		{	

@@ -5,6 +5,7 @@ import java.util.List;
 import com.actionbarsherlock.app.SherlockActivity;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -52,6 +53,15 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 			
 		});
 		
+	}
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig)
+	{
+		getBaseContext().getResources().updateConfiguration(newConfig, getBaseContext().getResources().getDisplayMetrics());
+		Intent intent = getIntent();
+		startActivity(intent);
+		finish();
 	}
 	
 	private void createShortcut(int position)

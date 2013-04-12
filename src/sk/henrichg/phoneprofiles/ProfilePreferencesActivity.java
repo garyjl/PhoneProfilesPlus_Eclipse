@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -200,6 +201,15 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
     	Log.d("ProfilePreferencesActivity.onDestroy", "xxxx");
     	preferences.unregisterOnSharedPreferenceChangeListener(prefListener);
 		super.onDestroy();
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig)
+	{
+		getBaseContext().getResources().updateConfiguration(newConfig, getBaseContext().getResources().getDisplayMetrics());
+		Intent intent = getIntent();
+		startActivity(intent);
+		finish();
 	}
 
 	private void updateSharedPreference()

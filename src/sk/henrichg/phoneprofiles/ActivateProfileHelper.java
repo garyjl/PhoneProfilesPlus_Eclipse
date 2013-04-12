@@ -2,15 +2,25 @@ package sk.henrichg.phoneprofiles;
 
 import java.io.IOException;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.WallpaperManager;
+import android.appwidget.AppWidgetManager;
 import android.bluetooth.BluetoothAdapter;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.net.wifi.WifiManager;
 import android.provider.Settings;
+import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Window;
@@ -20,6 +30,8 @@ public class ActivateProfileHelper {
 	
 	private Activity activity;
 	private Context context;
+	private NotificationManager notificationManager;
+	
 	
 	public ActivateProfileHelper()
 	{
@@ -30,6 +42,7 @@ public class ActivateProfileHelper {
 	{
 		activity = a;
 		context = c;
+		notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -359,6 +372,85 @@ public class ActivateProfileHelper {
 		}	
 		
 	}
+	
+	@SuppressWarnings("deprecation")
+	@SuppressLint("InlinedApi")
+	public void showNotification(Profile profile)
+	{
+
+		SharedPreferences preferences = context.getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, Context.MODE_PRIVATE);
+		
+		if (preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_NOTIFICATION_STATUS_BAR, true))
+		{	
+			if (profile == null)
+			{
+				notificationManager.cancel(PhoneProfilesActivity.NOTIFICATION_ID);
+			}
+			else
+			{
+				// vytvorenie intentu na aktivitu, ktora sa otvori na kliknutie na notifikaciu
+				Intent intent = new Intent(context, PhoneProfilesActivity.class);
+				// nastavime, ze aktivita sa spusti z notifikacnej listy
+				intent.putExtra(PhoneProfilesActivity.EXTRA_START_APP_SOURCE, PhoneProfilesActivity.STARTUP_SOURCE_NOTIFICATION);
+				PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+				// vytvorenie samotnej notifikacie
+				NotificationCompat.Builder notificationBuilder;
+		        if (profile.getIsIconResourceID())
+		        {
+		        	int iconResource = context.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", context.getPackageName());
+		        
+					notificationBuilder = new NotificationCompat.Builder(context)
+						.setContentText(context.getResources().getString(R.string.active_profile_notification_label))
+						.setContentTitle(profile.getName())
+						.setContentIntent(pIntent)
+						.setSmallIcon(iconResource);
+		        }
+		        else
+		        {
+		        	if (android.os.Build.VERSION.SDK_INT >= 11)
+		        	{
+		        		Bitmap bitmap = BitmapFactory.decodeFile(profile.getIconIdentifier());
+		        		Resources resources = context.getResources();
+		        		int height = (int) resources.getDimension(android.R.dimen.notification_large_icon_height);
+		        		int width = (int) resources.getDimension(android.R.dimen.notification_large_icon_width);
+		        		bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
+						notificationBuilder = new NotificationCompat.Builder(context)
+							.setContentText(context.getResources().getString(R.string.active_profile_notification_label))
+							.setContentTitle(profile.getName())
+							.setContentIntent(pIntent)
+							.setLargeIcon(bitmap)
+							.setSmallIcon(R.drawable.ic_launcher);
+		        	}
+		        	else
+		        	{
+						notificationBuilder = new NotificationCompat.Builder(context)
+						.setContentText(context.getResources().getString(R.string.active_profile_notification_label))
+						.setContentTitle(profile.getName())
+						.setContentIntent(pIntent)
+						.setSmallIcon(R.drawable.ic_launcher);
+		        	}
+		        }
+				Notification notification = notificationBuilder.getNotification();
+				notification.flags |= Notification.FLAG_NO_CLEAR; 
+				notificationManager.notify(PhoneProfilesActivity.NOTIFICATION_ID, notification);
+			}
+		}
+		else
+		{
+			notificationManager.cancel(PhoneProfilesActivity.NOTIFICATION_ID);
+		}
+	}
+	
+	public void updateWidget()
+	{
+		Intent intent = new Intent(context, ActivateProfileWidget.class);
+		intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+		int ids[] = AppWidgetManager.getInstance(activity.getApplication()).getAppWidgetIds(new ComponentName(activity.getApplication(), ActivateProfileWidget.class));
+		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+		context.sendBroadcast(intent);
+	}
+	
+	
 
 	private boolean isAirplaneMode(Context context)
 	{
@@ -396,5 +488,7 @@ public class ActivateProfileHelper {
 		}
 		return inSampleSize;
 	}
+	
+	
 	
 }
