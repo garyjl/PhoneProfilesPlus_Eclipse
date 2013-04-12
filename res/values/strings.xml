@@ -99,5 +99,7 @@
     <string name="array_pref_value_sk">sk</string>
     <string name="array_pref_value_cs">cs</string>
     <string name="profile_preferences_airplane_mode_no_allowed">No allowed</string>
+    <string name="menu_export">Export profiles</string>
+    <string name="menu_import">Import profiles</string>
     
 </resources>

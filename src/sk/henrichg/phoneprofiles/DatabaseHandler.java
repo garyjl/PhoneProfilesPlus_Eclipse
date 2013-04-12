@@ -1,5 +1,9 @@
 package sk.henrichg.phoneprofiles;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +12,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 import android.util.Log;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
@@ -21,7 +26,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	// Profiles table name
 	private static final String TABLE_PROFILES = "profiles";
+	
+	// import/export
+	private final String EXPORT_DBPATH = "/PhoneProfiles";
+	private final String EXPORT_FILENAME = DATABASE_NAME + ".backup";
+	private final String DB_FILEPATH = "/data/" + PhoneProfilesActivity.PACKAGE_NAME + "/databases";
 
+	
 	// Profiles Table Columns names
 	private static final String KEY_ID = "id";
 	private static final String KEY_NAME = "name";
@@ -594,5 +605,84 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		}
 		
         db.close();
+	}
+	
+	@SuppressWarnings("resource")
+	public void importDB()
+	{
+		// Close SQLiteOpenHelper so it will commit the created empty
+		// database to internal storage
+		close();
+
+		try {
+			
+			File sd = Environment.getExternalStorageDirectory();
+			File data = Environment.getDataDirectory();
+			
+			File dataDB = new File(data, DB_FILEPATH + "/" + DATABASE_NAME);
+			File exportedDB = new File(sd, EXPORT_DBPATH + "/" + EXPORT_FILENAME);
+			
+			if (exportedDB.exists())
+			{
+				// zistenie verzie zalohy
+				SQLiteDatabase exportedDBObj = SQLiteDatabase.openDatabase(exportedDB.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY);
+				Log.d("DatabaseHandler.importDB", "databaseVersion="+exportedDBObj.getVersion());
+				if (exportedDBObj.getVersion() == DATABASE_VERSION)
+				{	
+					FileChannel src = new FileInputStream(exportedDB).getChannel();
+					FileChannel dst = new FileOutputStream(dataDB).getChannel();
+					dst.transferFrom(src, 0, src.size());
+					src.close();
+					dst.close();
+					
+					// Access the copied database so SQLiteHelper will cache it and mark
+					// it as created
+					getWritableDatabase().close();
+				}
+				else
+				{
+					Log.w("DatabaseHandler.importDB", "wrong exported db version");
+				}
+			}
+		} catch (Exception e) {
+			Log.e("DatabaseHandler.importDB", e.getMessage());
+		}
+		
+	}
+	
+	@SuppressWarnings("resource")
+	public void exportDB()
+	{
+		try {
+			
+			File sd = Environment.getExternalStorageDirectory();
+			File data = Environment.getDataDirectory();
+			
+			File dataDB = new File(data, DB_FILEPATH + "/" + DATABASE_NAME);
+			File exportedDB = new File(sd, EXPORT_DBPATH + "/" + EXPORT_FILENAME);
+			
+			Log.d("DatabaseHandler.exportDB", "dataDB="+dataDB.getAbsolutePath());
+			Log.d("DatabaseHandler.exportDB", "exportedDB="+exportedDB.getAbsolutePath());
+			
+			if (dataDB.exists())
+			{
+				
+				File exportDir = new File(sd, EXPORT_DBPATH);
+				if (!(exportDir.exists() && exportDir.isDirectory()))
+				{
+					exportDir.mkdirs();
+					Log.d("DatabaseHandler.exportDB", "mkdir="+exportDir.getAbsolutePath());
+				}
+				
+				FileChannel src = new FileInputStream(dataDB).getChannel();
+				FileChannel dst = new FileOutputStream(exportedDB).getChannel();
+				dst.transferFrom(src, 0, src.size());
+				src.close();
+				dst.close();
+			}
+		} catch (Exception e) {
+			Log.e("DatabaseHandler.exportDB", e.getMessage());
+		}
+		
 	}
 }

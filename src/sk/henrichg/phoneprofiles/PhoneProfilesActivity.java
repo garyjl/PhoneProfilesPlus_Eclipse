@@ -58,10 +58,14 @@ public class PhoneProfilesActivity extends SherlockActivity {
 
 	static final int NOTIFICATION_ID = 700420;
 	
+	static String PACKAGE_NAME;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		PACKAGE_NAME = getApplicationContext().getPackageName();
+
 		setLanguage(getBaseContext(), false);
 		
 		setContentView(R.layout.activity_phone_profiles);
@@ -270,6 +274,20 @@ public class PhoneProfilesActivity extends SherlockActivity {
 
 			startActivity(intent);
 
+			return true;
+		case R.id.menu_export:
+			Log.d("PhoneProfilesActivity.onOptionsItemSelected", "menu_export");
+
+			databaseHandler.exportDB();
+			
+			return true;
+		case R.id.menu_import:
+			Log.d("PhoneProfilesActivity.onOptionsItemSelected", "menu_import");
+
+			databaseHandler.importDB();
+			activateProfileHelper.showNotification(null);
+			finish();
+			
 			return true;
 		case R.id.menu_exit:
 			Log.d("PhoneProfilesActivity.onOptionsItemSelected", "menu_exit");

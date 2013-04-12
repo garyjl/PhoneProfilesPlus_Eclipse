@@ -9,9 +9,19 @@
         android:orderInCategory="120"
         android:showAsAction="never"
 	    android:icon="@drawable/ic_action_settings" />
+    <item android:id="@+id/menu_export"
+        android:title="@string/menu_export"
+        android:orderInCategory="130"
+        android:showAsAction="never"
+	    android:icon="@drawable/ic_action_import_export" />
+    <item android:id="@+id/menu_import"
+        android:title="@string/menu_import"
+        android:orderInCategory="140"
+        android:showAsAction="never"
+	    android:icon="@drawable/ic_action_import_export" />
     <item android:id="@+id/menu_exit"
         android:title="@string/menu_exit"
-        android:orderInCategory="130"
+        android:orderInCategory="150"
         android:showAsAction="never"
 	    android:icon="@drawable/ic_action_exit" />
 </menu>
