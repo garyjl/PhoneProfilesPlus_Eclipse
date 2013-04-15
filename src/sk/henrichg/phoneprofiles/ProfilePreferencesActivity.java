@@ -1,6 +1,7 @@
 package sk.henrichg.phoneprofiles;
  
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
+import com.actionbarsherlock.view.MenuItem;
 
 import android.app.Activity;
 import android.content.Context;
@@ -60,10 +61,13 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
 	@Override
     public void onCreate(Bundle savedInstanceState) {
 		
-		PhoneProfilesActivity.setLanguage(getBaseContext(), false);
-		
         super.onCreate(savedInstanceState);
 
+		PhoneProfilesActivity.setLanguage(getBaseContext(), false);
+		
+		getSupportActionBar().setHomeButtonEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        
 		preferenceActivity = this;
 
         intent = getIntent();
@@ -101,6 +105,18 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
 
     	Log.d("ProfilePreferencesActivity.onCreate", "xxxx");
     }
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			finish();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
 	
 	@Override
 	protected void onStart()

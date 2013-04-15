@@ -1,6 +1,7 @@
 package sk.henrichg.phoneprofiles;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
+import com.actionbarsherlock.view.MenuItem;
 
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -41,9 +42,13 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
-		PhoneProfilesActivity.setLanguage(getBaseContext(), false);
-
 		super.onCreate(savedInstanceState);
+
+		PhoneProfilesActivity.setLanguage(getBaseContext(), false);
+		
+		getSupportActionBar().setHomeButtonEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		
 
 		preferenceActivity = this;
 
@@ -84,7 +89,19 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
 		startActivity(intent);
 		finish();
 	}
-
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			finish();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+	
 	private void updateSharedPreference()
 	{
         setSummary(PREF_APPLICATION_LANGUAGE, preferences.getString(PREF_APPLICATION_LANGUAGE, ""));

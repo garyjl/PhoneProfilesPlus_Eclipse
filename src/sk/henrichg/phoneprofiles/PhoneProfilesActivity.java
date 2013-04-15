@@ -70,6 +70,9 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		
 		setContentView(R.layout.activity_phone_profiles);
 		
+		//getSupportActionBar().setHomeButtonEnabled(true);
+		//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		
 		// na onCreate dame, ze aplikacia este nie je nastartovana
 		applicationStarted = false;
 		
