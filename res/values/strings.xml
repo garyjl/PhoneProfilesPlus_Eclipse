@@ -103,5 +103,9 @@
     <string name="menu_import">Import profiles</string>
     <string name="toast_export_ok">Profiles exported</string>
     <string name="toast_import_ok">Profiles imported</string>
+    <string name="import_profiles_alert_title">Import profiles</string>
+    <string name="import_profiles_alert_message">Are you sure</string>
+    <string name="import_profiles_alert_error">Error on importing profiles</string>
+    <string name="export_profiles_alert_error">Error on exporting profiles</string>
     
 </resources>

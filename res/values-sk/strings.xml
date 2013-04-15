@@ -103,5 +103,9 @@
     <string name="menu_import">Import profilov</string>
     <string name="toast_export_ok">Profily sú exportnuté</string>
     <string name="toast_import_ok">Profily sú importnuté</string>
+    <string name="import_profiles_alert_title">Import profilov</string>
+    <string name="import_profiles_alert_message">Ste si istí</string>
+    <string name="import_profiles_alert_error">Chyba pri importe profilov</string>
+    <string name="export_profiles_alert_error">Chyba pii exporte profilov</string>
     
 </resources>

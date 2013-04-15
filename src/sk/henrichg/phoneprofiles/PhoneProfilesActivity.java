@@ -261,8 +261,6 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		
-		Toast msg;
-		
 		switch (item.getItemId()) {
 		case R.id.menu_new_profile:
 			Log.d("PhoneProfileActivity.onOptionsItemSelected", "menu_new_profile");
@@ -281,34 +279,13 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		case R.id.menu_export:
 			Log.d("PhoneProfilesActivity.onOptionsItemSelected", "menu_export");
 
-			if (databaseHandler.exportDB() == 1)
-			{
-
-				// toast notification
-				msg = Toast.makeText(this, 
-						getResources().getString(R.string.toast_export_ok), 
-						Toast.LENGTH_LONG);
-				msg.show();
-			
-			}
+			exportProfiles();
 			
 			return true;
 		case R.id.menu_import:
 			Log.d("PhoneProfilesActivity.onOptionsItemSelected", "menu_import");
 
-			if (databaseHandler.importDB() == 1)
-			{
-
-				// toast notification
-				msg = Toast.makeText(this, 
-						getResources().getString(R.string.toast_import_ok), 
-						Toast.LENGTH_LONG);
-				msg.show();
-				
-				activateProfileHelper.showNotification(null);
-				finish();
-			
-			}
+			importProfiles();
 			
 			return true;
 		case R.id.menu_exit:
@@ -517,7 +494,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		if (preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_NOTIFICATION_TOAST, true))
 		{	
 			// toast notification
-			Toast msg = Toast.makeText(this, 
+			Toast msg = Toast.makeText(getBaseContext(), 
 					getResources().getString(R.string.toast_profile_activated_0) + ": " + profile.getName() + " " +
 					getResources().getString(R.string.toast_profile_activated_1), 
 					Toast.LENGTH_LONG);
@@ -542,6 +519,73 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		Profile profile = profileList.get(position);
 		activateProfile(profile);
 	}
+	
+	private void importExportErrorDialog(int importExport)
+	{
+		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+		dialogBuilder.setTitle(getResources().getString(R.string.import_profiles_alert_title));
+		String resMessage;
+		if (importExport == 1)
+			resMessage = getResources().getString(R.string.import_profiles_alert_error);
+		else
+			resMessage = getResources().getString(R.string.export_profiles_alert_error);
+		dialogBuilder.setMessage(resMessage + "!");
+		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
+		dialogBuilder.setPositiveButton(android.R.string.ok, null);
+		dialogBuilder.show();
+	}
+	
+	private void importProfiles()
+	{
+		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+		dialogBuilder.setTitle(getResources().getString(R.string.import_profiles_alert_title));
+		dialogBuilder.setMessage(getResources().getString(R.string.import_profiles_alert_message) + "?");
+		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
+		dialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+			
+			public void onClick(DialogInterface dialog, int which) {
+				if (databaseHandler.importDB()  == 1)
+				{
+
+					// toast notification
+					Toast msg = Toast.makeText(getBaseContext(), 
+							getResources().getString(R.string.toast_import_ok), 
+							Toast.LENGTH_LONG);
+					msg.show();
+					
+					activateProfileHelper.showNotification(null);
+					finish();
+				
+				}
+				else
+				{
+					importExportErrorDialog(1);
+				}
+			}
+		});
+		dialogBuilder.setNegativeButton(android.R.string.no, null);
+		dialogBuilder.show();
+	}
+
+	private void exportProfiles()
+	{
+		if (databaseHandler.exportDB() == 1)
+		{
+
+			// toast notification
+			Toast msg = Toast.makeText(getBaseContext(), 
+					getResources().getString(R.string.toast_export_ok), 
+					Toast.LENGTH_LONG);
+			msg.show();
+		
+		}
+		else
+		{
+			importExportErrorDialog(2);
+		}
+		
+	}
+	
 	
 	public static void setLanguage(Context context, boolean restart)
 	{
