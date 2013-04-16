@@ -1,5 +1,8 @@
 package sk.henrichg.phoneprofiles;
 
+import com.stericson.RootTools.RootTools;
+import com.stericson.RootTools.execution.CommandCapture;
+
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
@@ -74,6 +77,29 @@ public class AirPlaneMode_SDK17 {
 				Intent intent = new Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED);
 				intent.putExtra("state", mode);
 				context.sendBroadcast(intent);
+			}
+			else
+			if (RootTools.isAccessGiven())
+			{
+				// zariadenie je rootnute
+				String command1;
+				String command2;
+				if (mode)
+				{
+					command1 = "settings put global airplane_mode_on 1";
+					command2 = "am broadcast -a android.intent.action.AIRPLANE_MODE --ez state true";
+				}
+				else
+				{
+					command1 = "settings put global airplane_mode_on 0";
+					command2 = "am broadcast -a android.intent.action.AIRPLANE_MODE --ez state false";
+				}
+				CommandCapture command = new CommandCapture(0, command1, command2);
+				try {
+					RootTools.getShell(true).add(command).waitForFinish();
+				} catch (Exception e) {
+					Log.e("AirPlaneMode_SDK17.setAirplaneMode", "Error on run su");
+				}
 			}
 			else
 			{
