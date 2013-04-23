@@ -3,13 +3,18 @@
     xmlns:dslv="http://schemas.android.com/apk/res/sk.henrichg.phoneprofiles"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="#ffdedede" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="3dp"
-        android:orientation="horizontal" >
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:background="#fff5f5f5" >
 
         <ImageView
             android:id="@+id/activated_profile_icon"
@@ -48,19 +53,13 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:background="#3f000000"
-        android:orientation="vertical" >
-
-    </LinearLayout>
-
     <com.mobeta.android.dslv.DragSortListView
         android:id="@+id/main_profiles_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
+        android:divider="@android:color/transparent" 
+        android:padding="10dip"
+        android:dividerHeight="10.0sp"
         dslv:drag_enabled="true"
 	    dslv:collapsed_height="2dp"
 	    dslv:drag_scroll_start="0.33"
