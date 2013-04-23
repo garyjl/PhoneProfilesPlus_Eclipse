@@ -3,7 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5dp"
+    android:padding="1dp"
     android:orientation="horizontal"
     android:background="@android:color/white" >
 
@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
+	    android:padding="5dp"
         android:contentDescription="@string/empty_string"
         android:src="@drawable/ic_drag_handle" />
     
@@ -40,17 +41,17 @@
         android:textSize="17sp"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/main_list_item_help_text"
+    <ImageView
+        android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:paddingRight="3dp"
-        android:text="@string/profile_item_help_text"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="#3f000000"
-        android:textSize="12sp" />
+        android:adjustViewBounds="true"
+        android:maxHeight="35dp"
+        android:maxWidth="35dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_action_edit_profile" />
 
 </RelativeLayout>
 

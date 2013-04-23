@@ -131,7 +131,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 			
 			profile = profileList.get(info.position);
 
-			menu.setHeaderTitle(getResources().getString(R.string.profile_context_header) + ": " + profile.getName());
+			//menu.setHeaderTitle(getResources().getString(R.string.profile_context_header) + ": " + profile.getName());
 			menu.add(Menu.NONE, 1001, 1, getResources().getString(R.string.profile_context_item_edit));
 			menu.add(Menu.NONE, 1002, 2, getResources().getString(R.string.profile_context_item_duplicate));
 			menu.add(Menu.NONE, 1003, 3, getResources().getString(R.string.profile_context_item_delete));
