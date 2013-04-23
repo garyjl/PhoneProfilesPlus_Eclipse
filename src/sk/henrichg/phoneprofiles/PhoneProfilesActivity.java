@@ -396,12 +396,36 @@ public class PhoneProfilesActivity extends SherlockActivity {
 
 	private void duplicateProfile(int position)
 	{
-		Profile profile = profileList.get(position);
+		Profile origProfile = profileList.get(position);
 
-		profile.setName(profile.getName()+"_d");
-		profile.setChecked(false);
-		profileListAdapter.addItem(profile);
-		databaseHandler.addProfile(profile);
+		Profile newProfile = new Profile(
+				   origProfile.getName()+"_d", 
+				   origProfile.getIcon(), 
+				   false, 
+				   origProfile.getPOrder(),
+				   origProfile.getVolumeRingerMode(),
+				   origProfile.getVolumeRingtone(),
+				   origProfile.getVolumeNotification(),
+				   origProfile.getVolumeMedia(),
+				   origProfile.getVolumeAlarm(),
+				   origProfile.getVolumeSystem(),
+				   origProfile.getVolumeVoice(),
+				   origProfile.getSoundRingtoneChange(),
+				   origProfile.getSoundRingtone(),
+				   origProfile.getSoundNotificationChange(),
+				   origProfile.getSoundNotification(),
+				   origProfile.getSoundAlarmChange(),
+				   origProfile.getSoundAlarm(),
+				   origProfile.getDeviceAirplaneMode(),
+				   origProfile.getDeviceWiFi(),
+				   origProfile.getDeviceBluetooth(),
+				   origProfile.getDeviceScreenTimeout(),
+				   origProfile.getDeviceBrightness(),
+				   origProfile.getDeviceWallpaperChange(),
+				   origProfile.getDeviceWallpaper());
+
+		profileListAdapter.addItem(newProfile);
+		databaseHandler.addProfile(newProfile);
 		
 		//updateListView();
 
