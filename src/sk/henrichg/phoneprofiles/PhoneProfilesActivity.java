@@ -126,10 +126,10 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	public void onCreateContextMenu(ContextMenu menu, View view, ContextMenuInfo menuInfo) {
 		
 		if (view.getId() == R.id.main_profiles_list) {
-			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
-			Profile profile;
+			//AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+			//Profile profile;
 			
-			profile = profileList.get(info.position);
+			//profile = profileList.get(info.position);
 
 			//menu.setHeaderTitle(getResources().getString(R.string.profile_context_header) + ": " + profile.getName());
 			menu.add(Menu.NONE, 1001, 1, getResources().getString(R.string.profile_context_item_edit));

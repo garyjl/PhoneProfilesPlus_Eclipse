@@ -34,15 +34,15 @@
         android:id="@+id/main_list_item_profile_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_marginLeft="3dp"
         android:layout_toRightOf="@+id/main_list_item_profile_icon"
-        android:layout_centerVertical="true"
+        android:paddingLeft="10dp"
         android:text="@string/profile_name_default"
-        android:textSize="17sp"
-        android:textStyle="bold" />
+        android:textSize="17sp" />
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/main_list_item_longclick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -51,6 +51,7 @@
         android:maxHeight="35dp"
         android:maxWidth="35dp"
         android:scaleType="centerCrop"
+        android:contentDescription="@string/empty_string"
         android:src="@drawable/ic_action_edit_profile" />
 
 </RelativeLayout>

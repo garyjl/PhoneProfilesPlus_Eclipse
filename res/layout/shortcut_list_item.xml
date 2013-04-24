@@ -24,12 +24,11 @@
         android:id="@+id/shortcut_list_item_profile_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_marginLeft="3dp"
         android:layout_toRightOf="@+id/shortcut_list_item_profile_icon"
-        android:layout_centerVertical="true"
         android:text="@string/profile_name_default"
-        android:textSize="17sp"
-        android:textStyle="bold" />
+        android:textSize="17sp" />
 
 </RelativeLayout>
 
