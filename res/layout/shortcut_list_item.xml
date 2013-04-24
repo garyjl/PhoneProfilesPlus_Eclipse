@@ -27,8 +27,21 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="3dp"
         android:layout_toRightOf="@+id/shortcut_list_item_profile_icon"
+        android:paddingLeft="10dp"
         android:text="@string/profile_name_default"
         android:textSize="17sp" />
+    
+    <LinearLayout
+        android:id="@+id/shortcut_list_profile_pref_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/shortcut_list_item_profile_name"
+        android:layout_toRightOf="@+id/shortcut_list_item_profile_icon"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp" >
+    
+    </LinearLayout>
 
+        
 </RelativeLayout>
 

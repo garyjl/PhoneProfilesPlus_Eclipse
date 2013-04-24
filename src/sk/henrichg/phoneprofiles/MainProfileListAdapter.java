@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MainProfileListAdapter extends BaseAdapter
@@ -122,7 +123,7 @@ public class MainProfileListAdapter extends BaseAdapter
 
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
-        View vi = convertView;
+		View vi = convertView;
         if (convertView == null)
         	vi = inflater.inflate(R.layout.main_list_item, null);
 		
@@ -142,6 +143,10 @@ public class MainProfileListAdapter extends BaseAdapter
         {
         	profileIcon.setImageBitmap(BitmapFactory.decodeFile(profile.getIconIdentifier()));
         }
+        
+        ProfilePreferencesIndicator profilePreferenceIndicator = new ProfilePreferencesIndicator();
+        LinearLayout profilePrefIndicatorLayout = (LinearLayout)vi.findViewById(R.id.main_list_profile_pref_indicator);
+        profilePreferenceIndicator.paint(profilePrefIndicatorLayout, profile);
         
         Log.d("ProfileListAdapter.getView", profile.getName());
         

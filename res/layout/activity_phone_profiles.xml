@@ -57,7 +57,18 @@
 		        android:maxWidth="30dp"
 		        android:scaleType="centerCrop"
 		        android:src="@drawable/ic_profile_activated" />
-		
+		    
+		    <LinearLayout
+		        android:id="@+id/activated_profile_pref_indicator"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_below="@id/activated_profile_name"
+		        android:layout_toRightOf="@+id/activated_profile_icon"
+		        android:orientation="horizontal"
+		        android:paddingLeft="10dp" >
+		    		    
+			</LinearLayout>		
+		        		
 		</RelativeLayout>
 		
 	</LinearLayout>		
