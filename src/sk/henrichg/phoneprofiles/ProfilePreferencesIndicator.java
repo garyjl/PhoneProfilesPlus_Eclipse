@@ -47,7 +47,7 @@ public class ProfilePreferencesIndicator {
 				parent.addView(createIndicator(R.drawable.ic_profile_pref_vibration, parent.getContext()));				
 			// volume off
 			if (profile.getVolumeRingerMode() == 4)
-				parent.addView(createIndicator(R.drawable.ic_profile_pref_volume_on, parent.getContext()));				
+				parent.addView(createIndicator(R.drawable.ic_profile_pref_volume_off, parent.getContext()));				
 			// sound
 			if (profile.getSoundRingtoneChange() || profile.getSoundNotificationChange() || profile.getSoundAlarmChange())
 				parent.addView(createIndicator(R.drawable.ic_profile_pref_sound, parent.getContext()));				
