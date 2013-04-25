@@ -52,14 +52,20 @@ public class ProfilePreferencesIndicator {
 			if (profile.getSoundRingtoneChange() || profile.getSoundNotificationChange() || profile.getSoundAlarmChange())
 				parent.addView(createIndicator(R.drawable.ic_profile_pref_sound, parent.getContext()));				
 			// airplane mode
-			if (profile.getDeviceAirplaneMode() != 0)
+			if ((profile.getDeviceAirplaneMode() == 1) || (profile.getDeviceAirplaneMode() == 3))
 				parent.addView(createIndicator(R.drawable.ic_profile_pref_airplane_mode, parent.getContext()));				
+			if (profile.getDeviceAirplaneMode() == 2)
+				parent.addView(createIndicator(R.drawable.ic_profile_pref_airplane_mode_off, parent.getContext()));				
 			// wifi
-			if (profile.getDeviceWiFi() != 0)
+			if ((profile.getDeviceWiFi() == 1) || (profile.getDeviceWiFi() == 3))
 				parent.addView(createIndicator(R.drawable.ic_profile_pref_wifi, parent.getContext()));				
+			if (profile.getDeviceWiFi() == 2)
+				parent.addView(createIndicator(R.drawable.ic_profile_pref_wifi_off, parent.getContext()));				
 			// bluetooth
-			if (profile.getDeviceBluetooth() != 0)
+			if ((profile.getDeviceBluetooth() == 1) || (profile.getDeviceBluetooth() == 3))
 				parent.addView(createIndicator(R.drawable.ic_profile_pref_bluetooth, parent.getContext()));				
+			if (profile.getDeviceBluetooth() == 2)
+				parent.addView(createIndicator(R.drawable.ic_profile_pref_bluetooth_off, parent.getContext()));				
 			// screen timeout
 			if (profile.getDeviceScreenTimeout() != 0)
 				parent.addView(createIndicator(R.drawable.ic_profile_pref_screen_timeout, parent.getContext()));				
