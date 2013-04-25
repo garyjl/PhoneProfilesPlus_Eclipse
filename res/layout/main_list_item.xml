@@ -9,12 +9,13 @@
 
     <ImageView
         android:id="@+id/main_list_drag_handle"
-        android:layout_width="wrap_content"
+        android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-	    android:padding="5dp"
         android:contentDescription="@string/empty_string"
+        android:paddingRight="5dp"
+        android:scaleType="center"
         android:src="@drawable/ic_drag_handle" />
     
     <ImageView
@@ -28,6 +29,8 @@
         android:maxHeight="50dp"
         android:maxWidth="50dp"
         android:scaleType="centerCrop"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:src="@drawable/ic_profile_default" />
     
     <TextView
