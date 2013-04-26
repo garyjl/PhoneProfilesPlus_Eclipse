@@ -111,6 +111,30 @@ public class ActivateProfileHelper {
 			Settings.System.putString(context.getContentResolver(), Settings.System.ALARM_ALERT, profile.getSoundAlarm());
 
 		// nahodenie mobilnych dat
+		boolean _isMobileData = isMobileData(context.getApplicationContext());
+		boolean _setMobileData = false;
+		switch (profile.getDeviceMobileData()) {
+			case 1:
+				if (!_isMobileData)
+				{
+					_isMobileData = true;
+					_setMobileData = true;
+				}
+				break;
+			case 2:
+				if (_isMobileData)
+				{
+					_isMobileData = false;
+					_setMobileData = true;
+				}
+				break;
+			case 3:
+				_isMobileData = !_isMobileData;
+				_setMobileData = true;
+				break;
+		}
+		if (_setMobileData)
+			setMobileData(context.getApplicationContext(), _isMobileData);
 
 		
 		// nahodenie WiFi
@@ -476,10 +500,22 @@ public class ActivateProfileHelper {
     		AirPlaneMode_SDK8.setAirplaneMode(context, mode);
 	}
 	
+	private boolean isMobileData(Context context)
+	{
+		// TODO - zistenie, ci su mobilne data nastavene
+		return true;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void setMobileData(Context context, boolean enabled)
 	{
     	if (android.os.Build.VERSION.SDK_INT <= 8)
     	{
+    		
+    		//     <uses-permission android:name="android.permission.MODIFY_PHONE_STATE"/>
+    		// toto nebude asik fungovat, lebo to vyzaduje, aby apka bola systemova
+    		// musime skusit najst riesenie pre root, ako je airplane mode
+    		
     		Method dataConnSwitchmethod;
     		Class telephonyManagerClass;
     		Object iTelephonyStub;

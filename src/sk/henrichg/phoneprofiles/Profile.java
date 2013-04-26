@@ -22,6 +22,7 @@ public class Profile {
 	boolean _soundAlarmChange;
 	String _soundAlarm;
 	int _deviceAirplaneMode;
+	int _deviceMobileData;
 	int _deviceWiFi;
 	int _deviceBluetooth;
 	int _deviceScreenTimeout;
@@ -60,7 +61,8 @@ public class Profile {
 			   	   int deviceScreenTimeout,
 			   	   String deviceBrightness,
 			   	   boolean deviceWallpaperChange,
-			   	   String deviceWallpaper)
+			   	   String deviceWallpaper,
+			   	   int deviceMobileData)
 	{
 		this._id = id;
 		this._name = name;
@@ -81,6 +83,7 @@ public class Profile {
 		this._soundAlarmChange = soundAlarmChange;
 		this._soundAlarm = soundAlarm;
 		this._deviceAirplaneMode = deviceAirplaneMode;
+		this._deviceMobileData = deviceMobileData;
 		this._deviceWiFi = deviceWiFi;
 		this._deviceBluetooth = deviceBluetooth;
 		this._deviceScreenTimeout = deviceScreenTimeout;
@@ -113,7 +116,8 @@ public class Profile {
 			   	   int deviceScreenTimeout,
 			   	   String deviceBrightness,
 			   	   boolean deviceWallpaperChange,
-			   	   String deviceWallpaper)
+			   	   String deviceWallpaper,
+			   	   int deviceMobileData)
 	{
 		this._name = name;
 		this._icon = icon;
@@ -133,6 +137,7 @@ public class Profile {
 		this._soundAlarmChange = soundAlarmChange;
 		this._soundAlarm = soundAlarm;
 		this._deviceAirplaneMode = deviceAirplaneMode;
+		this._deviceMobileData = deviceMobileData;
 		this._deviceWiFi = deviceWiFi;
 		this._deviceBluetooth = deviceBluetooth;
 		this._deviceScreenTimeout = deviceScreenTimeout;
@@ -412,6 +417,11 @@ public class Profile {
 		return _deviceAirplaneMode;
 	}
 	
+	public int getDeviceMobileData()
+	{
+		return _deviceMobileData;
+	}
+	
 	public int getDeviceWiFi()
 	{
 		return _deviceWiFi;
@@ -589,6 +599,11 @@ public class Profile {
 	public void setDeviceAirplaneMode(int deviceAirplaneMode)
 	{
 		_deviceAirplaneMode = deviceAirplaneMode;
+	}
+	
+	public void setDeviceMobileData(int deviceMobileData)
+	{
+		_deviceMobileData = deviceMobileData;
 	}
 	
 	public void setDeviceWiFi(int deviceWiFi)

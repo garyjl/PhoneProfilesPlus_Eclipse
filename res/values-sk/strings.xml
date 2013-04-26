@@ -107,5 +107,6 @@
     <string name="import_profiles_alert_message">Ste si istí</string>
     <string name="import_profiles_alert_error">Chyba pri importe profilov</string>
     <string name="export_profiles_alert_error">Chyba pii exporte profilov</string>
+    <string name="profile_preferences_deviceMobileData">Mobilné dáta</string>
     
 </resources>

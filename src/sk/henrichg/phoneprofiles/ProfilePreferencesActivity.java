@@ -57,6 +57,7 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
 	static final String PREF_PROFILE_DEVICE_BRIGHTNESS = "deviceBrightness";
 	static final String PREF_PROFILE_DEVICE_WALLPAPER_CHANGE = "deviceWallpaperChange";
 	static final String PREF_PROFILE_DEVICE_WALLPAPER = "deviceWallpaper";
+	static final String PREF_PROFILE_DEVICE_MOBILE_DATA = "deviceMobileData";
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -165,6 +166,7 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
         		profile.setDeviceWallpaper(preferences.getString(PREF_PROFILE_DEVICE_WALLPAPER, ""));
         	else
         		profile.setDeviceWallpaper("-|0");
+        	profile.setDeviceMobileData(Integer.parseInt(preferences.getString(PREF_PROFILE_DEVICE_MOBILE_DATA, "")));
         	
         	PhoneProfilesActivity.getProfileListAdapter().updateItem(profile);
         	PhoneProfilesActivity.getDatabaseHandler().updateProfile(profile);
@@ -252,6 +254,7 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
 	        setSummary(PREF_PROFILE_DEVICE_WIFI, profile.getDeviceWiFi());
 	        setSummary(PREF_PROFILE_DEVICE_BLUETOOTH, profile.getDeviceBluetooth());
 	        setSummary(PREF_PROFILE_DEVICE_SCREEN_TIMEOUT, profile.getDeviceScreenTimeout());
+	        setSummary(PREF_PROFILE_DEVICE_MOBILE_DATA, profile.getDeviceMobileData());
 			
         }
 	}
@@ -294,7 +297,8 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
 		}
 		if (key.equals(PREF_PROFILE_DEVICE_AIRPLANE_MODE) || 
 			key.equals(PREF_PROFILE_DEVICE_WIFI) ||
-			key.equals(PREF_PROFILE_DEVICE_BLUETOOTH))
+			key.equals(PREF_PROFILE_DEVICE_BLUETOOTH) ||
+			key.equals(PREF_PROFILE_DEVICE_MOBILE_DATA))
 		{
 			boolean canChange = true;
 			

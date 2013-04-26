@@ -109,6 +109,12 @@
             android:defaultValue="0"
             android:entries="@array/hardwareModeArray"
             android:entryValues="@array/hardwareModeValues" />        
+		<ListPreference android:title="@string/profile_preferences_deviceMobileData"
+            android:summary="@string/array_pref_no_change"
+            android:key="deviceMobileData"
+            android:defaultValue="0"
+            android:entries="@array/hardwareModeArray"
+            android:entryValues="@array/hardwareModeValues" />        
 		<ListPreference android:title="@string/profile_preferences_deviceWiFi"
             android:summary="@string/array_pref_no_change"
             android:key="deviceWiFi"
