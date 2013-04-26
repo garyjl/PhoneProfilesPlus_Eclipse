@@ -110,6 +110,9 @@ public class ActivateProfileHelper {
 		if (profile.getSoundAlarmChange())
 			Settings.System.putString(context.getContentResolver(), Settings.System.ALARM_ALERT, profile.getSoundAlarm());
 
+		// nahodenie mobilnych dat
+
+		
 		// nahodenie WiFi
 		WifiManager wifiManager = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
 		boolean setWifiState = false;
@@ -143,9 +146,6 @@ public class ActivateProfileHelper {
 			}
 		}	
 		
-		// nahodenie mobilnych dat
-		
-
 		// nahodenie bluetooth
 		BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 		switch (profile.getDeviceBluetooth()) {
