@@ -63,9 +63,9 @@ public class ShortcutProfileListAdapter extends BaseAdapter {
         	profileIcon.setImageBitmap(BitmapFactory.decodeFile(profile.getIconIdentifier()));
         }
         
-        ProfilePreferencesIndicator profilePreferenceIndicator = new ProfilePreferencesIndicator();
+        //ProfilePreferencesIndicator profilePreferenceIndicator = new ProfilePreferencesIndicator();
         LinearLayout profilePrefIndicatorLayout = (LinearLayout)vi.findViewById(R.id.shortcut_list_profile_pref_indicator);
-        profilePreferenceIndicator.paint(profilePrefIndicatorLayout, profile);
+        ProfilePreferencesIndicator.paint(profilePrefIndicatorLayout, profile);
         
         Log.d("ShortcutProfileListAdapter.getView", profile.getName());
         

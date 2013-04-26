@@ -480,9 +480,9 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	        }
 		}
 		
-        ProfilePreferencesIndicator profilePreferenceIndicator = new ProfilePreferencesIndicator();
+        //ProfilePreferencesIndicator profilePreferenceIndicator = new ProfilePreferencesIndicator();
         LinearLayout profilePrefIndicatorLayout = (LinearLayout)findViewById(R.id.activated_profile_pref_indicator);
-        profilePreferenceIndicator.paint(profilePrefIndicatorLayout, profile);
+        ProfilePreferencesIndicator.paint(profilePrefIndicatorLayout, profile);
 		
 	}
 	

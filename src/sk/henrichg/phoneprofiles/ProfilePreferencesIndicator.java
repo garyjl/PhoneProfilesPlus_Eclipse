@@ -16,7 +16,7 @@ public class ProfilePreferencesIndicator {
 		
 	}
 	
-	private ImageView createIndicator(int resource, Context context)
+	private static ImageView createIndicator(int resource, Context context)
 	{
 		final float scale = context.getResources().getDisplayMetrics().density;
 		
@@ -31,7 +31,7 @@ public class ProfilePreferencesIndicator {
 		return indicator;
 	}
 	
-	void paint(LinearLayout parent, Profile profile)
+	public static void paint(LinearLayout parent, Profile profile)
 	{
 		
 		parent.removeAllViews();
