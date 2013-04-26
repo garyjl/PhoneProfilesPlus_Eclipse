@@ -22,6 +22,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
@@ -502,11 +503,54 @@ public class ActivateProfileHelper {
 	
 	private boolean isMobileData(Context context)
 	{
-		// TODO - zistenie, ci su mobilne data nastavene
-		return true;
+		final ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		
+	/*	try {
+			final Class<?> connectivityManagerClass = Class.forName(connectivityManager.getClass().getName());
+			final Method getMobileDataEnabledMethod = connectivityManagerClass.getDeclaredMethod("getMobileDataEnabled");
+			getMobileDataEnabledMethod.setAccessible(true);
+			return (Boolean)getMobileDataEnabledMethod.invoke(connectivityManager);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			return false;
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+			return false;
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+			return false;
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+			return false;
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+			return false;
+		}
+		*/
+		
+		final NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+		if (networkInfo != null)
+		{
+			int netvorkType = networkInfo.getType(); // 0 = mobile, 1 = wifi
+			//String netvorkTypeName = networkInfo.getTypeName(); // "mobile" or "WIFI"
+			boolean connected = networkInfo.isConnected();  // true = active connection
+			
+			if (netvorkType == 0)
+			{
+				// connected into mobile data
+				return connected;
+			}
+			else
+			{
+				// conected into Wifi
+				return false;
+			}
+		}
+		else
+			return false;
+		
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void setMobileData(Context context, boolean enabled)
 	{
     	if (android.os.Build.VERSION.SDK_INT <= 8)
@@ -517,9 +561,9 @@ public class ActivateProfileHelper {
     		// musime skusit najst riesenie pre root, ako je airplane mode
     		
     		Method dataConnSwitchmethod;
-    		Class telephonyManagerClass;
+    		Class<?> telephonyManagerClass;
     		Object iTelephonyStub;
-    		Class iTelephonyClass;
+    		Class<?> iTelephonyClass;
     		
     		TelephonyManager telephonyManager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
     		
@@ -546,14 +590,19 @@ public class ActivateProfileHelper {
 				
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
+				Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
 			} catch (NoSuchMethodException e) {
 				e.printStackTrace();
+				Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
+				Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
+				Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
 			} catch (InvocationTargetException e) {
 				e.printStackTrace();
+				Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
 			}
     		
     		
@@ -562,27 +611,33 @@ public class ActivateProfileHelper {
     	{
     		final ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
     		try {
-				final Class connectivityManagerClass = Class.forName(connectivityManager.getClass().getName());
+				final Class<?> connectivityManagerClass = Class.forName(connectivityManager.getClass().getName());
 				final Field iConnectivityManagerField = connectivityManagerClass.getDeclaredField("mService");
 				iConnectivityManagerField.setAccessible(true);
 				final Object iConnectivityManager = iConnectivityManagerField.get(connectivityManager);
-				final Class iConnectivityManagerClass = Class.forName(iConnectivityManager.getClass().getName());
+				final Class<?> iConnectivityManagerClass = Class.forName(iConnectivityManager.getClass().getName());
 				final Method setMobileDataEnabledMethod = iConnectivityManagerClass.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
 				setMobileDataEnabledMethod.setAccessible(true);
 				
 				setMobileDataEnabledMethod.invoke(iConnectivityManager, enabled);
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
+				Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
 			} catch (NoSuchFieldException e) {
 				e.printStackTrace();
+				Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
+				Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
+				Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
 			} catch (NoSuchMethodException e) {
 				e.printStackTrace();
+				Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
 			} catch (InvocationTargetException e) {
 				e.printStackTrace();
+				Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
 			}
     	}
 		
