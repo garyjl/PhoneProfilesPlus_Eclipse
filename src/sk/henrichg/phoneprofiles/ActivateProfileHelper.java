@@ -1,6 +1,9 @@
 package sk.henrichg.phoneprofiles;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -18,9 +21,11 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
+import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
+import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Window;
@@ -137,6 +142,9 @@ public class ActivateProfileHelper {
 				wifiManager.setWifiEnabled(setWifiState);
 			}
 		}	
+		
+		// nahodenie mobilnych dat
+		
 
 		// nahodenie bluetooth
 		BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -466,6 +474,82 @@ public class ActivateProfileHelper {
     		AirPlaneMode_SDK17.setAirplaneMode(context, mode);
     	else
     		AirPlaneMode_SDK8.setAirplaneMode(context, mode);
+	}
+	
+	private void setMobileData(Context context, boolean enabled)
+	{
+    	if (android.os.Build.VERSION.SDK_INT <= 8)
+    	{
+    		Method dataConnSwitchmethod;
+    		Class telephonyManagerClass;
+    		Object iTelephonyStub;
+    		Class iTelephonyClass;
+    		
+    		TelephonyManager telephonyManager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+    		
+    		boolean isEnabled;
+    		if (telephonyManager.getDataState() == TelephonyManager.DATA_CONNECTED)
+    			isEnabled = true;
+    		else
+    			isEnabled = false;
+    		
+    		try {
+				telephonyManagerClass = Class.forName(telephonyManager.getClass().getName());
+				Method getITelephonyMethod = telephonyManagerClass.getDeclaredMethod("getITelephony");
+				getITelephonyMethod.setAccessible(true);
+				iTelephonyStub = getITelephonyMethod.invoke(telephonyManager);
+				iTelephonyClass = Class.forName(iTelephonyStub.getClass().getName());
+				
+				if (isEnabled)
+					dataConnSwitchmethod = iTelephonyClass.getDeclaredMethod("disableDataConnectivity");
+				else
+					dataConnSwitchmethod = iTelephonyClass.getDeclaredMethod("enableDataConnectivity");
+				
+				dataConnSwitchmethod.setAccessible(true);
+				dataConnSwitchmethod.invoke(iTelephonyStub);
+				
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			}
+    		
+    		
+    	}
+    	else
+    	{
+    		final ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    		try {
+				final Class connectivityManagerClass = Class.forName(connectivityManager.getClass().getName());
+				final Field iConnectivityManagerField = connectivityManagerClass.getDeclaredField("mService");
+				iConnectivityManagerField.setAccessible(true);
+				final Object iConnectivityManager = iConnectivityManagerField.get(connectivityManager);
+				final Class iConnectivityManagerClass = Class.forName(iConnectivityManager.getClass().getName());
+				final Method setMobileDataEnabledMethod = iConnectivityManagerClass.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
+				setMobileDataEnabledMethod.setAccessible(true);
+				
+				setMobileDataEnabledMethod.invoke(iConnectivityManager, enabled);
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch (NoSuchFieldException e) {
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			}
+    	}
+		
 	}
 	
 	private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight)
