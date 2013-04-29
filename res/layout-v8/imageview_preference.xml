@@ -12,16 +12,6 @@
         android:text="@string/imageview_preference_profile_icon_label"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <TextView
-        android:id="@+id/imageview_pref_align"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/imageview_pref_label"
-        android:text="@string/empty_string"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="#00000000" />
-    
     <ImageView
         android:id="@+id/imageview_pref_imageview"
         android:layout_width="wrap_content"
@@ -34,4 +24,14 @@
         android:scaleType="centerCrop"
         android:src="@drawable/ic_profile_default" />
 
+    <TextView
+        android:id="@+id/imageview_pref_align"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:text="xxx"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#00000000" />
+    
 </RelativeLayout>
