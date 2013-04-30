@@ -2,7 +2,9 @@ package sk.henrichg.phoneprofiles;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -90,7 +92,13 @@ public class ImageViewPreference extends Preference {
 	    	{
 	    		// je to file
 	    		Log.d("ImageViewPreference.onBindView", "file="+imageIdentifier);
-	    		imageView.setImageBitmap(BitmapFactory.decodeFile(imageIdentifier));
+
+        		Resources resources = prefContext.getResources();
+        		int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
+        		int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
+        		Bitmap bitmap = BitmapResampler.resample(imageIdentifier, width, height);
+
+        		imageView.setImageBitmap(bitmap);
 	    	}
 	    }
 	}

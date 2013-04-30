@@ -15,6 +15,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -482,7 +483,12 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	        }
 	        else
 	        {
-	        	activeProfileIcon.setImageBitmap(BitmapFactory.decodeFile(profile.getIconIdentifier()));
+        		Resources resources = getResources();
+        		int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
+        		int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
+        		Bitmap bitmap = BitmapResampler.resample(profile.getIconIdentifier(), width, height);
+
+	        	activeProfileIcon.setImageBitmap(bitmap);
 	        }
 		}
 		

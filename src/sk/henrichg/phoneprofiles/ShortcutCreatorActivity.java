@@ -6,6 +6,7 @@ import com.actionbarsherlock.app.SherlockActivity;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -102,14 +103,13 @@ public class ShortcutCreatorActivity extends SherlockActivity {
         {
         	iconResource = getResources().getIdentifier(iconIdentifier, "drawable", getPackageName());
 			profileBitmap = BitmapFactory.decodeResource(getResources(), iconResource);
-        	//ShortcutIconResource shortcutIconResource = ShortcutIconResource.fromContext(this, iconResource);
-    		//intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, shortcutIconResource);
         }
         else
         {
-        	profileBitmap = BitmapFactory.decodeFile(iconIdentifier);
-        	//Bitmap bitmap = BitmapFactory.decodeFile(iconIdentifier);
-    		//intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, bitmap);
+    		Resources resources = getResources();
+    		int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
+    		int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
+    		profileBitmap = BitmapResampler.resample(iconIdentifier, width, height);
         }
     	shortcutOverlayBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_shortcut_overlay);
     	profileShortcutBitmap = combineImages(profileBitmap, shortcutOverlayBitmap);

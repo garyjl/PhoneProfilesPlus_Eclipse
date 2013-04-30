@@ -6,6 +6,8 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.RemoteViews;
 
@@ -48,7 +50,12 @@ public class ActivateProfileWidget extends AppWidgetProvider {
 	        }
 	        else
 	        {
-	        	remoteViews.setImageViewBitmap(R.id.activate_profile_widget_icon, BitmapFactory.decodeFile(iconIdentifier));
+	    		Resources resources = context.getResources();
+	    		int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
+	    		int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
+	    		Bitmap bitmap = BitmapResampler.resample(iconIdentifier, width, height);
+
+	        	remoteViews.setImageViewBitmap(R.id.activate_profile_widget_icon, bitmap);
 	        }
 			remoteViews.setTextViewText(R.id.activate_profile_widget_name, profileName);
 			

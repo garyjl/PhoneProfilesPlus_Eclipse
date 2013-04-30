@@ -4,6 +4,8 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -60,7 +62,12 @@ public class ShortcutProfileListAdapter extends BaseAdapter {
         }
         else
         {
-        	profileIcon.setImageBitmap(BitmapFactory.decodeFile(profile.getIconIdentifier()));
+    		Resources resources = vi.getResources();
+    		int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
+    		int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
+    		Bitmap bitmap = BitmapResampler.resample(profile.getIconIdentifier(), width, height);
+        	
+        	profileIcon.setImageBitmap(bitmap);
         }
         
         //ProfilePreferencesIndicator profilePreferenceIndicator = new ProfilePreferencesIndicator();

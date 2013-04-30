@@ -386,15 +386,7 @@ public class ActivateProfileHelper {
 			activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 			int height = displayMetrics.heightPixels;
 			int width = displayMetrics.widthPixels << 1; // best wallpaper width is twice screen width
-			// first decode with inJustDecodeDpunds=true to check dimensions
-			final BitmapFactory.Options options = new BitmapFactory.Options();
-			options.inJustDecodeBounds = true;
-			BitmapFactory.decodeFile(profile.getDeviceWallpaperIdentifier(), options);
-			// calaculate inSampleSize
-			options.inSampleSize = calculateInSampleSize(options, width, height);
-			// decode bitmap with inSampleSize
-			options.inJustDecodeBounds = false;
-			Bitmap decodedSampleBitmap = BitmapFactory.decodeFile(profile.getDeviceWallpaperIdentifier(), options);
+			Bitmap decodedSampleBitmap = BitmapResampler.resample(profile.getDeviceWallpaperIdentifier(), width, height); 
 			// set wallpaper
 			WallpaperManager wallpaperManager = WallpaperManager.getInstance(context);
 			try {
@@ -465,12 +457,12 @@ public class ActivateProfileHelper {
 		        {
 		        	if (android.os.Build.VERSION.SDK_INT >= 11)
 		        	{
-		        		Bitmap bitmap = BitmapFactory.decodeFile(profile.getIconIdentifier());
 		        		Resources resources = context.getResources();
 		        		int height = (int) resources.getDimension(android.R.dimen.notification_large_icon_height);
 		        		int width = (int) resources.getDimension(android.R.dimen.notification_large_icon_width);
-		        		bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
-						notificationBuilder = new NotificationCompat.Builder(context)
+		        		Bitmap bitmap = BitmapResampler.resample(profile.getIconIdentifier(), width, height);
+
+		        		notificationBuilder = new NotificationCompat.Builder(context)
 							.setContentText(context.getResources().getString(R.string.active_profile_notification_label))
 							.setContentTitle(profile.getName())
 							.setContentIntent(pIntent)
@@ -665,28 +657,5 @@ public class ActivateProfileHelper {
     	}
 		
 	}
-	
-	private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight)
-	{
-		// raw height and width of image
-		final int height = options.outHeight;
-		final int width = options.outWidth;
-		int inSampleSize = 1;
-		
-		if (height > reqHeight || width > reqWidth)
-		{
-			// calculate ratios of height and width to requested height an width
-			final int heightRatio = Math.round((float) height / (float) reqHeight);
-			final int widthRatio = Math.round((float) width / (float) reqWidth);
-			
-			// choose the smalest ratio as InSamleSize value, this will guarantee
-			// a final image with both dimensions larger than or equal to the
-			// requested height and width
-			inSampleSize = (heightRatio < widthRatio) ? heightRatio : widthRatio;
-		}
-		return inSampleSize;
-	}
-	
-	
 	
 }
