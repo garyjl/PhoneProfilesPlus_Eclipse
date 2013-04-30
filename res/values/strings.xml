@@ -108,5 +108,6 @@
     <string name="import_profiles_alert_error">Error on importing profiles</string>
     <string name="export_profiles_alert_error">Error on exporting profiles</string>
     <string name="profile_preferences_deviceMobileData">Mobile data</string>
+    <string name="profile_preferences_deviceMobileDataPrefs">Mobile data preferences</string>
     
 </resources>

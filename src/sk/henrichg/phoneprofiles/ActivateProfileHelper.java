@@ -52,7 +52,7 @@ public class ActivateProfileHelper {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public void execute(Profile profile)
+	public void execute(Profile profile, boolean interactive)
 	{
 		// rozdelit zvonenie a notifikacie - zial je to oznacene ako @Hide :-(
 		//Settings.System.putInt(getContentResolver(), Settings.System.NOTIFICATIONS_USE_RING_VOLUME, 0);
@@ -403,6 +403,29 @@ public class ActivateProfileHelper {
 				Log.e("PhoneProfilesActivity.activateProfile", "Cannot set wallpaper. Image="+profile.getDeviceWallpaperIdentifier());
 			}
 		}	
+		
+		if (interactive)
+		{
+			// preferences, ktore vyzaduju interakciu uzivatela
+			
+			if (profile.getDeviceMobileDataPrefs())
+			{
+		    	if (android.os.Build.VERSION.SDK_INT > 10)
+		    	{
+		    		final Intent intent = new Intent(android.provider.Settings.ACTION_DATA_ROAMING_SETTINGS);
+					activity.startActivityForResult(intent, 1);
+		    	}
+		    	else
+		    	{
+		    		final Intent intent = new Intent(android.provider.Settings.ACTION_DATA_ROAMING_SETTINGS);
+					final ComponentName componentName = new ComponentName("com.android.phone", "com.android.phone.Settings");
+					intent.addCategory(Intent.ACTION_MAIN);
+					intent.setComponent(componentName);
+					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					activity.startActivity(intent);
+		    	}
+			}
+		}
 		
 	}
 	

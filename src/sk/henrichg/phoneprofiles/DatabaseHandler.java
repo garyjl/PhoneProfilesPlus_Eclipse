@@ -19,7 +19,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	// All Static variables
 	// Database Version
-	private static final int DATABASE_VERSION = 19;
+	private static final int DATABASE_VERSION = 20;
 
 	// Database Name
 	private static final String DATABASE_NAME = "phoneProfilesManager";
@@ -60,6 +60,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_DEVICE_WALLPAPER_CHANGE = "deviceWallpaperChange";
 	private static final String KEY_DEVICE_WALLPAPER = "deviceWallpaper";
 	private static final String KEY_DEVICE_MOBILE_DATA = "deviceMobileData";
+	private static final String KEY_DEVICE_MOBILE_DATA_PREFS = "deviceMobileDataPrefs";
 	
 	public DatabaseHandler(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -93,7 +94,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_DEVICE_BRIGHTNESS + " TEXT,"
 				+ KEY_DEVICE_WALLPAPER_CHANGE + " INTEGER,"
 				+ KEY_DEVICE_WALLPAPER + " TEXT,"
-				+ KEY_DEVICE_MOBILE_DATA + " INTEGER"
+				+ KEY_DEVICE_MOBILE_DATA + " INTEGER,"
+				+ KEY_DEVICE_MOBILE_DATA_PREFS + " INTEGER"
 				+ ")";
 		db.execSQL(CREATE_PROFILES_TABLE);
 	}
@@ -187,6 +189,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			// updatneme zaznamy
 			db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_DEVICE_MOBILE_DATA + "=0");
 		}
+
+		if (oldVersion < 20)
+		{
+			// pridame nove stlpce
+			db.execSQL("ALTER TABLE " + TABLE_PROFILES + " ADD COLUMN " + KEY_DEVICE_MOBILE_DATA_PREFS + " INTEGER");
+			
+			// updatneme zaznamy
+			db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_DEVICE_MOBILE_DATA_PREFS + "=0");
+		}
 		
 		
 	}
@@ -229,6 +240,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_DEVICE_WALLPAPER_CHANGE, (profile.getDeviceWallpaperChange()) ? 1 : 0);
 		values.put(KEY_DEVICE_WALLPAPER, profile.getDeviceWallpaper());
 		values.put(KEY_DEVICE_MOBILE_DATA, profile.getDeviceMobileData());
+		values.put(KEY_DEVICE_MOBILE_DATA_PREFS, (profile.getDeviceMobileDataPrefs()) ? 1 : 0);
 
 		// Inserting Row
 		long id = db.insert(TABLE_PROFILES, null, values);
@@ -268,7 +280,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 								         		KEY_DEVICE_BRIGHTNESS,
 								         		KEY_DEVICE_WALLPAPER_CHANGE,
 								         		KEY_DEVICE_WALLPAPER,
-								         		KEY_DEVICE_MOBILE_DATA
+								         		KEY_DEVICE_MOBILE_DATA,
+								         		KEY_DEVICE_MOBILE_DATA_PREFS
 												}, 
 				                 KEY_ID + "=?",
 				                 new String[] { String.valueOf(profile_id) }, null, null, null, null);
@@ -300,7 +313,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				                      cursor.getString(22),
 				                      (Integer.parseInt(cursor.getString(23)) == 1) ? true : false,
 				                      cursor.getString(24),
-				                      Integer.parseInt(cursor.getString(25))
+				                      Integer.parseInt(cursor.getString(25)),
+				                      (Integer.parseInt(cursor.getString(26)) == 1) ? true : false
 				                      );
 
 		cursor.close();
@@ -339,7 +353,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						         		 KEY_DEVICE_BRIGHTNESS + "," +
 						         		 KEY_DEVICE_WALLPAPER_CHANGE + "," +
 						         		 KEY_DEVICE_WALLPAPER + "," +
-						         		 KEY_DEVICE_MOBILE_DATA +
+						         		 KEY_DEVICE_MOBILE_DATA + "," +
+						         		 KEY_DEVICE_MOBILE_DATA_PREFS +
 		                     " FROM " + TABLE_PROFILES + " ORDER BY " + KEY_PORDER;
 
 		SQLiteDatabase db = this.getReadableDatabase();
@@ -375,6 +390,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 profile.setDeviceWallpaperChange((Integer.parseInt(cursor.getString(23)) == 1) ? true : false);
                 profile.setDeviceWallpaper(cursor.getString(24));
                 profile.setDeviceMobileData(Integer.parseInt(cursor.getString(25)));
+                profile.setDeviceMobileDataPrefs((Integer.parseInt(cursor.getString(26)) == 1) ? true : false);
 				// Adding contact to list
 				profileList.add(profile);
 			} while (cursor.moveToNext());
@@ -417,6 +433,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_DEVICE_WALLPAPER_CHANGE, (profile.getDeviceWallpaperChange()) ? 1 : 0);
 		values.put(KEY_DEVICE_WALLPAPER, profile.getDeviceWallpaper());
 		values.put(KEY_DEVICE_MOBILE_DATA, profile.getDeviceMobileData());
+		values.put(KEY_DEVICE_MOBILE_DATA_PREFS, (profile.getDeviceMobileDataPrefs()) ? 1 : 0);
 
 		// updating row
 		int r = db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
@@ -536,7 +553,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 								         		KEY_DEVICE_BRIGHTNESS,
 								         		KEY_DEVICE_WALLPAPER_CHANGE,
 								         		KEY_DEVICE_WALLPAPER,
-								         		KEY_DEVICE_MOBILE_DATA
+								         		KEY_DEVICE_MOBILE_DATA,
+								         		KEY_DEVICE_MOBILE_DATA_PREFS
 												}, 
 				                 KEY_CHECKED + "=?",
 				                 new String[] { "1" }, null, null, null, null);
@@ -573,7 +591,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					                      cursor.getString(22),
 					                      (Integer.parseInt(cursor.getString(23)) == 1) ? true : false,
 					                      cursor.getString(24),
-					                      Integer.parseInt(cursor.getString(25))
+					                      Integer.parseInt(cursor.getString(25)),
+					                      (Integer.parseInt(cursor.getString(26)) == 1) ? true : false
 					                      );
 		}
 		else
@@ -681,6 +700,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 									if (exportedDBObj.getVersion() < 19)
 									{
 										values.put(KEY_DEVICE_MOBILE_DATA, 0);
+									}
+									if (exportedDBObj.getVersion() < 20)
+									{
+										values.put(KEY_DEVICE_MOBILE_DATA_PREFS, 0);
 									}
 									
 									// Inserting Row do db z SQLiteOpenHelper

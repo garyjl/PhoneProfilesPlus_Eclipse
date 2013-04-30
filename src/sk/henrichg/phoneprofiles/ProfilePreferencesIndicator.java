@@ -61,6 +61,9 @@ public class ProfilePreferencesIndicator {
 				parent.addView(createIndicator(R.drawable.ic_profile_pref_mobiledata, parent.getContext()));				
 			if (profile.getDeviceMobileData() == 2)
 				parent.addView(createIndicator(R.drawable.ic_profile_pref_mobiledata_off, parent.getContext()));				
+			// mobile data preferences
+			if (profile.getDeviceMobileDataPrefs())
+				parent.addView(createIndicator(R.drawable.ic_profile_pref_mobiledata_pref, parent.getContext()));				
 			// wifi
 			if ((profile.getDeviceWiFi() == 1) || (profile.getDeviceWiFi() == 3))
 				parent.addView(createIndicator(R.drawable.ic_profile_pref_wifi, parent.getContext()));				

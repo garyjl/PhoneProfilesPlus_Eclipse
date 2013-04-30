@@ -23,6 +23,7 @@ public class Profile {
 	String _soundAlarm;
 	int _deviceAirplaneMode;
 	int _deviceMobileData;
+	boolean _deviceMobileDataPrefs;
 	int _deviceWiFi;
 	int _deviceBluetooth;
 	int _deviceScreenTimeout;
@@ -62,7 +63,8 @@ public class Profile {
 			   	   String deviceBrightness,
 			   	   boolean deviceWallpaperChange,
 			   	   String deviceWallpaper,
-			   	   int deviceMobileData)
+			   	   int deviceMobileData,
+			   	   boolean deviceMobileDataPrefs)
 	{
 		this._id = id;
 		this._name = name;
@@ -84,6 +86,7 @@ public class Profile {
 		this._soundAlarm = soundAlarm;
 		this._deviceAirplaneMode = deviceAirplaneMode;
 		this._deviceMobileData = deviceMobileData;
+		this._deviceMobileDataPrefs = deviceMobileDataPrefs;
 		this._deviceWiFi = deviceWiFi;
 		this._deviceBluetooth = deviceBluetooth;
 		this._deviceScreenTimeout = deviceScreenTimeout;
@@ -117,7 +120,8 @@ public class Profile {
 			   	   String deviceBrightness,
 			   	   boolean deviceWallpaperChange,
 			   	   String deviceWallpaper,
-			   	   int deviceMobileData)
+			   	   int deviceMobileData,
+			   	   boolean deviceMobileDataPrefs)
 	{
 		this._name = name;
 		this._icon = icon;
@@ -138,6 +142,7 @@ public class Profile {
 		this._soundAlarm = soundAlarm;
 		this._deviceAirplaneMode = deviceAirplaneMode;
 		this._deviceMobileData = deviceMobileData;
+		this._deviceMobileDataPrefs = deviceMobileDataPrefs;
 		this._deviceWiFi = deviceWiFi;
 		this._deviceBluetooth = deviceBluetooth;
 		this._deviceScreenTimeout = deviceScreenTimeout;
@@ -422,6 +427,11 @@ public class Profile {
 		return _deviceMobileData;
 	}
 	
+	public boolean getDeviceMobileDataPrefs()
+	{
+		return _deviceMobileDataPrefs;
+	}
+	
 	public int getDeviceWiFi()
 	{
 		return _deviceWiFi;
@@ -604,6 +614,11 @@ public class Profile {
 	public void setDeviceMobileData(int deviceMobileData)
 	{
 		_deviceMobileData = deviceMobileData;
+	}
+	
+	public void setDeviceMobileDataPrefs(boolean deviceMobileDataPrefs)
+	{
+		_deviceMobileDataPrefs = deviceMobileDataPrefs;
 	}
 	
 	public void setDeviceWiFi(int deviceWiFi)

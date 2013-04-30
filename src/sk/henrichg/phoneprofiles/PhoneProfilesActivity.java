@@ -217,7 +217,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		if (actProfile && (profile != null))
 		{
 			// aktivacia profilu
-			activateProfile(profile);
+			activateProfile(profile, false);
 		}
 		
 		// reset, aby sa to dalej chovalo ako normalne spustenie z lauchera
@@ -354,7 +354,8 @@ public class PhoneProfilesActivity extends SherlockActivity {
 					         	  "-1|1|1",
 					         	  false,
 								  "-|0",
-								  0
+								  0,
+								  false
 					);
 			profileListAdapter.addItem(profile); // pridame profil do listview a nastavime jeho order
 			databaseHandler.addProfile(profile);
@@ -386,6 +387,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
         editor.putBoolean(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_WALLPAPER_CHANGE, profile.getDeviceWallpaperChange());
         editor.putString(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_WALLPAPER, profile.getDeviceWallpaper());
         editor.putString(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_MOBILE_DATA, Integer.toString(profile.getDeviceMobileData()));
+        editor.putBoolean(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS, profile.getDeviceMobileDataPrefs());
 		editor.commit();
 		
 		Log.d("PhoneProfilesActivity.startProfilePreferencesActivityFromList", profile.getID()+"");
@@ -426,7 +428,8 @@ public class PhoneProfilesActivity extends SherlockActivity {
 				   origProfile.getDeviceBrightness(),
 				   origProfile.getDeviceWallpaperChange(),
 				   origProfile.getDeviceWallpaper(),
-				   origProfile.getDeviceMobileData());
+				   origProfile.getDeviceMobileData(),
+				   origProfile.getDeviceMobileDataPrefs());
 
 		profileListAdapter.addItem(newProfile);
 		databaseHandler.addProfile(newProfile);
@@ -505,24 +508,24 @@ public class PhoneProfilesActivity extends SherlockActivity {
 			dialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 				
 				public void onClick(DialogInterface dialog, int which) {
-					activateProfile(_position);
+					activateProfile(_position, true);
 				}
 			});
 			dialogBuilder.setNegativeButton(android.R.string.no, null);
 			dialogBuilder.show();
 		}
 		else
-			activateProfile(position);
+			activateProfile(position, true);
 	}
 	
-	private void activateProfile(Profile profile)
+	private void activateProfile(Profile profile, boolean interactive)
 	{
 		SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
 		
 		profileListAdapter.activateProfile(profile);
 		databaseHandler.activateProfile(profile);
 		
-		activateProfileHelper.execute(profile);
+		activateProfileHelper.execute(profile, interactive);
 
 		updateHeader(profile);
 		activateProfileHelper.updateWidget();
@@ -550,10 +553,10 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		}
 	}
 	
-	private void activateProfile(int position)
+	private void activateProfile(int position, boolean interactive)
 	{
 		Profile profile = profileList.get(position);
-		activateProfile(profile);
+		activateProfile(profile, interactive);
 	}
 	
 	private void importExportErrorDialog(int importExport)

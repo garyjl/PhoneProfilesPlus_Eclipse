@@ -38,10 +38,12 @@ public class ActivateProfileActivity extends Activity {
 		Log.d("ActivateProfileActivity.onStart", "startupSource="+startupSource);
 		
 		boolean actProfile = false;
+		boolean interactive = false;
 		if (startupSource == PhoneProfilesActivity.STARTUP_SOURCE_SHORTCUT)
 		{
 			// aktivita spustena z shortcutu, profil aktivujeme
 			actProfile = true;
+			interactive = true;
 		}
 		else
 		if (startupSource == PhoneProfilesActivity.STARTUP_SOURCE_BOOT)
@@ -76,7 +78,7 @@ public class ActivateProfileActivity extends Activity {
 		if (actProfile && (profile != null))
 		{
 			// aktivacia profilu
-			activateProfile(profile);
+			activateProfile(profile, interactive);
 		}
 		
 		Log.d("ActivateProfileActivity.onStart", "xxxx");
@@ -84,13 +86,13 @@ public class ActivateProfileActivity extends Activity {
 		finish();
 	}
 	
-	private void activateProfile(Profile profile)
+	private void activateProfile(Profile profile, boolean interactive)
 	{
 		SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
 		
 		databaseHandler.activateProfile(profile);
 
-		activateProfileHelper.execute(profile);
+		activateProfileHelper.execute(profile, interactive);
 		activateProfileHelper.showNotification(profile);
 		activateProfileHelper.updateWidget();
 

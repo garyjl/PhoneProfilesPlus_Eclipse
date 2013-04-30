@@ -58,6 +58,7 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
 	static final String PREF_PROFILE_DEVICE_WALLPAPER_CHANGE = "deviceWallpaperChange";
 	static final String PREF_PROFILE_DEVICE_WALLPAPER = "deviceWallpaper";
 	static final String PREF_PROFILE_DEVICE_MOBILE_DATA = "deviceMobileData";
+	static final String PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS = "deviceMobileDataPrefs";
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -93,7 +94,9 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
     	    	if (!(key.equals(PREF_PROFILE_SOUND_RINGTONE_CHANGE) ||
     	    		key.equals(PREF_PROFILE_SOUND_NOTIFICATION_CHANGE) ||
     	    		key.equals(PREF_PROFILE_SOUND_ALARM_CHANGE) ||
-    	    		key.equals(PREF_PROFILE_DEVICE_WALLPAPER_CHANGE)))
+    	    		key.equals(PREF_PROFILE_DEVICE_WALLPAPER_CHANGE) ||
+    	    		key.equals(PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS)
+    	    		))
     	    		setSummary(key, prefs.getString(key, ""));
 
         	}
@@ -167,6 +170,7 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
         	else
         		profile.setDeviceWallpaper("-|0");
         	profile.setDeviceMobileData(Integer.parseInt(preferences.getString(PREF_PROFILE_DEVICE_MOBILE_DATA, "")));
+        	profile.setDeviceMobileDataPrefs(preferences.getBoolean(PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS, false));
         	
         	PhoneProfilesActivity.getProfileListAdapter().updateItem(profile);
         	PhoneProfilesActivity.getDatabaseHandler().updateProfile(profile);
@@ -244,11 +248,8 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
         	Log.d("PhonePreferencesActivity.updateSharedPreference", profile.getName());
 	        setSummary(PREF_PROFILE_NAME, profile.getName());
 	        setSummary(PREF_PROFILE_VOLUME_RINGER_MODE, profile.getVolumeRingerMode());
-	        setSummary(PREF_PROFILE_SOUND_RINGTONE_CHANGE, profile.getSoundRingtoneChange());
 	        setSummary(PREF_PROFILE_SOUND_RINGTONE, profile.getSoundRingtone());
-	        setSummary(PREF_PROFILE_SOUND_NOTIFICATION_CHANGE, profile.getSoundNotificationChange());
 	        setSummary(PREF_PROFILE_SOUND_NOTIFICATION, profile.getSoundNotification());
-	        setSummary(PREF_PROFILE_SOUND_ALARM_CHANGE, profile.getSoundAlarmChange());
 	        setSummary(PREF_PROFILE_SOUND_ALARM, profile.getSoundAlarm());
 	        setSummary(PREF_PROFILE_DEVICE_AIRPLANE_MODE, profile.getDeviceAirplaneMode());
 	        setSummary(PREF_PROFILE_DEVICE_WIFI, profile.getDeviceWiFi());

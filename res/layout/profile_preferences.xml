@@ -115,6 +115,10 @@
             android:defaultValue="0"
             android:entries="@array/hardwareModeArray"
             android:entryValues="@array/hardwareModeValues" />        
+		<CheckBoxPreference 
+		    android:key="deviceMobileDataPrefs"
+		    android:title="@string/profile_preferences_deviceMobileDataPrefs"
+		    android:defaultValue="false" />
 		<ListPreference android:title="@string/profile_preferences_deviceWiFi"
             android:summary="@string/array_pref_no_change"
             android:key="deviceWiFi"
