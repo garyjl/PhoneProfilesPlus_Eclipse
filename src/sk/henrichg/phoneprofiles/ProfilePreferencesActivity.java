@@ -2,8 +2,6 @@ package sk.henrichg.phoneprofiles;
  
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.actionbarsherlock.view.MenuItem;
-import com.stericson.RootTools.RootTools;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -301,33 +299,17 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
 			key.equals(PREF_PROFILE_DEVICE_BLUETOOTH) ||
 			key.equals(PREF_PROFILE_DEVICE_MOBILE_DATA))
 		{
-			boolean canChange = true;
-			
-			if (key.equals(PREF_PROFILE_DEVICE_AIRPLANE_MODE))
-			{	
-				if (android.os.Build.VERSION.SDK_INT >= 17)
+			boolean canChange = CheckHardwareFeatures.check(key, context);
+			if (!canChange)
+			{
+				prefMng.findPreference(key).setEnabled(false);
+				prefMng.findPreference(key).setSummary(getResources().getString(R.string.profile_preferences_device_not_allowed));
+				if (key.equals(PREF_PROFILE_DEVICE_MOBILE_DATA))
 				{
-					if (AirPlaneMode_SDK17.isSystemApp(context) && AirPlaneMode_SDK17.isAdminUser(context))
-					{
-						// aplikacia je nainstalovana ako systemova
-						canChange = true;
-					}
-					else
-					if (RootTools.isAccessGiven())
-					{
-						// zariadenie je rootnute
-						canChange = true;
-					}
-					else
-					{
-						canChange = false;
-						prefMng.findPreference(key).setEnabled(false);
-						prefMng.findPreference(key).setSummary(getResources().getString(R.string.profile_preferences_airplane_mode_no_allowed));
-					}
+					prefMng.findPreference(PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS).setEnabled(false);
 				}
 			}
-			
-			if (canChange)
+			else
 			{
 				String sPrefDeviceMode = value.toString();
 				int iPrefDeviceMode;

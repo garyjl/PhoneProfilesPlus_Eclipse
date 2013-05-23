@@ -98,7 +98,7 @@
     <string name="array_pref_value_en">en</string>
     <string name="array_pref_value_sk">sk</string>
     <string name="array_pref_value_cs">cs</string>
-    <string name="profile_preferences_airplane_mode_no_allowed">Není možné</string>
+    <string name="profile_preferences_device_not_allowed">Není možné</string>
     <string name="menu_export">Export profilů</string>
     <string name="menu_import">Import profilů</string>
     <string name="toast_export_ok">Profily jsou exportnuté</string>

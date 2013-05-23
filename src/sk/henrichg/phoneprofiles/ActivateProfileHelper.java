@@ -19,7 +19,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -112,112 +111,123 @@ public class ActivateProfileHelper {
 			Settings.System.putString(context.getContentResolver(), Settings.System.ALARM_ALERT, profile.getSoundAlarm());
 
 		// nahodenie mobilnych dat
-		boolean _isMobileData = isMobileData(context.getApplicationContext());
-		boolean _setMobileData = false;
-		switch (profile.getDeviceMobileData()) {
-			case 1:
-				if (!_isMobileData)
-				{
-					_isMobileData = true;
-					_setMobileData = true;
-				}
-				break;
-			case 2:
-				if (_isMobileData)
-				{
-					_isMobileData = false;
-					_setMobileData = true;
-				}
-				break;
-			case 3:
-				_isMobileData = !_isMobileData;
-				_setMobileData = true;
-				break;
-		}
-		if (_setMobileData)
-			setMobileData(context.getApplicationContext(), _isMobileData);
-
-		
-		// nahodenie WiFi
-		WifiManager wifiManager = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
-		boolean setWifiState = false;
-		switch (profile.getDeviceWiFi()) {
-			case 1 :
-				setWifiState = true;
-				break;
-			case 2 : 
-				setWifiState = false;
-				break;
-			case 3 :
-				int wifiState = wifiManager.getWifiState(); 
-				if ((wifiState == WifiManager.WIFI_STATE_DISABLED) || (wifiState == WifiManager.WIFI_STATE_DISABLING))
-				{
-					setWifiState = true;
-				}
-				else
-				if ((wifiState == WifiManager.WIFI_STATE_ENABLED) || (wifiState == WifiManager.WIFI_STATE_ENABLING))
-				{
-					setWifiState = false;
-				}
-				break;
-		}
-		if (profile.getDeviceWiFi() != 0)
+		if (CheckHardwareFeatures.check(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_MOBILE_DATA, context))
 		{
-			try {
-				wifiManager.setWifiEnabled(setWifiState);
-			} catch (Exception e) {
-				// barla pre security exception INTERACT_ACROSS_USERS - chyba ROM 
-				wifiManager.setWifiEnabled(setWifiState);
+			boolean _isMobileData = isMobileData(context.getApplicationContext());
+			boolean _setMobileData = false;
+			switch (profile.getDeviceMobileData()) {
+				case 1:
+					if (!_isMobileData)
+					{
+						_isMobileData = true;
+						_setMobileData = true;
+					}
+					break;
+				case 2:
+					if (_isMobileData)
+					{
+						_isMobileData = false;
+						_setMobileData = true;
+					}
+					break;
+				case 3:
+					_isMobileData = !_isMobileData;
+					_setMobileData = true;
+					break;
 			}
-		}	
+			if (_setMobileData)
+				setMobileData(context.getApplicationContext(), _isMobileData);
+		}
+
+		// nahodenie WiFi
+		if (CheckHardwareFeatures.check(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_WIFI, context))
+		{
+			WifiManager wifiManager = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
+			boolean setWifiState = false;
+			switch (profile.getDeviceWiFi()) {
+				case 1 :
+					setWifiState = true;
+					break;
+				case 2 : 
+					setWifiState = false;
+					break;
+				case 3 :
+					int wifiState = wifiManager.getWifiState(); 
+					if ((wifiState == WifiManager.WIFI_STATE_DISABLED) || (wifiState == WifiManager.WIFI_STATE_DISABLING))
+					{
+						setWifiState = true;
+					}
+					else
+					if ((wifiState == WifiManager.WIFI_STATE_ENABLED) || (wifiState == WifiManager.WIFI_STATE_ENABLING))
+					{
+						setWifiState = false;
+					}
+					break;
+			}
+			if (profile.getDeviceWiFi() != 0)
+			{
+				try {
+					wifiManager.setWifiEnabled(setWifiState);
+				} catch (Exception e) {
+					// barla pre security exception INTERACT_ACROSS_USERS - chyba ROM 
+					wifiManager.setWifiEnabled(setWifiState);
+				}
+			}
+		}
 		
 		// nahodenie bluetooth
-		BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-		switch (profile.getDeviceBluetooth()) {
-			case 1 :
-				bluetoothAdapter.enable();
-				break;
-			case 2 : 
-				bluetoothAdapter.disable();
-				break;
-			case 3 :
-				if ((bluetoothAdapter != null) && (bluetoothAdapter.isEnabled()))
-				{
+		if (CheckHardwareFeatures.check(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_BLUETOOTH, context))
+		{
+			BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+			switch (profile.getDeviceBluetooth()) {
+				case 1 :
 					bluetoothAdapter.enable();
-				}
-				else
-				if ((bluetoothAdapter != null) && (!bluetoothAdapter.isEnabled()))
-				{
+					break;
+				case 2 : 
 					bluetoothAdapter.disable();
-				}
-				break;
+					break;
+				case 3 :
+					if ((bluetoothAdapter != null) && (bluetoothAdapter.isEnabled()))
+					{
+						bluetoothAdapter.enable();
+					}
+					else
+					if ((bluetoothAdapter != null) && (!bluetoothAdapter.isEnabled()))
+					{
+						bluetoothAdapter.disable();
+					}
+					break;
+			}
 		}
 		
 		// nahodenie airplane modu
-		boolean _isAirplaneMode = isAirplaneMode(context.getApplicationContext());
-		boolean _setAirplaneMode = false;
-		switch (profile.getDeviceAirplaneMode()) {
-			case 1:
-				if (!_isAirplaneMode)
-				{
-					_isAirplaneMode = true;
+		if (CheckHardwareFeatures.check(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_AIRPLANE_MODE, context))
+		{
+			boolean _isAirplaneMode = isAirplaneMode(context.getApplicationContext());
+			boolean _setAirplaneMode = false;
+			switch (profile.getDeviceAirplaneMode()) {
+				case 1:
+					if (!_isAirplaneMode)
+					{
+						_isAirplaneMode = true;
+						_setAirplaneMode = true;
+					}
+					break;
+				case 2:
+					if (_isAirplaneMode)
+					{
+						_isAirplaneMode = false;
+						_setAirplaneMode = true;
+					}
+					break;
+				case 3:
+					_isAirplaneMode = !_isAirplaneMode;
 					_setAirplaneMode = true;
-				}
-				break;
-			case 2:
-				if (_isAirplaneMode)
-				{
-					_isAirplaneMode = false;
-					_setAirplaneMode = true;
-				}
-				break;
-			case 3:
-				_isAirplaneMode = !_isAirplaneMode;
-				_setAirplaneMode = true;
-				break;
+					break;
+			}
+			if (_setAirplaneMode)
+				setAirplaneMode(context.getApplicationContext(), _isAirplaneMode);
 		}
-		if (_setAirplaneMode)
-			setAirplaneMode(context.getApplicationContext(), _isAirplaneMode);
 		
 		
 /*		Intent intent = new Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED);
@@ -421,7 +431,7 @@ public class ActivateProfileHelper {
 		
 	}
 	
-	@SuppressWarnings("deprecation")
+	//@SuppressWarnings("deprecation")
 	@SuppressLint("InlinedApi")
 	public void showNotification(Profile profile)
 	{
@@ -447,7 +457,8 @@ public class ActivateProfileHelper {
 		        {
 		        	int iconResource = context.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", context.getPackageName());
 		        
-					notificationBuilder = new NotificationCompat.Builder(context)
+					//notificationBuilder 
+		        	notificationBuilder = new NotificationCompat.Builder(context)
 						.setContentText(context.getResources().getString(R.string.active_profile_notification_label))
 						.setContentTitle(profile.getName())
 						.setContentIntent(pIntent)
@@ -478,7 +489,8 @@ public class ActivateProfileHelper {
 						.setSmallIcon(R.drawable.ic_launcher);
 		        	}
 		        }
-				Notification notification = notificationBuilder.getNotification();
+				Notification notification = notificationBuilder.build();
+						//.getNotification();
 				notification.flags |= Notification.FLAG_NO_CLEAR; 
 				notificationManager.notify(PhoneProfilesActivity.NOTIFICATION_ID, notification);
 			}

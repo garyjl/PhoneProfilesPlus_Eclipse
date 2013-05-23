@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 
 public class ProfilePreferencesIndicator {
 	
+	private static Context _context;
+	
 	ProfilePreferencesIndicator()
 	{
 		
@@ -18,6 +20,8 @@ public class ProfilePreferencesIndicator {
 	
 	private static ImageView createIndicator(int resource, Context context)
 	{
+		_context = context;
+		
 		final float scale = context.getResources().getDisplayMetrics().density;
 		
 		ImageView indicator = new ImageView(context);
@@ -52,28 +56,40 @@ public class ProfilePreferencesIndicator {
 			if (profile.getSoundRingtoneChange() || profile.getSoundNotificationChange() || profile.getSoundAlarmChange())
 				parent.addView(createIndicator(R.drawable.ic_profile_pref_sound, parent.getContext()));				
 			// airplane mode
-			if ((profile.getDeviceAirplaneMode() == 1) || (profile.getDeviceAirplaneMode() == 3))
-				parent.addView(createIndicator(R.drawable.ic_profile_pref_airplane_mode, parent.getContext()));				
-			if (profile.getDeviceAirplaneMode() == 2)
-				parent.addView(createIndicator(R.drawable.ic_profile_pref_airplane_mode_off, parent.getContext()));				
+			if (CheckHardwareFeatures.check(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_AIRPLANE_MODE, _context))
+			{
+				if ((profile.getDeviceAirplaneMode() == 1) || (profile.getDeviceAirplaneMode() == 3))
+					parent.addView(createIndicator(R.drawable.ic_profile_pref_airplane_mode, parent.getContext()));				
+				if (profile.getDeviceAirplaneMode() == 2)
+					parent.addView(createIndicator(R.drawable.ic_profile_pref_airplane_mode_off, parent.getContext()));
+			}
 			// mobile data
-			if ((profile.getDeviceMobileData() == 1) || (profile.getDeviceMobileData() == 3))
-				parent.addView(createIndicator(R.drawable.ic_profile_pref_mobiledata, parent.getContext()));				
-			if (profile.getDeviceMobileData() == 2)
-				parent.addView(createIndicator(R.drawable.ic_profile_pref_mobiledata_off, parent.getContext()));				
-			// mobile data preferences
-			if (profile.getDeviceMobileDataPrefs())
-				parent.addView(createIndicator(R.drawable.ic_profile_pref_mobiledata_pref, parent.getContext()));				
+			if (CheckHardwareFeatures.check(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_MOBILE_DATA, _context))
+			{
+				if ((profile.getDeviceMobileData() == 1) || (profile.getDeviceMobileData() == 3))
+					parent.addView(createIndicator(R.drawable.ic_profile_pref_mobiledata, parent.getContext()));				
+				if (profile.getDeviceMobileData() == 2)
+					parent.addView(createIndicator(R.drawable.ic_profile_pref_mobiledata_off, parent.getContext()));				
+				// mobile data preferences
+				if (profile.getDeviceMobileDataPrefs())
+					parent.addView(createIndicator(R.drawable.ic_profile_pref_mobiledata_pref, parent.getContext()));
+			}
 			// wifi
-			if ((profile.getDeviceWiFi() == 1) || (profile.getDeviceWiFi() == 3))
-				parent.addView(createIndicator(R.drawable.ic_profile_pref_wifi, parent.getContext()));				
-			if (profile.getDeviceWiFi() == 2)
-				parent.addView(createIndicator(R.drawable.ic_profile_pref_wifi_off, parent.getContext()));				
+			if (CheckHardwareFeatures.check(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_WIFI, _context))
+			{
+				if ((profile.getDeviceWiFi() == 1) || (profile.getDeviceWiFi() == 3))
+					parent.addView(createIndicator(R.drawable.ic_profile_pref_wifi, parent.getContext()));				
+				if (profile.getDeviceWiFi() == 2)
+					parent.addView(createIndicator(R.drawable.ic_profile_pref_wifi_off, parent.getContext()));
+			}
 			// bluetooth
-			if ((profile.getDeviceBluetooth() == 1) || (profile.getDeviceBluetooth() == 3))
-				parent.addView(createIndicator(R.drawable.ic_profile_pref_bluetooth, parent.getContext()));				
-			if (profile.getDeviceBluetooth() == 2)
-				parent.addView(createIndicator(R.drawable.ic_profile_pref_bluetooth_off, parent.getContext()));				
+			if (CheckHardwareFeatures.check(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_BLUETOOTH, _context))
+			{
+				if ((profile.getDeviceBluetooth() == 1) || (profile.getDeviceBluetooth() == 3))
+					parent.addView(createIndicator(R.drawable.ic_profile_pref_bluetooth, parent.getContext()));				
+				if (profile.getDeviceBluetooth() == 2)
+					parent.addView(createIndicator(R.drawable.ic_profile_pref_bluetooth_off, parent.getContext()));
+			}
 			// screen timeout
 			if (profile.getDeviceScreenTimeout() != 0)
 				parent.addView(createIndicator(R.drawable.ic_profile_pref_screen_timeout, parent.getContext()));				
