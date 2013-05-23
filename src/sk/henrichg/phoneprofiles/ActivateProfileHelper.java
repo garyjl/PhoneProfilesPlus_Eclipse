@@ -456,20 +456,34 @@ public class ActivateProfileHelper {
 				NotificationCompat.Builder notificationBuilder;
 		        if (profile.getIsIconResourceID())
 		        {
-		        	int iconSmallResource = context.getResources().getIdentifier(profile.getIconIdentifier()+"_notify", "drawable", context.getPackageName());
-		        	int iconLargeResource = context.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", context.getPackageName());
-		        	Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(), iconLargeResource);
-		        
 		        	notificationBuilder = new NotificationCompat.Builder(context)
 						.setContentText(context.getResources().getString(R.string.active_profile_notification_label))
 						.setContentTitle(profile.getName())
-						.setContentIntent(pIntent)
-						.setLargeIcon(largeIcon)
-						.setSmallIcon(iconSmallResource);
+						.setContentIntent(pIntent);
+
+		        	int iconSmallResource;
+		    		if (preferences.getString(PhoneProfilesPreferencesActivity.PREF_NOTIFICATION_STATUS_BAR_STYLE, "0").equals("0"))
+		    		{
+		    			iconSmallResource = context.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", context.getPackageName());
+						notificationBuilder.setSmallIcon(iconSmallResource);
+		    		}
+		    		else
+		    		{
+		    			iconSmallResource = context.getResources().getIdentifier(profile.getIconIdentifier()+"_notify", "drawable", context.getPackageName());
+		    			int iconLargeResource = context.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", context.getPackageName());
+		    			Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(), iconLargeResource);
+		    			notificationBuilder.setLargeIcon(largeIcon);
+						notificationBuilder.setSmallIcon(iconSmallResource);
+		    		}
+		        
 		        }
 		        else
 		        {
-		        	int iconSmallResource = R.drawable.ic_launcher_notify;
+		        	int iconSmallResource;
+		    		if (preferences.getString(PhoneProfilesPreferencesActivity.PREF_NOTIFICATION_STATUS_BAR_STYLE, "0").equals("0"))
+		    			iconSmallResource = R.drawable.ic_launcher;
+		    		else
+		    			iconSmallResource = R.drawable.ic_launcher_notify;
 		        			
 		        	if (android.os.Build.VERSION.SDK_INT >= 11)
 		        	{

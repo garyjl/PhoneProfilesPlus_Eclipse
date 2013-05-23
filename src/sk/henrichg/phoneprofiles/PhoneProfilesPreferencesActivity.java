@@ -36,6 +36,7 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
     static final String PREF_APPLICATION_LANGUAGE = "applicationLanguage";
     static final String PREF_NOTIFICATION_TOAST = "notificationsToast";
     static final String PREF_NOTIFICATION_STATUS_BAR  = "notificationStatusBar";
+    static final String PREF_NOTIFICATION_STATUS_BAR_STYLE  = "notificationStatusBarStyle";
 	
 	
 	@SuppressWarnings("deprecation")
@@ -70,7 +71,8 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
     	    	// updating activity with selected profile preferences
     	    	Log.d("PhoneProfilesPreferencesActivity.onSharedPreferenceChanged", key);
     	    	
-    	    	if (key.equals(PREF_APPLICATION_LANGUAGE))
+    	    	if (key.equals(PREF_APPLICATION_LANGUAGE) ||
+    	    		key.equals(PREF_NOTIFICATION_STATUS_BAR_STYLE))
     	    		setSummary(key, prefs.getString(key, ""));
     	    		
     	    }
@@ -105,6 +107,7 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
 	private void updateSharedPreference()
 	{
         setSummary(PREF_APPLICATION_LANGUAGE, preferences.getString(PREF_APPLICATION_LANGUAGE, ""));
+        setSummary(PREF_NOTIFICATION_STATUS_BAR_STYLE, preferences.getString(PREF_NOTIFICATION_STATUS_BAR_STYLE, ""));
 	}
 	
 	@Override
@@ -141,6 +144,19 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
 			{
 				if (slangValue.equals(sPrefLanguauge))
 					prefMng.findPreference(key).setSummary(prefLanguages[ilangValue]);
+				++ilangValue;
+			}
+		}
+		if (key.equals(PREF_NOTIFICATION_STATUS_BAR_STYLE))
+		{
+			String sPrefNotifIconStyle = value.toString();
+			String[] prefNotifIconStyles = getResources().getStringArray(R.array.notificationIconStyleArray);
+			String[] prefNotifIconStyleValues = getResources().getStringArray(R.array.notificationIconStyleValues);
+			int ilangValue = 0;
+			for (String slangValue : prefNotifIconStyleValues)
+			{
+				if (slangValue.equals(sPrefNotifIconStyle))
+					prefMng.findPreference(key).setSummary(prefNotifIconStyles[ilangValue]);
 				++ilangValue;
 			}
 		}

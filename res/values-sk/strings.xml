@@ -40,6 +40,7 @@
     <string name="phone_profiles_pref_applicationAlert">Pýtať sa na aktiváciu profilu</string>
     <string name="phone_profiles_pref_notificationsToast">Notifikovať bublinou</string>
     <string name="phone_profiles_pref_notificationStatusBar">Notifikovať v stavovej lište</string>
+    <string name="phone_profiles_pref_notificationStatusBarStyle">Štýl notifikačnej ikony</string>
     <string name="profile_preferences_category_profileidenification">Identifikácia profilu</string>
     <string name="profile_preferences_category_volumes">Hlasitosti</string>
     <string name="profile_preferences_category_sounds">Tóny</string>
@@ -109,5 +110,7 @@
     <string name="export_profiles_alert_error">Chyba pii exporte profilov</string>
     <string name="profile_preferences_deviceMobileData">Mobilné dáta</string>
     <string name="profile_preferences_deviceMobileDataPrefs">Nastavenia mobilných dát</string>
+    <string name="phone_profiles_pref_notificationStatusBarStyle_color">Farebné</string>
+    <string name="phone_profiles_pref_notificationStatusBarStyle_android">Natívne</string>
     
 </resources>

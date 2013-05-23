@@ -37,5 +37,11 @@
 		    android:key="notificationStatusBar"
 		    android:title="@string/phone_profiles_pref_notificationStatusBar"
 		    android:defaultValue="true" />
+		<ListPreference android:title="@string/phone_profiles_pref_notificationStatusBarStyle"
+            android:summary="@string/phone_profiles_pref_notificationStatusBarStyle_color"
+            android:key="notificationStatusBarStyle"
+            android:defaultValue="0"
+            android:entries="@array/notificationIconStyleArray"
+            android:entryValues="@array/notificationIconStyleValues" />        
 	</PreferenceCategory>
 </PreferenceScreen>    

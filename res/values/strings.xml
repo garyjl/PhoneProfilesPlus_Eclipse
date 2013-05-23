@@ -40,6 +40,7 @@
     <string name="phone_profiles_pref_applicationAlert">Alert activating profile</string>
     <string name="phone_profiles_pref_notificationsToast">Show toast notification</string>
     <string name="phone_profiles_pref_notificationStatusBar">Show status bar notification</string>
+    <string name="phone_profiles_pref_notificationStatusBarStyle">Notification icon style</string>
     <string name="profile_preferences_category_profileidenification">Profile identification</string>
     <string name="profile_preferences_category_volumes">Volumes</string>
     <string name="profile_preferences_category_sounds">Sounds</string>
@@ -109,5 +110,7 @@
     <string name="export_profiles_alert_error">Error on exporting profiles</string>
     <string name="profile_preferences_deviceMobileData">Mobile data</string>
     <string name="profile_preferences_deviceMobileDataPrefs">Mobile data preferences</string>
+    <string name="phone_profiles_pref_notificationStatusBarStyle_color">Colorfull</string>
+    <string name="phone_profiles_pref_notificationStatusBarStyle_android">Native</string>
     
 </resources>
