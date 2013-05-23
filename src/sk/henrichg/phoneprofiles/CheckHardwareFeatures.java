@@ -2,6 +2,7 @@ package sk.henrichg.phoneprofiles;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.util.Log;
 
 import com.stericson.RootTools.RootTools;
 
@@ -39,14 +40,14 @@ public class CheckHardwareFeatures {
 		if (preferenceKey.equals(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_BLUETOOTH))
 		{	
 			if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH))
-				// device ma Wifi
+				// device ma bluetooth
 				featurePresented = true;
 		}
 		else
 		if (preferenceKey.equals(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_MOBILE_DATA))
 		{	
 			if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY))
-				// device ma Wifi
+				// device ma mobilne data
 				featurePresented = true;
 		}
 		else

@@ -19,6 +19,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -455,17 +456,21 @@ public class ActivateProfileHelper {
 				NotificationCompat.Builder notificationBuilder;
 		        if (profile.getIsIconResourceID())
 		        {
-		        	int iconResource = context.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", context.getPackageName());
+		        	int iconSmallResource = context.getResources().getIdentifier(profile.getIconIdentifier()+"_notify", "drawable", context.getPackageName());
+		        	int iconLargeResource = context.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", context.getPackageName());
+		        	Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(), iconLargeResource);
 		        
-					//notificationBuilder 
 		        	notificationBuilder = new NotificationCompat.Builder(context)
 						.setContentText(context.getResources().getString(R.string.active_profile_notification_label))
 						.setContentTitle(profile.getName())
 						.setContentIntent(pIntent)
-						.setSmallIcon(iconResource);
+						.setLargeIcon(largeIcon)
+						.setSmallIcon(iconSmallResource);
 		        }
 		        else
 		        {
+		        	int iconSmallResource = R.drawable.ic_launcher_notify;
+		        			
 		        	if (android.os.Build.VERSION.SDK_INT >= 11)
 		        	{
 		        		Resources resources = context.getResources();
@@ -478,7 +483,7 @@ public class ActivateProfileHelper {
 							.setContentTitle(profile.getName())
 							.setContentIntent(pIntent)
 							.setLargeIcon(bitmap)
-							.setSmallIcon(R.drawable.ic_launcher);
+							.setSmallIcon(iconSmallResource);
 		        	}
 		        	else
 		        	{
@@ -486,7 +491,7 @@ public class ActivateProfileHelper {
 						.setContentText(context.getResources().getString(R.string.active_profile_notification_label))
 						.setContentTitle(profile.getName())
 						.setContentIntent(pIntent)
-						.setSmallIcon(R.drawable.ic_launcher);
+						.setSmallIcon(iconSmallResource);
 		        	}
 		        }
 				Notification notification = notificationBuilder.build();
