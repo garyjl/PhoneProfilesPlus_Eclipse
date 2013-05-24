@@ -2,8 +2,6 @@ package sk.henrichg.phoneprofiles;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.util.Log;
-
 import com.stericson.RootTools.RootTools;
 
 public class CheckHardwareFeatures {
