@@ -493,7 +493,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		
         //ProfilePreferencesIndicator profilePreferenceIndicator = new ProfilePreferencesIndicator();
         LinearLayout profilePrefIndicatorLayout = (LinearLayout)findViewById(R.id.activated_profile_pref_indicator);
-        ProfilePreferencesIndicator.paint(profilePrefIndicatorLayout, profile, getBaseContext());
+        ProfilePreferencesIndicator.paint(profilePrefIndicatorLayout, profile);
 		
 	}
 	

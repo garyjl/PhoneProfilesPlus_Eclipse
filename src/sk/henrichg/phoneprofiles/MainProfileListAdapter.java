@@ -152,7 +152,7 @@ public class MainProfileListAdapter extends BaseAdapter
         
         //ProfilePreferencesIndicator profilePreferenceIndicator = new ProfilePreferencesIndicator();
         LinearLayout profilePrefIndicatorLayout = (LinearLayout)vi.findViewById(R.id.main_list_profile_pref_indicator);
-        ProfilePreferencesIndicator.paint(profilePrefIndicatorLayout, profile, vi.getContext());
+        ProfilePreferencesIndicator.paint(profilePrefIndicatorLayout, profile);
         
         Log.d("ProfileListAdapter.getView", profile.getName());
         
