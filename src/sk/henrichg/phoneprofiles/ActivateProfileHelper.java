@@ -17,7 +17,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
@@ -31,6 +30,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
+import android.widget.RemoteViews;
 
 public class ActivateProfileHelper {
 	
@@ -455,40 +455,47 @@ public class ActivateProfileHelper {
 				// nastavime, ze aktivita sa spusti z notifikacnej listy
 				intent.putExtra(PhoneProfilesActivity.EXTRA_START_APP_SOURCE, PhoneProfilesActivity.STARTUP_SOURCE_NOTIFICATION);
 				PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+				
 				// vytvorenie samotnej notifikacie
 				NotificationCompat.Builder notificationBuilder;
-		        if (profile.getIsIconResourceID())
+		        RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.notification_drawer);
+
+				if (profile.getIsIconResourceID())
 		        {
-		        	notificationBuilder = new NotificationCompat.Builder(context)
+		        /*	notificationBuilder = new NotificationCompat.Builder(context)
 						.setContentText(context.getResources().getString(R.string.active_profile_notification_label))
 						.setContentTitle(profile.getName())
-						.setContentIntent(pIntent);
+						.setContentIntent(pIntent); */
+		        	notificationBuilder = new NotificationCompat.Builder(context)
+		        		.setContentIntent(pIntent);
+					
 
 		        	int iconSmallResource;
 		    		if (preferences.getString(PhoneProfilesPreferencesActivity.PREF_NOTIFICATION_STATUS_BAR_STYLE, "0").equals("0"))
 		    		{
 		    			iconSmallResource = context.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", context.getPackageName());
 						notificationBuilder.setSmallIcon(iconSmallResource);
+				        contentView.setImageViewResource(R.id.notification_activated_profile_icon, iconSmallResource);
 		    		}
 		    		else
 		    		{
 		    			iconSmallResource = context.getResources().getIdentifier(profile.getIconIdentifier()+"_notify", "drawable", context.getPackageName());
 		    			int iconLargeResource = context.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", context.getPackageName());
 		    			Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(), iconLargeResource);
-		    			notificationBuilder.setLargeIcon(largeIcon);
+		    			//notificationBuilder.setLargeIcon(largeIcon);
 						notificationBuilder.setSmallIcon(iconSmallResource);
+		    			contentView.setImageViewBitmap(R.id.notification_activated_profile_icon, largeIcon);
 		    		}
-		        
 		        }
 		        else
 		        {
 		        	int iconSmallResource;
 		    		if (preferences.getString(PhoneProfilesPreferencesActivity.PREF_NOTIFICATION_STATUS_BAR_STYLE, "0").equals("0"))
-		    			iconSmallResource = R.drawable.ic_launcher;
+		    			iconSmallResource = R.drawable.ic_profile_default;
 		    		else
-		    			iconSmallResource = R.drawable.ic_launcher_notify;
+		    			iconSmallResource = R.drawable.ic_profile_default_notify;
 		        			
-		        	if (android.os.Build.VERSION.SDK_INT >= 11)
+		        /*	if (android.os.Build.VERSION.SDK_INT >= 11)
 		        	{
 		        		Resources resources = context.getResources();
 		        		int height = (int) resources.getDimension(android.R.dimen.notification_large_icon_height);
@@ -505,14 +512,32 @@ public class ActivateProfileHelper {
 		        	else
 		        	{
 						notificationBuilder = new NotificationCompat.Builder(context)
-						.setContentText(context.getResources().getString(R.string.active_profile_notification_label))
-						.setContentTitle(profile.getName())
-						.setContentIntent(pIntent)
-						.setSmallIcon(iconSmallResource);
-		        	}
+							.setContentText(context.getResources().getString(R.string.active_profile_notification_label))
+							.setContentTitle(profile.getName())
+							.setContentIntent(pIntent)
+							.setSmallIcon(iconSmallResource);
+		        	} */
+		    		
+		        	notificationBuilder = new NotificationCompat.Builder(context)
+	        			.setContentIntent(pIntent);
+	        	
+		        	notificationBuilder.setSmallIcon(iconSmallResource);
+
+		        	final float scale = context.getResources().getDisplayMetrics().density;
+		        	Bitmap largeIcon = BitmapResampler.resample(profile.getIconIdentifier(), (int) (60 * scale + 0.5f), (int) (60 * scale + 0.5f));
+	    			contentView.setImageViewBitmap(R.id.notification_activated_profile_icon, largeIcon);
+
 		        }
-				Notification notification = notificationBuilder.build();
-						//.getNotification();
+
+				
+		        Notification notification = notificationBuilder.build();
+				
+		        contentView.setTextViewText(R.id.notification_activated_profile_name, profile.getName());
+		        
+		        //ProfilePreferencesIndicator.paint(R.id.notification_activated_profile_pref_indicator, profile);
+		        
+		        notification.contentView = contentView;
+		        
 				notification.flags |= Notification.FLAG_NO_CLEAR; 
 				notificationManager.notify(PhoneProfilesActivity.NOTIFICATION_ID, notification);
 			}
