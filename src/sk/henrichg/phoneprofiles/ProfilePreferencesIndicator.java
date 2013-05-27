@@ -3,103 +3,130 @@ package sk.henrichg.phoneprofiles;
 import sk.henrichg.phoneprofiles.Profile;
 import sk.henrichg.phoneprofiles.R;
 import android.content.Context;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
-import android.widget.LinearLayout;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.util.Log;
 
 
 public class ProfilePreferencesIndicator {
+	
+	private static final int PREFERENCES_COUNT = 10;
 	
 	ProfilePreferencesIndicator()
 	{
 		
 	}
 	
-	private static ImageView createIndicator(int resource, Context context)
+	private static Bitmap createIndicatorBitmap(Context context)
 	{
-		final float scale = context.getResources().getDisplayMetrics().density;
+		// bitmapa, z ktorej zobrerieme velkost
+    	Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_profile_pref_volume_on);
+
+		int width  = bmp.getWidth() * PREFERENCES_COUNT; 
+		int height  = bmp.getHeight();
 		
-		ImageView indicator = new ImageView(context);
-		indicator.setImageResource(resource);
-		indicator.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-		indicator.setAdjustViewBounds(true);
-		indicator.setScaleType(ScaleType.CENTER_CROP);
-		indicator.setMaxWidth((int) (20 * scale + 0.5f));
-		indicator.setMaxHeight((int) (20 * scale + 0.5f));
+		Log.d("ProfilePreferencesIndicator.createIndicatorBitmap", String.valueOf(width));
+		Log.d("ProfilePreferencesIndicator.createIndicatorBitmap", String.valueOf(height));
+
 		
-		return indicator;
+		return Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 	}
 	
-	public static void paint(LinearLayout parent, Profile profile)
+	private static int preferenceIndex;
+	
+	private static void addIndicator(Bitmap indicatorBitmap, int preferenceBitmapResourceID, Context context)
 	{
+		Bitmap preferenceBitmap = BitmapFactory.decodeResource(context.getResources(), preferenceBitmapResourceID);
 		
-		parent.removeAllViews();
+		Log.d("ProfilePreferencesIndicator.addIndicator", String.valueOf(preferenceBitmap.getWidth()));
+				
+		Canvas canvas = new Canvas(indicatorBitmap);
+		canvas.drawBitmap(preferenceBitmap, preferenceBitmap.getWidth() * preferenceIndex, 0, null);
+		//canvas.save();
+		
+		Log.d("ProfilePreferencesIndicator.addIndicator", String.valueOf(preferenceIndex));
+		
+		++preferenceIndex;
+	}
+	
+	public static Bitmap paint(Profile profile, Context context)
+	{
+		Bitmap indicatorBitmap = createIndicatorBitmap(context);
 		
 		if (profile != null)
 		{
-		
+			Log.d("ProfilePreferencesIndicator.paint", "xx");
+			
+			preferenceIndex = 0;
+			
 			// volume on
 			if ((profile.getVolumeRingerMode() == 1) || (profile.getVolumeRingerMode() == 2))
-				parent.addView(createIndicator(R.drawable.ic_profile_pref_volume_on, parent.getContext()));				
+				addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_volume_on, context);				
 			// vibration
 			if ((profile.getVolumeRingerMode() == 2) || (profile.getVolumeRingerMode() == 3))
-				parent.addView(createIndicator(R.drawable.ic_profile_pref_vibration, parent.getContext()));				
+				addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_vibration, context);				
 			// volume off
 			if (profile.getVolumeRingerMode() == 4)
-				parent.addView(createIndicator(R.drawable.ic_profile_pref_volume_off, parent.getContext()));				
+				addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_volume_off, context);				
 			// sound
 			if (profile.getSoundRingtoneChange() || profile.getSoundNotificationChange() || profile.getSoundAlarmChange())
-				parent.addView(createIndicator(R.drawable.ic_profile_pref_sound, parent.getContext()));				
+				addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_sound, context);				
 			// airplane mode
-			if (CheckHardwareFeatures.check(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_AIRPLANE_MODE, parent.getContext()))
+			if (CheckHardwareFeatures.check(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_AIRPLANE_MODE, context))
 			{
 				if ((profile.getDeviceAirplaneMode() == 1) || (profile.getDeviceAirplaneMode() == 3))
-					parent.addView(createIndicator(R.drawable.ic_profile_pref_airplane_mode, parent.getContext()));				
+					addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_airplane_mode, context);				
 				if (profile.getDeviceAirplaneMode() == 2)
-					parent.addView(createIndicator(R.drawable.ic_profile_pref_airplane_mode_off, parent.getContext()));
+					addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_airplane_mode_off, context);
 			}
 			// mobile data
-			if (CheckHardwareFeatures.check(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_MOBILE_DATA, parent.getContext()))
+			if (CheckHardwareFeatures.check(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_MOBILE_DATA, context))
 			{
 				if ((profile.getDeviceMobileData() == 1) || (profile.getDeviceMobileData() == 3))
-					parent.addView(createIndicator(R.drawable.ic_profile_pref_mobiledata, parent.getContext()));				
+					addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_mobiledata, context);				
 				if (profile.getDeviceMobileData() == 2)
-					parent.addView(createIndicator(R.drawable.ic_profile_pref_mobiledata_off, parent.getContext()));				
+					addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_mobiledata_off, context);				
 				// mobile data preferences
 				if (profile.getDeviceMobileDataPrefs())
-					parent.addView(createIndicator(R.drawable.ic_profile_pref_mobiledata_pref, parent.getContext()));
+					addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_mobiledata_pref, context);
 			}
 			// wifi
-			if (CheckHardwareFeatures.check(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_WIFI, parent.getContext()))
+			if (CheckHardwareFeatures.check(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_WIFI, context))
 			{
 				if ((profile.getDeviceWiFi() == 1) || (profile.getDeviceWiFi() == 3))
-					parent.addView(createIndicator(R.drawable.ic_profile_pref_wifi, parent.getContext()));				
+					addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_wifi, context);				
 				if (profile.getDeviceWiFi() == 2)
-					parent.addView(createIndicator(R.drawable.ic_profile_pref_wifi_off, parent.getContext()));
+					addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_wifi_off, context);
 			}
 			// bluetooth
-			if (CheckHardwareFeatures.check(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_BLUETOOTH, parent.getContext()))
+			if (CheckHardwareFeatures.check(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_BLUETOOTH, context))
 			{
 				if ((profile.getDeviceBluetooth() == 1) || (profile.getDeviceBluetooth() == 3))
-					parent.addView(createIndicator(R.drawable.ic_profile_pref_bluetooth, parent.getContext()));				
+					addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_bluetooth, context);				
 				if (profile.getDeviceBluetooth() == 2)
-					parent.addView(createIndicator(R.drawable.ic_profile_pref_bluetooth_off, parent.getContext()));
+					addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_bluetooth_off, context);
 			}
 			// screen timeout
 			if (profile.getDeviceScreenTimeout() != 0)
-				parent.addView(createIndicator(R.drawable.ic_profile_pref_screen_timeout, parent.getContext()));				
+				addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_screen_timeout, context);				
 			// brightness/autobrightness
 			if (profile.getDeviceBrightnessChange())
 				if (profile.getDeviceBrightnessAutomatic())
-					parent.addView(createIndicator(R.drawable.ic_profile_pref_autobrightness, parent.getContext()));				
+					addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_autobrightness, context);				
 				else
-					parent.addView(createIndicator(R.drawable.ic_profile_pref_brightness, parent.getContext()));				
+					addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_brightness, context);				
 			// wallpaper
 			if (profile.getDeviceWallpaperChange())
-				parent.addView(createIndicator(R.drawable.ic_profile_pref_wallpaper, parent.getContext()));				
+				addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_wallpaper, context);				
 			
 		}
+		
+		return indicatorBitmap;
+		//imageView.setImageBitmap(indicatorBitmap);
+		//imageView.setImageBitmap(indicatorBitmap.copy(indicatorBitmap.getConfig(), false));
+		//imageView.setImageDrawable(new BitmapDrawable(imageView.getContext().getResources(), indicatorBitmap));
+		
 	}
 
 }

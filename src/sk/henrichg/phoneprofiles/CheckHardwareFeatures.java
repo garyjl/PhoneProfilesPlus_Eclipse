@@ -5,24 +5,42 @@ import android.content.pm.PackageManager;
 import com.stericson.RootTools.RootTools;
 
 public class CheckHardwareFeatures {
+	
+	static private boolean rootChecked = false;
+	static private boolean rooted = false;
 
 	static boolean check(String preferenceKey, Context context)
 	{
 		boolean featurePresented = false;
+
+		if (!rootChecked)
+		{
+			if (RootTools.isAccessGiven())
+			{
+				// zariadenie je rootnute
+				rootChecked = true;
+				rooted = true;
+			}
+			else
+			{
+				rootChecked = true;
+				rooted = false;
+			}
+		}
 		
 		if (preferenceKey.equals(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_AIRPLANE_MODE))
 		{	
 			if (android.os.Build.VERSION.SDK_INT >= 17)
 			{
-				if (AirPlaneMode_SDK17.isSystemApp(context) && AirPlaneMode_SDK17.isAdminUser(context))
+				if (rooted)
 				{
-					// aplikacia je nainstalovana ako systemova
+					// zariadenie je rootnute
 					featurePresented = true;
 				}
 				else
-				if (RootTools.isAccessGiven())
+				if (AirPlaneMode_SDK17.isSystemApp(context) && AirPlaneMode_SDK17.isAdminUser(context))
 				{
-					// zariadenie je rootnute
+					// aplikacia je nainstalovana ako systemova
 					featurePresented = true;
 				}
 			}

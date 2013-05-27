@@ -28,7 +28,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -491,9 +490,8 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	        }
 		}
 		
-        //ProfilePreferencesIndicator profilePreferenceIndicator = new ProfilePreferencesIndicator();
-        LinearLayout profilePrefIndicatorLayout = (LinearLayout)findViewById(R.id.activated_profile_pref_indicator);
-        ProfilePreferencesIndicator.paint(profilePrefIndicatorLayout, profile);
+		ImageView profilePrefIndicatorImageView = (ImageView)findViewById(R.id.activated_profile_pref_indicator);
+		profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, getBaseContext()));
 		
 	}
 	

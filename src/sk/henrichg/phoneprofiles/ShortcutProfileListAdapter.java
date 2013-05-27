@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ShortcutProfileListAdapter extends BaseAdapter {
@@ -69,9 +68,8 @@ public class ShortcutProfileListAdapter extends BaseAdapter {
         	profileIcon.setImageBitmap(bitmap);
         }
         
-        //ProfilePreferencesIndicator profilePreferenceIndicator = new ProfilePreferencesIndicator();
-        LinearLayout profilePrefIndicatorLayout = (LinearLayout)vi.findViewById(R.id.shortcut_list_profile_pref_indicator);
-        ProfilePreferencesIndicator.paint(profilePrefIndicatorLayout, profile);
+		ImageView profilePrefIndicatorImageView = (ImageView)vi.findViewById(R.id.shortcut_list_profile_pref_indicator);
+		profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, vi.getContext()));
         
         Log.d("ShortcutProfileListAdapter.getView", profile.getName());
         

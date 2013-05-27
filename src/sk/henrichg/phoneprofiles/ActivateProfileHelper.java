@@ -533,8 +533,8 @@ public class ActivateProfileHelper {
 		        Notification notification = notificationBuilder.build();
 				
 		        contentView.setTextViewText(R.id.notification_activated_profile_name, profile.getName());
-		        
-		        //ProfilePreferencesIndicator.paint(R.id.notification_activated_profile_pref_indicator, profile);
+		        contentView.setImageViewBitmap(R.id.notification_activated_profile_pref_indicator, 
+		        		ProfilePreferencesIndicator.paint(profile, context));
 		        
 		        notification.contentView = contentView;
 		        
