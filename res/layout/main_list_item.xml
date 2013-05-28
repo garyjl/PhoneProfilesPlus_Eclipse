@@ -46,7 +46,7 @@
 
     <ImageView
         android:id="@+id/main_list_item_edit_menu"
-        android:layout_width="20dp"
+        android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
