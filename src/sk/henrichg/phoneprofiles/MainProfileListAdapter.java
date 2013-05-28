@@ -118,8 +118,16 @@ public class MainProfileListAdapter extends BaseAdapter
 		{
 			p.setChecked(false);
 		}
-		if (profile != null)
-			profile.setChecked(true);
+		
+		// teraz musime najst profile v profileList 
+		int position = getItemId(profile);
+		if (position != -1)
+		{
+			// najdenemu objektu nastavime _checked
+			Profile _profile = profileList.get(position);
+			if (_profile != null)
+				_profile.setChecked(true);
+		}
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent)

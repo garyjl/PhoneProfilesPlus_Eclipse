@@ -390,11 +390,13 @@ public class PhoneProfilesActivity extends SherlockActivity {
         editor.putBoolean(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS, profile.getDeviceMobileDataPrefs());
 		editor.commit();
 		
-		Log.d("PhoneProfilesActivity.startProfilePreferencesActivityFromList", profile.getID()+"");
+		Log.d("PhoneProfilesActivity.startProfilePreferencesActivity", profile.getID()+"");
 		
 		Intent intent = new Intent(getBaseContext(), ProfilePreferencesActivity.class);
 		intent.putExtra(EXTRA_PROFILE_POSITION, profileListAdapter.getItemId(profile));
 
+		Log.d("PhoneProfilesActivity.startProfilePreferencesActivity", profile.getChecked()+"");
+		
 		startActivity(intent);
 		
 	}

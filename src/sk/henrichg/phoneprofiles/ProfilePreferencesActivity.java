@@ -126,11 +126,12 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
 	{
 		super.onStart();
 
-		Log.d("ProfilePreferencesActivity.onStart", preferences.getString(PREF_PROFILE_NAME, ""));
-
 		updateSharedPreference();
-
+		
     	Log.d("ProfilePreferencesActivity.onStart", preferences.getString(PREF_PROFILE_NAME, ""));
+
+    	Log.d("ProfilePreferencesActivity.onStart", "profile activated="+profile.getChecked());
+
 	}
 	
 	@Override
@@ -169,8 +170,13 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
         		profile.setDeviceWallpaper("-|0");
         	profile.setDeviceMobileData(Integer.parseInt(preferences.getString(PREF_PROFILE_DEVICE_MOBILE_DATA, "")));
         	profile.setDeviceMobileDataPrefs(preferences.getBoolean(PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS, false));
+
+        	Log.d("ProfilePreferencesActivity.onPause", "profile activated="+profile.getChecked());
         	
         	PhoneProfilesActivity.getProfileListAdapter().updateItem(profile);
+
+        	Log.d("ProfilePreferencesActivity.onPause", "profile activated="+profile.getChecked());
+        	
         	PhoneProfilesActivity.getDatabaseHandler().updateProfile(profile);
         	
         	Log.d("ProfilePreferencesActivity.onPause", "updateProfile");

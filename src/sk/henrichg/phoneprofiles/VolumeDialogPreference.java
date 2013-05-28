@@ -270,9 +270,6 @@ public class VolumeDialogPreference extends
 			noChange = 1;
 		}
 		
-		Log.d("VolumeDialogPreference.getValue", String.valueOf(value));
-		Log.d("VolumeDialogPreference.getValue", String.valueOf(noChange));
-		
 		// You're never know...
 		if (value < 0) {
 			value = 0;

@@ -6,7 +6,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.util.Log;
 
 
 public class ProfilePreferencesIndicator {
@@ -26,10 +25,6 @@ public class ProfilePreferencesIndicator {
 		int width  = bmp.getWidth() * PREFERENCES_COUNT; 
 		int height  = bmp.getHeight();
 		
-		Log.d("ProfilePreferencesIndicator.createIndicatorBitmap", String.valueOf(width));
-		Log.d("ProfilePreferencesIndicator.createIndicatorBitmap", String.valueOf(height));
-
-		
 		return Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 	}
 	
@@ -39,13 +34,9 @@ public class ProfilePreferencesIndicator {
 	{
 		Bitmap preferenceBitmap = BitmapFactory.decodeResource(context.getResources(), preferenceBitmapResourceID);
 		
-		Log.d("ProfilePreferencesIndicator.addIndicator", String.valueOf(preferenceBitmap.getWidth()));
-				
 		Canvas canvas = new Canvas(indicatorBitmap);
 		canvas.drawBitmap(preferenceBitmap, preferenceBitmap.getWidth() * preferenceIndex, 0, null);
 		//canvas.save();
-		
-		Log.d("ProfilePreferencesIndicator.addIndicator", String.valueOf(preferenceIndex));
 		
 		++preferenceIndex;
 	}
@@ -56,8 +47,6 @@ public class ProfilePreferencesIndicator {
 		
 		if (profile != null)
 		{
-			Log.d("ProfilePreferencesIndicator.paint", "xx");
-			
 			preferenceIndex = 0;
 			
 			// volume on

@@ -510,10 +510,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.update(TABLE_PROFILES, valuesAll, null, null);
 
 		// updating checked = true for profile
-		profile.setChecked(true);
+		//profile.setChecked(true);
 		
 		ContentValues values = new ContentValues();
-		values.put(KEY_CHECKED, (profile.getChecked()) ? 1 : 0);
+		//values.put(KEY_CHECKED, (profile.getChecked()) ? 1 : 0);
+		values.put(KEY_CHECKED, 1);
 
 		db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
 				        new String[] { String.valueOf(profile.getID()) });
