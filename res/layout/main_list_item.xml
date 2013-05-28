@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/main_list_drag_handle"
         android:layout_width="30dp"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:contentDescription="@string/empty_string"
@@ -22,7 +22,7 @@
         android:id="@+id/main_list_item_profile_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_alignParentTop="true"
         android:layout_toRightOf="@id/main_list_drag_handle"
         android:adjustViewBounds="true"
         android:contentDescription="@string/empty_string"
@@ -45,17 +45,15 @@
         android:textSize="17sp" />
 
     <ImageView
-        android:id="@+id/main_list_item_longclick"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:id="@+id/main_list_item_edit_menu"
+        android:layout_width="20dp"
+        android:layout_height="30dp"
+        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:adjustViewBounds="true"
-        android:maxHeight="35dp"
-        android:maxWidth="35dp"
-        android:scaleType="centerCrop"
+        android:paddingTop="5dp"
+        android:scaleType="center"
         android:contentDescription="@string/empty_string"
-        android:src="@drawable/ic_action_edit_profile" />
+        android:src="@drawable/ic_profile_item_edit_menu" />
 
     <ImageView
         android:id="@+id/main_list_profile_pref_indicator"

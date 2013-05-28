@@ -94,6 +94,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		listView.setAdapter(profileListAdapter);
 		
 		registerForContextMenu(listView);
+		//listView.setLongClickable(false);
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
 

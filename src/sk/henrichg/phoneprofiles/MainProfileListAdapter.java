@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -152,6 +153,15 @@ public class MainProfileListAdapter extends BaseAdapter
 		ImageView profilePrefIndicatorImageView = (ImageView)vi.findViewById(R.id.main_list_profile_pref_indicator);
 		profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, vi.getContext()));
         
+		ImageView profileItemEditMenu = (ImageView)vi.findViewById(R.id.main_list_item_edit_menu);
+		profileItemEditMenu.setTag(position);
+		profileItemEditMenu.setOnClickListener(new OnClickListener() {
+
+				public void onClick(View v) {
+					activity.openContextMenu(v);
+				}
+			});
+		
         Log.d("ProfileListAdapter.getView", profile.getName());
         
 		return vi;
