@@ -112,5 +112,6 @@
     <string name="profile_preferences_deviceMobileDataPrefs">Nastavení mobilních dat</string>
     <string name="phone_profiles_pref_notificationStatusBarStyle_color">Barevné</string>
     <string name="phone_profiles_pref_notificationStatusBarStyle_android">Nativní</string>
+    <string name="phone_profiles_pref_applicationLongClickActivation">Dlouhé stlačení aktivuje profil</string>
     
 </resources>

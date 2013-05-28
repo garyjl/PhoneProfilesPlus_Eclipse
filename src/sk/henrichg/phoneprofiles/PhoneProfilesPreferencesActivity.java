@@ -31,8 +31,9 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
 	
     static final String PREF_APPLICATION_START_ON_BOOT = "applicationStartOnBoot";
     static final String PREF_APPLICATION_ACTIVATE = "applicationActivate";
-    static final String PREF_APPLICATION_CLOSE = "applicationClose";
     static final String PREF_APPLICATION_ALERT = "applicationAlert";
+    static final String PREF_APPLICATION_CLOSE = "applicationClose";
+    static final String PREF_APPLICATION_LONG_PRESS_ACTIVATION = "applicationLongClickActivation";
     static final String PREF_APPLICATION_LANGUAGE = "applicationLanguage";
     static final String PREF_NOTIFICATION_TOAST = "notificationsToast";
     static final String PREF_NOTIFICATION_STATUS_BAR  = "notificationStatusBar";

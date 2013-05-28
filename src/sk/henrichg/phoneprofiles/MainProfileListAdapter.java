@@ -23,6 +23,8 @@ public class MainProfileListAdapter extends BaseAdapter
 	
 	private static LayoutInflater inflater = null;
 	
+	public static boolean editMenuClicked = false;
+	
 	public MainProfileListAdapter(Activity a, List<Profile> pl)
 	{
 		activity = a;
@@ -166,6 +168,8 @@ public class MainProfileListAdapter extends BaseAdapter
 		profileItemEditMenu.setOnClickListener(new OnClickListener() {
 
 				public void onClick(View v) {
+					editMenuClicked = true;
+					Log.d("MainProfileAdapter.onClick", "x");
 					activity.openContextMenu(v);
 				}
 			});

@@ -12,6 +12,10 @@
 		    android:title="@string/phone_profiles_pref_applicationActivate"
 		    android:defaultValue="true" />
   		<CheckBoxPreference 
+		    android:key="applicationLongClickActivation"
+		    android:title="@string/phone_profiles_pref_applicationLongClickActivation"
+		    android:defaultValue="true" />
+        		<CheckBoxPreference 
 		    android:key="applicationClose"
 		    android:title="@string/phone_profiles_pref_applicationClose"
 		    android:defaultValue="true" />

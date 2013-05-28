@@ -27,6 +27,7 @@ import com.mobeta.android.dslv.DragSortListView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -101,9 +102,31 @@ public class PhoneProfilesActivity extends SherlockActivity {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 				Log.d("PhoneProfilesActivity.onItemClick", "xxxx");
-				
-				activateProfileWithAlert(position);
 
+				SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
+				if (!preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_APPLICATION_LONG_PRESS_ACTIVATION, false))
+					activateProfileWithAlert(position);
+
+			}
+			
+		}); 
+		
+		listView.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+				Log.d("PhoneProfilesActivity.onItemLongClick", "xxxx");
+				
+				if (!MainProfileListAdapter.editMenuClicked) // workaround
+				{
+					SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
+					if (preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_APPLICATION_LONG_PRESS_ACTIVATION, false))
+						activateProfileWithAlert(position);
+				}
+				
+				MainProfileListAdapter.editMenuClicked = false;
+				
+				return false;
 			}
 			
 		});

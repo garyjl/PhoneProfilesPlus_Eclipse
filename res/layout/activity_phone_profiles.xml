@@ -93,7 +93,7 @@
 	    dslv:drag_handle_id="@+id/main_list_drag_handle"
 	    dslv:sort_enabled="true"
 	    dslv:remove_enabled="false"
-	    dslv:drag_start_mode="onDown"
+	    dslv:drag_start_mode="onMove"
 	    dslv:remove_mode="flingRemove" />
 
 </LinearLayout>
