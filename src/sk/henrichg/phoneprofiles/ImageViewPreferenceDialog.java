@@ -6,7 +6,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
-import android.util.Log;
 //import android.preference.Preference;
 //import android.preference.Preference.OnPreferenceChangeListener;
 import android.view.View;
@@ -32,7 +31,7 @@ public class ImageViewPreferenceDialog extends Dialog {
 		
 		GridView gridView;
 		
-		Log.d("ImageViewPreferenceDialog", "imageSource="+imageSource);
+		//Log.d("ImageViewPreferenceDialog", "imageSource="+imageSource);
 		
 		if (imageSource.equals("resource_file"))
 		{

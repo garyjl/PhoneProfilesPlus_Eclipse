@@ -16,7 +16,6 @@ import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import com.actionbarsherlock.view.Menu;
@@ -101,7 +100,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-				Log.d("PhoneProfilesActivity.onItemClick", "xxxx");
+				//Log.d("PhoneProfilesActivity.onItemClick", "xxxx");
 
 				SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
 				if (!preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_APPLICATION_LONG_PRESS_ACTIVATION, false))
@@ -115,7 +114,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 
 			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-				Log.d("PhoneProfilesActivity.onItemLongClick", "xxxx");
+				//Log.d("PhoneProfilesActivity.onItemLongClick", "xxxx");
 				
 				if (!MainProfileListAdapter.editMenuClicked) // workaround
 				{
@@ -135,14 +134,14 @@ public class PhoneProfilesActivity extends SherlockActivity {
             public void drop(int from, int to) {
             	profileListAdapter.changeItemOrder(from, to);
             	databaseHandler.setPOrder(profileList);
-        		Log.d("PhoneProfileActivity.drop", "xxxx");
+        		//Log.d("PhoneProfileActivity.drop", "xxxx");
             }
         });
         
         //listView.setRemoveListener(onRemove);
 		
 		
-		Log.d("PhoneProfileActivity.onCreate", "xxxx");
+		//Log.d("PhoneProfileActivity.onCreate", "xxxx");
 		
 	}
 
@@ -170,19 +169,19 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		
 		switch (item.getItemId()) {
 		case 1001:
-			Log.d("PhoneProfileActivity.onContextItemSelected", "Edit");
+			//Log.d("PhoneProfileActivity.onContextItemSelected", "Edit");
 
 			startProfilePreferencesActivity(info.position);
 			
 			return true;
 		case 1002:
-			Log.d("PhoneProfileActivity.onContextItemSelected", "Duplicate");
+			//Log.d("PhoneProfileActivity.onContextItemSelected", "Duplicate");
 			
 			duplicateProfile(position);
 			
 			return true;
 		case 1003:
-			Log.d("PhoneProfileActivity.onContextItemSelected", "Delete");
+			//Log.d("PhoneProfileActivity.onContextItemSelected", "Delete");
 
 			deleteProfile(position);
 			
@@ -205,7 +204,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 			finish();
 		}
 
-		Log.d("PhoneProfilesActivity.onStart", "startupSource="+startupSource);
+		//Log.d("PhoneProfilesActivity.onStart", "startupSource="+startupSource);
 		
 		boolean actProfile = false;
 		if (startupSource == 0)
@@ -227,7 +226,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 				}
 			}
 		}
-		Log.d("PhoneProfilesActivity.onStart", "actProfile="+String.valueOf(actProfile));
+		//Log.d("PhoneProfilesActivity.onStart", "actProfile="+String.valueOf(actProfile));
 
 		Profile profile;
 		
@@ -249,7 +248,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		// na onStart dame, ze aplikacia uz je nastartovana
 		applicationStarted = true;
 		
-		Log.d("PhoneProfileActivity.onStart", "xxxx");
+		//Log.d("PhoneProfileActivity.onStart", "xxxx");
 		
 	}
 	
@@ -290,13 +289,13 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		
 		switch (item.getItemId()) {
 		case R.id.menu_new_profile:
-			Log.d("PhoneProfileActivity.onOptionsItemSelected", "menu_new_profile");
+			//Log.d("PhoneProfileActivity.onOptionsItemSelected", "menu_new_profile");
 
 			startProfilePreferencesActivity(-1);
 			
 			return true;
 		case R.id.menu_settings:
-			Log.d("PhoneProfilesActivity.onOptionsItemSelected", "menu_settings");
+			//Log.d("PhoneProfilesActivity.onOptionsItemSelected", "menu_settings");
 			
 			Intent intent = new Intent(getBaseContext(), PhoneProfilesPreferencesActivity.class);
 
@@ -304,19 +303,19 @@ public class PhoneProfilesActivity extends SherlockActivity {
 
 			return true;
 		case R.id.menu_export:
-			Log.d("PhoneProfilesActivity.onOptionsItemSelected", "menu_export");
+			//Log.d("PhoneProfilesActivity.onOptionsItemSelected", "menu_export");
 
 			exportProfiles();
 			
 			return true;
 		case R.id.menu_import:
-			Log.d("PhoneProfilesActivity.onOptionsItemSelected", "menu_import");
+			//Log.d("PhoneProfilesActivity.onOptionsItemSelected", "menu_import");
 
 			importProfiles();
 			
 			return true;
 		case R.id.menu_exit:
-			Log.d("PhoneProfilesActivity.onOptionsItemSelected", "menu_exit");
+			//Log.d("PhoneProfilesActivity.onOptionsItemSelected", "menu_exit");
 			
 			// zrusenie notifikacie
 			activateProfileHelper.showNotification(null);
@@ -413,12 +412,12 @@ public class PhoneProfilesActivity extends SherlockActivity {
         editor.putBoolean(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS, profile.getDeviceMobileDataPrefs());
 		editor.commit();
 		
-		Log.d("PhoneProfilesActivity.startProfilePreferencesActivity", profile.getID()+"");
+		//Log.d("PhoneProfilesActivity.startProfilePreferencesActivity", profile.getID()+"");
 		
 		Intent intent = new Intent(getBaseContext(), ProfilePreferencesActivity.class);
 		intent.putExtra(EXTRA_PROFILE_POSITION, profileListAdapter.getItemId(profile));
 
-		Log.d("PhoneProfilesActivity.startProfilePreferencesActivity", profile.getChecked()+"");
+		//Log.d("PhoneProfilesActivity.startProfilePreferencesActivity", profile.getChecked()+"");
 		
 		startActivity(intent);
 		
@@ -662,7 +661,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		// jazyk na aky zmenit
 		String lang = preferences.getString(PhoneProfilesPreferencesActivity.PREF_APPLICATION_LANGUAGE, "system");
 		
-		Log.d("PhoneProfilesActivity.setLanguauge", lang);
+		//Log.d("PhoneProfilesActivity.setLanguauge", lang);
 
 		Locale appLocale;
 		

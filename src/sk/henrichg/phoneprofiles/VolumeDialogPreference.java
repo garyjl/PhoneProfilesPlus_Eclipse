@@ -12,8 +12,6 @@ import android.media.AudioManager;
 import android.preference.DialogPreference;
 
 import android.util.AttributeSet;
-import android.util.Log;
-
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -204,7 +202,7 @@ public class VolumeDialogPreference extends
 		// if the positive button is clicked, we persist the value.
 		if (which == DialogInterface.BUTTON_POSITIVE) {
 			if (shouldPersist()) {
-				Log.d("VolumeDialogPreference.onClick","xxxx");
+				//Log.d("VolumeDialogPreference.onClick","xxxx");
 				persistString(Integer.toString(value + minimumValue)
 						+ "|" + Integer.toString(noChange));
 				setSummaryVDP();

@@ -15,7 +15,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
-import android.util.Log;
  
 public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
 	
@@ -87,7 +86,7 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
         	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
 
     	    	// updating activity with selected profile preferences
-    	    	Log.d("ProfilePreferencesActivity.onSharedPreferenceChanged", key);
+    	    	//Log.d("ProfilePreferencesActivity.onSharedPreferenceChanged", key);
 
     	    	if (!(key.equals(PREF_PROFILE_SOUND_RINGTONE_CHANGE) ||
     	    		key.equals(PREF_PROFILE_SOUND_NOTIFICATION_CHANGE) ||
@@ -106,7 +105,7 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
         // getting attached intent data
         profile_position = intent.getIntExtra(PhoneProfilesActivity.EXTRA_PROFILE_POSITION, -1);
 
-    	Log.d("ProfilePreferencesActivity.onCreate", "xxxx");
+    	//Log.d("ProfilePreferencesActivity.onCreate", "xxxx");
     }
 
 	@Override
@@ -128,9 +127,9 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
 
 		updateSharedPreference();
 		
-    	Log.d("ProfilePreferencesActivity.onStart", preferences.getString(PREF_PROFILE_NAME, ""));
+    	//Log.d("ProfilePreferencesActivity.onStart", preferences.getString(PREF_PROFILE_NAME, ""));
 
-    	Log.d("ProfilePreferencesActivity.onStart", "profile activated="+profile.getChecked());
+    	//Log.d("ProfilePreferencesActivity.onStart", "profile activated="+profile.getChecked());
 
 	}
 	
@@ -139,7 +138,7 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
 	{
 		super.onPause();
 
-    	Log.d("ProfilePreferencesActivity.onPause", "xxxx");
+    	//Log.d("ProfilePreferencesActivity.onPause", "xxxx");
 		
         if (profile_position > -1) 
         {
@@ -171,15 +170,15 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
         	profile.setDeviceMobileData(Integer.parseInt(preferences.getString(PREF_PROFILE_DEVICE_MOBILE_DATA, "")));
         	profile.setDeviceMobileDataPrefs(preferences.getBoolean(PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS, false));
 
-        	Log.d("ProfilePreferencesActivity.onPause", "profile activated="+profile.getChecked());
+        	//Log.d("ProfilePreferencesActivity.onPause", "profile activated="+profile.getChecked());
         	
         	PhoneProfilesActivity.getProfileListAdapter().updateItem(profile);
 
-        	Log.d("ProfilePreferencesActivity.onPause", "profile activated="+profile.getChecked());
+        	//Log.d("ProfilePreferencesActivity.onPause", "profile activated="+profile.getChecked());
         	
         	PhoneProfilesActivity.getDatabaseHandler().updateProfile(profile);
         	
-        	Log.d("ProfilePreferencesActivity.onPause", "updateProfile");
+        	//Log.d("ProfilePreferencesActivity.onPause", "updateProfile");
 
 
         }
@@ -202,7 +201,7 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
 			
 			cursor.close();
 			
-			Log.d("ProfilePreferencesActivity.onActivityResult", picturePath);
+			//Log.d("ProfilePreferencesActivity.onActivityResult", picturePath);
 			
 			// nastavime image identifikatoru na ziskanu cestu ku obrazku
 			changedImageViewPreference.setImageIdentifierAndType(picturePath, false);
@@ -225,7 +224,7 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
 	@Override
 	protected void onDestroy()
 	{
-    	Log.d("ProfilePreferencesActivity.onDestroy", "xxxx");
+    	//Log.d("ProfilePreferencesActivity.onDestroy", "xxxx");
     	preferences.unregisterOnSharedPreferenceChangeListener(prefListener);
 		super.onDestroy();
 	}
@@ -249,7 +248,7 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
 
 	    	// updating activity with selected profile preferences
 	    	
-        	Log.d("PhonePreferencesActivity.updateSharedPreference", profile.getName());
+        	//Log.d("PhonePreferencesActivity.updateSharedPreference", profile.getName());
 	        setSummary(PREF_PROFILE_NAME, profile.getName());
 	        setSummary(PREF_PROFILE_VOLUME_RINGER_MODE, profile.getVolumeRingerMode());
 	        setSummary(PREF_PROFILE_SOUND_RINGTONE, profile.getSoundRingtone());
@@ -288,7 +287,7 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
 		{
 			String ringtoneUri = value.toString();
 			
-			Log.d("ProfilePreferencesActivity.setSummary", ringtoneUri);
+			//Log.d("ProfilePreferencesActivity.setSummary", ringtoneUri);
 			
 			Uri uri = Uri.parse(ringtoneUri);
 			Ringtone ringtone = RingtoneManager.getRingtone(context, uri);

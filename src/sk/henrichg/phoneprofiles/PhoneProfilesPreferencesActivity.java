@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Configuration;
-import android.util.Log;
 
 public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity {
 
@@ -70,7 +69,7 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
         	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
 
     	    	// updating activity with selected profile preferences
-    	    	Log.d("PhoneProfilesPreferencesActivity.onSharedPreferenceChanged", key);
+    	    	//Log.d("PhoneProfilesPreferencesActivity.onSharedPreferenceChanged", key);
     	    	
     	    	if (key.equals(PREF_APPLICATION_LANGUAGE) ||
     	    		key.equals(PREF_NOTIFICATION_STATUS_BAR_STYLE))

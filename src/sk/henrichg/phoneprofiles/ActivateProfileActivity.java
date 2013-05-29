@@ -1,7 +1,6 @@
 package sk.henrichg.phoneprofiles;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 import android.app.Activity;
 import android.content.Intent;
@@ -35,7 +34,7 @@ public class ActivateProfileActivity extends Activity {
 	{
 		super.onStart();
 
-		Log.d("ActivateProfileActivity.onStart", "startupSource="+startupSource);
+		//Log.d("ActivateProfileActivity.onStart", "startupSource="+startupSource);
 		
 		boolean actProfile = false;
 		boolean interactive = false;
@@ -57,7 +56,7 @@ public class ActivateProfileActivity extends Activity {
 				actProfile = true;
 			}
 		}
-		Log.d("PhoneProfilesActivity.onStart", "actProfile="+String.valueOf(actProfile));
+		//Log.d("PhoneProfilesActivity.onStart", "actProfile="+String.valueOf(actProfile));
 
 		Profile profile;
 		
@@ -81,7 +80,7 @@ public class ActivateProfileActivity extends Activity {
 			activateProfile(profile, interactive);
 		}
 		
-		Log.d("ActivateProfileActivity.onStart", "xxxx");
+		//Log.d("ActivateProfileActivity.onStart", "xxxx");
 		
 		finish();
 	}

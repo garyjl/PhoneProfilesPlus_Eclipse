@@ -12,8 +12,6 @@ import android.preference.DialogPreference;
 import android.provider.Settings.SettingNotFoundException;
 
 import android.util.AttributeSet;
-import android.util.Log;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -135,7 +133,7 @@ public class BrightnessDialogPreference extends
 
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-		Log.i("SeekBarNoChangeDialogPreference.onCheckedChanged", Boolean.toString(isChecked));
+		//Log.d("SeekBarNoChangeDialogPreference.onCheckedChanged", Boolean.toString(isChecked));
 		
 		if (buttonView.getId() == R.id.brightnessPrefDialogNoChange)
 		{

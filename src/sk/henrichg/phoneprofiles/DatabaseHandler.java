@@ -103,7 +103,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		
-		Log.d("DatabaseHandler.onUpgrade", "xxxx");
+		//Log.d("DatabaseHandler.onUpgrade", "xxxx");
 		
 		/*
 		// Drop older table if existed
@@ -670,7 +670,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			{
 				// zistenie verzie zalohy
 				SQLiteDatabase exportedDBObj = SQLiteDatabase.openDatabase(exportedDB.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY);
-				Log.d("DatabaseHandler.importDB", "databaseVersion="+exportedDBObj.getVersion());
+				//Log.d("DatabaseHandler.importDB", "databaseVersion="+exportedDBObj.getVersion());
 				//if (exportedDBObj.getVersion() == DATABASE_VERSION)
 				if (exportedDBObj.getVersion() <= DATABASE_VERSION)
 				{	
@@ -694,7 +694,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 									for (int i = 0; i < columnNames.length; i++)
 									{
 										values.put(columnNames[i], cursor.getString(i));
-										Log.d("DatabaseHandler.importDB", "cn="+columnNames[i]+" val="+cursor.getString(i));
+										//Log.d("DatabaseHandler.importDB", "cn="+columnNames[i]+" val="+cursor.getString(i));
 									}
 									
 									// for non existent fields set default value
@@ -758,8 +758,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			File dataDB = new File(data, DB_FILEPATH + "/" + DATABASE_NAME);
 			File exportedDB = new File(sd, EXPORT_DBPATH + "/" + EXPORT_FILENAME);
 			
-			Log.d("DatabaseHandler.exportDB", "dataDB="+dataDB.getAbsolutePath());
-			Log.d("DatabaseHandler.exportDB", "exportedDB="+exportedDB.getAbsolutePath());
+			//Log.d("DatabaseHandler.exportDB", "dataDB="+dataDB.getAbsolutePath());
+			//Log.d("DatabaseHandler.exportDB", "exportedDB="+exportedDB.getAbsolutePath());
 			
 			if (dataDB.exists())
 			{
@@ -768,7 +768,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				if (!(exportDir.exists() && exportDir.isDirectory()))
 				{
 					exportDir.mkdirs();
-					Log.d("DatabaseHandler.exportDB", "mkdir="+exportDir.getAbsolutePath());
+					//Log.d("DatabaseHandler.exportDB", "mkdir="+exportDir.getAbsolutePath());
 				}
 				
 				FileChannel src = new FileInputStream(dataDB).getChannel();

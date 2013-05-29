@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,7 +70,7 @@ public class ShortcutProfileListAdapter extends BaseAdapter {
 		ImageView profilePrefIndicatorImageView = (ImageView)vi.findViewById(R.id.shortcut_list_profile_pref_indicator);
 		profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, vi.getContext()));
         
-        Log.d("ShortcutProfileListAdapter.getView", profile.getName());
+        //Log.d("ShortcutProfileListAdapter.getView", profile.getName());
         
 		return vi;
 	}

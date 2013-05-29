@@ -25,7 +25,7 @@ public class AirPlaneMode_SDK17 {
 		
 		if ((ai.flags & ApplicationInfo.FLAG_SYSTEM) != 0)
 		{
-			Log.d(TAG, "isSystemApp==true");
+			//Log.d(TAG, "isSystemApp==true");
 			return true;
 		}
 		return false;
@@ -37,7 +37,7 @@ public class AirPlaneMode_SDK17 {
 		
 		if ((ai.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0)
 		{
-			Log.d(TAG, "isUpdatedSystemApp==true");
+			//Log.d(TAG, "isUpdatedSystemApp==true");
 			return true;
 		}
 		return false;
@@ -51,7 +51,7 @@ public class AirPlaneMode_SDK17 {
 		if (um != null)
 		{
 			long userSerialNumber = um.getSerialNumberForUser(uh);
-			Log.d(TAG, "userSerialNumber="+userSerialNumber);
+			//Log.d(TAG, "userSerialNumber="+userSerialNumber);
 			return userSerialNumber == 0;
 		}
 		else

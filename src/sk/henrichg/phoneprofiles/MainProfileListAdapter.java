@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -169,12 +168,12 @@ public class MainProfileListAdapter extends BaseAdapter
 
 				public void onClick(View v) {
 					editMenuClicked = true;
-					Log.d("MainProfileAdapter.onClick", "x");
+					//Log.d("MainProfileAdapter.onClick", "x");
 					activity.openContextMenu(v);
 				}
 			});
 		
-        Log.d("ProfileListAdapter.getView", profile.getName());
+        //Log.d("ProfileListAdapter.getView", profile.getName());
         
 		return vi;
 	}

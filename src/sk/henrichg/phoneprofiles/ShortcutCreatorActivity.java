@@ -11,7 +11,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -46,7 +45,7 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-				Log.d("ShortcutCreatorActivity.onItemClick", "xxxx");
+				//Log.d("ShortcutCreatorActivity.onItemClick", "xxxx");
 				
 				createShortcut(position);
 

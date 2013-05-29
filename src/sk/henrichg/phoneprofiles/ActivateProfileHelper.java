@@ -392,7 +392,7 @@ public class ActivateProfileHelper {
 		// nahodenie pozadia
 		if (profile.getDeviceWallpaperChange())
 		{
-			Log.d("PhoneProfilesActivity.activateProfile","set wallpaper");
+			//Log.d("PhoneProfilesActivity.activateProfile","set wallpaper");
 			DisplayMetrics displayMetrics = new DisplayMetrics();
 			activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 			int height = displayMetrics.heightPixels;

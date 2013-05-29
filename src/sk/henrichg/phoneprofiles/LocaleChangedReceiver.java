@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 public class LocaleChangedReceiver extends BroadcastReceiver {
 
@@ -20,7 +19,7 @@ public class LocaleChangedReceiver extends BroadcastReceiver {
 			notificationManager.cancel(PhoneProfilesActivity.NOTIFICATION_ID);
 		}
 		
-		Log.d("LocaleChangedReceiver.onReceive", "xxxxx");
+		//Log.d("LocaleChangedReceiver.onReceive", "xxxxx");
 
 	}
 
