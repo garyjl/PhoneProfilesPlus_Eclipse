@@ -2,9 +2,13 @@ package sk.henrichg.phoneprofiles;
 
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Process;
+import android.os.UserHandle;
+import android.os.UserManager;
 
 import com.stericson.RootTools.RootTools;
 
@@ -42,7 +46,7 @@ public class CheckHardwareFeatures {
 					featurePresented = true;
 				}
 				else
-				if (AirPlaneMode_SDK17.isSystemApp(context) && AirPlaneMode_SDK17.isAdminUser(context))
+				if (isSystemApp(context) && isAdminUser(context))
 				{
 					// aplikacia je nainstalovana ako systemova
 					featurePresented = true;
@@ -77,22 +81,17 @@ public class CheckHardwareFeatures {
 			{
 				// device ma gps
 
-				// test expoiting power manager widget
-			    PackageManager pacman = context.getPackageManager();
-			    PackageInfo pacInfo = null;
-			    try {
-			        pacInfo = pacman.getPackageInfo("com.android.settings", PackageManager.GET_RECEIVERS);
-
-				    if(pacInfo != null){
-				        for(ActivityInfo actInfo : pacInfo.receivers){
-				            //test if recevier is exported. if so, we can toggle GPS.
-				            if(actInfo.name.equals("com.android.settings.widget.SettingsAppWidgetProvider") && actInfo.exported){
-								featurePresented = true;
-				            }
-				        }
-				    }				
-			    } catch (NameNotFoundException e) {
-			        ; //package not found
+				if (canExploitGPS(context))
+				{
+					featurePresented = true;
+			    }
+				else
+			    {
+					if (isSystemApp(context) && isAdminUser(context))
+					{
+						// aplikacia je nainstalovana ako systemova
+						featurePresented = true;
+					}
 			    }
 			}
 		}
@@ -101,4 +100,67 @@ public class CheckHardwareFeatures {
 		
 		return featurePresented;
 	}
+	
+	static boolean canExploitGPS(Context context)
+	{
+		// test expoiting power manager widget
+	    PackageManager pacman = context.getPackageManager();
+	    PackageInfo pacInfo = null;
+	    try {
+	        pacInfo = pacman.getPackageInfo("com.android.settings", PackageManager.GET_RECEIVERS);
+
+		    if(pacInfo != null){
+		        for(ActivityInfo actInfo : pacInfo.receivers){
+		            //test if recevier is exported. if so, we can toggle GPS.
+		            if(actInfo.name.equals("com.android.settings.widget.SettingsAppWidgetProvider") && actInfo.exported){
+						return true;
+		            }
+		        }
+		    }				
+	    } catch (NameNotFoundException e) {
+	        return false; //package not found
+	    }
+	    return false;
+	}
+	
+	static boolean isSystemApp(Context context)
+	{
+		ApplicationInfo ai = context.getApplicationInfo();
+		
+		if ((ai.flags & ApplicationInfo.FLAG_SYSTEM) != 0)
+		{
+			//Log.d(TAG, "isSystemApp==true");
+			return true;
+		}
+		return false;
+	}
+	
+	static boolean isUpdatedSystemApp(Context context)
+	{
+		ApplicationInfo ai = context.getApplicationInfo();
+		
+		if ((ai.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0)
+		{
+			//Log.d(TAG, "isUpdatedSystemApp==true");
+			return true;
+		}
+		return false;
+		
+	}
+	
+	static boolean isAdminUser(Context context)
+	{
+		UserHandle uh = Process.myUserHandle();
+		UserManager um = (UserManager)context.getSystemService(Context.USER_SERVICE);
+		if (um != null)
+		{
+			long userSerialNumber = um.getSerialNumberForUser(uh);
+			//Log.d(TAG, "userSerialNumber="+userSerialNumber);
+			return userSerialNumber == 0;
+		}
+		else
+			return false;
+	}
+	
+	
 }

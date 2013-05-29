@@ -19,6 +19,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.LocationManager;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -752,22 +753,56 @@ public class ActivateProfileHelper {
 
 		//Log.d("ActivateProfileHelper.setGPS", provider);
 	    
-	    if(!provider.contains("gps") && enable)
+	    if(!provider.contains(LocationManager.GPS_PROVIDER) && enable)
 	    {
-	        final Intent poke = new Intent();
-	        poke.setClassName("com.android.settings", "com.android.settings.widget.SettingsAppWidgetProvider"); 
-	        poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
-	        poke.setData(Uri.parse("3")); 
-	        context.sendBroadcast(poke);
+	    	if (CheckHardwareFeatures.canExploitGPS(context))
+	    	{
+		        final Intent poke = new Intent();
+		        poke.setClassName("com.android.settings", "com.android.settings.widget.SettingsAppWidgetProvider"); 
+		        poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
+		        poke.setData(Uri.parse("3")); 
+		        context.sendBroadcast(poke);
+	    	}
+	    	else
+	    	{
+	    		String newSet;
+	    		if (provider == "")
+	    			newSet = LocationManager.GPS_PROVIDER;
+	    		else
+	    			newSet = String.format("%s,%s", provider, LocationManager.GPS_PROVIDER);
+				Settings.Secure.putString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED, newSet);
+	    	}
 	    }
 	    else
-        if(provider.contains("gps") && (!enable))
+        if(provider.contains(LocationManager.GPS_PROVIDER) && (!enable))
         {
-            final Intent poke = new Intent();
-            poke.setClassName("com.android.settings", "com.android.settings.widget.SettingsAppWidgetProvider");
-            poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
-            poke.setData(Uri.parse("3")); 
-            context.sendBroadcast(poke);
+	    	if (CheckHardwareFeatures.canExploitGPS(context))
+	    	{
+	            final Intent poke = new Intent();
+	            poke.setClassName("com.android.settings", "com.android.settings.widget.SettingsAppWidgetProvider");
+	            poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
+	            poke.setData(Uri.parse("3")); 
+	            context.sendBroadcast(poke);
+	    	}
+	    	else
+	    	{
+	    		String[] list = provider.split(",");
+	    		
+	    		String newSet = "";
+	    		int j = 0;
+	    		for (int i = 0; i < list.length; i++)
+	    		{
+	    			
+	    			if  (!list[i].equals(LocationManager.GPS_PROVIDER))
+	    			{
+	    				if (j > 0)
+	    					newSet += ",";
+	    				newSet += list[i];
+	    				j++;
+	    			}
+	    		}
+				Settings.Secure.putString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED, newSet);
+	    	}
         }	    	
 	}
 	
