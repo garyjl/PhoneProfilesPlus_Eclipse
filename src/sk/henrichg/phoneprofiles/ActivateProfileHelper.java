@@ -22,6 +22,7 @@ import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
@@ -188,14 +189,42 @@ public class ActivateProfileHelper {
 					bluetoothAdapter.disable();
 					break;
 				case 3 :
-					if ((bluetoothAdapter != null) && (bluetoothAdapter.isEnabled()))
+					if ((bluetoothAdapter != null) && (!bluetoothAdapter.isEnabled()))
 					{
 						bluetoothAdapter.enable();
 					}
 					else
-					if ((bluetoothAdapter != null) && (!bluetoothAdapter.isEnabled()))
+					if ((bluetoothAdapter != null) && (bluetoothAdapter.isEnabled()))
 					{
 						bluetoothAdapter.disable();
+					}
+					break;
+			}
+		}
+
+		// nahodenie GPS
+		if (CheckHardwareFeatures.check(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_GPS, context))
+		{
+		    String provider = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+
+			//Log.d("ActivateProfileHelper.execute", provider);
+		    
+			switch (profile.getDeviceGPS()) {
+				case 1 :
+					setGPS(context, true);
+					break;
+				case 2 : 
+					setGPS(context, false);
+					break;
+				case 3 :
+				    if (!provider.contains("gps"))
+					{
+						setGPS(context, true);
+					}
+					else
+				    if (provider.contains("gps"))
+					{
+						setGPS(context, false);
 					}
 					break;
 			}
@@ -625,7 +654,7 @@ public class ActivateProfileHelper {
 		
 	}
 	
-	private void setMobileData(Context context, boolean enabled)
+	private void setMobileData(Context context, boolean enable)
 	{
     	if (android.os.Build.VERSION.SDK_INT <= 8)
     	{
@@ -693,7 +722,7 @@ public class ActivateProfileHelper {
 				final Method setMobileDataEnabledMethod = iConnectivityManagerClass.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
 				setMobileDataEnabledMethod.setAccessible(true);
 				
-				setMobileDataEnabledMethod.invoke(iConnectivityManager, enabled);
+				setMobileDataEnabledMethod.invoke(iConnectivityManager, enable);
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 				Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
@@ -715,6 +744,31 @@ public class ActivateProfileHelper {
 			}
     	}
 		
+	}
+	
+	private void setGPS(Context context, boolean enable)
+	{
+	    String provider = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+
+		//Log.d("ActivateProfileHelper.setGPS", provider);
+	    
+	    if(!provider.contains("gps") && enable)
+	    {
+	        final Intent poke = new Intent();
+	        poke.setClassName("com.android.settings", "com.android.settings.widget.SettingsAppWidgetProvider"); 
+	        poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
+	        poke.setData(Uri.parse("3")); 
+	        context.sendBroadcast(poke);
+	    }
+	    else
+        if(provider.contains("gps") && (!enable))
+        {
+            final Intent poke = new Intent();
+            poke.setClassName("com.android.settings", "com.android.settings.widget.SettingsAppWidgetProvider");
+            poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
+            poke.setData(Uri.parse("3")); 
+            context.sendBroadcast(poke);
+        }	    	
 	}
 	
 }

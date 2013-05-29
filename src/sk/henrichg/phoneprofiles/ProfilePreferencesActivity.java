@@ -56,6 +56,7 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
 	static final String PREF_PROFILE_DEVICE_WALLPAPER = "deviceWallpaper";
 	static final String PREF_PROFILE_DEVICE_MOBILE_DATA = "deviceMobileData";
 	static final String PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS = "deviceMobileDataPrefs";
+	static final String PREF_PROFILE_DEVICE_GPS = "deviceGPS";
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -169,6 +170,7 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
         		profile.setDeviceWallpaper("-|0");
         	profile.setDeviceMobileData(Integer.parseInt(preferences.getString(PREF_PROFILE_DEVICE_MOBILE_DATA, "")));
         	profile.setDeviceMobileDataPrefs(preferences.getBoolean(PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS, false));
+        	profile.setDeviceGPS(Integer.parseInt(preferences.getString(PREF_PROFILE_DEVICE_GPS, "")));
 
         	//Log.d("ProfilePreferencesActivity.onPause", "profile activated="+profile.getChecked());
         	
@@ -259,6 +261,7 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
 	        setSummary(PREF_PROFILE_DEVICE_BLUETOOTH, profile.getDeviceBluetooth());
 	        setSummary(PREF_PROFILE_DEVICE_SCREEN_TIMEOUT, profile.getDeviceScreenTimeout());
 	        setSummary(PREF_PROFILE_DEVICE_MOBILE_DATA, profile.getDeviceMobileData());
+	        setSummary(PREF_PROFILE_DEVICE_GPS, profile.getDeviceGPS());
 			
         }
 	}
@@ -302,7 +305,8 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
 		if (key.equals(PREF_PROFILE_DEVICE_AIRPLANE_MODE) || 
 			key.equals(PREF_PROFILE_DEVICE_WIFI) ||
 			key.equals(PREF_PROFILE_DEVICE_BLUETOOTH) ||
-			key.equals(PREF_PROFILE_DEVICE_MOBILE_DATA))
+			key.equals(PREF_PROFILE_DEVICE_MOBILE_DATA) ||
+			key.equals(PREF_PROFILE_DEVICE_GPS))
 		{
 			boolean canChange = CheckHardwareFeatures.check(key, context);
 			if (!canChange)

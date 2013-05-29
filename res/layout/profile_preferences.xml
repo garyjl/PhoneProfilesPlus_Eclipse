@@ -131,6 +131,12 @@
             android:defaultValue="0"
             android:entries="@array/hardwareModeArray"
             android:entryValues="@array/hardwareModeValues" />        
+		<ListPreference android:title="@string/profile_preferences_deviceGPS"
+            android:summary="@string/array_pref_no_change"
+            android:key="deviceGPS"
+            android:defaultValue="0"
+            android:entries="@array/hardwareModeArray"
+            android:entryValues="@array/hardwareModeValues" />        
 		<ListPreference android:title="@string/profile_preferences_deviceScreenTimeout"
             android:summary="@string/array_pref_no_change"
             android:key="deviceScreenTimeout"

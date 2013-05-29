@@ -96,6 +96,14 @@ public class ProfilePreferencesIndicator {
 				if (profile.getDeviceBluetooth() == 2)
 					addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_bluetooth_off, context);
 			}
+			// gps
+			if (CheckHardwareFeatures.check(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_GPS, context))
+			{
+				if ((profile.getDeviceGPS() == 1) || (profile.getDeviceGPS() == 3))
+					addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_gps_on, context);				
+				if (profile.getDeviceGPS() == 2)
+					addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_gps_off, context);
+			}
 			// screen timeout
 			if (profile.getDeviceScreenTimeout() != 0)
 				addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_screen_timeout, context);				

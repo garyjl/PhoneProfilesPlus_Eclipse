@@ -26,6 +26,7 @@ public class Profile {
 	boolean _deviceMobileDataPrefs;
 	int _deviceWiFi;
 	int _deviceBluetooth;
+	int _deviceGPS;
 	int _deviceScreenTimeout;
 	String _deviceBrightness;
 	boolean _deviceWallpaperChange;
@@ -64,7 +65,8 @@ public class Profile {
 			   	   boolean deviceWallpaperChange,
 			   	   String deviceWallpaper,
 			   	   int deviceMobileData,
-			   	   boolean deviceMobileDataPrefs)
+			   	   boolean deviceMobileDataPrefs,
+			   	   int deviceGPS)
 	{
 		this._id = id;
 		this._name = name;
@@ -89,6 +91,7 @@ public class Profile {
 		this._deviceMobileDataPrefs = deviceMobileDataPrefs;
 		this._deviceWiFi = deviceWiFi;
 		this._deviceBluetooth = deviceBluetooth;
+		this._deviceGPS = deviceGPS;
 		this._deviceScreenTimeout = deviceScreenTimeout;
 		this._deviceBrightness = deviceBrightness;
 		this._deviceWallpaperChange = deviceWallpaperChange;
@@ -121,7 +124,8 @@ public class Profile {
 			   	   boolean deviceWallpaperChange,
 			   	   String deviceWallpaper,
 			   	   int deviceMobileData,
-			   	   boolean deviceMobileDataPrefs)
+			   	   boolean deviceMobileDataPrefs,
+			   	   int deviceGPS)
 	{
 		this._name = name;
 		this._icon = icon;
@@ -145,6 +149,7 @@ public class Profile {
 		this._deviceMobileDataPrefs = deviceMobileDataPrefs;
 		this._deviceWiFi = deviceWiFi;
 		this._deviceBluetooth = deviceBluetooth;
+		this._deviceGPS = deviceGPS;
 		this._deviceScreenTimeout = deviceScreenTimeout;
 		this._deviceBrightness = deviceBrightness;
 		this._deviceWallpaperChange = deviceWallpaperChange;
@@ -442,6 +447,11 @@ public class Profile {
 		return _deviceBluetooth;
 	}
 	
+	public int getDeviceGPS()
+	{
+		return _deviceGPS;
+	}
+	
 	public int getDeviceScreenTimeout()
 	{
 		return _deviceScreenTimeout;
@@ -629,6 +639,11 @@ public class Profile {
 	public void setDeviceBluetooth(int deviceBluetooth)
 	{
 		_deviceBluetooth = deviceBluetooth;
+	}
+	
+	public void setDeviceGPS(int deviceGPS)
+	{
+		_deviceGPS = deviceGPS;
 	}
 	
 	public void setDeviceScreenTimeout(int deviceScreenTimeout)

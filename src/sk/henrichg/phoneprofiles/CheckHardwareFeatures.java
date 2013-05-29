@@ -1,7 +1,11 @@
 package sk.henrichg.phoneprofiles;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+
 import com.stericson.RootTools.RootTools;
 
 public class CheckHardwareFeatures {
@@ -65,6 +69,32 @@ public class CheckHardwareFeatures {
 			if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY))
 				// device ma mobilne data
 				featurePresented = true;
+		}
+		else
+		if (preferenceKey.equals(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_GPS))
+		{	
+			if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_LOCATION_GPS))
+			{
+				// device ma gps
+
+				// test expoiting power manager widget
+			    PackageManager pacman = context.getPackageManager();
+			    PackageInfo pacInfo = null;
+			    try {
+			        pacInfo = pacman.getPackageInfo("com.android.settings", PackageManager.GET_RECEIVERS);
+
+				    if(pacInfo != null){
+				        for(ActivityInfo actInfo : pacInfo.receivers){
+				            //test if recevier is exported. if so, we can toggle GPS.
+				            if(actInfo.name.equals("com.android.settings.widget.SettingsAppWidgetProvider") && actInfo.exported){
+								featurePresented = true;
+				            }
+				        }
+				    }				
+			    } catch (NameNotFoundException e) {
+			        ; //package not found
+			    }
+			}
 		}
 		else
 			featurePresented = true;

@@ -377,7 +377,8 @@ public class PhoneProfilesActivity extends SherlockActivity {
 					         	  false,
 								  "-|0",
 								  0,
-								  false
+								  false,
+								  0
 					);
 			profileListAdapter.addItem(profile); // pridame profil do listview a nastavime jeho order
 			databaseHandler.addProfile(profile);
@@ -410,6 +411,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
         editor.putString(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_WALLPAPER, profile.getDeviceWallpaper());
         editor.putString(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_MOBILE_DATA, Integer.toString(profile.getDeviceMobileData()));
         editor.putBoolean(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS, profile.getDeviceMobileDataPrefs());
+        editor.putString(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_GPS, Integer.toString(profile.getDeviceGPS()));
 		editor.commit();
 		
 		//Log.d("PhoneProfilesActivity.startProfilePreferencesActivity", profile.getID()+"");
@@ -453,7 +455,8 @@ public class PhoneProfilesActivity extends SherlockActivity {
 				   origProfile.getDeviceWallpaperChange(),
 				   origProfile.getDeviceWallpaper(),
 				   origProfile.getDeviceMobileData(),
-				   origProfile.getDeviceMobileDataPrefs());
+				   origProfile.getDeviceMobileDataPrefs(),
+				   origProfile.getDeviceGPS());
 
 		profileListAdapter.addItem(newProfile);
 		databaseHandler.addProfile(newProfile);
