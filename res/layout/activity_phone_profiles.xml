@@ -80,7 +80,7 @@
         android:layout_height="wrap_content"
         android:divider="@android:color/transparent" 
         android:padding="10dip"
-        android:dividerHeight="10.0sp"
+        android:dividerHeight="5dp"
         android:listSelector="@drawable/card_selector"
         dslv:drag_enabled="true"
 	    dslv:collapsed_height="2dp"
