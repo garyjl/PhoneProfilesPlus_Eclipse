@@ -1,5 +1,7 @@
 package sk.henrichg.phoneprofiles;
 
+import java.io.File;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -7,18 +9,23 @@ public class BitmapResampler {
 	
 	public static Bitmap resample(String bitmapFile, int width, int height)
 	{
-		// first decode with inJustDecodeDpunds=true to check dimensions
-		final BitmapFactory.Options options = new BitmapFactory.Options();
-		options.inJustDecodeBounds = true;
-		BitmapFactory.decodeFile(bitmapFile, options);
-		// calaculate inSampleSize
-		options.inSampleSize = calculateInSampleSize(options, width, height);
-		// decode bitmap with inSampleSize
-		options.inJustDecodeBounds = false;
-		Bitmap decodedSampleBitmap = BitmapFactory.decodeFile(bitmapFile, options);
-
-		
-		return decodedSampleBitmap;
+		File f = new File(bitmapFile);
+		if (f.exists())
+		{
+			// first decode with inJustDecodeDpunds=true to check dimensions
+			final BitmapFactory.Options options = new BitmapFactory.Options();
+			options.inJustDecodeBounds = true;
+			BitmapFactory.decodeFile(bitmapFile, options);
+			// calaculate inSampleSize
+			options.inSampleSize = calculateInSampleSize(options, width, height);
+			// decode bitmap with inSampleSize
+			options.inJustDecodeBounds = false;
+			Bitmap decodedSampleBitmap = BitmapFactory.decodeFile(bitmapFile, options);
+			
+			return decodedSampleBitmap;
+		}
+		else
+			return null;
 	}
 	
 	private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight)

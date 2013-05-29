@@ -9,6 +9,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.preference.Preference;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -95,8 +96,9 @@ public class ImageViewPreference extends Preference {
         		int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
         		int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
         		Bitmap bitmap = BitmapResampler.resample(imageIdentifier, width, height);
-
-        		imageView.setImageBitmap(bitmap);
+        		
+        		//if (bitmap != null)
+        			imageView.setImageBitmap(bitmap);
 	    	}
 	    }
 	}

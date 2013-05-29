@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.util.Log;
  
 public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
 	
@@ -268,6 +269,8 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
 	
 	private void setSummary(String key, Object value)
 	{
+		//Log.d("ProfilePreferencesActivity.setSummary",key);
+		
 		if (key.equals(PREF_PROFILE_NAME))
 		{	
 	        prefMng.findPreference(key).setSummary(value.toString());
