@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:padding="5dp"
     android:orientation="horizontal" 
-    android:background="@android:color/white" >
+    android:background="@drawable/card" >
 
     <ImageView
         android:id="@+id/shortcut_list_item_profile_icon"
@@ -29,7 +29,7 @@
         android:layout_toRightOf="@+id/shortcut_list_item_profile_icon"
         android:paddingLeft="10dp"
         android:text="@string/profile_name_default"
-        android:textSize="17sp" />
+        android:textSize="19sp" />
     
     <ImageView
         android:id="@+id/shortcut_list_profile_pref_indicator"

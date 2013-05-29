@@ -12,7 +12,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
-        android:background="#fff5f5f5"
+        android:background="@drawable/card"
         android:orientation="vertical"
         android:padding="5dp" >
     
@@ -43,7 +43,7 @@
 		        android:layout_toRightOf="@+id/activated_profile_icon"
 		        android:paddingLeft="10dp"
 		        android:text="@string/profile_name_default"
-		        android:textSize="17sp" />
+		        android:textSize="19sp" />
 		
 		    <ImageView
 		        android:id="@+id/activated_profile_activated"
