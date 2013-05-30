@@ -33,6 +33,7 @@
     <string name="string_1">1</string>
     <string name="volume_pref_dialog_no_change_chb">Neměnit</string>
     <string name="imageview_preference_profile_icon_label">Ikona profilu</string>
+    <string name="applications_preference_profile_icon_label">Spustit aplikaci</string>
     <string name="phone_profiles_pref_category_application">Aplikace</string>
     <string name="phone_profiles_pref_category_notifications">Notifikace</string>
     <string name="phone_profiles_pref_applicationActivate">Aktivovat profil při startu</string>

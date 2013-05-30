@@ -33,6 +33,7 @@
     <string name="string_1">1</string>
     <string name="volume_pref_dialog_no_change_chb">No change</string>
     <string name="imageview_preference_profile_icon_label">Profile icon</string>
+    <string name="applications_preference_profile_icon_label">Run application</string>
     <string name="phone_profiles_pref_category_application">Application</string>
     <string name="phone_profiles_pref_category_notifications">Notifications</string>
     <string name="phone_profiles_pref_applicationActivate">Activate profile on start</string>
