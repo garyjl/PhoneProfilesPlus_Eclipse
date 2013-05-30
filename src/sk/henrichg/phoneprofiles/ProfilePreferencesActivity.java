@@ -15,7 +15,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
-import android.util.Log;
  
 public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
 	

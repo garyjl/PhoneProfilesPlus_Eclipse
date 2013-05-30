@@ -6,11 +6,7 @@ import com.stericson.RootTools.execution.CommandCapture;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.util.Log;
-import android.os.Process;
-import android.os.UserHandle;
-import android.os.UserManager;
 import android.provider.Settings;
 import android.provider.Settings.Global;
 
@@ -32,7 +28,8 @@ public class AirPlaneMode_SDK17 {
 			// if app runs:
 			// - as system app (located on /system/app)
 			// - and if current user is the admin user (not sure about that...)
-			if (CheckHardwareFeatures.isSystemApp(context) && CheckHardwareFeatures.isAdminUser(context))
+			//if (CheckHardwareFeatures.isSystemApp(context) && CheckHardwareFeatures.isAdminUser(context))
+			if (CheckHardwareFeatures.isSystemApp(context))
 			{
 				Settings.Global.putInt(context.getContentResolver(), Settings.Global.AIRPLANE_MODE_ON, mode ? 1 : 0);
 				Intent intent = new Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED);
@@ -40,7 +37,7 @@ public class AirPlaneMode_SDK17 {
 				context.sendBroadcast(intent);
 			}
 			else
-			if (RootTools.isAccessGiven())
+			if (CheckHardwareFeatures.isRooted())
 			{
 				// zariadenie je rootnute
 				String command1;

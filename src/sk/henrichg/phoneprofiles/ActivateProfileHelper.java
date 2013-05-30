@@ -5,6 +5,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import com.stericson.RootTools.RootTools;
+import com.stericson.RootTools.execution.CommandCapture;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Notification;
@@ -427,13 +430,16 @@ public class ActivateProfileHelper {
 			activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 			int height = displayMetrics.heightPixels;
 			int width = displayMetrics.widthPixels << 1; // best wallpaper width is twice screen width
-			Bitmap decodedSampleBitmap = BitmapResampler.resample(profile.getDeviceWallpaperIdentifier(), width, height); 
-			// set wallpaper
-			WallpaperManager wallpaperManager = WallpaperManager.getInstance(context);
-			try {
-				wallpaperManager.setBitmap(decodedSampleBitmap);
-			} catch (IOException e) {
-				Log.e("PhoneProfilesActivity.activateProfile", "Cannot set wallpaper. Image="+profile.getDeviceWallpaperIdentifier());
+			Bitmap decodedSampleBitmap = BitmapResampler.resample(profile.getDeviceWallpaperIdentifier(), width, height);
+			if (decodedSampleBitmap != null)
+			{
+				// set wallpaper
+				WallpaperManager wallpaperManager = WallpaperManager.getInstance(context);
+				try {
+					wallpaperManager.setBitmap(decodedSampleBitmap);
+				} catch (IOException e) {
+					Log.e("PhoneProfilesActivity.activateProfile", "Cannot set wallpaper. Image="+profile.getDeviceWallpaperIdentifier());
+				}
 			}
 		}	
 		
@@ -749,14 +755,17 @@ public class ActivateProfileHelper {
 	
 	private void setGPS(Context context, boolean enable)
 	{
-	    String provider = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+		boolean isEnabled = Settings.Secure.isLocationProviderEnabled(context.getContentResolver(), LocationManager.GPS_PROVIDER);
 
-		//Log.d("ActivateProfileHelper.setGPS", provider);
+		Log.d("ActivateProfileHelper.setGPS", isEnabled + "");
 	    
-	    if(!provider.contains(LocationManager.GPS_PROVIDER) && enable)
+	    //if(!provider.contains(LocationManager.GPS_PROVIDER) && enable)
+		if ((!isEnabled)  && enable)
 	    {
+    		Log.d("ActivateProfileHelper.setGPS", "enable=true");
 	    	if (CheckHardwareFeatures.canExploitGPS(context))
 	    	{
+	    		Log.d("ActivateProfileHelper.setGPS", "exploit");
 		        final Intent poke = new Intent();
 		        poke.setClassName("com.android.settings", "com.android.settings.widget.SettingsAppWidgetProvider"); 
 		        poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
@@ -764,20 +773,63 @@ public class ActivateProfileHelper {
 		        context.sendBroadcast(poke);
 	    	}
 	    	else
-	    	{
+	    	if ((android.os.Build.VERSION.SDK_INT >= 17) && CheckHardwareFeatures.isRooted())
+			{
+				// zariadenie je rootnute
+	    		Log.d("ActivateProfileHelper.setGPS", "root");
+				String command1;
+				//String command2;
+
+			    String provider = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+				
 	    		String newSet;
 	    		if (provider == "")
 	    			newSet = LocationManager.GPS_PROVIDER;
 	    		else
 	    			newSet = String.format("%s,%s", provider, LocationManager.GPS_PROVIDER);
-				Settings.Secure.putString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED, newSet);
+				
+				command1 = "settings put secure location_providers_allowed \"" + newSet + "\"";
+				//command2 = "am broadcast -a android.location.GPS_ENABLED_CHANGE --ez state true";
+				CommandCapture command = new CommandCapture(0, command1); //, command2);
+				try {
+					RootTools.getShell(true).add(command).waitForFinish();
+				} catch (Exception e) {
+					Log.e("ActivateProfileHelper.setGPS", "Error on run su");
+				} 
+			}	    	
+	    	else
+			//if (CheckHardwareFeatures.isSystemApp(context) && CheckHardwareFeatures.isAdminUser(context))
+			if (CheckHardwareFeatures.isSystemApp(context))
+	    	{
+	    	/*	String newSet;
+	    		if (provider == "")
+	    			newSet = LocationManager.GPS_PROVIDER;
+	    		else
+	    			newSet = String.format("%s,%s", provider, LocationManager.GPS_PROVIDER);
+				Settings.Secure.putString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED, newSet); */
+				Settings.Secure.setLocationProviderEnabled(context.getContentResolver(), LocationManager.GPS_PROVIDER, true);
 	    	}
+			else
+			{
+	    		Log.d("ActivateProfileHelper.setGPS", "normal");
+				Intent intent = new Intent("android.location.GPS_ENABLED_CHANGE");
+				intent.putExtra("enabled", enable);
+				context.sendBroadcast(intent); 
+
+				// for normal apps it is only possible to open the system settings dialog
+			/*	Intent intent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				context.startActivity(intent); */ 
+			}
 	    }
 	    else
-        if(provider.contains(LocationManager.GPS_PROVIDER) && (!enable))
+        //if(provider.contains(LocationManager.GPS_PROVIDER) && (!enable))
+		if (isEnabled && (!enable))
         {
-	    	if (CheckHardwareFeatures.canExploitGPS(context))
+    		Log.d("ActivateProfileHelper.setGPS", "enable=false");
+    		if (CheckHardwareFeatures.canExploitGPS(context))
 	    	{
+	    		Log.d("ActivateProfileHelper.setGPS", "exploit");
 	            final Intent poke = new Intent();
 	            poke.setClassName("com.android.settings", "com.android.settings.widget.SettingsAppWidgetProvider");
 	            poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
@@ -785,7 +837,15 @@ public class ActivateProfileHelper {
 	            context.sendBroadcast(poke);
 	    	}
 	    	else
-	    	{
+	    	if ((android.os.Build.VERSION.SDK_INT >= 17) && CheckHardwareFeatures.isRooted())
+			{
+				// zariadenie je rootnute
+	    		Log.d("ActivateProfileHelper.setGPS", "root");
+				String command1;
+				//String command2;
+
+			    String provider = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+				
 	    		String[] list = provider.split(",");
 	    		
 	    		String newSet = "";
@@ -801,8 +861,50 @@ public class ActivateProfileHelper {
 	    				j++;
 	    			}
 	    		}
-				Settings.Secure.putString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED, newSet);
+				
+				command1 = "settings put secure location_providers_allowed \"" + newSet + "\"";
+				//command2 = "am broadcast -a android.location.GPS_ENABLED_CHANGE --ez state false";
+				CommandCapture command = new CommandCapture(0, command1);//, command2);
+				try {
+					RootTools.getShell(true).add(command).waitForFinish();
+				} catch (Exception e) {
+					Log.e("ActivateProfileHelper.setGPS", "Error on run su");
+				}
+			}	    	
+	    	else
+			//if (CheckHardwareFeatures.isSystemApp(context) && CheckHardwareFeatures.isAdminUser(context))
+			if (CheckHardwareFeatures.isSystemApp(context))
+			{
+	    	/*	String[] list = provider.split(",");
+	    		
+	    		String newSet = "";
+	    		int j = 0;
+	    		for (int i = 0; i < list.length; i++)
+	    		{
+	    			
+	    			if  (!list[i].equals(LocationManager.GPS_PROVIDER))
+	    			{
+	    				if (j > 0)
+	    					newSet += ",";
+	    				newSet += list[i];
+	    				j++;
+	    			}
+	    		}
+				Settings.Secure.putString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED, newSet); */
+				Settings.Secure.setLocationProviderEnabled(context.getContentResolver(), LocationManager.GPS_PROVIDER, false);
 	    	}
+			else
+			{
+	    		Log.d("ActivateProfileHelper.setGPS", "normal");
+				Intent intent = new Intent("android.location.GPS_ENABLED_CHANGE");
+				intent.putExtra("enabled", enable);
+				context.sendBroadcast(intent); 
+
+				// for normal apps it is only possible to open the system settings dialog
+			/*	Intent intent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				context.startActivity(intent); */ 
+			}
         }	    	
 	}
 	

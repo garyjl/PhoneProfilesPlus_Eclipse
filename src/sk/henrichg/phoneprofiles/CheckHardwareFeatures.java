@@ -6,10 +6,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.os.Process;
-import android.os.UserHandle;
-import android.os.UserManager;
-
 import com.stericson.RootTools.RootTools;
 
 public class CheckHardwareFeatures {
@@ -21,32 +17,18 @@ public class CheckHardwareFeatures {
 	{
 		boolean featurePresented = false;
 
-		if (!rootChecked)
-		{
-			if (RootTools.isAccessGiven())
-			{
-				// zariadenie je rootnute
-				rootChecked = true;
-				rooted = true;
-			}
-			else
-			{
-				rootChecked = true;
-				rooted = false;
-			}
-		}
-		
 		if (preferenceKey.equals(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_AIRPLANE_MODE))
 		{	
 			if (android.os.Build.VERSION.SDK_INT >= 17)
 			{
-				if (rooted)
+				if (isRooted())
 				{
 					// zariadenie je rootnute
 					featurePresented = true;
 				}
 				else
-				if (isSystemApp(context) && isAdminUser(context))
+				//if (isSystemApp(context) && isAdminUser(context))
+				if (isSystemApp(context))
 				{
 					// aplikacia je nainstalovana ako systemova
 					featurePresented = true;
@@ -81,18 +63,23 @@ public class CheckHardwareFeatures {
 			{
 				// device ma gps
 
-				if (canExploitGPS(context))
+			/*	if (canExploitGPS(context))
 				{
 					featurePresented = true;
 			    }
 				else
-			    {
-					if (isSystemApp(context) && isAdminUser(context))
-					{
-						// aplikacia je nainstalovana ako systemova
-						featurePresented = true;
-					}
-			    }
+				if ((android.os.Build.VERSION.SDK_INT >= 17) && isRooted())
+				{
+					featurePresented = true;
+				}
+				else 
+				//if (isSystemApp(context) && isAdminUser(context))
+				if (isSystemApp(context))
+				{
+					// aplikacia je nainstalovana ako systemova
+					featurePresented = true;
+			    } */
+				featurePresented = true;
 			}
 		}
 		else
@@ -119,7 +106,7 @@ public class CheckHardwareFeatures {
 		    }				
 	    } catch (NameNotFoundException e) {
 	        return false; //package not found
-	    }
+	    }   
 	    return false;
 	}
 	
@@ -147,7 +134,8 @@ public class CheckHardwareFeatures {
 		return false;
 		
 	}
-	
+
+/*	
 	static boolean isAdminUser(Context context)
 	{
 		UserHandle uh = Process.myUserHandle();
@@ -161,6 +149,25 @@ public class CheckHardwareFeatures {
 		else
 			return false;
 	}
+*/
 	
+	static boolean isRooted()
+	{
+		if (!rootChecked)
+		{
+			if (RootTools.isAccessGiven())
+			{
+				// zariadenie je rootnute
+				rootChecked = true;
+				rooted = true;
+			}
+			else
+			{
+				rootChecked = true;
+				rooted = false;
+			}
+		}
+		return rooted;
+	}
 	
 }
