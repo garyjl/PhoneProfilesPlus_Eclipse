@@ -116,5 +116,7 @@
     <string name="phone_profiles_pref_notificationStatusBarStyle_color">Barevné</string>
     <string name="phone_profiles_pref_notificationStatusBarStyle_android">Nativní</string>
     <string name="phone_profiles_pref_applicationLongClickActivation">Dlouhé stlačení aktivuje profil</string>
+    <string name="profile_preferences_deviceRunApplicationPackageName">Aplikace</string>
+    <string name="profile_preferences_deviceRunApplicationChange">Spustit aplikaci</string>
     
 </resources>

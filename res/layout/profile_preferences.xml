@@ -148,7 +148,16 @@
 			henrichg:bNoChange="1"
 			henrichg:bAutomatic="0"
 			android:title="@string/profile_preferences_deviceBrightness"
-			android:summary="@string/brightness_pref_dialog_no_change_chb" />        
+			android:summary="@string/brightness_pref_dialog_no_change_chb" />   
+		<CheckBoxPreference 
+		    android:key="deviceRunApplicationChange"
+		    android:title="@string/profile_preferences_deviceRunApplicationChange"
+		    android:defaultValue="false" />
+		<sk.henrichg.phoneprofiles.ApplicationsPreference
+            android:defaultValue="-"
+            android:key="deviceRunApplicationPackageName"
+            android:title="@string/profile_preferences_deviceRunApplicationPackageName"
+            android:dependency="deviceRunApplicationChange" />
 		<CheckBoxPreference 
 		    android:key="deviceWallpaperChange"
 		    android:title="@string/profile_preferences_deviceWallpaperChange"

@@ -57,6 +57,8 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
 	static final String PREF_PROFILE_DEVICE_MOBILE_DATA = "deviceMobileData";
 	static final String PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS = "deviceMobileDataPrefs";
 	static final String PREF_PROFILE_DEVICE_GPS = "deviceGPS";
+	static final String PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE = "deviceRunApplicationChange";
+	static final String PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME = "deviceRunApplicationPackageName";
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -93,7 +95,8 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
     	    		key.equals(PREF_PROFILE_SOUND_NOTIFICATION_CHANGE) ||
     	    		key.equals(PREF_PROFILE_SOUND_ALARM_CHANGE) ||
     	    		key.equals(PREF_PROFILE_DEVICE_WALLPAPER_CHANGE) ||
-    	    		key.equals(PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS)
+    	    		key.equals(PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS) || 
+    	    		key.equals(PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE) 
     	    		))
     	    		setSummary(key, prefs.getString(key, ""));
 
@@ -171,6 +174,11 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
         	profile.setDeviceMobileData(Integer.parseInt(preferences.getString(PREF_PROFILE_DEVICE_MOBILE_DATA, "")));
         	profile.setDeviceMobileDataPrefs(preferences.getBoolean(PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS, false));
         	profile.setDeviceGPS(Integer.parseInt(preferences.getString(PREF_PROFILE_DEVICE_GPS, "")));
+        	profile.setDeviceRunApplicationChange(preferences.getBoolean(PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE, false));
+        	if (profile.getDeviceRunApplicationChange())
+        		profile.setDeviceRunApplicationPackageName(preferences.getString(PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME, "-"));
+        	else
+        		profile.setDeviceRunApplicationPackageName("-");
 
         	//Log.d("ProfilePreferencesActivity.onPause", "profile activated="+profile.getChecked());
         	

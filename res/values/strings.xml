@@ -116,5 +116,7 @@
     <string name="phone_profiles_pref_notificationStatusBarStyle_color">Colorfull</string>
     <string name="phone_profiles_pref_notificationStatusBarStyle_android">Native</string>
     <string name="phone_profiles_pref_applicationLongClickActivation">Long click activate profile</string>
+    <string name="profile_preferences_deviceRunApplicationPackageName">Application</string>
+    <string name="profile_preferences_deviceRunApplicationChange">Run application</string>
     
 </resources>

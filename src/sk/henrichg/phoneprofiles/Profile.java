@@ -31,6 +31,8 @@ public class Profile {
 	String _deviceBrightness;
 	boolean _deviceWallpaperChange;
 	String _deviceWallpaper;
+	boolean _deviceRunApplicationChange;
+	String _deviceRunApplicationPackageName;
 	
 	
 	// Empty constructorn
@@ -66,7 +68,9 @@ public class Profile {
 			   	   String deviceWallpaper,
 			   	   int deviceMobileData,
 			   	   boolean deviceMobileDataPrefs,
-			   	   int deviceGPS)
+			   	   int deviceGPS,
+			   	   boolean deviceRunApplicationChange,
+			   	   String deviceRunApplicationPackageName)
 	{
 		this._id = id;
 		this._name = name;
@@ -96,6 +100,9 @@ public class Profile {
 		this._deviceBrightness = deviceBrightness;
 		this._deviceWallpaperChange = deviceWallpaperChange;
 		this._deviceWallpaper = deviceWallpaper;
+		this._deviceRunApplicationChange = deviceRunApplicationChange;
+		this._deviceRunApplicationPackageName = deviceRunApplicationPackageName;
+		
 	}
 	
 	// constructor
@@ -125,7 +132,9 @@ public class Profile {
 			   	   String deviceWallpaper,
 			   	   int deviceMobileData,
 			   	   boolean deviceMobileDataPrefs,
-			   	   int deviceGPS)
+			   	   int deviceGPS,
+			   	   boolean deviceRunApplicationChange,
+			   	   String deviceRunApplicationPackageName)
 	{
 		this._name = name;
 		this._icon = icon;
@@ -154,6 +163,8 @@ public class Profile {
 		this._deviceBrightness = deviceBrightness;
 		this._deviceWallpaperChange = deviceWallpaperChange;
 		this._deviceWallpaper = deviceWallpaper;
+		this._deviceRunApplicationChange = deviceRunApplicationChange;
+		this._deviceRunApplicationPackageName = deviceRunApplicationPackageName;
 	}
 	
 	// getting ID
@@ -521,6 +532,16 @@ public class Profile {
 		return value;
 	}
 	
+	public boolean getDeviceRunApplicationChange()
+	{
+		return this._deviceRunApplicationChange;
+	}
+	
+	public String getDeviceRunApplicationPackageName()
+	{
+		return this._deviceRunApplicationPackageName;
+	}
+	
 	// setting id
 	public void setID(long id)
 	{
@@ -666,4 +687,14 @@ public class Profile {
 		_deviceWallpaper = deviceWallpaper;
 	}
 
+	public void setDeviceRunApplicationChange(boolean deviceRunApplicationChange)
+	{
+		_deviceRunApplicationChange = deviceRunApplicationChange;
+	}
+	
+	public void setDeviceRunApplicationPackageName(String deviceRunApplicationPackagename)
+	{
+		_deviceRunApplicationPackageName = deviceRunApplicationPackagename;
+	}
+	
 }

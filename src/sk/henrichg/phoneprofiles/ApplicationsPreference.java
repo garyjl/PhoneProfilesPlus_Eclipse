@@ -71,12 +71,22 @@ public class ApplicationsPreference extends Preference {
 			ApplicationInfo app;
 			try {
 				app = packageManager.getApplicationInfo(packageName, 0);
-				Drawable icon = packageManager.getApplicationIcon(app);
-				CharSequence name = packageManager.getApplicationLabel(app);
-				packageIcon.setText(name);
-				packageIcon.setCompoundDrawables(null, icon, null, null);
+				if (app != null)
+				{
+					Drawable icon = packageManager.getApplicationIcon(app);
+					CharSequence name = packageManager.getApplicationLabel(app);
+					packageIcon.setText(name);
+					packageIcon.setCompoundDrawables(null, icon, null, null);
+				}
+				else
+				{
+					packageIcon.setText("");
+					packageIcon.setCompoundDrawables(null, null, null, null);
+				}
 			} catch (NameNotFoundException e) {
-				e.printStackTrace();
+				//e.printStackTrace();
+				packageIcon.setText("");
+				packageIcon.setCompoundDrawables(null, null, null, null);
 			}
 	    }
 	}
