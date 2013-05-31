@@ -19,7 +19,7 @@
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/applications_pref_align"
         android:text="@string/empty_string"
-		android:drawableTop=""
+		android:drawableTop="@drawable/ic_launcher"
         android:drawablePadding="2dp" />
     
     <TextView

@@ -1,24 +1,22 @@
 package sk.henrichg.phoneprofiles;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.res.Resources;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.preference.Preference;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ApplicationsPreference extends Preference {
 	
 	private String packageName;
 
-	private String preferenceTitle;
-	
 	private TextView preferenceTitleView;
  	private TextView packageIcon;
 
@@ -32,7 +30,7 @@ public class ApplicationsPreference extends Preference {
 		
 		/*
 		TypedArray typedArray = context.obtainStyledAttributes(attrs,
-				R.styleable.ImageViewPreference);
+				R.styleable.ApplicationsPreference);
 
 		// resource, resource_file, file
 		imageSource = typedArray.getString(
@@ -51,7 +49,7 @@ public class ApplicationsPreference extends Preference {
 		
 		setWidgetLayoutResource(R.layout.applications_preference); // resource na layout custom preference - TextView-ImageView
 		
-		typedArray.recycle();
+		//pedArray.recycle();
 		
 	}
 	
@@ -65,17 +63,21 @@ public class ApplicationsPreference extends Preference {
 		preferenceTitleView = (TextView)view.findViewById(R.id.applications_pref_label);  // resource na title
 		preferenceTitleView.setText(preferenceTitle);
 		
-		packageIcon = (ImageView)view.findViewById(R.id.applications_pref_icon); // resource na Textview v custom preference layoute
+		packageIcon = (TextView)view.findViewById(R.id.applications_pref_icon); // resource na Textview v custom preference layoute
 
 	    if (packageIcon != null)
 	    {
-			PackageNamager packageManager = prefContext.getPackagemanager();
-			ApplicationInfo app packageManager.getApplicationInfo(packageName);
-			Drawable icon = packageNamager.getApplicationIcon(app);
-			String name = packageManager.getApplicationLabel(app);
-
-			packageIcon.setText(name);
-			packageIcon.setCompoundDrawablesWithIntrinsicBounds(0, icon, 0, 0);
+			PackageManager packageManager = prefContext.getPackageManager();
+			ApplicationInfo app;
+			try {
+				app = packageManager.getApplicationInfo(packageName, 0);
+				Drawable icon = packageManager.getApplicationIcon(app);
+				CharSequence name = packageManager.getApplicationLabel(app);
+				packageIcon.setText(name);
+				packageIcon.setCompoundDrawables(null, icon, null, null);
+			} catch (NameNotFoundException e) {
+				e.printStackTrace();
+			}
 	    }
 	}
 	
@@ -87,7 +89,7 @@ public class ApplicationsPreference extends Preference {
 		//Log.d("ApplicationsPreference.onClick", "packageName="+packageName);
 
 		final ApplicationsPreferenceDialog dialog = new ApplicationsPreferenceDialog(prefContext, this);
-		dialog.setTitle(R.string.title_activity_paalications_preference_dialog);
+		dialog.setTitle(R.string.title_activity_applications_preference_dialog);
 		dialog.show();
 	}
 	
@@ -128,7 +130,7 @@ public class ApplicationsPreference extends Preference {
 		
 		// ulozenie istance state
 		final SavedState myState = new SavedState(superState);
-		myState.packageName = packagename;
+		myState.packageName = packageName;
 		return myState;
 		
 	}

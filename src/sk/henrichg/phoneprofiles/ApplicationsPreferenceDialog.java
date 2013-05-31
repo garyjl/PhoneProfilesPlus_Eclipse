@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.GridView;
 //import android.preference.Preference;
 //import android.preference.Preference.OnPreferenceChangeListener;
@@ -14,6 +13,7 @@ import android.view.View;
 public class ApplicationsPreferenceDialog extends Dialog {
 
 	private ApplicationsPreference applicationsPreference;
+	private ApplicationsPreferenceAdapter applicationsPreferenceAdapter;
 	
 	public ApplicationsPreferenceDialog(Context context) {
 		super(context);
@@ -32,11 +32,13 @@ public class ApplicationsPreferenceDialog extends Dialog {
 		setContentView(R.layout.activity_applications_pref_dialog);
 		gridView = (GridView)findViewById(R.id.applications_pref_dlg_gridview);
 		
-		gridView.setAdapter(new ApplicationsPreferenceAdapter(_context));
+		applicationsPreferenceAdapter = new ApplicationsPreferenceAdapter(_context); 
+		gridView.setAdapter(applicationsPreferenceAdapter);
 	
 		gridView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				ApplicationsPreference.setPackageName(ApplicationsPreferenceAdapter.getApplicationPackageName(position));
+				String packageName = applicationsPreferenceAdapter.getApplicationPackageName(position);
+				applicationsPreference.setPackageName(packageName);
 				ApplicationsPreferenceDialog.this.dismiss();
 			}
 

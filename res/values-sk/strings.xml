@@ -18,6 +18,7 @@
     <string name="toast_profile_activated_0">Profil</string>
     <string name="toast_profile_activated_1">aktivovaný</string>
     <string name="title_activity_image_view_preference_dialog">Zmena ikony</string>
+    <string name="title_activity_applications_preference_dialog">Výber aplikácie</string>
     <string name="preference_profile_no_change">Nemeniť</string>
     <string name="preference_profile_autobrightness">Automaticky</string>
     <string name="active_profile_notification_label">Aktívny profil</string>

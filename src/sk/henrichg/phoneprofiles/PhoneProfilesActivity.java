@@ -44,6 +44,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	private static boolean applicationStarted;
 	private Intent intent;
 	private static boolean languageChanged = false;
+	private static ApplicationsCache applicationsCache;
 
 	static final String EXTRA_PROFILE_POSITION = "profile_position";
 	static final String EXTRA_PROFILE_ID = "profile_id";
@@ -82,6 +83,8 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		activateProfileHelper = new ActivateProfileHelper(this, getBaseContext());
 
 		databaseHandler = new DatabaseHandler(this);
+		
+		applicationsCache = new ApplicationsCache();
 		
 		activeProfileName = (TextView)findViewById(R.id.activated_profile_name);
 		activeProfileIcon = (ImageView)findViewById(R.id.activated_profile_icon);
@@ -273,6 +276,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	@Override
 	protected void onDestroy()
 	{
+		applicationsCache.clearCache();
 		super.onDestroy();
 	}
 
@@ -695,4 +699,10 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		return profileListAdapter;
 	}
 
+	public static ApplicationsCache getApplicationsCache()
+	{
+		return applicationsCache;
+	}
+	
+	
 }

@@ -5,11 +5,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
-import android.widget.ImageView;
+import android.widget.TextView;
 
 public class ApplicationsPreferenceAdapter extends BaseAdapter {
 
 	private Context context;
+	
 	
 	public ApplicationsPreferenceAdapter(Context c)
 	{
@@ -17,11 +18,11 @@ public class ApplicationsPreferenceAdapter extends BaseAdapter {
 	}
 	
 	public int getCount() {
-		return ApplicationsCache.getLength();
+		return PhoneProfilesActivity.getApplicationsCache().getLength();
 	}
 
 	public Object getItem(int position) {
-		return ApplicationsCache.getApplication(position);
+		return PhoneProfilesActivity.getApplicationsCache().getPackageName(position);
 	}
 
 	public long getItemId(int position) {
@@ -43,10 +44,14 @@ public class ApplicationsPreferenceAdapter extends BaseAdapter {
 			applicationIcon = (TextView)convertView;
 		}
 		
-		applicationIcon.setText(ApplicationsCache.getApplicationName(position));
-		applicationIcon.setCompoundDrawablesWithIntrinsicBounds(0, ApplicationsCache.getApplicationIcon(position), 0, 0);
+		applicationIcon.setText(PhoneProfilesActivity.getApplicationsCache().getApplicationLabel(position));
+		applicationIcon.setCompoundDrawables(null, PhoneProfilesActivity.getApplicationsCache().getApplicationIcon(position), null, null);
 
 		return applicationIcon;
 	}
 
+	public String getApplicationPackageName(int position)
+	{
+		return PhoneProfilesActivity.getApplicationsCache().getPackageName(position);
+	}
 }

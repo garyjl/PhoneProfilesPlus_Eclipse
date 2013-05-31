@@ -18,6 +18,7 @@
     <string name="toast_profile_activated_0">Profile</string>
     <string name="toast_profile_activated_1">activated</string>
     <string name="title_activity_image_view_preference_dialog">Change icon</string>
+    <string name="title_activity_applications_preference_dialog">Set application</string>
     <string name="preference_profile_no_change">No change</string>
     <string name="preference_profile_autobrightness">Automatic</string>
     <string name="active_profile_notification_label">Active profile</string>

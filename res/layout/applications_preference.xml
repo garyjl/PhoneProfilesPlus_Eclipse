@@ -19,7 +19,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:text="@string/empty_string"
-		android:drawableTop=""
+		android:drawableTop="@drawable/ic_launcher"
         android:drawablePadding="2dp" />
     
 </RelativeLayout>
