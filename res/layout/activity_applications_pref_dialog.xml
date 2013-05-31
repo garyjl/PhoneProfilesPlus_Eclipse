@@ -1,18 +1,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
-	android:layout_height="wrap_content"
+	android:layout_height="fill_parent"
 	android:orientation="vertical">
 
 
-	<GridView 
-	    android:id="@+id/applications_pref_dlg_gridview"
+    <LinearLayout 
+        android:id="@+id/applications_pref_dlg_linla_progress"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone" >
+        
+        <ProgressBar
+            android:id="@+id/applications_pref_dlg_progress"
+            android:layout_width="wrap_content"
+            style="@style/Sherlock.__Widget.Holo.Spinner"
+            android:layout_height="wrap_content" />
+        
+    </LinearLayout>
+    
+	<ListView 
+	    android:id="@+id/applications_pref_dlg_listview"
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
-	    android:columnWidth="90dp"
-	    android:gravity="center"
-	    android:horizontalSpacing="3dp"
-	    android:numColumns="auto_fit"
-	    android:stretchMode="columnWidth"
-	    android:verticalSpacing="3dp" />
+	    android:gravity="center" />
 
 </LinearLayout>

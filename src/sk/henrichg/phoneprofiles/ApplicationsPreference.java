@@ -11,6 +11,7 @@ import android.os.Parcelable;
 import android.preference.Preference;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ApplicationsPreference extends Preference {
@@ -18,7 +19,7 @@ public class ApplicationsPreference extends Preference {
 	private String packageName;
 
 	private TextView preferenceTitleView;
- 	private TextView packageIcon;
+ 	private ImageView packageIcon;
 
 	private Context prefContext;
 	
@@ -63,7 +64,7 @@ public class ApplicationsPreference extends Preference {
 		preferenceTitleView = (TextView)view.findViewById(R.id.applications_pref_label);  // resource na title
 		preferenceTitleView.setText(preferenceTitle);
 		
-		packageIcon = (TextView)view.findViewById(R.id.applications_pref_icon); // resource na Textview v custom preference layoute
+		packageIcon = (ImageView)view.findViewById(R.id.applications_pref_icon); // resource na ImageView v custom preference layoute
 
 	    if (packageIcon != null)
 	    {
@@ -74,19 +75,16 @@ public class ApplicationsPreference extends Preference {
 				if (app != null)
 				{
 					Drawable icon = packageManager.getApplicationIcon(app);
-					CharSequence name = packageManager.getApplicationLabel(app);
-					packageIcon.setText(name);
-					packageIcon.setCompoundDrawables(null, icon, null, null);
+					//CharSequence name = packageManager.getApplicationLabel(app);
+					packageIcon.setImageDrawable(icon);
 				}
 				else
 				{
-					packageIcon.setText("");
-					packageIcon.setCompoundDrawables(null, null, null, null);
+					packageIcon.setImageDrawable(null);
 				}
 			} catch (NameNotFoundException e) {
 				//e.printStackTrace();
-				packageIcon.setText("");
-				packageIcon.setCompoundDrawables(null, null, null, null);
+				packageIcon.setImageDrawable(null);
 			}
 	    }
 	}

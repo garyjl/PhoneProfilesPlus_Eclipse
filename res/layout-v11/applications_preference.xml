@@ -12,14 +12,18 @@
         android:text="@string/applications_preference_profile_icon_label"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <TextView
+    <ImageView
         android:id="@+id/applications_pref_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:text="@string/empty_string"
-		android:drawableTop="@drawable/ic_launcher"
-        android:drawablePadding="2dp" />
+        android:adjustViewBounds="true"
+        android:maxHeight="50dp"
+        android:maxWidth="50dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_launcher"
+        android:contentDescription="@string/empty_string" />
+    
     
 </RelativeLayout>

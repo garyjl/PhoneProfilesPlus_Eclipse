@@ -1,6 +1,8 @@
 package sk.henrichg.phoneprofiles;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import android.content.Context;
@@ -18,6 +20,17 @@ public class ApplicationsCache {
 		private Drawable icon;
 	}
 	
+	private class SortList implements Comparator {
+
+		public int compare(Object lhs, Object rhs) {
+			PackInfo _lhs = (PackInfo)lhs;
+			PackInfo _rhs = (PackInfo)rhs;
+			
+			return _lhs.appLabel.compareToIgnoreCase(_rhs.appLabel);
+		}
+		
+	}
+	
 	private ArrayList<PackInfo> applicationsList;
 	private boolean cached;
 	
@@ -27,6 +40,7 @@ public class ApplicationsCache {
 		cached = false;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void getApplicationsList(Context context)
 	{
 		if (cached) return;
@@ -39,17 +53,22 @@ public class ApplicationsCache {
 		for (int i = 0; i < packs.size(); i++)
 		{
 			PackageInfo packageInfo = packs.get(i);
-			
-			PackInfo newInfo = new PackInfo();
-			
-			newInfo.appLabel = packageInfo.applicationInfo.loadLabel(packageManager).toString();
-			newInfo.packageName = packageInfo.packageName;
-			//newInfo.versionName = packageInfo.versionName;
-			//newInfo.versionCode = packageInfo.versionCode;
-			newInfo.icon = packageInfo.applicationInfo.loadIcon(packageManager);
-			
-			applicationsList.add(newInfo);
+
+			if (packageManager.getLaunchIntentForPackage(packageInfo.packageName) != null)
+			{
+				PackInfo newInfo = new PackInfo();
+				
+				newInfo.appLabel = packageInfo.applicationInfo.loadLabel(packageManager).toString();
+				newInfo.packageName = packageInfo.packageName;
+				//newInfo.versionName = packageInfo.versionName;
+				//newInfo.versionCode = packageInfo.versionCode;
+				newInfo.icon = packageInfo.applicationInfo.loadIcon(packageManager);
+				
+				applicationsList.add(newInfo);
+			}
 		}
+		
+		Collections.sort(applicationsList, new SortList());
 		
 		cached = true;
 	}
@@ -90,5 +109,10 @@ public class ApplicationsCache {
 	{
 		applicationsList.clear();
 		cached = false;
+	}
+	
+	public boolean isCached()
+	{
+		return cached;
 	}
 }
