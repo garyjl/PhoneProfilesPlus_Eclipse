@@ -20,6 +20,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.LocationManager;
@@ -441,7 +442,16 @@ public class ActivateProfileHelper {
 					Log.e("PhoneProfilesActivity.activateProfile", "Cannot set wallpaper. Image="+profile.getDeviceWallpaperIdentifier());
 				}
 			}
-		}	
+		}
+		
+		if (profile.getDeviceRunApplicationChange())
+		{
+			Intent intent;
+			PackageManager packageManager = context.getPackageManager();
+			intent = packageManager.getLaunchIntentForPackage(profile.getDeviceRunApplicationPackageName());
+			intent.addCategory(Intent.CATEGORY_LAUNCHER);
+			activity.startActivity(intent);			
+		}
 		
 		if (interactive)
 		{

@@ -112,7 +112,10 @@ public class ProfilePreferencesIndicator {
 				if (profile.getDeviceBrightnessAutomatic())
 					addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_autobrightness, context);				
 				else
-					addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_brightness, context);				
+					addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_brightness, context);	
+			// run application
+			if (profile.getDeviceRunApplicationChange())
+				addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_run_application, context);				
 			// wallpaper
 			if (profile.getDeviceWallpaperChange())
 				addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_wallpaper, context);				
