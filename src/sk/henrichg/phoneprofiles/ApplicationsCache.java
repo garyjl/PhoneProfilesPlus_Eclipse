@@ -20,13 +20,10 @@ public class ApplicationsCache {
 		private Drawable icon;
 	}
 	
-	private class SortList implements Comparator {
+	private class SortList implements Comparator<PackInfo> {
 
-		public int compare(Object lhs, Object rhs) {
-			PackInfo _lhs = (PackInfo)lhs;
-			PackInfo _rhs = (PackInfo)rhs;
-			
-			return _lhs.appLabel.compareToIgnoreCase(_rhs.appLabel);
+		public int compare(PackInfo lhs, PackInfo rhs) {
+			return lhs.appLabel.compareToIgnoreCase(rhs.appLabel);
 		}
 		
 	}
@@ -40,7 +37,6 @@ public class ApplicationsCache {
 		cached = false;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void getApplicationsList(Context context)
 	{
 		if (cached) return;

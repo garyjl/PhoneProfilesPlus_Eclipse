@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.os.AsyncTask;

@@ -11,14 +11,14 @@ import android.widget.TextView;
 
 public class ApplicationsPreferenceAdapter extends BaseAdapter {
 
-	private Context context;
+	//private Context context;
 	
 	private static LayoutInflater inflater = null;
 	
 	
 	public ApplicationsPreferenceAdapter(Context c)
 	{
-		context = c;
+		//context = c;
 
 		inflater = (LayoutInflater)c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
