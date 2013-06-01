@@ -3,6 +3,7 @@ package sk.henrichg.phoneprofiles;
 import java.util.List;
 import java.util.Locale;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -73,7 +75,15 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		
 		//getSupportActionBar().setHomeButtonEnabled(true);
 		//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setDisplayShowTitleEnabled(false);
 		
+		   /** Create an array adapter to populate dropdownlist */
+	    ArrayAdapter<CharSequence> navigationAdapter =
+	            ArrayAdapter.createFromResource(getBaseContext(), R.array.phoneProfilesNavigator, R.layout.sherlock_spinner_item);
+
+	    /** Enabling dropdown list navigation for the action bar */
+	    getSupportActionBar().setNavigationMode(com.actionbarsherlock.app.ActionBar.NAVIGATION_MODE_LIST);
+
 		// na onCreate dame, ze aplikacia este nie je nastartovana
 		applicationStarted = false;
 		
@@ -99,6 +109,26 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		registerForContextMenu(listView);
 		//listView.setLongClickable(false);
 
+	    /** Defining Navigation listener */
+	    ActionBar.OnNavigationListener navigationListener = new ActionBar.OnNavigationListener() {
+
+	        public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+	            switch(itemPosition) {
+	            case 0:
+	            	//
+	                break;
+	            case 1:
+	                //...
+	                break;
+	            }
+	            return false;
+	        }
+	    };
+
+	    /** Setting dropdown items and item navigation listener for the actionbar */
+	    getSupportActionBar().setListNavigationCallbacks(navigationAdapter, navigationListener);
+	    navigationAdapter.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
+		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
