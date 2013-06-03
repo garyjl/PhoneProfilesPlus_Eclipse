@@ -10,8 +10,13 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.WindowManager.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -29,8 +34,35 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 		super.onCreate(savedInstanceState);
 		
 		PhoneProfilesActivity.setLanguage(getBaseContext(), false);
-		
+
+		//requestWindowFeature(Window.FEATURE_ACTION_BAR);
+
 		setContentView(R.layout.activity_shortcut_creator);
+		
+		
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND, WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+		LayoutParams params = getWindow().getAttributes();
+		params.alpha = 1.0f;
+		params.dimAmount = 0.5f;
+		getWindow().setAttributes(params);
+		
+		Display display = getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		int width = size.x;
+		int height = size.y;
+		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+		{
+			
+		}
+		else
+		{
+			width = Math.round(width / 100f * 90f);
+			height = Math.round(height /100f * 90f);
+		}
+		getWindow().setLayout(width, height);
+		
+		
 
 		databaseHandler = new DatabaseHandler(this);
 		
