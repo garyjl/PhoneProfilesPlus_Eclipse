@@ -10,11 +10,9 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.AdapterView;
@@ -29,6 +27,7 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 	private ShortcutProfileListAdapter profileListAdapter;
 	private ListView listView;
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -47,10 +46,12 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 		getWindow().setAttributes(params);
 		
 		Display display = getWindowManager().getDefaultDisplay();
-		Point size = new Point();
-		display.getSize(size);
-		int width = size.x;
-		int height = size.y;
+		//Point size = new Point();
+		//display.getSize(size);
+		//int width = size.x;
+		//int height = size.y;
+		int width = display.getWidth();
+		int height = display.getHeight();
 		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
 		{
 			
