@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <drawable name="focused">#00000000</drawable>
-    <drawable name="selected">#00000000</drawable>
+    <drawable name="focused">@drawable/list_focused_phoneprofilestheme</drawable>
+    <drawable name="selected">@drawable/list_focused_phoneprofilestheme</drawable>
 </resources>

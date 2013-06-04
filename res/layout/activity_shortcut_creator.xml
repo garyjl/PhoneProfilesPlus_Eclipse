@@ -13,7 +13,8 @@
         android:divider="@android:color/transparent" 
         android:padding="10dip"
         android:dividerHeight="5dp"
-        android:listSelector="@drawable/card_selector" >
+        android:listSelector="@drawable/card_selector"
+        android:drawSelectorOnTop="true" >
 
     </ListView>
 
