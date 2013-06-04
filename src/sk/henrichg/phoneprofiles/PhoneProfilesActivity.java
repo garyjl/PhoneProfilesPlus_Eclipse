@@ -42,7 +42,6 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	private DragSortListView listView;
 	private TextView activeProfileName;
 	private ImageView activeProfileIcon;
-	private int startupSource = 0;
 	private static boolean applicationStarted;
 	private Intent intent;
 	private static boolean languageChanged = false;
@@ -88,7 +87,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		applicationStarted = false;
 		
 		intent = getIntent();
-		startupSource = intent.getIntExtra(EXTRA_START_APP_SOURCE, 0);
+		intent.getIntExtra(EXTRA_START_APP_SOURCE, 0);
 		
 		activateProfileHelper = new ActivateProfileHelper(this, getBaseContext());
 
@@ -247,9 +246,6 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		activateProfileHelper.showNotification(profile);
 		activateProfileHelper.updateWidget();
 		
-		// reset, aby sa to dalej chovalo ako normalne spustenie z lauchera
-		startupSource = 0;
-
 		// na onStart dame, ze aplikacia uz je nastartovana
 		applicationStarted = true;
 		

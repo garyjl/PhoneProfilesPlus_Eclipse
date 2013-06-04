@@ -282,7 +282,20 @@ public class ActivateProfileActivity extends SherlockActivity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		return super.onOptionsItemSelected(item);
+		switch (item.getItemId()) {
+		case R.id.menu_edit_profiles:
+			//Log.d("PhoneProfilesActivity.onOptionsItemSelected", "menu_settings");
+			
+			Intent intent = new Intent(getBaseContext(), PhoneProfilesActivity.class);
+
+			startActivity(intent);
+			
+			finish();
+
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	@Override

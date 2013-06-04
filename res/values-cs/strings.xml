@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">PhoneProfiles</string>
+    <string name="menu_edit_profiles">Úprava profilů</string>
     <string name="menu_settings">Nastavení</string>
     <string name="title_activity_phone_profiles">Phone Profiles</string>
     <string name="title_activity_profile_preferences">Parametry profilu</string>
