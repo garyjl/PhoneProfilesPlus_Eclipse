@@ -6,7 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-public class ActivateProfileActivity extends Activity {
+public class BackgroundActivateProfileActivity extends Activity {
 
 	private static DatabaseHandler databaseHandler;
 	private ActivateProfileHelper activateProfileHelper;

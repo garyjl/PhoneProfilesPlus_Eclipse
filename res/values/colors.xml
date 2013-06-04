@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<resources>
-    <drawable name="focused">@drawable/list_focused_phoneprofilestheme</drawable>
-    <drawable name="selected">@drawable/list_focused_phoneprofilestheme</drawable>
-</resources>

@@ -72,7 +72,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="sk.henrichg.phoneprofiles.ActivateProfileActivity"
+            android:name="sk.henrichg.phoneprofiles.BackgroundActivateProfileActivity"
             android:label="@string/empty_string" 
             android:taskAffinity="sk.henrichg.phoneprofiles"
             android:excludeFromRecents="true"
