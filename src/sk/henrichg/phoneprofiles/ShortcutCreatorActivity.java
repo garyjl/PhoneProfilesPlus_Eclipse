@@ -4,18 +4,23 @@ import java.util.List;
 
 import com.actionbarsherlock.app.SherlockActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -38,33 +43,6 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 
 		setContentView(R.layout.activity_shortcut_creator);
 		
-		
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND, WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-		LayoutParams params = getWindow().getAttributes();
-		params.alpha = 1.0f;
-		params.dimAmount = 0.5f;
-		getWindow().setAttributes(params);
-		
-		Display display = getWindowManager().getDefaultDisplay();
-		//Point size = new Point();
-		//display.getSize(size);
-		//int width = size.x;
-		//int height = size.y;
-		int width = display.getWidth();
-		int height = display.getHeight();
-		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-		{
-			
-		}
-		else
-		{
-			width = Math.round(width / 100f * 90f);
-			height = Math.round(height /100f * 90f);
-		}
-		getWindow().setLayout(width, height);
-		
-		
-
 		databaseHandler = new DatabaseHandler(this);
 		
 		listView = (ListView)findViewById(R.id.shortcut_profiles_list);
@@ -85,6 +63,66 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 			}
 			
 		});
+		
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND, WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+		LayoutParams params = getWindow().getAttributes();
+		params.alpha = 1.0f;
+		params.dimAmount = 0.5f;
+		getWindow().setAttributes(params);
+		
+
+		final Activity activity = this;
+		
+		listView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+			
+			public void onGlobalLayout() {
+				listView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+
+				Display display = getWindowManager().getDefaultDisplay();
+				int width = display.getWidth();
+				int maxHeight = display.getHeight();
+				int height = maxHeight;
+				int actionBarHeight = 0;
+
+				TypedValue tv = new TypedValue();
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+				{
+					if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
+				        actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
+				}
+				else 
+				if (getTheme().resolveAttribute(com.actionbarsherlock.R.attr.actionBarSize, tv, true))
+				{
+					actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
+				}
+				   
+				if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+				{
+					width = Math.round(width / 100f * 50f);
+					maxHeight = Math.round(maxHeight / 100f * 90f);
+					
+					height = listView.getHeight();
+					height = height + actionBarHeight; 
+					
+					if (height > maxHeight)
+						height = maxHeight;
+				}
+				else
+				{
+					width = Math.round(width / 100f * 70f);
+					maxHeight = Math.round(maxHeight / 100f * 90f);
+					
+					height = listView.getHeight();
+					height = height + actionBarHeight; 
+					
+					if (height > maxHeight)
+						height = maxHeight;
+				}
+				activity.getWindow().setLayout(width, height);
+			}
+		});
+		
+		
 		
 	}
 	
