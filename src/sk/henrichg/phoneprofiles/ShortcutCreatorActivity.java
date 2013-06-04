@@ -32,6 +32,12 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 	private ShortcutProfileListAdapter profileListAdapter;
 	private ListView listView;
 	
+	private int popupWidth;
+	private int popupMaxHeight;
+	private int popupHeight;
+	private int actionBarHeight;
+
+	
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,55 +76,56 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 		params.dimAmount = 0.5f;
 		getWindow().setAttributes(params);
 		
+		// display dimensions
+		Display display = getWindowManager().getDefaultDisplay();
+		popupWidth = display.getWidth();
+		popupMaxHeight = display.getHeight();
+		popupHeight = 0;
+		actionBarHeight = 0;
 
-		final Activity activity = this;
+		// action bar height
+		TypedValue tv = new TypedValue();
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+		{
+			if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
+		        actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
+		}
+		else 
+		if (getTheme().resolveAttribute(com.actionbarsherlock.R.attr.actionBarSize, tv, true))
+		{
+			actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
+		}
 		
+		// set max. dimensions for display orientation
+		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+		{
+			popupWidth = Math.round(popupWidth / 100f * 50f);
+			popupMaxHeight = Math.round(popupMaxHeight / 100f * 90f);
+		}
+		else
+		{
+			popupWidth = Math.round(popupWidth / 100f * 70f);
+			popupMaxHeight = Math.round(popupMaxHeight / 100f * 90f);
+		}
+
+		// add action bar height
+		popupHeight = popupHeight + actionBarHeight; 
+		
+		// get views height and add it into popupHeight
+		final Activity activity = this;
 		listView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 			
 			public void onGlobalLayout() {
 				listView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
 
-				Display display = getWindowManager().getDefaultDisplay();
-				int width = display.getWidth();
-				int maxHeight = display.getHeight();
-				int height = maxHeight;
-				int actionBarHeight = 0;
+				popupHeight = popupHeight + listView.getHeight();
 
-				TypedValue tv = new TypedValue();
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-				{
-					if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
-				        actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
-				}
-				else 
-				if (getTheme().resolveAttribute(com.actionbarsherlock.R.attr.actionBarSize, tv, true))
-				{
-					actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
-				}
-				   
-				if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-				{
-					width = Math.round(width / 100f * 50f);
-					maxHeight = Math.round(maxHeight / 100f * 90f);
-					
-					height = listView.getHeight();
-					height = height + actionBarHeight; 
-					
-					if (height > maxHeight)
-						height = maxHeight;
-				}
-				else
-				{
-					width = Math.round(width / 100f * 70f);
-					maxHeight = Math.round(maxHeight / 100f * 90f);
-					
-					height = listView.getHeight();
-					height = height + actionBarHeight; 
-					
-					if (height > maxHeight)
-						height = maxHeight;
-				}
-				activity.getWindow().setLayout(width, height);
+				// only last view set window popup dimensions
+				if (popupHeight > popupMaxHeight)
+					popupHeight = popupMaxHeight;
+
+				// set popup window dimensions
+				activity.getWindow().setLayout(popupWidth, popupHeight);
 			}
 		});
 		
