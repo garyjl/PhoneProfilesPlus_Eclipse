@@ -239,28 +239,6 @@ public class PhoneProfilesActivity extends SherlockActivity {
 
 		//Log.d("PhoneProfilesActivity.onStart", "startupSource="+startupSource);
 		
-		boolean actProfile = false;
-		if (startupSource == 0)
-		{
-			
-			// aktivita nebola spustena z notifikacie, ani z widgetu
-			// lebo v tychto pripadoch sa nesmie spravit aktivacia profilu
-			// pri starte aktivity
-			
-			if (!applicationStarted)
-			{
-				// aplikacia este nie je nastartovana, takze mozeme
-				// aktivovat profil, ak je nastavene, ze sa tak ma stat 
-				SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
-				if (preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_APPLICATION_ACTIVATE, true))
-				{
-					// je nastavene, ze pri starte sa ma aktivita aktivovat
-					actProfile = true;
-				}
-			}
-		}
-		//Log.d("PhoneProfilesActivity.onStart", "actProfile="+String.valueOf(actProfile));
-
 		Profile profile;
 		
 		// pre profil, ktory je prave aktivny, treba aktualizovat aktivitu
@@ -268,12 +246,6 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		updateHeader(profile);
 		activateProfileHelper.showNotification(profile);
 		activateProfileHelper.updateWidget();
-		
-		if (actProfile && (profile != null))
-		{
-			// aktivacia profilu
-			activateProfile(profile, false);
-		}
 		
 		// reset, aby sa to dalej chovalo ako normalne spustenie z lauchera
 		startupSource = 0;
@@ -739,6 +711,5 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	{
 		return applicationsCache;
 	}
-	
 	
 }

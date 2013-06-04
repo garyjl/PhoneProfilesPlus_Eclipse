@@ -56,7 +56,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 				actProfile = true;
 			}
 		}
-		//Log.d("PhoneProfilesActivity.onStart", "actProfile="+String.valueOf(actProfile));
+		//Log.d("BackgroundActivateProfileActivity.onStart", "actProfile="+String.valueOf(actProfile));
 
 		Profile profile;
 		

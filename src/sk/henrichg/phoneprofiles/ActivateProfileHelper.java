@@ -355,8 +355,8 @@ public class ActivateProfileHelper {
 				break;
 		}
 		
-		Log.d("PhoneProfilesActivity.activateProfile", "enabledRadios=" + enabledRadios);
-		Log.d("PhoneProfilesActivity.activateProfile", "disabledRadios=" + disabledRadios);
+		Log.d("ActivateProfileHelper.execute", "enabledRadios=" + enabledRadios);
+		Log.d("ActivateProfileHelper.execute", "disabledRadios=" + disabledRadios);
 		
 		// zapni radia
 		if (!enabledRadios.isEmpty())
@@ -426,7 +426,7 @@ public class ActivateProfileHelper {
 		// nahodenie pozadia
 		if (profile.getDeviceWallpaperChange())
 		{
-			//Log.d("PhoneProfilesActivity.activateProfile","set wallpaper");
+			//Log.d("ActivateProfileHelper.execute","set wallpaper");
 			DisplayMetrics displayMetrics = new DisplayMetrics();
 			activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 			int height = displayMetrics.heightPixels;
@@ -439,7 +439,7 @@ public class ActivateProfileHelper {
 				try {
 					wallpaperManager.setBitmap(decodedSampleBitmap);
 				} catch (IOException e) {
-					Log.e("PhoneProfilesActivity.activateProfile", "Cannot set wallpaper. Image="+profile.getDeviceWallpaperIdentifier());
+					Log.e("ActivateProfileHelper.execute", "Cannot set wallpaper. Image="+profile.getDeviceWallpaperIdentifier());
 				}
 			}
 		}
@@ -497,7 +497,7 @@ public class ActivateProfileHelper {
 			else
 			{
 				// vytvorenie intentu na aktivitu, ktora sa otvori na kliknutie na notifikaciu
-				Intent intent = new Intent(context, PhoneProfilesActivity.class);
+				Intent intent = new Intent(context, ActivateProfileActivity.class);
 				// nastavime, ze aktivita sa spusti z notifikacnej listy
 				intent.putExtra(PhoneProfilesActivity.EXTRA_START_APP_SOURCE, PhoneProfilesActivity.STARTUP_SOURCE_NOTIFICATION);
 				PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);

@@ -51,6 +51,15 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="sk.henrichg.phoneprofiles.ActivateProfileActivity"
+            android:label="@string/title_activity_phone_profiles"
+            android:theme="@style/PopupTheme" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name="sk.henrichg.phoneprofiles.ProfilePreferencesActivity"
             android:label="@string/title_activity_profile_preferences"
             android:configChanges="locale|layoutDirection" >

@@ -129,8 +129,6 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 			}
 		});
 		
-		
-		
 	}
 	
 	@Override
@@ -165,9 +163,8 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 			profileName = getResources().getString(R.string.profile_name_default);
 		}
 
-	//	Intent shortcutIntent = new Intent(this, PhoneProfilesActivity.class);
 		Intent shortcutIntent = new Intent(this, BackgroundActivateProfileActivity.class);
-		// PhoneProfilesActivity musi toto testovat, a len spravit aktivaciu profilu
+		// BackgroundActivateProfileActivity musi toto testovat, a len spravit aktivaciu profilu
 		shortcutIntent.putExtra(PhoneProfilesActivity.EXTRA_START_APP_SOURCE, PhoneProfilesActivity.STARTUP_SOURCE_SHORTCUT);
 		shortcutIntent.putExtra(PhoneProfilesActivity.EXTRA_PROFILE_ID, profile.getID());
 		
