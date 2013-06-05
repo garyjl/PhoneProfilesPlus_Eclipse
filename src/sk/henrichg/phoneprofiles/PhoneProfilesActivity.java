@@ -17,8 +17,7 @@ import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
+import android.util.Log;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -132,7 +131,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-				//Log.d("PhoneProfilesActivity.onItemClick", "xxxx");
+				Log.d("PhoneProfilesActivity.onItemClick", "xxxx");
 
 				//SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
 				//if (!preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_APPLICATION_LONG_PRESS_ACTIVATION, false))
@@ -140,7 +139,6 @@ public class PhoneProfilesActivity extends SherlockActivity {
 				
 				startProfilePreferencesActivity(position);
 				
-
 			}
 			
 		}); 
@@ -149,37 +147,13 @@ public class PhoneProfilesActivity extends SherlockActivity {
 
 			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-				//Log.d("PhoneProfilesActivity.onItemLongClick", "xxxx");
+				Log.d("PhoneProfilesActivity.onItemLongClick", "xxxx");
 				
 				if (!MainProfileListAdapter.editIconClicked) // workaround
 				{
 					//SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
 					//if (preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_APPLICATION_LONG_PRESS_ACTIVATION, false))
 						activateProfileWithAlert(position);
-				}
-				else
-				{
-					switch (view.getId()) {
-					case R.id.main_list_item_activate:
-						//Log.d("PhoneProfileActivity.onItemLongClick", "Edit");
-
-						activateProfileWithAlert(position);
-						
-						return true;
-					case R.id.main_list_item_duplicate:
-						//Log.d("PhoneProfileActivity.onItemLongClick", "Duplicate");
-						
-						duplicateProfile(position);
-						
-						return true;
-					case R.id.main_list_item_delete:
-						//Log.d("PhoneProfileActivity.onItemLongClick", "Delete");
-
-						deleteProfile(position);
-						
-						return true;
-					}
-					
 				}
 				
 				MainProfileListAdapter.editIconClicked = false;
@@ -458,7 +432,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		
 	}
 
-	private void duplicateProfile(int position)
+	public void duplicateProfile(int position)
 	{
 		Profile origProfile = profileList.get(position);
 
@@ -501,7 +475,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		startProfilePreferencesActivity(profileList.size()-1);
 	}
 
-	private void deleteProfile(int position)
+	public void deleteProfile(int position)
 	{
 		final Profile profile = profileList.get(position);
 
@@ -558,12 +532,12 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		
 	}
 	
-	private void activateProfileWithAlert(int position)
+	public void activateProfileWithAlert(int position)
 	{
-		SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
+	//	SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
 
-		if (preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_APPLICATION_ALERT, true))
-		{	
+	//	if (preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_APPLICATION_ALERT, true))
+	//	{	
 			final int _position = position;
 			final Profile profile = profileList.get(_position);
 
@@ -579,9 +553,9 @@ public class PhoneProfilesActivity extends SherlockActivity {
 			});
 			dialogBuilder.setNegativeButton(android.R.string.no, null);
 			dialogBuilder.show();
-		}
-		else
-			activateProfile(position, true);
+	//	}
+	//	else
+	//		activateProfile(position, true);
 	}
 	
 	private void activateProfile(Profile profile, boolean interactive)

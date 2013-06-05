@@ -175,6 +175,8 @@ public class MainProfileListAdapter extends BaseAdapter
 			});
 */
 
+        final int _position = position;
+		
 		ImageView profileItemActivate = (ImageView)vi.findViewById(R.id.main_list_item_activate);
 		profileItemActivate.setTag(R.id.main_list_item_activate);
 		profileItemActivate.setOnClickListener(new OnClickListener() {
@@ -182,9 +184,9 @@ public class MainProfileListAdapter extends BaseAdapter
 				public void onClick(View v) {
 					editIconClicked = true;
 					Log.d("MainProfileAdapter.onClick", "activate");
-					//activity.openContextMenu(v);
+					((PhoneProfilesActivity)activity).activateProfileWithAlert(_position);
 				}
-			});
+			}); 
 
 		ImageView profileItemDuplicate = (ImageView)vi.findViewById(R.id.main_list_item_duplicate);
 		profileItemDuplicate.setTag(R.id.main_list_item_duplicate);
@@ -193,9 +195,9 @@ public class MainProfileListAdapter extends BaseAdapter
 				public void onClick(View v) {
 					editIconClicked = true;
 					Log.d("MainProfileAdapter.onClick", "duplicate");
-					//activity.openContextMenu(v);
+					((PhoneProfilesActivity)activity).duplicateProfile(_position);
 				}
-			});
+			}); 
 
 		ImageView profileItemDelete = (ImageView)vi.findViewById(R.id.main_list_item_delete);
 		profileItemDelete.setTag(R.id.main_list_item_delete);
@@ -204,9 +206,9 @@ public class MainProfileListAdapter extends BaseAdapter
 				public void onClick(View v) {
 					editIconClicked = true;
 					Log.d("MainProfileAdapter.onClick", "delete");
-					//activity.openContextMenu(v);
+					((PhoneProfilesActivity)activity).deleteProfile(_position);
 				}
-			});
+			}); 
 		
         //Log.d("ProfileListAdapter.getView", profile.getName());
         

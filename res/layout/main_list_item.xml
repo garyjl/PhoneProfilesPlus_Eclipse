@@ -63,6 +63,8 @@
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/main_list_item_delete"
         android:paddingTop="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
         android:scaleType="center"
         android:contentDescription="@string/empty_string"
         android:src="@drawable/ic_action_duplicate" />
