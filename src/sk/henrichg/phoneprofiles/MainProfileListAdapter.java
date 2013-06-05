@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,7 +23,7 @@ public class MainProfileListAdapter extends BaseAdapter
 	
 	private static LayoutInflater inflater = null;
 	
-	public static boolean editMenuClicked = false;
+	public static boolean editIconClicked = false;
 	
 	public MainProfileListAdapter(Activity a, List<Profile> pl)
 	{
@@ -162,7 +163,7 @@ public class MainProfileListAdapter extends BaseAdapter
 		ImageView profilePrefIndicatorImageView = (ImageView)vi.findViewById(R.id.main_list_profile_pref_indicator);
 		profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, vi.getContext()));
         
-		ImageView profileItemEditMenu = (ImageView)vi.findViewById(R.id.main_list_item_edit_menu);
+/*		ImageView profileItemEditMenu = (ImageView)vi.findViewById(R.id.main_list_item_edit_menu);
 		profileItemEditMenu.setTag(position);
 		profileItemEditMenu.setOnClickListener(new OnClickListener() {
 
@@ -170,6 +171,40 @@ public class MainProfileListAdapter extends BaseAdapter
 					editMenuClicked = true;
 					//Log.d("MainProfileAdapter.onClick", "x");
 					activity.openContextMenu(v);
+				}
+			});
+*/
+
+		ImageView profileItemActivate = (ImageView)vi.findViewById(R.id.main_list_item_activate);
+		profileItemActivate.setTag(R.id.main_list_item_activate);
+		profileItemActivate.setOnClickListener(new OnClickListener() {
+
+				public void onClick(View v) {
+					editIconClicked = true;
+					Log.d("MainProfileAdapter.onClick", "activate");
+					//activity.openContextMenu(v);
+				}
+			});
+
+		ImageView profileItemDuplicate = (ImageView)vi.findViewById(R.id.main_list_item_duplicate);
+		profileItemDuplicate.setTag(R.id.main_list_item_duplicate);
+		profileItemDuplicate.setOnClickListener(new OnClickListener() {
+
+				public void onClick(View v) {
+					editIconClicked = true;
+					Log.d("MainProfileAdapter.onClick", "duplicate");
+					//activity.openContextMenu(v);
+				}
+			});
+
+		ImageView profileItemDelete = (ImageView)vi.findViewById(R.id.main_list_item_delete);
+		profileItemDelete.setTag(R.id.main_list_item_delete);
+		profileItemDelete.setOnClickListener(new OnClickListener() {
+
+				public void onClick(View v) {
+					editIconClicked = true;
+					Log.d("MainProfileAdapter.onClick", "delete");
+					//activity.openContextMenu(v);
 				}
 			});
 		

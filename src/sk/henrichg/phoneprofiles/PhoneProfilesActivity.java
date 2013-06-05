@@ -105,7 +105,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		
 		listView.setAdapter(profileListAdapter);
 		
-		registerForContextMenu(listView);
+		//registerForContextMenu(listView);
 		//listView.setLongClickable(false);
 
 	    /** Defining Navigation listener */
@@ -134,9 +134,12 @@ public class PhoneProfilesActivity extends SherlockActivity {
 
 				//Log.d("PhoneProfilesActivity.onItemClick", "xxxx");
 
-				SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
-				if (!preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_APPLICATION_LONG_PRESS_ACTIVATION, false))
-					activateProfileWithAlert(position);
+				//SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
+				//if (!preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_APPLICATION_LONG_PRESS_ACTIVATION, false))
+				//	activateProfileWithAlert(position);
+				
+				startProfilePreferencesActivity(position);
+				
 
 			}
 			
@@ -148,14 +151,38 @@ public class PhoneProfilesActivity extends SherlockActivity {
 
 				//Log.d("PhoneProfilesActivity.onItemLongClick", "xxxx");
 				
-				if (!MainProfileListAdapter.editMenuClicked) // workaround
+				if (!MainProfileListAdapter.editIconClicked) // workaround
 				{
-					SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
-					if (preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_APPLICATION_LONG_PRESS_ACTIVATION, false))
+					//SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
+					//if (preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_APPLICATION_LONG_PRESS_ACTIVATION, false))
 						activateProfileWithAlert(position);
 				}
+				else
+				{
+					switch (view.getId()) {
+					case R.id.main_list_item_activate:
+						//Log.d("PhoneProfileActivity.onItemLongClick", "Edit");
+
+						activateProfileWithAlert(position);
+						
+						return true;
+					case R.id.main_list_item_duplicate:
+						//Log.d("PhoneProfileActivity.onItemLongClick", "Duplicate");
+						
+						duplicateProfile(position);
+						
+						return true;
+					case R.id.main_list_item_delete:
+						//Log.d("PhoneProfileActivity.onItemLongClick", "Delete");
+
+						deleteProfile(position);
+						
+						return true;
+					}
+					
+				}
 				
-				MainProfileListAdapter.editMenuClicked = false;
+				MainProfileListAdapter.editIconClicked = false;
 				
 				return false;
 			}
@@ -177,7 +204,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		
 	}
 
-	@Override
+/*	@Override
 	public void onCreateContextMenu(ContextMenu menu, View view, ContextMenuInfo menuInfo) {
 		
 		if (view.getId() == R.id.main_profiles_list) {
@@ -222,7 +249,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 			return false;
 		}
 	}
-	
+*/	
 	
 	@Override
 	protected void onStart()
@@ -581,7 +608,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 
 		activateProfileHelper.showNotification(profile);
 
-		if (preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_APPLICATION_CLOSE, true))
+	/*	if (preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_APPLICATION_CLOSE, true))
 		{	
 			// ma sa zatvarat aktivita po aktivacii
 			if (applicationStarted)
@@ -589,7 +616,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 				// tymto je vyriesene, ze pri spusteni aplikacie z launchera
 				// sa hned nezavrie
 				finish();
-		}
+		}  */
 	}
 	
 	private void activateProfile(int position, boolean interactive)
