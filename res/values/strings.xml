@@ -7,6 +7,7 @@
     <string name="title_activity_phone_profiles">Phone Profiles</string>
     <string name="title_activity_profile_preferences">Profile preferences</string>
     <string name="menu_new_profile">New profile</string>
+    <string name="menu_delete_all_profiles">Delete all profiles</string>
     <string name="profiles_header_label">Last activated profile</string>
     <string name="profiles_header_profile_name_no_activated">No profile activated</string>
     <string name="profile_name_default">Profile</string>
@@ -119,5 +120,7 @@
     <string name="phone_profiles_pref_applicationLongClickActivation">Long click activate profile</string>
     <string name="profile_preferences_deviceRunApplicationPackageName">Application</string>
     <string name="profile_preferences_deviceRunApplicationChange">Run application</string>
+    <string name="alert_title_delete_all_profiles">Delete all profiles</string>
+    <string name="alert_message_delete_all_profiles">Are you sure</string>
     
 </resources>

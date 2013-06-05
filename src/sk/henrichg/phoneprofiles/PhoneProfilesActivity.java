@@ -297,6 +297,13 @@ public class PhoneProfilesActivity extends SherlockActivity {
 			startProfilePreferencesActivity(-1);
 			
 			return true;
+		case R.id.menu_delete_all_profiles:
+			//Log.d("PhoneProfilesActivity.onOptionsItemSelected", "menu_delete_all_profiles");
+			
+			deleteAllProfiles();
+			
+			return true;
+			
 		case R.id.menu_settings:
 			//Log.d("PhoneProfilesActivity.onOptionsItemSelected", "menu_settings");
 			
@@ -488,6 +495,30 @@ public class PhoneProfilesActivity extends SherlockActivity {
 			public void onClick(DialogInterface dialog, int which) {
 				profileListAdapter.deleteItem(profile);
 				databaseHandler.deleteProfile(profile);
+				//updateListView();
+				// v pripade, ze sa odmaze aktivovany profil, nastavime, ze nic nie je aktivovane
+				//Profile profile = databaseHandler.getActivatedProfile();
+				Profile profile = profileListAdapter.getActivatedProfile();
+				updateHeader(profile);
+				activateProfileHelper.showNotification(profile);
+				activateProfileHelper.updateWidget();
+			}
+		});
+		dialogBuilder.setNegativeButton(android.R.string.no, null);
+		dialogBuilder.show();
+	}
+
+	private void deleteAllProfiles()
+	{
+		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+		dialogBuilder.setTitle(getResources().getString(R.string.alert_title_delete_all_profiles));
+		dialogBuilder.setMessage(getResources().getString(R.string.alert_message_delete_all_profiles) + "?");
+		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
+		dialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+			
+			public void onClick(DialogInterface dialog, int which) {
+				profileListAdapter.clear();
+				databaseHandler.deleteAllProfiles();
 				//updateListView();
 				// v pripade, ze sa odmaze aktivovany profil, nastavime, ze nic nie je aktivovane
 				//Profile profile = databaseHandler.getActivatedProfile();

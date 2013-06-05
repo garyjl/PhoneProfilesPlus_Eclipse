@@ -89,6 +89,12 @@ public class MainProfileListAdapter extends BaseAdapter
 		notifyDataSetChanged();
 	}
 	
+	public void clear()
+	{
+		profileList.clear();
+		notifyDataSetChanged();
+	}
+	
 	public void changeItemOrder(int from, int to)
 	{
 		Profile profile = profileList.get(from);
