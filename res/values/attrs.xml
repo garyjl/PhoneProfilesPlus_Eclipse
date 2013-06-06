@@ -27,6 +27,9 @@
     <attr name="actionExitIcon" format="reference" />
     <attr name="actionEditProfilesIcon" format="reference" />
     <attr name="activityPopupBackground" format="reference" />
+    <attr name="cardShape" format="reference" />
+    <attr name="headerCardShape" format="reference" />
+    <attr name="cardSelector" format="reference" />
     <attr name="dragHandleIcon" format="reference" />
     <attr name="actionActivateIcon" format="reference" />
     <attr name="actionDuplicateIcon" format="reference" />

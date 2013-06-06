@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="activityPopupBackground_phoneprofilestheme_dark">#FF000000</color>
+    <color name="activityPopupBackground_phoneprofilestheme_dark">#FF0F0F0F</color>
+    <color name="activityCardBackground_phoneprofilestheme_dark">#FF202020</color>
 </resources>

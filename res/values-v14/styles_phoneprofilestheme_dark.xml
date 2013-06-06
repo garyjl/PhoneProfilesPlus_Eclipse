@@ -38,6 +38,9 @@
         <item name="actionExitIcon">@drawable/ic_action_exit_dark</item>
         <item name="actionEditProfilesIcon">@drawable/ic_action_edit_profiles_dark</item>
         <item name="activityPopupBackground">@color/activityPopupBackground_phoneprofilestheme_dark</item>
+        <item name="cardShape">@drawable/card_dark</item>
+        <item name="headerCardShape">@drawable/header_card_dark</item>
+        <item name="cardSelector">@drawable/card_selector_dark</item>
         <item name="dragHandleIcon">@drawable/ic_drag_handle_dark</item>
         <item name="actionActivateIcon">@drawable/ic_action_activate_dark</item>
         <item name="actionDuplicateIcon">@drawable/ic_action_duplicate_dark</item>

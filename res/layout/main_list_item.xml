@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:padding="1dp"
     android:orientation="horizontal"
-    android:background="@drawable/card" >
+    android:background="?attr/cardShape" >
 
     <ImageView
         android:id="@+id/main_list_drag_handle"

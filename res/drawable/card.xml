@@ -15,7 +15,7 @@
     <!-- Card -->
     <item android:bottom="2dp">
         <shape android:shape="rectangle">
-            <solid android:color="@android:color/white" />
+            <solid android:color="@color/activityCardBackground_phoneprofilestheme" />
             <stroke android:width="2.0px" android:color="#00000000" />
             <corners android:topLeftRadius="2.0dip"
                      android:topRightRadius="2.0dip"
