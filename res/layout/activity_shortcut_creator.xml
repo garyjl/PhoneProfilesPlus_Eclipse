@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     tools:context=".ShortcutCreatorActivity" 
-    android:background="#ffdedede" >
+    android:background="?attr/activityPopupBackground" >
 
     <ListView
         android:id="@+id/shortcut_profiles_list"

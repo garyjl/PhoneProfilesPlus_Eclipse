@@ -26,6 +26,11 @@
     <attr name="actionImportExportIcon" format="reference" />
     <attr name="actionExitIcon" format="reference" />
     <attr name="actionEditProfilesIcon" format="reference" />
+    <attr name="activityPopupBackground" format="reference" />
+    <attr name="dragHandleIcon" format="reference" />
+    <attr name="actionActivateIcon" format="reference" />
+    <attr name="actionDuplicateIcon" format="reference" />
+    <attr name="actionDeleteIcon" format="reference" />
     
     
 </resources>

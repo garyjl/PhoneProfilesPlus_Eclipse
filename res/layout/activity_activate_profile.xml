@@ -5,7 +5,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     tools:context=".ShortcutCreatorActivity" 
-    android:background="#ffdedede" >
+    android:background="?attr/activityPopupBackground" >
 
     <LinearLayout
 		android:id="@+id/act_prof_linlayout_header"

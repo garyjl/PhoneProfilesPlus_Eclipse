@@ -36,6 +36,11 @@
         <item name="actionImportExportIcon">@drawable/ic_action_import_export</item>
         <item name="actionExitIcon">@drawable/ic_action_exit</item>
         <item name="actionEditProfilesIcon">@drawable/ic_action_edit_profiles</item>
+        <item name="activityPopupBackground">@color/activityPopupBackground_phoneprofilestheme_dark</item>
+        <item name="dragHandleIcon">@drawable/ic_drag_handle_dark</item>
+        <item name="actionActivateIcon">@drawable/ic_action_activate_dark</item>
+        <item name="actionDuplicateIcon">@drawable/ic_action_duplicate_dark</item>
+        <item name="actionDeleteIcon">@drawable/ic_action_delete_dark</item>
     </style>
 
     <style name="ActionBar.Solid.Phoneprofilestheme_dark" parent="@style/Widget.Sherlock.ActionBar.Solid">
