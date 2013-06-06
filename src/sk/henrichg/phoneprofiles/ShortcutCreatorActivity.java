@@ -41,13 +41,16 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		PhoneProfilesPreferencesActivity.loadPreferences(getBaseContext());
 		
-		PhoneProfilesActivity.setLanguage(getBaseContext(), false);
+		PhoneProfilesActivity.setTheme(this, true);
+		PhoneProfilesActivity.setLanguage(getBaseContext());
 
 		//requestWindowFeature(Window.FEATURE_ACTION_BAR);
 
 		setContentView(R.layout.activity_shortcut_creator);
-		
+
 		databaseHandler = new DatabaseHandler(this);
 		
 		listView = (ListView)findViewById(R.id.shortcut_profiles_list);

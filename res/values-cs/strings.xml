@@ -126,5 +126,10 @@
     <string name="profile_preferences_deviceRunApplicationChange">Spustit aplikaci</string>
     <string name="alert_title_delete_all_profiles">Vymazat všechny profily</string>
     <string name="alert_message_delete_all_profiles">Jste si jisti</string>
+    <string name="phone_profiles_pref_applicationTheme">Téma aplikace</string>
+    <string name="phone_profiles_pref_applicationTheme_light">Světlá téma</string>
+    <string name="phone_profiles_pref_applicationTheme_dark">Tmavá téma</string>
+    <string name="array_pref_value_light">light</string>
+    <string name="array_pref_value_dark">dark</string>
     
 </resources>

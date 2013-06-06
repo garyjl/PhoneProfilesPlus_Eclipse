@@ -58,10 +58,11 @@ public class ActivateProfileActivity extends SherlockActivity {
 		
 		PhoneProfilesPreferencesActivity.loadPreferences(getBaseContext());
 		
-		PhoneProfilesActivity.setLanguage(getBaseContext(), false);
+		PhoneProfilesActivity.setTheme(this, true);
+		PhoneProfilesActivity.setLanguage(getBaseContext());
 		
 		setContentView(R.layout.activity_activate_profile);
-		
+
 		//getSupportActionBar().setHomeButtonEnabled(true);
 		//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

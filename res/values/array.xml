@@ -68,5 +68,13 @@
     <item>@string/array_pref_value_0</item>
     <item>@string/array_pref_value_1</item>
 </string-array>
+<string-array name="themeArray">
+	<item>@string/phone_profiles_pref_applicationTheme_light</item>
+	<item>@string/phone_profiles_pref_applicationTheme_dark</item>
+</string-array>
+<string-array name="themeValues">
+    <item>@string/array_pref_value_light</item>
+    <item>@string/array_pref_value_dark</item>
+</string-array>
 
 </resources>

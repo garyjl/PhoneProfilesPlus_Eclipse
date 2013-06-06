@@ -30,7 +30,12 @@
         <item name="actionModeSplitBackground">@drawable/cab_background_bottom_phoneprofilestheme</item>
         <item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Phoneprofilestheme</item>
 
-        
+        <item name="actionNewProfileIcon">@drawable/ic_action_new_profile</item>
+        <item name="actionDeleteAllIcon">@drawable/ic_action_delete_all</item>
+        <item name="actionSettingsIcon">@drawable/ic_action_settings</item>
+        <item name="actionImportExportIcon">@drawable/ic_action_import_export</item>
+        <item name="actionExitIcon">@drawable/ic_action_exit</item>
+        <item name="actionEditProfilesIcon">@drawable/ic_action_edit_profiles</item>
     </style>
 
     <style name="ActionBar.Solid.Phoneprofilestheme" parent="@style/Widget.Sherlock.Light.ActionBar.Solid">

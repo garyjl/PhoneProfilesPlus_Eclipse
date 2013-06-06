@@ -3,6 +3,6 @@
 	    android:title="@string/menu_edit_profiles"
 	    android:orderInCategory="100"
 	    android:showAsAction="ifRoom"
-	    android:icon="@drawable/ic_action_edit_profiles" />
+	    android:icon="?attr/actionEditProfilesIcon" />
     
 </menu>

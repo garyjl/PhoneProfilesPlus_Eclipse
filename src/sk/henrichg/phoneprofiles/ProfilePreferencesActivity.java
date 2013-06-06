@@ -64,9 +64,14 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
 	@Override
     public void onCreate(Bundle savedInstanceState) {
 		
-        super.onCreate(savedInstanceState);
+		// must by called before super.onCreate() for PreferenceActivity
+		PhoneProfilesActivity.setTheme(this, false); // must by called before super.onCreate()
+		PhoneProfilesActivity.setLanguage(getBaseContext());
 
-		PhoneProfilesActivity.setLanguage(getBaseContext(), false);
+		super.onCreate(savedInstanceState);
+
+		//PhoneProfilesActivity.setLanguage(getBaseContext());
+		//PhoneProfilesActivity.setTheme(getBaseContext());
 		
 		getSupportActionBar().setHomeButtonEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);

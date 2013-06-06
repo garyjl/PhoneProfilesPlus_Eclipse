@@ -8,7 +8,9 @@ import com.actionbarsherlock.app.SherlockActivity;
 
 import android.os.Bundle;
 import android.provider.Settings;
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -42,9 +44,9 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	private DragSortListView listView;
 	private TextView activeProfileName;
 	private ImageView activeProfileIcon;
-	private static boolean applicationStarted;
+	//private static boolean applicationStarted;
 	private Intent intent;
-	private static boolean languageChanged = false;
+	//private static boolean languageChanged = false;
 	private static ApplicationsCache applicationsCache;
 
 	static final String EXTRA_PROFILE_POSITION = "profile_position";
@@ -68,10 +70,13 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		
 		PACKAGE_NAME = getApplicationContext().getPackageName();
 
-		setLanguage(getBaseContext(), false);
+		PhoneProfilesPreferencesActivity.loadPreferences(getBaseContext());
+		
+		setTheme(this, false);
+		setLanguage(getBaseContext());
 		
 		setContentView(R.layout.activity_phone_profiles);
-		
+
 		//getSupportActionBar().setHomeButtonEnabled(true);
 		//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
@@ -85,7 +90,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	    getSupportActionBar().setNavigationMode(com.actionbarsherlock.app.ActionBar.NAVIGATION_MODE_LIST);
 	*/
 		// na onCreate dame, ze aplikacia este nie je nastartovana
-		applicationStarted = false;
+		//applicationStarted = false;
 		
 		intent = getIntent();
 		intent.getIntExtra(EXTRA_START_APP_SOURCE, 0);
@@ -249,13 +254,13 @@ public class PhoneProfilesActivity extends SherlockActivity {
 			return;
 		}
 		
-		if (applicationStarted && languageChanged)
+	/*	if (applicationStarted && languageChanged)
 		{
 			// zrusenie notifikacie
 			activateProfileHelper.showNotification(null);
 			finish();
 			return;
-		}
+		} */
 
 		//Log.d("PhoneProfilesActivity.onStart", "startupSource="+startupSource);
 		
@@ -267,8 +272,8 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		activateProfileHelper.showNotification(profile);
 		activateProfileHelper.updateWidget();
 		
-		// na onStart dame, ze aplikacia uz je nastartovana
-		applicationStarted = true;
+	/*	// na onStart dame, ze aplikacia uz je nastartovana
+		applicationStarted = true; */
 		
 		//Log.d("PhoneProfileActivity.onStart", "xxxx");
 		
@@ -718,7 +723,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	}
 	
 	
-	public static void setLanguage(Context context, boolean restart)
+	public static void setLanguage(Context context)//, boolean restart)
 	{
 		// jazyk na aky zmenit
 		String lang = PhoneProfilesPreferencesActivity.applicationLanguage;
@@ -741,7 +746,28 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		appConfig.locale = appLocale;
 		context.getResources().updateConfiguration(appConfig, context.getResources().getDisplayMetrics());
 		
-		languageChanged = restart;
+		//languageChanged = restart;
+	}
+	
+	public static void setTheme(Activity activity, boolean forPopup)
+	{
+		if (PhoneProfilesPreferencesActivity.applicationTheme.equals("light"))
+		{
+			Log.d("PhoneProfilesActivity.setTheme","light");
+			if (forPopup)
+				activity.setTheme(R.style.PopupTheme);
+			else
+				activity.setTheme(R.style.Theme_Phoneprofilestheme);
+		}
+		else
+		if (PhoneProfilesPreferencesActivity.applicationTheme.equals("dark"))
+		{
+			Log.d("PhoneProfilesActivity.setTheme","dark");
+			if (forPopup)
+				activity.setTheme(R.style.PopupTheme_dark);
+			else
+				activity.setTheme(R.style.Theme_Phoneprofilestheme_dark);
+		}
 	}
 	
 	public static DatabaseHandler getDatabaseHandler()

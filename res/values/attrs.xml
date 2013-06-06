@@ -18,4 +18,14 @@
 		<attr name="bNoChange" format="integer" />
 		<attr name="bAutomatic" format="integer" />
 	</declare-styleable>
+	
+	<!-- theme dependent drawables -->
+    <attr name="actionNewProfileIcon" format="reference" />
+    <attr name="actionDeleteAllIcon" format="reference" />
+    <attr name="actionSettingsIcon" format="reference" />
+    <attr name="actionImportExportIcon" format="reference" />
+    <attr name="actionExitIcon" format="reference" />
+    <attr name="actionEditProfilesIcon" format="reference" />
+    
+    
 </resources>
