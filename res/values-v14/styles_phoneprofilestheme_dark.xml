@@ -25,11 +25,10 @@
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Phoneprofilestheme_dark</item>
         <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Phoneprofilestheme_dark</item>
         <item name="android:actionDropDownStyle">@style/DropDownNav.Phoneprofilestheme_dark</item>
-        <item name="android:actionBarStyle">@style/ActionBar.Transparent.Phoneprofilestheme_dark</item>
+        <item name="android:actionBarStyle">@style/ActionBar.Solid.Phoneprofilestheme_dark</item>
         <item name="android:actionModeBackground">@drawable/cab_background_top_phoneprofilestheme_dark</item>
         <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_phoneprofilestheme_dark</item>
         <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Phoneprofilestheme_dark</item>
-        
         
         <item name="actionNewProfileIcon">@drawable/ic_action_new_profile_dark</item>
         <item name="actionDeleteAllIcon">@drawable/ic_action_delete_all_dark</item>
