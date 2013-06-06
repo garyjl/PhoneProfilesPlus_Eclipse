@@ -15,15 +15,18 @@ public class ActivateProfileWidget extends AppWidgetProvider {
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
 	{
+		PhoneProfilesPreferencesActivity.loadPreferences(context);
+
+		DatabaseHandler databaseHandler = new DatabaseHandler(context);
+		Profile profile = databaseHandler.getActivatedProfile();
+
 		// ziskanie vsetkych wigetov tejtor triedy na plochach lauchera
 		ComponentName thisWidget = new ComponentName(context, ActivateProfileWidget.class);
 		int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
-		
+
 		// prechadzame vsetky ziskane widgety
 		for (int widgetId : allWidgetIds)
 		{
-			DatabaseHandler databaseHandler = new DatabaseHandler(context);
-			Profile profile = databaseHandler.getActivatedProfile();
 			boolean isIconResourceID;
 			String iconIdentifier;
 			String profileName;

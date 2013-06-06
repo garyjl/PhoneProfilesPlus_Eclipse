@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.widget.Toast;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 
 public class BackgroundActivateProfileActivity extends Activity {
 
@@ -49,8 +48,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 		{
 			// aktivita bola spustena po boote telefonu
 			
-			SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
-			if (preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_APPLICATION_ACTIVATE, true))
+			if (PhoneProfilesPreferencesActivity.applicationActivate)
 			{
 				// je nastavene, ze pri starte sa ma aktivita aktivovat
 				actProfile = true;
@@ -87,15 +85,13 @@ public class BackgroundActivateProfileActivity extends Activity {
 	
 	private void activateProfile(Profile profile, boolean interactive)
 	{
-		SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
-		
 		databaseHandler.activateProfile(profile);
 
 		activateProfileHelper.execute(profile, interactive);
 		activateProfileHelper.showNotification(profile);
 		activateProfileHelper.updateWidget();
 
-		if (preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_NOTIFICATION_TOAST, true))
+		if (PhoneProfilesPreferencesActivity.notificationsToast)
 		{	
 			// toast notification
 			Toast msg = Toast.makeText(this, 

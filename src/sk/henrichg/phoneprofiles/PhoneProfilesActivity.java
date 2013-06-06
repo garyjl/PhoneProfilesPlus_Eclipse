@@ -24,6 +24,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.mobeta.android.dslv.DragSortListView;
 
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -73,15 +74,16 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		
 		//getSupportActionBar().setHomeButtonEnabled(true);
 		//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		getSupportActionBar().setDisplayShowTitleEnabled(false);
 		
-		   /** Create an array adapter to populate dropdownlist */
+	/*	getSupportActionBar().setDisplayShowTitleEnabled(false);
+		
+		// Create an array adapter to populate dropdownlist 
 	    ArrayAdapter<CharSequence> navigationAdapter =
 	            ArrayAdapter.createFromResource(getBaseContext(), R.array.phoneProfilesNavigator, R.layout.sherlock_spinner_item);
 
-	    /** Enabling dropdown list navigation for the action bar */
+	    // Enabling dropdown list navigation for the action bar 
 	    getSupportActionBar().setNavigationMode(com.actionbarsherlock.app.ActionBar.NAVIGATION_MODE_LIST);
-
+	*/
 		// na onCreate dame, ze aplikacia este nie je nastartovana
 		applicationStarted = false;
 		
@@ -107,7 +109,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		//registerForContextMenu(listView);
 		//listView.setLongClickable(false);
 
-	    /** Defining Navigation listener */
+	/*    // Defining Navigation listener 
 	    ActionBar.OnNavigationListener navigationListener = new ActionBar.OnNavigationListener() {
 
 	        public boolean onNavigationItemSelected(int itemPosition, long itemId) {
@@ -123,10 +125,10 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	        }
 	    };
 
-	    /** Setting dropdown items and item navigation listener for the actionbar */
+	    // Setting dropdown items and item navigation listener for the actionbar 
 	    getSupportActionBar().setListNavigationCallbacks(navigationAdapter, navigationListener);
 	    navigationAdapter.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
-		
+	*/	
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -229,12 +231,30 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	protected void onStart()
 	{
 		super.onStart();
+
+		Log.d("PhoneProfilesActivity.onStart", "xxx");
+		
+		if (PhoneProfilesPreferencesActivity.getInvalidateLoader())
+		{
+			Log.d("PhoneProfilesActivity.onStart", "invalidate");
+
+		//	ViewGroup vg = (ViewGroup) findViewById(R.id.layout_phone_profiles_activity);
+		//	vg.invalidate();
+			
+			// refresh activity
+			Intent refresh = new Intent(getBaseContext(), PhoneProfilesActivity.class);
+			startActivity(refresh);
+			finish();
+			
+			return;
+		}
 		
 		if (applicationStarted && languageChanged)
 		{
 			// zrusenie notifikacie
 			activateProfileHelper.showNotification(null);
 			finish();
+			return;
 		}
 
 		//Log.d("PhoneProfilesActivity.onStart", "startupSource="+startupSource);
@@ -559,7 +579,10 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		}
 		
 		ImageView profilePrefIndicatorImageView = (ImageView)findViewById(R.id.activated_profile_pref_indicator);
-		profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, getBaseContext()));
+		if (PhoneProfilesPreferencesActivity.applicationEditorPrefIndicator)
+			profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, getBaseContext()));
+		else
+			profilePrefIndicatorImageView.setImageBitmap(null);
 		
 	}
 	
@@ -591,8 +614,6 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	
 	private void activateProfile(Profile profile, boolean interactive)
 	{
-		SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
-		
 		profileListAdapter.activateProfile(profile);
 		databaseHandler.activateProfile(profile);
 		
@@ -601,7 +622,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		updateHeader(profile);
 		activateProfileHelper.updateWidget();
 
-		if (preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_NOTIFICATION_TOAST, true))
+		if (PhoneProfilesPreferencesActivity.notificationsToast)
 		{	
 			// toast notification
 			Toast msg = Toast.makeText(getBaseContext(), 
@@ -699,10 +720,8 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	
 	public static void setLanguage(Context context, boolean restart)
 	{
-		SharedPreferences preferences = context.getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
-		
 		// jazyk na aky zmenit
-		String lang = preferences.getString(PhoneProfilesPreferencesActivity.PREF_APPLICATION_LANGUAGE, "system");
+		String lang = PhoneProfilesPreferencesActivity.applicationLanguage;
 		
 		//Log.d("PhoneProfilesActivity.setLanguauge", lang);
 

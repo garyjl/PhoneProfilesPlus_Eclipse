@@ -9,7 +9,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -57,6 +56,8 @@ public class ActivateProfileActivity extends SherlockActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		PhoneProfilesPreferencesActivity.loadPreferences(getBaseContext());
+		
 		PhoneProfilesActivity.setLanguage(getBaseContext(), false);
 		
 		setContentView(R.layout.activity_activate_profile);
@@ -90,8 +91,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 
 				//Log.d("ActivateProfilesActivity.onItemClick", "xxxx");
 
-				SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
-				if (!preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_APPLICATION_LONG_PRESS_ACTIVATION, false))
+				if (!PhoneProfilesPreferencesActivity.applicationLongClickActivation)
 					activateProfileWithAlert(position);
 
 			}
@@ -104,8 +104,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 
 				//Log.d("ActivateProfilesActivity.onItemLongClick", "xxxx");
 				
-				SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
-				if (preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_APPLICATION_LONG_PRESS_ACTIVATION, false))
+				if (PhoneProfilesPreferencesActivity.applicationLongClickActivation)
 					activateProfileWithAlert(position);
 
 				return false;
@@ -214,8 +213,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 			{
 				// aplikacia este nie je nastartovana, takze mozeme
 				// aktivovat profil, ak je nastavene, ze sa tak ma stat 
-				SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
-				if (preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_APPLICATION_ACTIVATE, true))
+				if (PhoneProfilesPreferencesActivity.applicationActivate)
 				{
 					// je nastavene, ze pri starte sa ma aktivita aktivovat
 					actProfile = true;
@@ -335,15 +333,17 @@ public class ActivateProfileActivity extends SherlockActivity {
 		}
 		
 		ImageView profilePrefIndicatorImageView = (ImageView)findViewById(R.id.act_prof_activated_profile_pref_indicator);
-		profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, getBaseContext()));
+		if (PhoneProfilesPreferencesActivity.applicationActivatorPrefIndicator)
+			profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, getBaseContext()));
+		else
+			profilePrefIndicatorImageView.setImageBitmap(null);
+			
 		
 	}
 	
 	private void activateProfileWithAlert(int position)
 	{
-		SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
-
-		if (preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_APPLICATION_ALERT, true))
+		if (PhoneProfilesPreferencesActivity.applicationActivateWithAlert)
 		{	
 			final int _position = position;
 			final Profile profile = profileList.get(_position);
@@ -367,8 +367,6 @@ public class ActivateProfileActivity extends SherlockActivity {
 	
 	private void activateProfile(Profile profile, boolean interactive)
 	{
-		SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
-		
 		profileListAdapter.activateProfile(profile);
 		databaseHandler.activateProfile(profile);
 		
@@ -377,7 +375,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 		updateHeader(profile);
 		activateProfileHelper.updateWidget();
 
-		if (preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_NOTIFICATION_TOAST, true))
+		if (PhoneProfilesPreferencesActivity.notificationsToast)
 		{	
 			// toast notification
 			Toast msg = Toast.makeText(getBaseContext(), 
@@ -389,7 +387,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 
 		activateProfileHelper.showNotification(profile);
 
-		if (preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_APPLICATION_CLOSE, true))
+		if (PhoneProfilesPreferencesActivity.applicationClose)
 		{	
 			// ma sa zatvarat aktivita po aktivacii
 			if (applicationStarted)

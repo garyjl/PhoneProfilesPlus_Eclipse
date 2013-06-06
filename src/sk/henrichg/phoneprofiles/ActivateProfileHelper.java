@@ -19,7 +19,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -485,10 +484,7 @@ public class ActivateProfileHelper {
 	@SuppressLint("InlinedApi")
 	public void showNotification(Profile profile)
 	{
-
-		SharedPreferences preferences = context.getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, Context.MODE_PRIVATE);
-		
-		if (preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_NOTIFICATION_STATUS_BAR, true))
+		if (PhoneProfilesPreferencesActivity.notificationStatusBar)
 		{	
 			if (profile == null)
 			{
@@ -517,7 +513,7 @@ public class ActivateProfileHelper {
 					
 
 		        	int iconSmallResource;
-		    		if (preferences.getString(PhoneProfilesPreferencesActivity.PREF_NOTIFICATION_STATUS_BAR_STYLE, "0").equals("0"))
+		    		if (PhoneProfilesPreferencesActivity.notificationStatusBarStyle.equals("0"))
 		    		{
 		    			iconSmallResource = context.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", context.getPackageName());
 						notificationBuilder.setSmallIcon(iconSmallResource);
@@ -536,7 +532,7 @@ public class ActivateProfileHelper {
 		        else
 		        {
 		        	int iconSmallResource;
-		    		if (preferences.getString(PhoneProfilesPreferencesActivity.PREF_NOTIFICATION_STATUS_BAR_STYLE, "0").equals("0"))
+		    		if (PhoneProfilesPreferencesActivity.notificationStatusBarStyle.equals("0"))
 		    			iconSmallResource = R.drawable.ic_profile_default;
 		    		else
 		    			iconSmallResource = R.drawable.ic_profile_default_notify;

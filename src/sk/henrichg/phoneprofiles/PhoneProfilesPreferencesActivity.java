@@ -5,7 +5,9 @@ import com.actionbarsherlock.view.MenuItem;
 
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 //import android.content.Context;
 //import android.content.Intent;
@@ -23,35 +25,53 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
 	
 	private static Activity preferenceActivity = null;
 	
+	private boolean showEditorPrefIndicator;
+	private static boolean invalidateLoader = false; 
+
 	private String activeLanguage;
 	
 		
 	static final String PREFS_NAME = "phone_profile_preferences";
 	
-    static final String PREF_APPLICATION_START_ON_BOOT = "applicationStartOnBoot";
-    static final String PREF_APPLICATION_ACTIVATE = "applicationActivate";
-    static final String PREF_APPLICATION_ALERT = "applicationAlert";
-    static final String PREF_APPLICATION_CLOSE = "applicationClose";
-    static final String PREF_APPLICATION_LONG_PRESS_ACTIVATION = "applicationLongClickActivation";
-    static final String PREF_APPLICATION_LANGUAGE = "applicationLanguage";
-    static final String PREF_NOTIFICATION_TOAST = "notificationsToast";
-    static final String PREF_NOTIFICATION_STATUS_BAR  = "notificationStatusBar";
-    static final String PREF_NOTIFICATION_STATUS_BAR_STYLE  = "notificationStatusBarStyle";
-	
-	
+    private static final String PREF_APPLICATION_START_ON_BOOT = "applicationStartOnBoot";
+    private static final String PREF_APPLICATION_ACTIVATE = "applicationActivate";
+    private static final String PREF_APPLICATION_ALERT = "applicationAlert";
+    private static final String PREF_APPLICATION_CLOSE = "applicationClose";
+    private static final String PREF_APPLICATION_LONG_PRESS_ACTIVATION = "applicationLongClickActivation";
+    private static final String PREF_APPLICATION_LANGUAGE = "applicationLanguage";
+    private static final String PREF_APPLICATION_ACTIVATOR_PREF_INDICATOR = "applicationActivatorPrefIndicator";
+    private static final String PREF_APPLICATION_EDITOR_PREF_INDICATOR = "applicationEditorPrefIndicator";
+    private static final String PREF_NOTIFICATION_TOAST = "notificationsToast";
+    private static final String PREF_NOTIFICATION_STATUS_BAR  = "notificationStatusBar";
+    private static final String PREF_NOTIFICATION_STATUS_BAR_STYLE  = "notificationStatusBarStyle";
+
+    public static boolean applicationStartOnBoot;
+    public static boolean applicationActivate;
+    public static boolean applicationActivateWithAlert;
+    public static boolean applicationClose;
+    public static boolean applicationLongClickActivation;
+    public static String applicationLanguage;
+    public static boolean applicationActivatorPrefIndicator;
+    public static boolean applicationEditorPrefIndicator;
+    public static boolean notificationsToast;
+    public static boolean notificationStatusBar;
+    public static String notificationStatusBarStyle;
+    
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
 
+		preferenceActivity = this;
+
+		invalidateLoader = false;
+		
 		PhoneProfilesActivity.setLanguage(getBaseContext(), false);
 		
 		getSupportActionBar().setHomeButtonEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
-
-		preferenceActivity = this;
 
         //intent = getIntent();
         //context = this;
@@ -64,6 +84,7 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
 
         preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         activeLanguage = preferences.getString(PREF_APPLICATION_LANGUAGE, "system");
+        showEditorPrefIndicator = preferences.getBoolean(PREF_APPLICATION_EDITOR_PREF_INDICATOR, true);
         
         prefListener = new OnSharedPreferenceChangeListener() {
         	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
@@ -121,8 +142,26 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
 	protected void onPause()
 	{
 		super.onPause();
+		loadPreferences(getBaseContext());
+		
 		if (activeLanguage != preferences.getString(PREF_APPLICATION_LANGUAGE, "system"))
+			// sposobi ukoncenie aplikacie (vid LocaleChangedReceiver
     		PhoneProfilesActivity.setLanguage(getBaseContext(), true);
+    	else
+    	{
+    		Log.d("PhoneProfilesPreferencesActivity.onPause","no language changed");
+    		if (showEditorPrefIndicator != applicationEditorPrefIndicator)
+    		{
+        		Log.d("PhoneProfilesPreferencesActivity.onPause","invalidate");
+    			invalidateLoader = true;
+    		}
+    	}
+	}
+
+	@Override
+	protected void onStop()
+	{
+		super.onStop();
 	}
 	
 	@Override
@@ -165,6 +204,31 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
 	static public Activity getActivity()
 	{
 		return preferenceActivity;
+	}
+	
+	static public void loadPreferences(Context context)
+	{
+		SharedPreferences preferences = context.getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, Context.MODE_PRIVATE);
+
+	    applicationStartOnBoot = preferences.getBoolean(PREF_APPLICATION_START_ON_BOOT, false);
+	    applicationActivate = preferences.getBoolean(PREF_APPLICATION_ACTIVATE, true);
+	    applicationActivateWithAlert = preferences.getBoolean(PREF_APPLICATION_ALERT, true);
+	    applicationClose = preferences.getBoolean(PREF_APPLICATION_CLOSE, true);
+	    applicationLongClickActivation = preferences.getBoolean(PREF_APPLICATION_LONG_PRESS_ACTIVATION, false);
+	    applicationLanguage = preferences.getString(PREF_APPLICATION_LANGUAGE, "system");
+	    applicationActivatorPrefIndicator = preferences.getBoolean(PREF_APPLICATION_ACTIVATOR_PREF_INDICATOR, true);
+	    applicationEditorPrefIndicator = preferences.getBoolean(PREF_APPLICATION_EDITOR_PREF_INDICATOR, true);
+	    notificationsToast = preferences.getBoolean(PREF_NOTIFICATION_TOAST, true);
+	    notificationStatusBar = preferences.getBoolean(PREF_NOTIFICATION_STATUS_BAR, true);
+	    notificationStatusBarStyle = preferences.getString(PREF_NOTIFICATION_STATUS_BAR_STYLE, "0");
+		
+	}
+	
+	static public boolean getInvalidateLoader()
+	{
+		boolean r = invalidateLoader;
+		invalidateLoader = false;
+		return r;
 	}
 
 }

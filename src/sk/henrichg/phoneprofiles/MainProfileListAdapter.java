@@ -167,7 +167,10 @@ public class MainProfileListAdapter extends BaseAdapter
         }
         
 		ImageView profilePrefIndicatorImageView = (ImageView)vi.findViewById(R.id.main_list_profile_pref_indicator);
-		profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, vi.getContext()));
+		if (PhoneProfilesPreferencesActivity.applicationEditorPrefIndicator)
+			profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, vi.getContext()));
+		else
+			profilePrefIndicatorImageView.setImageBitmap(null);
         
 /*		ImageView profileItemEditMenu = (ImageView)vi.findViewById(R.id.main_list_item_edit_menu);
 		profileItemEditMenu.setTag(position);
