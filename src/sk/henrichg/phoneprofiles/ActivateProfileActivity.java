@@ -5,7 +5,6 @@ import com.actionbarsherlock.app.SherlockActivity;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,14 +14,10 @@ import android.graphics.Bitmap;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.Window;
-
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.view.ViewTreeObserver.OnDrawListener;
 import android.view.ViewTreeObserver.OnPreDrawListener;
 import android.view.WindowManager;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
@@ -30,7 +25,6 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -63,6 +57,8 @@ public class ActivateProfileActivity extends SherlockActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
+		
+		//Debug.startMethodTracing("phoneprofiles");
 		
 		PhoneProfilesPreferencesActivity.loadPreferences(getBaseContext());
 		
@@ -287,6 +283,8 @@ public class ActivateProfileActivity extends SherlockActivity {
 	@Override
 	protected void onResume()
 	{
+		//Debug.stopMethodTracing();
+
 		super.onResume();
 	}
 	
