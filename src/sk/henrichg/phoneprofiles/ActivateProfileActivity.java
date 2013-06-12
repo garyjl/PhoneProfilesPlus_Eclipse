@@ -15,16 +15,22 @@ import android.graphics.Bitmap;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.Window;
 
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnDrawListener;
+import android.view.ViewTreeObserver.OnPreDrawListener;
 import android.view.WindowManager;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -37,6 +43,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 	private ActivateProfileHelper activateProfileHelper;
 	private List<Profile> profileList;
 	private static ActivateProfileListAdapter profileListAdapter;
+	private LinearLayout linlayoutRoot;
 	private LinearLayout linlayoutHeader;
 	private ListView listView;
 	private TextView activeProfileName;
@@ -54,12 +61,15 @@ public class ActivateProfileActivity extends SherlockActivity {
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+
 		super.onCreate(savedInstanceState);
 		
 		PhoneProfilesPreferencesActivity.loadPreferences(getBaseContext());
 		
 		PhoneProfilesActivity.setTheme(this, true);
 		PhoneProfilesActivity.setLanguage(getBaseContext());
+
+		//requestWindowFeature(Window.FEATURE_ACTION_BAR);
 		
 		setContentView(R.layout.activity_activate_profile);
 
@@ -73,6 +83,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 
 		databaseHandler = new DatabaseHandler(this);
 		
+		linlayoutRoot = (LinearLayout)findViewById(R.id.act_prof_linlayout_root);
 		linlayoutHeader = (LinearLayout)findViewById(R.id.act_prof_linlayout_header);
 		activeProfileName = (TextView)findViewById(R.id.act_prof_activated_profile_name);
 		activeProfileIcon = (ImageView)findViewById(R.id.act_prof_activated_profile_icon);
@@ -90,7 +101,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-				//Log.d("ActivateProfilesActivity.onItemClick", "xxxx");
+				Log.d("ActivateProfilesActivity.onItemClick", "xxxx");
 
 				if (!PhoneProfilesPreferencesActivity.applicationLongClickActivation)
 					activateProfileWithAlert(position);
@@ -103,7 +114,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 
 			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-				//Log.d("ActivateProfilesActivity.onItemLongClick", "xxxx");
+				Log.d("ActivateProfilesActivity.onItemLongClick", "xxxx");
 				
 				if (PhoneProfilesPreferencesActivity.applicationLongClickActivation)
 					activateProfileWithAlert(position);
@@ -115,6 +126,10 @@ public class ActivateProfileActivity extends SherlockActivity {
 		
         //listView.setRemoveListener(onRemove);
 		
+		Display display = getWindowManager().getDefaultDisplay();
+		
+		// set popup width into display width - fix graphical glitch
+		getWindow().setLayout(0, display.getHeight());
 
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND, WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 		LayoutParams params = getWindow().getAttributes();
@@ -123,7 +138,6 @@ public class ActivateProfileActivity extends SherlockActivity {
 		getWindow().setAttributes(params);
 		
 		// display dimensions
-		Display display = getWindowManager().getDefaultDisplay();
 		popupWidth = display.getWidth();
 		popupMaxHeight = display.getHeight();
 		popupHeight = 0;
@@ -158,7 +172,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 		popupHeight = popupHeight + actionBarHeight; 
 		
 		// get views height and add it into popupHeight
-		final Activity activity = this;
+		final SherlockActivity activity = this;
 		
 		linlayoutHeader.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 			
@@ -171,6 +185,8 @@ public class ActivateProfileActivity extends SherlockActivity {
 				// add 1dp
 				popupHeight = popupHeight + (int) (12 * scale + 0.5f);
 
+				Log.d("ActivateProfilesActivity.onGlobalLayout", "header");
+				
 			}
 		});
 		
@@ -181,12 +197,23 @@ public class ActivateProfileActivity extends SherlockActivity {
 
 				popupHeight = popupHeight + listView.getHeight();
 
-				// only last view set window popup dimensions
+				Log.d("ActivateProfilesActivity.onGlobalLayout", "listview");
+			}
+		});
+		
+		linlayoutRoot.getViewTreeObserver().addOnPreDrawListener(new OnPreDrawListener() {
+			
+			public boolean onPreDraw() {
+				linlayoutRoot.getViewTreeObserver().removeOnPreDrawListener(this);
+
 				if (popupHeight > popupMaxHeight)
 					popupHeight = popupMaxHeight;
 
 				// set popup window dimensions
 				activity.getWindow().setLayout(popupWidth, popupHeight);
+				
+				Log.d("ActivateProfilesActivity.onPreDraw", "linlayoutRoot");
+				return true;
 			}
 		});
 		
@@ -199,7 +226,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 	protected void onStart()
 	{
 		super.onStart();
-		
+
 		//Log.d("ActivateProfilesActivity.onStart", "startupSource="+startupSource);
 		
 		boolean actProfile = false;

@@ -13,13 +13,16 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.view.ViewTreeObserver.OnPreDrawListener;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -29,6 +32,7 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 	
 	private List<Profile> profileList;
 	private ShortcutProfileListAdapter profileListAdapter;
+	private LinearLayout linlayoutRoot;
 	private ListView listView;
 	
 	private int popupWidth;
@@ -53,6 +57,7 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 
 		databaseHandler = new DatabaseHandler(this);
 		
+		linlayoutRoot = (LinearLayout)findViewById(R.id.shortcut_profile_linlayout_root);
 		listView = (ListView)findViewById(R.id.shortcut_profiles_list);
 
 		profileList = databaseHandler.getAllProfiles();
@@ -72,6 +77,11 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 			
 		});
 		
+		Display display = getWindowManager().getDefaultDisplay();
+		
+		// set popup width into display width - fix graphical glitch
+		getWindow().setLayout(0, display.getHeight());
+
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND, WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 		LayoutParams params = getWindow().getAttributes();
 		params.alpha = 1.0f;
@@ -79,7 +89,6 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 		getWindow().setAttributes(params);
 		
 		// display dimensions
-		Display display = getWindowManager().getDefaultDisplay();
 		popupWidth = display.getWidth();
 		popupMaxHeight = display.getHeight();
 		popupHeight = 0;
@@ -122,12 +131,22 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 
 				popupHeight = popupHeight + listView.getHeight();
 
-				// only last view set window popup dimensions
+			}
+		});
+
+		linlayoutRoot.getViewTreeObserver().addOnPreDrawListener(new OnPreDrawListener() {
+			
+			public boolean onPreDraw() {
+				linlayoutRoot.getViewTreeObserver().removeOnPreDrawListener(this);
+
 				if (popupHeight > popupMaxHeight)
 					popupHeight = popupMaxHeight;
 
 				// set popup window dimensions
 				activity.getWindow().setLayout(popupWidth, popupHeight);
+				
+				Log.d("ActivateProfilesActivity.onPreDraw", "linlayoutRoot");
+				return true;
 			}
 		});
 		
