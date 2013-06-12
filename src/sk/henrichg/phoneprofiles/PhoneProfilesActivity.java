@@ -44,6 +44,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	private DragSortListView listView;
 	private TextView activeProfileName;
 	private ImageView activeProfileIcon;
+	private int startupSource = 0;
 	//private static boolean applicationStarted;
 	private Intent intent;
 	//private static boolean languageChanged = false;
@@ -59,6 +60,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	static final int STARTUP_SOURCE_WIDGET = 2;
 	static final int STARTUP_SOURCE_SHORTCUT = 3;
 	static final int STARTUP_SOURCE_BOOT = 4;
+	static final int STARTUP_SOURCE_ACTIVATOR = 5;
 
 	static final int NOTIFICATION_ID = 700420;
 	
@@ -79,6 +81,10 @@ public class PhoneProfilesActivity extends SherlockActivity {
 
 		//getSupportActionBar().setHomeButtonEnabled(true);
 		//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+		intent = getIntent();
+		startupSource = intent.getIntExtra(EXTRA_START_APP_SOURCE, 0);
+		
 		
 	/*	getSupportActionBar().setDisplayShowTitleEnabled(false);
 		
@@ -91,9 +97,6 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	*/
 		// na onCreate dame, ze aplikacia este nie je nastartovana
 		//applicationStarted = false;
-		
-		intent = getIntent();
-		intent.getIntExtra(EXTRA_START_APP_SOURCE, 0);
 		
 		activateProfileHelper = new ActivateProfileHelper(this, getBaseContext());
 
@@ -269,8 +272,17 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		// pre profil, ktory je prave aktivny, treba aktualizovat aktivitu
 		profile = databaseHandler.getActivatedProfile();
 		updateHeader(profile);
-		activateProfileHelper.showNotification(profile);
-		activateProfileHelper.updateWidget();
+		
+		if (startupSource == 0)
+		{
+			// aktivita nebola spustena z notifikacie, ani z widgetu
+			// pre profil, ktory je prave aktivny, treba aktualizovat notifikaciu a widgety 
+			activateProfileHelper.showNotification(profile);
+			activateProfileHelper.updateWidget();
+		}
+
+		// reset, aby sa to dalej chovalo ako normalne spustenie z lauchera
+		startupSource = 0;
 		
 	/*	// na onStart dame, ze aplikacia uz je nastartovana
 		applicationStarted = true; */
