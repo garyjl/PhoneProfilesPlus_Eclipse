@@ -15,7 +15,7 @@ public class ActivateProfileWidget extends AppWidgetProvider {
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
 	{
-		PhoneProfilesPreferencesActivity.loadPreferences(context);
+		//PhoneProfilesPreferencesActivity.loadPreferences(context);
 
 		Profile profile = GlobalData.getActivatedProfile();
 

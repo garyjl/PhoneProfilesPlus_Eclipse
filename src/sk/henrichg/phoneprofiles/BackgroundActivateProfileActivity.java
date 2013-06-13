@@ -48,7 +48,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 		{
 			// aktivita bola spustena po boote telefonu
 			
-			if (PhoneProfilesPreferencesActivity.applicationActivate)
+			if (GlobalData.applicationActivate)
 			{
 				// je nastavene, ze pri starte sa ma aktivita aktivovat
 				actProfile = true;
@@ -92,7 +92,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 		activateProfileHelper.showNotification(profile);
 		activateProfileHelper.updateWidget();
 
-		if (PhoneProfilesPreferencesActivity.notificationsToast)
+		if (GlobalData.notificationsToast)
 		{	
 			// toast notification
 			Toast msg = Toast.makeText(this, 

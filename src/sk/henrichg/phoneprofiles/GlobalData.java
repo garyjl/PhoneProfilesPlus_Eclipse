@@ -3,8 +3,12 @@ package sk.henrichg.phoneprofiles;
 import java.util.List;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
 
 public class GlobalData extends Application {
+	
+	private static Context context;
 	
 	private static DatabaseHandler databaseHandler = null;
 	private static List<Profile> profileList = null;
@@ -24,14 +28,45 @@ public class GlobalData extends Application {
 
 	static final String PROFILE_ICON_DEFAULT = "ic_profile_default";
 	
-	
 	static String PACKAGE_NAME;
+	
+	static final String APPLICATION_PREFS_NAME = "phone_profile_preferences";
+	
+    public static final String PREF_APPLICATION_START_ON_BOOT = "applicationStartOnBoot";
+    public static final String PREF_APPLICATION_ACTIVATE = "applicationActivate";
+    public static final String PREF_APPLICATION_ALERT = "applicationAlert";
+    public static final String PREF_APPLICATION_CLOSE = "applicationClose";
+    public static final String PREF_APPLICATION_LONG_PRESS_ACTIVATION = "applicationLongClickActivation";
+    public static final String PREF_APPLICATION_LANGUAGE = "applicationLanguage";
+    public static final String PREF_APPLICATION_THEME = "applicationTheme";
+    public static final String PREF_APPLICATION_ACTIVATOR_PREF_INDICATOR = "applicationActivatorPrefIndicator";
+    public static final String PREF_APPLICATION_EDITOR_PREF_INDICATOR = "applicationEditorPrefIndicator";
+    public static final String PREF_NOTIFICATION_TOAST = "notificationsToast";
+    public static final String PREF_NOTIFICATION_STATUS_BAR  = "notificationStatusBar";
+    public static final String PREF_NOTIFICATION_STATUS_BAR_STYLE  = "notificationStatusBarStyle";
+
+    public static boolean applicationStartOnBoot;
+    public static boolean applicationActivate;
+    public static boolean applicationActivateWithAlert;
+    public static boolean applicationClose;
+    public static boolean applicationLongClickActivation;
+    public static String applicationLanguage;
+    public static String applicationTheme;
+    public static boolean applicationActivatorPrefIndicator;
+    public static boolean applicationEditorPrefIndicator;
+    public static boolean notificationsToast;
+    public static boolean notificationStatusBar;
+    public static String notificationStatusBarStyle;
+	
 	
 	public void onCreate()
 	{
 		super.onCreate();
+
+		context = getApplicationContext();
+		PACKAGE_NAME = context.getPackageName();
 		
-		PACKAGE_NAME = getApplicationContext().getPackageName();
+		loadPreferences();
 		
 		databaseHandler = new DatabaseHandler(this);
 		
@@ -120,4 +155,24 @@ public class GlobalData extends Application {
 		return null;
 	}
 
+	
+	static public void loadPreferences()
+	{
+		SharedPreferences preferences = context.getSharedPreferences(APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+
+	    applicationStartOnBoot = preferences.getBoolean(PREF_APPLICATION_START_ON_BOOT, false);
+	    applicationActivate = preferences.getBoolean(PREF_APPLICATION_ACTIVATE, true);
+	    applicationActivateWithAlert = preferences.getBoolean(PREF_APPLICATION_ALERT, true);
+	    applicationClose = preferences.getBoolean(PREF_APPLICATION_CLOSE, true);
+	    applicationLongClickActivation = preferences.getBoolean(PREF_APPLICATION_LONG_PRESS_ACTIVATION, false);
+	    applicationLanguage = preferences.getString(PREF_APPLICATION_LANGUAGE, "system");
+	    applicationTheme = preferences.getString(PREF_APPLICATION_THEME, "light");
+	    applicationActivatorPrefIndicator = preferences.getBoolean(PREF_APPLICATION_ACTIVATOR_PREF_INDICATOR, true);
+	    applicationEditorPrefIndicator = preferences.getBoolean(PREF_APPLICATION_EDITOR_PREF_INDICATOR, true);
+	    notificationsToast = preferences.getBoolean(PREF_NOTIFICATION_TOAST, true);
+	    notificationStatusBar = preferences.getBoolean(PREF_NOTIFICATION_STATUS_BAR, true);
+	    notificationStatusBarStyle = preferences.getString(PREF_NOTIFICATION_STATUS_BAR_STYLE, "0");
+		
+	}
+	
 }

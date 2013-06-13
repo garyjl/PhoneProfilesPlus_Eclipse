@@ -10,9 +10,9 @@ public class LocaleChangedReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 
-		PhoneProfilesPreferencesActivity.loadPreferences(context);
+		//PhoneProfilesPreferencesActivity.loadPreferences(context);
 		
-		if (PhoneProfilesPreferencesActivity.applicationLanguage.equals("system"))
+		if (GlobalData.applicationLanguage.equals("system"))
 		{	
 			NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
 			notificationManager.cancel(GlobalData.NOTIFICATION_ID);

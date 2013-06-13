@@ -50,7 +50,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		PhoneProfilesPreferencesActivity.loadPreferences(getBaseContext());
+		//PhoneProfilesPreferencesActivity.loadPreferences(getBaseContext());
 		
 		setTheme(this, false);
 		setLanguage(getBaseContext());
@@ -574,7 +574,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		}
 		
 		ImageView profilePrefIndicatorImageView = (ImageView)findViewById(R.id.activated_profile_pref_indicator);
-		if (PhoneProfilesPreferencesActivity.applicationEditorPrefIndicator)
+		if (GlobalData.applicationEditorPrefIndicator)
 			profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, getBaseContext()));
 		else
 			profilePrefIndicatorImageView.setImageBitmap(null);
@@ -617,7 +617,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		updateHeader(profile);
 		activateProfileHelper.updateWidget();
 
-		if (PhoneProfilesPreferencesActivity.notificationsToast)
+		if (GlobalData.notificationsToast)
 		{	
 			// toast notification
 			Toast msg = Toast.makeText(getBaseContext(), 
@@ -716,7 +716,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	public static void setLanguage(Context context)//, boolean restart)
 	{
 		// jazyk na aky zmenit
-		String lang = PhoneProfilesPreferencesActivity.applicationLanguage;
+		String lang = GlobalData.applicationLanguage;
 		
 		//Log.d("PhoneProfilesActivity.setLanguauge", lang);
 
@@ -741,7 +741,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	
 	public static void setTheme(Activity activity, boolean forPopup)
 	{
-		if (PhoneProfilesPreferencesActivity.applicationTheme.equals("light"))
+		if (GlobalData.applicationTheme.equals("light"))
 		{
 			Log.d("PhoneProfilesActivity.setTheme","light");
 			if (forPopup)
@@ -750,7 +750,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 				activity.setTheme(R.style.Theme_Phoneprofilestheme);
 		}
 		else
-		if (PhoneProfilesPreferencesActivity.applicationTheme.equals("dark"))
+		if (GlobalData.applicationTheme.equals("dark"))
 		{
 			Log.d("PhoneProfilesActivity.setTheme","dark");
 			if (forPopup)

@@ -58,7 +58,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 		
 		//Debug.startMethodTracing("phoneprofiles");
 		
-		PhoneProfilesPreferencesActivity.loadPreferences(getBaseContext());
+		//PhoneProfilesPreferencesActivity.loadPreferences(getBaseContext());
 		
 		PhoneProfilesActivity.setTheme(this, true);
 		PhoneProfilesActivity.setLanguage(getBaseContext());
@@ -95,7 +95,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 
 				Log.d("ActivateProfilesActivity.onItemClick", "xxxx");
 
-				if (!PhoneProfilesPreferencesActivity.applicationLongClickActivation)
+				if (!GlobalData.applicationLongClickActivation)
 					activateProfileWithAlert(position);
 
 			}
@@ -108,7 +108,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 
 				Log.d("ActivateProfilesActivity.onItemLongClick", "xxxx");
 				
-				if (PhoneProfilesPreferencesActivity.applicationLongClickActivation)
+				if (GlobalData.applicationLongClickActivation)
 					activateProfileWithAlert(position);
 
 				return false;
@@ -233,7 +233,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 			{
 				// aplikacia este nie je nastartovana, takze mozeme
 				// aktivovat profil, ak je nastavene, ze sa tak ma stat 
-				if (PhoneProfilesPreferencesActivity.applicationActivate)
+				if (GlobalData.applicationActivate)
 				{
 					// je nastavene, ze pri starte sa ma aktivita aktivovat
 					actProfile = true;
@@ -360,7 +360,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 		}
 		
 		ImageView profilePrefIndicatorImageView = (ImageView)findViewById(R.id.act_prof_activated_profile_pref_indicator);
-		if (PhoneProfilesPreferencesActivity.applicationActivatorPrefIndicator)
+		if (GlobalData.applicationActivatorPrefIndicator)
 			profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, getBaseContext()));
 		else
 			profilePrefIndicatorImageView.setImageBitmap(null);
@@ -370,7 +370,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 	
 	private void activateProfileWithAlert(int position)
 	{
-		if (PhoneProfilesPreferencesActivity.applicationActivateWithAlert)
+		if (GlobalData.applicationActivateWithAlert)
 		{	
 			final int _position = position;
 			final Profile profile = profileList.get(_position);
@@ -402,7 +402,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 		updateHeader(profile);
 		activateProfileHelper.updateWidget();
 
-		if (PhoneProfilesPreferencesActivity.notificationsToast)
+		if (GlobalData.notificationsToast)
 		{	
 			// toast notification
 			Toast msg = Toast.makeText(getBaseContext(), 
@@ -414,7 +414,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 
 		activateProfileHelper.showNotification(profile);
 
-		if (PhoneProfilesPreferencesActivity.applicationClose)
+		if (GlobalData.applicationClose)
 		{	
 			// ma sa zatvarat aktivita po aktivacii
 			if (GlobalData.getApplicationStarted())

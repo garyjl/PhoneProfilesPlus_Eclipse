@@ -32,7 +32,7 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
 	private String activeTheme;
 	
 		
-	static final String PREFS_NAME = "phone_profile_preferences";
+/*	static final String PREFS_NAME = "phone_profile_preferences";
 	
     private static final String PREF_APPLICATION_START_ON_BOOT = "applicationStartOnBoot";
     private static final String PREF_APPLICATION_ACTIVATE = "applicationActivate";
@@ -59,6 +59,7 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
     public static boolean notificationsToast;
     public static boolean notificationStatusBar;
     public static String notificationStatusBarStyle;
+*/
     
 	@SuppressWarnings("deprecation")
 	@Override
@@ -82,15 +83,15 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
         //context = this;
         
 		prefMng = getPreferenceManager();
-		prefMng.setSharedPreferencesName(PREFS_NAME);
+		prefMng.setSharedPreferencesName(GlobalData.APPLICATION_PREFS_NAME);
 		prefMng.setSharedPreferencesMode(MODE_PRIVATE);
         
 		addPreferencesFromResource(R.layout.phone_profiles_preferences);
 
-        preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        activeLanguage = preferences.getString(PREF_APPLICATION_LANGUAGE, "system");
-        activeTheme = preferences.getString(PREF_APPLICATION_THEME, "light");
-        showEditorPrefIndicator = preferences.getBoolean(PREF_APPLICATION_EDITOR_PREF_INDICATOR, true);
+        preferences = getApplicationContext().getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, MODE_PRIVATE);
+        activeLanguage = preferences.getString(GlobalData.PREF_APPLICATION_LANGUAGE, "system");
+        activeTheme = preferences.getString(GlobalData.PREF_APPLICATION_THEME, "light");
+        showEditorPrefIndicator = preferences.getBoolean(GlobalData.PREF_APPLICATION_EDITOR_PREF_INDICATOR, true);
         
         prefListener = new OnSharedPreferenceChangeListener() {
         	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
@@ -98,9 +99,9 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
     	    	// updating activity with selected profile preferences
     	    	//Log.d("PhoneProfilesPreferencesActivity.onSharedPreferenceChanged", key);
     	    	
-    	    	if (key.equals(PREF_APPLICATION_LANGUAGE) ||
-    	    		key.equals(PREF_APPLICATION_THEME) ||	
-    	    		key.equals(PREF_NOTIFICATION_STATUS_BAR_STYLE))
+    	    	if (key.equals(GlobalData.PREF_APPLICATION_LANGUAGE) ||
+    	    		key.equals(GlobalData.PREF_APPLICATION_THEME) ||	
+    	    		key.equals(GlobalData.PREF_NOTIFICATION_STATUS_BAR_STYLE))
     	    		setSummary(key, prefs.getString(key, ""));
     	    		
     	    }
@@ -134,9 +135,9 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
 	
 	private void updateSharedPreference()
 	{
-        setSummary(PREF_APPLICATION_LANGUAGE, preferences.getString(PREF_APPLICATION_LANGUAGE, ""));
-        setSummary(PREF_APPLICATION_THEME, preferences.getString(PREF_APPLICATION_THEME, ""));
-        setSummary(PREF_NOTIFICATION_STATUS_BAR_STYLE, preferences.getString(PREF_NOTIFICATION_STATUS_BAR_STYLE, ""));
+        setSummary(GlobalData.PREF_APPLICATION_LANGUAGE, preferences.getString(GlobalData.PREF_APPLICATION_LANGUAGE, ""));
+        setSummary(GlobalData.PREF_APPLICATION_THEME, preferences.getString(GlobalData.PREF_APPLICATION_THEME, ""));
+        setSummary(GlobalData.PREF_NOTIFICATION_STATUS_BAR_STYLE, preferences.getString(GlobalData.PREF_NOTIFICATION_STATUS_BAR_STYLE, ""));
 	}
 	
 	@Override
@@ -150,16 +151,16 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
 	protected void onPause()
 	{
 		super.onPause();
-		loadPreferences(getBaseContext());
+		GlobalData.loadPreferences();
 		
-		if (activeLanguage != preferences.getString(PREF_APPLICATION_LANGUAGE, "system"))
+		if (activeLanguage != preferences.getString(GlobalData.PREF_APPLICATION_LANGUAGE, "system"))
 		{
     		//Log.d("PhoneProfilesPreferencesActivity.onPause","language changed");
     		PhoneProfilesActivity.setLanguage(getBaseContext());
 			invalidateLoader = true;
 		}
 		else
-		if (activeTheme != preferences.getString(PREF_APPLICATION_THEME, "light"))
+		if (activeTheme != preferences.getString(GlobalData.PREF_APPLICATION_THEME, "light"))
 		{
     		Log.d("PhoneProfilesPreferencesActivity.onPause","theme changed");
     		//PhoneProfilesActivity.setTheme(this, false);
@@ -168,7 +169,7 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
     	else
     	{
     		//Log.d("PhoneProfilesPreferencesActivity.onPause","no language changed");
-    		if (showEditorPrefIndicator != applicationEditorPrefIndicator)
+    		if (showEditorPrefIndicator != GlobalData.applicationEditorPrefIndicator)
     		{
         		//Log.d("PhoneProfilesPreferencesActivity.onPause","invalidate");
     			invalidateLoader = true;
@@ -191,7 +192,7 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
 	
 	private void setSummary(String key, Object value)
 	{
-		if (key.equals(PREF_APPLICATION_LANGUAGE))
+		if (key.equals(GlobalData.PREF_APPLICATION_LANGUAGE))
 		{
 			String sPrefLanguauge = value.toString();
 			String[] prefLanguages = getResources().getStringArray(R.array.languageArray);
@@ -204,7 +205,7 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
 				++ilangValue;
 			}
 		}
-		if (key.equals(PREF_APPLICATION_THEME))
+		if (key.equals(GlobalData.PREF_APPLICATION_THEME))
 		{
 			String sPrefTheme = value.toString();
 			String[] prefThemes = getResources().getStringArray(R.array.themeArray);
@@ -217,7 +218,7 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
 				++iThemeValue;
 			}
 		}
-		if (key.equals(PREF_NOTIFICATION_STATUS_BAR_STYLE))
+		if (key.equals(GlobalData.PREF_NOTIFICATION_STATUS_BAR_STYLE))
 		{
 			String sPrefNotifIconStyle = value.toString();
 			String[] prefNotifIconStyles = getResources().getStringArray(R.array.notificationIconStyleArray);
@@ -235,25 +236,6 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
 	static public Activity getActivity()
 	{
 		return preferenceActivity;
-	}
-	
-	static public void loadPreferences(Context context)
-	{
-		SharedPreferences preferences = context.getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, Context.MODE_PRIVATE);
-
-	    applicationStartOnBoot = preferences.getBoolean(PREF_APPLICATION_START_ON_BOOT, false);
-	    applicationActivate = preferences.getBoolean(PREF_APPLICATION_ACTIVATE, true);
-	    applicationActivateWithAlert = preferences.getBoolean(PREF_APPLICATION_ALERT, true);
-	    applicationClose = preferences.getBoolean(PREF_APPLICATION_CLOSE, true);
-	    applicationLongClickActivation = preferences.getBoolean(PREF_APPLICATION_LONG_PRESS_ACTIVATION, false);
-	    applicationLanguage = preferences.getString(PREF_APPLICATION_LANGUAGE, "system");
-	    applicationTheme = preferences.getString(PREF_APPLICATION_THEME, "light");
-	    applicationActivatorPrefIndicator = preferences.getBoolean(PREF_APPLICATION_ACTIVATOR_PREF_INDICATOR, true);
-	    applicationEditorPrefIndicator = preferences.getBoolean(PREF_APPLICATION_EDITOR_PREF_INDICATOR, true);
-	    notificationsToast = preferences.getBoolean(PREF_NOTIFICATION_TOAST, true);
-	    notificationStatusBar = preferences.getBoolean(PREF_NOTIFICATION_STATUS_BAR, true);
-	    notificationStatusBarStyle = preferences.getString(PREF_NOTIFICATION_STATUS_BAR_STYLE, "0");
-		
 	}
 	
 	static public boolean getInvalidateLoader()

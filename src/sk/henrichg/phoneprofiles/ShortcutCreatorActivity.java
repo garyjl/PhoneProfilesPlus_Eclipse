@@ -46,7 +46,7 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		PhoneProfilesPreferencesActivity.loadPreferences(getBaseContext());
+		//PhoneProfilesPreferencesActivity.loadPreferences(getBaseContext());
 		
 		PhoneProfilesActivity.setTheme(this, true);
 		PhoneProfilesActivity.setLanguage(getBaseContext());

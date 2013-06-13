@@ -484,7 +484,7 @@ public class ActivateProfileHelper {
 	@SuppressLint("InlinedApi")
 	public void showNotification(Profile profile)
 	{
-		if (PhoneProfilesPreferencesActivity.notificationStatusBar)
+		if (GlobalData.notificationStatusBar)
 		{	
 			if (profile == null)
 			{
@@ -515,7 +515,7 @@ public class ActivateProfileHelper {
 					
 
 		        	int iconSmallResource;
-		    		if (PhoneProfilesPreferencesActivity.notificationStatusBarStyle.equals("0"))
+		    		if (GlobalData.notificationStatusBarStyle.equals("0"))
 		    		{
 		    			iconSmallResource = context.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", context.getPackageName());
 						notificationBuilder.setSmallIcon(iconSmallResource);
@@ -534,7 +534,7 @@ public class ActivateProfileHelper {
 		        else
 		        {
 		        	int iconSmallResource;
-		    		if (PhoneProfilesPreferencesActivity.notificationStatusBarStyle.equals("0"))
+		    		if (GlobalData.notificationStatusBarStyle.equals("0"))
 		    			iconSmallResource = R.drawable.ic_profile_default;
 		    		else
 		    			iconSmallResource = R.drawable.ic_profile_default_notify;

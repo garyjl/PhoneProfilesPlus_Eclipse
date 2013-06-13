@@ -157,7 +157,7 @@ public class ActivateProfileListAdapter extends BaseAdapter
         }
         
 		ImageView profilePrefIndicatorImageView = (ImageView)vi.findViewById(R.id.act_prof_list_profile_pref_indicator);
-		if (PhoneProfilesPreferencesActivity.applicationActivatorPrefIndicator)
+		if (GlobalData.applicationActivatorPrefIndicator)
 			profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, vi.getContext()));
 		else
 			profilePrefIndicatorImageView.setImageBitmap(null);
