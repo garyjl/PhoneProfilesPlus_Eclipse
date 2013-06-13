@@ -112,7 +112,7 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
         preferences.registerOnSharedPreferenceChangeListener(prefListener);
         
         // getting attached intent data
-        profile_position = intent.getIntExtra(PhoneProfilesActivity.EXTRA_PROFILE_POSITION, -1);
+        profile_position = intent.getIntExtra(GlobalData.EXTRA_PROFILE_POSITION, -1);
 
     	//Log.d("ProfilePreferencesActivity.onCreate", "xxxx");
     }
@@ -191,7 +191,7 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
 
         	//Log.d("ProfilePreferencesActivity.onPause", "profile activated="+profile.getChecked());
         	
-        	PhoneProfilesActivity.getDatabaseHandler().updateProfile(profile);
+        	GlobalData.getDatabaseHandler().updateProfile(profile);
         	
         	//Log.d("ProfilePreferencesActivity.onPause", "updateProfile");
 

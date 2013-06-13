@@ -488,16 +488,16 @@ public class ActivateProfileHelper {
 		{	
 			if (profile == null)
 			{
-				notificationManager.cancel(PhoneProfilesActivity.NOTIFICATION_ID);
+				notificationManager.cancel(GlobalData.NOTIFICATION_ID);
 			}
 			else
 			{
 				// close showed notification
-				notificationManager.cancel(PhoneProfilesActivity.NOTIFICATION_ID);
+				notificationManager.cancel(GlobalData.NOTIFICATION_ID);
 				// vytvorenie intentu na aktivitu, ktora sa otvori na kliknutie na notifikaciu
 				Intent intent = new Intent(context, ActivateProfileActivity.class);
 				// nastavime, ze aktivita sa spusti z notifikacnej listy
-				intent.putExtra(PhoneProfilesActivity.EXTRA_START_APP_SOURCE, PhoneProfilesActivity.STARTUP_SOURCE_NOTIFICATION);
+				intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_NOTIFICATION);
 				PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 				
 				// vytvorenie samotnej notifikacie
@@ -583,12 +583,12 @@ public class ActivateProfileHelper {
 		        notification.contentView = contentView;
 		        
 				notification.flags |= Notification.FLAG_NO_CLEAR; 
-				notificationManager.notify(PhoneProfilesActivity.NOTIFICATION_ID, notification);
+				notificationManager.notify(GlobalData.NOTIFICATION_ID, notification);
 			}
 		}
 		else
 		{
-			notificationManager.cancel(PhoneProfilesActivity.NOTIFICATION_ID);
+			notificationManager.cancel(GlobalData.NOTIFICATION_ID);
 		}
 	}
 	

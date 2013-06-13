@@ -30,7 +30,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	// import/export
 	private final String EXPORT_DBPATH = "/PhoneProfiles";
 	private final String EXPORT_FILENAME = DATABASE_NAME + ".backup";
-	private final String DB_FILEPATH = "/data/" + PhoneProfilesActivity.PACKAGE_NAME + "/databases";
+	private final String DB_FILEPATH = "/data/" + GlobalData.PACKAGE_NAME + "/databases";
 
 	
 	// Profiles Table Columns names

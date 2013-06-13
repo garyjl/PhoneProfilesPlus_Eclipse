@@ -41,7 +41,8 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.Phoneprofilestheme"
-        android:configChanges="locale|layoutDirection" >
+        android:configChanges="locale|layoutDirection"
+        android:name="sk.henrichg.phoneprofiles.GlobalData" >
         <activity
             android:name="sk.henrichg.phoneprofiles.ActivateProfileActivity"
             android:label="@string/title_activity_phone_profiles"

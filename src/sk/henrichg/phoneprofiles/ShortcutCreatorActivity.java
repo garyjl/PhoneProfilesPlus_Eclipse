@@ -28,7 +28,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class ShortcutCreatorActivity extends SherlockActivity {
 
-	private DatabaseHandler databaseHandler;
+	//private DatabaseHandler databaseHandler;
 	
 	private List<Profile> profileList;
 	private ShortcutProfileListAdapter profileListAdapter;
@@ -55,12 +55,12 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 
 		setContentView(R.layout.activity_shortcut_creator);
 
-		databaseHandler = new DatabaseHandler(this);
+		//databaseHandler = new DatabaseHandler(this);
 		
 		linlayoutRoot = (LinearLayout)findViewById(R.id.shortcut_profile_linlayout_root);
 		listView = (ListView)findViewById(R.id.shortcut_profiles_list);
 
-		profileList = databaseHandler.getAllProfiles();
+		profileList = GlobalData.getProfileList();
 
 		profileListAdapter = new ShortcutProfileListAdapter(this, profileList);
 		listView.setAdapter(profileListAdapter);
@@ -180,14 +180,14 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 		else
 		{
 			isIconResourceID = true;
-			iconIdentifier = PhoneProfilesActivity.PROFILE_ICON_DEFAULT;
+			iconIdentifier = GlobalData.PROFILE_ICON_DEFAULT;
 			profileName = getResources().getString(R.string.profile_name_default);
 		}
 
 		Intent shortcutIntent = new Intent(this, BackgroundActivateProfileActivity.class);
 		// BackgroundActivateProfileActivity musi toto testovat, a len spravit aktivaciu profilu
-		shortcutIntent.putExtra(PhoneProfilesActivity.EXTRA_START_APP_SOURCE, PhoneProfilesActivity.STARTUP_SOURCE_SHORTCUT);
-		shortcutIntent.putExtra(PhoneProfilesActivity.EXTRA_PROFILE_ID, profile.getID());
+		shortcutIntent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_SHORTCUT);
+		shortcutIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile.getID());
 		
 		Intent intent = new Intent();
 		intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);

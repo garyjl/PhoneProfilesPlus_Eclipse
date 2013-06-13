@@ -33,17 +33,15 @@ import android.widget.Toast;
 
 public class ActivateProfileActivity extends SherlockActivity {
 
-	private DatabaseHandler databaseHandler;
 	private ActivateProfileHelper activateProfileHelper;
 	private List<Profile> profileList;
-	private static ActivateProfileListAdapter profileListAdapter;
+	private ActivateProfileListAdapter profileListAdapter;
 	private LinearLayout linlayoutRoot;
 	private LinearLayout linlayoutHeader;
 	private ListView listView;
 	private TextView activeProfileName;
 	private ImageView activeProfileIcon;
 	private int startupSource = 0;
-	private static boolean applicationStarted;
 	private Intent intent;
 	
 	private int popupWidth;
@@ -73,19 +71,17 @@ public class ActivateProfileActivity extends SherlockActivity {
 		//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		intent = getIntent();
-		startupSource = intent.getIntExtra(PhoneProfilesActivity.EXTRA_START_APP_SOURCE, 0);
+		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
 		
 		activateProfileHelper = new ActivateProfileHelper(this, getBaseContext());
 
-		databaseHandler = new DatabaseHandler(this);
-		
 		linlayoutRoot = (LinearLayout)findViewById(R.id.act_prof_linlayout_root);
 		linlayoutHeader = (LinearLayout)findViewById(R.id.act_prof_linlayout_header);
 		activeProfileName = (TextView)findViewById(R.id.act_prof_activated_profile_name);
 		activeProfileIcon = (ImageView)findViewById(R.id.act_prof_activated_profile_icon);
 		listView = (ListView)findViewById(R.id.act_prof_profiles_list);
 		
-		profileList = databaseHandler.getAllProfiles();
+		profileList = GlobalData.getProfileList();
 
 		profileListAdapter = new ActivateProfileListAdapter(this, profileList);
 		
@@ -233,7 +229,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 			// lebo v tychto pripadoch sa nesmie spravit aktivacia profilu
 			// pri starte aktivity
 			
-			if (!applicationStarted)
+			if (!GlobalData.getApplicationStarted())
 			{
 				// aplikacia este nie je nastartovana, takze mozeme
 				// aktivovat profil, ak je nastavene, ze sa tak ma stat 
@@ -246,7 +242,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 		}
 		//Log.d("ActivateProfilesActivity.onStart", "actProfile="+String.valueOf(actProfile));
 
-		Profile profile = databaseHandler.getActivatedProfile();
+		Profile profile = GlobalData.getActivatedProfile();
 
 		
 		if (actProfile && (profile != null))
@@ -268,7 +264,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 		startupSource = 0;
 
 		// na onStart dame, ze aplikacia uz je nastartovana
-		applicationStarted = true;
+		GlobalData.setApplicationStarted(true);
 		
 		//Log.d("PhoneProfileActivity.onStart", "xxxx");
 		
@@ -315,7 +311,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 			//Log.d("PhoneProfilesActivity.onOptionsItemSelected", "menu_settings");
 			
 			Intent intent = new Intent(getBaseContext(), PhoneProfilesActivity.class);
-			intent.putExtra(PhoneProfilesActivity.EXTRA_START_APP_SOURCE, PhoneProfilesActivity.STARTUP_SOURCE_ACTIVATOR);
+			intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_ACTIVATOR);
 
 			startActivity(intent);
 			
@@ -399,7 +395,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 	private void activateProfile(Profile profile, boolean interactive)
 	{
 		profileListAdapter.activateProfile(profile);
-		databaseHandler.activateProfile(profile);
+		GlobalData.getDatabaseHandler().activateProfile(profile);
 		
 		activateProfileHelper.execute(profile, interactive);
 
@@ -421,7 +417,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 		if (PhoneProfilesPreferencesActivity.applicationClose)
 		{	
 			// ma sa zatvarat aktivita po aktivacii
-			if (applicationStarted)
+			if (GlobalData.getApplicationStarted())
 				// aplikacia je uz spustena, mozeme aktivitu zavriet
 				// tymto je vyriesene, ze pri spusteni aplikacie z launchera
 				// sa hned nezavrie

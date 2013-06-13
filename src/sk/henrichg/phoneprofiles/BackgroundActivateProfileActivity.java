@@ -7,7 +7,7 @@ import android.content.Intent;
 
 public class BackgroundActivateProfileActivity extends Activity {
 
-	private static DatabaseHandler databaseHandler;
+	private DatabaseHandler databaseHandler;
 	private ActivateProfileHelper activateProfileHelper;
 	
 	private int startupSource = 0;
@@ -17,14 +17,14 @@ public class BackgroundActivateProfileActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		PhoneProfilesActivity.setLanguage(getBaseContext());
+		//PhoneProfilesActivity.setLanguage(getBaseContext());
 		
 		intent = getIntent();
-		startupSource = intent.getIntExtra(PhoneProfilesActivity.EXTRA_START_APP_SOURCE, 0);
+		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
 		
 		activateProfileHelper = new ActivateProfileHelper(this, getBaseContext());
 
-		databaseHandler = new DatabaseHandler(this);
+		databaseHandler = GlobalData.getDatabaseHandler();
 		
 	}
 
@@ -37,14 +37,14 @@ public class BackgroundActivateProfileActivity extends Activity {
 		
 		boolean actProfile = false;
 		boolean interactive = false;
-		if (startupSource == PhoneProfilesActivity.STARTUP_SOURCE_SHORTCUT)
+		if (startupSource == GlobalData.STARTUP_SOURCE_SHORTCUT)
 		{
 			// aktivita spustena z shortcutu, profil aktivujeme
 			actProfile = true;
 			interactive = true;
 		}
 		else
-		if (startupSource == PhoneProfilesActivity.STARTUP_SOURCE_BOOT)
+		if (startupSource == GlobalData.STARTUP_SOURCE_BOOT)
 		{
 			// aktivita bola spustena po boote telefonu
 			
@@ -59,17 +59,17 @@ public class BackgroundActivateProfileActivity extends Activity {
 		Profile profile;
 		
 		// pre profil, ktory je prave aktivny, treba aktualizovat aktivitu
-		profile = databaseHandler.getActivatedProfile();
+		profile = GlobalData.getActivatedProfile();
 		activateProfileHelper.showNotification(profile);
 		activateProfileHelper.updateWidget();
 		
-		if (startupSource == PhoneProfilesActivity.STARTUP_SOURCE_SHORTCUT)
+		if (startupSource == GlobalData.STARTUP_SOURCE_SHORTCUT)
 		{
-			long profile_id = intent.getLongExtra(PhoneProfilesActivity.EXTRA_PROFILE_ID, 0);
+			long profile_id = intent.getLongExtra(GlobalData.EXTRA_PROFILE_ID, 0);
 			if (profile_id == 0)
 				profile = null;
 			else
-				profile = databaseHandler.getProfile(profile_id);
+				profile = GlobalData.getProfileById(profile_id);
 		}
 		
 		if (actProfile && (profile != null))
@@ -86,6 +86,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 	private void activateProfile(Profile profile, boolean interactive)
 	{
 		databaseHandler.activateProfile(profile);
+		GlobalData.activateProfile(profile);
 
 		activateProfileHelper.execute(profile, interactive);
 		activateProfileHelper.showNotification(profile);

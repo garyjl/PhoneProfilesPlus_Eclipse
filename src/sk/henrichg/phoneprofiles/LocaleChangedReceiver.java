@@ -15,7 +15,7 @@ public class LocaleChangedReceiver extends BroadcastReceiver {
 		if (PhoneProfilesPreferencesActivity.applicationLanguage.equals("system"))
 		{	
 			NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-			notificationManager.cancel(PhoneProfilesActivity.NOTIFICATION_ID);
+			notificationManager.cancel(GlobalData.NOTIFICATION_ID);
 		}
 		
 		//Log.d("LocaleChangedReceiver.onReceive", "xxxxx");

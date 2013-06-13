@@ -33,7 +33,7 @@ import android.widget.Toast;
 
 public class PhoneProfilesActivity extends SherlockActivity {
 
-	private static DatabaseHandler databaseHandler;
+	//private DatabaseHandler databaseHandler;
 	private ActivateProfileHelper activateProfileHelper;
 	private List<Profile> profileList;
 	private static MainProfileListAdapter profileListAdapter;
@@ -46,28 +46,10 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	//private static boolean languageChanged = false;
 	private static ApplicationsCache applicationsCache;
 
-	static final String EXTRA_PROFILE_POSITION = "profile_position";
-	static final String EXTRA_PROFILE_ID = "profile_id";
-	static final String EXTRA_START_APP_SOURCE = "start_app_source";
-	
-	static final String PROFILE_ICON_DEFAULT = "ic_profile_default";
-	
-	static final int STARTUP_SOURCE_NOTIFICATION = 1;
-	static final int STARTUP_SOURCE_WIDGET = 2;
-	static final int STARTUP_SOURCE_SHORTCUT = 3;
-	static final int STARTUP_SOURCE_BOOT = 4;
-	static final int STARTUP_SOURCE_ACTIVATOR = 5;
-
-	static final int NOTIFICATION_ID = 700420;
-	
-	static String PACKAGE_NAME;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		PACKAGE_NAME = getApplicationContext().getPackageName();
-
 		PhoneProfilesPreferencesActivity.loadPreferences(getBaseContext());
 		
 		setTheme(this, false);
@@ -79,7 +61,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		intent = getIntent();
-		startupSource = intent.getIntExtra(EXTRA_START_APP_SOURCE, 0);
+		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
 		
 		
 	/*	getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -96,7 +78,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		
 		activateProfileHelper = new ActivateProfileHelper(this, getBaseContext());
 
-		databaseHandler = new DatabaseHandler(this);
+		//databaseHandler = new DatabaseHandler(this);
 		
 		applicationsCache = new ApplicationsCache();
 		
@@ -104,7 +86,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		activeProfileIcon = (ImageView)findViewById(R.id.activated_profile_icon);
 		listView = (DragSortListView)findViewById(R.id.main_profiles_list);
 		
-		profileList = databaseHandler.getAllProfiles();
+		profileList = GlobalData.getProfileList();
 
 		profileListAdapter = new MainProfileListAdapter(this, profileList);
 		
@@ -172,7 +154,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
         listView.setDropListener(new DragSortListView.DropListener() {
             public void drop(int from, int to) {
             	profileListAdapter.changeItemOrder(from, to);
-            	databaseHandler.setPOrder(profileList);
+            	GlobalData.getDatabaseHandler().setPOrder(profileList);
         		//Log.d("PhoneProfileActivity.drop", "xxxx");
             }
         });
@@ -266,7 +248,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		Profile profile;
 		
 		// pre profil, ktory je prave aktivny, treba aktualizovat aktivitu
-		profile = databaseHandler.getActivatedProfile();
+		profile = GlobalData.getActivatedProfile();
 		updateHeader(profile);
 		
 		if (startupSource == 0)
@@ -396,7 +378,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		{
 			// pridanie noveho profilu
 			profile = new Profile(getResources().getString(R.string.profile_name_default), 
-								  PROFILE_ICON_DEFAULT + "|1", 
+								  GlobalData.PROFILE_ICON_DEFAULT + "|1", 
 								  false, 
 								  0,
 								  0,
@@ -426,7 +408,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 								  "-"
 					);
 			profileListAdapter.addItem(profile); // pridame profil do listview a nastavime jeho order
-			databaseHandler.addProfile(profile);
+			GlobalData.getDatabaseHandler().addProfile(profile);
 		}
 
 		
@@ -464,7 +446,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		//Log.d("PhoneProfilesActivity.startProfilePreferencesActivity", profile.getID()+"");
 		
 		Intent intent = new Intent(getBaseContext(), ProfilePreferencesActivity.class);
-		intent.putExtra(EXTRA_PROFILE_POSITION, profileListAdapter.getItemId(profile));
+		intent.putExtra(GlobalData.EXTRA_PROFILE_POSITION, profileListAdapter.getItemId(profile));
 
 		//Log.d("PhoneProfilesActivity.startProfilePreferencesActivity", profile.getChecked()+"");
 		
@@ -508,7 +490,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 				   origProfile.getDeviceRunApplicationPackageName());
 
 		profileListAdapter.addItem(newProfile);
-		databaseHandler.addProfile(newProfile);
+		GlobalData.getDatabaseHandler().addProfile(newProfile);
 		
 		//updateListView();
 
@@ -527,7 +509,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 			
 			public void onClick(DialogInterface dialog, int which) {
 				profileListAdapter.deleteItem(profile);
-				databaseHandler.deleteProfile(profile);
+				GlobalData.getDatabaseHandler().deleteProfile(profile);
 				//updateListView();
 				// v pripade, ze sa odmaze aktivovany profil, nastavime, ze nic nie je aktivovane
 				//Profile profile = databaseHandler.getActivatedProfile();
@@ -551,7 +533,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 			
 			public void onClick(DialogInterface dialog, int which) {
 				profileListAdapter.clear();
-				databaseHandler.deleteAllProfiles();
+				GlobalData.getDatabaseHandler().deleteAllProfiles();
 				//updateListView();
 				// v pripade, ze sa odmaze aktivovany profil, nastavime, ze nic nie je aktivovane
 				//Profile profile = databaseHandler.getActivatedProfile();
@@ -628,7 +610,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	private void activateProfile(Profile profile, boolean interactive)
 	{
 		profileListAdapter.activateProfile(profile);
-		databaseHandler.activateProfile(profile);
+		GlobalData.getDatabaseHandler().activateProfile(profile);
 		
 		activateProfileHelper.execute(profile, interactive);
 
@@ -688,7 +670,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		dialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 			
 			public void onClick(DialogInterface dialog, int which) {
-				if (databaseHandler.importDB()  == 1)
+				if (GlobalData.getDatabaseHandler().importDB()  == 1)
 				{
 
 					// toast notification
@@ -713,7 +695,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 
 	private void exportProfiles()
 	{
-		if (databaseHandler.exportDB() == 1)
+		if (GlobalData.getDatabaseHandler().exportDB() == 1)
 		{
 
 			// toast notification
@@ -776,11 +758,6 @@ public class PhoneProfilesActivity extends SherlockActivity {
 			else
 				activity.setTheme(R.style.Theme_Phoneprofilestheme_dark);
 		}
-	}
-	
-	public static DatabaseHandler getDatabaseHandler()
-	{
-		return databaseHandler;
 	}
 	
 	public static MainProfileListAdapter getProfileListAdapter()

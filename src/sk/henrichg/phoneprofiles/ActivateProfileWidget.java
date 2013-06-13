@@ -17,8 +17,7 @@ public class ActivateProfileWidget extends AppWidgetProvider {
 	{
 		PhoneProfilesPreferencesActivity.loadPreferences(context);
 
-		DatabaseHandler databaseHandler = new DatabaseHandler(context);
-		Profile profile = databaseHandler.getActivatedProfile();
+		Profile profile = GlobalData.getActivatedProfile();
 
 		// ziskanie vsetkych wigetov tejtor triedy na plochach lauchera
 		ComponentName thisWidget = new ComponentName(context, ActivateProfileWidget.class);
@@ -39,7 +38,7 @@ public class ActivateProfileWidget extends AppWidgetProvider {
 			else
 			{
 				isIconResourceID = true;
-				iconIdentifier = PhoneProfilesActivity.PROFILE_ICON_DEFAULT;
+				iconIdentifier = GlobalData.PROFILE_ICON_DEFAULT;
 				profileName = context.getResources().getString(R.string.profile_name_default);
 			}
 			
@@ -63,7 +62,7 @@ public class ActivateProfileWidget extends AppWidgetProvider {
 			
 			// konfiguracia, ze ma spustit hlavnu aktivitu zoznamu profilov, ked kliknme na widget
 			Intent intent = new Intent(context, ActivateProfileActivity.class);
-			intent.putExtra(PhoneProfilesActivity.EXTRA_START_APP_SOURCE, PhoneProfilesActivity.STARTUP_SOURCE_WIDGET);
+			intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_WIDGET);
 			PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, Intent.FLAG_ACTIVITY_NEW_TASK);
 			remoteViews.setOnClickPendingIntent(R.id.activate_profile_widget_icon, pendingIntent);
 			remoteViews.setOnClickPendingIntent(R.id.activate_profile_widget_name, pendingIntent);
