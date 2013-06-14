@@ -8,8 +8,16 @@
 		    android:title="@string/phone_profiles_pref_applicationActivatorPrefIndicator"
 		    android:defaultValue="true" />
 		<CheckBoxPreference 
+		    android:key="applicationActivatorHeader"
+		    android:title="@string/phone_profiles_pref_applicationActivatorHeader"
+		    android:defaultValue="true" />
+		<CheckBoxPreference 
 		    android:key="applicationEditorPrefIndicator"
 		    android:title="@string/phone_profiles_pref_applicationEditorPrefIndicator"
+		    android:defaultValue="true" />
+		<CheckBoxPreference 
+		    android:key="applicationEditorHeader"
+		    android:title="@string/phone_profiles_pref_applicationEditorHeader"
 		    android:defaultValue="true" />
 		<ListPreference android:title="@string/phone_profiles_pref_applicationTheme"
             android:summary="@string/phone_profiles_pref_applicationTheme_light"

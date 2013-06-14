@@ -1,0 +1,21 @@
+1. PhoneProfileActivity zmenit na EditProfilesListFragment (SherlockFragment)
+   - bude robit to, co robi teraz, cize zobrazovat zoznam profilov + header
+   - bude robita aj aktivovanie, duplikovanie, mazanie ako teraz
+   - musi definovat interface na click na profil
+   - na onAttach atacnut interface (vid MasterDetailSample.ProfileListFragment)
+   - na onDetach treba zrusit atac interface (vid MasterDetailSample.ProfileListFragment)
+   - na click nebude volat preferences profilu, ale volat onclick vlastnenej aktivity (vid definovany interface)
+
+2. vytovorit novy fragment ProfilePreferencesFragment (PreferenceListFragment -> http://forum.xda-developers.com/showthread.php?t=1363906)
+   - upravit - musi byt od SherlockListFragment 
+
+3. vytvorit novu aktivitu EditProfilesListActivity (SherlockFragmentActivity)
+   - implementacia vid MasterDetailSample.ProfileListActivity
+
+4. vytvorit novu aktivitu ProfilePreferencesActivity (SherlockFragmentActivity)
+   - implementacia vid MasterDetailSample.ProfileDetailActivity
+
+
+
+
+

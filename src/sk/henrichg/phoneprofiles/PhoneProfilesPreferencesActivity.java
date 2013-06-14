@@ -25,10 +25,12 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
 	private static Activity preferenceActivity = null;
 	
 	private boolean showEditorPrefIndicator;
-	private static boolean invalidateLoader = false; 
-
+	private boolean showEditorHeader;
 	private String activeLanguage;
 	private String activeTheme;
+
+	private static boolean invalidateEditor = false; 
+
 	
 		
 /*	static final String PREFS_NAME = "phone_profile_preferences";
@@ -72,7 +74,7 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
 
 		preferenceActivity = this;
 
-		invalidateLoader = false;
+		invalidateEditor = false;
 		
 		getSupportActionBar().setHomeButtonEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -91,6 +93,7 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
         activeLanguage = preferences.getString(GlobalData.PREF_APPLICATION_LANGUAGE, "system");
         activeTheme = preferences.getString(GlobalData.PREF_APPLICATION_THEME, "light");
         showEditorPrefIndicator = preferences.getBoolean(GlobalData.PREF_APPLICATION_EDITOR_PREF_INDICATOR, true);
+        showEditorHeader = preferences.getBoolean(GlobalData.PREF_APPLICATION_EDITOR_HEADER, true);
         
         prefListener = new OnSharedPreferenceChangeListener() {
         	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
@@ -152,28 +155,31 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
 		super.onPause();
 		GlobalData.loadPreferences();
 		
-		if (activeLanguage != preferences.getString(GlobalData.PREF_APPLICATION_LANGUAGE, "system"))
+		if (activeLanguage != GlobalData.applicationLanguage)
 		{
     		//Log.d("PhoneProfilesPreferencesActivity.onPause","language changed");
     		PhoneProfilesActivity.setLanguage(getBaseContext());
-			invalidateLoader = true;
+			invalidateEditor = true;
 		}
 		else
-		if (activeTheme != preferences.getString(GlobalData.PREF_APPLICATION_THEME, "light"))
+		if (activeTheme != GlobalData.applicationTheme)
 		{
     		Log.d("PhoneProfilesPreferencesActivity.onPause","theme changed");
     		//PhoneProfilesActivity.setTheme(this, false);
-			invalidateLoader = true;
+			invalidateEditor = true;
 		}
-    	else
-    	{
-    		//Log.d("PhoneProfilesPreferencesActivity.onPause","no language changed");
-    		if (showEditorPrefIndicator != GlobalData.applicationEditorPrefIndicator)
-    		{
-        		//Log.d("PhoneProfilesPreferencesActivity.onPause","invalidate");
-    			invalidateLoader = true;
-    		}
-    	}
+		else
+   		if (showEditorPrefIndicator != GlobalData.applicationEditorPrefIndicator)
+   		{
+       		//Log.d("PhoneProfilesPreferencesActivity.onPause","invalidate");
+   			invalidateEditor = true;
+   		}
+		else
+   		if (showEditorHeader != GlobalData.applicationEditorHeader)
+   		{
+       		//Log.d("PhoneProfilesPreferencesActivity.onPause","invalidate");
+   			invalidateEditor = true;
+   		}
 	}
 
 	@Override
@@ -237,10 +243,10 @@ public class PhoneProfilesPreferencesActivity extends SherlockPreferenceActivity
 		return preferenceActivity;
 	}
 	
-	static public boolean getInvalidateLoader()
+	static public boolean getInvalidateEditor()
 	{
-		boolean r = invalidateLoader;
-		invalidateLoader = false;
+		boolean r = invalidateEditor;
+		invalidateEditor = false;
 		return r;
 	}
 

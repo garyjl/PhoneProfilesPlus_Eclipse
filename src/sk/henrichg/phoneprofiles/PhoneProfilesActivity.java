@@ -55,7 +55,14 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		setTheme(this, false);
 		setLanguage(getBaseContext());
 		
-		setContentView(R.layout.activity_phone_profiles);
+		if (GlobalData.applicationEditorPrefIndicator && GlobalData.applicationEditorHeader)
+			setContentView(R.layout.activity_phone_profiles);
+		else
+		if (GlobalData.applicationEditorHeader)
+			setContentView(R.layout.activity_phone_profiles_no_indicator);
+		else
+			setContentView(R.layout.activity_phone_profiles_no_header);
+		
 
 		//getSupportActionBar().setHomeButtonEnabled(true);
 		//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -220,7 +227,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 
 		Log.d("PhoneProfilesActivity.onStart", "xxx");
 		
-		if (PhoneProfilesPreferencesActivity.getInvalidateLoader())
+		if (PhoneProfilesPreferencesActivity.getInvalidateEditor())
 		{
 			Log.d("PhoneProfilesActivity.onStart", "invalidate");
 
@@ -549,6 +556,9 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	
 	private void updateHeader(Profile profile)
 	{
+		if (!GlobalData.applicationEditorHeader)
+			return;
+		
 		if (profile == null)
 		{
 			activeProfileName.setText(getResources().getString(R.string.profiles_header_profile_name_no_activated));
@@ -573,12 +583,11 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	        }
 		}
 		
-		ImageView profilePrefIndicatorImageView = (ImageView)findViewById(R.id.activated_profile_pref_indicator);
 		if (GlobalData.applicationEditorPrefIndicator)
+		{
+			ImageView profilePrefIndicatorImageView = (ImageView)findViewById(R.id.activated_profile_pref_indicator);
 			profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, getBaseContext()));
-		else
-			profilePrefIndicatorImageView.setImageBitmap(null);
-		
+		}
 	}
 	
 	public void activateProfileWithAlert(int position)

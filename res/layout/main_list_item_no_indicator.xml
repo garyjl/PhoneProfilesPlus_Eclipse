@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  Single List Item Design -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="1dp"
+    android:orientation="horizontal"
+    android:background="?attr/cardShape" >
+
+    <ImageView
+        android:id="@+id/main_list_drag_handle"
+        android:layout_width="30dp"
+        android:layout_height="60dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/empty_string"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:scaleType="center"
+        android:src="?attr/dragHandleIcon" />
+    
+    <ImageView
+        android:id="@+id/main_list_item_profile_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/main_list_drag_handle"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/empty_string"
+        android:maxHeight="50dp"
+        android:maxWidth="50dp"
+        android:scaleType="centerCrop"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:src="@drawable/ic_profile_default" />
+    
+    <TextView
+        android:id="@+id/main_list_item_profile_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="3dp"
+        android:layout_toRightOf="@+id/main_list_item_profile_icon"
+        android:paddingLeft="10dp"
+        android:text="@string/profile_name_default"
+        android:textSize="19sp" />
+
+    <ImageView
+        android:id="@+id/main_list_item_delete"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:paddingTop="5dp"
+        android:scaleType="center"
+        android:contentDescription="@string/empty_string"
+        android:src="?attr/actionDeleteIcon" />
+
+    <ImageView
+        android:id="@+id/main_list_item_duplicate"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/main_list_item_delete"
+        android:paddingTop="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        android:scaleType="center"
+        android:contentDescription="@string/empty_string"
+        android:src="?attr/actionDuplicateIcon" />
+
+    <ImageView
+        android:id="@+id/main_list_item_activate"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/main_list_item_duplicate"
+        android:paddingTop="5dp"
+        android:scaleType="center"
+        android:contentDescription="@string/empty_string"
+        android:src="?attr/actionActivateIcon" />
+    
+</RelativeLayout>
+

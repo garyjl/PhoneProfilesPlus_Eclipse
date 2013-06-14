@@ -59,18 +59,6 @@
 		        android:scaleType="centerCrop"
 		        android:src="@drawable/ic_profile_activated" />
 		    
-		    <ImageView
-		        android:id="@+id/activated_profile_pref_indicator"
-		        android:layout_width="200dp"
-		        android:layout_height="20dp"
-		        android:layout_below="@id/activated_profile_name"
-		        android:layout_toRightOf="@+id/activated_profile_icon"
-		        android:adjustViewBounds="true"
-		        android:contentDescription="@string/empty_string"
-		        android:scaleType="fitStart"
-		        android:src="@drawable/ic_profile_pref_volume_on"
-		        android:paddingLeft="10dp" />
-		    		    
 		</RelativeLayout>
 		
 	</LinearLayout>		

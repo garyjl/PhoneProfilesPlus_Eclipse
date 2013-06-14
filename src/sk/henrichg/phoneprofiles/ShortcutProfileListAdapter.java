@@ -43,7 +43,12 @@ public class ShortcutProfileListAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
         View vi = convertView;
         if (convertView == null)
-        	vi = inflater.inflate(R.layout.shortcut_list_item, null);
+        {
+        	if (GlobalData.applicationActivatorPrefIndicator)
+        		vi = inflater.inflate(R.layout.shortcut_list_item, null);
+        	else
+        		vi = inflater.inflate(R.layout.shortcut_list_item_no_indicator, null);
+        }
 		
         TextView profileName = (TextView)vi.findViewById(R.id.shortcut_list_item_profile_name);
         ImageView profileIcon = (ImageView)vi.findViewById(R.id.shortcut_list_item_profile_icon);
@@ -67,8 +72,12 @@ public class ShortcutProfileListAdapter extends BaseAdapter {
         	profileIcon.setImageBitmap(bitmap);
         }
         
-		ImageView profilePrefIndicatorImageView = (ImageView)vi.findViewById(R.id.shortcut_list_profile_pref_indicator);
-		profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, vi.getContext()));
+		if (GlobalData.applicationActivatorPrefIndicator)
+		{
+			ImageView profilePrefIndicatorImageView = (ImageView)vi.findViewById(R.id.shortcut_list_profile_pref_indicator);
+			profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, vi.getContext()));
+		}
+		
         
         //Log.d("ShortcutProfileListAdapter.getView", profile.getName());
         

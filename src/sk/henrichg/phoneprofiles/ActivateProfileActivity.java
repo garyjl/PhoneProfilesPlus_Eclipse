@@ -65,7 +65,13 @@ public class ActivateProfileActivity extends SherlockActivity {
 
 		//requestWindowFeature(Window.FEATURE_ACTION_BAR);
 		
-		setContentView(R.layout.activity_activate_profile);
+		if (GlobalData.applicationActivatorPrefIndicator && GlobalData.applicationActivatorHeader)
+			setContentView(R.layout.activity_activate_profile);
+		else
+		if (GlobalData.applicationActivatorHeader)
+			setContentView(R.layout.activity_activate_profile_no_indicator);
+		else
+			setContentView(R.layout.activity_activate_profile_no_header);
 
 		//getSupportActionBar().setHomeButtonEnabled(true);
 		//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -76,7 +82,8 @@ public class ActivateProfileActivity extends SherlockActivity {
 		activateProfileHelper = new ActivateProfileHelper(this, getBaseContext());
 
 		linlayoutRoot = (LinearLayout)findViewById(R.id.act_prof_linlayout_root);
-		linlayoutHeader = (LinearLayout)findViewById(R.id.act_prof_linlayout_header);
+		if (GlobalData.applicationActivatorHeader)
+			linlayoutHeader = (LinearLayout)findViewById(R.id.act_prof_linlayout_header);
 		activeProfileName = (TextView)findViewById(R.id.act_prof_activated_profile_name);
 		activeProfileIcon = (ImageView)findViewById(R.id.act_prof_activated_profile_icon);
 		listView = (ListView)findViewById(R.id.act_prof_profiles_list);
@@ -166,21 +173,24 @@ public class ActivateProfileActivity extends SherlockActivity {
 		// get views height and add it into popupHeight
 		final SherlockActivity activity = this;
 		
-		linlayoutHeader.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-			
-			public void onGlobalLayout() {
-				linlayoutHeader.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-
-	        	final float scale = getResources().getDisplayMetrics().density;
-
-				popupHeight = popupHeight + linlayoutHeader.getHeight();
-				// add 1dp
-				popupHeight = popupHeight + (int) (12 * scale + 0.5f);
-
-				Log.d("ActivateProfilesActivity.onGlobalLayout", "header");
+		if (GlobalData.applicationActivatorHeader)
+		{
+			linlayoutHeader.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 				
-			}
-		});
+				public void onGlobalLayout() {
+					linlayoutHeader.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+	
+		        	final float scale = getResources().getDisplayMetrics().density;
+	
+					popupHeight = popupHeight + linlayoutHeader.getHeight();
+					// add 1dp
+					popupHeight = popupHeight + (int) (12 * scale + 0.5f);
+	
+					Log.d("ActivateProfilesActivity.onGlobalLayout", "header");
+					
+				}
+			});
+		}
 		
 		listView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 			
@@ -335,6 +345,9 @@ public class ActivateProfileActivity extends SherlockActivity {
 
 	private void updateHeader(Profile profile)
 	{
+		if (!GlobalData.applicationActivatorHeader)
+			return;
+		
 		if (profile == null)
 		{
 			activeProfileName.setText(getResources().getString(R.string.profiles_header_profile_name_no_activated));
@@ -359,13 +372,11 @@ public class ActivateProfileActivity extends SherlockActivity {
 	        }
 		}
 		
-		ImageView profilePrefIndicatorImageView = (ImageView)findViewById(R.id.act_prof_activated_profile_pref_indicator);
 		if (GlobalData.applicationActivatorPrefIndicator)
+		{
+			ImageView profilePrefIndicatorImageView = (ImageView)findViewById(R.id.act_prof_activated_profile_pref_indicator);
 			profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, getBaseContext()));
-		else
-			profilePrefIndicatorImageView.setImageBitmap(null);
-			
-		
+		}
 	}
 	
 	private void activateProfileWithAlert(int position)

@@ -46,6 +46,8 @@
     <string name="phone_profiles_pref_applicationAlert">Pýtať sa na aktiváciu profilu</string>
     <string name="phone_profiles_pref_applicationActivatorPrefIndicator">Indikátor parametrov profilu v aktivátore</string>
     <string name="phone_profiles_pref_applicationEditorPrefIndicator">Indikátor parametrov profilu v editore</string>
+    <string name="phone_profiles_pref_applicationActivatorHeader">Zobraz aktivovaný profil v aktivátore</string>
+    <string name="phone_profiles_pref_applicationEditorHeader">Zobraz aktivovaný profil v editore</string>
     <string name="phone_profiles_pref_notificationsToast">Notifikovať bublinou</string>
     <string name="phone_profiles_pref_notificationStatusBar">Notifikovať v stavovej lište</string>
     <string name="phone_profiles_pref_notificationStatusBarStyle">Štýl notifikačnej ikony</string>

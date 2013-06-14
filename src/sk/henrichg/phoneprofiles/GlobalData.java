@@ -41,6 +41,8 @@ public class GlobalData extends Application {
     public static final String PREF_APPLICATION_THEME = "applicationTheme";
     public static final String PREF_APPLICATION_ACTIVATOR_PREF_INDICATOR = "applicationActivatorPrefIndicator";
     public static final String PREF_APPLICATION_EDITOR_PREF_INDICATOR = "applicationEditorPrefIndicator";
+    public static final String PREF_APPLICATION_ACTIVATOR_HEADER = "applicationActivatorHeader";
+    public static final String PREF_APPLICATION_EDITOR_HEADER = "applicationEditorHeader";
     public static final String PREF_NOTIFICATION_TOAST = "notificationsToast";
     public static final String PREF_NOTIFICATION_STATUS_BAR  = "notificationStatusBar";
     public static final String PREF_NOTIFICATION_STATUS_BAR_STYLE  = "notificationStatusBarStyle";
@@ -54,6 +56,8 @@ public class GlobalData extends Application {
     public static String applicationTheme;
     public static boolean applicationActivatorPrefIndicator;
     public static boolean applicationEditorPrefIndicator;
+    public static boolean applicationActivatorHeader;
+    public static boolean applicationEditorHeader;
     public static boolean notificationsToast;
     public static boolean notificationStatusBar;
     public static String notificationStatusBarStyle;
@@ -169,6 +173,8 @@ public class GlobalData extends Application {
 	    applicationTheme = preferences.getString(PREF_APPLICATION_THEME, "light");
 	    applicationActivatorPrefIndicator = preferences.getBoolean(PREF_APPLICATION_ACTIVATOR_PREF_INDICATOR, true);
 	    applicationEditorPrefIndicator = preferences.getBoolean(PREF_APPLICATION_EDITOR_PREF_INDICATOR, true);
+	    applicationActivatorHeader = preferences.getBoolean(PREF_APPLICATION_ACTIVATOR_HEADER, true);
+	    applicationEditorHeader = preferences.getBoolean(PREF_APPLICATION_EDITOR_HEADER, true);
 	    notificationsToast = preferences.getBoolean(PREF_NOTIFICATION_TOAST, true);
 	    notificationStatusBar = preferences.getBoolean(PREF_NOTIFICATION_STATUS_BAR, true);
 	    notificationStatusBarStyle = preferences.getString(PREF_NOTIFICATION_STATUS_BAR_STYLE, "0");
