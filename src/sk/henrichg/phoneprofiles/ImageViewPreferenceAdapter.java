@@ -19,7 +19,7 @@ public class ImageViewPreferenceAdapter extends BaseAdapter {
 		"ic_profile_outdoors_1", "ic_profile_outdoors_2", "ic_profile_outdoors_3", "ic_profile_outdoors_4",
 		"ic_profile_outdoors_5",
 		 
-		"ic_profile_meeting", "ic_profile_mute", 
+		"ic_profile_meeting", "ic_profile_meeting_2", "ic_profile_meeting_3", "ic_profile_mute", "ic_profile_mute_2",  
 		
 		"ic_profile_work_1", "ic_profile_work_2", "ic_profile_work_3", "ic_profile_work_4", "ic_profile_work_5",
 		"ic_profile_work_6", "ic_profile_work_7", "ic_profile_work_8", "ic_profile_work_9", "ic_profile_work_10",

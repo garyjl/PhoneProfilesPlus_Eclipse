@@ -5,6 +5,7 @@ import java.util.List;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 public class GlobalData extends Application {
 	
@@ -74,6 +75,8 @@ public class GlobalData extends Application {
 		
 		databaseHandler = new DatabaseHandler(this);
 		
+		Log.d("GlobalData.onCreate","xxx");
+		
 	}
 	
 	public static boolean getApplicationStarted()
@@ -97,6 +100,12 @@ public class GlobalData extends Application {
 			profileList = databaseHandler.getAllProfiles();
 
 		return profileList;
+	}
+	
+	public static void clearProfileList()
+	{
+		profileList.clear();
+		profileList = null;
 	}
 	
 	public static Profile getActivatedProfile()

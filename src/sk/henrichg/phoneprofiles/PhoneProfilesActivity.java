@@ -539,14 +539,14 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		dialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 			
 			public void onClick(DialogInterface dialog, int which) {
-				profileListAdapter.clear();
 				GlobalData.getDatabaseHandler().deleteAllProfiles();
+				profileListAdapter.clear();
 				//updateListView();
 				// v pripade, ze sa odmaze aktivovany profil, nastavime, ze nic nie je aktivovane
 				//Profile profile = databaseHandler.getActivatedProfile();
-				Profile profile = profileListAdapter.getActivatedProfile();
-				updateHeader(profile);
-				activateProfileHelper.showNotification(profile);
+				//Profile profile = profileListAdapter.getActivatedProfile();
+				updateHeader(null);
+				activateProfileHelper.showNotification(null);
 				activateProfileHelper.updateWidget();
 			}
 		});
@@ -681,14 +681,17 @@ public class PhoneProfilesActivity extends SherlockActivity {
 			public void onClick(DialogInterface dialog, int which) {
 				if (GlobalData.getDatabaseHandler().importDB()  == 1)
 				{
+					GlobalData.clearProfileList();
 
 					// toast notification
 					Toast msg = Toast.makeText(getBaseContext(), 
 							getResources().getString(R.string.toast_import_ok), 
 							Toast.LENGTH_LONG);
 					msg.show();
-					
-					activateProfileHelper.showNotification(null);
+
+					// refresh activity
+					Intent refresh = new Intent(getBaseContext(), PhoneProfilesActivity.class);
+					startActivity(refresh);
 					finish();
 				
 				}
