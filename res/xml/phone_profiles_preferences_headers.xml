@@ -9,19 +9,19 @@
 	*/
     -->
     <header
-        unified:fragment="sk.henrichg.phoneprofiles.PhoneProfilesPreferencesActivityTUI$GUIPreferencesFragment"
+        unified:fragment="sk.henrichg.phoneprofiles.PhoneProfilesPreferencesActivity$GUIPreferencesFragment"
         unified:title="@string/phone_profiles_pref_category_gui"
         unified:preferenceRes="@xml/phone_profiles_preferences_gui" />
     <header
-        unified:fragment="sk.henrichg.phoneprofiles.PhoneProfilesPreferencesActivityTUI$ActivationPreferencesFragment"
+        unified:fragment="sk.henrichg.phoneprofiles.PhoneProfilesPreferencesActivity$ActivationPreferencesFragment"
         unified:title="@string/phone_profiles_pref_category_activation"
         unified:preferenceRes="@xml/phone_profiles_preferences_activation" />
     <header
-        unified:fragment="sk.henrichg.phoneprofiles.PhoneProfilesPreferencesActivityTUI$NotificationsPreferencesFragment"
+        unified:fragment="sk.henrichg.phoneprofiles.PhoneProfilesPreferencesActivity$NotificationsPreferencesFragment"
         unified:title="@string/phone_profiles_pref_category_notifications"
         unified:preferenceRes="@xml/phone_profiles_preferences_notifications" />
     <header
-        unified:fragment="sk.henrichg.phoneprofiles.PhoneProfilesPreferencesActivityTUI$StartPreferencesFragment"
+        unified:fragment="sk.henrichg.phoneprofiles.PhoneProfilesPreferencesActivity$StartPreferencesFragment"
         unified:title="@string/phone_profiles_pref_category_start"
         unified:preferenceRes="@xml/phone_profiles_preferences_start" />
     
