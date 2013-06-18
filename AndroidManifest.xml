@@ -66,6 +66,11 @@
             android:configChanges="locale|layoutDirection" >
         </activity>
         <activity
+            android:name="sk.henrichg.phoneprofiles.PhoneProfilesPreferencesActivityNoTUI"
+            android:label="@string/title_activity_phone_profiles_preferences"
+            android:configChanges="locale|layoutDirection" >
+        </activity>
+        <activity
             android:name="sk.henrichg.phoneprofiles.PhoneProfilesPreferencesActivity"
             android:label="@string/title_activity_phone_profiles_preferences"
             android:configChanges="locale|layoutDirection" >

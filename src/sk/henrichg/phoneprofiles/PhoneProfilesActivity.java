@@ -50,8 +50,6 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		//PhoneProfilesPreferencesActivity.loadPreferences(getBaseContext());
-		
 		setTheme(this, false);
 		setLanguage(getBaseContext());
 		
@@ -128,10 +126,6 @@ public class PhoneProfilesActivity extends SherlockActivity {
 
 				Log.d("PhoneProfilesActivity.onItemClick", "xxxx");
 
-				//SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
-				//if (!preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_APPLICATION_LONG_PRESS_ACTIVATION, false))
-				//	activateProfileWithAlert(position);
-				
 				startProfilePreferencesActivity(position);
 				
 			}
@@ -146,9 +140,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 				
 				if (!MainProfileListAdapter.editIconClicked) // workaround
 				{
-					//SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
-					//if (preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_APPLICATION_LONG_PRESS_ACTIVATION, false))
-						activateProfileWithAlert(position);
+					activateProfileWithAlert(position);
 				}
 				
 				MainProfileListAdapter.editIconClicked = false;
@@ -592,28 +584,21 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	
 	public void activateProfileWithAlert(int position)
 	{
-	//	SharedPreferences preferences = getSharedPreferences(PhoneProfilesPreferencesActivity.PREFS_NAME, MODE_PRIVATE);
+		final int _position = position;
+		final Profile profile = profileList.get(_position);
 
-	//	if (preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_APPLICATION_ALERT, true))
-	//	{	
-			final int _position = position;
-			final Profile profile = profileList.get(_position);
-
-			AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-			dialogBuilder.setTitle(getResources().getString(R.string.profile_string_0) + ": " + profile.getName());
-			dialogBuilder.setMessage(getResources().getString(R.string.activate_profile_alert_message) + "?");
-			//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
-			dialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-				
-				public void onClick(DialogInterface dialog, int which) {
-					activateProfile(_position, true);
-				}
-			});
-			dialogBuilder.setNegativeButton(android.R.string.no, null);
-			dialogBuilder.show();
-	//	}
-	//	else
-	//		activateProfile(position, true);
+		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+		dialogBuilder.setTitle(getResources().getString(R.string.profile_string_0) + ": " + profile.getName());
+		dialogBuilder.setMessage(getResources().getString(R.string.activate_profile_alert_message) + "?");
+		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
+		dialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+			
+			public void onClick(DialogInterface dialog, int which) {
+				activateProfile(_position, true);
+			}
+		});
+		dialogBuilder.setNegativeButton(android.R.string.no, null);
+		dialogBuilder.show();
 	}
 	
 	private void activateProfile(Profile profile, boolean interactive)
@@ -638,15 +623,6 @@ public class PhoneProfilesActivity extends SherlockActivity {
 
 		activateProfileHelper.showNotification(profile);
 
-	/*	if (preferences.getBoolean(PhoneProfilesPreferencesActivity.PREF_APPLICATION_CLOSE, true))
-		{	
-			// ma sa zatvarat aktivita po aktivacii
-			if (applicationStarted)
-				// aplikacia je uz spustena, mozeme aktivitu zavriet
-				// tymto je vyriesene, ze pri spusteni aplikacie z launchera
-				// sa hned nezavrie
-				finish();
-		}  */
 	}
 	
 	private void activateProfile(int position, boolean interactive)

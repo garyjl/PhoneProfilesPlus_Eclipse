@@ -58,8 +58,6 @@ public class ActivateProfileActivity extends SherlockActivity {
 		
 		//Debug.startMethodTracing("phoneprofiles");
 		
-		//PhoneProfilesPreferencesActivity.loadPreferences(getBaseContext());
-		
 		PhoneProfilesActivity.setTheme(this, true);
 		PhoneProfilesActivity.setLanguage(getBaseContext());
 

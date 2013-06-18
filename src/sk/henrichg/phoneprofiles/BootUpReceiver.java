@@ -9,8 +9,6 @@ public class BootUpReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		
-		//PhoneProfilesPreferencesActivity.loadPreferences(context);
-		
 		if (GlobalData.applicationStartOnBoot)
 		{	
 			Intent i = new Intent(context, BackgroundActivateProfileActivity.class);

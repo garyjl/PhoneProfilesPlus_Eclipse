@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+	<CheckBoxPreference 
+	    android:key="applicationActivatorPrefIndicator"
+	    android:title="@string/phone_profiles_pref_applicationActivatorPrefIndicator"
+	    android:defaultValue="true" />
+	<CheckBoxPreference 
+	    android:key="applicationActivatorHeader"
+	    android:title="@string/phone_profiles_pref_applicationActivatorHeader"
+	    android:defaultValue="true" />
+	<CheckBoxPreference 
+	    android:key="applicationEditorPrefIndicator"
+	    android:title="@string/phone_profiles_pref_applicationEditorPrefIndicator"
+	    android:defaultValue="true" />
+	<CheckBoxPreference 
+	    android:key="applicationEditorHeader"
+	    android:title="@string/phone_profiles_pref_applicationEditorHeader"
+	    android:defaultValue="true" />
+	<ListPreference android:title="@string/phone_profiles_pref_applicationTheme"
+           android:summary="@string/phone_profiles_pref_applicationTheme_light"
+           android:key="applicationTheme"
+           android:defaultValue="light"
+           android:entries="@array/themeArray"
+           android:entryValues="@array/themeValues" />        
+	<ListPreference android:title="@string/phone_profiles_pref_applicationLanguage"
+           android:summary="@string/phone_profiles_pref_applicationLanguage_system"
+           android:key="applicationLanguage"
+           android:defaultValue="system"
+           android:entries="@array/languageArray"
+           android:entryValues="@array/languageValues" />        
+</PreferenceScreen>    
