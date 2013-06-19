@@ -15,6 +15,27 @@
 4. vytvorit novu aktivitu ProfilePreferencesActivity (SherlockFragmentActivity)
    - implementacia vid MasterDetailSample.ProfileDetailActivity
 
+-----------------------------
+
+Tak inac:
+
+- EditorProfilesActivity 
+  -> podla velkosti displaya pouzije bud layout/activity_editor_profile_list alebo layout/activity_editor_profiles_twopane
+  -> obhospodaruje:
+     - nastavenie temy a jazyka
+     - menu Nastavenia a Exit
+     - reset po importe, zmene jazyka, temy, ...
+     - callback od EditorProfileListFragment - v prvej faze vzdy otvori aktivitu ProfilePreferencesActivity, v druhej faze pre twopane vytvori fragment 
+     - nemal by mat pristup k databaze, helperu na aktivaciu, applicationCache, databaseHandler, ...
+     - pre udalostami aktivovane profily navigation drawer
+- EditorProfileListFragment
+  -> fragment zoznamu profilov (povodny PhoneProfilesActivity)
+  -> obhospodaruje:
+     - pridava do menu: novy profil, vymazanie vsetkych profilov, export profilov, import profilov
+     - reaguje na vyber z menu pre nim pridane polozky
+     - reaguje na klik edit ikon polozik zoznamu profilov (aktivacia, duplikacia, vymazanie)
+     - ponuka callback na click na profil, aby EditorProfilesActivity vedela menit detail fragment
+
 
 
 
