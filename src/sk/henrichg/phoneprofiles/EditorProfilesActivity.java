@@ -17,6 +17,8 @@ import com.actionbarsherlock.view.MenuItem;
 
 public class EditorProfilesActivity extends SherlockFragmentActivity {
 
+	private static ApplicationsCache applicationsCache;
+	
 	/**
 	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
 	 * device.
@@ -26,10 +28,13 @@ public class EditorProfilesActivity extends SherlockFragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
+
 		setTheme(this, false);
 		setLanguage(getBaseContext());
+
+		super.onCreate(savedInstanceState);
+		
+		applicationsCache = new ApplicationsCache();
 		
 		setContentView(R.layout.activity_editor_profile_list);
 		
@@ -93,12 +98,12 @@ public class EditorProfilesActivity extends SherlockFragmentActivity {
 	{
 		super.onStart();
 
-		if (PhoneProfilesPreferencesActivity.getInvalidateEditor())
+		if (PhoneProfilesPreferencesActivity.getInvalidateEditor(true))
 		{
 			Log.d("EditorProfilesActivity.onStart", "invalidate");
 
 			// refresh activity
-			Intent refresh = new Intent(getBaseContext(), PhoneProfilesActivity.class);
+			Intent refresh = new Intent(getBaseContext(), EditorProfilesActivity.class);
 			startActivity(refresh);
 			finish();
 			
@@ -108,6 +113,14 @@ public class EditorProfilesActivity extends SherlockFragmentActivity {
 		//Log.d("EditorProfilesActivity.onStart", "xxxx");
 		
 	}
+	
+	@Override
+	protected void onDestroy()
+	{
+		applicationsCache.clearCache();
+		super.onDestroy();
+	}
+	
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -158,7 +171,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity {
 		// jazyk na aky zmenit
 		String lang = GlobalData.applicationLanguage;
 		
-		//Log.d("PhoneProfilesActivity.setLanguauge", lang);
+		//Log.d("EditorProfilesActivity.setLanguauge", lang);
 
 		Locale appLocale;
 		
@@ -183,7 +196,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity {
 	{
 		if (GlobalData.applicationTheme.equals("light"))
 		{
-			Log.d("PhoneProfilesActivity.setTheme","light");
+			Log.d("EditorProfilesActivity.setTheme","light");
 			if (forPopup)
 				activity.setTheme(R.style.PopupTheme);
 			else
@@ -192,12 +205,17 @@ public class EditorProfilesActivity extends SherlockFragmentActivity {
 		else
 		if (GlobalData.applicationTheme.equals("dark"))
 		{
-			Log.d("PhoneProfilesActivity.setTheme","dark");
+			Log.d("EditorProfilesActivity.setTheme","dark");
 			if (forPopup)
 				activity.setTheme(R.style.PopupTheme_dark);
 			else
 				activity.setTheme(R.style.Theme_Phoneprofilestheme_dark);
 		}
+	}
+
+	public static ApplicationsCache getApplicationsCache()
+	{
+		return applicationsCache;
 	}
 	
 }

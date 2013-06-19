@@ -3,7 +3,7 @@ package sk.henrichg.phoneprofiles;
 import java.util.List;
 import java.util.Locale;
 
-import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockFragment;
 
 import android.os.Bundle;
 import android.provider.Settings;
@@ -23,7 +23,9 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.mobeta.android.dslv.DragSortListView;
 
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -31,100 +33,70 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PhoneProfilesActivity extends SherlockActivity {
+public class EditorProfileListFragment extends SherlockFragment {
 
-	//private DatabaseHandler databaseHandler;
 	private ActivateProfileHelper activateProfileHelper;
 	private List<Profile> profileList;
-	private static MainProfileListAdapter profileListAdapter;
+	private static EditorProfileListAdapter profileListAdapter;
 	private DragSortListView listView;
 	private TextView activeProfileName;
 	private ImageView activeProfileIcon;
 	private int startupSource = 0;
-	//private static boolean applicationStarted;
 	private Intent intent;
-	//private static boolean languageChanged = false;
-	private static ApplicationsCache applicationsCache;
+	
+	public EditorProfileListFragment() {
+	}
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
+
 		super.onCreate(savedInstanceState);
 		
-		setTheme(this, false);
-		setLanguage(getBaseContext());
-		
-		if (GlobalData.applicationEditorPrefIndicator && GlobalData.applicationEditorHeader)
-			setContentView(R.layout.activity_phone_profiles);
-		else
-		if (GlobalData.applicationEditorHeader)
-			setContentView(R.layout.activity_phone_profiles_no_indicator);
-		else
-			setContentView(R.layout.activity_phone_profiles_no_header);
-		
-
-		//getSupportActionBar().setHomeButtonEnabled(true);
-		//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-		intent = getIntent();
+		intent = getActivity().getIntent();
 		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
 		
-		
-	/*	getSupportActionBar().setDisplayShowTitleEnabled(false);
-		
-		// Create an array adapter to populate dropdownlist 
-	    ArrayAdapter<CharSequence> navigationAdapter =
-	            ArrayAdapter.createFromResource(getBaseContext(), R.array.phoneProfilesNavigator, R.layout.sherlock_spinner_item);
-
-	    // Enabling dropdown list navigation for the action bar 
-	    getSupportActionBar().setNavigationMode(com.actionbarsherlock.app.ActionBar.NAVIGATION_MODE_LIST);
-	*/
-		// na onCreate dame, ze aplikacia este nie je nastartovana
-		//applicationStarted = false;
-		
-		activateProfileHelper = new ActivateProfileHelper(this, getBaseContext());
-
-		//databaseHandler = new DatabaseHandler(this);
-		
-		applicationsCache = new ApplicationsCache();
-		
-		activeProfileName = (TextView)findViewById(R.id.activated_profile_name);
-		activeProfileIcon = (ImageView)findViewById(R.id.activated_profile_icon);
-		listView = (DragSortListView)findViewById(R.id.main_profiles_list);
-		
+		activateProfileHelper = new ActivateProfileHelper(getActivity(), getActivity().getBaseContext());
 		profileList = GlobalData.getProfileList();
-
-		profileListAdapter = new MainProfileListAdapter(this, profileList);
+		profileListAdapter = new EditorProfileListAdapter(this, profileList);
 		
+		setHasOptionsMenu(true);
+
+		//Log.d("EditorProfileListFragment.onCreate", "xxxx");
+		
+	}
+	
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View rootView;
+		
+		if (GlobalData.applicationEditorPrefIndicator && GlobalData.applicationEditorHeader)
+			rootView = inflater.inflate(R.layout.fragment_profile_list, container, false); 
+		else
+		if (GlobalData.applicationEditorHeader)
+			rootView = inflater.inflate(R.layout.fragment_profile_list_no_indicator, container, false); 
+		else
+			rootView = inflater.inflate(R.layout.fragment_profile_list_no_header, container, false); 
+
+		return rootView;
+	}
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState)
+	{
+		super.onActivityCreated(savedInstanceState);
+		
+		// az tu mame layout, tak mozeme ziskat view-y
+		activeProfileName = (TextView)getActivity().findViewById(R.id.activated_profile_name);
+		activeProfileIcon = (ImageView)getActivity().findViewById(R.id.activated_profile_icon);
+		listView = (DragSortListView)getActivity().findViewById(R.id.main_profiles_list);
+
 		listView.setAdapter(profileListAdapter);
 		
-		//registerForContextMenu(listView);
-		//listView.setLongClickable(false);
-
-	/*    // Defining Navigation listener 
-	    ActionBar.OnNavigationListener navigationListener = new ActionBar.OnNavigationListener() {
-
-	        public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-	            switch(itemPosition) {
-	            case 0:
-	            	//
-	                break;
-	            case 1:
-	                //...
-	                break;
-	            }
-	            return false;
-	        }
-	    };
-
-	    // Setting dropdown items and item navigation listener for the actionbar 
-	    getSupportActionBar().setListNavigationCallbacks(navigationAdapter, navigationListener);
-	    navigationAdapter.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
-	*/	
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-				Log.d("PhoneProfilesActivity.onItemClick", "xxxx");
+				Log.d("EditorProfileListFragment.onItemClick", "xxxx");
 
 				startProfilePreferencesActivity(position);
 				
@@ -136,7 +108,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 
 			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-				Log.d("PhoneProfilesActivity.onItemLongClick", "xxxx");
+				Log.d("EditorProfileListFragment.onItemLongClick", "xxxx");
 				
 				if (!MainProfileListAdapter.editIconClicked) // workaround
 				{
@@ -154,95 +126,26 @@ public class PhoneProfilesActivity extends SherlockActivity {
             public void drop(int from, int to) {
             	profileListAdapter.changeItemOrder(from, to);
             	GlobalData.getDatabaseHandler().setPOrder(profileList);
-        		//Log.d("PhoneProfileActivity.drop", "xxxx");
+        		//Log.d("EditorProfileListFragment.drop", "xxxx");
             }
         });
         
         //listView.setRemoveListener(onRemove);
-		
-		
-		//Log.d("PhoneProfileActivity.onCreate", "xxxx");
-		
-	}
 
-/*	@Override
-	public void onCreateContextMenu(ContextMenu menu, View view, ContextMenuInfo menuInfo) {
-		
-		if (view.getId() == R.id.main_profiles_list) {
-			//AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
-			//Profile profile;
-			
-			//profile = profileList.get(info.position);
-
-			//menu.setHeaderTitle(getResources().getString(R.string.profile_context_header) + ": " + profile.getName());
-			menu.add(Menu.NONE, 1001, 1, getResources().getString(R.string.profile_context_item_edit));
-			menu.add(Menu.NONE, 1002, 2, getResources().getString(R.string.profile_context_item_duplicate));
-			menu.add(Menu.NONE, 1003, 3, getResources().getString(R.string.profile_context_item_delete));
-			
-		}
+		Log.d("EditorProfileListFragment.onActivityCreated", "xxx");
+        
 	}
 	
 	@Override
-	public boolean onContextItemSelected(android.view.MenuItem item) {
-		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
-		final int position = info.position;
-		
-		switch (item.getItemId()) {
-		case 1001:
-			//Log.d("PhoneProfileActivity.onContextItemSelected", "Edit");
-
-			startProfilePreferencesActivity(info.position);
-			
-			return true;
-		case 1002:
-			//Log.d("PhoneProfileActivity.onContextItemSelected", "Duplicate");
-			
-			duplicateProfile(position);
-			
-			return true;
-		case 1003:
-			//Log.d("PhoneProfileActivity.onContextItemSelected", "Delete");
-
-			deleteProfile(position);
-			
-			return true;
-		default:
-			return false;
-		}
-	}
-*/	
-	
-	@Override
-	protected void onStart()
+	public void onStart()
 	{
 		super.onStart();
 
-		Log.d("PhoneProfilesActivity.onStart", "xxx");
-		
-		if (PhoneProfilesPreferencesActivity.getInvalidateEditor(true))
-		{
-			Log.d("PhoneProfilesActivity.onStart", "invalidate");
-
-		//	ViewGroup vg = (ViewGroup) findViewById(R.id.layout_phone_profiles_activity);
-		//	vg.invalidate();
-			
-			// refresh activity
-			Intent refresh = new Intent(getBaseContext(), PhoneProfilesActivity.class);
-			startActivity(refresh);
-			finish();
-			
+		// ak sa ma refreshnut aktivita, nebudeme robit nic, co je v onStart
+		if (PhoneProfilesPreferencesActivity.getInvalidateEditor(false))
 			return;
-		}
 		
-	/*	if (applicationStarted && languageChanged)
-		{
-			// zrusenie notifikacie
-			activateProfileHelper.showNotification(null);
-			finish();
-			return;
-		} */
-
-		//Log.d("PhoneProfilesActivity.onStart", "startupSource="+startupSource);
+		Log.d("EditorProfileListFragment.onStart", "xxx");
 		
 		Profile profile;
 		
@@ -261,44 +164,14 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		// reset, aby sa to dalej chovalo ako normalne spustenie z lauchera
 		startupSource = 0;
 		
-	/*	// na onStart dame, ze aplikacia uz je nastartovana
-		applicationStarted = true; */
-		
-		//Log.d("PhoneProfileActivity.onStart", "xxxx");
+		//Log.d("EditorProfileListFragment.onStart", "xxxx");
 		
 	}
 	
 	@Override
-	protected void onPause()
-	{
-		super.onPause();
-	}
-	
-	@Override
-	protected void onResume()
-	{
-		super.onResume();
-	}
-	
-	@Override
-	protected void onStop()
-	{
-		super.onStop();
-	}
-	
-	@Override
-	protected void onDestroy()
-	{
-		applicationsCache.clearCache();
-		super.onDestroy();
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		MenuInflater inflater = getSupportMenuInflater();
-		inflater.inflate(R.menu.activity_phone_profiles, menu);
-		return true;
+		inflater.inflate(R.menu.fragment_editor_profile_list, menu);
 	}
 	
 	@Override
@@ -312,54 +185,27 @@ public class PhoneProfilesActivity extends SherlockActivity {
 			
 			return true;
 		case R.id.menu_delete_all_profiles:
-			//Log.d("PhoneProfilesActivity.onOptionsItemSelected", "menu_delete_all_profiles");
+			//Log.d("EditorProfileListFragment.onOptionsItemSelected", "menu_delete_all_profiles");
 			
 			deleteAllProfiles();
 			
 			return true;
 			
-		case R.id.menu_settings:
-			//Log.d("PhoneProfilesActivity.onOptionsItemSelected", "menu_settings");
-			
-			Intent intent = new Intent(getBaseContext(), PhoneProfilesPreferencesActivity.class);
-
-			startActivity(intent);
-
-			return true;
 		case R.id.menu_export:
-			//Log.d("PhoneProfilesActivity.onOptionsItemSelected", "menu_export");
+			//Log.d("EditorProfileListFragment.onOptionsItemSelected", "menu_export");
 
 			exportProfiles();
 			
 			return true;
 		case R.id.menu_import:
-			//Log.d("PhoneProfilesActivity.onOptionsItemSelected", "menu_import");
+			//Log.d("EditorProfileListFragment.onOptionsItemSelected", "menu_import");
 
 			importProfiles();
 			
 			return true;
-		case R.id.menu_exit:
-			//Log.d("PhoneProfilesActivity.onOptionsItemSelected", "menu_exit");
-			
-			// zrusenie notifikacie
-			activateProfileHelper.showNotification(null);
-			
-			finish();
-
-			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
-	}
-
-	@Override
-	public void onConfigurationChanged(Configuration newConfig)
-	{
-		getBaseContext().getResources().updateConfiguration(newConfig, getBaseContext().getResources().getDisplayMetrics());
-		//setContentView(R.layout.activity_phone_profiles);
-		Intent intent = getIntent();
-		startActivity(intent);
-		finish();
 	}
 
 	private void startProfilePreferencesActivity(int position)
@@ -411,7 +257,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		}
 
 		
-        preferences = getSharedPreferences(ProfilePreferencesActivity.PREFS_NAME, MODE_PRIVATE);
+        preferences = getActivity().getSharedPreferences(ProfilePreferencesActivity.PREFS_NAME, Activity.MODE_PRIVATE);
         editor = preferences.edit();
         editor.putString(ProfilePreferencesActivity.PREF_PROFILE_NAME, profile.getName());
         editor.putString(ProfilePreferencesActivity.PREF_PROFILE_ICON, profile.getIcon());
@@ -442,12 +288,12 @@ public class PhoneProfilesActivity extends SherlockActivity {
         editor.putString(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME, profile.getDeviceRunApplicationPackageName());
 		editor.commit();
 		
-		//Log.d("PhoneProfilesActivity.startProfilePreferencesActivity", profile.getID()+"");
+		//Log.d("EditorProfileListFragment.startProfilePreferencesActivity", profile.getID()+"");
 		
-		Intent intent = new Intent(getBaseContext(), ProfilePreferencesActivity.class);
+		Intent intent = new Intent(getActivity().getBaseContext(), ProfilePreferencesActivity.class);
 		intent.putExtra(GlobalData.EXTRA_PROFILE_POSITION, profileListAdapter.getItemId(profile));
 
-		//Log.d("PhoneProfilesActivity.startProfilePreferencesActivity", profile.getChecked()+"");
+		//Log.d("EditorProfileListFragment.startProfilePreferencesActivity", profile.getChecked()+"");
 		
 		startActivity(intent);
 		
@@ -500,7 +346,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	{
 		final Profile profile = profileList.get(position);
 
-		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
 		dialogBuilder.setTitle(getResources().getString(R.string.profile_string_0) + ": " + profile.getName());
 		dialogBuilder.setMessage(getResources().getString(R.string.delete_profile_alert_message) + "?");
 		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
@@ -524,7 +370,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 
 	private void deleteAllProfiles()
 	{
-		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
 		dialogBuilder.setTitle(getResources().getString(R.string.alert_title_delete_all_profiles));
 		dialogBuilder.setMessage(getResources().getString(R.string.alert_message_delete_all_profiles) + "?");
 		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
@@ -561,7 +407,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 			activeProfileName.setText(profile.getName());
 	        if (profile.getIsIconResourceID())
 	        {
-				int res = getResources().getIdentifier(profile.getIconIdentifier(), "drawable", getPackageName());
+				int res = getResources().getIdentifier(profile.getIconIdentifier(), "drawable", getActivity().getPackageName());
 				activeProfileIcon.setImageResource(res); // resource na ikonu
 	        }
 	        else
@@ -577,8 +423,8 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		
 		if (GlobalData.applicationEditorPrefIndicator)
 		{
-			ImageView profilePrefIndicatorImageView = (ImageView)findViewById(R.id.activated_profile_pref_indicator);
-			profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, getBaseContext()));
+			ImageView profilePrefIndicatorImageView = (ImageView)getActivity().findViewById(R.id.activated_profile_pref_indicator);
+			profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, getActivity().getBaseContext()));
 		}
 	}
 	
@@ -587,7 +433,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		final int _position = position;
 		final Profile profile = profileList.get(_position);
 
-		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
 		dialogBuilder.setTitle(getResources().getString(R.string.profile_string_0) + ": " + profile.getName());
 		dialogBuilder.setMessage(getResources().getString(R.string.activate_profile_alert_message) + "?");
 		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
@@ -614,7 +460,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		if (GlobalData.notificationsToast)
 		{	
 			// toast notification
-			Toast msg = Toast.makeText(getBaseContext(), 
+			Toast msg = Toast.makeText(getActivity().getBaseContext(), 
 					getResources().getString(R.string.toast_profile_activated_0) + ": " + profile.getName() + " " +
 					getResources().getString(R.string.toast_profile_activated_1), 
 					Toast.LENGTH_LONG);
@@ -633,7 +479,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	
 	private void importExportErrorDialog(int importExport)
 	{
-		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
 		dialogBuilder.setTitle(getResources().getString(R.string.import_profiles_alert_title));
 		String resMessage;
 		if (importExport == 1)
@@ -648,7 +494,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 	
 	private void importProfiles()
 	{
-		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
 		dialogBuilder.setTitle(getResources().getString(R.string.import_profiles_alert_title));
 		dialogBuilder.setMessage(getResources().getString(R.string.import_profiles_alert_message) + "?");
 		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
@@ -660,15 +506,16 @@ public class PhoneProfilesActivity extends SherlockActivity {
 					GlobalData.clearProfileList();
 
 					// toast notification
-					Toast msg = Toast.makeText(getBaseContext(), 
+					Toast msg = Toast.makeText(getActivity().getBaseContext(), 
 							getResources().getString(R.string.toast_import_ok), 
 							Toast.LENGTH_LONG);
 					msg.show();
 
+					// TODO tu by sme mohli len fragment refreshnut
 					// refresh activity
-					Intent refresh = new Intent(getBaseContext(), PhoneProfilesActivity.class);
+					Intent refresh = new Intent(getActivity().getBaseContext(), EditorProfilesActivity.class);
 					startActivity(refresh);
-					finish();
+					getActivity().finish();
 				
 				}
 				else
@@ -687,7 +534,7 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		{
 
 			// toast notification
-			Toast msg = Toast.makeText(getBaseContext(), 
+			Toast msg = Toast.makeText(getActivity().getBaseContext(), 
 					getResources().getString(R.string.toast_export_ok), 
 					Toast.LENGTH_LONG);
 			msg.show();
@@ -700,62 +547,9 @@ public class PhoneProfilesActivity extends SherlockActivity {
 		
 	}
 	
-	
-	public static void setLanguage(Context context)//, boolean restart)
-	{
-		// jazyk na aky zmenit
-		String lang = GlobalData.applicationLanguage;
-		
-		//Log.d("PhoneProfilesActivity.setLanguauge", lang);
-
-		Locale appLocale;
-		
-		if (!lang.equals("system"))
-		{
-			appLocale = new Locale(lang);
-		}
-		else
-		{
-			appLocale = Resources.getSystem().getConfiguration().locale;
-		}
-		
-		Locale.setDefault(appLocale);
-		Configuration appConfig = new Configuration();
-		appConfig.locale = appLocale;
-		context.getResources().updateConfiguration(appConfig, context.getResources().getDisplayMetrics());
-		
-		//languageChanged = restart;
-	}
-	
-	public static void setTheme(Activity activity, boolean forPopup)
-	{
-		if (GlobalData.applicationTheme.equals("light"))
-		{
-			Log.d("PhoneProfilesActivity.setTheme","light");
-			if (forPopup)
-				activity.setTheme(R.style.PopupTheme);
-			else
-				activity.setTheme(R.style.Theme_Phoneprofilestheme);
-		}
-		else
-		if (GlobalData.applicationTheme.equals("dark"))
-		{
-			Log.d("PhoneProfilesActivity.setTheme","dark");
-			if (forPopup)
-				activity.setTheme(R.style.PopupTheme_dark);
-			else
-				activity.setTheme(R.style.Theme_Phoneprofilestheme_dark);
-		}
-	}
-	
-	public static MainProfileListAdapter getProfileListAdapter()
+	public static EditorProfileListAdapter getProfileListAdapter()
 	{
 		return profileListAdapter;
 	}
 
-	public static ApplicationsCache getApplicationsCache()
-	{
-		return applicationsCache;
-	}
-	
 }

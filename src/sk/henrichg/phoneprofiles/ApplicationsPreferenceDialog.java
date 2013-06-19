@@ -63,7 +63,7 @@ public class ApplicationsPreferenceDialog extends Dialog implements OnShowListen
 	
 	public void onShow(DialogInterface dialog) {
 
-		if (!PhoneProfilesActivity.getApplicationsCache().isCached())
+		if (!EditorProfilesActivity.getApplicationsCache().isCached())
 		{
 			new AsyncTask<Void, Integer, Void>() {
 	
@@ -76,7 +76,7 @@ public class ApplicationsPreferenceDialog extends Dialog implements OnShowListen
 				
 				@Override
 				protected Void doInBackground(Void... params) {
-					PhoneProfilesActivity.getApplicationsCache().getApplicationsList(_context);
+					EditorProfilesActivity.getApplicationsCache().getApplicationsList(_context);
 					
 					return null;
 				}

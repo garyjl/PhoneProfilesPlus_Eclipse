@@ -65,14 +65,11 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
     public void onCreate(Bundle savedInstanceState) {
 		
 		// must by called before super.onCreate() for PreferenceActivity
-		PhoneProfilesActivity.setTheme(this, false); // must by called before super.onCreate()
-		PhoneProfilesActivity.setLanguage(getBaseContext());
+		EditorProfilesActivity.setTheme(this, false); // must by called before super.onCreate()
+		EditorProfilesActivity.setLanguage(getBaseContext());
 
 		super.onCreate(savedInstanceState);
 
-		//PhoneProfilesActivity.setLanguage(getBaseContext());
-		//PhoneProfilesActivity.setTheme(getBaseContext());
-		
 		getSupportActionBar().setHomeButtonEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         
@@ -187,7 +184,8 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
 
         	//Log.d("ProfilePreferencesActivity.onPause", "profile activated="+profile.getChecked());
         	
-        	PhoneProfilesActivity.getProfileListAdapter().updateItem(profile);
+        	// TODO toto asik je zle. treba vymysliet, ako sa dostat ku tomu adapteru inac
+        	EditorProfileListFragment.getProfileListAdapter().updateItem(profile);
 
         	//Log.d("ProfilePreferencesActivity.onPause", "profile activated="+profile.getChecked());
         	
@@ -258,8 +256,8 @@ public class ProfilePreferencesActivity extends SherlockPreferenceActivity {
         if (profile_position > -1) 
         {	
 
-           	//profile = PhoneProfilesActivity.getDatabaseHandler().getProfile(profile_id);
-        	profile = (Profile) PhoneProfilesActivity.getProfileListAdapter().getItem(profile_position);
+        	// TODO toto asik je zle. treba vymysliet, ako sa dostat ku tomu adapteru inac
+        	profile = (Profile) EditorProfileListFragment.getProfileListAdapter().getItem(profile_position);
 
 	    	// updating activity with selected profile preferences
 	    	

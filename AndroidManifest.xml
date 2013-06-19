@@ -53,6 +53,14 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="sk.henrichg.phoneprofiles.EditorProfilesActivity"
+            android:label="@string/title_activity_phone_profiles" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name="sk.henrichg.phoneprofiles.PhoneProfilesActivity"
             android:label="@string/title_activity_phone_profiles" >
             <intent-filter>

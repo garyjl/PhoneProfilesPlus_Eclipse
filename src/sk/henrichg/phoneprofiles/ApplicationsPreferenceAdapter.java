@@ -24,11 +24,11 @@ public class ApplicationsPreferenceAdapter extends BaseAdapter {
 	}
 	
 	public int getCount() {
-		return PhoneProfilesActivity.getApplicationsCache().getLength();
+		return EditorProfilesActivity.getApplicationsCache().getLength();
 	}
 
 	public Object getItem(int position) {
-		return PhoneProfilesActivity.getApplicationsCache().getPackageName(position);
+		return EditorProfilesActivity.getApplicationsCache().getPackageName(position);
 	}
 
 	public long getItemId(int position) {
@@ -44,12 +44,12 @@ public class ApplicationsPreferenceAdapter extends BaseAdapter {
 		ImageView applicationIcon = (ImageView)vi.findViewById(R.id.applications_pref_dlg_item_icon);
 		TextView applicationLabel = (TextView)vi.findViewById(R.id.applications_pref_dlg_item_label);
 		
-		//Log.d("ApplicationsPreferenceAdapter.getView", PhoneProfilesActivity.getApplicationsCache().getApplicationLabel(position).toString());
-		//Log.d("ApplicationsPreferenceAdapter.getView", PhoneProfilesActivity.getApplicationsCache().getApplicationIcon(position).toString());
+		//Log.d("ApplicationsPreferenceAdapter.getView", EditorProfilesActivity.getApplicationsCache().getApplicationLabel(position).toString());
+		//Log.d("ApplicationsPreferenceAdapter.getView", EditorProfilesActivity.getApplicationsCache().getApplicationIcon(position).toString());
 		
-		applicationLabel.setText(PhoneProfilesActivity.getApplicationsCache().getApplicationLabel(position));
+		applicationLabel.setText(EditorProfilesActivity.getApplicationsCache().getApplicationLabel(position));
 
-		Drawable icon = PhoneProfilesActivity.getApplicationsCache().getApplicationIcon(position);
+		Drawable icon = EditorProfilesActivity.getApplicationsCache().getApplicationIcon(position);
 		//Resources resources = context.getResources();
 		//int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
 		//int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
@@ -62,6 +62,6 @@ public class ApplicationsPreferenceAdapter extends BaseAdapter {
 
 	public String getApplicationPackageName(int position)
 	{
-		return PhoneProfilesActivity.getApplicationsCache().getPackageName(position);
+		return EditorProfilesActivity.getApplicationsCache().getPackageName(position);
 	}
 }

@@ -17,8 +17,6 @@ public class BackgroundActivateProfileActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		//PhoneProfilesActivity.setLanguage(getBaseContext());
-		
 		intent = getIntent();
 		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
 		

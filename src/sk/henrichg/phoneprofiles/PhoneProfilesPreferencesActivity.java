@@ -34,8 +34,8 @@ public class PhoneProfilesPreferencesActivity extends
 	@Override public void onCreate(Bundle savedInstanceState) {
 
 		// must by called before super.onCreate() for PreferenceActivity
-		PhoneProfilesActivity.setTheme(this, false);
-		PhoneProfilesActivity.setLanguage(getBaseContext());
+		EditorProfilesActivity.setTheme(this, false);
+		EditorProfilesActivity.setLanguage(getBaseContext());
 		
 		
 		// Set header resource MUST BE CALLED BEFORE super.onCreate 
@@ -132,17 +132,19 @@ public class PhoneProfilesPreferencesActivity extends
 		super.onPause();
 		GlobalData.loadPreferences();
 		
+		Log.d("PhoneProfilesPreferencesActivity.onPause", "xxx");
+		
 		if (activeLanguage != GlobalData.applicationLanguage)
 		{
     		//Log.d("PhoneProfilesPreferencesActivity.onPause","language changed");
-    		PhoneProfilesActivity.setLanguage(getBaseContext());
+			EditorProfilesActivity.setLanguage(getBaseContext());
 			invalidateEditor = true;
 		}
 		else
 		if (activeTheme != GlobalData.applicationTheme)
 		{
     		Log.d("PhoneProfilesPreferencesActivity.onPause","theme changed");
-    		//PhoneProfilesActivity.setTheme(this, false);
+    		//EditorProfilesActivity.setTheme(this, false);
 			invalidateEditor = true;
 		}
 		else
@@ -222,10 +224,10 @@ public class PhoneProfilesPreferencesActivity extends
 		return preferenceActivity;
 	}
 	
-	static public boolean getInvalidateEditor()
+	static public boolean getInvalidateEditor(boolean reset)
 	{
 		boolean r = invalidateEditor;
-		invalidateEditor = false;
+		if (reset) invalidateEditor = false;
 		return r;
 	}
 	

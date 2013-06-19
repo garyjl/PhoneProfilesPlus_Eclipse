@@ -58,8 +58,8 @@ public class ActivateProfileActivity extends SherlockActivity {
 		
 		//Debug.startMethodTracing("phoneprofiles");
 		
-		PhoneProfilesActivity.setTheme(this, true);
-		PhoneProfilesActivity.setLanguage(getBaseContext());
+		EditorProfilesActivity.setTheme(this, true);
+		EditorProfilesActivity.setLanguage(getBaseContext());
 
 		//requestWindowFeature(Window.FEATURE_ACTION_BAR);
 		
@@ -316,9 +316,9 @@ public class ActivateProfileActivity extends SherlockActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_edit_profiles:
-			//Log.d("PhoneProfilesActivity.onOptionsItemSelected", "menu_settings");
+			//Log.d("ActivateProfileActivity.onOptionsItemSelected", "menu_settings");
 			
-			Intent intent = new Intent(getBaseContext(), PhoneProfilesActivity.class);
+			Intent intent = new Intent(getBaseContext(), EditorProfilesActivity.class);
 			intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_ACTIVATOR);
 
 			startActivity(intent);
