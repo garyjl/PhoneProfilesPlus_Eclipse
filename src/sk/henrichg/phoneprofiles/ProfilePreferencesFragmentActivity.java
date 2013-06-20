@@ -4,6 +4,8 @@ import sk.henrichg.phoneprofiles.PreferenceListFragment.OnPreferenceAttachedList
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
+
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -116,5 +118,5 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 	public void onPreferenceAttached(PreferenceScreen root, int xmlId) {
 		return;
 	}
-
+	
 }

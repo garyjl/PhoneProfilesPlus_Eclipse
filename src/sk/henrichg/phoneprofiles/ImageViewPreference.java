@@ -257,8 +257,8 @@ public class ImageViewPreference extends Preference {
 		Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 		
 		// hm, neda sa ziskat aktivita z preference, tak vyuzivam static metodu
-		ProfilePreferencesActivity.setChangedImageViewPreference(this);
-		ProfilePreferencesActivity.getActivity().startActivityForResult(intent, RESULT_LOAD_IMAGE);
+		ProfilePreferencesFragment.setChangedImageViewPreference(this);
+		ProfilePreferencesFragment.getPreferencesActivity().startActivityForResult(intent, RESULT_LOAD_IMAGE);
 		
 	}
 

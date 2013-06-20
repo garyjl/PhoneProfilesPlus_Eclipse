@@ -20,9 +20,9 @@ import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 
-public class PreferenceListFragment extends SherlockListFragment {
-
-    private static PreferenceManager mPreferenceManager;
+public class PreferenceListFragment extends SherlockListFragment{
+    
+    private PreferenceManager mPreferenceManager;
     
     /**
      * The starting request code given out to preference framework.
@@ -30,7 +30,7 @@ public class PreferenceListFragment extends SherlockListFragment {
     private static final int FIRST_REQUEST_CODE = 100;
     
     private static final int MSG_BIND_PREFERENCES = 0;
-    private static Handler mHandler = new Handler() {
+    private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -41,7 +41,7 @@ public class PreferenceListFragment extends SherlockListFragment {
             }
         }
     };
-    private static ListView lv;
+    private ListView lv;
     private int xmlId;
     
     public PreferenceListFragment(int xmlId){
@@ -134,7 +134,7 @@ public class PreferenceListFragment extends SherlockListFragment {
         mHandler.obtainMessage(MSG_BIND_PREFERENCES).sendToTarget();
     }
     
-    private static void bindPreferences() {
+    private void bindPreferences() {
         final PreferenceScreen preferenceScreen = getPreferenceScreen();
         if (preferenceScreen != null) {
             preferenceScreen.bind(lv);
@@ -190,7 +190,7 @@ public class PreferenceListFragment extends SherlockListFragment {
      * @return The {@link PreferenceScreen} that is the root of the preference
      *         hierarchy.
      */
-    public static PreferenceScreen getPreferenceScreen(){
+    public PreferenceScreen getPreferenceScreen(){
         try{
             Method m = PreferenceManager.class.getDeclaredMethod("getPreferenceScreen");
             m.setAccessible(true);
@@ -244,5 +244,5 @@ public class PreferenceListFragment extends SherlockListFragment {
     public interface OnPreferenceAttachedListener{
         public void onPreferenceAttached(PreferenceScreen root, int xmlId);
     }
-	    
+    
 }

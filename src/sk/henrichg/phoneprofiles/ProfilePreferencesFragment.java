@@ -22,6 +22,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment {
 	private Intent intent;
 	
 	private static ImageViewPreference changedImageViewPreference;
+	private static Activity preferencesActivity = null;
 		
 	static final String PREFS_NAME = "profile_preferences";
 	
@@ -66,20 +67,28 @@ public class ProfilePreferencesFragment extends PreferenceListFragment {
 		
 		super.onCreate(savedInstanceState);
 
+		preferencesActivity = getActivity();
+		
         intent = getActivity().getIntent();
         context = getActivity().getBaseContext();
         
-		prefMng = getPreferenceManager();
-		prefMng.setSharedPreferencesName(PREFS_NAME);
-		prefMng.setSharedPreferencesMode(Activity.MODE_PRIVATE);
-        
-        preferences = prefMng.getSharedPreferences();
-
         // getting attached intent data
         profile_position = intent.getIntExtra(GlobalData.EXTRA_PROFILE_POSITION, -1);
 
     	//Log.d("ProfilePreferencesFragment.onCreate", "xxxx");
     }
+	
+	@Override
+	public void onActivityCreated (Bundle savedInstanceState)
+	{
+		super.onActivityCreated(savedInstanceState);
+
+		prefMng = getPreferenceManager();
+		prefMng.setSharedPreferencesName(PREFS_NAME);
+		prefMng.setSharedPreferencesMode(Activity.MODE_PRIVATE);
+
+        preferences = getActivity().getSharedPreferences(PREFS_NAME, Activity.MODE_PRIVATE);
+	}
 
 	@Override
 	public void onStart()
@@ -298,6 +307,11 @@ public class ProfilePreferencesFragment extends PreferenceListFragment {
 	    		key.equals(PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE) 
 	    		))
 	    		setSummary(key, prefs.getString(key, ""));
+	}
+
+	static public Activity getPreferencesActivity()
+	{
+		return preferencesActivity;
 	}
 	
 	static public void setChangedImageViewPreference(ImageViewPreference changedImageViewPref)

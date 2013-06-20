@@ -123,7 +123,7 @@ public class BrightnessDialogPreference extends
 		// Set the valueText text.
 		valueText.setText(String.valueOf(value + minimumValue));
 		
-		Window win = ProfilePreferencesActivity.getActivity().getWindow();
+		Window win = ProfilePreferencesFragment.getPreferencesActivity().getWindow();
 		WindowManager.LayoutParams layoutParams = win.getAttributes();
 		layoutParams.screenBrightness = (float)(value + minimumValue) / maximumValue;
 		win.setAttributes(layoutParams);
@@ -177,7 +177,7 @@ public class BrightnessDialogPreference extends
 						+ "|" + Integer.toString(automatic));
 				setSummaryBDP();
 				
-				Window win = ProfilePreferencesActivity.getActivity().getWindow();
+				Window win = ProfilePreferencesFragment.getPreferencesActivity().getWindow();
 				WindowManager.LayoutParams layoutParams = win.getAttributes();
 				layoutParams.screenBrightness = -1.0f;
 				win.setAttributes(layoutParams);
