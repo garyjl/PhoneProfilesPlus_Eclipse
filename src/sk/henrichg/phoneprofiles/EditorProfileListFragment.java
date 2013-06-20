@@ -1,20 +1,16 @@
 package sk.henrichg.phoneprofiles;
 
 import java.util.List;
-import java.util.Locale;
-
 import com.actionbarsherlock.app.SherlockFragment;
 
 import android.os.Bundle;
 import android.provider.Settings;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.util.Log;
@@ -44,8 +40,58 @@ public class EditorProfileListFragment extends SherlockFragment {
 	private int startupSource = 0;
 	private Intent intent;
 	
+	/**
+	 * The fragment's current callback object, which is notified of list item
+	 * clicks.
+	 */
+	private OnStartProfilePreferences mCallbacks = sDummyCallbacks;
+	
+	/**
+	 * A callback interface that all activities containing this fragment must
+	 * implement. This mechanism allows activities to be notified of item
+	 * selections.
+	 */
+	public interface OnStartProfilePreferences {
+		/**
+		 * Callback for when an item has been selected.
+		 */
+		public void onStartProfilePreferences(int position);
+	}
+
+	/**
+	 * A dummy implementation of the {@link Callbacks} interface that does
+	 * nothing. Used only when this fragment is not attached to an activity.
+	 */
+	private static OnStartProfilePreferences sDummyCallbacks = new OnStartProfilePreferences() {
+		public void onStartProfilePreferences(int position) {
+		}
+	};
+	
+	
 	public EditorProfileListFragment() {
 	}
+	
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+
+		// Activities containing this fragment must implement its callbacks.
+		if (!(activity instanceof OnStartProfilePreferences)) {
+			throw new IllegalStateException(
+					"Activity must implement fragment's callbacks.");
+		}
+
+		mCallbacks = (OnStartProfilePreferences) activity;
+	}
+
+	@Override
+	public void onDetach() {
+		super.onDetach();
+
+		// Reset the active callbacks interface to the dummy implementation.
+		mCallbacks = sDummyCallbacks;
+	}
+	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -290,13 +336,9 @@ public class EditorProfileListFragment extends SherlockFragment {
 		
 		//Log.d("EditorProfileListFragment.startProfilePreferencesActivity", profile.getID()+"");
 		
-		Intent intent = new Intent(getActivity().getBaseContext(), ProfilePreferencesActivity.class);
-		intent.putExtra(GlobalData.EXTRA_PROFILE_POSITION, profileListAdapter.getItemId(profile));
-
-		//Log.d("EditorProfileListFragment.startProfilePreferencesActivity", profile.getChecked()+"");
-		
-		startActivity(intent);
-		
+		// Notify the active callbacks interface (the activity, if the
+		// fragment is attached to one) one must start profile preferences
+		mCallbacks.onStartProfilePreferences(profileListAdapter.getItemId(profile));
 	}
 
 	public void duplicateProfile(int position)
@@ -545,6 +587,11 @@ public class EditorProfileListFragment extends SherlockFragment {
 			importExportErrorDialog(2);
 		}
 		
+	}
+	
+	public ActivateProfileHelper getActivateProfileHelper()
+	{
+		return activateProfileHelper;
 	}
 	
 	public static EditorProfileListAdapter getProfileListAdapter()

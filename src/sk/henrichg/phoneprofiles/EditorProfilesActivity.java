@@ -2,12 +2,18 @@ package sk.henrichg.phoneprofiles;
 
 import java.util.Locale;
 
+import sk.henrichg.phoneprofiles.EditorProfileListFragment.OnStartProfilePreferences;
+import sk.henrichg.phoneprofiles.PreferenceListFragment.OnPreferenceAttachedListener;
+
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import android.os.Bundle;
+import android.preference.PreferenceScreen;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.util.Log;
@@ -15,9 +21,15 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-public class EditorProfilesActivity extends SherlockFragmentActivity {
+public class EditorProfilesActivity extends SherlockFragmentActivity
+                                    implements OnStartProfilePreferences,
+                                               OnPreferenceAttachedListener
+{
 
 	private static ApplicationsCache applicationsCache;
+	private SharedPreferences preferences;
+	private OnSharedPreferenceChangeListener prefListener;
+	
 	
 	/**
 	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -89,6 +101,24 @@ public class EditorProfilesActivity extends SherlockFragmentActivity {
 	    navigationAdapter.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
 	*/	
 
+		
+		preferences = getSharedPreferences(ProfilePreferencesFragment.PREFS_NAME, MODE_PRIVATE);		
+		
+        prefListener = new OnSharedPreferenceChangeListener() {
+        	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+
+    	    	// updating activity with selected profile preferences
+    	    	//Log.d("ProfilePreferencesActivity.onSharedPreferenceChanged", key);
+        		
+        		ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.editor_profile_detail_container);
+        		if (fragment != null)
+        			fragment.preferenceChanged(prefs, key);
+        		
+        	}
+        };
+        
+        preferences.registerOnSharedPreferenceChangeListener(prefListener);
+		
 		//Log.d("EditorProfilesActivity.onCreate", "xxxx");
 		
 	}
@@ -117,6 +147,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity {
 	@Override
 	protected void onDestroy()
 	{
+    	preferences.unregisterOnSharedPreferenceChangeListener(prefListener);
 		applicationsCache.clearCache();
 		super.onDestroy();
 	}
@@ -146,8 +177,9 @@ public class EditorProfilesActivity extends SherlockFragmentActivity {
 			//Log.d("EditorProfilesActivity.onOptionsItemSelected", "menu_exit");
 			
 			// zrusenie notifikacie
-			// TODO - toto musime vyriesit inac, dako volanim fragmentu
-			//activateProfileHelper.showNotification(null);
+			EditorProfileListFragment fragment = (EditorProfileListFragment)getSupportFragmentManager().findFragmentById(R.id.editor_profile_list);
+			if (fragment != null)
+				fragment.getActivateProfileHelper().showNotification(null);
 			
 			finish();
 
@@ -166,6 +198,36 @@ public class EditorProfilesActivity extends SherlockFragmentActivity {
 		finish();
 	}
 
+	public void onStartProfilePreferences(int position) {
+		if (mTwoPane) {
+			// In two-pane mode, show the detail view in this activity by
+			// adding or replacing the detail fragment using a
+			// fragment transaction.
+
+			// TODO dorobit fragment, zatial volame aktivitu
+			Bundle arguments = new Bundle();
+			arguments.putInt(GlobalData.EXTRA_PROFILE_POSITION, position);
+			ProfilePreferencesFragment fragment = new ProfilePreferencesFragment(R.xml.profile_preferences);
+			fragment.setArguments(arguments);
+			getSupportFragmentManager().beginTransaction()
+					.replace(R.id.editor_profile_detail_container, fragment).commit();
+			//Intent intent = new Intent(getBaseContext(), ProfilePreferencesActivity.class);
+			//intent.putExtra(GlobalData.EXTRA_PROFILE_POSITION, position);
+			//startActivity(intent);
+
+		} else {
+			// In single-pane mode, simply start the profile preferences activity
+			// for the profile position.
+			Intent intent = new Intent(getBaseContext(), ProfilePreferencesFragmentActivity.class);
+			intent.putExtra(GlobalData.EXTRA_PROFILE_POSITION, position);
+			startActivity(intent);
+		}
+	}
+
+	public void onPreferenceAttached(PreferenceScreen root, int xmlId) {
+		return;
+	}
+	
 	public static void setLanguage(Context context)//, boolean restart)
 	{
 		// jazyk na aky zmenit
@@ -217,5 +279,5 @@ public class EditorProfilesActivity extends SherlockFragmentActivity {
 	{
 		return applicationsCache;
 	}
-	
+
 }

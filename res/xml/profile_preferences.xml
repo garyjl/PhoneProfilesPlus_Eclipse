@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:henrichg="http://schemas.android.com/apk/res/sk.henrichg.phoneprofiles" >
+    <PreferenceCategory
+        android:summary="@string/profile_preferences_category_profileidenification"
+        android:title="@string/profile_preferences_category_profileidenification" >
+        <EditTextPreference
+            android:key="profileName"
+            android:summary="@string/profile_preferences_profileName"
+            android:title="@string/profile_preferences_profileName" /> 
+        <sk.henrichg.phoneprofiles.ImageViewPreference
+            android:defaultValue="ic_profile_default|1"
+            android:key="profileIcon"
+            android:title="@string/profile_preferences_profileIcon"
+            henrichg:imageSource="resource_file" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:summary="@string/profile_preferences_category_volumes"
+        android:title="@string/profile_preferences_category_volumes" >
+		<ListPreference android:title="@string/profile_preferences_volumeRingerMode"
+            android:summary="@string/array_pref_no_change"
+            android:key="volumeRingerMode"
+            android:defaultValue="0"
+            android:entries="@array/ringerModeArray"
+            android:entryValues="@array/ringerModeValues" />        
+		<sk.henrichg.phoneprofiles.VolumeDialogPreference
+			android:key="volumeRingtone"
+			henrichg:volumeType="ringtone"
+			henrichg:vNoChange="1"
+			android:title="@string/profile_preferences_volumeRingtone"
+			android:summary="@string/volume_pref_dialog_no_change_chb" />        
+		<sk.henrichg.phoneprofiles.VolumeDialogPreference
+			android:key="volumeNotification"
+			henrichg:volumeType="notification"
+			henrichg:vNoChange="1"
+			android:title="@string/profile_preferences_volumeNotification"
+			android:summary="@string/volume_pref_dialog_no_change_chb" />        
+		<sk.henrichg.phoneprofiles.VolumeDialogPreference
+			android:key="volumeMedia"
+			henrichg:volumeType="media"
+			henrichg:vNoChange="1"
+			android:title="@string/profile_preferences_volumeMedia"
+			android:summary="@string/volume_pref_dialog_no_change_chb" />        
+		<sk.henrichg.phoneprofiles.VolumeDialogPreference
+			android:key="volumeAlarm"
+			henrichg:volumeType="alarm"
+			henrichg:vNoChange="1"
+			android:title="@string/profile_preferences_volumeAlarm"
+			android:summary="@string/volume_pref_dialog_no_change_chb" />        
+		<sk.henrichg.phoneprofiles.VolumeDialogPreference
+			android:key="volumeSystem"
+			henrichg:volumeType="system"
+			henrichg:vNoChange="1"
+			android:title="@string/profile_preferences_volumeSystem"
+			android:summary="@string/volume_pref_dialog_no_change_chb" />        
+		<sk.henrichg.phoneprofiles.VolumeDialogPreference
+			android:key="volumeVoice"
+			henrichg:volumeType="voice"
+			henrichg:vNoChange="1"
+			android:title="@string/profile_preferences_volumeVoice"
+			android:summary="@string/volume_pref_dialog_no_change_chb" />        
+	</PreferenceCategory>
+    <PreferenceCategory
+        android:summary="@string/profile_preferences_category_sounds"
+        android:title="@string/profile_preferences_category_sounds" >
+		<CheckBoxPreference 
+		    android:key="soundRingtoneChange"
+		    android:title="@string/profile_preferences_soundRingtoneChange"
+		    android:defaultValue="false" />
+        <RingtonePreference
+            android:key="soundRingtone"
+            android:summary="@string/array_pref_no_change"
+            android:title="@string/profile_preferences_soundRingtone"
+            android:ringtoneType="ringtone" 
+            android:showSilent="false"
+            android:showDefault="true"
+            android:dependency="soundRingtoneChange" />
+		<CheckBoxPreference 
+		    android:key="soundNotificationChange"
+		    android:title="@string/profile_preferences_soundNotificationChange"
+		    android:defaultValue="false" />
+        <RingtonePreference
+            android:key="soundNotification"
+            android:summary="@string/array_pref_no_change"
+            android:title="@string/profile_preferences_soundNotification"
+            android:ringtoneType="notification" 
+            android:showSilent="false"
+            android:showDefault="true"
+            android:dependency="soundNotificationChange" />
+		<CheckBoxPreference 
+		    android:key="soundAlarmChange"
+		    android:title="@string/profile_preferences_soundAlarmChange"
+		    android:defaultValue="false" />
+        <RingtonePreference
+            android:key="soundAlarm"
+            android:summary="@string/array_pref_no_change"
+            android:title="@string/profile_preferences_soundAlarm"
+            android:ringtoneType="alarm" 
+            android:showSilent="false"
+            android:showDefault="true"
+            android:dependency="soundAlarmChange" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:summary="@string/profile_preferences_category_device"
+        android:title="@string/profile_preferences_category_device" >
+		<ListPreference android:title="@string/profile_preferences_deviceAirplaneMode"
+            android:summary="@string/array_pref_no_change"
+            android:key="deviceAirplaneMode"
+            android:defaultValue="0"
+            android:entries="@array/hardwareModeArray"
+            android:entryValues="@array/hardwareModeValues" />        
+		<ListPreference android:title="@string/profile_preferences_deviceMobileData"
+            android:summary="@string/array_pref_no_change"
+            android:key="deviceMobileData"
+            android:defaultValue="0"
+            android:entries="@array/hardwareModeArray"
+            android:entryValues="@array/hardwareModeValues" />        
+		<CheckBoxPreference 
+		    android:key="deviceMobileDataPrefs"
+		    android:title="@string/profile_preferences_deviceMobileDataPrefs"
+		    android:defaultValue="false" />
+		<ListPreference android:title="@string/profile_preferences_deviceWiFi"
+            android:summary="@string/array_pref_no_change"
+            android:key="deviceWiFi"
+            android:defaultValue="0"
+            android:entries="@array/hardwareModeArray"
+            android:entryValues="@array/hardwareModeValues" />        
+		<ListPreference android:title="@string/profile_preferences_deviceBluetooth"
+            android:summary="@string/array_pref_no_change"
+            android:key="deviceBluetooth"
+            android:defaultValue="0"
+            android:entries="@array/hardwareModeArray"
+            android:entryValues="@array/hardwareModeValues" />        
+		<ListPreference android:title="@string/profile_preferences_deviceGPS"
+            android:summary="@string/array_pref_no_change"
+            android:key="deviceGPS"
+            android:defaultValue="0"
+            android:entries="@array/hardwareModeArray"
+            android:entryValues="@array/hardwareModeValues" />        
+		<ListPreference android:title="@string/profile_preferences_deviceScreenTimeout"
+            android:summary="@string/array_pref_no_change"
+            android:key="deviceScreenTimeout"
+            android:defaultValue="0"
+            android:entries="@array/screenTimeoutArray"
+            android:entryValues="@array/screenTimeoutValues" />        
+		<sk.henrichg.phoneprofiles.BrightnessDialogPreference
+			android:key="deviceBrightness"
+			henrichg:bNoChange="1"
+			henrichg:bAutomatic="0"
+			android:title="@string/profile_preferences_deviceBrightness"
+			android:summary="@string/brightness_pref_dialog_no_change_chb" />   
+		<CheckBoxPreference 
+		    android:key="deviceRunApplicationChange"
+		    android:title="@string/profile_preferences_deviceRunApplicationChange"
+		    android:defaultValue="false" />
+		<sk.henrichg.phoneprofiles.ApplicationsPreference
+            android:defaultValue="-"
+            android:key="deviceRunApplicationPackageName"
+            android:title="@string/profile_preferences_deviceRunApplicationPackageName"
+            android:dependency="deviceRunApplicationChange" />
+		<CheckBoxPreference 
+		    android:key="deviceWallpaperChange"
+		    android:title="@string/profile_preferences_deviceWallpaperChange"
+		    android:defaultValue="false" />
+		<sk.henrichg.phoneprofiles.ImageViewPreference
+            android:defaultValue="-|0"
+            android:key="deviceWallpaper"
+            android:title="@string/profile_preferences_deviceWallpaper"
+            henrichg:imageSource="file"
+            android:dependency="deviceWallpaperChange" />
+	</PreferenceCategory>
+</PreferenceScreen>    
