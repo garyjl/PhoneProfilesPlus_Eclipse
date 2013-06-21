@@ -35,5 +35,4 @@
     <attr name="actionDuplicateIcon" format="reference" />
     <attr name="actionDeleteIcon" format="reference" />
     
-    
 </resources>

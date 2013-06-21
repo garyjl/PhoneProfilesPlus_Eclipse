@@ -96,10 +96,10 @@ public class EditorProfileListFragment extends SherlockFragment {
 
 		super.onCreate(savedInstanceState);
 		
-		intent = getActivity().getIntent();
+		intent = getSherlockActivity().getIntent();
 		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
 		
-		activateProfileHelper = new ActivateProfileHelper(getActivity(), getActivity().getBaseContext());
+		activateProfileHelper = new ActivateProfileHelper(getSherlockActivity(), getActivity().getBaseContext());
 		profileList = GlobalData.getProfileList();
 		profileListAdapter = new EditorProfileListAdapter(this, profileList);
 		
@@ -130,9 +130,9 @@ public class EditorProfileListFragment extends SherlockFragment {
 		super.onActivityCreated(savedInstanceState);
 		
 		// az tu mame layout, tak mozeme ziskat view-y
-		activeProfileName = (TextView)getActivity().findViewById(R.id.activated_profile_name);
-		activeProfileIcon = (ImageView)getActivity().findViewById(R.id.activated_profile_icon);
-		listView = (DragSortListView)getActivity().findViewById(R.id.main_profiles_list);
+		activeProfileName = (TextView)getSherlockActivity().findViewById(R.id.activated_profile_name);
+		activeProfileIcon = (ImageView)getSherlockActivity().findViewById(R.id.activated_profile_icon);
+		listView = (DragSortListView)getSherlockActivity().findViewById(R.id.main_profiles_list);
 
 		listView.setAdapter(profileListAdapter);
 		
@@ -351,7 +351,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 	{
 		final Profile profile = profileList.get(position);
 
-		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getSherlockActivity());
 		dialogBuilder.setTitle(getResources().getString(R.string.profile_string_0) + ": " + profile.getName());
 		dialogBuilder.setMessage(getResources().getString(R.string.delete_profile_alert_message) + "?");
 		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
@@ -375,7 +375,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 
 	private void deleteAllProfiles()
 	{
-		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getSherlockActivity());
 		dialogBuilder.setTitle(getResources().getString(R.string.alert_title_delete_all_profiles));
 		dialogBuilder.setMessage(getResources().getString(R.string.alert_message_delete_all_profiles) + "?");
 		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
@@ -412,7 +412,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 			activeProfileName.setText(profile.getName());
 	        if (profile.getIsIconResourceID())
 	        {
-				int res = getResources().getIdentifier(profile.getIconIdentifier(), "drawable", getActivity().getPackageName());
+				int res = getResources().getIdentifier(profile.getIconIdentifier(), "drawable", getSherlockActivity().getPackageName());
 				activeProfileIcon.setImageResource(res); // resource na ikonu
 	        }
 	        else
@@ -428,8 +428,8 @@ public class EditorProfileListFragment extends SherlockFragment {
 		
 		if (GlobalData.applicationEditorPrefIndicator)
 		{
-			ImageView profilePrefIndicatorImageView = (ImageView)getActivity().findViewById(R.id.activated_profile_pref_indicator);
-			profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, getActivity().getBaseContext()));
+			ImageView profilePrefIndicatorImageView = (ImageView)getSherlockActivity().findViewById(R.id.activated_profile_pref_indicator);
+			profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, getSherlockActivity().getBaseContext()));
 		}
 	}
 	
@@ -438,7 +438,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		final int _position = position;
 		final Profile profile = profileList.get(_position);
 
-		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getSherlockActivity());
 		dialogBuilder.setTitle(getResources().getString(R.string.profile_string_0) + ": " + profile.getName());
 		dialogBuilder.setMessage(getResources().getString(R.string.activate_profile_alert_message) + "?");
 		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
@@ -465,7 +465,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		if (GlobalData.notificationsToast)
 		{	
 			// toast notification
-			Toast msg = Toast.makeText(getActivity().getBaseContext(), 
+			Toast msg = Toast.makeText(getSherlockActivity().getBaseContext(), 
 					getResources().getString(R.string.toast_profile_activated_0) + ": " + profile.getName() + " " +
 					getResources().getString(R.string.toast_profile_activated_1), 
 					Toast.LENGTH_LONG);
@@ -484,7 +484,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 	
 	private void importExportErrorDialog(int importExport)
 	{
-		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getSherlockActivity());
 		dialogBuilder.setTitle(getResources().getString(R.string.import_profiles_alert_title));
 		String resMessage;
 		if (importExport == 1)
@@ -499,7 +499,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 	
 	private void importProfiles()
 	{
-		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getSherlockActivity());
 		dialogBuilder.setTitle(getResources().getString(R.string.import_profiles_alert_title));
 		dialogBuilder.setMessage(getResources().getString(R.string.import_profiles_alert_message) + "?");
 		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
@@ -511,16 +511,16 @@ public class EditorProfileListFragment extends SherlockFragment {
 					GlobalData.clearProfileList();
 
 					// toast notification
-					Toast msg = Toast.makeText(getActivity().getBaseContext(), 
+					Toast msg = Toast.makeText(getSherlockActivity().getBaseContext(), 
 							getResources().getString(R.string.toast_import_ok), 
 							Toast.LENGTH_LONG);
 					msg.show();
 
 					// TODO tu by sme mohli len fragment refreshnut
 					// refresh activity
-					Intent refresh = new Intent(getActivity().getBaseContext(), EditorProfilesActivity.class);
+					Intent refresh = new Intent(getSherlockActivity().getBaseContext(), EditorProfilesActivity.class);
 					startActivity(refresh);
-					getActivity().finish();
+					getSherlockActivity().finish();
 				
 				}
 				else
@@ -539,7 +539,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		{
 
 			// toast notification
-			Toast msg = Toast.makeText(getActivity().getBaseContext(), 
+			Toast msg = Toast.makeText(getSherlockActivity().getBaseContext(), 
 					getResources().getString(R.string.toast_export_ok), 
 					Toast.LENGTH_LONG);
 			msg.show();

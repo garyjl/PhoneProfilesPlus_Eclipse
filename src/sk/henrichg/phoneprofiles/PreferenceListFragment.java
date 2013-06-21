@@ -72,11 +72,11 @@ public class PreferenceListFragment extends SherlockListFragment{
         if(b != null)
             xmlId = b.getInt("xml");
         mPreferenceManager = onCreatePreferenceManager();
-        lv = (ListView) LayoutInflater.from(getActivity()).inflate(R.layout.preference_list_content, null);
+        lv = (ListView) LayoutInflater.from(getSherlockActivity()).inflate(R.layout.preference_list_content, null);
         lv.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         addPreferencesFromResource(xmlId);
         postBindPreferences();
-        ((OnPreferenceAttachedListener)getActivity()).onPreferenceAttached(getPreferenceScreen(), xmlId);
+        ((OnPreferenceAttachedListener)getSherlockActivity()).onPreferenceAttached(getPreferenceScreen(), xmlId);
     }
 
     @Override
@@ -150,7 +150,7 @@ public class PreferenceListFragment extends SherlockListFragment{
         try{
             Constructor<PreferenceManager> c = PreferenceManager.class.getDeclaredConstructor(Activity.class, int.class);
             c.setAccessible(true);
-            PreferenceManager preferenceManager = c.newInstance(this.getActivity(), FIRST_REQUEST_CODE);
+            PreferenceManager preferenceManager = c.newInstance(this.getSherlockActivity(), FIRST_REQUEST_CODE);
             return preferenceManager;
         }catch(Exception e){
             e.printStackTrace();
@@ -220,7 +220,7 @@ public class PreferenceListFragment extends SherlockListFragment{
         try{
             Method m = PreferenceManager.class.getDeclaredMethod("inflateFromResource", Context.class, int.class, PreferenceScreen.class);
             m.setAccessible(true);
-            PreferenceScreen prefScreen = (PreferenceScreen) m.invoke(mPreferenceManager, getActivity(), preferencesResId, getPreferenceScreen());
+            PreferenceScreen prefScreen = (PreferenceScreen) m.invoke(mPreferenceManager, getSherlockActivity(), preferencesResId, getPreferenceScreen());
             setPreferenceScreen(prefScreen);
         }catch(Exception e){
             e.printStackTrace();

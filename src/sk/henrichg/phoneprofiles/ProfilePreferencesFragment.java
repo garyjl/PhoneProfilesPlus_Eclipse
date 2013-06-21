@@ -1,5 +1,10 @@
 package sk.henrichg.phoneprofiles;
  
+import com.actionbarsherlock.view.ActionMode;
+import com.actionbarsherlock.view.ActionMode.Callback;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -23,6 +28,8 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	private PreferenceManager prefMng;
 	private SharedPreferences preferences;
 	private Context context;
+	private ActionMode actionMode;
+	private Callback actionModeCallback;
 	
 	private static ImageViewPreference changedImageViewPreference;
 	private static Activity preferencesActivity = null;
@@ -62,14 +69,14 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		
 		super.onCreate(savedInstanceState);
 
-		preferencesActivity = getActivity();
+		preferencesActivity = getSherlockActivity();
 		
         // getting attached fragment data
 		if (getArguments().containsKey(GlobalData.EXTRA_PROFILE_POSITION))
 			profile_position = getArguments().getInt(GlobalData.EXTRA_PROFILE_POSITION);
     	Log.d("ProfilePreferencesFragment.onCreate", "profile_position=" + profile_position);
 		
-        context = getActivity().getBaseContext();
+        context = getSherlockActivity().getBaseContext();
         
         loadPreferences();
         
@@ -81,7 +88,9 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 
         preferences = prefMng.getSharedPreferences();
         
-        preferences.registerOnSharedPreferenceChangeListener(this);        
+        preferences.registerOnSharedPreferenceChangeListener(this);  
+        
+        createActionMode();
         
 
     	//Log.d("ProfilePreferencesFragment.onCreate", "xxxx");
@@ -198,7 +207,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
     	// TODO toto asik je zle. treba vymysliet, ako sa dostat ku tomu adapteru inac
     	profile = (Profile) EditorProfileListFragment.getProfileListAdapter().getItem(profile_position);
 		
-    	SharedPreferences preferences = getActivity().getSharedPreferences(ProfilePreferencesFragment.PREFS_NAME, Activity.MODE_PRIVATE);
+    	SharedPreferences preferences = getSherlockActivity().getSharedPreferences(ProfilePreferencesFragment.PREFS_NAME, Activity.MODE_PRIVATE);
 
     	Editor editor = preferences.edit();
         editor.putString(PREF_PROFILE_NAME, profile.getName());
@@ -348,6 +357,53 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	    		key.equals(PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE) 
 	    		))
 	    		setSummary(key, sharedPreferences.getString(key, ""));
+    	
+    	// show action mode
+    	//if(actionMode!=null) 
+    	//	return false;
+        if (actionMode == null)
+            actionMode = getSherlockActivity().startActionMode(actionModeCallback);
+	}
+	
+	private void createActionMode()
+	{
+		actionModeCallback = new ActionMode.Callback() {
+			 
+            /** Invoked whenever the action mode is shown. This is invoked immediately after onCreateActionMode */
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+ 
+            /** Called when user exits action mode */
+            public void onDestroyActionMode(ActionMode mode) {
+               actionMode = null;
+            }
+ 
+            /** This is called when the action mode is created. This is called by startActionMode() */
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                mode.setTitle(R.string.phone_preferences_actionmode_title);
+                //getSherlockActivity().getSupportMenuInflater().inflate(R.menu.context_menu, menu);
+                return true;
+            }
+ 
+            /** This is called when an item in the context menu is selected */
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            /*    switch(item.getItemId()){
+                    case R.id.action1:
+                        Toast.makeText(getBaseContext(), "Selected Action1 ", Toast.LENGTH_LONG).show();
+                        mode.finish();  // Automatically exists the action mode, when the user selects this action
+                        break;
+                    case R.id.action2:
+                        Toast.makeText(getBaseContext(), "Selected Action2 ", Toast.LENGTH_LONG).show();
+                        break;
+                    case R.id.action3:
+                        Toast.makeText(getBaseContext(), "Selected Action3 ", Toast.LENGTH_LONG).show();
+                        break;
+                }  */
+                return false;
+            }
+
+        };		
 	}
 
 	static public Activity getPreferencesActivity()

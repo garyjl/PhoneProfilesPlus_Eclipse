@@ -133,5 +133,6 @@
     <string name="phone_profiles_pref_applicationTheme_dark">Dark</string>
     <string name="array_pref_value_light">light</string>
     <string name="array_pref_value_dark">dark</string>
+    <string name="phone_preferences_actionmode_title">Save changes?</string>
     
 </resources>

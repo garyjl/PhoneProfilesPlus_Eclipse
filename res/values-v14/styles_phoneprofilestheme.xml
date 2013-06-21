@@ -44,6 +44,10 @@
         <item name="actionActivateIcon">@drawable/ic_action_activate</item>
         <item name="actionDuplicateIcon">@drawable/ic_action_duplicate</item>
         <item name="actionDeleteIcon">@drawable/ic_action_delete</item>
+        
+        <item name="actionModeCloseButtonStyle">@style/NoCloseButton</item>
+        <item name="android:actionModeCloseButtonStyle">@style/NoCloseButton</item>
+        
     </style>
 
     <style name="ActionBar.Solid.Phoneprofilestheme" parent="@style/Widget.Sherlock.Light.ActionBar.Solid">

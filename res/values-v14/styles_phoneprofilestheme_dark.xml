@@ -44,6 +44,10 @@
         <item name="actionActivateIcon">@drawable/ic_action_activate_dark</item>
         <item name="actionDuplicateIcon">@drawable/ic_action_duplicate_dark</item>
         <item name="actionDeleteIcon">@drawable/ic_action_delete_dark</item>
+        
+        <item name="actionModeCloseButtonStyle">@style/NoCloseButton</item>
+        <item name="android:actionModeCloseButtonStyle">@style/NoCloseButton</item>
+        
     </style>
 
     <style name="ActionBar.Solid.Phoneprofilestheme_dark" parent="@style/Widget.Sherlock.ActionBar.Solid">
