@@ -17,7 +17,7 @@ public class CheckHardwareFeatures {
 	{
 		boolean featurePresented = false;
 
-		if (preferenceKey.equals(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_AIRPLANE_MODE))
+		if (preferenceKey.equals(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_AIRPLANE_MODE))
 		{	
 			if (android.os.Build.VERSION.SDK_INT >= 17)
 			{
@@ -36,28 +36,28 @@ public class CheckHardwareFeatures {
 			}
 		}
 		else
-		if (preferenceKey.equals(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_WIFI))
+		if (preferenceKey.equals(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_WIFI))
 		{	
 			if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_WIFI))
 				// device ma Wifi
 				featurePresented = true;
 		}
 		else
-		if (preferenceKey.equals(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_BLUETOOTH))
+		if (preferenceKey.equals(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_BLUETOOTH))
 		{	
 			if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH))
 				// device ma bluetooth
 				featurePresented = true;
 		}
 		else
-		if (preferenceKey.equals(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_MOBILE_DATA))
+		if (preferenceKey.equals(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_MOBILE_DATA))
 		{	
 			if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY))
 				// device ma mobilne data
 				featurePresented = true;
 		}
 		else
-		if (preferenceKey.equals(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_GPS))
+		if (preferenceKey.equals(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_GPS))
 		{	
 			if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_LOCATION_GPS))
 			{

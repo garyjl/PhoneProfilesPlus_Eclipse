@@ -4,8 +4,6 @@ import java.util.List;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;

@@ -9,8 +9,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.util.Log;
@@ -156,12 +154,12 @@ public class EditorProfileListFragment extends SherlockFragment {
 
 				Log.d("EditorProfileListFragment.onItemLongClick", "xxxx");
 				
-				if (!MainProfileListAdapter.editIconClicked) // workaround
+				if (!EditorProfileListAdapter.editIconClicked) // workaround
 				{
 					activateProfileWithAlert(position);
 				}
 				
-				MainProfileListAdapter.editIconClicked = false;
+				EditorProfileListAdapter.editIconClicked = false;
 				
 				return false;
 			}
@@ -257,9 +255,6 @@ public class EditorProfileListFragment extends SherlockFragment {
 	private void startProfilePreferencesActivity(int position)
 	{
 
-		SharedPreferences preferences;
-		Editor editor;
-
 		Profile profile;
 		
 		if (position != -1)
@@ -302,38 +297,6 @@ public class EditorProfileListFragment extends SherlockFragment {
 			GlobalData.getDatabaseHandler().addProfile(profile);
 		}
 
-		
-        preferences = getActivity().getSharedPreferences(ProfilePreferencesFragment.PREFS_NAME, Activity.MODE_PRIVATE);
-        editor = preferences.edit();
-        editor.putString(ProfilePreferencesFragment.PREF_PROFILE_NAME, profile.getName());
-        editor.putString(ProfilePreferencesFragment.PREF_PROFILE_ICON, profile.getIcon());
-        editor.putString(ProfilePreferencesFragment.PREF_PROFILE_VOLUME_RINGER_MODE, Integer.toString(profile.getVolumeRingerMode()));
-        editor.putString(ProfilePreferencesFragment.PREF_PROFILE_VOLUME_RINGTONE, profile.getVolumeRingtone());
-        editor.putString(ProfilePreferencesFragment.PREF_PROFILE_VOLUME_NOTIFICATION, profile.getVolumeNotification());
-        editor.putString(ProfilePreferencesFragment.PREF_PROFILE_VOLUME_MEDIA, profile.getVolumeMedia());
-        editor.putString(ProfilePreferencesFragment.PREF_PROFILE_VOLUME_ALARM, profile.getVolumeAlarm());
-        editor.putString(ProfilePreferencesFragment.PREF_PROFILE_VOLUME_SYSTEM, profile.getVolumeSystem());
-        editor.putString(ProfilePreferencesFragment.PREF_PROFILE_VOLUME_VOICE, profile.getVolumeVoice());
-        editor.putBoolean(ProfilePreferencesFragment.PREF_PROFILE_SOUND_RINGTONE_CHANGE, profile.getSoundRingtoneChange());
-        editor.putString(ProfilePreferencesFragment.PREF_PROFILE_SOUND_RINGTONE, profile.getSoundRingtone());
-        editor.putBoolean(ProfilePreferencesFragment.PREF_PROFILE_SOUND_NOTIFICATION_CHANGE, profile.getSoundNotificationChange());
-        editor.putString(ProfilePreferencesFragment.PREF_PROFILE_SOUND_NOTIFICATION, profile.getSoundNotification());
-        editor.putBoolean(ProfilePreferencesFragment.PREF_PROFILE_SOUND_ALARM_CHANGE, profile.getSoundAlarmChange());
-        editor.putString(ProfilePreferencesFragment.PREF_PROFILE_SOUND_ALARM, profile.getSoundAlarm());
-        editor.putString(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_AIRPLANE_MODE, Integer.toString(profile.getDeviceAirplaneMode()));
-        editor.putString(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_WIFI, Integer.toString(profile.getDeviceWiFi()));
-        editor.putString(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_BLUETOOTH, Integer.toString(profile.getDeviceBluetooth()));
-        editor.putString(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_SCREEN_TIMEOUT, Integer.toString(profile.getDeviceScreenTimeout()));
-        editor.putString(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_BRIGHTNESS, profile.getDeviceBrightness());
-        editor.putBoolean(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_WALLPAPER_CHANGE, profile.getDeviceWallpaperChange());
-        editor.putString(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_WALLPAPER, profile.getDeviceWallpaper());
-        editor.putString(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_MOBILE_DATA, Integer.toString(profile.getDeviceMobileData()));
-        editor.putBoolean(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS, profile.getDeviceMobileDataPrefs());
-        editor.putString(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_GPS, Integer.toString(profile.getDeviceGPS()));
-        editor.putBoolean(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE, profile.getDeviceRunApplicationChange());
-        editor.putString(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME, profile.getDeviceRunApplicationPackageName());
-		editor.commit();
-		
 		//Log.d("EditorProfileListFragment.startProfilePreferencesActivity", profile.getID()+"");
 		
 		// Notify the active callbacks interface (the activity, if the

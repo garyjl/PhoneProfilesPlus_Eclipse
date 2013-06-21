@@ -62,7 +62,7 @@ public class ProfilePreferencesIndicator {
 			if (profile.getSoundRingtoneChange() || profile.getSoundNotificationChange() || profile.getSoundAlarmChange())
 				addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_sound, context);				
 			// airplane mode
-			if (CheckHardwareFeatures.check(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_AIRPLANE_MODE, context))
+			if (CheckHardwareFeatures.check(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_AIRPLANE_MODE, context))
 			{
 				if ((profile.getDeviceAirplaneMode() == 1) || (profile.getDeviceAirplaneMode() == 3))
 					addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_airplane_mode, context);				
@@ -70,7 +70,7 @@ public class ProfilePreferencesIndicator {
 					addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_airplane_mode_off, context);
 			}
 			// mobile data
-			if (CheckHardwareFeatures.check(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_MOBILE_DATA, context))
+			if (CheckHardwareFeatures.check(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_MOBILE_DATA, context))
 			{
 				if ((profile.getDeviceMobileData() == 1) || (profile.getDeviceMobileData() == 3))
 					addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_mobiledata, context);				
@@ -81,7 +81,7 @@ public class ProfilePreferencesIndicator {
 					addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_mobiledata_pref, context);
 			}
 			// wifi
-			if (CheckHardwareFeatures.check(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_WIFI, context))
+			if (CheckHardwareFeatures.check(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_WIFI, context))
 			{
 				if ((profile.getDeviceWiFi() == 1) || (profile.getDeviceWiFi() == 3))
 					addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_wifi, context);				
@@ -89,7 +89,7 @@ public class ProfilePreferencesIndicator {
 					addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_wifi_off, context);
 			}
 			// bluetooth
-			if (CheckHardwareFeatures.check(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_BLUETOOTH, context))
+			if (CheckHardwareFeatures.check(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_BLUETOOTH, context))
 			{
 				if ((profile.getDeviceBluetooth() == 1) || (profile.getDeviceBluetooth() == 3))
 					addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_bluetooth, context);				
@@ -97,7 +97,7 @@ public class ProfilePreferencesIndicator {
 					addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_bluetooth_off, context);
 			}
 			// gps
-			if (CheckHardwareFeatures.check(ProfilePreferencesActivity.PREF_PROFILE_DEVICE_GPS, context))
+			if (CheckHardwareFeatures.check(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_GPS, context))
 			{
 				if ((profile.getDeviceGPS() == 1) || (profile.getDeviceGPS() == 3))
 					addIndicator(indicatorBitmap, R.drawable.ic_profile_pref_gps_on, context);				

@@ -55,7 +55,7 @@ public class ImageViewPreferenceAdapter extends BaseAdapter {
 		if (convertView == null)
 		{
 			imageView = new ImageView(context);
-			imageView.setLayoutParams(new GridView.LayoutParams(120, 120));
+			imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
 			imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 			imageView.setPadding(8, 8, 8, 8);
 		}

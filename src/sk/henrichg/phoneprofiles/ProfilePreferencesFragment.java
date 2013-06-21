@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -11,15 +12,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.util.Log;
  
-public class ProfilePreferencesFragment extends PreferenceListFragment {
+public class ProfilePreferencesFragment extends PreferenceListFragment 
+										implements SharedPreferences.OnSharedPreferenceChangeListener
+{
 	
 	private Profile profile;
 	private int profile_position;
 	private PreferenceManager prefMng;
 	private SharedPreferences preferences;
 	private Context context;
-	private Intent intent;
 	
 	private static ImageViewPreference changedImageViewPreference;
 	private static Activity preferencesActivity = null;
@@ -54,14 +57,6 @@ public class ProfilePreferencesFragment extends PreferenceListFragment {
 	static final String PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE = "deviceRunApplicationChange";
 	static final String PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME = "deviceRunApplicationPackageName";
 
-    public ProfilePreferencesFragment(int xmlId){
-    	super(xmlId);
-    }
-	
-	public ProfilePreferencesFragment() {
-		super();
-	}
-	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
 		
@@ -69,27 +64,29 @@ public class ProfilePreferencesFragment extends PreferenceListFragment {
 
 		preferencesActivity = getActivity();
 		
-        intent = getActivity().getIntent();
+        // getting attached fragment data
+		if (getArguments().containsKey(GlobalData.EXTRA_PROFILE_POSITION))
+			profile_position = getArguments().getInt(GlobalData.EXTRA_PROFILE_POSITION);
+    	Log.d("ProfilePreferencesFragment.onCreate", "profile_position=" + profile_position);
+		
         context = getActivity().getBaseContext();
         
-        // getting attached intent data
-        profile_position = intent.getIntExtra(GlobalData.EXTRA_PROFILE_POSITION, -1);
+        loadPreferences();
+        
+		prefMng = getPreferenceManager();
+		prefMng.setSharedPreferencesName(PREFS_NAME);
+		prefMng.setSharedPreferencesMode(Activity.MODE_PRIVATE);
+		
+		addPreferencesFromResource(R.xml.profile_preferences);
+
+        preferences = prefMng.getSharedPreferences();
+        
+        preferences.registerOnSharedPreferenceChangeListener(this);        
+        
 
     	//Log.d("ProfilePreferencesFragment.onCreate", "xxxx");
     }
 	
-	@Override
-	public void onActivityCreated (Bundle savedInstanceState)
-	{
-		super.onActivityCreated(savedInstanceState);
-
-		prefMng = getPreferenceManager();
-		prefMng.setSharedPreferencesName(PREFS_NAME);
-		prefMng.setSharedPreferencesMode(Activity.MODE_PRIVATE);
-
-        preferences = getActivity().getSharedPreferences(PREFS_NAME, Activity.MODE_PRIVATE);
-	}
-
 	@Override
 	public void onStart()
 	{
@@ -161,6 +158,13 @@ public class ProfilePreferencesFragment extends PreferenceListFragment {
         }
 		
 	}
+	
+	@Override
+	public void onDestroy()
+	{
+        preferences.unregisterOnSharedPreferenceChangeListener(this);        
+		super.onDestroy();
+	}
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -188,30 +192,44 @@ public class ProfilePreferencesFragment extends PreferenceListFragment {
 		}
 	}
 	
-	private void updateSharedPreference()
+	private void loadPreferences()
 	{
-        if (profile_position > -1) 
-        {	
+		
+    	// TODO toto asik je zle. treba vymysliet, ako sa dostat ku tomu adapteru inac
+    	profile = (Profile) EditorProfileListFragment.getProfileListAdapter().getItem(profile_position);
+		
+    	SharedPreferences preferences = getActivity().getSharedPreferences(ProfilePreferencesFragment.PREFS_NAME, Activity.MODE_PRIVATE);
 
-        	// TODO toto asik je zle. treba vymysliet, ako sa dostat ku tomu adapteru inac
-        	profile = (Profile) EditorProfileListFragment.getProfileListAdapter().getItem(profile_position);
-
-	    	// updating activity with selected profile preferences
-	    	
-        	//Log.d("PhonePreferencesActivity.updateSharedPreference", profile.getName());
-	        setSummary(PREF_PROFILE_NAME, profile.getName());
-	        setSummary(PREF_PROFILE_VOLUME_RINGER_MODE, profile.getVolumeRingerMode());
-	        setSummary(PREF_PROFILE_SOUND_RINGTONE, profile.getSoundRingtone());
-	        setSummary(PREF_PROFILE_SOUND_NOTIFICATION, profile.getSoundNotification());
-	        setSummary(PREF_PROFILE_SOUND_ALARM, profile.getSoundAlarm());
-	        setSummary(PREF_PROFILE_DEVICE_AIRPLANE_MODE, profile.getDeviceAirplaneMode());
-	        setSummary(PREF_PROFILE_DEVICE_WIFI, profile.getDeviceWiFi());
-	        setSummary(PREF_PROFILE_DEVICE_BLUETOOTH, profile.getDeviceBluetooth());
-	        setSummary(PREF_PROFILE_DEVICE_SCREEN_TIMEOUT, profile.getDeviceScreenTimeout());
-	        setSummary(PREF_PROFILE_DEVICE_MOBILE_DATA, profile.getDeviceMobileData());
-	        setSummary(PREF_PROFILE_DEVICE_GPS, profile.getDeviceGPS());
-			
-        }
+    	Editor editor = preferences.edit();
+        editor.putString(PREF_PROFILE_NAME, profile.getName());
+        editor.putString(PREF_PROFILE_ICON, profile.getIcon());
+        editor.putString(PREF_PROFILE_VOLUME_RINGER_MODE, Integer.toString(profile.getVolumeRingerMode()));
+        editor.putString(PREF_PROFILE_VOLUME_RINGTONE, profile.getVolumeRingtone());
+        editor.putString(PREF_PROFILE_VOLUME_NOTIFICATION, profile.getVolumeNotification());
+        editor.putString(PREF_PROFILE_VOLUME_MEDIA, profile.getVolumeMedia());
+        editor.putString(PREF_PROFILE_VOLUME_ALARM, profile.getVolumeAlarm());
+        editor.putString(PREF_PROFILE_VOLUME_SYSTEM, profile.getVolumeSystem());
+        editor.putString(PREF_PROFILE_VOLUME_VOICE, profile.getVolumeVoice());
+        editor.putBoolean(PREF_PROFILE_SOUND_RINGTONE_CHANGE, profile.getSoundRingtoneChange());
+        editor.putString(PREF_PROFILE_SOUND_RINGTONE, profile.getSoundRingtone());
+        editor.putBoolean(PREF_PROFILE_SOUND_NOTIFICATION_CHANGE, profile.getSoundNotificationChange());
+        editor.putString(PREF_PROFILE_SOUND_NOTIFICATION, profile.getSoundNotification());
+        editor.putBoolean(PREF_PROFILE_SOUND_ALARM_CHANGE, profile.getSoundAlarmChange());
+        editor.putString(PREF_PROFILE_SOUND_ALARM, profile.getSoundAlarm());
+        editor.putString(PREF_PROFILE_DEVICE_AIRPLANE_MODE, Integer.toString(profile.getDeviceAirplaneMode()));
+        editor.putString(PREF_PROFILE_DEVICE_WIFI, Integer.toString(profile.getDeviceWiFi()));
+        editor.putString(PREF_PROFILE_DEVICE_BLUETOOTH, Integer.toString(profile.getDeviceBluetooth()));
+        editor.putString(PREF_PROFILE_DEVICE_SCREEN_TIMEOUT, Integer.toString(profile.getDeviceScreenTimeout()));
+        editor.putString(PREF_PROFILE_DEVICE_BRIGHTNESS, profile.getDeviceBrightness());
+        editor.putBoolean(PREF_PROFILE_DEVICE_WALLPAPER_CHANGE, profile.getDeviceWallpaperChange());
+        editor.putString(PREF_PROFILE_DEVICE_WALLPAPER, profile.getDeviceWallpaper());
+        editor.putString(PREF_PROFILE_DEVICE_MOBILE_DATA, Integer.toString(profile.getDeviceMobileData()));
+        editor.putBoolean(PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS, profile.getDeviceMobileDataPrefs());
+        editor.putString(PREF_PROFILE_DEVICE_GPS, Integer.toString(profile.getDeviceGPS()));
+        editor.putBoolean(PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE, profile.getDeviceRunApplicationChange());
+        editor.putString(PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME, profile.getDeviceRunApplicationPackageName());
+		editor.commit();
+		
 	}
 	
 	private void setSummary(String key, Object value)
@@ -297,8 +315,31 @@ public class ProfilePreferencesFragment extends PreferenceListFragment {
 		
 	}
 	
-	public void preferenceChanged(SharedPreferences prefs, String key)
+	private void updateSharedPreference()
 	{
+        if (profile_position > -1) 
+        {	
+
+	    	// updating activity with selected profile preferences
+	    	
+        	//Log.d("PhonePreferencesActivity.updateSharedPreference", profile.getName());
+	        setSummary(PREF_PROFILE_NAME, profile.getName());
+	        setSummary(PREF_PROFILE_VOLUME_RINGER_MODE, profile.getVolumeRingerMode());
+	        setSummary(PREF_PROFILE_SOUND_RINGTONE, profile.getSoundRingtone());
+	        setSummary(PREF_PROFILE_SOUND_NOTIFICATION, profile.getSoundNotification());
+	        setSummary(PREF_PROFILE_SOUND_ALARM, profile.getSoundAlarm());
+	        setSummary(PREF_PROFILE_DEVICE_AIRPLANE_MODE, profile.getDeviceAirplaneMode());
+	        setSummary(PREF_PROFILE_DEVICE_WIFI, profile.getDeviceWiFi());
+	        setSummary(PREF_PROFILE_DEVICE_BLUETOOTH, profile.getDeviceBluetooth());
+	        setSummary(PREF_PROFILE_DEVICE_SCREEN_TIMEOUT, profile.getDeviceScreenTimeout());
+	        setSummary(PREF_PROFILE_DEVICE_MOBILE_DATA, profile.getDeviceMobileData());
+	        setSummary(PREF_PROFILE_DEVICE_GPS, profile.getDeviceGPS());
+			
+        }
+	}
+	
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+			String key) {
     	if (!(key.equals(PREF_PROFILE_SOUND_RINGTONE_CHANGE) ||
 	    		key.equals(PREF_PROFILE_SOUND_NOTIFICATION_CHANGE) ||
 	    		key.equals(PREF_PROFILE_SOUND_ALARM_CHANGE) ||
@@ -306,7 +347,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment {
 	    		key.equals(PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS) || 
 	    		key.equals(PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE) 
 	    		))
-	    		setSummary(key, prefs.getString(key, ""));
+	    		setSummary(key, sharedPreferences.getString(key, ""));
 	}
 
 	static public Activity getPreferencesActivity()
@@ -318,6 +359,5 @@ public class ProfilePreferencesFragment extends PreferenceListFragment {
 	{
 		changedImageViewPreference = changedImageViewPref;
 	}
-	
-	
+
 }

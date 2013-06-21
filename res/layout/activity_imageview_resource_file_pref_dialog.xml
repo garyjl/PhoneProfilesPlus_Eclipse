@@ -19,7 +19,7 @@
         android:layout_above="@+id/imageview_resource_file_pref_dlg_button"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:columnWidth="90dp"
+        android:columnWidth="70dp"
         android:horizontalSpacing="3dp"
         android:numColumns="auto_fit"
         android:stretchMode="columnWidth"

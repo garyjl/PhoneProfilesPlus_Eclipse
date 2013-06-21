@@ -5,22 +5,15 @@ import sk.henrichg.phoneprofiles.PreferenceListFragment.OnPreferenceAttachedList
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceScreen;
  
 public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
-												implements OnPreferenceAttachedListener /*, 
-												           OnPreferenceChangeListener */
+												implements OnPreferenceAttachedListener
 {
 	
-	private SharedPreferences preferences;
-	private OnSharedPreferenceChangeListener prefListener;
-
 	@Override
     public void onCreate(Bundle savedInstanceState) {
 		
@@ -41,59 +34,16 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 		if (savedInstanceState == null) {
 			Bundle arguments = new Bundle();
 			arguments.putInt(GlobalData.EXTRA_PROFILE_POSITION, profile_position);
-			ProfilePreferencesFragment fragment = new ProfilePreferencesFragment(R.xml.profile_preferences);
+			ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
 					.replace(R.id.activity_profile_preferences_container, fragment).commit();
 		}
 		
-		preferences = getSharedPreferences(ProfilePreferencesFragment.PREFS_NAME, MODE_PRIVATE);		
-		
-        prefListener = new OnSharedPreferenceChangeListener() {
-        	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-
-    	    	// updating activity with selected profile preferences
-    	    	//Log.d("ProfilePreferencesFragmentActivity.onSharedPreferenceChanged", key);
-        		
-        		ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.activity_profile_preferences_container);
-        		if (fragment != null)
-        			fragment.preferenceChanged(prefs, key);
-        		
-        	}
-        };
-        
-        preferences.registerOnSharedPreferenceChangeListener(prefListener);
-
-		
     	//Log.d("ProfilePreferencesFragmentActivity.onCreate", "xxxx");
 		
     }
 
-	@Override
-	protected void onDestroy()
-	{
-    	//Log.d("ProfilePreferencesFragmentActivity.onDestroy", "xxxx");
-    	preferences.unregisterOnSharedPreferenceChangeListener(prefListener);
-		super.onDestroy();
-	}
-	
-/*	
-	public void onPreferenceAttached(PreferenceScreen root, int xmlId){
-        if(root == null)
-           return; //for whatever reason in very rare cases this is null
-        root.findPreference("somePreference").setOnPreferenceChangeListener(this);
-    }
-    
-    //handle your preferenceChanged events here (if needed)
-    public boolean onPreferenceChange(Preference preference, Object newValue) {
-		ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.activity_profile_preferences_container);
-		if (fragment != null)
-			fragment.preferenceChanged(preference, newValue);
-    	
-        return true;
-    }
-*/
-	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		
@@ -116,7 +66,6 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 	}
 
 	public void onPreferenceAttached(PreferenceScreen root, int xmlId) {
-		return;
 	}
 	
 }
