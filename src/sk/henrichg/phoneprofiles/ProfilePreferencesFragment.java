@@ -173,6 +173,12 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	{
 		super.onPause();
 
+		if (actionMode != null)
+		{
+			restart = false; // nerestartovat fragment
+			actionMode.finish();
+		}
+		
     	//Log.d("ProfilePreferencesFragment.onPause", "xxxx");
 		
 	}
