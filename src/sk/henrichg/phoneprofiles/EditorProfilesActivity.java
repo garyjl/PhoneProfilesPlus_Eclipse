@@ -52,13 +52,10 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			// activity should be in two-pane mode.
 			mTwoPane = true;
 
-			/*
-			// In two-pane mode, list items should be given the
-			// 'activated' state when touched.
-			((ProfileListFragment) getSupportFragmentManager()
-					.findFragmentById(R.id.profile_list))
-					.setActivateOnItemClick(true);
-			*/
+			Profile profile = GlobalData.getActivatedProfile();
+			
+			onStartProfilePreferences(EditorProfileListFragment.getProfileListAdapter().getItemId(profile));
+
 		}
 		
 		
@@ -181,16 +178,12 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			// adding or replacing the detail fragment using a
 			// fragment transaction.
 
-			// TODO dorobit fragment, zatial volame aktivitu
 			Bundle arguments = new Bundle();
 			arguments.putInt(GlobalData.EXTRA_PROFILE_POSITION, position);
 			ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
 					.replace(R.id.editor_profile_detail_container, fragment).commit();
-			//Intent intent = new Intent(getBaseContext(), ProfilePreferencesActivity.class);
-			//intent.putExtra(GlobalData.EXTRA_PROFILE_POSITION, position);
-			//startActivity(intent);
 
 		} else {
 			// In single-pane mode, simply start the profile preferences activity
