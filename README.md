@@ -9,4 +9,5 @@ Required
 - ActionBarSherlock - http://actionbarsherlock.com/
 - DragSortListView - https://github.com/bauerca/drag-sort-listview
 - RootTools - https://code.google.com/p/roottools/
+- UnifiedPreferences - https://github.com/saik0/UnifiedPreference
 
