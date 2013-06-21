@@ -61,6 +61,7 @@ public class PreferenceListFragment extends SherlockListFragment{
     @Override
     public void onDestroyView(){
         super.onDestroyView();
+        
         ViewParent p = lv.getParent();
         if(p != null)
             ((ViewGroup)p).removeView(lv);
@@ -74,6 +75,7 @@ public class PreferenceListFragment extends SherlockListFragment{
         mPreferenceManager = onCreatePreferenceManager();
         lv = (ListView) LayoutInflater.from(getSherlockActivity()).inflate(R.layout.preference_list_content, null);
         lv.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+
         addPreferencesFromResource(xmlId);
         postBindPreferences();
         ((OnPreferenceAttachedListener)getSherlockActivity()).onPreferenceAttached(getPreferenceScreen(), xmlId);
@@ -94,6 +96,7 @@ public class PreferenceListFragment extends SherlockListFragment{
     @Override
     public void onDestroy() {
         super.onDestroy();
+
         lv = null;
         try{
             Method m = PreferenceManager.class.getDeclaredMethod("dispatchActivityDestroy");
@@ -136,7 +139,7 @@ public class PreferenceListFragment extends SherlockListFragment{
     
     private void bindPreferences() {
         final PreferenceScreen preferenceScreen = getPreferenceScreen();
-        if (preferenceScreen != null) {
+        if (preferenceScreen != null && lv != null) {
             preferenceScreen.bind(lv);
         }
     }
