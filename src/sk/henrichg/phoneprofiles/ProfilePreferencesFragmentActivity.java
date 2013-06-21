@@ -1,6 +1,8 @@
 package sk.henrichg.phoneprofiles;
  
 import sk.henrichg.phoneprofiles.PreferenceListFragment.OnPreferenceAttachedListener;
+import sk.henrichg.phoneprofiles.ProfilePreferencesFragment.OnRedrawListFragment;
+import sk.henrichg.phoneprofiles.ProfilePreferencesFragment.OnRestartProfilePreferences;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
@@ -11,7 +13,9 @@ import android.os.Bundle;
 import android.preference.PreferenceScreen;
  
 public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
-												implements OnPreferenceAttachedListener
+												implements OnPreferenceAttachedListener,
+	                                                       OnRestartProfilePreferences,
+	                                                       OnRedrawListFragment
 {
 	
 	@Override
@@ -65,7 +69,22 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 		finish();
 	}
 
-	public void onPreferenceAttached(PreferenceScreen root, int xmlId) {
+	public void onRestartProfilePreferences(int position) {
+		Bundle arguments = new Bundle();
+		arguments.putInt(GlobalData.EXTRA_PROFILE_POSITION, position);
+		ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
+		fragment.setArguments(arguments);
+		getSupportFragmentManager().beginTransaction()
+				.replace(R.id.activity_profile_preferences_container, fragment).commit();
+	}
+
+	public void onRedrawListFragment() {
+		// tu nic nerobim, vsetko sa deje v EditorProfilesActivity.onStart
+		// kedze toto je aktivita pre mobily, takze ten onStart sa zavola
+		// ked sa tato aktivita zavrie
 	}
 	
+	public void onPreferenceAttached(PreferenceScreen root, int xmlId) {
+	}
+
 }

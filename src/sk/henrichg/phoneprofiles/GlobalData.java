@@ -124,6 +124,20 @@ public class GlobalData extends Application {
 		return null;
 	}
 	
+	public static Profile getFirstProfile()
+	{
+		if (profileList == null)
+			profileList = databaseHandler.getAllProfiles();
+		
+		Profile profile;
+		if (profileList.size() > 0)
+			profile = profileList.get(0);
+		else
+			profile = null;
+		
+		return profile;
+	}
+	
 	public static int getItemPosition(Profile profile)
 	{
 		for (int i = 0; i < profileList.size(); i++)

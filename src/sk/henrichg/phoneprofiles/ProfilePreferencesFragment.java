@@ -1,5 +1,7 @@
 package sk.henrichg.phoneprofiles;
  
+import sk.henrichg.phoneprofiles.EditorProfileListFragment.OnStartProfilePreferences;
+
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.ActionMode.Callback;
 import com.actionbarsherlock.view.Menu;
@@ -20,6 +22,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
  
 public class ProfilePreferencesFragment extends PreferenceListFragment 
 										implements SharedPreferences.OnSharedPreferenceChangeListener
@@ -32,6 +35,35 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	private Context context;
 	private ActionMode actionMode;
 	private Callback actionModeCallback;
+	
+	private boolean restart; 
+	
+	private OnRestartProfilePreferences onRestartProfilePreferencesCallback = sDummyOnRestartProfilePreferencesCallback;
+	private OnRedrawListFragment onRedrawListFragmentCallback = sDummyOnRedrawListFragmentCallback;
+
+	public interface OnRestartProfilePreferences {
+		/**
+		 * Callback for when an item has been selected.
+		 */
+		public void onRestartProfilePreferences(int position);
+	}
+
+	private static OnRestartProfilePreferences sDummyOnRestartProfilePreferencesCallback = new OnRestartProfilePreferences() {
+		public void onRestartProfilePreferences(int position) {
+		}
+	};
+	
+	public interface OnRedrawListFragment {
+		/**
+		 * Callback for when an item has been selected.
+		 */
+		public void onRedrawListFragment();
+	}
+
+	private static OnRedrawListFragment sDummyOnRedrawListFragmentCallback = new OnRedrawListFragment() {
+		public void onRedrawListFragment() {
+		}
+	};
 	
 	private static ImageViewPreference changedImageViewPreference;
 	private static Activity preferencesActivity = null;
@@ -66,6 +98,31 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	static final String PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE = "deviceRunApplicationChange";
 	static final String PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME = "deviceRunApplicationPackageName";
 
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+
+		if (!(activity instanceof OnRestartProfilePreferences)) {
+			throw new IllegalStateException(
+					"Activity must implement fragment's callbacks.");
+		}
+
+		onRestartProfilePreferencesCallback = (OnRestartProfilePreferences) activity;
+		
+		if (activity instanceof OnRedrawListFragment)
+			onRedrawListFragmentCallback = (OnRedrawListFragment) activity;
+		
+	}
+
+	@Override
+	public void onDetach() {
+		super.onDetach();
+
+		// Reset the active callbacks interface to the dummy implementation.
+		onRestartProfilePreferencesCallback = sDummyOnRestartProfilePreferencesCallback;
+		onRedrawListFragmentCallback = sDummyOnRedrawListFragmentCallback;
+	}
+	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
 		
@@ -118,6 +175,86 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 
     	//Log.d("ProfilePreferencesFragment.onPause", "xxxx");
 		
+	}
+	
+	@Override
+	public void onDestroy()
+	{
+        preferences.unregisterOnSharedPreferenceChangeListener(this);        
+		super.onDestroy();
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		if (requestCode == ImageViewPreference.RESULT_LOAD_IMAGE && resultCode == Activity.RESULT_OK && data != null)
+		{
+			Uri selectedImage = data.getData();
+			String[] filePathColumn = { MediaStore.Images.Media.DATA };
+			
+			Cursor cursor = context.getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+			cursor.moveToFirst();
+			
+			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+			String picturePath = cursor.getString(columnIndex);
+			
+			cursor.close();
+			
+			//Log.d("ProfilePreferencesFragment.onActivityResult", picturePath);
+			
+			// nastavime image identifikatoru na ziskanu cestu ku obrazku
+			changedImageViewPreference.setImageIdentifierAndType(picturePath, false);
+			
+		}
+	}
+	
+	private void loadPreferences()
+	{
+		
+    	// TODO toto asik je zle. treba vymysliet, ako sa dostat ku tomu adapteru inac
+    	profile = (Profile) EditorProfileListFragment.getProfileListAdapter().getItem(profile_position);
+    	
+    	if (profile != null)
+    	{
+	    	SharedPreferences preferences = getSherlockActivity().getSharedPreferences(ProfilePreferencesFragment.PREFS_NAME, Activity.MODE_PRIVATE);
+	
+	    	Editor editor = preferences.edit();
+	        editor.putString(PREF_PROFILE_NAME, profile.getName());
+	        editor.putString(PREF_PROFILE_ICON, profile.getIcon());
+	        editor.putString(PREF_PROFILE_VOLUME_RINGER_MODE, Integer.toString(profile.getVolumeRingerMode()));
+	        editor.putString(PREF_PROFILE_VOLUME_RINGTONE, profile.getVolumeRingtone());
+	        editor.putString(PREF_PROFILE_VOLUME_NOTIFICATION, profile.getVolumeNotification());
+	        editor.putString(PREF_PROFILE_VOLUME_MEDIA, profile.getVolumeMedia());
+	        editor.putString(PREF_PROFILE_VOLUME_ALARM, profile.getVolumeAlarm());
+	        editor.putString(PREF_PROFILE_VOLUME_SYSTEM, profile.getVolumeSystem());
+	        editor.putString(PREF_PROFILE_VOLUME_VOICE, profile.getVolumeVoice());
+	        editor.putBoolean(PREF_PROFILE_SOUND_RINGTONE_CHANGE, profile.getSoundRingtoneChange());
+	        editor.putString(PREF_PROFILE_SOUND_RINGTONE, profile.getSoundRingtone());
+	        editor.putBoolean(PREF_PROFILE_SOUND_NOTIFICATION_CHANGE, profile.getSoundNotificationChange());
+	        editor.putString(PREF_PROFILE_SOUND_NOTIFICATION, profile.getSoundNotification());
+	        editor.putBoolean(PREF_PROFILE_SOUND_ALARM_CHANGE, profile.getSoundAlarmChange());
+	        editor.putString(PREF_PROFILE_SOUND_ALARM, profile.getSoundAlarm());
+	        editor.putString(PREF_PROFILE_DEVICE_AIRPLANE_MODE, Integer.toString(profile.getDeviceAirplaneMode()));
+	        editor.putString(PREF_PROFILE_DEVICE_WIFI, Integer.toString(profile.getDeviceWiFi()));
+	        editor.putString(PREF_PROFILE_DEVICE_BLUETOOTH, Integer.toString(profile.getDeviceBluetooth()));
+	        editor.putString(PREF_PROFILE_DEVICE_SCREEN_TIMEOUT, Integer.toString(profile.getDeviceScreenTimeout()));
+	        editor.putString(PREF_PROFILE_DEVICE_BRIGHTNESS, profile.getDeviceBrightness());
+	        editor.putBoolean(PREF_PROFILE_DEVICE_WALLPAPER_CHANGE, profile.getDeviceWallpaperChange());
+	        editor.putString(PREF_PROFILE_DEVICE_WALLPAPER, profile.getDeviceWallpaper());
+	        editor.putString(PREF_PROFILE_DEVICE_MOBILE_DATA, Integer.toString(profile.getDeviceMobileData()));
+	        editor.putBoolean(PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS, profile.getDeviceMobileDataPrefs());
+	        editor.putString(PREF_PROFILE_DEVICE_GPS, Integer.toString(profile.getDeviceGPS()));
+	        editor.putBoolean(PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE, profile.getDeviceRunApplicationChange());
+	        editor.putString(PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME, profile.getDeviceRunApplicationPackageName());
+			editor.commit();
+    	}
+		
+	}
+	
+	private void savePreferences()
+	{
         if (profile_position > -1) 
         {
         	profile.setName(preferences.getString(PREF_PROFILE_NAME, ""));
@@ -165,85 +302,9 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
         	
         	//Log.d("ProfilePreferencesFragment.onPause", "updateProfile");
 
-
         }
-        
-        if (actionMode != null)
-        	actionMode.finish();
-		
-	}
-	
-	@Override
-	public void onDestroy()
-	{
-        preferences.unregisterOnSharedPreferenceChangeListener(this);        
-		super.onDestroy();
-	}
 
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data)
-	{
-		super.onActivityResult(requestCode, resultCode, data);
-		
-		if (requestCode == ImageViewPreference.RESULT_LOAD_IMAGE && resultCode == Activity.RESULT_OK && data != null)
-		{
-			Uri selectedImage = data.getData();
-			String[] filePathColumn = { MediaStore.Images.Media.DATA };
-			
-			Cursor cursor = context.getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-			cursor.moveToFirst();
-			
-			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-			String picturePath = cursor.getString(columnIndex);
-			
-			cursor.close();
-			
-			//Log.d("ProfilePreferencesFragment.onActivityResult", picturePath);
-			
-			// nastavime image identifikatoru na ziskanu cestu ku obrazku
-			changedImageViewPreference.setImageIdentifierAndType(picturePath, false);
-			
-		}
-	}
-	
-	private void loadPreferences()
-	{
-		
-    	// TODO toto asik je zle. treba vymysliet, ako sa dostat ku tomu adapteru inac
-    	profile = (Profile) EditorProfileListFragment.getProfileListAdapter().getItem(profile_position);
-		
-    	SharedPreferences preferences = getSherlockActivity().getSharedPreferences(ProfilePreferencesFragment.PREFS_NAME, Activity.MODE_PRIVATE);
-
-    	Editor editor = preferences.edit();
-        editor.putString(PREF_PROFILE_NAME, profile.getName());
-        editor.putString(PREF_PROFILE_ICON, profile.getIcon());
-        editor.putString(PREF_PROFILE_VOLUME_RINGER_MODE, Integer.toString(profile.getVolumeRingerMode()));
-        editor.putString(PREF_PROFILE_VOLUME_RINGTONE, profile.getVolumeRingtone());
-        editor.putString(PREF_PROFILE_VOLUME_NOTIFICATION, profile.getVolumeNotification());
-        editor.putString(PREF_PROFILE_VOLUME_MEDIA, profile.getVolumeMedia());
-        editor.putString(PREF_PROFILE_VOLUME_ALARM, profile.getVolumeAlarm());
-        editor.putString(PREF_PROFILE_VOLUME_SYSTEM, profile.getVolumeSystem());
-        editor.putString(PREF_PROFILE_VOLUME_VOICE, profile.getVolumeVoice());
-        editor.putBoolean(PREF_PROFILE_SOUND_RINGTONE_CHANGE, profile.getSoundRingtoneChange());
-        editor.putString(PREF_PROFILE_SOUND_RINGTONE, profile.getSoundRingtone());
-        editor.putBoolean(PREF_PROFILE_SOUND_NOTIFICATION_CHANGE, profile.getSoundNotificationChange());
-        editor.putString(PREF_PROFILE_SOUND_NOTIFICATION, profile.getSoundNotification());
-        editor.putBoolean(PREF_PROFILE_SOUND_ALARM_CHANGE, profile.getSoundAlarmChange());
-        editor.putString(PREF_PROFILE_SOUND_ALARM, profile.getSoundAlarm());
-        editor.putString(PREF_PROFILE_DEVICE_AIRPLANE_MODE, Integer.toString(profile.getDeviceAirplaneMode()));
-        editor.putString(PREF_PROFILE_DEVICE_WIFI, Integer.toString(profile.getDeviceWiFi()));
-        editor.putString(PREF_PROFILE_DEVICE_BLUETOOTH, Integer.toString(profile.getDeviceBluetooth()));
-        editor.putString(PREF_PROFILE_DEVICE_SCREEN_TIMEOUT, Integer.toString(profile.getDeviceScreenTimeout()));
-        editor.putString(PREF_PROFILE_DEVICE_BRIGHTNESS, profile.getDeviceBrightness());
-        editor.putBoolean(PREF_PROFILE_DEVICE_WALLPAPER_CHANGE, profile.getDeviceWallpaperChange());
-        editor.putString(PREF_PROFILE_DEVICE_WALLPAPER, profile.getDeviceWallpaper());
-        editor.putString(PREF_PROFILE_DEVICE_MOBILE_DATA, Integer.toString(profile.getDeviceMobileData()));
-        editor.putBoolean(PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS, profile.getDeviceMobileDataPrefs());
-        editor.putString(PREF_PROFILE_DEVICE_GPS, Integer.toString(profile.getDeviceGPS()));
-        editor.putBoolean(PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE, profile.getDeviceRunApplicationChange());
-        editor.putString(PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME, profile.getDeviceRunApplicationPackageName());
-		editor.commit();
-		
+        onRedrawListFragmentCallback.onRedrawListFragment();
 	}
 	
 	private void setSummary(String key, Object value)
@@ -366,11 +427,36 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
         if (actionMode == null)
         {
         	
+        	restart = true;
+        	
         	LayoutInflater inflater = LayoutInflater.from(getSherlockActivity());
         	View actionView = inflater.inflate(R.layout.profile_preferences_action_mode, null);
 
             actionMode = getSherlockActivity().startActionMode(actionModeCallback);
-            actionMode.setCustomView(actionView);        	
+            actionMode.setCustomView(actionView); 
+            
+            actionMode.getCustomView().findViewById(R.id.profile_preferences_action_menu_cancel).setOnClickListener(new OnClickListener() {
+				public void onClick(View v) {
+					
+					Log.d("actionMode.onClick", "cancel");
+					
+					actionMode.finish();
+					
+				}
+           	});
+
+            actionMode.getCustomView().findViewById(R.id.profile_preferences_action_menu_save).setOnClickListener(new OnClickListener() {
+				public void onClick(View v) {
+					
+					Log.d("actionMode.onClick", "save");
+			
+					savePreferences();
+					
+					restart = false; // nerestartovat fragment
+					actionMode.finish();
+					
+				}
+           	});
         }
 	}
 	
@@ -386,6 +472,8 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
             /** Called when user exits action mode */
             public void onDestroyActionMode(ActionMode mode) {
                actionMode = null;
+               if (restart)
+            	   onRestartProfilePreferencesCallback.onRestartProfilePreferences(profile_position);
             }
  
             /** This is called when the action mode is created. This is called by startActionMode() */

@@ -4,6 +4,8 @@ import java.util.Locale;
 
 import sk.henrichg.phoneprofiles.EditorProfileListFragment.OnStartProfilePreferences;
 import sk.henrichg.phoneprofiles.PreferenceListFragment.OnPreferenceAttachedListener;
+import sk.henrichg.phoneprofiles.ProfilePreferencesFragment.OnRedrawListFragment;
+import sk.henrichg.phoneprofiles.ProfilePreferencesFragment.OnRestartProfilePreferences;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
@@ -21,7 +23,9 @@ import com.actionbarsherlock.view.MenuItem;
 
 public class EditorProfilesActivity extends SherlockFragmentActivity
                                     implements OnStartProfilePreferences,
-                                               OnPreferenceAttachedListener
+                                               OnPreferenceAttachedListener,
+                                               OnRestartProfilePreferences,
+                                               OnRedrawListFragment
 {
 
 	private static ApplicationsCache applicationsCache;
@@ -52,9 +56,10 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			// activity should be in two-pane mode.
 			mTwoPane = true;
 
-			Profile profile = GlobalData.getActivatedProfile();
+			Profile profile = GlobalData.getFirstProfile();
 			
-			onStartProfilePreferences(EditorProfileListFragment.getProfileListAdapter().getItemId(profile));
+			if (profile != null)
+				onStartProfilePreferences(EditorProfileListFragment.getProfileListAdapter().getItemId(profile));
 
 		}
 		
@@ -194,6 +199,34 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		}
 	}
 
+	public void onRestartProfilePreferences(int position) {
+		if (mTwoPane) {
+			// In two-pane mode, show the detail view in this activity by
+			// adding or replacing the detail fragment using a
+			// fragment transaction.
+
+			// restart profile preferences fragmentu
+			Bundle arguments = new Bundle();
+			arguments.putInt(GlobalData.EXTRA_PROFILE_POSITION, position);
+			ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
+			fragment.setArguments(arguments);
+			getSupportFragmentManager().beginTransaction()
+					.replace(R.id.editor_profile_detail_container, fragment).commit();
+		}
+	}
+
+	public void onRedrawListFragment() {
+		// redraw headeru list fragmentu, notifikacie a widgetov
+		EditorProfileListFragment fragment = (EditorProfileListFragment)getSupportFragmentManager().findFragmentById(R.id.editor_profile_list);
+		if (fragment != null)
+		{
+			Profile profile = GlobalData.getActivatedProfile();
+			fragment.updateHeader(profile);
+			fragment.getActivateProfileHelper().showNotification(profile);
+			fragment.getActivateProfileHelper().updateWidget();
+		}
+	}
+	
 	public void onPreferenceAttached(PreferenceScreen root, int xmlId) {
 		return;
 	}

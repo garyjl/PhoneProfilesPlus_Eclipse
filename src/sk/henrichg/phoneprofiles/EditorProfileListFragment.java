@@ -42,7 +42,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 	 * The fragment's current callback object, which is notified of list item
 	 * clicks.
 	 */
-	private OnStartProfilePreferences mCallbacks = sDummyCallbacks;
+	private OnStartProfilePreferences onStartProfilePreferencesCallback = sDummyOnStartProfilePreferencesCallback;
 	
 	/**
 	 * A callback interface that all activities containing this fragment must
@@ -60,7 +60,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 	 * A dummy implementation of the {@link Callbacks} interface that does
 	 * nothing. Used only when this fragment is not attached to an activity.
 	 */
-	private static OnStartProfilePreferences sDummyCallbacks = new OnStartProfilePreferences() {
+	private static OnStartProfilePreferences sDummyOnStartProfilePreferencesCallback = new OnStartProfilePreferences() {
 		public void onStartProfilePreferences(int position) {
 		}
 	};
@@ -79,7 +79,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 					"Activity must implement fragment's callbacks.");
 		}
 
-		mCallbacks = (OnStartProfilePreferences) activity;
+		onStartProfilePreferencesCallback = (OnStartProfilePreferences) activity;
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		super.onDetach();
 
 		// Reset the active callbacks interface to the dummy implementation.
-		mCallbacks = sDummyCallbacks;
+		onStartProfilePreferencesCallback = sDummyOnStartProfilePreferencesCallback;
 	}
 	
 
@@ -301,7 +301,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		
 		// Notify the active callbacks interface (the activity, if the
 		// fragment is attached to one) one must start profile preferences
-		mCallbacks.onStartProfilePreferences(profileListAdapter.getItemId(profile));
+		onStartProfilePreferencesCallback.onStartProfilePreferences(profileListAdapter.getItemId(profile));
 	}
 
 	public void duplicateProfile(int position)
@@ -397,7 +397,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		dialogBuilder.show();
 	}
 	
-	private void updateHeader(Profile profile)
+	public void updateHeader(Profile profile)
 	{
 		if (!GlobalData.applicationEditorHeader)
 			return;

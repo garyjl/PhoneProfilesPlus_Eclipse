@@ -16,6 +16,7 @@
         android:dividerHeight="5dp"
         android:listSelector="?attr/cardSelector"
         android:drawSelectorOnTop="true"
+        android:choiceMode="singleChoice"
         dslv:drag_enabled="true"
 	    dslv:collapsed_height="2dp"
 	    dslv:drag_scroll_start="0.33"

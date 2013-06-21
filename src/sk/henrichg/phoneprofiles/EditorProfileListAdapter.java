@@ -41,7 +41,10 @@ public class EditorProfileListAdapter extends BaseAdapter
 
 	public Object getItem(int position)
 	{
-		return profileList.get(position);
+		if (profileList.size() == 0)
+			return null;
+		else
+			return profileList.get(position);
 	}
 
 	public long getItemId(int position)
@@ -145,9 +148,9 @@ public class EditorProfileListAdapter extends BaseAdapter
         if (convertView == null)
         {
         	if (GlobalData.applicationEditorPrefIndicator)
-        		vi = inflater.inflate(R.layout.main_list_item, null);
+        		vi = inflater.inflate(R.layout.editor_profile_list_item, null);
         	else
-        		vi = inflater.inflate(R.layout.main_list_item_no_indicator, null);
+        		vi = inflater.inflate(R.layout.editor_profile_list_item_no_indicator, null);
         }
 		
         TextView profileName = (TextView)vi.findViewById(R.id.main_list_item_profile_name);
