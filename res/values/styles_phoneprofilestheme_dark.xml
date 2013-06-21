@@ -44,6 +44,8 @@
         <item name="actionActivateIcon">@drawable/ic_action_activate_dark</item>
         <item name="actionDuplicateIcon">@drawable/ic_action_duplicate_dark</item>
         <item name="actionDeleteIcon">@drawable/ic_action_delete_dark</item>
+        <item name="actionProfilePrefSave">@drawable/ic_action_profile_pref_save_dark</item>
+        <item name="actionProfilePrefCancel">@drawable/ic_action_profile_pref_cancel_dark</item>
         
         <item name="actionModeCloseButtonStyle">@style/NoCloseButton</item>
         

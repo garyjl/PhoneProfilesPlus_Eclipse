@@ -134,5 +134,7 @@
     <string name="array_pref_value_light">light</string>
     <string name="array_pref_value_dark">dark</string>
     <string name="phone_preferences_actionmode_title">Uložit změny?</string>
+    <string name="phone_preferences_actionmode_save">Uložit</string>
+    <string name="phone_preferences_actionmode_cancel">Zrušit</string>
     
 </resources>

@@ -18,6 +18,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
  
 public class ProfilePreferencesFragment extends PreferenceListFragment 
 										implements SharedPreferences.OnSharedPreferenceChangeListener
@@ -165,6 +167,9 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 
 
         }
+        
+        if (actionMode != null)
+        	actionMode.finish();
 		
 	}
 	
@@ -358,11 +363,15 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	    		))
 	    		setSummary(key, sharedPreferences.getString(key, ""));
     	
-    	// show action mode
-    	//if(actionMode!=null) 
-    	//	return false;
         if (actionMode == null)
+        {
+        	
+        	LayoutInflater inflater = LayoutInflater.from(getSherlockActivity());
+        	View actionView = inflater.inflate(R.layout.profile_preferences_action_mode, null);
+
             actionMode = getSherlockActivity().startActionMode(actionModeCallback);
+            actionMode.setCustomView(actionView);        	
+        }
 	}
 	
 	private void createActionMode()
@@ -381,7 +390,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
  
             /** This is called when the action mode is created. This is called by startActionMode() */
             public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                mode.setTitle(R.string.phone_preferences_actionmode_title);
+                //mode.setTitle(R.string.phone_preferences_actionmode_title);
                 //getSherlockActivity().getSupportMenuInflater().inflate(R.menu.context_menu, menu);
                 return true;
             }

@@ -44,6 +44,8 @@
         <item name="actionActivateIcon">@drawable/ic_action_activate</item>
         <item name="actionDuplicateIcon">@drawable/ic_action_duplicate</item>
         <item name="actionDeleteIcon">@drawable/ic_action_delete</item>
+        <item name="actionProfilePrefSave">@drawable/ic_action_profile_pref_save</item>
+        <item name="actionProfilePrefCancel">@drawable/ic_action_profile_pref_cancel</item>
         
         <item name="actionModeCloseButtonStyle">@style/NoCloseButton</item>
         

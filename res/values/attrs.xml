@@ -34,5 +34,7 @@
     <attr name="actionActivateIcon" format="reference" />
     <attr name="actionDuplicateIcon" format="reference" />
     <attr name="actionDeleteIcon" format="reference" />
+    <attr name="actionProfilePrefSave" format="reference" />
+    <attr name="actionProfilePrefCancel" format="reference" />
     
 </resources>
