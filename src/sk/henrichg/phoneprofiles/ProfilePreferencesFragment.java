@@ -1,7 +1,5 @@
 package sk.henrichg.phoneprofiles;
  
-import sk.henrichg.phoneprofiles.EditorProfileListFragment.OnStartProfilePreferences;
-
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.ActionMode.Callback;
 import com.actionbarsherlock.view.Menu;

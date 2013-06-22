@@ -2,9 +2,6 @@ package sk.henrichg.phoneprofiles;
 
 import java.util.List;
 
-import sk.henrichg.phoneprofiles.ProfilePreferencesFragment.OnRedrawListFragment;
-import sk.henrichg.phoneprofiles.ProfilePreferencesFragment.OnRestartProfilePreferences;
-
 import com.actionbarsherlock.app.SherlockFragment;
 
 import android.os.Bundle;
@@ -58,7 +55,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		/**
 		 * Callback for when an item has been selected.
 		 */
-		public void onStartProfilePreferences(int position);
+		public void onStartProfilePreferences(int position, boolean afterDelete);
 	}
 
 	/**
@@ -66,7 +63,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 	 * nothing. Used only when this fragment is not attached to an activity.
 	 */
 	private static OnStartProfilePreferences sDummyOnStartProfilePreferencesCallback = new OnStartProfilePreferences() {
-		public void onStartProfilePreferences(int position) {
+		public void onStartProfilePreferences(int position, boolean afterDelete) {
 		}
 	};
 	
@@ -319,7 +316,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		
 		// Notify the active callbacks interface (the activity, if the
 		// fragment is attached to one) one must start profile preferences
-		onStartProfilePreferencesCallback.onStartProfilePreferences(profileListAdapter.getItemId(profile));
+		onStartProfilePreferencesCallback.onStartProfilePreferences(profileListAdapter.getItemId(profile), false);
 	}
 
 	public void duplicateProfile(int position)
@@ -387,7 +384,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 				activateProfileHelper.updateWidget();
 				
 				profile = GlobalData.getFirstProfile();
-				onStartProfilePreferencesCallback.onStartProfilePreferences(profileListAdapter.getItemId(profile));
+				onStartProfilePreferencesCallback.onStartProfilePreferences(profileListAdapter.getItemId(profile), true);
 				
 			}
 		});
@@ -415,7 +412,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 				activateProfileHelper.updateWidget();
 				
 				Profile profile = GlobalData.getFirstProfile();
-				onStartProfilePreferencesCallback.onStartProfilePreferences(profileListAdapter.getItemId(profile));
+				onStartProfilePreferencesCallback.onStartProfilePreferences(profileListAdapter.getItemId(profile), true);
 				
 			}
 		});
@@ -547,7 +544,6 @@ public class EditorProfileListFragment extends SherlockFragment {
 							Toast.LENGTH_LONG);
 					msg.show();
 
-					// TODO tu by sme mohli len fragment refreshnut
 					// refresh activity
 					Intent refresh = new Intent(getSherlockActivity().getBaseContext(), EditorProfilesActivity.class);
 					startActivity(refresh);

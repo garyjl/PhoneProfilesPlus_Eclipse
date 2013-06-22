@@ -61,7 +61,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			Profile profile = GlobalData.getFirstProfile();
 			
 			//if (profile != null)
-				onStartProfilePreferences(EditorProfileListFragment.getProfileListAdapter().getItemId(profile));
+				onStartProfilePreferences(EditorProfileListFragment.getProfileListAdapter().getItemId(profile), false);
 
 		}
 		
@@ -179,7 +179,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		finish();
 	}
 
-	public void onStartProfilePreferences(int position) {
+	public void onStartProfilePreferences(int position, boolean afterDelete) {
 		if (mTwoPane) {
 			// In two-pane mode, show the detail view in this activity by
 			// adding or replacing the detail fragment using a
@@ -208,9 +208,12 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		} else {
 			// In single-pane mode, simply start the profile preferences activity
 			// for the profile position.
-			Intent intent = new Intent(getBaseContext(), ProfilePreferencesFragmentActivity.class);
-			intent.putExtra(GlobalData.EXTRA_PROFILE_POSITION, position);
-			startActivity(intent);
+			if (position >= 0 && (!afterDelete))
+			{
+				Intent intent = new Intent(getBaseContext(), ProfilePreferencesFragmentActivity.class);
+				intent.putExtra(GlobalData.EXTRA_PROFILE_POSITION, position);
+				startActivity(intent);
+			}
 		}
 	}
 
@@ -243,7 +246,6 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	}
 
 	public void onFinishProfilePreferencesActionMode() {
-		// TODO Auto-generated method stub
 		if (mTwoPane) {
 			ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.editor_profile_detail_container);
 			if (fragment != null)
