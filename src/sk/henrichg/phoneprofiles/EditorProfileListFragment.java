@@ -1,6 +1,10 @@
 package sk.henrichg.phoneprofiles;
 
 import java.util.List;
+
+import sk.henrichg.phoneprofiles.ProfilePreferencesFragment.OnRedrawListFragment;
+import sk.henrichg.phoneprofiles.ProfilePreferencesFragment.OnRestartProfilePreferences;
+
 import com.actionbarsherlock.app.SherlockFragment;
 
 import android.os.Bundle;
@@ -37,12 +41,13 @@ public class EditorProfileListFragment extends SherlockFragment {
 	private ImageView activeProfileIcon;
 	private int startupSource = 0;
 	private Intent intent;
-	
+
 	/**
 	 * The fragment's current callback object, which is notified of list item
 	 * clicks.
 	 */
 	private OnStartProfilePreferences onStartProfilePreferencesCallback = sDummyOnStartProfilePreferencesCallback;
+	private OnFinishProfilePreferencesActionMode onFinishProfilePreferencesActionModeCallback = sDummyOnFinishProfilePreferencesActionModeCallback;
 	
 	/**
 	 * A callback interface that all activities containing this fragment must
@@ -65,6 +70,14 @@ public class EditorProfileListFragment extends SherlockFragment {
 		}
 	};
 	
+	public interface OnFinishProfilePreferencesActionMode {
+		public void onFinishProfilePreferencesActionMode();
+	}
+
+	private static OnFinishProfilePreferencesActionMode sDummyOnFinishProfilePreferencesActionModeCallback = new OnFinishProfilePreferencesActionMode() {
+		public void onFinishProfilePreferencesActionMode() {
+		}
+	};
 	
 	public EditorProfileListFragment() {
 	}
@@ -80,6 +93,10 @@ public class EditorProfileListFragment extends SherlockFragment {
 		}
 
 		onStartProfilePreferencesCallback = (OnStartProfilePreferences) activity;
+
+		if (activity instanceof OnFinishProfilePreferencesActionMode)
+			onFinishProfilePreferencesActionModeCallback = (OnFinishProfilePreferencesActionMode) activity;
+	
 	}
 
 	@Override
@@ -88,6 +105,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 
 		// Reset the active callbacks interface to the dummy implementation.
 		onStartProfilePreferencesCallback = sDummyOnStartProfilePreferencesCallback;
+		onFinishProfilePreferencesActionModeCallback = sDummyOnFinishProfilePreferencesActionModeCallback;
 	}
 	
 
@@ -367,6 +385,10 @@ public class EditorProfileListFragment extends SherlockFragment {
 				updateHeader(profile);
 				activateProfileHelper.showNotification(profile);
 				activateProfileHelper.updateWidget();
+				
+				profile = GlobalData.getFirstProfile();
+				onStartProfilePreferencesCallback.onStartProfilePreferences(profileListAdapter.getItemId(profile));
+				
 			}
 		});
 		dialogBuilder.setNegativeButton(android.R.string.no, null);
@@ -391,6 +413,10 @@ public class EditorProfileListFragment extends SherlockFragment {
 				updateHeader(null);
 				activateProfileHelper.showNotification(null);
 				activateProfileHelper.updateWidget();
+				
+				Profile profile = GlobalData.getFirstProfile();
+				onStartProfilePreferencesCallback.onStartProfilePreferences(profileListAdapter.getItemId(profile));
+				
 			}
 		});
 		dialogBuilder.setNegativeButton(android.R.string.no, null);
@@ -480,6 +506,11 @@ public class EditorProfileListFragment extends SherlockFragment {
 	{
 		Profile profile = profileList.get(position);
 		activateProfile(profile, interactive);
+	}
+	
+	public void finishProfilePreferencesActionMode()
+	{
+		onFinishProfilePreferencesActionModeCallback.onFinishProfilePreferencesActionMode();
 	}
 	
 	private void importExportErrorDialog(int importExport)

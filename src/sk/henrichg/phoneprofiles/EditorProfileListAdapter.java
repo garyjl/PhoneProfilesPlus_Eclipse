@@ -190,6 +190,7 @@ public class EditorProfileListAdapter extends BaseAdapter
 				public void onClick(View v) {
 					editIconClicked = true;
 					Log.d("EditorProfileListAdapter.onClick", "activate");
+					((EditorProfileListFragment)fragment).finishProfilePreferencesActionMode();
 					((EditorProfileListFragment)fragment).activateProfileWithAlert(_position);
 				}
 			}); 
@@ -201,6 +202,7 @@ public class EditorProfileListAdapter extends BaseAdapter
 				public void onClick(View v) {
 					editIconClicked = true;
 					Log.d("EditorProfileListAdapter.onClick", "duplicate");
+					((EditorProfileListFragment)fragment).finishProfilePreferencesActionMode();
 					((EditorProfileListFragment)fragment).duplicateProfile(_position);
 				}
 			}); 
@@ -212,6 +214,7 @@ public class EditorProfileListAdapter extends BaseAdapter
 				public void onClick(View v) {
 					editIconClicked = true;
 					Log.d("EditorProfileListAdapter.onClick", "delete");
+					((EditorProfileListFragment)fragment).finishProfilePreferencesActionMode();
 					((EditorProfileListFragment)fragment).deleteProfile(_position);
 				}
 			}); 

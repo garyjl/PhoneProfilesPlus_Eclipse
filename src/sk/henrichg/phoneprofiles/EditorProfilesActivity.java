@@ -2,6 +2,7 @@ package sk.henrichg.phoneprofiles;
 
 import java.util.Locale;
 
+import sk.henrichg.phoneprofiles.EditorProfileListFragment.OnFinishProfilePreferencesActionMode;
 import sk.henrichg.phoneprofiles.EditorProfileListFragment.OnStartProfilePreferences;
 import sk.henrichg.phoneprofiles.PreferenceListFragment.OnPreferenceAttachedListener;
 import sk.henrichg.phoneprofiles.ProfilePreferencesFragment.OnRedrawListFragment;
@@ -25,7 +26,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
                                     implements OnStartProfilePreferences,
                                                OnPreferenceAttachedListener,
                                                OnRestartProfilePreferences,
-                                               OnRedrawListFragment
+                                               OnRedrawListFragment,
+                                               OnFinishProfilePreferencesActionMode
 {
 
 	private static ApplicationsCache applicationsCache;
@@ -58,7 +60,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 
 			Profile profile = GlobalData.getFirstProfile();
 			
-			if (profile != null)
+			//if (profile != null)
 				onStartProfilePreferences(EditorProfileListFragment.getProfileListAdapter().getItemId(profile));
 
 		}
@@ -183,12 +185,25 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			// adding or replacing the detail fragment using a
 			// fragment transaction.
 
-			Bundle arguments = new Bundle();
-			arguments.putInt(GlobalData.EXTRA_PROFILE_POSITION, position);
-			ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
-			fragment.setArguments(arguments);
-			getSupportFragmentManager().beginTransaction()
+			if (position >= 0)
+			{
+				Bundle arguments = new Bundle();
+				arguments.putInt(GlobalData.EXTRA_PROFILE_POSITION, position);
+				ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
+				fragment.setArguments(arguments);
+				getSupportFragmentManager().beginTransaction()
 					.replace(R.id.editor_profile_detail_container, fragment).commit();
+			}
+			else
+			{
+				ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.editor_profile_detail_container);
+				if (fragment != null)
+				{
+					getSupportFragmentManager().beginTransaction()
+						.remove(fragment).commit();
+				}
+				
+			}
 
 		} else {
 			// In single-pane mode, simply start the profile preferences activity
@@ -226,9 +241,23 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			fragment.getActivateProfileHelper().updateWidget();
 		}
 	}
+
+	public void onFinishProfilePreferencesActionMode() {
+		// TODO Auto-generated method stub
+		if (mTwoPane) {
+			ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.editor_profile_detail_container);
+			if (fragment != null)
+				fragment.finishActionMode();
+		}
+	}
 	
 	public void onPreferenceAttached(PreferenceScreen root, int xmlId) {
 		return;
+	}
+
+	public void finishProfilePreferencesActionMode()
+	{
+		
 	}
 	
 	public static void setLanguage(Context context)//, boolean restart)
@@ -282,5 +311,6 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	{
 		return applicationsCache;
 	}
+
 
 }

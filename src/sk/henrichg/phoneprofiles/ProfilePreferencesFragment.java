@@ -508,6 +508,15 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 
         };		
 	}
+	
+	public void finishActionMode()
+	{
+		if (actionMode != null)
+		{	
+			restart = true;
+			actionMode.finish();
+		}
+	}
 
 	static public Activity getPreferencesActivity()
 	{
