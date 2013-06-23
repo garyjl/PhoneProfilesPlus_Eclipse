@@ -31,7 +31,7 @@ public class ActivateProfileWidget extends AppWidgetProvider {
 			{
 				isIconResourceID = profile.getIsIconResourceID();
 				iconIdentifier = profile.getIconIdentifier();
-				profileName = profile.getName();
+				profileName = profile._name;
 			}
 			else
 			{

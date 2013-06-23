@@ -241,43 +241,43 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		ContentValues values = new ContentValues();
-		values.put(KEY_NAME, profile.getName()); // Profile Name
-		values.put(KEY_ICON, profile.getIcon()); // Icon
-		values.put(KEY_CHECKED, (profile.getChecked()) ? 1 : 0); // Checked
+		values.put(KEY_NAME, profile._name); // Profile Name
+		values.put(KEY_ICON, profile._icon); // Icon
+		values.put(KEY_CHECKED, (profile._checked) ? 1 : 0); // Checked
 		//values.put(KEY_PORDER, porder); // POrder
-		values.put(KEY_PORDER, profile.getPOrder()); // POrder
-		values.put(KEY_VOLUME_RINGER_MODE, profile.getVolumeRingerMode());
-		values.put(KEY_VOLUME_RINGTONE, profile.getVolumeRingtone());
-		values.put(KEY_VOLUME_NOTIFICATION, profile.getVolumeNotification());
-		values.put(KEY_VOLUME_MEDIA, profile.getVolumeMedia());
-		values.put(KEY_VOLUME_ALARM, profile.getVolumeAlarm());
-		values.put(KEY_VOLUME_SYSTEM, profile.getVolumeSystem());
-		values.put(KEY_VOLUME_VOICE, profile.getVolumeVoice());
-		values.put(KEY_SOUND_RINGTONE_CHANGE, (profile.getSoundRingtoneChange()) ? 1 : 0);
-		values.put(KEY_SOUND_RINGTONE, profile.getSoundRingtone());
-		values.put(KEY_SOUND_NOTIFICATION_CHANGE, (profile.getSoundNotificationChange()) ? 1 : 0);
-		values.put(KEY_SOUND_NOTIFICATION, profile.getSoundNotification());
-		values.put(KEY_SOUND_ALARM_CHANGE, (profile.getSoundAlarmChange()) ? 1 : 0);
-		values.put(KEY_SOUND_ALARM, profile.getSoundAlarm());
-		values.put(KEY_DEVICE_AIRPLANE_MODE, profile.getDeviceAirplaneMode());
-		values.put(KEY_DEVICE_WIFI, profile.getDeviceWiFi());
-		values.put(KEY_DEVICE_BLUETOOTH, profile.getDeviceBluetooth());
-		values.put(KEY_DEVICE_SCREEN_TIMEOUT, profile.getDeviceScreenTimeout());
-		values.put(KEY_DEVICE_BRIGHTNESS, profile.getDeviceBrightness());
-		values.put(KEY_DEVICE_WALLPAPER_CHANGE, (profile.getDeviceWallpaperChange()) ? 1 : 0);
-		values.put(KEY_DEVICE_WALLPAPER, profile.getDeviceWallpaper());
-		values.put(KEY_DEVICE_MOBILE_DATA, profile.getDeviceMobileData());
-		values.put(KEY_DEVICE_MOBILE_DATA_PREFS, (profile.getDeviceMobileDataPrefs()) ? 1 : 0);
-		values.put(KEY_DEVICE_GPS, profile.getDeviceGPS());
-		values.put(KEY_DEVICE_RUN_APPLICATION_CHANGE, (profile.getDeviceRunApplicationChange()) ? 1 : 0);
-		values.put(KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME, profile.getDeviceRunApplicationPackageName());
+		values.put(KEY_PORDER, profile._porder); // POrder
+		values.put(KEY_VOLUME_RINGER_MODE, profile._volumeRingerMode);
+		values.put(KEY_VOLUME_RINGTONE, profile._volumeRingtone);
+		values.put(KEY_VOLUME_NOTIFICATION, profile._volumeNotification);
+		values.put(KEY_VOLUME_MEDIA, profile._volumeMedia);
+		values.put(KEY_VOLUME_ALARM, profile._volumeAlarm);
+		values.put(KEY_VOLUME_SYSTEM, profile._volumeSystem);
+		values.put(KEY_VOLUME_VOICE, profile._volumeVoice);
+		values.put(KEY_SOUND_RINGTONE_CHANGE, (profile._soundRingtoneChange) ? 1 : 0);
+		values.put(KEY_SOUND_RINGTONE, profile._soundRingtone);
+		values.put(KEY_SOUND_NOTIFICATION_CHANGE, (profile._soundNotificationChange) ? 1 : 0);
+		values.put(KEY_SOUND_NOTIFICATION, profile._soundNotification);
+		values.put(KEY_SOUND_ALARM_CHANGE, (profile._soundAlarmChange) ? 1 : 0);
+		values.put(KEY_SOUND_ALARM, profile._soundAlarm);
+		values.put(KEY_DEVICE_AIRPLANE_MODE, profile._deviceAirplaneMode);
+		values.put(KEY_DEVICE_WIFI, profile._deviceWiFi);
+		values.put(KEY_DEVICE_BLUETOOTH, profile._deviceBluetooth);
+		values.put(KEY_DEVICE_SCREEN_TIMEOUT, profile._deviceScreenTimeout);
+		values.put(KEY_DEVICE_BRIGHTNESS, profile._deviceBrightness);
+		values.put(KEY_DEVICE_WALLPAPER_CHANGE, (profile._deviceWallpaperChange) ? 1 : 0);
+		values.put(KEY_DEVICE_WALLPAPER, profile._deviceWallpaper);
+		values.put(KEY_DEVICE_MOBILE_DATA, profile._deviceMobileData);
+		values.put(KEY_DEVICE_MOBILE_DATA_PREFS, (profile._deviceMobileDataPrefs) ? 1 : 0);
+		values.put(KEY_DEVICE_GPS, profile._deviceGPS);
+		values.put(KEY_DEVICE_RUN_APPLICATION_CHANGE, (profile._deviceRunApplicationChange) ? 1 : 0);
+		values.put(KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME, profile._deviceRunApplicationPackageName);
 		
 
 		// Inserting Row
 		long id = db.insert(TABLE_PROFILES, null, values);
 		db.close(); // Closing database connection
 		
-		profile.setID(id);
+		profile._id = id;
 		//profile.setPOrder(porder);
 	}
 
@@ -404,36 +404,36 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		if (cursor.moveToFirst()) {
 			do {
 				Profile profile = new Profile();
-				profile.setID(Long.parseLong(cursor.getString(0)));
-				profile.setName(cursor.getString(1));
-				profile.setIcon(cursor.getString(2));
-				profile.setChecked((Integer.parseInt(cursor.getString(3)) == 1) ? true : false);
-				profile.setPOrder(Integer.parseInt(cursor.getString(4)));
-				profile.setVolumeRingerMode(Integer.parseInt(cursor.getString(5)));
-				profile.setVolumeRingtone(cursor.getString(6));
-				profile.setVolumeNotification(cursor.getString(7));
-                profile.setVolumeMedia(cursor.getString(8));
-                profile.setVolumeAlarm(cursor.getString(9));
-                profile.setVolumeSystem(cursor.getString(10));
-                profile.setVolumeVoice(cursor.getString(11));
-                profile.setSoundRingtoneChange((Integer.parseInt(cursor.getString(12)) == 1) ? true : false);
-                profile.setSoundRingtone(cursor.getString(13));
-                profile.setSoundNotificationChange((Integer.parseInt(cursor.getString(14)) == 1) ? true : false);
-                profile.setSoundNotification(cursor.getString(15));
-                profile.setSoundAlarmChange((Integer.parseInt(cursor.getString(16)) == 1) ? true : false);
-                profile.setSoundAlarm(cursor.getString(17));
-                profile.setDeviceAirplaneMode(Integer.parseInt(cursor.getString(18)));
-                profile.setDeviceWiFi(Integer.parseInt(cursor.getString(19)));
-                profile.setDeviceBluetooth(Integer.parseInt(cursor.getString(20)));
-                profile.setDeviceScreenTimeout(Integer.parseInt(cursor.getString(21)));
-                profile.setDeviceBrightness(cursor.getString(22));
-                profile.setDeviceWallpaperChange((Integer.parseInt(cursor.getString(23)) == 1) ? true : false);
-                profile.setDeviceWallpaper(cursor.getString(24));
-                profile.setDeviceMobileData(Integer.parseInt(cursor.getString(25)));
-                profile.setDeviceMobileDataPrefs((Integer.parseInt(cursor.getString(26)) == 1) ? true : false);
-                profile.setDeviceGPS(Integer.parseInt(cursor.getString(27)));
-                profile.setDeviceRunApplicationChange((Integer.parseInt(cursor.getString(28)) == 1) ? true : false);
-                profile.setDeviceRunApplicationPackageName(cursor.getString(29));
+				profile._id = Long.parseLong(cursor.getString(0));
+				profile._name = cursor.getString(1);
+				profile._icon = (cursor.getString(2));
+				profile._checked = ((Integer.parseInt(cursor.getString(3)) == 1) ? true : false);
+				profile._porder = (Integer.parseInt(cursor.getString(4)));
+				profile._volumeRingerMode = Integer.parseInt(cursor.getString(5));
+				profile._volumeRingtone = cursor.getString(6);
+				profile._volumeNotification = cursor.getString(7);
+                profile._volumeMedia = cursor.getString(8);
+                profile._volumeAlarm = cursor.getString(9);
+                profile._volumeSystem = cursor.getString(10);
+                profile._volumeVoice = cursor.getString(11);
+                profile._soundRingtoneChange = (Integer.parseInt(cursor.getString(12)) == 1) ? true : false;
+                profile._soundRingtone = cursor.getString(13);
+                profile._soundNotificationChange = (Integer.parseInt(cursor.getString(14)) == 1) ? true : false;
+                profile._soundNotification = cursor.getString(15);
+                profile._soundAlarmChange = (Integer.parseInt(cursor.getString(16)) == 1) ? true : false;
+                profile._soundAlarm = cursor.getString(17);
+                profile._deviceAirplaneMode = Integer.parseInt(cursor.getString(18));
+                profile._deviceWiFi = Integer.parseInt(cursor.getString(19));
+                profile._deviceBluetooth = Integer.parseInt(cursor.getString(20));
+                profile._deviceScreenTimeout = Integer.parseInt(cursor.getString(21));
+                profile._deviceBrightness = cursor.getString(22);
+                profile._deviceWallpaperChange = (Integer.parseInt(cursor.getString(23)) == 1) ? true : false;
+                profile._deviceWallpaper = cursor.getString(24);
+                profile._deviceMobileData = Integer.parseInt(cursor.getString(25));
+                profile._deviceMobileDataPrefs = (Integer.parseInt(cursor.getString(26)) == 1) ? true : false;
+                profile._deviceGPS = Integer.parseInt(cursor.getString(27));
+                profile._deviceRunApplicationChange = (Integer.parseInt(cursor.getString(28)) == 1) ? true : false;
+                profile._deviceRunApplicationPackageName = cursor.getString(29);
 				// Adding contact to list
 				profileList.add(profile);
 			} while (cursor.moveToNext());
@@ -451,40 +451,40 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(KEY_NAME, profile.getName());
-		values.put(KEY_ICON, profile.getIcon());
-		values.put(KEY_CHECKED, (profile.getChecked()) ? 1 : 0);
-		values.put(KEY_PORDER, profile.getPOrder());
-		values.put(KEY_VOLUME_RINGER_MODE, profile.getVolumeRingerMode());
-		values.put(KEY_VOLUME_RINGTONE, profile.getVolumeRingtone());
-		values.put(KEY_VOLUME_NOTIFICATION, profile.getVolumeNotification());
-		values.put(KEY_VOLUME_MEDIA, profile.getVolumeMedia());
-		values.put(KEY_VOLUME_ALARM, profile.getVolumeAlarm());
-		values.put(KEY_VOLUME_SYSTEM, profile.getVolumeSystem());
-		values.put(KEY_VOLUME_VOICE, profile.getVolumeVoice());
-		values.put(KEY_SOUND_RINGTONE_CHANGE, (profile.getSoundRingtoneChange()) ? 1 : 0);
-		values.put(KEY_SOUND_RINGTONE, profile.getSoundRingtone());
-		values.put(KEY_SOUND_NOTIFICATION_CHANGE, (profile.getSoundNotificationChange()) ? 1 : 0);
-		values.put(KEY_SOUND_NOTIFICATION, profile.getSoundNotification());
-		values.put(KEY_SOUND_ALARM_CHANGE, (profile.getSoundAlarmChange()) ? 1 : 0);
-		values.put(KEY_SOUND_ALARM, profile.getSoundAlarm());
-		values.put(KEY_DEVICE_AIRPLANE_MODE, profile.getDeviceAirplaneMode());
-		values.put(KEY_DEVICE_WIFI, profile.getDeviceWiFi());
-		values.put(KEY_DEVICE_BLUETOOTH, profile.getDeviceBluetooth());
-		values.put(KEY_DEVICE_SCREEN_TIMEOUT, profile.getDeviceScreenTimeout());
-		values.put(KEY_DEVICE_BRIGHTNESS, profile.getDeviceBrightness());
-		values.put(KEY_DEVICE_WALLPAPER_CHANGE, (profile.getDeviceWallpaperChange()) ? 1 : 0);
-		values.put(KEY_DEVICE_WALLPAPER, profile.getDeviceWallpaper());
-		values.put(KEY_DEVICE_MOBILE_DATA, profile.getDeviceMobileData());
-		values.put(KEY_DEVICE_MOBILE_DATA_PREFS, (profile.getDeviceMobileDataPrefs()) ? 1 : 0);
-		values.put(KEY_DEVICE_GPS, profile.getDeviceGPS());
-		values.put(KEY_DEVICE_RUN_APPLICATION_CHANGE, (profile.getDeviceRunApplicationChange()) ? 1 : 0);
-		values.put(KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME, profile.getDeviceRunApplicationPackageName());
+		values.put(KEY_NAME, profile._name);
+		values.put(KEY_ICON, profile._icon);
+		values.put(KEY_CHECKED, (profile._checked) ? 1 : 0);
+		values.put(KEY_PORDER, profile._porder);
+		values.put(KEY_VOLUME_RINGER_MODE, profile._volumeRingerMode);
+		values.put(KEY_VOLUME_RINGTONE, profile._volumeRingtone);
+		values.put(KEY_VOLUME_NOTIFICATION, profile._volumeNotification);
+		values.put(KEY_VOLUME_MEDIA, profile._volumeMedia);
+		values.put(KEY_VOLUME_ALARM, profile._volumeAlarm);
+		values.put(KEY_VOLUME_SYSTEM, profile._volumeSystem);
+		values.put(KEY_VOLUME_VOICE, profile._volumeVoice);
+		values.put(KEY_SOUND_RINGTONE_CHANGE, (profile._soundRingtoneChange) ? 1 : 0);
+		values.put(KEY_SOUND_RINGTONE, profile._soundRingtone);
+		values.put(KEY_SOUND_NOTIFICATION_CHANGE, (profile._soundNotificationChange) ? 1 : 0);
+		values.put(KEY_SOUND_NOTIFICATION, profile._soundNotification);
+		values.put(KEY_SOUND_ALARM_CHANGE, (profile._soundAlarmChange) ? 1 : 0);
+		values.put(KEY_SOUND_ALARM, profile._soundAlarm);
+		values.put(KEY_DEVICE_AIRPLANE_MODE, profile._deviceAirplaneMode);
+		values.put(KEY_DEVICE_WIFI, profile._deviceWiFi);
+		values.put(KEY_DEVICE_BLUETOOTH, profile._deviceBluetooth);
+		values.put(KEY_DEVICE_SCREEN_TIMEOUT, profile._deviceScreenTimeout);
+		values.put(KEY_DEVICE_BRIGHTNESS, profile._deviceBrightness);
+		values.put(KEY_DEVICE_WALLPAPER_CHANGE, (profile._deviceWallpaperChange) ? 1 : 0);
+		values.put(KEY_DEVICE_WALLPAPER, profile._deviceWallpaper);
+		values.put(KEY_DEVICE_MOBILE_DATA, profile._deviceMobileData);
+		values.put(KEY_DEVICE_MOBILE_DATA_PREFS, (profile._deviceMobileDataPrefs) ? 1 : 0);
+		values.put(KEY_DEVICE_GPS, profile._deviceGPS);
+		values.put(KEY_DEVICE_RUN_APPLICATION_CHANGE, (profile._deviceRunApplicationChange) ? 1 : 0);
+		values.put(KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME, profile._deviceRunApplicationPackageName);
 		
 
 		// updating row
 		int r = db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
-				        new String[] { String.valueOf(profile.getID()) });
+				        new String[] { String.valueOf(profile._id) });
         db.close();
         
 		return r;
@@ -494,7 +494,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public void deleteProfile(Profile profile) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_PROFILES, KEY_ID + " = ?",
-				new String[] { String.valueOf(profile.getID()) });
+				new String[] { String.valueOf(profile._id) });
 		db.close();
 	}
 
@@ -564,7 +564,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_CHECKED, 1);
 
 		db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
-				        new String[] { String.valueOf(profile.getID()) });
+				        new String[] { String.valueOf(profile._id) });
 		
         db.close();
 		
@@ -672,10 +672,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 			profile = list.get(i);
 			
-			values.put(KEY_PORDER, profile.getPOrder());
+			values.put(KEY_PORDER, profile._porder);
 
 			db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
-				        new String[] { String.valueOf(profile.getID()) });
+				        new String[] { String.valueOf(profile._id) });
 		}
 		
         db.close();
@@ -693,10 +693,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 			profile = list.get(i);
 			
-			values.put(KEY_CHECKED, profile.getChecked());
+			values.put(KEY_CHECKED, profile._checked);
 
 			db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
-				        new String[] { String.valueOf(profile.getID()) });
+				        new String[] { String.valueOf(profile._id) });
 		}
 		
         db.close();

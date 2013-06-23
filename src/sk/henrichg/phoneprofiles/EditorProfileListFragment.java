@@ -114,7 +114,9 @@ public class EditorProfileListFragment extends SherlockFragment {
 		intent = getSherlockActivity().getIntent();
 		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
 		
-		activateProfileHelper = new ActivateProfileHelper(getSherlockActivity(), getActivity().getBaseContext());
+		activateProfileHelper = GlobalData.getActivateProfileHelper();
+		activateProfileHelper.initialize(getSherlockActivity(), getActivity().getBaseContext());
+		
 		profileList = GlobalData.getProfileList();
 		profileListAdapter = new EditorProfileListAdapter(this, profileList);
 		
@@ -324,35 +326,35 @@ public class EditorProfileListFragment extends SherlockFragment {
 		Profile origProfile = profileList.get(position);
 
 		Profile newProfile = new Profile(
-				   origProfile.getName()+"_d", 
-				   origProfile.getIcon(), 
+				   origProfile._name+"_d", 
+				   origProfile._icon, 
 				   false, 
-				   origProfile.getPOrder(),
-				   origProfile.getVolumeRingerMode(),
-				   origProfile.getVolumeRingtone(),
-				   origProfile.getVolumeNotification(),
-				   origProfile.getVolumeMedia(),
-				   origProfile.getVolumeAlarm(),
-				   origProfile.getVolumeSystem(),
-				   origProfile.getVolumeVoice(),
-				   origProfile.getSoundRingtoneChange(),
-				   origProfile.getSoundRingtone(),
-				   origProfile.getSoundNotificationChange(),
-				   origProfile.getSoundNotification(),
-				   origProfile.getSoundAlarmChange(),
-				   origProfile.getSoundAlarm(),
-				   origProfile.getDeviceAirplaneMode(),
-				   origProfile.getDeviceWiFi(),
-				   origProfile.getDeviceBluetooth(),
-				   origProfile.getDeviceScreenTimeout(),
-				   origProfile.getDeviceBrightness(),
-				   origProfile.getDeviceWallpaperChange(),
-				   origProfile.getDeviceWallpaper(),
-				   origProfile.getDeviceMobileData(),
-				   origProfile.getDeviceMobileDataPrefs(),
-				   origProfile.getDeviceGPS(),
-				   origProfile.getDeviceRunApplicationChange(),
-				   origProfile.getDeviceRunApplicationPackageName());
+				   origProfile._porder,
+				   origProfile._volumeRingerMode,
+				   origProfile._volumeRingtone,
+				   origProfile._volumeNotification,
+				   origProfile._volumeMedia,
+				   origProfile._volumeAlarm,
+				   origProfile._volumeSystem,
+				   origProfile._volumeVoice,
+				   origProfile._soundRingtoneChange,
+				   origProfile._soundRingtone,
+				   origProfile._soundNotificationChange,
+				   origProfile._soundNotification,
+				   origProfile._soundAlarmChange,
+				   origProfile._soundAlarm,
+				   origProfile._deviceAirplaneMode,
+				   origProfile._deviceWiFi,
+				   origProfile._deviceBluetooth,
+				   origProfile._deviceScreenTimeout,
+				   origProfile._deviceBrightness,
+				   origProfile._deviceWallpaperChange,
+				   origProfile._deviceWallpaper,
+				   origProfile._deviceMobileData,
+				   origProfile._deviceMobileDataPrefs,
+				   origProfile._deviceGPS,
+				   origProfile._deviceRunApplicationChange,
+				   origProfile._deviceRunApplicationPackageName);
 
 		profileListAdapter.addItem(newProfile);
 		GlobalData.getDatabaseHandler().addProfile(newProfile);
@@ -367,7 +369,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		final Profile profile = profileList.get(position);
 
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getSherlockActivity());
-		dialogBuilder.setTitle(getResources().getString(R.string.profile_string_0) + ": " + profile.getName());
+		dialogBuilder.setTitle(getResources().getString(R.string.profile_string_0) + ": " + profile._name);
 		dialogBuilder.setMessage(getResources().getString(R.string.delete_profile_alert_message) + "?");
 		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
 		dialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -432,7 +434,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		}
 		else
 		{
-			activeProfileName.setText(profile.getName());
+			activeProfileName.setText(profile._name);
 	        if (profile.getIsIconResourceID())
 	        {
 				int res = getResources().getIdentifier(profile.getIconIdentifier(), "drawable", getSherlockActivity().getPackageName());
@@ -462,7 +464,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		final Profile profile = profileList.get(_position);
 
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getSherlockActivity());
-		dialogBuilder.setTitle(getResources().getString(R.string.profile_string_0) + ": " + profile.getName());
+		dialogBuilder.setTitle(getResources().getString(R.string.profile_string_0) + ": " + profile._name);
 		dialogBuilder.setMessage(getResources().getString(R.string.activate_profile_alert_message) + "?");
 		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
 		dialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -489,7 +491,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		{	
 			// toast notification
 			Toast msg = Toast.makeText(getSherlockActivity().getBaseContext(), 
-					getResources().getString(R.string.toast_profile_activated_0) + ": " + profile.getName() + " " +
+					getResources().getString(R.string.toast_profile_activated_0) + ": " + profile._name + " " +
 					getResources().getString(R.string.toast_profile_activated_1), 
 					Toast.LENGTH_LONG);
 			msg.show();

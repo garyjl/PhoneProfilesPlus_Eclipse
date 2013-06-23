@@ -77,7 +77,8 @@ public class ActivateProfileActivity extends SherlockActivity {
 		intent = getIntent();
 		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
 		
-		activateProfileHelper = new ActivateProfileHelper(this, getBaseContext());
+		activateProfileHelper = GlobalData.getActivateProfileHelper();
+		activateProfileHelper.initialize(this, getBaseContext());
 
 		linlayoutRoot = (LinearLayout)findViewById(R.id.act_prof_linlayout_root);
 		if (GlobalData.applicationActivatorHeader)
@@ -353,7 +354,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 		}
 		else
 		{
-			activeProfileName.setText(profile.getName());
+			activeProfileName.setText(profile._name);
 	        if (profile.getIsIconResourceID())
 	        {
 				int res = getResources().getIdentifier(profile.getIconIdentifier(), "drawable", getPackageName());
@@ -385,7 +386,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 			final Profile profile = profileList.get(_position);
 
 			AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-			dialogBuilder.setTitle(getResources().getString(R.string.profile_string_0) + ": " + profile.getName());
+			dialogBuilder.setTitle(getResources().getString(R.string.profile_string_0) + ": " + profile._name);
 			dialogBuilder.setMessage(getResources().getString(R.string.activate_profile_alert_message) + "?");
 			//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
 			dialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -415,7 +416,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 		{	
 			// toast notification
 			Toast msg = Toast.makeText(getBaseContext(), 
-					getResources().getString(R.string.toast_profile_activated_0) + ": " + profile.getName() + " " +
+					getResources().getString(R.string.toast_profile_activated_0) + ": " + profile._name + " " +
 					getResources().getString(R.string.toast_profile_activated_1), 
 					Toast.LENGTH_LONG);
 			msg.show();

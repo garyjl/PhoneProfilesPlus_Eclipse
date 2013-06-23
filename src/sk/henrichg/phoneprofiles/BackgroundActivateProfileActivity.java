@@ -20,7 +20,8 @@ public class BackgroundActivateProfileActivity extends Activity {
 		intent = getIntent();
 		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
 		
-		activateProfileHelper = new ActivateProfileHelper(this, getBaseContext());
+		activateProfileHelper = GlobalData.getActivateProfileHelper();
+		activateProfileHelper.initialize(this, getBaseContext());
 
 		databaseHandler = GlobalData.getDatabaseHandler();
 		
@@ -94,7 +95,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 		{	
 			// toast notification
 			Toast msg = Toast.makeText(this, 
-					getResources().getString(R.string.toast_profile_activated_0) + ": " + profile.getName() + " " +
+					getResources().getString(R.string.toast_profile_activated_0) + ": " + profile._name + " " +
 					getResources().getString(R.string.toast_profile_activated_1), 
 					Toast.LENGTH_LONG);
 			msg.show();

@@ -3,36 +3,36 @@ package sk.henrichg.phoneprofiles;
 public class Profile {
 	
 	//private variables
-	long _id;
-	String _name;
-	String _icon;
-	boolean _checked;
-	int _porder;
-	int _volumeRingerMode;
-	String _volumeRingtone;
-	String _volumeNotification;
-	String _volumeMedia;
-	String _volumeAlarm;
-	String _volumeSystem;
-	String _volumeVoice;
-	boolean _soundRingtoneChange;
-	String _soundRingtone;
-	boolean _soundNotificationChange;
-	String _soundNotification;
-	boolean _soundAlarmChange;
-	String _soundAlarm;
-	int _deviceAirplaneMode;
-	int _deviceMobileData;
-	boolean _deviceMobileDataPrefs;
-	int _deviceWiFi;
-	int _deviceBluetooth;
-	int _deviceGPS;
-	int _deviceScreenTimeout;
-	String _deviceBrightness;
-	boolean _deviceWallpaperChange;
-	String _deviceWallpaper;
-	boolean _deviceRunApplicationChange;
-	String _deviceRunApplicationPackageName;
+	public long _id;
+	public String _name;
+	public String _icon;
+	public boolean _checked;
+	public int _porder;
+	public int _volumeRingerMode;
+	public String _volumeRingtone;
+	public String _volumeNotification;
+	public String _volumeMedia;
+	public String _volumeAlarm;
+	public String _volumeSystem;
+	public String _volumeVoice;
+	public boolean _soundRingtoneChange;
+	public String _soundRingtone;
+	public boolean _soundNotificationChange;
+	public String _soundNotification;
+	public boolean _soundAlarmChange;
+	public String _soundAlarm;
+	public int _deviceAirplaneMode;
+	public int _deviceMobileData;
+	public boolean _deviceMobileDataPrefs;
+	public int _deviceWiFi;
+	public int _deviceBluetooth;
+	public int _deviceGPS;
+	public int _deviceScreenTimeout;
+	public String _deviceBrightness;
+	public boolean _deviceWallpaperChange;
+	public String _deviceWallpaper;
+	public boolean _deviceRunApplicationChange;
+	public String _deviceRunApplicationPackageName;
 	
 	
 	// Empty constructorn
@@ -167,24 +167,6 @@ public class Profile {
 		this._deviceRunApplicationPackageName = deviceRunApplicationPackageName;
 	}
 	
-	// getting ID
-	public long getID()
-	{
-		return this._id;
-	}
-	
-	// getting name
-	public String getName()
-	{
-		return this._name;
-	}
-	
-	// getting icon
-	public String getIcon()
-	{
-		return this._icon;
-	}
-	
 	// getting icon identifier
 	public String getIconIdentifier()
 	{
@@ -212,28 +194,6 @@ public class Profile {
 		return value;
 	}
 	
-	// getting checked
-	public Boolean getChecked()
-	{
-		return this._checked;
-	}
-	
-	// getting porder
-	public int getPOrder()
-	{
-		return this._porder;
-	}
-	
-	public int getVolumeRingerMode()
-	{
-		return _volumeRingerMode;
-	}
-	
-	public String getVolumeRingtone()
-	{
-		return _volumeRingtone;
-	}
-	
 	public int getVolumeRingtoneValue()
 	{
 		int value;
@@ -258,11 +218,6 @@ public class Profile {
 		return (value == 0) ? true : false;
 	}
 	
-	public String getVolumeNotification()
-	{
-		return _volumeNotification;
-	}
-
 	public int getVolumeNotificationValue()
 	{
 		int value;
@@ -287,11 +242,6 @@ public class Profile {
 		return (value == 0) ? true : false;
 	}
 	
-	public String getVolumeMedia()
-	{
-		return _volumeMedia;
-	}
-
 	public int getVolumeMediaValue()
 	{
 		int value;
@@ -314,11 +264,6 @@ public class Profile {
 			value = 1;
 		}
 		return (value == 0) ? true : false;
-	}
-	
-	public String getVolumeAlarm()
-	{
-		return _volumeAlarm;
 	}
 	
 	public int getVolumeAlarmValue()
@@ -345,11 +290,6 @@ public class Profile {
 		return (value == 0) ? true : false;
 	}
 	
-	public String getVolumeSystem()
-	{
-		return _volumeSystem;
-	}
-
 	public int getVolumeSystemValue()
 	{
 		int value;
@@ -374,11 +314,6 @@ public class Profile {
 		return (value == 0) ? true : false;
 	}
 	
-	public String getVolumeVoice()
-	{
-		return _volumeVoice;
-	}
-
 	public int getVolumeVoiceValue()
 	{
 		int value;
@@ -403,76 +338,6 @@ public class Profile {
 		return (value == 0) ? true : false;
 	}
 	
-	public boolean getSoundRingtoneChange()
-	{
-		return _soundRingtoneChange;
-	}
-	
-	public String getSoundRingtone()
-	{
-		return _soundRingtone;
-	}
-	
-	public boolean getSoundNotificationChange()
-	{
-		return _soundNotificationChange;
-	}
-	
-	public String getSoundNotification()
-	{
-		return _soundNotification;
-	}
-	
-	public boolean getSoundAlarmChange()
-	{
-		return _soundAlarmChange;
-	}
-	
-	public String getSoundAlarm()
-	{
-		return _soundAlarm;
-	}
-	
-	public int getDeviceAirplaneMode()
-	{
-		return _deviceAirplaneMode;
-	}
-	
-	public int getDeviceMobileData()
-	{
-		return _deviceMobileData;
-	}
-	
-	public boolean getDeviceMobileDataPrefs()
-	{
-		return _deviceMobileDataPrefs;
-	}
-	
-	public int getDeviceWiFi()
-	{
-		return _deviceWiFi;
-	}
-	
-	public int getDeviceBluetooth()
-	{
-		return _deviceBluetooth;
-	}
-	
-	public int getDeviceGPS()
-	{
-		return _deviceGPS;
-	}
-	
-	public int getDeviceScreenTimeout()
-	{
-		return _deviceScreenTimeout;
-	}
-	
-	public String getDeviceBrightness()
-	{
-		return _deviceBrightness;
-	}
-
 	public int getDeviceBrightnessValue()
 	{
 		int value;
@@ -509,16 +374,6 @@ public class Profile {
 		return (value == 1) ? true : false;
 	}
 	
-	public boolean getDeviceWallpaperChange()
-	{
-		return this._deviceWallpaperChange;
-	}
-	
-	public String getDeviceWallpaper()
-	{
-		return this._deviceWallpaper;
-	}
-	
 	// getting wallpaper identifikator
 	public String getDeviceWallpaperIdentifier()
 	{
@@ -530,171 +385,6 @@ public class Profile {
 			value = "-";
 		}
 		return value;
-	}
-	
-	public boolean getDeviceRunApplicationChange()
-	{
-		return this._deviceRunApplicationChange;
-	}
-	
-	public String getDeviceRunApplicationPackageName()
-	{
-		return this._deviceRunApplicationPackageName;
-	}
-	
-	// setting id
-	public void setID(long id)
-	{
-		this._id = id;
-	}
-	
-	// setting name
-	public void setName(String name)
-	{
-		this._name = name;
-	}
-	
-	// setting icon
-	public void setIcon(String icon)
-	{
-		this._icon = icon;
-	}
-	
-	// setting checked
-	public void setChecked(Boolean checked)
-	{
-		this._checked = checked;
-	}
-
-	// setting porder
-	public void setPOrder(int porder)
-	{
-		this._porder = porder;
-	}
-	
-	public void setVolumeRingerMode(int volumeRingerMode)
-	{
-		_volumeRingerMode = volumeRingerMode;
-	}
-	
-	public void setVolumeRingtone(String volumeRingtone)
-	{
-		_volumeRingtone = volumeRingtone;
-	}
-	
-	public void setVolumeNotification(String volumeNotification)
-	{
-		_volumeNotification = volumeNotification;
-	}
-	
-	public void setVolumeMedia(String volumeMedia)
-	{
-		_volumeMedia = volumeMedia;
-	}
-	
-	public void setVolumeAlarm(String volumeAlarm)
-	{
-		_volumeAlarm = volumeAlarm;
-	}
-	
-	public void setVolumeSystem(String volumeSystem)
-	{
-		_volumeSystem = volumeSystem;
-	}
-	
-	public void setVolumeVoice(String volumeVoice)
-	{
-		_volumeVoice = volumeVoice;
-	}
-	
-	public void setSoundRingtoneChange(boolean soundRingtoneChange)
-	{
-		_soundRingtoneChange = soundRingtoneChange;
-	}
-	
-	public void setSoundRingtone(String soundRingtone)
-	{
-		_soundRingtone = soundRingtone;
-	}
-	
-	public void setSoundNotificationChange(boolean soundNotificationChange)
-	{
-		_soundNotificationChange = soundNotificationChange;
-	}
-	
-	public void setSoundNotification(String soundNotification)
-	{
-		_soundNotification = soundNotification;
-	}
-	
-	public void setSoundAlarmChange(boolean soundAlarmChange)
-	{
-		_soundAlarmChange = soundAlarmChange;
-	}
-	
-	public void setSoundAlarm(String soundAlarm)
-	{
-		_soundAlarm = soundAlarm;
-	}
-	
-	public void setDeviceAirplaneMode(int deviceAirplaneMode)
-	{
-		_deviceAirplaneMode = deviceAirplaneMode;
-	}
-	
-	public void setDeviceMobileData(int deviceMobileData)
-	{
-		_deviceMobileData = deviceMobileData;
-	}
-	
-	public void setDeviceMobileDataPrefs(boolean deviceMobileDataPrefs)
-	{
-		_deviceMobileDataPrefs = deviceMobileDataPrefs;
-	}
-	
-	public void setDeviceWiFi(int deviceWiFi)
-	{
-		_deviceWiFi = deviceWiFi;
-	}
-	
-	public void setDeviceBluetooth(int deviceBluetooth)
-	{
-		_deviceBluetooth = deviceBluetooth;
-	}
-	
-	public void setDeviceGPS(int deviceGPS)
-	{
-		_deviceGPS = deviceGPS;
-	}
-	
-	public void setDeviceScreenTimeout(int deviceScreenTimeout)
-	{
-		_deviceScreenTimeout = deviceScreenTimeout;
-	}
-	
-	public void setDeviceBrightness(String deviceBrightness)
-	{
-		_deviceBrightness = deviceBrightness;
-	}
-
-	public void setDeviceWallpaperChange(boolean deviceWallpaperChange)
-	{
-		this._deviceWallpaperChange = deviceWallpaperChange;
-	}
-	
-	public void setDeviceWallpaper(String deviceWallpaper)
-	{
-		_deviceWallpaper = deviceWallpaper;
-	}
-
-	public void setDeviceRunApplicationChange(boolean deviceRunApplicationChange)
-	{
-		_deviceRunApplicationChange = deviceRunApplicationChange;
-	}
-	
-	public void setDeviceRunApplicationPackageName(String deviceRunApplicationPackagename)
-	{
-		_deviceRunApplicationPackageName = deviceRunApplicationPackagename;
 	}
 	
 }

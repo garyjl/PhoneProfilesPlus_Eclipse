@@ -2,9 +2,16 @@ package sk.henrichg.phoneprofiles;
 
 import java.util.List;
 
+import com.stericson.RootTools.RootTools;
+
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.util.Log;
 
 public class GlobalData extends Application {
@@ -14,6 +21,7 @@ public class GlobalData extends Application {
 	private static DatabaseHandler databaseHandler = null;
 	private static List<Profile> profileList = null;
 	private static boolean applicationStarted = false;
+	private static ActivateProfileHelper activateProfileHelper = null;
 
 	static final String EXTRA_PROFILE_POSITION = "profile_position";
 	static final String EXTRA_PROFILE_ID = "profile_id";
@@ -75,6 +83,8 @@ public class GlobalData extends Application {
 		
 		databaseHandler = new DatabaseHandler(this);
 		
+		activateProfileHelper = new ActivateProfileHelper(); 
+		
 		Log.d("GlobalData.onCreate","xxx");
 		
 	}
@@ -92,6 +102,11 @@ public class GlobalData extends Application {
 	public static DatabaseHandler getDatabaseHandler()
 	{
 		return databaseHandler;
+	}
+
+	public static ActivateProfileHelper getActivateProfileHelper()
+	{
+		return activateProfileHelper;
 	}
 	
 	public static List<Profile> getProfileList()
@@ -117,7 +132,7 @@ public class GlobalData extends Application {
 		for (int i = 0; i < profileList.size(); i++)
 		{
 			profile = profileList.get(i); 
-			if (profile.getChecked())
+			if (profile._checked)
 				return profile;
 		}
 		
@@ -142,7 +157,7 @@ public class GlobalData extends Application {
 	{
 		for (int i = 0; i < profileList.size(); i++)
 		{
-			if (profileList.get(i).getID() == profile.getID())
+			if (profileList.get(i)._id == profile._id)
 				return i;
 		}
 		return -1;
@@ -152,7 +167,7 @@ public class GlobalData extends Application {
 	{
 		for (Profile p : profileList)
 		{
-			p.setChecked(false);
+			p._checked = false;
 		}
 		
 		// teraz musime najst profile v profileList 
@@ -162,7 +177,7 @@ public class GlobalData extends Application {
 			// najdenemu objektu nastavime _checked
 			Profile _profile = profileList.get(position);
 			if (_profile != null)
-				_profile.setChecked(true);
+				_profile._checked = true;
 		}
 	}
 	
@@ -175,7 +190,7 @@ public class GlobalData extends Application {
 		for (int i = 0; i < profileList.size(); i++)
 		{
 			profile = profileList.get(i); 
-			if (profile.getID() == id)
+			if (profile._id == id)
 				return profile;
 		}
 		
@@ -203,5 +218,168 @@ public class GlobalData extends Application {
 	    notificationStatusBarStyle = preferences.getString(PREF_NOTIFICATION_STATUS_BAR_STYLE, "0");
 		
 	}
+
+	// ----- Hardware check -------------------------------------
 	
+	static private boolean rootChecked = false;
+	static private boolean rooted = false;
+
+	static boolean hardwareCheck(String preferenceKey, Context context)
+	{
+		boolean featurePresented = false;
+
+		if (preferenceKey.equals(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_AIRPLANE_MODE))
+		{	
+			if (android.os.Build.VERSION.SDK_INT >= 17)
+			{
+				if (isRooted())
+				{
+					// zariadenie je rootnute
+					featurePresented = true;
+				}
+				else
+				//if (isSystemApp(context) && isAdminUser(context))
+				if (isSystemApp(context))
+				{
+					// aplikacia je nainstalovana ako systemova
+					featurePresented = true;
+				}
+			}
+		}
+		else
+		if (preferenceKey.equals(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_WIFI))
+		{	
+			if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_WIFI))
+				// device ma Wifi
+				featurePresented = true;
+		}
+		else
+		if (preferenceKey.equals(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_BLUETOOTH))
+		{	
+			if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH))
+				// device ma bluetooth
+				featurePresented = true;
+		}
+		else
+		if (preferenceKey.equals(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_MOBILE_DATA))
+		{	
+			if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY))
+				// device ma mobilne data
+				featurePresented = true;
+		}
+		else
+		if (preferenceKey.equals(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_GPS))
+		{	
+			if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_LOCATION_GPS))
+			{
+				// device ma gps
+
+			/*	if (canExploitGPS(context))
+				{
+					featurePresented = true;
+			    }
+				else
+				if ((android.os.Build.VERSION.SDK_INT >= 17) && isRooted())
+				{
+					featurePresented = true;
+				}
+				else 
+				//if (isSystemApp(context) && isAdminUser(context))
+				if (isSystemApp(context))
+				{
+					// aplikacia je nainstalovana ako systemova
+					featurePresented = true;
+			    } */
+				featurePresented = true;
+			}
+		}
+		else
+			featurePresented = true;
+		
+		return featurePresented;
+	}
+	
+	static boolean canExploitGPS(Context context)
+	{
+		// test expoiting power manager widget
+	    PackageManager pacman = context.getPackageManager();
+	    PackageInfo pacInfo = null;
+	    try {
+	        pacInfo = pacman.getPackageInfo("com.android.settings", PackageManager.GET_RECEIVERS);
+
+		    if(pacInfo != null){
+		        for(ActivityInfo actInfo : pacInfo.receivers){
+		            //test if recevier is exported. if so, we can toggle GPS.
+		            if(actInfo.name.equals("com.android.settings.widget.SettingsAppWidgetProvider") && actInfo.exported){
+						return true;
+		            }
+		        }
+		    }				
+	    } catch (NameNotFoundException e) {
+	        return false; //package not found
+	    }   
+	    return false;
+	}
+	
+	static boolean isSystemApp(Context context)
+	{
+		ApplicationInfo ai = context.getApplicationInfo();
+		
+		if ((ai.flags & ApplicationInfo.FLAG_SYSTEM) != 0)
+		{
+			//Log.d(TAG, "isSystemApp==true");
+			return true;
+		}
+		return false;
+	}
+	
+	static boolean isUpdatedSystemApp(Context context)
+	{
+		ApplicationInfo ai = context.getApplicationInfo();
+		
+		if ((ai.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0)
+		{
+			//Log.d(TAG, "isUpdatedSystemApp==true");
+			return true;
+		}
+		return false;
+		
+	}
+
+/*	
+	static boolean isAdminUser(Context context)
+	{
+		UserHandle uh = Process.myUserHandle();
+		UserManager um = (UserManager)context.getSystemService(Context.USER_SERVICE);
+		if (um != null)
+		{
+			long userSerialNumber = um.getSerialNumberForUser(uh);
+			//Log.d(TAG, "userSerialNumber="+userSerialNumber);
+			return userSerialNumber == 0;
+		}
+		else
+			return false;
+	}
+*/
+	
+	static boolean isRooted()
+	{
+		if (!rootChecked)
+		{
+			if (RootTools.isAccessGiven())
+			{
+				// zariadenie je rootnute
+				rootChecked = true;
+				rooted = true;
+			}
+			else
+			{
+				rootChecked = true;
+				rooted = false;
+			}
+		}
+		return rooted;
+	}
+	
+	//------------------------------------------------------
 }

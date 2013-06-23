@@ -173,7 +173,7 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 		{
 			isIconResourceID = profile.getIsIconResourceID();
 			iconIdentifier = profile.getIconIdentifier();
-			profileName = profile.getName();
+			profileName = profile._name;
 		}
 		else
 		{
@@ -185,7 +185,7 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 		Intent shortcutIntent = new Intent(this, BackgroundActivateProfileActivity.class);
 		// BackgroundActivateProfileActivity musi toto testovat, a len spravit aktivaciu profilu
 		shortcutIntent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_SHORTCUT);
-		shortcutIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile.getID());
+		shortcutIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
 		
 		Intent intent = new Intent();
 		intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);

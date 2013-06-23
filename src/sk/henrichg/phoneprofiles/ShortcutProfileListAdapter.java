@@ -55,7 +55,7 @@ public class ShortcutProfileListAdapter extends BaseAdapter {
         
         Profile profile = profileList.get(position);
         
-        profileName.setText(profile.getName());
+        profileName.setText(profile._name);
         if (profile.getIsIconResourceID())
         {
         	int res = vi.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", 

@@ -49,7 +49,7 @@ public class ActivateProfileHelper {
 		
 	}
 
-	public ActivateProfileHelper(Activity a, Context c)
+	public void initialize(Activity a, Context c)
 	{
 		activity = a;
 		context = c;
@@ -65,7 +65,7 @@ public class ActivateProfileHelper {
 		AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
 		
 		// nahodenie ringer modu
-		switch (profile.getVolumeRingerMode()) {
+		switch (profile._volumeRingerMode) {
 			case 1:  // Ring
 				audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
 				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_OFF);
@@ -109,19 +109,19 @@ public class ActivateProfileHelper {
 			//Settings.System.putInt(getContentResolver(), Settings.System.VOLUME_VOICE, profile.getVolumeVoiceValue());
 
 		// nahodenie ringtone
-		if (profile.getSoundRingtoneChange())
-			Settings.System.putString(context.getContentResolver(), Settings.System.RINGTONE, profile.getSoundRingtone());
-		if (profile.getSoundNotificationChange())
-			Settings.System.putString(context.getContentResolver(), Settings.System.NOTIFICATION_SOUND, profile.getSoundNotification());
-		if (profile.getSoundAlarmChange())
-			Settings.System.putString(context.getContentResolver(), Settings.System.ALARM_ALERT, profile.getSoundAlarm());
+		if (profile._soundRingtoneChange)
+			Settings.System.putString(context.getContentResolver(), Settings.System.RINGTONE, profile._soundRingtone);
+		if (profile._soundNotificationChange)
+			Settings.System.putString(context.getContentResolver(), Settings.System.NOTIFICATION_SOUND, profile._soundNotification);
+		if (profile._soundAlarmChange)
+			Settings.System.putString(context.getContentResolver(), Settings.System.ALARM_ALERT, profile._soundAlarm);
 
 		// nahodenie mobilnych dat
-		if (CheckHardwareFeatures.check(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_MOBILE_DATA, context))
+		if (GlobalData.hardwareCheck(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_MOBILE_DATA, context))
 		{
 			boolean _isMobileData = isMobileData(context.getApplicationContext());
 			boolean _setMobileData = false;
-			switch (profile.getDeviceMobileData()) {
+			switch (profile._deviceMobileData) {
 				case 1:
 					if (!_isMobileData)
 					{
@@ -146,11 +146,11 @@ public class ActivateProfileHelper {
 		}
 
 		// nahodenie WiFi
-		if (CheckHardwareFeatures.check(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_WIFI, context))
+		if (GlobalData.hardwareCheck(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_WIFI, context))
 		{
 			WifiManager wifiManager = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
 			boolean setWifiState = false;
-			switch (profile.getDeviceWiFi()) {
+			switch (profile._deviceWiFi) {
 				case 1 :
 					setWifiState = true;
 					break;
@@ -170,7 +170,7 @@ public class ActivateProfileHelper {
 					}
 					break;
 			}
-			if (profile.getDeviceWiFi() != 0)
+			if (profile._deviceWiFi != 0)
 			{
 				try {
 					wifiManager.setWifiEnabled(setWifiState);
@@ -182,10 +182,10 @@ public class ActivateProfileHelper {
 		}
 		
 		// nahodenie bluetooth
-		if (CheckHardwareFeatures.check(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_BLUETOOTH, context))
+		if (GlobalData.hardwareCheck(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_BLUETOOTH, context))
 		{
 			BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-			switch (profile.getDeviceBluetooth()) {
+			switch (profile._deviceBluetooth) {
 				case 1 :
 					bluetoothAdapter.enable();
 					break;
@@ -207,13 +207,13 @@ public class ActivateProfileHelper {
 		}
 
 		// nahodenie GPS
-		if (CheckHardwareFeatures.check(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_GPS, context))
+		if (GlobalData.hardwareCheck(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_GPS, context))
 		{
 		    String provider = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
 
 			//Log.d("ActivateProfileHelper.execute", provider);
 		    
-			switch (profile.getDeviceGPS()) {
+			switch (profile._deviceGPS) {
 				case 1 :
 					setGPS(context, true);
 					break;
@@ -235,11 +235,11 @@ public class ActivateProfileHelper {
 		}
 		
 		// nahodenie airplane modu
-		if (CheckHardwareFeatures.check(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_AIRPLANE_MODE, context))
+		if (GlobalData.hardwareCheck(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_AIRPLANE_MODE, context))
 		{
 			boolean _isAirplaneMode = isAirplaneMode(context.getApplicationContext());
 			boolean _setAirplaneMode = false;
-			switch (profile.getDeviceAirplaneMode()) {
+			switch (profile._deviceAirplaneMode) {
 				case 1:
 					if (!_isAirplaneMode)
 					{
@@ -380,7 +380,7 @@ public class ActivateProfileHelper {
 */
 		
 		// screen timeout
-		switch (profile.getDeviceScreenTimeout()) {
+		switch (profile._deviceScreenTimeout) {
 			case 1:
 				Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, 15000);
 				break;
@@ -423,7 +423,7 @@ public class ActivateProfileHelper {
 		}
 		
 		// nahodenie pozadia
-		if (profile.getDeviceWallpaperChange())
+		if (profile._deviceWallpaperChange)
 		{
 			//Log.d("ActivateProfileHelper.execute","set wallpaper");
 			DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -443,11 +443,11 @@ public class ActivateProfileHelper {
 			}
 		}
 		
-		if (profile.getDeviceRunApplicationChange())
+		if (profile._deviceRunApplicationChange)
 		{
 			Intent intent;
 			PackageManager packageManager = context.getPackageManager();
-			intent = packageManager.getLaunchIntentForPackage(profile.getDeviceRunApplicationPackageName());
+			intent = packageManager.getLaunchIntentForPackage(profile._deviceRunApplicationPackageName);
 			intent.addCategory(Intent.CATEGORY_LAUNCHER);
 			activity.startActivity(intent);			
 		}
@@ -456,9 +456,9 @@ public class ActivateProfileHelper {
 		{
 			// preferences, ktore vyzaduju interakciu uzivatela
 			
-			if (CheckHardwareFeatures.check(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_MOBILE_DATA, context))
+			if (GlobalData.hardwareCheck(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_MOBILE_DATA, context))
 			{
-				if (profile.getDeviceMobileDataPrefs())
+				if (profile._deviceMobileDataPrefs)
 				{
 			    	if (android.os.Build.VERSION.SDK_INT > 10)
 			    	{
@@ -576,7 +576,7 @@ public class ActivateProfileHelper {
 				
 		        Notification notification = notificationBuilder.build();
 				
-		        contentView.setTextViewText(R.id.notification_activated_profile_name, profile.getName());
+		        contentView.setTextViewText(R.id.notification_activated_profile_name, profile._name);
 		        contentView.setImageViewBitmap(R.id.notification_activated_profile_pref_indicator, 
 		        		ProfilePreferencesIndicator.paint(profile, context));
 		        
@@ -771,7 +771,7 @@ public class ActivateProfileHelper {
 		if ((!isEnabled)  && enable)
 	    {
     		Log.d("ActivateProfileHelper.setGPS", "enable=true");
-	    	if (CheckHardwareFeatures.canExploitGPS(context))
+	    	if (GlobalData.canExploitGPS(context))
 	    	{
 	    		Log.d("ActivateProfileHelper.setGPS", "exploit");
 		        final Intent poke = new Intent();
@@ -781,7 +781,7 @@ public class ActivateProfileHelper {
 		        context.sendBroadcast(poke);
 	    	}
 	    	else
-	    	if ((android.os.Build.VERSION.SDK_INT >= 17) && CheckHardwareFeatures.isRooted())
+	    	if ((android.os.Build.VERSION.SDK_INT >= 17) && GlobalData.isRooted())
 			{
 				// zariadenie je rootnute
 	    		Log.d("ActivateProfileHelper.setGPS", "root");
@@ -807,7 +807,7 @@ public class ActivateProfileHelper {
 			}	    	
 	    	else
 			//if (CheckHardwareFeatures.isSystemApp(context) && CheckHardwareFeatures.isAdminUser(context))
-			if (CheckHardwareFeatures.isSystemApp(context))
+			if (GlobalData.isSystemApp(context))
 	    	{
 	    	/*	String newSet;
 	    		if (provider == "")
@@ -835,7 +835,7 @@ public class ActivateProfileHelper {
 		if (isEnabled && (!enable))
         {
     		Log.d("ActivateProfileHelper.setGPS", "enable=false");
-    		if (CheckHardwareFeatures.canExploitGPS(context))
+    		if (GlobalData.canExploitGPS(context))
 	    	{
 	    		Log.d("ActivateProfileHelper.setGPS", "exploit");
 	            final Intent poke = new Intent();
@@ -845,7 +845,7 @@ public class ActivateProfileHelper {
 	            context.sendBroadcast(poke);
 	    	}
 	    	else
-	    	if ((android.os.Build.VERSION.SDK_INT >= 17) && CheckHardwareFeatures.isRooted())
+	    	if ((android.os.Build.VERSION.SDK_INT >= 17) && GlobalData.isRooted())
 			{
 				// zariadenie je rootnute
 	    		Log.d("ActivateProfileHelper.setGPS", "root");
@@ -881,7 +881,7 @@ public class ActivateProfileHelper {
 			}	    	
 	    	else
 			//if (CheckHardwareFeatures.isSystemApp(context) && CheckHardwareFeatures.isAdminUser(context))
-			if (CheckHardwareFeatures.isSystemApp(context))
+			if (GlobalData.isSystemApp(context))
 			{
 	    	/*	String[] list = provider.split(",");
 	    		

@@ -56,7 +56,7 @@ public class EditorProfileListAdapter extends BaseAdapter
 	{
 		for (int i = 0; i < profileList.size(); i++)
 		{
-			if (profileList.get(i).getID() == profile.getID())
+			if (profileList.get(i)._id == profile._id)
 				return i;
 		}
 		return -1;
@@ -74,10 +74,10 @@ public class EditorProfileListAdapter extends BaseAdapter
 		int pOrder;
 		for (Profile p : profileList)
 		{
-			pOrder = p.getPOrder();
+			pOrder = p._porder;
 			if (pOrder > maxPOrder) maxPOrder = pOrder;
 		}
-		profile.setPOrder(maxPOrder+1);
+		profile._porder = maxPOrder+1;
 		profileList.add(profile);
 		notifyDataSetChanged();
 	}
@@ -106,7 +106,7 @@ public class EditorProfileListAdapter extends BaseAdapter
 		profileList.add(to, profile);
 		for (int i = 0; i < profileList.size(); i++)
 		{
-			profileList.get(i).setPOrder(i+1);
+			profileList.get(i)._porder = i+1;
 		}
 		notifyDataSetChanged();
 	}
@@ -115,7 +115,7 @@ public class EditorProfileListAdapter extends BaseAdapter
 	{
 		for (Profile p : profileList)
 		{
-			if (p.getChecked())
+			if (p._checked)
 			{
 				return p;
 			}
@@ -128,7 +128,7 @@ public class EditorProfileListAdapter extends BaseAdapter
 	{
 		for (Profile p : profileList)
 		{
-			p.setChecked(false);
+			p._checked = false;
 		}
 		
 		// teraz musime najst profile v profileList 
@@ -138,7 +138,7 @@ public class EditorProfileListAdapter extends BaseAdapter
 			// najdenemu objektu nastavime _checked
 			Profile _profile = profileList.get(position);
 			if (_profile != null)
-				_profile.setChecked(true);
+				_profile._checked = true;
 		}
 	}
 
@@ -158,7 +158,7 @@ public class EditorProfileListAdapter extends BaseAdapter
         
         Profile profile = profileList.get(position);
         
-        profileName.setText(profile.getName());
+        profileName.setText(profile._name);
         if (profile.getIsIconResourceID())
         {
         	int res = vi.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", 
