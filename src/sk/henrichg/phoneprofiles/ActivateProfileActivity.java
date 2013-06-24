@@ -74,6 +74,22 @@ public class ActivateProfileActivity extends SherlockActivity {
 		//getSupportActionBar().setHomeButtonEnabled(true);
 		//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+		profileList = GlobalData.getProfileList();
+
+		if (profileList.size() == 0)
+		{
+			// nie je ziaden profile, staretnene Editor
+			
+			Intent intent = new Intent(getBaseContext(), EditorProfilesActivity.class);
+			intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_ACTIVATOR);
+
+			startActivity(intent);
+			
+			finish();
+
+			return;
+		}
+
 		intent = getIntent();
 		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
 		
@@ -87,8 +103,6 @@ public class ActivateProfileActivity extends SherlockActivity {
 		activeProfileIcon = (ImageView)findViewById(R.id.act_prof_activated_profile_icon);
 		listView = (ListView)findViewById(R.id.act_prof_profiles_list);
 		
-		profileList = GlobalData.getProfileList();
-
 		profileListAdapter = new ActivateProfileListAdapter(this, profileList);
 		
 		listView.setAdapter(profileListAdapter);

@@ -116,11 +116,17 @@ public class ProfilePreferencesIndicator {
 			
 		}
 		
-		Bitmap indicatorBitmap = createIndicatorBitmap(context, countDrawables);
-		Canvas canvas = new Canvas(indicatorBitmap);
-		
-		for (int i = 0; i < countDrawables; i++)
-			addIndicator(indicatorBitmap, drawables[i], i, context, canvas);				
+		Bitmap indicatorBitmap;
+		if (countDrawables > 0)
+		{
+			indicatorBitmap = createIndicatorBitmap(context, countDrawables);
+			Canvas canvas = new Canvas(indicatorBitmap);
+			
+			for (int i = 0; i < countDrawables; i++)
+				addIndicator(indicatorBitmap, drawables[i], i, context, canvas);
+		}
+		else
+			indicatorBitmap = null;
 		
 		return indicatorBitmap;
 		

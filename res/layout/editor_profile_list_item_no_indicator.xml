@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/main_list_drag_handle"
-        android:layout_width="30dp"
-        android:layout_height="60dp"
+        android:layout_width="25dp"
+        android:layout_height="55dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:contentDescription="@string/empty_string"
@@ -27,8 +27,8 @@
         android:layout_toRightOf="@id/main_list_drag_handle"
         android:adjustViewBounds="true"
         android:contentDescription="@string/empty_string"
-        android:maxHeight="50dp"
-        android:maxWidth="50dp"
+        android:maxHeight="40dp"
+        android:maxWidth="40dp"
         android:scaleType="centerCrop"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
@@ -43,12 +43,12 @@
         android:layout_toRightOf="@+id/main_list_item_profile_icon"
         android:paddingLeft="10dp"
         android:text="@string/profile_name_default"
-        android:textSize="19sp" />
+        android:textSize="15sp" />
 
     <ImageView
         android:id="@+id/main_list_item_delete"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
@@ -59,8 +59,8 @@
 
     <ImageView
         android:id="@+id/main_list_item_duplicate"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/main_list_item_delete"
         android:layout_marginRight="10dp"
@@ -71,8 +71,8 @@
 
     <ImageView
         android:id="@+id/main_list_item_activate"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/main_list_item_duplicate"
         android:layout_marginRight="10dp"

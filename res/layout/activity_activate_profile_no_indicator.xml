@@ -21,7 +21,7 @@
     
 		<RelativeLayout
 		    android:layout_width="match_parent"
-		    android:layout_height="55dp"
+		    android:layout_height="match_parent"
 		    android:orientation="horizontal"
 		    android:padding="1dp" >
 		
@@ -32,8 +32,8 @@
 		        android:layout_centerVertical="true"
 		        android:adjustViewBounds="true"
 		        android:contentDescription="@string/empty_string"
-		        android:maxHeight="50dp"
-		        android:maxWidth="50dp"
+		        android:maxHeight="40dp"
+		        android:maxWidth="40dp"
 		        android:scaleType="centerCrop"
 		        android:src="@drawable/ic_profile_default" />
 		    
@@ -46,7 +46,7 @@
 		        android:layout_toRightOf="@+id/act_prof_activated_profile_icon"
 		        android:paddingLeft="10dp"
 		        android:text="@string/profile_name_default"
-		        android:textSize="19sp" />
+		        android:textSize="15sp" />
 		
 		    <ImageView
 		        android:id="@+id/act_prof_activated_profile_activated"
@@ -56,8 +56,8 @@
 		        android:layout_alignParentRight="true"
 		        android:adjustViewBounds="true"
 		        android:contentDescription="@string/empty_string"
-		        android:maxHeight="30dp"
-		        android:maxWidth="30dp"
+		        android:maxHeight="25dp"
+		        android:maxWidth="25dp"
 		        android:scaleType="centerCrop"
 		        android:src="@drawable/ic_profile_activated" />
 		    

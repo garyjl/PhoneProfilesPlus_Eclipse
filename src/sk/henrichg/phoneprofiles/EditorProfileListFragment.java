@@ -131,12 +131,12 @@ public class EditorProfileListFragment extends SherlockFragment {
 		View rootView;
 		
 		if (GlobalData.applicationEditorPrefIndicator && GlobalData.applicationEditorHeader)
-			rootView = inflater.inflate(R.layout.fragment_profile_list, container, false); 
+			rootView = inflater.inflate(R.layout.editor_profile_list, container, false); 
 		else
 		if (GlobalData.applicationEditorHeader)
-			rootView = inflater.inflate(R.layout.fragment_profile_list_no_indicator, container, false); 
+			rootView = inflater.inflate(R.layout.editor_profile_list_no_indicator, container, false); 
 		else
-			rootView = inflater.inflate(R.layout.fragment_profile_list_no_header, container, false); 
+			rootView = inflater.inflate(R.layout.editor_profile_list_no_header, container, false); 
 
 		return rootView;
 	}
