@@ -6,6 +6,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.os.Debug;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -130,6 +132,10 @@ public class ActivateProfileListAdapter extends BaseAdapter
 
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
+
+		Log.d("ActivateProfileLisAdaptet.getView", "position=" + position);
+		Log.d("ActivateProfileLisAdaptet.getView", "memory usage=" + Debug.getNativeHeapAllocatedSize());
+		
 		View vi = convertView;
         if (convertView == null)
         {
@@ -137,37 +143,46 @@ public class ActivateProfileListAdapter extends BaseAdapter
         		vi = inflater.inflate(R.layout.act_prof_list_item, null);
         	else
         		vi = inflater.inflate(R.layout.act_prof_list_item_no_indicator, null);
-        }
+
+			Log.d("ActivateProfileLisAdaptet.getView", "memory usage (after inflating)=" + Debug.getNativeHeapAllocatedSize());
+	        
+	        TextView profileName = (TextView)vi.findViewById(R.id.act_prof_list_item_profile_name);
+	        ImageView profileIcon = (ImageView)vi.findViewById(R.id.act_prof_list_item_profile_icon);
+	
+			Log.d("ActivateProfileLisAdaptet.getView", "memory usage (after get view instances)=" + Debug.getNativeHeapAllocatedSize());
+	        
+	        Profile profile = profileList.get(position);
+	        
+	        profileName.setText(profile._name);
+	        if (profile.getIsIconResourceID())
+	        {
+	        	int res = vi.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", 
+	        				vi.getContext().getPackageName());
+	        	profileIcon.setImageResource(res); // resource na ikonu
+	        }
+	        else
+	        {
+	    		Resources resources = vi.getResources();
+	    		int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
+	    		int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
+	    		Bitmap bitmap = BitmapResampler.resample(profile.getIconIdentifier(), width, height);
+	        	
+	        	profileIcon.setImageBitmap(bitmap);
+	        }
+	
+			Log.d("ActivateProfileLisAdaptet.getView", "memory usage (after set profile icon)=" + Debug.getNativeHeapAllocatedSize());
+	        
+			if (GlobalData.applicationActivatorPrefIndicator)
+			{
+				ImageView profilePrefIndicatorImageView = (ImageView)vi.findViewById(R.id.act_prof_list_profile_pref_indicator);
+				profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, vi.getContext()));
+			}
+			
+			Log.d("ActivateProfileLisAdaptet.getView", "memory usage (after paint indicator)=" + Debug.getNativeHeapAllocatedSize());
 		
-        TextView profileName = (TextView)vi.findViewById(R.id.act_prof_list_item_profile_name);
-        ImageView profileIcon = (ImageView)vi.findViewById(R.id.act_prof_list_item_profile_icon);
-        
-        Profile profile = profileList.get(position);
-        
-        profileName.setText(profile._name);
-        if (profile.getIsIconResourceID())
-        {
-        	int res = vi.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", 
-        				vi.getContext().getPackageName());
-        	profileIcon.setImageResource(res); // resource na ikonu
         }
-        else
-        {
-    		Resources resources = vi.getResources();
-    		int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
-    		int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
-    		Bitmap bitmap = BitmapResampler.resample(profile.getIconIdentifier(), width, height);
-        	
-        	profileIcon.setImageBitmap(bitmap);
-        }
-        
-		if (GlobalData.applicationActivatorPrefIndicator)
-		{
-			ImageView profilePrefIndicatorImageView = (ImageView)vi.findViewById(R.id.act_prof_list_profile_pref_indicator);
-			profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, vi.getContext()));
-		}
-        
-/*		ImageView profileItemEditMenu = (ImageView)vi.findViewById(R.id.act_prof_list_item_edit_menu);
+
+        /*		ImageView profileItemEditMenu = (ImageView)vi.findViewById(R.id.act_prof_list_item_edit_menu);
 		profileItemEditMenu.setTag(position);
 		profileItemEditMenu.setOnClickListener(new OnClickListener() {
 

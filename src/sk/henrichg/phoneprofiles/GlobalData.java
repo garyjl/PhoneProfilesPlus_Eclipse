@@ -16,6 +16,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Debug;
 import android.util.Log;
 
 public class GlobalData extends Application {
@@ -108,15 +109,24 @@ public class GlobalData extends Application {
 	public void onCreate()
 	{
 		super.onCreate();
+		
+		//Log.d("GlobalData.onCreate", "memory usage=" + Debug.getNativeHeapAllocatedSize());
+		
 
 		context = getApplicationContext();
 		PACKAGE_NAME = context.getPackageName();
 		
 		loadPreferences();
+
+		//Log.d("GlobalData.onCreate", "memory usage (after loadPreferences)=" + Debug.getNativeHeapAllocatedSize());
 		
 		databaseHandler = new DatabaseHandler(this);
+
+		//Log.d("GlobalData.onCreate", "memory usage (after create databasehandler)=" + Debug.getNativeHeapAllocatedSize());
 		
 		activateProfileHelper = new ActivateProfileHelper(); 
+
+		Log.d("GlobalData.onCreate", "memory usage (after create activateProfileHelper)=" + Debug.getNativeHeapAllocatedSize());
 		
 		Log.d("GlobalData.onCreate","xxx");
 		
