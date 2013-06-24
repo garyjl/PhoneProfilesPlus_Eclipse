@@ -664,14 +664,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	{
 		SQLiteDatabase db = this.getWritableDatabase();
 		
-		Profile profile;
 		ContentValues values = new ContentValues();
 		
-		for (int i = 0; i < list.size(); i++)
+		for (Profile profile : list)
 		{
-
-			profile = list.get(i);
-			
 			values.put(KEY_PORDER, profile._porder);
 
 			db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
@@ -685,14 +681,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	{
 		SQLiteDatabase db = this.getWritableDatabase();
 		
-		Profile profile;
 		ContentValues values = new ContentValues();
 		
-		for (int i = 0; i < list.size(); i++)
+		for (Profile profile : list)
 		{
-
-			profile = list.get(i);
-			
 			values.put(KEY_CHECKED, profile._checked);
 
 			db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
