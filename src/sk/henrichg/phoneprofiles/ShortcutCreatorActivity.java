@@ -46,8 +46,8 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		EditorProfilesActivity.setTheme(this, true);
-		EditorProfilesActivity.setLanguage(getBaseContext());
+		GlobalData.setTheme(this, true);
+		GlobalData.setLanguage(getBaseContext());
 
 		//requestWindowFeature(Window.FEATURE_ACTION_BAR);
 

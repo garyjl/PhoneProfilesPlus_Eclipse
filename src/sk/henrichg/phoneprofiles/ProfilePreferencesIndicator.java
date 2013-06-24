@@ -10,11 +10,6 @@ import android.graphics.Canvas;
 
 public class ProfilePreferencesIndicator {
 	
-	ProfilePreferencesIndicator()
-	{
-		
-	}
-	
 	private static Bitmap createIndicatorBitmap(Context context, int countDrawables)
 	{
 		// bitmapa, z ktorej zobrerieme velkost
@@ -56,7 +51,7 @@ public class ProfilePreferencesIndicator {
 			if (profile._soundRingtoneChange || profile._soundNotificationChange || profile._soundAlarmChange)
 				drawables[countDrawables++] = R.drawable.ic_profile_pref_sound;
 			// airplane mode
-			if (GlobalData.hardwareCheck(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_AIRPLANE_MODE, context))
+			if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE, context))
 			{
 				if ((profile._deviceAirplaneMode == 1) || (profile._deviceAirplaneMode == 3))
 					drawables[countDrawables++] = R.drawable.ic_profile_pref_airplane_mode;
@@ -64,7 +59,7 @@ public class ProfilePreferencesIndicator {
 					drawables[countDrawables++] = R.drawable.ic_profile_pref_airplane_mode_off;
 			}
 			// mobile data
-			if (GlobalData.hardwareCheck(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_MOBILE_DATA, context))
+			if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA, context))
 			{
 				if ((profile._deviceMobileData == 1) || (profile._deviceMobileData == 3))
 					drawables[countDrawables++] = R.drawable.ic_profile_pref_mobiledata;
@@ -75,7 +70,7 @@ public class ProfilePreferencesIndicator {
 					drawables[countDrawables++] = R.drawable.ic_profile_pref_mobiledata_pref;
 			}
 			// wifi
-			if (GlobalData.hardwareCheck(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_WIFI, context))
+			if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_WIFI, context))
 			{
 				if ((profile._deviceWiFi == 1) || (profile._deviceWiFi == 3))
 					drawables[countDrawables++] = R.drawable.ic_profile_pref_wifi;
@@ -83,7 +78,7 @@ public class ProfilePreferencesIndicator {
 					drawables[countDrawables++] = R.drawable.ic_profile_pref_wifi_off;
 			}
 			// bluetooth
-			if (GlobalData.hardwareCheck(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_BLUETOOTH, context))
+			if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_BLUETOOTH, context))
 			{
 				if ((profile._deviceBluetooth == 1) || (profile._deviceBluetooth == 3))
 					drawables[countDrawables++] = R.drawable.ic_profile_pref_bluetooth;
@@ -91,7 +86,7 @@ public class ProfilePreferencesIndicator {
 					drawables[countDrawables++] = R.drawable.ic_profile_pref_bluetooth_off;
 			}
 			// gps
-			if (GlobalData.hardwareCheck(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_GPS, context))
+			if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_GPS, context))
 			{
 				if ((profile._deviceGPS == 1) || (profile._deviceGPS == 3))
 					drawables[countDrawables++] = R.drawable.ic_profile_pref_gps_on;

@@ -22,8 +22,8 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
     public void onCreate(Bundle savedInstanceState) {
 		
 		// must by called before super.onCreate() for PreferenceActivity
-		EditorProfilesActivity.setTheme(this, false); // must by called before super.onCreate()
-		EditorProfilesActivity.setLanguage(getBaseContext());
+		GlobalData.setTheme(this, false); // must by called before super.onCreate()
+		GlobalData.setLanguage(getBaseContext());
 
 		super.onCreate(savedInstanceState);
 		

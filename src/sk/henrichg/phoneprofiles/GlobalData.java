@@ -1,9 +1,11 @@
 package sk.henrichg.phoneprofiles;
 
 import java.util.List;
+import java.util.Locale;
 
 import com.stericson.RootTools.RootTools;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -12,6 +14,8 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.util.Log;
 
 public class GlobalData extends Application {
@@ -38,6 +42,35 @@ public class GlobalData extends Application {
 	static final String PROFILE_ICON_DEFAULT = "ic_profile_default";
 	
 	static String PACKAGE_NAME;
+	
+	static final String PREF_PROFILE_NAME = "profileName";
+	static final String PREF_PROFILE_ICON = "profileIcon";
+	static final String PREF_PROFILE_VOLUME_RINGER_MODE = "volumeRingerMode";
+	static final String PREF_PROFILE_VOLUME_RINGTONE = "volumeRingtone";
+	static final String PREF_PROFILE_VOLUME_NOTIFICATION = "volumeNotification";
+	static final String PREF_PROFILE_VOLUME_MEDIA = "volumeMedia";
+	static final String PREF_PROFILE_VOLUME_ALARM = "volumeAlarm";
+	static final String PREF_PROFILE_VOLUME_SYSTEM = "volumeSystem";
+	static final String PREF_PROFILE_VOLUME_VOICE = "volumeVoice";
+	static final String PREF_PROFILE_SOUND_RINGTONE_CHANGE = "soundRingtoneChange";
+	static final String PREF_PROFILE_SOUND_RINGTONE = "soundRingtone";
+	static final String PREF_PROFILE_SOUND_NOTIFICATION_CHANGE = "soundNotificationChange";
+	static final String PREF_PROFILE_SOUND_NOTIFICATION = "soundNotification";
+	static final String PREF_PROFILE_SOUND_ALARM_CHANGE = "soundAlarmChange";
+	static final String PREF_PROFILE_SOUND_ALARM = "soundAlarm";
+	static final String PREF_PROFILE_DEVICE_AIRPLANE_MODE = "deviceAirplaneMode";
+	static final String PREF_PROFILE_DEVICE_WIFI = "deviceWiFi";
+	static final String PREF_PROFILE_DEVICE_BLUETOOTH = "deviceBluetooth";
+	static final String PREF_PROFILE_DEVICE_SCREEN_TIMEOUT = "deviceScreenTimeout";
+	static final String PREF_PROFILE_DEVICE_BRIGHTNESS = "deviceBrightness";
+	static final String PREF_PROFILE_DEVICE_WALLPAPER_CHANGE = "deviceWallpaperChange";
+	static final String PREF_PROFILE_DEVICE_WALLPAPER = "deviceWallpaper";
+	static final String PREF_PROFILE_DEVICE_MOBILE_DATA = "deviceMobileData";
+	static final String PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS = "deviceMobileDataPrefs";
+	static final String PREF_PROFILE_DEVICE_GPS = "deviceGPS";
+	static final String PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE = "deviceRunApplicationChange";
+	static final String PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME = "deviceRunApplicationPackageName";
+	
 	
 	static final String APPLICATION_PREFS_NAME = "phone_profile_preferences";
 	
@@ -228,7 +261,7 @@ public class GlobalData extends Application {
 	{
 		boolean featurePresented = false;
 
-		if (preferenceKey.equals(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_AIRPLANE_MODE))
+		if (preferenceKey.equals(PREF_PROFILE_DEVICE_AIRPLANE_MODE))
 		{	
 			if (android.os.Build.VERSION.SDK_INT >= 17)
 			{
@@ -247,28 +280,28 @@ public class GlobalData extends Application {
 			}
 		}
 		else
-		if (preferenceKey.equals(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_WIFI))
+		if (preferenceKey.equals(PREF_PROFILE_DEVICE_WIFI))
 		{	
 			if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_WIFI))
 				// device ma Wifi
 				featurePresented = true;
 		}
 		else
-		if (preferenceKey.equals(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_BLUETOOTH))
+		if (preferenceKey.equals(PREF_PROFILE_DEVICE_BLUETOOTH))
 		{	
 			if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH))
 				// device ma bluetooth
 				featurePresented = true;
 		}
 		else
-		if (preferenceKey.equals(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_MOBILE_DATA))
+		if (preferenceKey.equals(PREF_PROFILE_DEVICE_MOBILE_DATA))
 		{	
 			if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY))
 				// device ma mobilne data
 				featurePresented = true;
 		}
 		else
-		if (preferenceKey.equals(ProfilePreferencesFragment.PREF_PROFILE_DEVICE_GPS))
+		if (preferenceKey.equals(PREF_PROFILE_DEVICE_GPS))
 		{	
 			if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_LOCATION_GPS))
 			{
@@ -382,4 +415,53 @@ public class GlobalData extends Application {
 	}
 	
 	//------------------------------------------------------
+	
+	public static void setLanguage(Context context)//, boolean restart)
+	{
+		// jazyk na aky zmenit
+		String lang = GlobalData.applicationLanguage;
+		
+		//Log.d("EditorProfilesActivity.setLanguauge", lang);
+
+		Locale appLocale;
+		
+		if (!lang.equals("system"))
+		{
+			appLocale = new Locale(lang);
+		}
+		else
+		{
+			appLocale = Resources.getSystem().getConfiguration().locale;
+		}
+		
+		Locale.setDefault(appLocale);
+		Configuration appConfig = new Configuration();
+		appConfig.locale = appLocale;
+		context.getResources().updateConfiguration(appConfig, context.getResources().getDisplayMetrics());
+		
+		//languageChanged = restart;
+	}
+	
+	public static void setTheme(Activity activity, boolean forPopup)
+	{
+		if (GlobalData.applicationTheme.equals("light"))
+		{
+			Log.d("EditorProfilesActivity.setTheme","light");
+			if (forPopup)
+				activity.setTheme(R.style.PopupTheme);
+			else
+				activity.setTheme(R.style.Theme_Phoneprofilestheme);
+		}
+		else
+		if (GlobalData.applicationTheme.equals("dark"))
+		{
+			Log.d("EditorProfilesActivity.setTheme","dark");
+			if (forPopup)
+				activity.setTheme(R.style.PopupTheme_dark);
+			else
+				activity.setTheme(R.style.Theme_Phoneprofilestheme_dark);
+		}
+	}
+
+	
 }

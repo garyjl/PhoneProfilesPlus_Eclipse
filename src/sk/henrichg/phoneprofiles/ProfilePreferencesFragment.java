@@ -68,33 +68,6 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		
 	static final String PREFS_NAME = "profile_preferences";
 	
-	static final String PREF_PROFILE_NAME = "profileName";
-	static final String PREF_PROFILE_ICON = "profileIcon";
-	static final String PREF_PROFILE_VOLUME_RINGER_MODE = "volumeRingerMode";
-	static final String PREF_PROFILE_VOLUME_RINGTONE = "volumeRingtone";
-	static final String PREF_PROFILE_VOLUME_NOTIFICATION = "volumeNotification";
-	static final String PREF_PROFILE_VOLUME_MEDIA = "volumeMedia";
-	static final String PREF_PROFILE_VOLUME_ALARM = "volumeAlarm";
-	static final String PREF_PROFILE_VOLUME_SYSTEM = "volumeSystem";
-	static final String PREF_PROFILE_VOLUME_VOICE = "volumeVoice";
-	static final String PREF_PROFILE_SOUND_RINGTONE_CHANGE = "soundRingtoneChange";
-	static final String PREF_PROFILE_SOUND_RINGTONE = "soundRingtone";
-	static final String PREF_PROFILE_SOUND_NOTIFICATION_CHANGE = "soundNotificationChange";
-	static final String PREF_PROFILE_SOUND_NOTIFICATION = "soundNotification";
-	static final String PREF_PROFILE_SOUND_ALARM_CHANGE = "soundAlarmChange";
-	static final String PREF_PROFILE_SOUND_ALARM = "soundAlarm";
-	static final String PREF_PROFILE_DEVICE_AIRPLANE_MODE = "deviceAirplaneMode";
-	static final String PREF_PROFILE_DEVICE_WIFI = "deviceWiFi";
-	static final String PREF_PROFILE_DEVICE_BLUETOOTH = "deviceBluetooth";
-	static final String PREF_PROFILE_DEVICE_SCREEN_TIMEOUT = "deviceScreenTimeout";
-	static final String PREF_PROFILE_DEVICE_BRIGHTNESS = "deviceBrightness";
-	static final String PREF_PROFILE_DEVICE_WALLPAPER_CHANGE = "deviceWallpaperChange";
-	static final String PREF_PROFILE_DEVICE_WALLPAPER = "deviceWallpaper";
-	static final String PREF_PROFILE_DEVICE_MOBILE_DATA = "deviceMobileData";
-	static final String PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS = "deviceMobileDataPrefs";
-	static final String PREF_PROFILE_DEVICE_GPS = "deviceGPS";
-	static final String PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE = "deviceRunApplicationChange";
-	static final String PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME = "deviceRunApplicationPackageName";
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -225,33 +198,33 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	    	SharedPreferences preferences = getSherlockActivity().getSharedPreferences(ProfilePreferencesFragment.PREFS_NAME, Activity.MODE_PRIVATE);
 	
 	    	Editor editor = preferences.edit();
-	        editor.putString(PREF_PROFILE_NAME, profile._name);
-	        editor.putString(PREF_PROFILE_ICON, profile._icon);
-	        editor.putString(PREF_PROFILE_VOLUME_RINGER_MODE, Integer.toString(profile._volumeRingerMode));
-	        editor.putString(PREF_PROFILE_VOLUME_RINGTONE, profile._volumeRingtone);
-	        editor.putString(PREF_PROFILE_VOLUME_NOTIFICATION, profile._volumeNotification);
-	        editor.putString(PREF_PROFILE_VOLUME_MEDIA, profile._volumeMedia);
-	        editor.putString(PREF_PROFILE_VOLUME_ALARM, profile._volumeAlarm);
-	        editor.putString(PREF_PROFILE_VOLUME_SYSTEM, profile._volumeSystem);
-	        editor.putString(PREF_PROFILE_VOLUME_VOICE, profile._volumeVoice);
-	        editor.putBoolean(PREF_PROFILE_SOUND_RINGTONE_CHANGE, profile._soundRingtoneChange);
-	        editor.putString(PREF_PROFILE_SOUND_RINGTONE, profile._soundRingtone);
-	        editor.putBoolean(PREF_PROFILE_SOUND_NOTIFICATION_CHANGE, profile._soundNotificationChange);
-	        editor.putString(PREF_PROFILE_SOUND_NOTIFICATION, profile._soundNotification);
-	        editor.putBoolean(PREF_PROFILE_SOUND_ALARM_CHANGE, profile._soundAlarmChange);
-	        editor.putString(PREF_PROFILE_SOUND_ALARM, profile._soundAlarm);
-	        editor.putString(PREF_PROFILE_DEVICE_AIRPLANE_MODE, Integer.toString(profile._deviceAirplaneMode));
-	        editor.putString(PREF_PROFILE_DEVICE_WIFI, Integer.toString(profile._deviceWiFi));
-	        editor.putString(PREF_PROFILE_DEVICE_BLUETOOTH, Integer.toString(profile._deviceBluetooth));
-	        editor.putString(PREF_PROFILE_DEVICE_SCREEN_TIMEOUT, Integer.toString(profile._deviceScreenTimeout));
-	        editor.putString(PREF_PROFILE_DEVICE_BRIGHTNESS, profile._deviceBrightness);
-	        editor.putBoolean(PREF_PROFILE_DEVICE_WALLPAPER_CHANGE, profile._deviceWallpaperChange);
-	        editor.putString(PREF_PROFILE_DEVICE_WALLPAPER, profile._deviceWallpaper);
-	        editor.putString(PREF_PROFILE_DEVICE_MOBILE_DATA, Integer.toString(profile._deviceMobileData));
-	        editor.putBoolean(PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS, profile._deviceMobileDataPrefs);
-	        editor.putString(PREF_PROFILE_DEVICE_GPS, Integer.toString(profile._deviceGPS));
-	        editor.putBoolean(PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE, profile._deviceRunApplicationChange);
-	        editor.putString(PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME, profile._deviceRunApplicationPackageName);
+	        editor.putString(GlobalData.PREF_PROFILE_NAME, profile._name);
+	        editor.putString(GlobalData.PREF_PROFILE_ICON, profile._icon);
+	        editor.putString(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE, Integer.toString(profile._volumeRingerMode));
+	        editor.putString(GlobalData.PREF_PROFILE_VOLUME_RINGTONE, profile._volumeRingtone);
+	        editor.putString(GlobalData.PREF_PROFILE_VOLUME_NOTIFICATION, profile._volumeNotification);
+	        editor.putString(GlobalData.PREF_PROFILE_VOLUME_MEDIA, profile._volumeMedia);
+	        editor.putString(GlobalData.PREF_PROFILE_VOLUME_ALARM, profile._volumeAlarm);
+	        editor.putString(GlobalData.PREF_PROFILE_VOLUME_SYSTEM, profile._volumeSystem);
+	        editor.putString(GlobalData.PREF_PROFILE_VOLUME_VOICE, profile._volumeVoice);
+	        editor.putBoolean(GlobalData.PREF_PROFILE_SOUND_RINGTONE_CHANGE, profile._soundRingtoneChange);
+	        editor.putString(GlobalData.PREF_PROFILE_SOUND_RINGTONE, profile._soundRingtone);
+	        editor.putBoolean(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION_CHANGE, profile._soundNotificationChange);
+	        editor.putString(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION, profile._soundNotification);
+	        editor.putBoolean(GlobalData.PREF_PROFILE_SOUND_ALARM_CHANGE, profile._soundAlarmChange);
+	        editor.putString(GlobalData.PREF_PROFILE_SOUND_ALARM, profile._soundAlarm);
+	        editor.putString(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE, Integer.toString(profile._deviceAirplaneMode));
+	        editor.putString(GlobalData.PREF_PROFILE_DEVICE_WIFI, Integer.toString(profile._deviceWiFi));
+	        editor.putString(GlobalData.PREF_PROFILE_DEVICE_BLUETOOTH, Integer.toString(profile._deviceBluetooth));
+	        editor.putString(GlobalData.PREF_PROFILE_DEVICE_SCREEN_TIMEOUT, Integer.toString(profile._deviceScreenTimeout));
+	        editor.putString(GlobalData.PREF_PROFILE_DEVICE_BRIGHTNESS, profile._deviceBrightness);
+	        editor.putBoolean(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER_CHANGE, profile._deviceWallpaperChange);
+	        editor.putString(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER, profile._deviceWallpaper);
+	        editor.putString(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA, Integer.toString(profile._deviceMobileData));
+	        editor.putBoolean(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS, profile._deviceMobileDataPrefs);
+	        editor.putString(GlobalData.PREF_PROFILE_DEVICE_GPS, Integer.toString(profile._deviceGPS));
+	        editor.putBoolean(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE, profile._deviceRunApplicationChange);
+	        editor.putString(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME, profile._deviceRunApplicationPackageName);
 			editor.commit();
     	}
 		
@@ -261,37 +234,37 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	{
         if (profile_position > -1) 
         {
-        	profile._name = preferences.getString(PREF_PROFILE_NAME, "");
-        	profile._icon = preferences.getString(PREF_PROFILE_ICON, "");
-        	profile._volumeRingerMode = Integer.parseInt(preferences.getString(PREF_PROFILE_VOLUME_RINGER_MODE, ""));
-        	profile._volumeRingtone = preferences.getString(PREF_PROFILE_VOLUME_RINGTONE, "");
-        	profile._volumeNotification = preferences.getString(PREF_PROFILE_VOLUME_NOTIFICATION, "");
-        	profile._volumeMedia = preferences.getString(PREF_PROFILE_VOLUME_MEDIA, "");
-        	profile._volumeAlarm = preferences.getString(PREF_PROFILE_VOLUME_ALARM, "");
-        	profile._volumeSystem = preferences.getString(PREF_PROFILE_VOLUME_SYSTEM, "");
-        	profile._volumeVoice = preferences.getString(PREF_PROFILE_VOLUME_VOICE, "");
-        	profile._soundRingtoneChange = preferences.getBoolean(PREF_PROFILE_SOUND_RINGTONE_CHANGE, false);
-        	profile._soundRingtone = preferences.getString(PREF_PROFILE_SOUND_RINGTONE, "");
-        	profile._soundNotificationChange = preferences.getBoolean(PREF_PROFILE_SOUND_NOTIFICATION_CHANGE, false);
-        	profile._soundNotification = preferences.getString(PREF_PROFILE_SOUND_NOTIFICATION, "");
-        	profile._soundAlarmChange = preferences.getBoolean(PREF_PROFILE_SOUND_ALARM_CHANGE, false);
-        	profile._soundAlarm = preferences.getString(PREF_PROFILE_SOUND_ALARM, "");
-        	profile._deviceAirplaneMode = Integer.parseInt(preferences.getString(PREF_PROFILE_DEVICE_AIRPLANE_MODE, ""));
-        	profile._deviceWiFi = Integer.parseInt(preferences.getString(PREF_PROFILE_DEVICE_WIFI, ""));
-        	profile._deviceBluetooth = Integer.parseInt(preferences.getString(PREF_PROFILE_DEVICE_BLUETOOTH, ""));
-        	profile._deviceScreenTimeout = Integer.parseInt(preferences.getString(PREF_PROFILE_DEVICE_SCREEN_TIMEOUT, ""));
-        	profile._deviceBrightness = preferences.getString(PREF_PROFILE_DEVICE_BRIGHTNESS, "");
-        	profile._deviceWallpaperChange = preferences.getBoolean(PREF_PROFILE_DEVICE_WALLPAPER_CHANGE, false);
+        	profile._name = preferences.getString(GlobalData.PREF_PROFILE_NAME, "");
+        	profile._icon = preferences.getString(GlobalData.PREF_PROFILE_ICON, "");
+        	profile._volumeRingerMode = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE, ""));
+        	profile._volumeRingtone = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_RINGTONE, "");
+        	profile._volumeNotification = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_NOTIFICATION, "");
+        	profile._volumeMedia = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_MEDIA, "");
+        	profile._volumeAlarm = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_ALARM, "");
+        	profile._volumeSystem = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_SYSTEM, "");
+        	profile._volumeVoice = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_VOICE, "");
+        	profile._soundRingtoneChange = preferences.getBoolean(GlobalData.PREF_PROFILE_SOUND_RINGTONE_CHANGE, false);
+        	profile._soundRingtone = preferences.getString(GlobalData.PREF_PROFILE_SOUND_RINGTONE, "");
+        	profile._soundNotificationChange = preferences.getBoolean(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION_CHANGE, false);
+        	profile._soundNotification = preferences.getString(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION, "");
+        	profile._soundAlarmChange = preferences.getBoolean(GlobalData.PREF_PROFILE_SOUND_ALARM_CHANGE, false);
+        	profile._soundAlarm = preferences.getString(GlobalData.PREF_PROFILE_SOUND_ALARM, "");
+        	profile._deviceAirplaneMode = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE, ""));
+        	profile._deviceWiFi = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_WIFI, ""));
+        	profile._deviceBluetooth = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_BLUETOOTH, ""));
+        	profile._deviceScreenTimeout = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_SCREEN_TIMEOUT, ""));
+        	profile._deviceBrightness = preferences.getString(GlobalData.PREF_PROFILE_DEVICE_BRIGHTNESS, "");
+        	profile._deviceWallpaperChange = preferences.getBoolean(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER_CHANGE, false);
         	if (profile._deviceWallpaperChange)
-        		profile._deviceWallpaper = preferences.getString(PREF_PROFILE_DEVICE_WALLPAPER, "");
+        		profile._deviceWallpaper = preferences.getString(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER, "");
         	else
         		profile._deviceWallpaper = "-|0";
-        	profile._deviceMobileData = Integer.parseInt(preferences.getString(PREF_PROFILE_DEVICE_MOBILE_DATA, ""));
-        	profile._deviceMobileDataPrefs = preferences.getBoolean(PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS, false);
-        	profile._deviceGPS = Integer.parseInt(preferences.getString(PREF_PROFILE_DEVICE_GPS, ""));
-        	profile._deviceRunApplicationChange = preferences.getBoolean(PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE, false);
+        	profile._deviceMobileData = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA, ""));
+        	profile._deviceMobileDataPrefs = preferences.getBoolean(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS, false);
+        	profile._deviceGPS = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_GPS, ""));
+        	profile._deviceRunApplicationChange = preferences.getBoolean(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE, false);
         	if (profile._deviceRunApplicationChange)
-        		profile._deviceRunApplicationPackageName = preferences.getString(PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME, "-");
+        		profile._deviceRunApplicationPackageName = preferences.getString(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME, "-");
         	else
         		profile._deviceRunApplicationPackageName = "-";
 
@@ -315,11 +288,11 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	{
 		//Log.d("ProfilePreferencesFragment.setSummary",key);
 		
-		if (key.equals(PREF_PROFILE_NAME))
+		if (key.equals(GlobalData.PREF_PROFILE_NAME))
 		{	
 	        prefMng.findPreference(key).setSummary(value.toString());
 		}
-		if (key.equals(PREF_PROFILE_VOLUME_RINGER_MODE))
+		if (key.equals(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE))
 		{
 			String sPrefVolumeMode = value.toString();
 			int iPrefVolumeMode;
@@ -331,9 +304,9 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 			String[] prefVolumeModes = getResources().getStringArray(R.array.ringerModeArray);
 			prefMng.findPreference(key).setSummary(prefVolumeModes[iPrefVolumeMode]);
 		}
-		if (key.equals(PREF_PROFILE_SOUND_RINGTONE) ||
-			key.equals(PREF_PROFILE_SOUND_NOTIFICATION) ||
-			key.equals(PREF_PROFILE_SOUND_ALARM))
+		if (key.equals(GlobalData.PREF_PROFILE_SOUND_RINGTONE) ||
+			key.equals(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION) ||
+			key.equals(GlobalData.PREF_PROFILE_SOUND_ALARM))
 		{
 			String ringtoneUri = value.toString();
 			
@@ -349,20 +322,20 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 			
 	        prefMng.findPreference(key).setSummary(ringtoneName);
 		}
-		if (key.equals(PREF_PROFILE_DEVICE_AIRPLANE_MODE) || 
-			key.equals(PREF_PROFILE_DEVICE_WIFI) ||
-			key.equals(PREF_PROFILE_DEVICE_BLUETOOTH) ||
-			key.equals(PREF_PROFILE_DEVICE_MOBILE_DATA) ||
-			key.equals(PREF_PROFILE_DEVICE_GPS))
+		if (key.equals(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE) || 
+			key.equals(GlobalData.PREF_PROFILE_DEVICE_WIFI) ||
+			key.equals(GlobalData.PREF_PROFILE_DEVICE_BLUETOOTH) ||
+			key.equals(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA) ||
+			key.equals(GlobalData.PREF_PROFILE_DEVICE_GPS))
 		{
 			boolean canChange = GlobalData.hardwareCheck(key, context);
 			if (!canChange)
 			{
 				prefMng.findPreference(key).setEnabled(false);
 				prefMng.findPreference(key).setSummary(getResources().getString(R.string.profile_preferences_device_not_allowed));
-				if (key.equals(PREF_PROFILE_DEVICE_MOBILE_DATA))
+				if (key.equals(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA))
 				{
-					prefMng.findPreference(PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS).setEnabled(false);
+					prefMng.findPreference(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS).setEnabled(false);
 				}
 			}
 			else
@@ -379,7 +352,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 			}
 			
 		}
-		if (key.equals(PREF_PROFILE_DEVICE_SCREEN_TIMEOUT))
+		if (key.equals(GlobalData.PREF_PROFILE_DEVICE_SCREEN_TIMEOUT))
 		{
 			String sPrefScreenTimeout = value.toString();
 			int iPrefScreenTimeout;
@@ -402,29 +375,29 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	    	// updating activity with selected profile preferences
 	    	
         	//Log.d("PhonePreferencesActivity.updateSharedPreference", profile.getName());
-	        setSummary(PREF_PROFILE_NAME, profile._name);
-	        setSummary(PREF_PROFILE_VOLUME_RINGER_MODE, profile._volumeRingerMode);
-	        setSummary(PREF_PROFILE_SOUND_RINGTONE, profile._soundRingtone);
-	        setSummary(PREF_PROFILE_SOUND_NOTIFICATION, profile._soundNotification);
-	        setSummary(PREF_PROFILE_SOUND_ALARM, profile._soundAlarm);
-	        setSummary(PREF_PROFILE_DEVICE_AIRPLANE_MODE, profile._deviceAirplaneMode);
-	        setSummary(PREF_PROFILE_DEVICE_WIFI, profile._deviceWiFi);
-	        setSummary(PREF_PROFILE_DEVICE_BLUETOOTH, profile._deviceBluetooth);
-	        setSummary(PREF_PROFILE_DEVICE_SCREEN_TIMEOUT, profile._deviceScreenTimeout);
-	        setSummary(PREF_PROFILE_DEVICE_MOBILE_DATA, profile._deviceMobileData);
-	        setSummary(PREF_PROFILE_DEVICE_GPS, profile._deviceGPS);
+	        setSummary(GlobalData.PREF_PROFILE_NAME, profile._name);
+	        setSummary(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE, profile._volumeRingerMode);
+	        setSummary(GlobalData.PREF_PROFILE_SOUND_RINGTONE, profile._soundRingtone);
+	        setSummary(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION, profile._soundNotification);
+	        setSummary(GlobalData.PREF_PROFILE_SOUND_ALARM, profile._soundAlarm);
+	        setSummary(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE, profile._deviceAirplaneMode);
+	        setSummary(GlobalData.PREF_PROFILE_DEVICE_WIFI, profile._deviceWiFi);
+	        setSummary(GlobalData.PREF_PROFILE_DEVICE_BLUETOOTH, profile._deviceBluetooth);
+	        setSummary(GlobalData.PREF_PROFILE_DEVICE_SCREEN_TIMEOUT, profile._deviceScreenTimeout);
+	        setSummary(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA, profile._deviceMobileData);
+	        setSummary(GlobalData.PREF_PROFILE_DEVICE_GPS, profile._deviceGPS);
 			
         }
 	}
 	
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
-    	if (!(key.equals(PREF_PROFILE_SOUND_RINGTONE_CHANGE) ||
-	    		key.equals(PREF_PROFILE_SOUND_NOTIFICATION_CHANGE) ||
-	    		key.equals(PREF_PROFILE_SOUND_ALARM_CHANGE) ||
-	    		key.equals(PREF_PROFILE_DEVICE_WALLPAPER_CHANGE) ||
-	    		key.equals(PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS) || 
-	    		key.equals(PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE) 
+    	if (!(key.equals(GlobalData.PREF_PROFILE_SOUND_RINGTONE_CHANGE) ||
+	    		key.equals(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION_CHANGE) ||
+	    		key.equals(GlobalData.PREF_PROFILE_SOUND_ALARM_CHANGE) ||
+	    		key.equals(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER_CHANGE) ||
+	    		key.equals(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS) || 
+	    		key.equals(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE) 
 	    		))
 	    		setSummary(key, sharedPreferences.getString(key, ""));
     	

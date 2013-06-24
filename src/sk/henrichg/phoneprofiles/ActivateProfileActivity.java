@@ -58,8 +58,8 @@ public class ActivateProfileActivity extends SherlockActivity {
 		
 		//Debug.startMethodTracing("phoneprofiles");
 		
-		EditorProfilesActivity.setTheme(this, true);
-		EditorProfilesActivity.setLanguage(getBaseContext());
+		GlobalData.setTheme(this, true);
+		GlobalData.setLanguage(getBaseContext());
 
 		//requestWindowFeature(Window.FEATURE_ACTION_BAR);
 		
@@ -76,7 +76,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 
 		profileList = GlobalData.getProfileList();
 
-		if (profileList.size() == 0)
+	/*	if (profileList.size() == 0)
 		{
 			// nie je ziaden profile, staretnene Editor
 			
@@ -88,7 +88,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 			finish();
 
 			return;
-		}
+		} */
 
 		intent = getIntent();
 		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);

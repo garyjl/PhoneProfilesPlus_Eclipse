@@ -42,8 +42,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
-		setTheme(this, false);
-		setLanguage(getBaseContext());
+		GlobalData.setTheme(this, false);
+		GlobalData.setLanguage(getBaseContext());
 
 		super.onCreate(savedInstanceState);
 		
@@ -261,7 +261,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	{
 		
 	}
-	
+/*	
 	public static void setLanguage(Context context)//, boolean restart)
 	{
 		// jazyk na aky zmenit
@@ -308,7 +308,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 				activity.setTheme(R.style.Theme_Phoneprofilestheme_dark);
 		}
 	}
-
+*/
 	public static ApplicationsCache getApplicationsCache()
 	{
 		return applicationsCache;
