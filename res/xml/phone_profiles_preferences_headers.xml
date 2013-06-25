@@ -9,6 +9,14 @@
 	*/
     -->
     <header
+        unified:fragment="sk.henrichg.phoneprofiles.PhoneProfilesPreferencesActivity$ActivatorPreferencesFragment"
+        unified:title="@string/phone_profiles_pref_category_activator"
+        unified:preferenceRes="@xml/phone_profiles_preferences_activator" />
+    <header
+        unified:fragment="sk.henrichg.phoneprofiles.PhoneProfilesPreferencesActivity$EditorPreferencesFragment"
+        unified:title="@string/phone_profiles_pref_category_editor"
+        unified:preferenceRes="@xml/phone_profiles_preferences_editor" />
+    <header
         unified:fragment="sk.henrichg.phoneprofiles.PhoneProfilesPreferencesActivity$GUIPreferencesFragment"
         unified:title="@string/phone_profiles_pref_category_gui"
         unified:preferenceRes="@xml/phone_profiles_preferences_gui" />

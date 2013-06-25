@@ -84,6 +84,8 @@ public class PhoneProfilesPreferencesActivity extends
 		
 	}
 
+	public static class ActivatorPreferencesFragment extends UnifiedPreferenceFragment {}
+	public static class EditorPreferencesFragment extends UnifiedPreferenceFragment {}
 	public static class GUIPreferencesFragment extends UnifiedPreferenceFragment {}
 	public static class ActivationPreferencesFragment extends UnifiedPreferenceFragment {}
 	public static class NotificationsPreferencesFragment extends UnifiedPreferenceFragment {}

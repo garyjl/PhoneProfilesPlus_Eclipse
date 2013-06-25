@@ -37,6 +37,8 @@
     <string name="volume_pref_dialog_no_change_chb">Nemeniť</string>
     <string name="imageview_preference_profile_icon_label">Ikona profilu</string>
     <string name="applications_preference_profile_icon_label">Spustiť aplikáciu</string>
+    <string name="phone_profiles_pref_category_activator">Aktivátor</string>
+    <string name="phone_profiles_pref_category_editor">Editor</string>
     <string name="phone_profiles_pref_category_gui">Prostredie aplikácie</string>
     <string name="phone_profiles_pref_category_activation">Aktivácia profilu</string>
     <string name="phone_profiles_pref_category_start">Štart aplikácie</string>
@@ -44,10 +46,8 @@
     <string name="phone_profiles_pref_applicationActivate">Aktivovať profil pri štarte</string>
     <string name="phone_profiles_pref_applicationClose">Po aktivácii profilu zavrieť</string>
     <string name="phone_profiles_pref_applicationAlert">Pýtať sa na aktiváciu profilu</string>
-    <string name="phone_profiles_pref_applicationActivatorPrefIndicator">Indikátor parametrov profilu v aktivátore</string>
-    <string name="phone_profiles_pref_applicationEditorPrefIndicator">Indikátor parametrov profilu v editore</string>
-    <string name="phone_profiles_pref_applicationActivatorHeader">Zobraz aktivovaný profil v aktivátore</string>
-    <string name="phone_profiles_pref_applicationEditorHeader">Zobraz aktivovaný profil v editore</string>
+    <string name="phone_profiles_pref_applicationPrefIndicator">Indikátor parametrov profilu</string>
+    <string name="phone_profiles_pref_applicationHeader">Zobraz aktivovaný profil</string>
     <string name="phone_profiles_pref_notificationsToast">Notifikovať bublinou</string>
     <string name="phone_profiles_pref_notificationStatusBar">Notifikovať v stavovej lište</string>
     <string name="phone_profiles_pref_notificationStatusBarStyle">Štýl notifikačnej ikony</string>
