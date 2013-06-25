@@ -12,6 +12,8 @@ import android.content.res.Configuration;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
@@ -73,7 +75,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 
 		profileList = GlobalData.getProfileList();
 
-	/*	if (profileList.size() == 0)
+		if (profileList.size() == 0)
 		{
 			// nie je ziaden profile, staretnene Editor
 			
@@ -85,7 +87,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 			finish();
 
 			return;
-		} */
+		} 
 
 		intent = getIntent();
 		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
@@ -388,7 +390,10 @@ public class ActivateProfileActivity extends SherlockActivity {
 		{
 			ImageView profilePrefIndicatorImageView = (ImageView)findViewById(R.id.act_prof_activated_profile_pref_indicator);
 			//profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, getBaseContext()));
-			profilePrefIndicatorImageView.setImageBitmap(profile._preferencesIndicator);
+			if (profile == null)
+				profilePrefIndicatorImageView.setImageBitmap(null);
+			else
+				profilePrefIndicatorImageView.setImageBitmap(profile._preferencesIndicator);
 		}
 	}
 	
