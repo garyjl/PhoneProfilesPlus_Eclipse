@@ -246,6 +246,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 				
 				Log.d("ActivateProfileActivity.onPreDraw", "memory usage (after set popup window layout)=" + Debug.getNativeHeapAllocatedSize());
 				
+				ActivateProfileListAdapter.completeGetView = false;
 				
 				Log.d("ActivateProfilesActivity.onPreDraw", "linlayoutRoot");
 				return true;

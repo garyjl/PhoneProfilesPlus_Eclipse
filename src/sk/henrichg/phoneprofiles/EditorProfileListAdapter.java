@@ -22,7 +22,7 @@ public class EditorProfileListAdapter extends BaseAdapter
 	private SherlockFragment fragment;
 	private List<Profile> profileList;
 	
-	private static LayoutInflater inflater = null;
+	private LayoutInflater inflater = null;
 	
 	public static boolean editIconClicked = false;
 	
@@ -31,7 +31,7 @@ public class EditorProfileListAdapter extends BaseAdapter
 		fragment = f;
 		profileList = pl;
 		
-		inflater = (LayoutInflater)fragment.getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		inflater = LayoutInflater.from(fragment.getSherlockActivity());
 	}   
 	
 	public int getCount()
@@ -161,24 +161,27 @@ public class EditorProfileListAdapter extends BaseAdapter
         profileName.setText(profile._name);
         if (profile.getIsIconResourceID())
         {
+        	profileIcon.setImageResource(0);
         	int res = vi.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", 
         				vi.getContext().getPackageName());
         	profileIcon.setImageResource(res); // resource na ikonu
         }
         else
         {
+        	profileIcon.setImageBitmap(null);
     		Resources resources = vi.getResources();
     		int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
     		int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
     		Bitmap bitmap = BitmapResampler.resample(profile.getIconIdentifier(), width, height);
-        	
         	profileIcon.setImageBitmap(bitmap);
         }
         
 		if (GlobalData.applicationEditorPrefIndicator)
 		{
 			ImageView profilePrefIndicatorImageView = (ImageView)vi.findViewById(R.id.main_list_profile_pref_indicator);
-			profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, vi.getContext()));
+			profilePrefIndicatorImageView.setImageBitmap(null);
+			Bitmap bitmap = ProfilePreferencesIndicator.paint(profile, vi.getContext());
+			profilePrefIndicatorImageView.setImageBitmap(bitmap);
 		}
         
         final int _position = position;

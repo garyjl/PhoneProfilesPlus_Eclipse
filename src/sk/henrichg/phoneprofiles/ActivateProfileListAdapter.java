@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Debug;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,17 +19,21 @@ import android.widget.TextView;
 public class ActivateProfileListAdapter extends BaseAdapter
 {
 
-	private Activity activity;
 	private List<Profile> profileList;
 	
-	private static LayoutInflater inflater = null;
+	private Context context;
+	private LayoutInflater inflater = null;
 	
-	public ActivateProfileListAdapter(Activity a, List<Profile> pl)
+	public static boolean completeGetView;
+	
+	public ActivateProfileListAdapter(Context c, List<Profile> pl)
 	{
-		activity = a;
 		profileList = pl;
 		
-		inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		context = c;
+		inflater = LayoutInflater.from(context);
+		
+		completeGetView = true;
 	}   
 	
 	public int getCount()
@@ -145,7 +150,11 @@ public class ActivateProfileListAdapter extends BaseAdapter
         		vi = inflater.inflate(R.layout.act_prof_list_item_no_indicator, null);
 
 			Log.d("ActivateProfileLisAdaptet.getView", "memory usage (after inflating)=" + Debug.getNativeHeapAllocatedSize());
-	        
+		
+        }
+
+		//if (completeGetView)
+		//{
 	        TextView profileName = (TextView)vi.findViewById(R.id.act_prof_list_item_profile_name);
 	        ImageView profileIcon = (ImageView)vi.findViewById(R.id.act_prof_list_item_profile_icon);
 	
@@ -156,17 +165,18 @@ public class ActivateProfileListAdapter extends BaseAdapter
 	        profileName.setText(profile._name);
 	        if (profile.getIsIconResourceID())
 	        {
+	        	profileIcon.setImageResource(0);
 	        	int res = vi.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", 
 	        				vi.getContext().getPackageName());
 	        	profileIcon.setImageResource(res); // resource na ikonu
 	        }
 	        else
 	        {
-	    		Resources resources = vi.getResources();
+	        	profileIcon.setImageBitmap(null);
+	        	Resources resources = vi.getResources();
 	    		int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
 	    		int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
 	    		Bitmap bitmap = BitmapResampler.resample(profile.getIconIdentifier(), width, height);
-	        	
 	        	profileIcon.setImageBitmap(bitmap);
 	        }
 	
@@ -175,13 +185,14 @@ public class ActivateProfileListAdapter extends BaseAdapter
 			if (GlobalData.applicationActivatorPrefIndicator)
 			{
 				ImageView profilePrefIndicatorImageView = (ImageView)vi.findViewById(R.id.act_prof_list_profile_pref_indicator);
-				profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, vi.getContext()));
+				profilePrefIndicatorImageView.setImageBitmap(null);
+				Bitmap bitmap = ProfilePreferencesIndicator.paint(profile, vi.getContext());
+				profilePrefIndicatorImageView.setImageBitmap(bitmap);
 			}
 			
 			Log.d("ActivateProfileLisAdaptet.getView", "memory usage (after paint indicator)=" + Debug.getNativeHeapAllocatedSize());
-		
-        }
-
+		//}
+        
         /*		ImageView profileItemEditMenu = (ImageView)vi.findViewById(R.id.act_prof_list_item_edit_menu);
 		profileItemEditMenu.setTag(position);
 		profileItemEditMenu.setOnClickListener(new OnClickListener() {
