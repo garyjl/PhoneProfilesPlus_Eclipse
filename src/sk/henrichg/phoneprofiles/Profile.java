@@ -1,5 +1,9 @@
 package sk.henrichg.phoneprofiles;
 
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+
 public class Profile {
 	
 	//private variables
@@ -33,6 +37,9 @@ public class Profile {
 	public String _deviceWallpaper;
 	public boolean _deviceRunApplicationChange;
 	public String _deviceRunApplicationPackageName;
+	
+	public Bitmap _iconBitmap;
+	public Bitmap _preferencesIndicator;
 	
 	
 	// Empty constructorn
@@ -103,6 +110,8 @@ public class Profile {
 		this._deviceRunApplicationChange = deviceRunApplicationChange;
 		this._deviceRunApplicationPackageName = deviceRunApplicationPackageName;
 		
+		this._iconBitmap = null;
+		this._preferencesIndicator = null;
 	}
 	
 	// constructor
@@ -165,6 +174,9 @@ public class Profile {
 		this._deviceWallpaper = deviceWallpaper;
 		this._deviceRunApplicationChange = deviceRunApplicationChange;
 		this._deviceRunApplicationPackageName = deviceRunApplicationPackageName;
+		
+		this._iconBitmap = null;
+		this._preferencesIndicator = null;
 	}
 	
 	// getting icon identifier
@@ -385,6 +397,33 @@ public class Profile {
 			value = "-";
 		}
 		return value;
+	}
+	
+	
+	//----------------------------------
+	
+	public void generateIconBitmap(Context context)
+	{
+        if (!getIsIconResourceID())
+        {
+        	if (_iconBitmap != null)
+        		_iconBitmap.recycle();
+        	
+        	Resources resources = context.getResources();
+    		int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
+    		int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
+    		_iconBitmap = BitmapResampler.resample(getIconIdentifier(), width, height);
+        }
+        else
+        	_iconBitmap = null;
+	}
+	
+	public void generatePreferencesIndicator(Context context)
+	{
+    	if (_preferencesIndicator != null)
+    		_preferencesIndicator.recycle();
+
+    	_preferencesIndicator = ProfilePreferencesIndicator.paint(this, context);
 	}
 	
 }

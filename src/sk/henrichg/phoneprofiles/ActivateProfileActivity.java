@@ -5,17 +5,13 @@ import com.actionbarsherlock.app.SherlockActivity;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Debug;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
@@ -59,13 +55,9 @@ public class ActivateProfileActivity extends SherlockActivity {
 		
 		//Debug.startMethodTracing("phoneprofiles");
 		
-		Log.d("ActivateProfileActivity.onCreate", "memory usage=" + Debug.getNativeHeapAllocatedSize());
-		
 		GlobalData.setTheme(this, true);
 		GlobalData.setLanguage(getBaseContext());
 
-		Log.d("ActivateProfileActivity.onCreate", "memory usage (after set language and theme)=" + Debug.getNativeHeapAllocatedSize());
-		
 		//requestWindowFeature(Window.FEATURE_ACTION_BAR);
 		
 		if (GlobalData.applicationActivatorPrefIndicator && GlobalData.applicationActivatorHeader)
@@ -76,15 +68,11 @@ public class ActivateProfileActivity extends SherlockActivity {
 		else
 			setContentView(R.layout.activity_activate_profile_no_header);
 
-		Log.d("ActivateProfileActivity.onCreate", "memory usage (setContentView)=" + Debug.getNativeHeapAllocatedSize());
-		
 		//getSupportActionBar().setHomeButtonEnabled(true);
 		//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		profileList = GlobalData.getProfileList();
 
-		Log.d("ActivateProfileActivity.onCreate", "memory usage (after getProfileList)=" + Debug.getNativeHeapAllocatedSize());
-		
 	/*	if (profileList.size() == 0)
 		{
 			// nie je ziaden profile, staretnene Editor
@@ -112,23 +100,16 @@ public class ActivateProfileActivity extends SherlockActivity {
 		activeProfileIcon = (ImageView)findViewById(R.id.act_prof_activated_profile_icon);
 		listView = (ListView)findViewById(R.id.act_prof_profiles_list);
 
-		Log.d("ActivateProfileActivity.onCreate", "memory usage (get view instances)=" + Debug.getNativeHeapAllocatedSize());
-		
 		profileListAdapter = new ActivateProfileListAdapter(this, profileList);
-
-		Log.d("ActivateProfileActivity.onCreate", "memory usage (after create profileListAdapter)=" + Debug.getNativeHeapAllocatedSize());
-		
 		listView.setAdapter(profileListAdapter);
 
-		Log.d("ActivateProfileActivity.onCreate", "memory usage (after set adapter into listview)=" + Debug.getNativeHeapAllocatedSize());
-		
 		//listView.setLongClickable(false);
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-				Log.d("ActivateProfilesActivity.onItemClick", "xxxx");
+				//Log.d("ActivateProfilesActivity.onItemClick", "xxxx");
 
 				if (!GlobalData.applicationLongClickActivation)
 					activateProfileWithAlert(position);
@@ -141,7 +122,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 
 			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-				Log.d("ActivateProfilesActivity.onItemLongClick", "xxxx");
+				//Log.d("ActivateProfilesActivity.onItemLongClick", "xxxx");
 				
 				if (GlobalData.applicationLongClickActivation)
 					activateProfileWithAlert(position);
@@ -151,8 +132,6 @@ public class ActivateProfileActivity extends SherlockActivity {
 			
 		});
 
-		Log.d("ActivateProfileActivity.onCreate", "memory usage (after set listview listeners)=" + Debug.getNativeHeapAllocatedSize());
-		
         //listView.setRemoveListener(onRemove);
 		
 		Display display = getWindowManager().getDefaultDisplay();
@@ -216,7 +195,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 					// add 1dp
 					popupHeight = popupHeight + (int) (12 * scale + 0.5f);
 	
-					Log.d("ActivateProfilesActivity.onGlobalLayout", "header");
+					//Log.d("ActivateProfilesActivity.onGlobalLayout", "header");
 					
 				}
 			});
@@ -229,7 +208,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 
 				popupHeight = popupHeight + listView.getHeight();
 
-				Log.d("ActivateProfilesActivity.onGlobalLayout", "listview");
+				//Log.d("ActivateProfilesActivity.onGlobalLayout", "listview");
 			}
 		});
 		
@@ -244,17 +223,13 @@ public class ActivateProfileActivity extends SherlockActivity {
 				// set popup window dimensions
 				activity.getWindow().setLayout(popupWidth, popupHeight);
 				
-				Log.d("ActivateProfileActivity.onPreDraw", "memory usage (after set popup window layout)=" + Debug.getNativeHeapAllocatedSize());
-				
 				ActivateProfileListAdapter.completeGetView = false;
 				
-				Log.d("ActivateProfilesActivity.onPreDraw", "linlayoutRoot");
+				//Log.d("ActivateProfilesActivity.onPreDraw", "linlayoutRoot");
 				return true;
 			}
 		});
 		
-		
-		Log.d("ActivateProfileActivity.onCreate", "memory usage (before onCreate finish)=" + Debug.getNativeHeapAllocatedSize());
 		
 		//Log.d("PhoneProfileActivity.onCreate", "xxxx");
 		
@@ -265,8 +240,6 @@ public class ActivateProfileActivity extends SherlockActivity {
 	{
 		super.onStart();
 
-		Log.d("ActivateProfileActivity.onStart", "memory usage=" + Debug.getNativeHeapAllocatedSize());
-		
 		//Log.d("ActivateProfilesActivity.onStart", "startupSource="+startupSource);
 		
 		boolean actProfile = false;
@@ -292,14 +265,10 @@ public class ActivateProfileActivity extends SherlockActivity {
 
 		Profile profile = GlobalData.getActivatedProfile();
 
-		Log.d("ActivateProfileActivity.onStart", "memory usage (after getActivatedProfile)=" + Debug.getNativeHeapAllocatedSize());
-		
-		
 		if (actProfile && (profile != null))
 		{
 			// aktivacia profilu
 			activateProfile(profile, false);
-			Log.d("ActivateProfileActivity.onStart", "memory usage (after activateProfile)=" + Debug.getNativeHeapAllocatedSize());
 		}
 		else
 		{
@@ -406,19 +375,20 @@ public class ActivateProfileActivity extends SherlockActivity {
 	        }
 	        else
 	        {
-        		Resources resources = getResources();
-        		int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
-        		int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
-        		Bitmap bitmap = BitmapResampler.resample(profile.getIconIdentifier(), width, height);
-
-	        	activeProfileIcon.setImageBitmap(bitmap);
+        		//Resources resources = getResources();
+        		//int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
+        		//int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
+        		//Bitmap bitmap = BitmapResampler.resample(profile.getIconIdentifier(), width, height);
+	        	//activeProfileIcon.setImageBitmap(bitmap);
+	        	activeProfileIcon.setImageBitmap(profile._iconBitmap);
 	        }
 		}
 		
 		if (GlobalData.applicationActivatorPrefIndicator)
 		{
 			ImageView profilePrefIndicatorImageView = (ImageView)findViewById(R.id.act_prof_activated_profile_pref_indicator);
-			profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, getBaseContext()));
+			//profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, getBaseContext()));
+			profilePrefIndicatorImageView.setImageBitmap(profile._preferencesIndicator);
 		}
 	}
 	

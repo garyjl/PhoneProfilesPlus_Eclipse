@@ -2,10 +2,7 @@ package sk.henrichg.phoneprofiles;
 
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,20 +62,22 @@ public class ShortcutProfileListAdapter extends BaseAdapter {
         }
         else
         {
-        	profileIcon.setImageBitmap(null);
-    		Resources resources = vi.getResources();
-    		int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
-    		int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
-    		Bitmap bitmap = BitmapResampler.resample(profile.getIconIdentifier(), width, height);
-        	profileIcon.setImageBitmap(bitmap);
+        	//profileIcon.setImageBitmap(null);
+    		//Resources resources = vi.getResources();
+    		//int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
+    		//int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
+    		//Bitmap bitmap = BitmapResampler.resample(profile.getIconIdentifier(), width, height);
+        	//profileIcon.setImageBitmap(bitmap);
+        	profileIcon.setImageBitmap(profile._iconBitmap);
         }
         
 		if (GlobalData.applicationActivatorPrefIndicator)
 		{
 			ImageView profilePrefIndicatorImageView = (ImageView)vi.findViewById(R.id.shortcut_list_profile_pref_indicator);
-			profilePrefIndicatorImageView.setImageBitmap(null);
-			Bitmap bitmap = ProfilePreferencesIndicator.paint(profile, vi.getContext());
-			profilePrefIndicatorImageView.setImageBitmap(bitmap);
+			//profilePrefIndicatorImageView.setImageBitmap(null);
+			//Bitmap bitmap = ProfilePreferencesIndicator.paint(profile, vi.getContext());
+			//profilePrefIndicatorImageView.setImageBitmap(bitmap);
+			profilePrefIndicatorImageView.setImageBitmap(profile._preferencesIndicator);
 		}
         
         //Log.d("ShortcutProfileListAdapter.getView", profile.getName());

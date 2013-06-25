@@ -23,6 +23,9 @@ public class BackgroundActivateProfileActivity extends Activity {
 		activateProfileHelper = GlobalData.getActivateProfileHelper();
 		activateProfileHelper.initialize(this, getBaseContext());
 
+		// initialize global profile list
+		GlobalData.getProfileList();
+
 		databaseHandler = GlobalData.getDatabaseHandler();
 		
 	}

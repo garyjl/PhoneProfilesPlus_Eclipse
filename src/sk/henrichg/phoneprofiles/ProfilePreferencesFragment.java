@@ -272,6 +272,11 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
         	
         	// TODO toto asik je zle. treba vymysliet, ako sa dostat ku tomu adapteru inac
         	EditorProfileListFragment.getProfileListAdapter().updateItem(profile);
+        	
+        	// update bitmaps
+			profile.generateIconBitmap(context);
+			profile.generatePreferencesIndicator(context);
+        	
 
         	//Log.d("ProfilePreferencesFragment.onPause", "profile activated="+profile.getChecked());
         	

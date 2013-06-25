@@ -10,8 +10,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.util.Log;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -312,6 +310,11 @@ public class EditorProfileListFragment extends SherlockFragment {
 					);
 			profileListAdapter.addItem(profile); // pridame profil do listview a nastavime jeho order
 			GlobalData.getDatabaseHandler().addProfile(profile);
+
+        	// generate bitmaps
+			profile.generateIconBitmap(getSherlockActivity().getBaseContext());
+			profile.generatePreferencesIndicator(getSherlockActivity().getBaseContext());
+			
 		}
 
 		//Log.d("EditorProfileListFragment.startProfilePreferencesActivity", profile.getID()+"");
@@ -358,6 +361,11 @@ public class EditorProfileListFragment extends SherlockFragment {
 
 		profileListAdapter.addItem(newProfile);
 		GlobalData.getDatabaseHandler().addProfile(newProfile);
+		
+    	// generate bitmaps
+		newProfile.generateIconBitmap(getSherlockActivity().getBaseContext());
+		newProfile.generatePreferencesIndicator(getSherlockActivity().getBaseContext());
+		
 		
 		//updateListView();
 
@@ -442,19 +450,20 @@ public class EditorProfileListFragment extends SherlockFragment {
 	        }
 	        else
 	        {
-        		Resources resources = getResources();
-        		int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
-        		int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
-        		Bitmap bitmap = BitmapResampler.resample(profile.getIconIdentifier(), width, height);
-
-	        	activeProfileIcon.setImageBitmap(bitmap);
+        		//Resources resources = getResources();
+        		//int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
+        		//int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
+        		//Bitmap bitmap = BitmapResampler.resample(profile.getIconIdentifier(), width, height);
+	        	//activeProfileIcon.setImageBitmap(bitmap);
+	        	activeProfileIcon.setImageBitmap(profile._iconBitmap);
 	        }
 		}
 		
 		if (GlobalData.applicationEditorPrefIndicator)
 		{
 			ImageView profilePrefIndicatorImageView = (ImageView)getSherlockActivity().findViewById(R.id.activated_profile_pref_indicator);
-			profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, getSherlockActivity().getBaseContext()));
+			//profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, getSherlockActivity().getBaseContext()));
+			profilePrefIndicatorImageView.setImageBitmap(profile._preferencesIndicator);
 		}
 	}
 	

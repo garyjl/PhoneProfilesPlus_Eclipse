@@ -6,8 +6,6 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.widget.RemoteViews;
 
 public class ActivateProfileWidget extends AppWidgetProvider {
@@ -44,17 +42,19 @@ public class ActivateProfileWidget extends AppWidgetProvider {
 			RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.activate_profile_widget);
 	        if (isIconResourceID)
 	        {
+	        	//remoteViews.setImageViewResource(R.id.activate_profile_widget_icon, 0);
 	        	int iconResource = context.getResources().getIdentifier(iconIdentifier, "drawable", context.getPackageName());
 	        	remoteViews.setImageViewResource(R.id.activate_profile_widget_icon, iconResource);
 	        }
 	        else
 	        {
-	    		Resources resources = context.getResources();
-	    		int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
-	    		int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
-	    		Bitmap bitmap = BitmapResampler.resample(iconIdentifier, width, height);
-
-	        	remoteViews.setImageViewBitmap(R.id.activate_profile_widget_icon, bitmap);
+	    		//Resources resources = context.getResources();
+	        	//remoteViews.setImageViewBitmap(R.id.activate_profile_widget_icon, null);
+	    		//int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
+	    		//int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
+	    		//Bitmap bitmap = BitmapResampler.resample(iconIdentifier, width, height);
+	        	//remoteViews.setImageViewBitmap(R.id.activate_profile_widget_icon, bitmap);
+	        	remoteViews.setImageViewBitmap(R.id.activate_profile_widget_icon, profile._iconBitmap);
 	        }
 			remoteViews.setTextViewText(R.id.activate_profile_widget_name, profileName);
 			

@@ -110,20 +110,13 @@ public class GlobalData extends Application {
 	{
 		super.onCreate();
 		
-		//Log.d("GlobalData.onCreate", "memory usage=" + Debug.getNativeHeapAllocatedSize());
-		
-
 		context = getApplicationContext();
 		PACKAGE_NAME = context.getPackageName();
 		
 		loadPreferences();
 
-		//Log.d("GlobalData.onCreate", "memory usage (after loadPreferences)=" + Debug.getNativeHeapAllocatedSize());
-		
 		databaseHandler = new DatabaseHandler(this);
 
-		//Log.d("GlobalData.onCreate", "memory usage (after create databasehandler)=" + Debug.getNativeHeapAllocatedSize());
-		
 		activateProfileHelper = new ActivateProfileHelper(); 
 
 		Log.d("GlobalData.onCreate", "memory usage (after create activateProfileHelper)=" + Debug.getNativeHeapAllocatedSize());
@@ -155,11 +148,19 @@ public class GlobalData extends Application {
 	public static List<Profile> getProfileList()
 	{
 		if (profileList == null)
+		{
 			profileList = databaseHandler.getAllProfiles();
+		
+			for (Profile profile : profileList)
+			{
+				profile.generateIconBitmap(context);
+				profile.generatePreferencesIndicator(context);
+			}
+		}
 
 		return profileList;
 	}
-	
+
 	public static void clearProfileList()
 	{
 		profileList.clear();
@@ -169,7 +170,7 @@ public class GlobalData extends Application {
 	public static Profile getActivatedProfile()
 	{
 		if (profileList == null)
-			profileList = databaseHandler.getAllProfiles();
+			getProfileList();
 
 		Profile profile;
 		for (int i = 0; i < profileList.size(); i++)
@@ -185,7 +186,7 @@ public class GlobalData extends Application {
 	public static Profile getFirstProfile()
 	{
 		if (profileList == null)
-			profileList = databaseHandler.getAllProfiles();
+			getProfileList();
 		
 		Profile profile;
 		if (profileList.size() > 0)
@@ -227,7 +228,7 @@ public class GlobalData extends Application {
 	public static Profile getProfileById(long id)
 	{
 		if (profileList == null)
-			profileList = databaseHandler.getAllProfiles();
+			getProfileList();
 
 		Profile profile;
 		for (int i = 0; i < profileList.size(); i++)
@@ -456,7 +457,7 @@ public class GlobalData extends Application {
 	{
 		if (GlobalData.applicationTheme.equals("light"))
 		{
-			Log.d("EditorProfilesActivity.setTheme","light");
+			//Log.d("EditorProfilesActivity.setTheme","light");
 			if (forPopup)
 				activity.setTheme(R.style.PopupTheme);
 			else
@@ -465,7 +466,7 @@ public class GlobalData extends Application {
 		else
 		if (GlobalData.applicationTheme.equals("dark"))
 		{
-			Log.d("EditorProfilesActivity.setTheme","dark");
+			//Log.d("EditorProfilesActivity.setTheme","dark");
 			if (forPopup)
 				activity.setTheme(R.style.PopupTheme_dark);
 			else

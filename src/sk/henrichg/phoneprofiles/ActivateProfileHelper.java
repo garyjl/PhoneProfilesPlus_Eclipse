@@ -517,17 +517,20 @@ public class ActivateProfileHelper {
 		        	int iconSmallResource;
 		    		if (GlobalData.notificationStatusBarStyle.equals("0"))
 		    		{
+						//notificationBuilder.setSmallIcon(0);
 		    			iconSmallResource = context.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", context.getPackageName());
 						notificationBuilder.setSmallIcon(iconSmallResource);
+				        //contentView.setImageViewResource(R.id.notification_activated_profile_icon, 0);
 				        contentView.setImageViewResource(R.id.notification_activated_profile_icon, iconSmallResource);
 		    		}
 		    		else
 		    		{
+						//notificationBuilder.setSmallIcon(0);
+		    			//contentView.setImageViewBitmap(R.id.notification_activated_profile_icon, null);
 		    			iconSmallResource = context.getResources().getIdentifier(profile.getIconIdentifier()+"_notify", "drawable", context.getPackageName());
+						notificationBuilder.setSmallIcon(iconSmallResource);
 		    			int iconLargeResource = context.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", context.getPackageName());
 		    			Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(), iconLargeResource);
-		    			//notificationBuilder.setLargeIcon(largeIcon);
-						notificationBuilder.setSmallIcon(iconSmallResource);
 		    			contentView.setImageViewBitmap(R.id.notification_activated_profile_icon, largeIcon);
 		    		}
 		        }
@@ -565,11 +568,14 @@ public class ActivateProfileHelper {
 		        	notificationBuilder = new NotificationCompat.Builder(context)
 	        			.setContentIntent(pIntent);
 	        	
+		        	//notificationBuilder.setSmallIcon(0);
 		        	notificationBuilder.setSmallIcon(iconSmallResource);
 
-		        	final float scale = context.getResources().getDisplayMetrics().density;
-		        	Bitmap largeIcon = BitmapResampler.resample(profile.getIconIdentifier(), (int) (60 * scale + 0.5f), (int) (60 * scale + 0.5f));
-	    			contentView.setImageViewBitmap(R.id.notification_activated_profile_icon, largeIcon);
+	    			//contentView.setImageViewBitmap(R.id.notification_activated_profile_icon, null);
+		        	//final float scale = context.getResources().getDisplayMetrics().density;
+		        	//Bitmap largeIcon = BitmapResampler.resample(profile.getIconIdentifier(), (int) (60 * scale + 0.5f), (int) (60 * scale + 0.5f));
+	    			//contentView.setImageViewBitmap(R.id.notification_activated_profile_icon, largeIcon);
+	    			contentView.setImageViewBitmap(R.id.notification_activated_profile_icon, profile._iconBitmap);
 
 		        }
 
@@ -577,8 +583,10 @@ public class ActivateProfileHelper {
 		        Notification notification = notificationBuilder.build();
 				
 		        contentView.setTextViewText(R.id.notification_activated_profile_name, profile._name);
-		        contentView.setImageViewBitmap(R.id.notification_activated_profile_pref_indicator, 
-		        		ProfilePreferencesIndicator.paint(profile, context));
+
+		        //contentView.setImageViewBitmap(R.id.notification_activated_profile_pref_indicator, 
+		        //		ProfilePreferencesIndicator.paint(profile, context));
+		        contentView.setImageViewBitmap(R.id.notification_activated_profile_pref_indicator, profile._preferencesIndicator);
 		        
 		        notification.contentView = contentView;
 		        

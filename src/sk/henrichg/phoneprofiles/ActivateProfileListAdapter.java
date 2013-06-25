@@ -2,13 +2,7 @@ package sk.henrichg.phoneprofiles;
 
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.Debug;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -138,9 +132,6 @@ public class ActivateProfileListAdapter extends BaseAdapter
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
 
-		Log.d("ActivateProfileLisAdaptet.getView", "position=" + position);
-		Log.d("ActivateProfileLisAdaptet.getView", "memory usage=" + Debug.getNativeHeapAllocatedSize());
-		
 		View vi = convertView;
         if (convertView == null)
         {
@@ -148,9 +139,6 @@ public class ActivateProfileListAdapter extends BaseAdapter
         		vi = inflater.inflate(R.layout.act_prof_list_item, null);
         	else
         		vi = inflater.inflate(R.layout.act_prof_list_item_no_indicator, null);
-
-			Log.d("ActivateProfileLisAdaptet.getView", "memory usage (after inflating)=" + Debug.getNativeHeapAllocatedSize());
-		
         }
 
 		//if (completeGetView)
@@ -158,8 +146,6 @@ public class ActivateProfileListAdapter extends BaseAdapter
 	        TextView profileName = (TextView)vi.findViewById(R.id.act_prof_list_item_profile_name);
 	        ImageView profileIcon = (ImageView)vi.findViewById(R.id.act_prof_list_item_profile_icon);
 	
-			Log.d("ActivateProfileLisAdaptet.getView", "memory usage (after get view instances)=" + Debug.getNativeHeapAllocatedSize());
-	        
 	        Profile profile = profileList.get(position);
 	        
 	        profileName.setText(profile._name);
@@ -172,25 +158,24 @@ public class ActivateProfileListAdapter extends BaseAdapter
 	        }
 	        else
 	        {
-	        	profileIcon.setImageBitmap(null);
-	        	Resources resources = vi.getResources();
+	        	//profileIcon.setImageBitmap(null);
+	        /*	Resources resources = vi.getResources();
 	    		int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
 	    		int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
 	    		Bitmap bitmap = BitmapResampler.resample(profile.getIconIdentifier(), width, height);
-	        	profileIcon.setImageBitmap(bitmap);
+	        	profileIcon.setImageBitmap(bitmap); */
+	        	profileIcon.setImageBitmap(profile._iconBitmap);
 	        }
 	
-			Log.d("ActivateProfileLisAdaptet.getView", "memory usage (after set profile icon)=" + Debug.getNativeHeapAllocatedSize());
-	        
 			if (GlobalData.applicationActivatorPrefIndicator)
 			{
 				ImageView profilePrefIndicatorImageView = (ImageView)vi.findViewById(R.id.act_prof_list_profile_pref_indicator);
-				profilePrefIndicatorImageView.setImageBitmap(null);
-				Bitmap bitmap = ProfilePreferencesIndicator.paint(profile, vi.getContext());
-				profilePrefIndicatorImageView.setImageBitmap(bitmap);
+				//profilePrefIndicatorImageView.setImageBitmap(null);
+				//Bitmap bitmap = ProfilePreferencesIndicator.paint(profile, vi.getContext());
+				//profilePrefIndicatorImageView.setImageBitmap(bitmap);
+				profilePrefIndicatorImageView.setImageBitmap(profile._preferencesIndicator);
 			}
 			
-			Log.d("ActivateProfileLisAdaptet.getView", "memory usage (after paint indicator)=" + Debug.getNativeHeapAllocatedSize());
 		//}
         
         /*		ImageView profileItemEditMenu = (ImageView)vi.findViewById(R.id.act_prof_list_item_edit_menu);
@@ -203,6 +188,9 @@ public class ActivateProfileListAdapter extends BaseAdapter
 				}
 			});
 */		
+			
+		//Log.d("ActivateProfileListAdapter.onGetView", "memory usage (after complete View)=" + Debug.getNativeHeapAllocatedSize());
+	
         //Log.d("ProfileListAdapter.getView", profile.getName());
         
 		return vi;
