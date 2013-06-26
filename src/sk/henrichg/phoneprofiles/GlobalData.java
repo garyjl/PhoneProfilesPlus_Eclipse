@@ -6,8 +6,13 @@ import java.util.Locale;
 import com.stericson.RootTools.RootTools;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.app.ActivityManager.RunningServiceInfo;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
@@ -23,10 +28,10 @@ public class GlobalData extends Application {
 	
 	private static Context context;
 	
-//	private static DatabaseHandler databaseHandler = null;
-//	private static List<Profile> profileList = null;
+	private static DatabaseHandler databaseHandler = null;
+	private static List<Profile> profileList = null;
 	private static boolean applicationStarted = false;
-//	private static ActivateProfileHelper activateProfileHelper = null;
+	private static ActivateProfileHelper activateProfileHelper = null;
 
 	static final String EXTRA_PROFILE_POSITION = "profile_position";
 	static final String EXTRA_PROFILE_ID = "profile_id";
@@ -113,11 +118,11 @@ public class GlobalData extends Application {
 		context = getApplicationContext();
 		PACKAGE_NAME = context.getPackageName();
 		
+		// initialization
 		loadPreferences();
-
-		PhoneProfilesService.databaseHandler = new DatabaseHandler(this);
-
-		PhoneProfilesService.activateProfileHelper = new ActivateProfileHelper(); 
+		databaseHandler = new DatabaseHandler(this);
+		activateProfileHelper = new ActivateProfileHelper();
+		getProfileList();
 
 		Log.d("GlobalData.onCreate", "memory usage (after create activateProfileHelper)=" + Debug.getNativeHeapAllocatedSize());
 		
@@ -137,45 +142,51 @@ public class GlobalData extends Application {
 
 	public static DatabaseHandler getDatabaseHandler()
 	{
-		return PhoneProfilesService.databaseHandler;
+		if (databaseHandler == null)
+			databaseHandler = new DatabaseHandler(context);
+			
+		return databaseHandler;
 	}
 
 	public static ActivateProfileHelper getActivateProfileHelper()
 	{
-		return PhoneProfilesService.activateProfileHelper;
+		if (activateProfileHelper == null)
+			activateProfileHelper = new ActivateProfileHelper(); 
+
+		return activateProfileHelper;
 	}
 	
 	public static List<Profile> getProfileList()
 	{
-		if (PhoneProfilesService.profileList == null)
+		if (profileList == null)
 		{
-			PhoneProfilesService.profileList = PhoneProfilesService.databaseHandler.getAllProfiles();
+			profileList = databaseHandler.getAllProfiles();
 		
-			for (Profile profile : PhoneProfilesService.profileList)
+			for (Profile profile : profileList)
 			{
 				profile.generateIconBitmap(context);
 				profile.generatePreferencesIndicator(context);
 			}
 		}
 
-		return PhoneProfilesService.profileList;
+		return profileList;
 	}
 
 	public static void clearProfileList()
 	{
-		PhoneProfilesService.profileList.clear();
-		PhoneProfilesService.profileList = null;
+		profileList.clear();
+		profileList = null;
 	}
 	
 	public static Profile getActivatedProfile()
 	{
-		if (PhoneProfilesService.profileList == null)
+		if (profileList == null)
 			getProfileList();
 
 		Profile profile;
-		for (int i = 0; i < PhoneProfilesService.profileList.size(); i++)
+		for (int i = 0; i < profileList.size(); i++)
 		{
-			profile = PhoneProfilesService.profileList.get(i); 
+			profile = profileList.get(i); 
 			if (profile._checked)
 				return profile;
 		}
@@ -185,12 +196,12 @@ public class GlobalData extends Application {
 	
 	public static Profile getFirstProfile()
 	{
-		if (PhoneProfilesService.profileList == null)
+		if (profileList == null)
 			getProfileList();
 		
 		Profile profile;
-		if (PhoneProfilesService.profileList.size() > 0)
-			profile = PhoneProfilesService.profileList.get(0);
+		if (profileList.size() > 0)
+			profile = profileList.get(0);
 		else
 			profile = null;
 		
@@ -199,9 +210,9 @@ public class GlobalData extends Application {
 	
 	public static int getItemPosition(Profile profile)
 	{
-		for (int i = 0; i < PhoneProfilesService.profileList.size(); i++)
+		for (int i = 0; i < profileList.size(); i++)
 		{
-			if (PhoneProfilesService.profileList.get(i)._id == profile._id)
+			if (profileList.get(i)._id == profile._id)
 				return i;
 		}
 		return -1;
@@ -209,7 +220,7 @@ public class GlobalData extends Application {
 	
 	public static void activateProfile(Profile profile)
 	{
-		for (Profile p : PhoneProfilesService.profileList)
+		for (Profile p : profileList)
 		{
 			p._checked = false;
 		}
@@ -219,7 +230,7 @@ public class GlobalData extends Application {
 		if (position != -1)
 		{
 			// najdenemu objektu nastavime _checked
-			Profile _profile = PhoneProfilesService.profileList.get(position);
+			Profile _profile = profileList.get(position);
 			if (_profile != null)
 				_profile._checked = true;
 		}
@@ -227,13 +238,13 @@ public class GlobalData extends Application {
 	
 	public static Profile getProfileById(long id)
 	{
-		if (PhoneProfilesService.profileList == null)
+		if (profileList == null)
 			getProfileList();
 
 		Profile profile;
-		for (int i = 0; i < PhoneProfilesService.profileList.size(); i++)
+		for (int i = 0; i < profileList.size(); i++)
 		{
-			profile = PhoneProfilesService.profileList.get(i); 
+			profile = profileList.get(i); 
 			if (profile._id == id)
 				return profile;
 		}
@@ -473,5 +484,40 @@ public class GlobalData extends Application {
 		}
 	}
 
+	public static void startService(Context context)
+	{
+		if (!isServiceRunning(context))
+		{
+			Log.d("GlobaData.startService","xxx");
+			Intent broadcast = new Intent(context, PhoneProfilesServiceSheduler.class);
+			//broadcast.setAction(BROADCAST_ACTION);
+			context.sendBroadcast(broadcast);
+		}	
+		
+	}
 	
+	public static void stopService(Context context)
+	{
+	    Intent intent = new Intent(context, PhoneProfilesServiceStarter.class);
+	    PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, 0);
+	
+	    AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+	    alarmManager.cancel(sender);
+	     
+		context.stopService(new Intent(context, PhoneProfilesService.class));
+	}
+	
+	
+	
+	public static boolean isServiceRunning(Context context) {
+	    ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+	    for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+	        if (PhoneProfilesService.class.getName().equals(service.service.getClassName())) {
+	        	Log.d("GlobalData.isServiceRunning","true");
+	            return true;
+	        }
+	    }
+    	Log.d("GlobalData.isServiceRunning","false");
+	    return false;
+	}
 }

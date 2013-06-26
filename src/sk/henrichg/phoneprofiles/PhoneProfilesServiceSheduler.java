@@ -18,22 +18,26 @@ public class PhoneProfilesServiceSheduler extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		
-		Log.d("PhoneProfilesServiceSheduler.onReceive","xxx");
-
-	    AlarmManager service = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
-	    Intent i = new Intent(context, PhoneProfilesServiceStarter.class);
-	    PendingIntent pending = PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
-
-	    Calendar cal = Calendar.getInstance();
-	    // Start 30 seconds after boot completed
-	    cal.add(Calendar.SECOND, 30);
-	    //
-	    // Fetch every 30 seconds
-	    // InexactRepeating allows Android to optimize the energy consumption
-	    service.setInexactRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), REPEAT_TIME, pending);
-	    // service.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), REPEAT_TIME, pending);
+		//Log.d("PhoneProfilesServiceSheduler.onResume","xxx");
 		
-	}
+		if (GlobalData.applicationStartOnBoot)
+		{	
 
+			AlarmManager service = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+	
+		    Intent i = new Intent(context, PhoneProfilesServiceStarter.class);
+		    PendingIntent pending = PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
+	
+		    Calendar cal = Calendar.getInstance();
+		    // Start 30 seconds after boot completed
+		    cal.add(Calendar.SECOND, 30);
+		    //
+		    // Fetch every 30 seconds
+		    // InexactRepeating allows Android to optimize the energy consumption
+		    service.setInexactRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), REPEAT_TIME, pending);
+		    // service.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), REPEAT_TIME, pending);
+		    
+		}
+	}
+	
 }

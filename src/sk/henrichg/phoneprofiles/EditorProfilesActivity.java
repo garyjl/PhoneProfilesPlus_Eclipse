@@ -42,6 +42,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 
 		super.onCreate(savedInstanceState);
 		
+		GlobalData.startService(getApplicationContext());
+		
 		applicationsCache = new ApplicationsCache();
 		
 		setContentView(R.layout.activity_editor_profile_list);
@@ -140,11 +142,13 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		
+		Intent intent;
+			
 		switch (item.getItemId()) {
 		case R.id.menu_settings:
 			//Log.d("EditorProfilesActivity.onOptionsItemSelected", "menu_settings");
 			
-			Intent intent = new Intent(getBaseContext(), PhoneProfilesPreferencesActivity.class);
+			intent = new Intent(getBaseContext(), PhoneProfilesPreferencesActivity.class);
 
 			startActivity(intent);
 
@@ -156,6 +160,9 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			EditorProfileListFragment fragment = (EditorProfileListFragment)getSupportFragmentManager().findFragmentById(R.id.editor_profile_list);
 			if (fragment != null)
 				fragment.getActivateProfileHelper().showNotification(null);
+			
+			// zrusenie service
+			GlobalData.stopService(getApplicationContext());
 			
 			finish();
 
@@ -256,54 +263,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	{
 		
 	}
-/*	
-	public static void setLanguage(Context context)//, boolean restart)
-	{
-		// jazyk na aky zmenit
-		String lang = GlobalData.applicationLanguage;
-		
-		//Log.d("EditorProfilesActivity.setLanguauge", lang);
-
-		Locale appLocale;
-		
-		if (!lang.equals("system"))
-		{
-			appLocale = new Locale(lang);
-		}
-		else
-		{
-			appLocale = Resources.getSystem().getConfiguration().locale;
-		}
-		
-		Locale.setDefault(appLocale);
-		Configuration appConfig = new Configuration();
-		appConfig.locale = appLocale;
-		context.getResources().updateConfiguration(appConfig, context.getResources().getDisplayMetrics());
-		
-		//languageChanged = restart;
-	}
 	
-	public static void setTheme(Activity activity, boolean forPopup)
-	{
-		if (GlobalData.applicationTheme.equals("light"))
-		{
-			Log.d("EditorProfilesActivity.setTheme","light");
-			if (forPopup)
-				activity.setTheme(R.style.PopupTheme);
-			else
-				activity.setTheme(R.style.Theme_Phoneprofilestheme);
-		}
-		else
-		if (GlobalData.applicationTheme.equals("dark"))
-		{
-			Log.d("EditorProfilesActivity.setTheme","dark");
-			if (forPopup)
-				activity.setTheme(R.style.PopupTheme_dark);
-			else
-				activity.setTheme(R.style.Theme_Phoneprofilestheme_dark);
-		}
-	}
-*/
 	public static ApplicationsCache getApplicationsCache()
 	{
 		return applicationsCache;

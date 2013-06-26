@@ -110,7 +110,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 
 		super.onCreate(savedInstanceState);
 		
-		databaseHandler = PhoneProfilesService.databaseHandler; 
+		databaseHandler = GlobalData.getDatabaseHandler(); 
 		
 		intent = getSherlockActivity().getIntent();
 		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
