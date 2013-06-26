@@ -6,6 +6,7 @@ import com.actionbarsherlock.app.SherlockActivity;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -54,6 +55,9 @@ public class ActivateProfileActivity extends SherlockActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
+		
+		PhoneProfilesService.setApplicationContext(getApplicationContext());
+		startService();
 		
 		//Debug.startMethodTracing("phoneprofiles");
 		
@@ -424,7 +428,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 	private void activateProfile(Profile profile, boolean interactive)
 	{
 		profileListAdapter.activateProfile(profile);
-		GlobalData.getDatabaseHandler().activateProfile(profile);
+		PhoneProfilesService.databaseHandler.activateProfile(profile);
 		
 		activateProfileHelper.execute(profile, interactive);
 
@@ -458,6 +462,15 @@ public class ActivateProfileActivity extends SherlockActivity {
 	{
 		Profile profile = profileList.get(position);
 		activateProfile(profile, interactive);
+	}
+	
+	private void startService()
+	{
+	    Intent broadcast = new Intent(getApplicationContext(), PhoneProfilesServiceSheduler.class);
+	    //broadcast.setAction(Intent.BROADCAST_ACTION);
+        sendBroadcast(broadcast);
+        
+	    //PendingIntent pending = PendingIntent.getBroadcast(getApplicationContext(), 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
 	}
 	
 }

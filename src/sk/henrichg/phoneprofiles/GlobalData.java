@@ -23,10 +23,10 @@ public class GlobalData extends Application {
 	
 	private static Context context;
 	
-	private static DatabaseHandler databaseHandler = null;
-	private static List<Profile> profileList = null;
+//	private static DatabaseHandler databaseHandler = null;
+//	private static List<Profile> profileList = null;
 	private static boolean applicationStarted = false;
-	private static ActivateProfileHelper activateProfileHelper = null;
+//	private static ActivateProfileHelper activateProfileHelper = null;
 
 	static final String EXTRA_PROFILE_POSITION = "profile_position";
 	static final String EXTRA_PROFILE_ID = "profile_id";
@@ -115,9 +115,9 @@ public class GlobalData extends Application {
 		
 		loadPreferences();
 
-		databaseHandler = new DatabaseHandler(this);
+		PhoneProfilesService.databaseHandler = new DatabaseHandler(this);
 
-		activateProfileHelper = new ActivateProfileHelper(); 
+		PhoneProfilesService.activateProfileHelper = new ActivateProfileHelper(); 
 
 		Log.d("GlobalData.onCreate", "memory usage (after create activateProfileHelper)=" + Debug.getNativeHeapAllocatedSize());
 		
@@ -137,45 +137,45 @@ public class GlobalData extends Application {
 
 	public static DatabaseHandler getDatabaseHandler()
 	{
-		return databaseHandler;
+		return PhoneProfilesService.databaseHandler;
 	}
 
 	public static ActivateProfileHelper getActivateProfileHelper()
 	{
-		return activateProfileHelper;
+		return PhoneProfilesService.activateProfileHelper;
 	}
 	
 	public static List<Profile> getProfileList()
 	{
-		if (profileList == null)
+		if (PhoneProfilesService.profileList == null)
 		{
-			profileList = databaseHandler.getAllProfiles();
+			PhoneProfilesService.profileList = PhoneProfilesService.databaseHandler.getAllProfiles();
 		
-			for (Profile profile : profileList)
+			for (Profile profile : PhoneProfilesService.profileList)
 			{
 				profile.generateIconBitmap(context);
 				profile.generatePreferencesIndicator(context);
 			}
 		}
 
-		return profileList;
+		return PhoneProfilesService.profileList;
 	}
 
 	public static void clearProfileList()
 	{
-		profileList.clear();
-		profileList = null;
+		PhoneProfilesService.profileList.clear();
+		PhoneProfilesService.profileList = null;
 	}
 	
 	public static Profile getActivatedProfile()
 	{
-		if (profileList == null)
+		if (PhoneProfilesService.profileList == null)
 			getProfileList();
 
 		Profile profile;
-		for (int i = 0; i < profileList.size(); i++)
+		for (int i = 0; i < PhoneProfilesService.profileList.size(); i++)
 		{
-			profile = profileList.get(i); 
+			profile = PhoneProfilesService.profileList.get(i); 
 			if (profile._checked)
 				return profile;
 		}
@@ -185,12 +185,12 @@ public class GlobalData extends Application {
 	
 	public static Profile getFirstProfile()
 	{
-		if (profileList == null)
+		if (PhoneProfilesService.profileList == null)
 			getProfileList();
 		
 		Profile profile;
-		if (profileList.size() > 0)
-			profile = profileList.get(0);
+		if (PhoneProfilesService.profileList.size() > 0)
+			profile = PhoneProfilesService.profileList.get(0);
 		else
 			profile = null;
 		
@@ -199,9 +199,9 @@ public class GlobalData extends Application {
 	
 	public static int getItemPosition(Profile profile)
 	{
-		for (int i = 0; i < profileList.size(); i++)
+		for (int i = 0; i < PhoneProfilesService.profileList.size(); i++)
 		{
-			if (profileList.get(i)._id == profile._id)
+			if (PhoneProfilesService.profileList.get(i)._id == profile._id)
 				return i;
 		}
 		return -1;
@@ -209,7 +209,7 @@ public class GlobalData extends Application {
 	
 	public static void activateProfile(Profile profile)
 	{
-		for (Profile p : profileList)
+		for (Profile p : PhoneProfilesService.profileList)
 		{
 			p._checked = false;
 		}
@@ -219,7 +219,7 @@ public class GlobalData extends Application {
 		if (position != -1)
 		{
 			// najdenemu objektu nastavime _checked
-			Profile _profile = profileList.get(position);
+			Profile _profile = PhoneProfilesService.profileList.get(position);
 			if (_profile != null)
 				_profile._checked = true;
 		}
@@ -227,20 +227,19 @@ public class GlobalData extends Application {
 	
 	public static Profile getProfileById(long id)
 	{
-		if (profileList == null)
+		if (PhoneProfilesService.profileList == null)
 			getProfileList();
 
 		Profile profile;
-		for (int i = 0; i < profileList.size(); i++)
+		for (int i = 0; i < PhoneProfilesService.profileList.size(); i++)
 		{
-			profile = profileList.get(i); 
+			profile = PhoneProfilesService.profileList.get(i); 
 			if (profile._id == id)
 				return profile;
 		}
 		
 		return null;
 	}
-
 	
 	static public void loadPreferences()
 	{

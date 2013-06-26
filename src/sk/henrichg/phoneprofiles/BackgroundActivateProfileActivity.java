@@ -16,6 +16,8 @@ public class BackgroundActivateProfileActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		PhoneProfilesService.setApplicationContext(getApplicationContext());
 
 		intent = getIntent();
 		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
@@ -26,7 +28,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 		// initialize global profile list
 		GlobalData.getProfileList();
 
-		databaseHandler = GlobalData.getDatabaseHandler();
+		databaseHandler = PhoneProfilesService.databaseHandler;
 		
 	}
 

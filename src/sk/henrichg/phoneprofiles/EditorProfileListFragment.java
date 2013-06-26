@@ -36,6 +36,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 	private ImageView activeProfileIcon;
 	private int startupSource = 0;
 	private Intent intent;
+	private DatabaseHandler databaseHandler;
 
 	/**
 	 * The fragment's current callback object, which is notified of list item
@@ -108,6 +109,8 @@ public class EditorProfileListFragment extends SherlockFragment {
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
+		
+		databaseHandler = PhoneProfilesService.databaseHandler; 
 		
 		intent = getSherlockActivity().getIntent();
 		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
@@ -184,7 +187,7 @@ public class EditorProfileListFragment extends SherlockFragment {
         listView.setDropListener(new DragSortListView.DropListener() {
             public void drop(int from, int to) {
             	profileListAdapter.changeItemOrder(from, to);
-            	GlobalData.getDatabaseHandler().setPOrder(profileList);
+            	databaseHandler.setPOrder(profileList);
         		//Log.d("EditorProfileListFragment.drop", "xxxx");
             }
         });
@@ -309,7 +312,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 								  "-"
 					);
 			profileListAdapter.addItem(profile); // pridame profil do listview a nastavime jeho order
-			GlobalData.getDatabaseHandler().addProfile(profile);
+			databaseHandler.addProfile(profile);
 
         	// generate bitmaps
 			profile.generateIconBitmap(getSherlockActivity().getBaseContext());
@@ -360,7 +363,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 				   origProfile._deviceRunApplicationPackageName);
 
 		profileListAdapter.addItem(newProfile);
-		GlobalData.getDatabaseHandler().addProfile(newProfile);
+		databaseHandler.addProfile(newProfile);
 		
     	// generate bitmaps
 		newProfile.generateIconBitmap(getSherlockActivity().getBaseContext());
@@ -384,7 +387,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 			
 			public void onClick(DialogInterface dialog, int which) {
 				profileListAdapter.deleteItem(profile);
-				GlobalData.getDatabaseHandler().deleteProfile(profile);
+				databaseHandler.deleteProfile(profile);
 				//updateListView();
 				// v pripade, ze sa odmaze aktivovany profil, nastavime, ze nic nie je aktivovane
 				//Profile profile = databaseHandler.getActivatedProfile();
@@ -411,7 +414,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		dialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 			
 			public void onClick(DialogInterface dialog, int which) {
-				GlobalData.getDatabaseHandler().deleteAllProfiles();
+				databaseHandler.deleteAllProfiles();
 				profileListAdapter.clear();
 				//updateListView();
 				// v pripade, ze sa odmaze aktivovany profil, nastavime, ze nic nie je aktivovane
@@ -492,7 +495,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 	private void activateProfile(Profile profile, boolean interactive)
 	{
 		profileListAdapter.activateProfile(profile);
-		GlobalData.getDatabaseHandler().activateProfile(profile);
+		databaseHandler.activateProfile(profile);
 		
 		activateProfileHelper.execute(profile, interactive);
 
@@ -548,7 +551,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		dialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 			
 			public void onClick(DialogInterface dialog, int which) {
-				if (GlobalData.getDatabaseHandler().importDB()  == 1)
+				if (databaseHandler.importDB()  == 1)
 				{
 					GlobalData.clearProfileList();
 
@@ -576,7 +579,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 
 	private void exportProfiles()
 	{
-		if (GlobalData.getDatabaseHandler().exportDB() == 1)
+		if (databaseHandler.exportDB() == 1)
 		{
 
 			// toast notification

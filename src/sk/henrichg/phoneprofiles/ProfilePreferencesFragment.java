@@ -280,7 +280,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 
         	//Log.d("ProfilePreferencesFragment.onPause", "profile activated="+profile.getChecked());
         	
-        	GlobalData.getDatabaseHandler().updateProfile(profile);
+			PhoneProfilesService.databaseHandler.updateProfile(profile);
         	
         	//Log.d("ProfilePreferencesFragment.onPause", "updateProfile");
 

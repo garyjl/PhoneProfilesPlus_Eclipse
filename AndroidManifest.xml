@@ -94,6 +94,12 @@
             </intent-filter>
         </activity>
         
+        <service
+            android:name="sk.henrich.phoneprofiles.PhoneProfilesService"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/app_name" >
+        </service>
+
         <receiver
             android:name="sk.henrichg.phoneprofiles.ActivateProfileWidget"
             android:icon="@drawable/ic_launcher"
@@ -105,6 +111,14 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/activate_profile_widget_info" />
         </receiver>
+        <receiver 
+            android:name="sk.henrichg.phoneprofiles.LocaleChangedReceiver" 
+            android:enabled="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.LOCALE_CHANGED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
         <receiver
             android:name="sk.henrichg.phoneprofiles.BootUpReceiver"
             android:enabled="true"
@@ -114,14 +128,17 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
-        <receiver 
-            android:name="sk.henrichg.phoneprofiles.LocaleChangedReceiver" 
-            android:enabled="true" >
+        
+        
+        <receiver android:name="sk.henrichg.phoneprofiles.PhoneProfilesServiceSheduler" 
+            android:enabled="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED" >
             <intent-filter>
-                <action android:name="android.intent.action.LOCALE_CHANGED" />
-                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+        <receiver android:name="sk.henrichg.phoneprofiles.PhoneProfilesServiceStarter" >
+        </receiver>        
 
     </application>
 
