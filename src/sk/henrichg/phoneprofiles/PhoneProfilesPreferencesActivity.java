@@ -2,7 +2,6 @@ package sk.henrichg.phoneprofiles;
 
 import com.actionbarsherlock.view.MenuItem;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;

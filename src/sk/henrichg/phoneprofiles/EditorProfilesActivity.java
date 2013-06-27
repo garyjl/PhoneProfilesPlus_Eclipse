@@ -270,6 +270,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		EditorProfileListFragment fragment = (EditorProfileListFragment)activity.getSupportFragmentManager().findFragmentById(R.id.editor_profile_list);
 		if (fragment != null)
 		{
+			Log.d("EditorProfileActivity.updateListView","");
 			fragment.updateListView();
 		}
 	}

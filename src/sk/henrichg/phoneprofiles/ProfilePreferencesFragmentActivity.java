@@ -79,9 +79,7 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 	}
 
 	public void onRedrawListFragment() {
-		// update listview adaptera
-		// ostatne sa deje v EditorProfilesActivity.onStart() 
-		EditorProfilesActivity.updateListView(this);
+		// all redraws are in EditorProfilesActivity.onStart()
 	}
 	
 	public void onPreferenceAttached(PreferenceScreen root, int xmlId) {

@@ -222,6 +222,9 @@ public class EditorProfileListFragment extends SherlockFragment {
 			activateProfileHelper.showNotification(profile);
 			activateProfileHelper.updateWidget();
 		}
+		
+		profileListAdapter.notifyDataSetChanged();
+
 
 		// reset, aby sa to dalej chovalo ako normalne spustenie z lauchera
 		startupSource = 0;
