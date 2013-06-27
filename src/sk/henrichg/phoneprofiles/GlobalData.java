@@ -498,12 +498,12 @@ public class GlobalData extends Application {
 	
 	public static void stopService(Context context)
 	{
-	    Intent intent = new Intent(context, PhoneProfilesServiceStarter.class);
+	/*    Intent intent = new Intent(context, PhoneProfilesServiceStarter.class);
 	    PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, 0);
 	
 	    AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 	    alarmManager.cancel(sender);
-	     
+	*/     
 		context.stopService(new Intent(context, PhoneProfilesService.class));
 	}
 	

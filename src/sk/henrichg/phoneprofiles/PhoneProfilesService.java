@@ -1,5 +1,7 @@
 package sk.henrichg.phoneprofiles;
 
+import java.util.List;
+
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
@@ -9,6 +11,13 @@ import android.util.Log;
 public class PhoneProfilesService extends Service {
 	
 	private final IBinder mBinder = new MyBinder();
+	
+	@SuppressWarnings("unused")
+	private DatabaseHandler databaseHandler = null;
+	@SuppressWarnings("unused")
+	private ActivateProfileHelper activateProfileHelper = null;
+	@SuppressWarnings("unused")
+	private List<Profile> profileList = null;
 
 	@Override
 	public void onCreate()
@@ -21,11 +30,12 @@ public class PhoneProfilesService extends Service {
 		Log.d("PhoneProfilesService.onStartCommand", "xxx");
 		
 		// initialization
-		GlobalData.getDatabaseHandler();
-		GlobalData.getActivateProfileHelper();
-		GlobalData.getProfileList();
+		databaseHandler = GlobalData.getDatabaseHandler();
+		activateProfileHelper = GlobalData.getActivateProfileHelper();
+		profileList = GlobalData.getProfileList();
 
-		return Service.START_NOT_STICKY;
+		//return Service.START_NOT_STICKY;
+		return Service.START_STICKY;
 	}
 	
 	@Override

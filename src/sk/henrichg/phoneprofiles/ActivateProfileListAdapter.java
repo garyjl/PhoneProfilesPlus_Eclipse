@@ -18,16 +18,12 @@ public class ActivateProfileListAdapter extends BaseAdapter
 	private Context context;
 	private LayoutInflater inflater = null;
 	
-	public static boolean completeGetView;
-	
 	public ActivateProfileListAdapter(Context c, List<Profile> pl)
 	{
 		profileList = pl;
 		
 		context = c;
 		inflater = LayoutInflater.from(context);
-		
-		completeGetView = true;
 	}   
 	
 	public int getCount()
@@ -141,43 +137,39 @@ public class ActivateProfileListAdapter extends BaseAdapter
         		vi = inflater.inflate(R.layout.act_prof_list_item_no_indicator, null);
         }
 
-		//if (completeGetView)
-		//{
-	        TextView profileName = (TextView)vi.findViewById(R.id.act_prof_list_item_profile_name);
-	        ImageView profileIcon = (ImageView)vi.findViewById(R.id.act_prof_list_item_profile_icon);
-	
-	        Profile profile = profileList.get(position);
-	        
-	        profileName.setText(profile._name);
-	        if (profile.getIsIconResourceID())
-	        {
-	        	profileIcon.setImageResource(0);
-	        	int res = vi.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", 
-	        				vi.getContext().getPackageName());
-	        	profileIcon.setImageResource(res); // resource na ikonu
-	        }
-	        else
-	        {
-	        	//profileIcon.setImageBitmap(null);
-	        /*	Resources resources = vi.getResources();
-	    		int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
-	    		int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
-	    		Bitmap bitmap = BitmapResampler.resample(profile.getIconIdentifier(), width, height);
-	        	profileIcon.setImageBitmap(bitmap); */
-	        	profileIcon.setImageBitmap(profile._iconBitmap);
-	        }
-	
-			if (GlobalData.applicationActivatorPrefIndicator)
-			{
-				ImageView profilePrefIndicatorImageView = (ImageView)vi.findViewById(R.id.act_prof_list_profile_pref_indicator);
-				//profilePrefIndicatorImageView.setImageBitmap(null);
-				//Bitmap bitmap = ProfilePreferencesIndicator.paint(profile, vi.getContext());
-				//profilePrefIndicatorImageView.setImageBitmap(bitmap);
-				profilePrefIndicatorImageView.setImageBitmap(profile._preferencesIndicator);
-			}
-			
-		//}
+        TextView profileName = (TextView)vi.findViewById(R.id.act_prof_list_item_profile_name);
+        ImageView profileIcon = (ImageView)vi.findViewById(R.id.act_prof_list_item_profile_icon);
+
+        Profile profile = profileList.get(position);
         
+        profileName.setText(profile._name);
+        if (profile.getIsIconResourceID())
+        {
+        	profileIcon.setImageResource(0);
+        	int res = vi.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", 
+        				vi.getContext().getPackageName());
+        	profileIcon.setImageResource(res); // resource na ikonu
+        }
+        else
+        {
+        	//profileIcon.setImageBitmap(null);
+        /*	Resources resources = vi.getResources();
+    		int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
+    		int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
+    		Bitmap bitmap = BitmapResampler.resample(profile.getIconIdentifier(), width, height);
+        	profileIcon.setImageBitmap(bitmap); */
+        	profileIcon.setImageBitmap(profile._iconBitmap);
+        }
+
+		if (GlobalData.applicationActivatorPrefIndicator)
+		{
+			ImageView profilePrefIndicatorImageView = (ImageView)vi.findViewById(R.id.act_prof_list_profile_pref_indicator);
+			//profilePrefIndicatorImageView.setImageBitmap(null);
+			//Bitmap bitmap = ProfilePreferencesIndicator.paint(profile, vi.getContext());
+			//profilePrefIndicatorImageView.setImageBitmap(bitmap);
+			profilePrefIndicatorImageView.setImageBitmap(profile._preferencesIndicator);
+		}
+			
         /*		ImageView profileItemEditMenu = (ImageView)vi.findViewById(R.id.act_prof_list_item_edit_menu);
 		profileItemEditMenu.setTag(position);
 		profileItemEditMenu.setOnClickListener(new OnClickListener() {

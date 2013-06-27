@@ -226,8 +226,6 @@ public class ActivateProfileActivity extends SherlockActivity {
 				// set popup window dimensions
 				activity.getWindow().setLayout(popupWidth, popupHeight);
 				
-				ActivateProfileListAdapter.completeGetView = false;
-				
 				//Log.d("ActivateProfilesActivity.onPreDraw", "linlayoutRoot");
 				return true;
 			}
