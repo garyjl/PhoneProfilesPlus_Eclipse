@@ -42,8 +42,6 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 
 		super.onCreate(savedInstanceState);
 		
-		GlobalData.startService(getApplicationContext());
-		
 		applicationsCache = new ApplicationsCache();
 		
 		setContentView(R.layout.activity_editor_profile_list);
@@ -55,10 +53,10 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			// activity should be in two-pane mode.
 			mTwoPane = true;
 
-			Profile profile = GlobalData.getFirstProfile();
+			Profile profile = PhoneProfilesService.getFirstProfile();
 			
 			//if (profile != null)
-				onStartProfilePreferences(GlobalData.getItemPosition(profile), false);
+				onStartProfilePreferences(PhoneProfilesService.getItemPosition(profile), false);
 
 		}
 		
@@ -241,7 +239,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		if (fragment != null)
 		{
 			fragment.updateListView();
-			Profile profile = GlobalData.getActivatedProfile();
+			Profile profile = PhoneProfilesService.getActivatedProfile();
 			fragment.updateHeader(profile);
 			fragment.getActivateProfileHelper().showNotification(profile);
 			fragment.getActivateProfileHelper().updateWidget();

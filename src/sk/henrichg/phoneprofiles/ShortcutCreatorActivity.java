@@ -58,7 +58,7 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 		linlayoutRoot = (LinearLayout)findViewById(R.id.shortcut_profile_linlayout_root);
 		listView = (ListView)findViewById(R.id.shortcut_profiles_list);
 
-		profileList = GlobalData.getProfileList();
+		profileList = PhoneProfilesService.getProfileList();
 
 		profileListAdapter = new ShortcutProfileListAdapter(this, profileList);
 		listView.setAdapter(profileListAdapter);

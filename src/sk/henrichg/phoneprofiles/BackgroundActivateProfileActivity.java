@@ -20,13 +20,13 @@ public class BackgroundActivateProfileActivity extends Activity {
 		intent = getIntent();
 		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
 		
-		activateProfileHelper = GlobalData.getActivateProfileHelper();
+		activateProfileHelper = PhoneProfilesService.getActivateProfileHelper();
 		activateProfileHelper.initialize(this, getBaseContext());
 
 		// initialize global profile list
-		GlobalData.getProfileList();
+		PhoneProfilesService.getProfileList();
 
-		databaseHandler = GlobalData.getDatabaseHandler();
+		databaseHandler = PhoneProfilesService.getDatabaseHandler();
 		
 	}
 
@@ -61,7 +61,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 		Profile profile;
 		
 		// pre profil, ktory je prave aktivny, treba aktualizovat aktivitu
-		profile = GlobalData.getActivatedProfile();
+		profile = PhoneProfilesService.getActivatedProfile();
 		activateProfileHelper.showNotification(profile);
 		activateProfileHelper.updateWidget();
 		
@@ -71,7 +71,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 			if (profile_id == 0)
 				profile = null;
 			else
-				profile = GlobalData.getProfileById(profile_id);
+				profile = PhoneProfilesService.getProfileById(profile_id);
 		}
 		
 		if (actProfile && (profile != null))
@@ -88,7 +88,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 	private void activateProfile(Profile profile, boolean interactive)
 	{
 		databaseHandler.activateProfile(profile);
-		GlobalData.activateProfile(profile);
+		PhoneProfilesService.activateProfile(profile);
 
 		activateProfileHelper.execute(profile, interactive);
 		activateProfileHelper.showNotification(profile);

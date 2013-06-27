@@ -1,7 +1,9 @@
 package sk.henrichg.phoneprofiles;
 
-import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import com.stericson.RootTools.RootTools;
 
@@ -19,17 +21,16 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.AsyncTask;
 import android.os.Debug;
 import android.util.Log;
+import android.view.View;
 
 public class GlobalData extends Application {
 	
 	private static Context context;
 	
-	private static DatabaseHandler databaseHandler = null;
-	private static List<Profile> profileList = null;
 	private static boolean applicationStarted = false;
-	private static ActivateProfileHelper activateProfileHelper = null;
 
 	static final String EXTRA_PROFILE_POSITION = "profile_position";
 	static final String EXTRA_PROFILE_ID = "profile_id";
@@ -115,12 +116,14 @@ public class GlobalData extends Application {
 		
 		context = getApplicationContext();
 		PACKAGE_NAME = context.getPackageName();
+
 		
 		// initialization
 		loadPreferences();
-		databaseHandler = new DatabaseHandler(this);
-		activateProfileHelper = new ActivateProfileHelper();
-		getProfileList();
+		PhoneProfilesService.setContext(context);
+		PhoneProfilesService.getDatabaseHandler();
+		PhoneProfilesService.getActivateProfileHelper();
+		PhoneProfilesService.getProfileList();
 
 		Log.d("GlobalData.onCreate", "memory usage (after create activateProfileHelper)=" + Debug.getNativeHeapAllocatedSize());
 		
@@ -138,118 +141,6 @@ public class GlobalData extends Application {
 		applicationStarted = started;
 	}
 
-	public static DatabaseHandler getDatabaseHandler()
-	{
-		if (databaseHandler == null)
-			databaseHandler = new DatabaseHandler(context);
-			
-		return databaseHandler;
-	}
-
-	public static ActivateProfileHelper getActivateProfileHelper()
-	{
-		if (activateProfileHelper == null)
-			activateProfileHelper = new ActivateProfileHelper(); 
-
-		return activateProfileHelper;
-	}
-	
-	public static List<Profile> getProfileList()
-	{
-		if (profileList == null)
-		{
-			profileList = databaseHandler.getAllProfiles();
-		
-			for (Profile profile : profileList)
-			{
-				profile.generateIconBitmap(context);
-				profile.generatePreferencesIndicator(context);
-			}
-		}
-
-		return profileList;
-	}
-
-	public static void clearProfileList()
-	{
-		profileList.clear();
-		profileList = null;
-	}
-	
-	public static Profile getActivatedProfile()
-	{
-		if (profileList == null)
-			getProfileList();
-
-		Profile profile;
-		for (int i = 0; i < profileList.size(); i++)
-		{
-			profile = profileList.get(i); 
-			if (profile._checked)
-				return profile;
-		}
-		
-		return null;
-	}
-	
-	public static Profile getFirstProfile()
-	{
-		if (profileList == null)
-			getProfileList();
-		
-		Profile profile;
-		if (profileList.size() > 0)
-			profile = profileList.get(0);
-		else
-			profile = null;
-		
-		return profile;
-	}
-	
-	public static int getItemPosition(Profile profile)
-	{
-		for (int i = 0; i < profileList.size(); i++)
-		{
-			if (profileList.get(i)._id == profile._id)
-				return i;
-		}
-		return -1;
-	}
-	
-	public static void activateProfile(Profile profile)
-	{
-		for (Profile p : profileList)
-		{
-			p._checked = false;
-		}
-		
-		// teraz musime najst profile v profileList 
-		int position = getItemPosition(profile);
-		if (position != -1)
-		{
-			// najdenemu objektu nastavime _checked
-			Profile _profile = profileList.get(position);
-			if (_profile != null)
-				_profile._checked = true;
-		}
-	}
-	
-	public static Profile getProfileById(long id)
-	{
-		if (profileList == null)
-			getProfileList();
-
-		Profile profile;
-		for (int i = 0; i < profileList.size(); i++)
-		{
-			profile = profileList.get(i); 
-			if (profile._id == id)
-				return profile;
-		}
-		
-		return null;
-	}
-	
 	static public void loadPreferences()
 	{
 		SharedPreferences preferences = context.getSharedPreferences(APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
@@ -482,16 +373,60 @@ public class GlobalData extends Application {
 		}
 	}
 
+	//------------------------------------------------------------
+	
 	public static void startService(Context context)
 	{
 		if (!isServiceRunning(context))
 		{
 			Log.d("GlobaData.startService","xxx");
-			Intent broadcast = new Intent(context, PhoneProfilesServiceSheduler.class);
+			
+			//Intent broadcast = new Intent(context, PhoneProfilesServiceSheduler.class);
 			//broadcast.setAction(BROADCAST_ACTION);
-			context.sendBroadcast(broadcast);
+			//context.sendBroadcast(broadcast);
+			PhoneProfilesService.started = false;
+			Intent service = new Intent(context, PhoneProfilesService.class);
+			context.startService(service);
+		/*	
+			AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
+				
+				@Override
+				protected void onPreExecute()
+				{
+					super.onPreExecute();
+				}
+				
+				@Override
+				protected Void doInBackground(Void... params) {
+					while (!PhoneProfilesService.started)
+					{
+						try {
+							Thread.sleep(100);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+					
+					return null;
+				}
+				
+				@Override
+				protected void onPostExecute(Void result)
+				{
+					super.onPostExecute(result);
+					
+				}
+				
+			};
+			task.execute();
+
+			try {
+				task.get(30000, TimeUnit.MILLISECONDS);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		*/
 		}	
-		
 	}
 	
 	public static void stopService(Context context)
