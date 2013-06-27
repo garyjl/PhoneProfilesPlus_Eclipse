@@ -58,7 +58,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			Profile profile = GlobalData.getFirstProfile();
 			
 			//if (profile != null)
-				onStartProfilePreferences(EditorProfileListFragment.getProfileListAdapter().getItemId(profile), false);
+				onStartProfilePreferences(GlobalData.getItemPosition(profile), false);
 
 		}
 		
@@ -240,6 +240,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		EditorProfileListFragment fragment = (EditorProfileListFragment)getSupportFragmentManager().findFragmentById(R.id.editor_profile_list);
 		if (fragment != null)
 		{
+			fragment.updateListView();
 			Profile profile = GlobalData.getActivatedProfile();
 			fragment.updateHeader(profile);
 			fragment.getActivateProfileHelper().showNotification(profile);
@@ -262,6 +263,15 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	public void finishProfilePreferencesActionMode()
 	{
 		
+	}
+	
+	public static void updateListView(SherlockFragmentActivity activity)
+	{
+		EditorProfileListFragment fragment = (EditorProfileListFragment)activity.getSupportFragmentManager().findFragmentById(R.id.editor_profile_list);
+		if (fragment != null)
+		{
+			fragment.updateListView();
+		}
 	}
 	
 	public static ApplicationsCache getApplicationsCache()

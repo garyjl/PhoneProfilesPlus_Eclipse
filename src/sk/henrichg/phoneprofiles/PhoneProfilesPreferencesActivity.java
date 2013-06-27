@@ -22,8 +22,6 @@ public class PhoneProfilesPreferencesActivity extends
 	//private Intent intent;
 	private OnSharedPreferenceChangeListener prefListener;
 	
-	private static Activity preferenceActivity = null;
-	
 	private boolean showEditorPrefIndicator;
 	private boolean showEditorHeader;
 	private String activeLanguage;
@@ -51,8 +49,6 @@ public class PhoneProfilesPreferencesActivity extends
 
 		super.onCreate(savedInstanceState);
 		
-		preferenceActivity = this;
-
 		invalidateEditor = false;
 		
 		getSupportActionBar().setHomeButtonEnabled(true);
@@ -220,12 +216,6 @@ public class PhoneProfilesPreferencesActivity extends
 		}
 	}
 */	
-	
-	static public Activity getActivity()
-	{
-		return preferenceActivity;
-	}
-	
 	static public boolean getInvalidateEditor(boolean reset)
 	{
 		boolean r = invalidateEditor;

@@ -13,7 +13,7 @@ public class ApplicationsPreferenceAdapter extends BaseAdapter {
 
 	//private Context context;
 	
-	private static LayoutInflater inflater = null;
+	private LayoutInflater inflater = null;
 	
 	
 	public ApplicationsPreferenceAdapter(Context c)

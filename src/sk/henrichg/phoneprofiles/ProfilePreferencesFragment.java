@@ -36,6 +36,11 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	
 	private boolean restart; 
 	
+	private static ImageViewPreference changedImageViewPreference;
+	private static Activity preferencesActivity = null;
+		
+	static final String PREFS_NAME = "profile_preferences";
+	
 	private OnRestartProfilePreferences onRestartProfilePreferencesCallback = sDummyOnRestartProfilePreferencesCallback;
 	private OnRedrawListFragment onRedrawListFragmentCallback = sDummyOnRedrawListFragmentCallback;
 
@@ -63,12 +68,6 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		}
 	};
 	
-	private static ImageViewPreference changedImageViewPreference;
-	private static Activity preferencesActivity = null;
-		
-	static final String PREFS_NAME = "profile_preferences";
-	
-
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -77,11 +76,13 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 			throw new IllegalStateException(
 					"Activity must implement fragment's callbacks.");
 		}
-
 		onRestartProfilePreferencesCallback = (OnRestartProfilePreferences) activity;
 		
-		if (activity instanceof OnRedrawListFragment)
-			onRedrawListFragmentCallback = (OnRedrawListFragment) activity;
+		if (!(activity instanceof OnRedrawListFragment)) {
+			throw new IllegalStateException(
+					"Activity must implement fragment's callbacks.");
+		}
+		onRedrawListFragmentCallback = (OnRedrawListFragment) activity;
 		
 	}
 
@@ -190,8 +191,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	private void loadPreferences()
 	{
 		
-    	// TODO toto asik je zle. treba vymysliet, ako sa dostat ku tomu adapteru inac
-    	profile = (Profile) EditorProfileListFragment.getProfileListAdapter().getItem(profile_position);
+    	profile = (Profile) GlobalData.getProfileList().get(profile_position);
     	
     	if (profile != null)
     	{
@@ -269,9 +269,6 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
         		profile._deviceRunApplicationPackageName = "-";
 
         	//Log.d("ProfilePreferencesFragment.onPause", "profile activated="+profile.getChecked());
-        	
-        	// TODO toto asik je zle. treba vymysliet, ako sa dostat ku tomu adapteru inac
-        	EditorProfileListFragment.getProfileListAdapter().updateItem(profile);
         	
         	// update bitmaps
 			profile.generateIconBitmap(context);

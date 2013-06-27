@@ -9,6 +9,7 @@ import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.execution.CommandCapture;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -28,7 +29,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.provider.Settings;
+import android.provider.Settings.Global;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
@@ -614,17 +617,17 @@ public class ActivateProfileHelper {
 	private boolean isAirplaneMode(Context context)
 	{
     	if (android.os.Build.VERSION.SDK_INT >= 17)
-    		return AirPlaneMode_SDK17.getAirplaneMode(context);
+    		return getAirplaneMode_SDK17(context);
     	else
-    		return AirPlaneMode_SDK8.getAirplaneMode(context);
+    		return getAirplaneMode_SDK8(context);
 	}
 	
 	private void setAirplaneMode(Context context, boolean mode)
 	{
     	if (android.os.Build.VERSION.SDK_INT >= 17)
-    		AirPlaneMode_SDK17.setAirplaneMode(context, mode);
+    		setAirplaneMode_SDK17(context, mode);
     	else
-    		AirPlaneMode_SDK8.setAirplaneMode(context, mode);
+    		setAirplaneMode_SDK8(context, mode);
 	}
 	
 	private boolean isMobileData(Context context)
@@ -922,6 +925,81 @@ public class ActivateProfileHelper {
 				context.startActivity(intent); */ 
 			}
         }	    	
+	}
+	
+	@SuppressLint({ "NewApi", "InlinedApi" })
+	private boolean getAirplaneMode_SDK17(Context context)
+	{
+		return Settings.Global.getInt(context.getContentResolver(), Global.AIRPLANE_MODE_ON, 0) != 0;
+	}
+	
+	@SuppressLint({ "NewApi", "InlinedApi" })
+	private void setAirplaneMode_SDK17(Context context, boolean mode)
+	{
+		if (mode != getAirplaneMode_SDK17(context))
+		{
+			// it is only possible to set AIRPLANE_MODE programmatically for Android >= 4.2.x
+			// if app runs:
+			// - as system app (located on /system/app)
+			// - and if current user is the admin user (not sure about that...)
+			//if (CheckHardwareFeatures.isSystemApp(context) && CheckHardwareFeatures.isAdminUser(context))
+			if (GlobalData.isSystemApp(context))
+			{
+				Settings.Global.putInt(context.getContentResolver(), Settings.Global.AIRPLANE_MODE_ON, mode ? 1 : 0);
+				Intent intent = new Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED);
+				intent.putExtra("state", mode);
+				context.sendBroadcast(intent);
+			}
+			else
+			if (GlobalData.isRooted())
+			{
+				// zariadenie je rootnute
+				String command1;
+				String command2;
+				if (mode)
+				{
+					command1 = "settings put global airplane_mode_on 1";
+					command2 = "am broadcast -a android.intent.action.AIRPLANE_MODE --ez state true";
+				}
+				else
+				{
+					command1 = "settings put global airplane_mode_on 0";
+					command2 = "am broadcast -a android.intent.action.AIRPLANE_MODE --ez state false";
+				}
+				CommandCapture command = new CommandCapture(0, command1, command2);
+				try {
+					RootTools.getShell(true).add(command).waitForFinish();
+				} catch (Exception e) {
+					Log.e("AirPlaneMode_SDK17.setAirplaneMode", "Error on run su");
+				}
+			}
+			else
+			{
+				// for normal apps it is only possible to open the system settings dialog
+			/*	Intent intent = new Intent(android.provider.Settings.ACTION_AIRPLANE_MODE_SETTINGS);
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				context.startActivity(intent); */ 
+			}
+			
+		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	static boolean getAirplaneMode_SDK8(Context context)
+	{
+		return Settings.System.getInt(context.getContentResolver(), Settings.System.AIRPLANE_MODE_ON, 0) != 0;
+	}
+	
+	@SuppressWarnings("deprecation")
+	static void setAirplaneMode_SDK8(Context context, boolean mode)
+	{
+		if (mode != getAirplaneMode_SDK8(context))
+		{
+			Settings.System.putInt(context.getContentResolver(), Settings.System.AIRPLANE_MODE_ON, mode ? 1 : 0);
+			Intent intent = new Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED);
+			intent.putExtra("state", mode);
+			context.sendBroadcast(intent);
+		}
 	}
 	
 }

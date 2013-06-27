@@ -79,9 +79,9 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 	}
 
 	public void onRedrawListFragment() {
-		// tu nic nerobim, vsetko sa deje v EditorProfilesActivity.onStart
-		// kedze toto je aktivita pre mobily, takze ten onStart sa zavola
-		// ked sa tato aktivita zavrie
+		// update listview adaptera
+		// ostatne sa deje v EditorProfilesActivity.onStart() 
+		EditorProfilesActivity.updateListView(this);
 	}
 	
 	public void onPreferenceAttached(PreferenceScreen root, int xmlId) {

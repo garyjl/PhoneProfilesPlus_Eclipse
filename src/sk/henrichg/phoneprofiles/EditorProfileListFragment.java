@@ -30,7 +30,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 
 	private ActivateProfileHelper activateProfileHelper;
 	private List<Profile> profileList;
-	private static EditorProfileListAdapter profileListAdapter;
+	private EditorProfileListAdapter profileListAdapter;
 	private DragSortListView listView;
 	private TextView activeProfileName;
 	private ImageView activeProfileIcon;
@@ -601,9 +601,11 @@ public class EditorProfileListFragment extends SherlockFragment {
 		return activateProfileHelper;
 	}
 	
-	public static EditorProfileListAdapter getProfileListAdapter()
+	
+	public void updateListView()
 	{
-		return profileListAdapter;
+		profileListAdapter.notifyDataSetChanged();
 	}
+
 
 }

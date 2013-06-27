@@ -79,11 +79,12 @@ public class EditorProfileListAdapter extends BaseAdapter
 		notifyDataSetChanged();
 	}
 
+/*	
 	public void updateItem(Profile profile)
 	{
 		notifyDataSetChanged();
 	}
-	
+*/	
 	public void deleteItem(Profile profile)
 	{
 		profileList.remove(profile);
