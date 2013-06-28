@@ -191,7 +191,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	private void loadPreferences()
 	{
 		
-    	profile = (Profile)PhoneProfilesService.getProfileList().get(profile_position);
+    	profile = (Profile)GUIData.profilesDataWrapper.getProfileList().get(profile_position);
     	
     	if (profile != null)
     	{
@@ -277,7 +277,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 
         	//Log.d("ProfilePreferencesFragment.onPause", "profile activated="+profile.getChecked());
         	
-			PhoneProfilesService.getDatabaseHandler().updateProfile(profile);
+			GUIData.profilesDataWrapper.getDatabaseHandler().updateProfile(profile);
         	
         	//Log.d("ProfilePreferencesFragment.onPause", "updateProfile");
 

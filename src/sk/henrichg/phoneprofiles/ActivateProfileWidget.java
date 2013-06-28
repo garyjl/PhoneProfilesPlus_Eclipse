@@ -13,7 +13,7 @@ public class ActivateProfileWidget extends AppWidgetProvider {
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
 	{
-		Profile profile = PhoneProfilesService.getActivatedProfile();
+		Profile profile = GUIData.profilesDataWrapper.getActivatedProfile();
 
 		// ziskanie vsetkych wigetov tejtor triedy na plochach lauchera
 		ComponentName thisWidget = new ComponentName(context, ActivateProfileWidget.class);

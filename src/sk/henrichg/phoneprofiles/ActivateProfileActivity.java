@@ -55,7 +55,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 		super.onCreate(savedInstanceState);
 		
 		GlobalData.startService(getApplicationContext());
-		
+
 		//Debug.startMethodTracing("phoneprofiles");
 		
 		GlobalData.setTheme(this, true);
@@ -74,7 +74,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 		//getSupportActionBar().setHomeButtonEnabled(true);
 		//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		profileList = PhoneProfilesService.getProfileList();
+		profileList = GUIData.profilesDataWrapper.getProfileList();
 
 		if (profileList.size() == 0)
 		{
@@ -93,7 +93,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 		intent = getIntent();
 		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
 		
-		activateProfileHelper = PhoneProfilesService.getActivateProfileHelper();
+		activateProfileHelper = GUIData.profilesDataWrapper.getActivateProfileHelper();
 		activateProfileHelper.initialize(this, getBaseContext());
 
 		linlayoutRoot = (LinearLayout)findViewById(R.id.act_prof_linlayout_root);
@@ -264,7 +264,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 		}
 		//Log.d("ActivateProfilesActivity.onStart", "actProfile="+String.valueOf(actProfile));
 
-		Profile profile = PhoneProfilesService.getActivatedProfile();
+		Profile profile = GUIData.profilesDataWrapper.getActivatedProfile();
 
 		if (actProfile && (profile != null))
 		{
@@ -423,7 +423,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 	private void activateProfile(Profile profile, boolean interactive)
 	{
 		profileListAdapter.activateProfile(profile);
-		PhoneProfilesService.getDatabaseHandler().activateProfile(profile);
+		GUIData.profilesDataWrapper.getDatabaseHandler().activateProfile(profile);
 		
 		activateProfileHelper.execute(profile, interactive);
 

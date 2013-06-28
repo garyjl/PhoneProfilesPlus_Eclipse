@@ -1,10 +1,6 @@
 package sk.henrichg.phoneprofiles;
 
 import java.util.Locale;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
 import com.stericson.RootTools.RootTools;
 
 import android.app.Activity;
@@ -21,10 +17,8 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.os.AsyncTask;
 import android.os.Debug;
 import android.util.Log;
-import android.view.View;
 
 public class GlobalData extends Application {
 	
@@ -108,6 +102,9 @@ public class GlobalData extends Application {
     public static boolean notificationsToast;
     public static boolean notificationStatusBar;
     public static String notificationStatusBarStyle;
+    
+    
+    ProfilesDataWrapper profilesDataWrapper;
 	
 	
 	public void onCreate()
@@ -120,10 +117,7 @@ public class GlobalData extends Application {
 		
 		// initialization
 		loadPreferences();
-		PhoneProfilesService.setContext(context);
-		PhoneProfilesService.getDatabaseHandler();
-		PhoneProfilesService.getActivateProfileHelper();
-		PhoneProfilesService.getProfileList();
+		GUIData.profilesDataWrapper = new ProfilesDataWrapper(context, true);
 
 		Log.d("GlobalData.onCreate", "memory usage (after create activateProfileHelper)=" + Debug.getNativeHeapAllocatedSize());
 		

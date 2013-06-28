@@ -53,10 +53,10 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			// activity should be in two-pane mode.
 			mTwoPane = true;
 
-			Profile profile = PhoneProfilesService.getFirstProfile();
+			Profile profile = GUIData.profilesDataWrapper.getFirstProfile();
 			
 			//if (profile != null)
-				onStartProfilePreferences(PhoneProfilesService.getItemPosition(profile), false);
+				onStartProfilePreferences(GUIData.profilesDataWrapper.getItemPosition(profile), false);
 
 		}
 		
@@ -239,7 +239,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		if (fragment != null)
 		{
 			fragment.updateListView();
-			Profile profile = PhoneProfilesService.getActivatedProfile();
+			Profile profile = GUIData.profilesDataWrapper.getActivatedProfile();
 			fragment.updateHeader(profile);
 			fragment.getActivateProfileHelper().showNotification(profile);
 			fragment.getActivateProfileHelper().updateWidget();
