@@ -3,6 +3,11 @@ package sk.henrichg.phoneprofiles;
 import java.util.List;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 
 public class ProfilesDataWrapper {
 
@@ -137,6 +142,38 @@ public class ProfilesDataWrapper {
 		}
 		
 		return null;
+	}
+	
+    final Messenger mMessenger = new Messenger(new IncomingHandler());
+	
+    class IncomingHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+            default:
+                super.handleMessage(msg);
+            }
+        }
+    }
+    
+	public Messenger phoneProfilesService;
+
+    public void sendMessageIntoService(IBinder service, int message)
+	{
+		phoneProfilesService = new Messenger(service);
+        try {
+            Message msg = Message.obtain(null, message);
+            msg.replyTo = mMessenger;
+            phoneProfilesService.send(msg);
+        } catch (RemoteException e) {
+            // In this case the service has crashed before we could even do anything with it
+        }
+	}
+	
+	public void reloadProfilesData()
+	{
+		clearProfileList();
+		getProfileList();
 	}
 	
 }

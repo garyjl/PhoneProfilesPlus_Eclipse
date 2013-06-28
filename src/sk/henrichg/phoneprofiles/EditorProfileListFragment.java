@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
@@ -44,6 +45,8 @@ public class EditorProfileListFragment extends SherlockFragment {
 	 */
 	private OnStartProfilePreferences onStartProfilePreferencesCallback = sDummyOnStartProfilePreferencesCallback;
 	private OnFinishProfilePreferencesActionMode onFinishProfilePreferencesActionModeCallback = sDummyOnFinishProfilePreferencesActionModeCallback;
+	private OnProfileCountChanged onProfileCountChangedCallback = sDummyOnProfileCountChangedCallback; 
+	private OnProfileOrderChanged onProfileOrderChangedCallback = sDummyOnProfileOrderChangedCallback; 
 	
 	/**
 	 * A callback interface that all activities containing this fragment must
@@ -74,6 +77,24 @@ public class EditorProfileListFragment extends SherlockFragment {
 		public void onFinishProfilePreferencesActionMode() {
 		}
 	};
+
+	public interface OnProfileCountChanged {
+		public void onProfileCountChanged();
+	}
+
+	private static OnProfileCountChanged sDummyOnProfileCountChangedCallback = new OnProfileCountChanged() {
+		public void onProfileCountChanged() {
+		}
+	};
+
+	public interface OnProfileOrderChanged {
+		public void onProfileOrderChanged();
+	}
+
+	private static OnProfileOrderChanged sDummyOnProfileOrderChangedCallback = new OnProfileOrderChanged() {
+		public void onProfileOrderChanged() {
+		}
+	};
 	
 	public EditorProfileListFragment() {
 	}
@@ -87,12 +108,24 @@ public class EditorProfileListFragment extends SherlockFragment {
 			throw new IllegalStateException(
 					"Activity must implement fragment's callbacks.");
 		}
-
 		onStartProfilePreferencesCallback = (OnStartProfilePreferences) activity;
 
+		if (!(activity instanceof OnProfileCountChanged)) {
+			throw new IllegalStateException(
+					"Activity must implement fragment's callbacks.");
+		}
+		onProfileCountChangedCallback = (OnProfileCountChanged) activity;
+		
+		if (!(activity instanceof OnProfileOrderChanged)) {
+			throw new IllegalStateException(
+					"Activity must implement fragment's callbacks.");
+		}
+		onProfileOrderChangedCallback = (OnProfileOrderChanged) activity;
+		
+		
 		if (activity instanceof OnFinishProfilePreferencesActionMode)
 			onFinishProfilePreferencesActionModeCallback = (OnFinishProfilePreferencesActionMode) activity;
-	
+
 	}
 
 	@Override
@@ -102,6 +135,8 @@ public class EditorProfileListFragment extends SherlockFragment {
 		// Reset the active callbacks interface to the dummy implementation.
 		onStartProfilePreferencesCallback = sDummyOnStartProfilePreferencesCallback;
 		onFinishProfilePreferencesActionModeCallback = sDummyOnFinishProfilePreferencesActionModeCallback;
+		onProfileCountChangedCallback = sDummyOnProfileCountChangedCallback;
+		onProfileOrderChangedCallback = sDummyOnProfileOrderChangedCallback;
 	}
 	
 
@@ -188,6 +223,7 @@ public class EditorProfileListFragment extends SherlockFragment {
             public void drop(int from, int to) {
             	profileListAdapter.changeItemOrder(from, to);
             	databaseHandler.setPOrder(profileList);
+        		onProfileOrderChangedCallback.onProfileOrderChanged();
         		//Log.d("EditorProfileListFragment.drop", "xxxx");
             }
         });
@@ -316,6 +352,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 					);
 			profileListAdapter.addItem(profile); // pridame profil do listview a nastavime jeho order
 			databaseHandler.addProfile(profile);
+			onProfileCountChangedCallback.onProfileCountChanged();
 
         	// generate bitmaps
 			profile.generateIconBitmap(getSherlockActivity().getBaseContext());
@@ -367,6 +404,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 
 		profileListAdapter.addItem(newProfile);
 		databaseHandler.addProfile(newProfile);
+		onProfileCountChangedCallback.onProfileCountChanged();
 		
     	// generate bitmaps
 		newProfile.generateIconBitmap(getSherlockActivity().getBaseContext());
@@ -376,6 +414,8 @@ public class EditorProfileListFragment extends SherlockFragment {
 		//updateListView();
 
 		startProfilePreferencesActivity(profileList.size()-1);
+		
+		
 	}
 
 	public void deleteProfile(int position)
@@ -391,6 +431,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 			public void onClick(DialogInterface dialog, int which) {
 				profileListAdapter.deleteItem(profile);
 				databaseHandler.deleteProfile(profile);
+				onProfileCountChangedCallback.onProfileCountChanged();
 				//updateListView();
 				// v pripade, ze sa odmaze aktivovany profil, nastavime, ze nic nie je aktivovane
 				//Profile profile = databaseHandler.getActivatedProfile();
@@ -419,6 +460,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 			public void onClick(DialogInterface dialog, int which) {
 				databaseHandler.deleteAllProfiles();
 				profileListAdapter.clear();
+				onProfileCountChangedCallback.onProfileCountChanged();
 				//updateListView();
 				// v pripade, ze sa odmaze aktivovany profil, nastavime, ze nic nie je aktivovane
 				//Profile profile = databaseHandler.getActivatedProfile();
@@ -557,6 +599,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 				if (databaseHandler.importDB()  == 1)
 				{
 					GUIData.profilesDataWrapper.clearProfileList();
+					onProfileCountChangedCallback.onProfileCountChanged();
 
 					// toast notification
 					Toast msg = Toast.makeText(getSherlockActivity().getBaseContext(), 

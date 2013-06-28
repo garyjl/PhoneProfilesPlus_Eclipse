@@ -1,6 +1,8 @@
 package sk.henrichg.phoneprofiles;
 
 import sk.henrichg.phoneprofiles.EditorProfileListFragment.OnFinishProfilePreferencesActionMode;
+import sk.henrichg.phoneprofiles.EditorProfileListFragment.OnProfileCountChanged;
+import sk.henrichg.phoneprofiles.EditorProfileListFragment.OnProfileOrderChanged;
 import sk.henrichg.phoneprofiles.EditorProfileListFragment.OnStartProfilePreferences;
 import sk.henrichg.phoneprofiles.PreferenceListFragment.OnPreferenceAttachedListener;
 import sk.henrichg.phoneprofiles.ProfilePreferencesFragment.OnRedrawListFragment;
@@ -9,8 +11,14 @@ import sk.henrichg.phoneprofiles.ProfilePreferencesFragment.OnRestartProfilePref
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
 import android.preference.PreferenceScreen;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import android.util.Log;
 import com.actionbarsherlock.view.Menu;
@@ -22,7 +30,9 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
                                                OnPreferenceAttachedListener,
                                                OnRestartProfilePreferences,
                                                OnRedrawListFragment,
-                                               OnFinishProfilePreferencesActionMode
+                                               OnFinishProfilePreferencesActionMode,
+                                               OnProfileCountChanged,
+                                               OnProfileOrderChanged
 {
 
 	private static ApplicationsCache applicationsCache;
@@ -32,7 +42,23 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	 * device.
 	 */
 	private boolean mTwoPane;
+	
+	private boolean serviceConnected;
 
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+
+    	public void onServiceConnected(ComponentName className, IBinder service) {
+    		serviceConnected = true;
+    		GUIData.profilesDataWrapper.sendMessageIntoService(service, PhoneProfilesService.MSG_RELOAD_DATA);
+        }
+
+        public void onServiceDisconnected(ComponentName className) {
+            // This is called when the connection with the service has been unexpectedly disconnected - process crashed.
+        	GUIData.profilesDataWrapper.phoneProfilesService = null;
+        	serviceConnected = false;
+        }
+
+    };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -127,9 +153,10 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	protected void onDestroy()
 	{
 		applicationsCache.clearCache();
+		if (serviceConnected)
+			unbindService(serviceConnection);
 		super.onDestroy();
 	}
-	
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -245,6 +272,9 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			fragment.updateHeader(profile);
 			fragment.getActivateProfileHelper().showNotification(profile);
 			fragment.getActivateProfileHelper().updateWidget();
+			
+			// send message into service
+	        bindService(new Intent(this, PhoneProfilesService.class), serviceConnection, Context.BIND_AUTO_CREATE);
 		}
 	}
 
@@ -259,6 +289,17 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	public void onPreferenceAttached(PreferenceScreen root, int xmlId) {
 		return;
 	}
+	
+	public void onProfileOrderChanged() {
+		// send message into service
+        bindService(new Intent(this, PhoneProfilesService.class), serviceConnection, Context.BIND_AUTO_CREATE);
+	}
+
+	public void onProfileCountChanged() {
+		// send message into service
+        bindService(new Intent(this, PhoneProfilesService.class), serviceConnection, Context.BIND_AUTO_CREATE);
+	}
+	
 
 	public void finishProfilePreferencesActionMode()
 	{
@@ -279,6 +320,5 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	{
 		return applicationsCache;
 	}
-
 
 }

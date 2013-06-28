@@ -3,14 +3,15 @@ package sk.henrichg.phoneprofiles;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
 import android.util.Log;
 
 public class PhoneProfilesService extends Service {
 	
-	private final IBinder mBinder = new MyBinder();
-
+	//private final IBinder mBinder = new MyBinder();
 	
 	private Context context = null;
 	
@@ -19,6 +20,24 @@ public class PhoneProfilesService extends Service {
 	// NEFUNGUJU
 	//public static ProfilesDataWrapper profilesDataWrapper = null;
 	private ProfilesDataWrapper profilesDataWrapper = null;
+
+	// messages from GUI
+	static final int MSG_RELOAD_DATA = 1;
+	// Target we publish for clients to send messages to IncomingHandler.
+	final Messenger messenger = new Messenger(new IncomingHandler());   	    
+
+    class IncomingHandler extends Handler { // Handler of incoming messages from clients.
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+            case MSG_RELOAD_DATA:
+                reloadData();
+                break;
+            default:
+                super.handleMessage(msg);
+            }
+        }
+    }	
 	
 	@Override
 	public void onCreate()
@@ -30,6 +49,7 @@ public class PhoneProfilesService extends Service {
   	    profilesDataWrapper = new ProfilesDataWrapper(context);
   	    
   	    GlobalData.loadPreferences(context);
+  	    
 	}
 	
 	@Override
@@ -48,16 +68,19 @@ public class PhoneProfilesService extends Service {
 	
 	@Override
 	public IBinder onBind(Intent arg0) {
-		// TODO Auto-generated method stub
-		return mBinder;
+		return messenger.getBinder();
 	}
 
-	public class MyBinder extends Binder {
+/*	public class MyBinder extends Binder {
 		PhoneProfilesService getService() {
 	      return PhoneProfilesService.this;
-	    }
-	}
+	    } 
+	}*/
 	
     //-------------------------------------------
 
+	private void reloadData()
+	{
+		profilesDataWrapper.reloadProfilesData();
+	}
 }

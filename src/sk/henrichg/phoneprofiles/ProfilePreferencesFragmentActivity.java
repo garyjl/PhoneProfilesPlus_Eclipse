@@ -7,9 +7,13 @@ import sk.henrichg.phoneprofiles.ProfilePreferencesFragment.OnRestartProfilePref
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.preference.PreferenceScreen;
  
 public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
@@ -17,6 +21,23 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 	                                                       OnRestartProfilePreferences,
 	                                                       OnRedrawListFragment
 {
+	
+	private boolean serviceConnected = false;
+	
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+
+    	public void onServiceConnected(ComponentName className, IBinder service) {
+    		serviceConnected = true;
+    		GUIData.profilesDataWrapper.sendMessageIntoService(service, PhoneProfilesService.MSG_RELOAD_DATA);
+        }
+
+        public void onServiceDisconnected(ComponentName className) {
+            // This is called when the connection with the service has been unexpectedly disconnected - process crashed.
+        	GUIData.profilesDataWrapper.phoneProfilesService = null;
+        	serviceConnected = false;
+        }
+
+    };
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +68,14 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
     	//Log.d("ProfilePreferencesFragmentActivity.onCreate", "xxxx");
 		
     }
+	
+	@Override
+	protected void onDestroy()
+	{
+		if (serviceConnected)
+			unbindService(serviceConnection);
+		super.onDestroy();
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -80,6 +109,9 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 
 	public void onRedrawListFragment() {
 		// all redraws are in EditorProfilesActivity.onStart()
+
+		// send message into service
+        bindService(new Intent(this, PhoneProfilesService.class), serviceConnection, Context.BIND_AUTO_CREATE);
 	}
 	
 	public void onPreferenceAttached(PreferenceScreen root, int xmlId) {
