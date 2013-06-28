@@ -47,7 +47,7 @@
         android:configChanges="locale|layoutDirection"
         android:name="sk.henrichg.phoneprofiles.GlobalData" >
         <activity
-            android:name="sk.henrichg.phoneprofiles.ActivateProfileActivity"
+            android:name=".ActivateProfileActivity"
             android:label="@string/title_activity_phone_profiles"
             android:theme="@style/PopupTheme"
             android:configChanges="locale|layoutDirection" >
@@ -57,22 +57,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="sk.henrichg.phoneprofiles.EditorProfilesActivity"
+            android:name=".EditorProfilesActivity"
             android:label="@string/title_activity_phone_profiles"
             android:configChanges="locale|layoutDirection" >
         </activity>
         <activity
-            android:name="sk.henrichg.phoneprofiles.ProfilePreferencesFragmentActivity"
+            android:name=".ProfilePreferencesFragmentActivity"
             android:label="@string/title_activity_profile_preferences"
             android:configChanges="locale|layoutDirection" >
         </activity>
         <activity
-            android:name="sk.henrichg.phoneprofiles.PhoneProfilesPreferencesActivity"
+            android:name=".PhoneProfilesPreferencesActivity"
             android:label="@string/title_activity_phone_profiles_preferences"
             android:configChanges="locale|layoutDirection" >
         </activity>
         <activity
-            android:name="sk.henrichg.phoneprofiles.ShortcutCreatorActivity"
+            android:name=".ShortcutCreatorActivity"
             android:label="@string/title_activity_shortcut_creator"
             android:icon="@drawable/ic_shortcut"
             android:theme="@style/PopupTheme"
@@ -83,7 +83,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="sk.henrichg.phoneprofiles.BackgroundActivateProfileActivity"
+            android:name=".BackgroundActivateProfileActivity"
             android:label="@string/empty_string" 
             android:taskAffinity="sk.henrichg.phoneprofiles"
             android:excludeFromRecents="true"
@@ -101,7 +101,7 @@
         </service>
 
         <receiver
-            android:name="sk.henrichg.phoneprofiles.ActivateProfileWidget"
+            android:name=".ActivateProfileWidget"
             android:icon="@drawable/ic_launcher"
             android:label="Phone Profiles" >
             <intent-filter>
@@ -112,7 +112,7 @@
                 android:resource="@xml/activate_profile_widget_info" />
         </receiver>
         <receiver 
-            android:name="sk.henrichg.phoneprofiles.LocaleChangedReceiver" 
+            android:name=".LocaleChangedReceiver" 
             android:enabled="true" >
             <intent-filter>
                 <action android:name="android.intent.action.LOCALE_CHANGED" />
@@ -120,7 +120,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name="sk.henrichg.phoneprofiles.BootUpReceiver"
+            android:name=".BootUpReceiver"
             android:enabled="true"
             android:permission="android.permission.RECEIVE_BOOT_COMPLETED" >
             <intent-filter>
@@ -130,14 +130,14 @@
         </receiver>
         
         
-        <receiver android:name="sk.henrichg.phoneprofiles.PhoneProfilesServiceSheduler" 
+        <receiver android:name=".PhoneProfilesServiceSheduler" 
             android:enabled="true"
             android:permission="android.permission.RECEIVE_BOOT_COMPLETED" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <receiver android:name="sk.henrichg.phoneprofiles.PhoneProfilesServiceStarter" >
+        <receiver android:name=".PhoneProfilesServiceStarter" >
         </receiver>        
 
     </application>

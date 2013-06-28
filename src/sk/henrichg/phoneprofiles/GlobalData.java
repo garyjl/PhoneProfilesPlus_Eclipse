@@ -1,9 +1,7 @@
 package sk.henrichg.phoneprofiles;
 
-import java.util.Locale;
 import com.stericson.RootTools.RootTools;
 
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.app.Application;
@@ -15,33 +13,30 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Debug;
 import android.util.Log;
 
 public class GlobalData extends Application {
-	
-	private static Context context;
-	
-	private static boolean applicationStarted = false;
 
+	public static Context context;
+	
+	static String PACKAGE_NAME;
+
+	// musi byt tu, pouziva t ActivateProfileHelper
 	static final String EXTRA_PROFILE_POSITION = "profile_position";
 	static final String EXTRA_PROFILE_ID = "profile_id";
 	static final String EXTRA_START_APP_SOURCE = "start_app_source";
 
+	// musi byt tu, pouziva t ActivateProfileHelper
 	static final int STARTUP_SOURCE_NOTIFICATION = 1;
 	static final int STARTUP_SOURCE_WIDGET = 2;
 	static final int STARTUP_SOURCE_SHORTCUT = 3;
 	static final int STARTUP_SOURCE_BOOT = 4;
 	static final int STARTUP_SOURCE_ACTIVATOR = 5;
 
+	// musi byt tu, pouziva t ActivateProfileHelper
 	static final int NOTIFICATION_ID = 700420;
 
-	static final String PROFILE_ICON_DEFAULT = "ic_profile_default";
-	
-	static String PACKAGE_NAME;
-	
 	static final String PREF_PROFILE_NAME = "profileName";
 	static final String PREF_PROFILE_ICON = "profileIcon";
 	static final String PREF_PROFILE_VOLUME_RINGER_MODE = "volumeRingerMode";
@@ -104,20 +99,16 @@ public class GlobalData extends Application {
     public static String notificationStatusBarStyle;
     
     
-    ProfilesDataWrapper profilesDataWrapper;
-	
-	
 	public void onCreate()
 	{
 		super.onCreate();
 		
 		context = getApplicationContext();
+		
 		PACKAGE_NAME = context.getPackageName();
-
 		
 		// initialization
-		loadPreferences();
-		GUIData.profilesDataWrapper = new ProfilesDataWrapper(context, true);
+		loadPreferences(getApplicationContext());
 
 		Log.d("GlobalData.onCreate", "memory usage (after create activateProfileHelper)=" + Debug.getNativeHeapAllocatedSize());
 		
@@ -125,17 +116,9 @@ public class GlobalData extends Application {
 		
 	}
 	
-	public static boolean getApplicationStarted()
-	{
-		return applicationStarted;
-	}
+	//--------------------------------------------------------------
 	
-	public static void setApplicationStarted(boolean started)
-	{
-		applicationStarted = started;
-	}
-
-	static public void loadPreferences()
+	static public void loadPreferences(Context context)
 	{
 		SharedPreferences preferences = context.getSharedPreferences(APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
 
@@ -318,55 +301,6 @@ public class GlobalData extends Application {
 		return rooted;
 	}
 	
-	//------------------------------------------------------
-	
-	public static void setLanguage(Context context)//, boolean restart)
-	{
-		// jazyk na aky zmenit
-		String lang = GlobalData.applicationLanguage;
-		
-		//Log.d("EditorProfilesActivity.setLanguauge", lang);
-
-		Locale appLocale;
-		
-		if (!lang.equals("system"))
-		{
-			appLocale = new Locale(lang);
-		}
-		else
-		{
-			appLocale = Resources.getSystem().getConfiguration().locale;
-		}
-		
-		Locale.setDefault(appLocale);
-		Configuration appConfig = new Configuration();
-		appConfig.locale = appLocale;
-		context.getResources().updateConfiguration(appConfig, context.getResources().getDisplayMetrics());
-		
-		//languageChanged = restart;
-	}
-	
-	public static void setTheme(Activity activity, boolean forPopup)
-	{
-		if (GlobalData.applicationTheme.equals("light"))
-		{
-			//Log.d("EditorProfilesActivity.setTheme","light");
-			if (forPopup)
-				activity.setTheme(R.style.PopupTheme);
-			else
-				activity.setTheme(R.style.Theme_Phoneprofilestheme);
-		}
-		else
-		if (GlobalData.applicationTheme.equals("dark"))
-		{
-			//Log.d("EditorProfilesActivity.setTheme","dark");
-			if (forPopup)
-				activity.setTheme(R.style.PopupTheme_dark);
-			else
-				activity.setTheme(R.style.Theme_Phoneprofilestheme_dark);
-		}
-	}
-
 	//------------------------------------------------------------
 	
 	public static void startService(Context context)
@@ -378,7 +312,6 @@ public class GlobalData extends Application {
 			//Intent broadcast = new Intent(context, PhoneProfilesServiceSheduler.class);
 			//broadcast.setAction(BROADCAST_ACTION);
 			//context.sendBroadcast(broadcast);
-			PhoneProfilesService.started = false;
 			Intent service = new Intent(context, PhoneProfilesService.class);
 			context.startService(service);
 		/*	

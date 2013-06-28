@@ -285,7 +285,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		{
 			// pridanie noveho profilu
 			profile = new Profile(getResources().getString(R.string.profile_name_default), 
-								  GlobalData.PROFILE_ICON_DEFAULT + "|1", 
+								  GUIData.PROFILE_ICON_DEFAULT + "|1", 
 								  false, 
 								  0,
 								  0,

@@ -46,9 +46,11 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		GlobalData.setTheme(this, true);
-		GlobalData.setLanguage(getBaseContext());
+		GUIData.setTheme(this, true);
+		GUIData.setLanguage(getBaseContext());
 
+		GUIData.getData(GlobalData.context);
+		
 		//requestWindowFeature(Window.FEATURE_ACTION_BAR);
 
 		setContentView(R.layout.activity_shortcut_creator);
@@ -178,7 +180,7 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 		else
 		{
 			isIconResourceID = true;
-			iconIdentifier = GlobalData.PROFILE_ICON_DEFAULT;
+			iconIdentifier = GUIData.PROFILE_ICON_DEFAULT;
 			profileName = getResources().getString(R.string.profile_name_default);
 		}
 

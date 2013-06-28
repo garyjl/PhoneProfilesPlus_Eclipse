@@ -1,7 +1,5 @@
 package sk.henrichg.phoneprofiles;
 
-import java.util.List;
-
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -16,9 +14,11 @@ public class PhoneProfilesService extends Service {
 	
 	private Context context = null;
 	
-	public static ProfilesDataWrapper profilesDataWrapper = null;
-	
-    public static boolean started = false; 
+	// TOTO JE PROBLEM!!!
+	// KED PRESUNIE OS SERVICE DO NOVEHO PROCESU, STATIC KOMPONENTY
+	// NEFUNGUJU
+	//public static ProfilesDataWrapper profilesDataWrapper = null;
+	private ProfilesDataWrapper profilesDataWrapper = null;
 	
 	@Override
 	public void onCreate()
@@ -27,9 +27,9 @@ public class PhoneProfilesService extends Service {
 		
 		// initialization
   	    context = getApplicationContext();
-  	    profilesDataWrapper = new ProfilesDataWrapper(context, false);
-		
-		started = true;
+  	    profilesDataWrapper = new ProfilesDataWrapper(context);
+  	    
+  	    GlobalData.loadPreferences(context);
 	}
 	
 	@Override
@@ -44,7 +44,6 @@ public class PhoneProfilesService extends Service {
 	public void onDestroy()
 	{
 		Log.d("PhoneProfilesService.onDestroy", "xxx");
-		started = false;
 	}
 	
 	@Override

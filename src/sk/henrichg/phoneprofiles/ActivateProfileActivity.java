@@ -55,11 +55,12 @@ public class ActivateProfileActivity extends SherlockActivity {
 		super.onCreate(savedInstanceState);
 		
 		GlobalData.startService(getApplicationContext());
+		GUIData.getData(GlobalData.context);
 
 		//Debug.startMethodTracing("phoneprofiles");
 		
-		GlobalData.setTheme(this, true);
-		GlobalData.setLanguage(getBaseContext());
+		GUIData.setTheme(this, true);
+		GUIData.setLanguage(getBaseContext());
 
 		//requestWindowFeature(Window.FEATURE_ACTION_BAR);
 		
@@ -251,7 +252,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 			// lebo v tychto pripadoch sa nesmie spravit aktivacia profilu
 			// pri starte aktivity
 			
-			if (!GlobalData.getApplicationStarted())
+			if (!GUIData.getApplicationStarted())
 			{
 				// aplikacia este nie je nastartovana, takze mozeme
 				// aktivovat profil, ak je nastavene, ze sa tak ma stat 
@@ -287,7 +288,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 		startupSource = 0;
 
 		// na onStart dame, ze aplikacia uz je nastartovana
-		GlobalData.setApplicationStarted(true);
+		GUIData.setApplicationStarted(true);
 		
 		//Log.d("PhoneProfileActivity.onStart", "xxxx");
 		
@@ -445,7 +446,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 		if (GlobalData.applicationClose)
 		{	
 			// ma sa zatvarat aktivita po aktivacii
-			if (GlobalData.getApplicationStarted())
+			if (GUIData.getApplicationStarted())
 				// aplikacia je uz spustena, mozeme aktivitu zavriet
 				// tymto je vyriesene, ze pri spusteni aplikacie z launchera
 				// sa hned nezavrie

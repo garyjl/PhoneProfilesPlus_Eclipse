@@ -12,7 +12,7 @@ public class ProfilesDataWrapper {
 	private ActivateProfileHelper activateProfileHelper = null;
 	private List<Profile> profileList = null;
 	
-	ProfilesDataWrapper(Context c, boolean swapIntoServiceData)
+	ProfilesDataWrapper(Context c)
 	{
 		context = c;
 		databaseHandler = getDatabaseHandler();

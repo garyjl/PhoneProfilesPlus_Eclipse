@@ -13,6 +13,8 @@ public class ActivateProfileWidget extends AppWidgetProvider {
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
 	{
+		GUIData.getData(GlobalData.context);
+
 		Profile profile = GUIData.profilesDataWrapper.getActivatedProfile();
 
 		// ziskanie vsetkych wigetov tejtor triedy na plochach lauchera
@@ -34,7 +36,7 @@ public class ActivateProfileWidget extends AppWidgetProvider {
 			else
 			{
 				isIconResourceID = true;
-				iconIdentifier = GlobalData.PROFILE_ICON_DEFAULT;
+				iconIdentifier = GUIData.PROFILE_ICON_DEFAULT;
 				profileName = context.getResources().getString(R.string.profile_name_default);
 			}
 			

@@ -19,7 +19,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	// All Static variables
 	// Database Version
-	private static final int DATABASE_VERSION = 22;
+	private static final int DATABASE_VERSION = 23;
 
 	// Database Name
 	private static final String DATABASE_NAME = "phoneProfilesManager";
@@ -104,6 +104,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME + " TEXT"
 				+ ")";
 		db.execSQL(CREATE_PROFILES_TABLE);
+		
+		db.execSQL("CREATE INDEX IDX_PORDER ON " + TABLE_PROFILES + " (" + KEY_PORDER + ")");
+
 	}
 
 	@Override
@@ -223,6 +226,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			// updatneme zaznamy
 			db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_DEVICE_RUN_APPLICATION_CHANGE + "=0");
 			db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME + "=\"-\"");
+		}
+		
+		if (oldVersion < 23)
+		{
+			// index na PORDER
+			db.execSQL("CREATE INDEX IDX_PORDER ON " + TABLE_PROFILES + " (" + KEY_PORDER + ")");
 		}
 		
 		

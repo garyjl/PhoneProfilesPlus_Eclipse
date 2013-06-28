@@ -37,11 +37,13 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
-		GlobalData.setTheme(this, false);
-		GlobalData.setLanguage(getBaseContext());
+		GUIData.setTheme(this, false);
+		GUIData.setLanguage(getBaseContext());
 
 		super.onCreate(savedInstanceState);
 		
+		GUIData.getData(GlobalData.context);
+
 		applicationsCache = new ApplicationsCache();
 		
 		setContentView(R.layout.activity_editor_profile_list);

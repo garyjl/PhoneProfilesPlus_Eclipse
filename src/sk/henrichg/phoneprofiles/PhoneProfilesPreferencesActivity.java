@@ -31,8 +31,8 @@ public class PhoneProfilesPreferencesActivity extends
 	@Override public void onCreate(Bundle savedInstanceState) {
 
 		// must by called before super.onCreate() for PreferenceActivity
-		GlobalData.setTheme(this, false);
-		GlobalData.setLanguage(getBaseContext());
+		GUIData.setTheme(this, false);
+		GUIData.setLanguage(getBaseContext());
 		
 		
 		// Set header resource MUST BE CALLED BEFORE super.onCreate 
@@ -127,14 +127,14 @@ public class PhoneProfilesPreferencesActivity extends
 	protected void onPause()
 	{
 		super.onPause();
-		GlobalData.loadPreferences();
+		GlobalData.loadPreferences(GlobalData.context);
 		
 		Log.d("PhoneProfilesPreferencesActivity.onPause", "xxx");
 		
 		if (activeLanguage != GlobalData.applicationLanguage)
 		{
     		//Log.d("PhoneProfilesPreferencesActivity.onPause","language changed");
-			GlobalData.setLanguage(getBaseContext());
+			GUIData.setLanguage(GlobalData.context);
 			invalidateEditor = true;
 		}
 		else
