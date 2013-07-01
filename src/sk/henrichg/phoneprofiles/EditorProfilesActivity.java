@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
+import android.os.RemoteException;
 import android.preference.PreferenceScreen;
 import android.content.ComponentName;
 import android.content.Context;
@@ -43,23 +44,6 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	 */
 	private boolean mTwoPane;
 	
-	private boolean serviceConnected;
-
-    private ServiceConnection serviceConnection = new ServiceConnection() {
-
-    	public void onServiceConnected(ComponentName className, IBinder service) {
-    		serviceConnected = true;
-    		GUIData.profilesDataWrapper.sendMessageIntoService(service, PhoneProfilesService.MSG_RELOAD_DATA);
-        }
-
-        public void onServiceDisconnected(ComponentName className) {
-            // This is called when the connection with the service has been unexpectedly disconnected - process crashed.
-        	GUIData.profilesDataWrapper.phoneProfilesService = null;
-        	serviceConnected = false;
-        }
-
-    };
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -153,8 +137,11 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	protected void onDestroy()
 	{
 		applicationsCache.clearCache();
-		if (serviceConnected)
-			unbindService(serviceConnection);
+		GUIData.profilesDataWrapper.phoneProfilesService = null;
+    	try {
+    		GlobalData.context.unbindService(GUIData.profilesDataWrapper.serviceConnection);
+        } catch (Exception e) {
+        }	
 		super.onDestroy();
 	}
 	
@@ -274,7 +261,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			fragment.getActivateProfileHelper().updateWidget();
 			
 			// send message into service
-	        bindService(new Intent(this, PhoneProfilesService.class), serviceConnection, Context.BIND_AUTO_CREATE);
+	        //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
+			GUIData.profilesDataWrapper.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
 		}
 	}
 
@@ -292,12 +280,14 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	
 	public void onProfileOrderChanged() {
 		// send message into service
-        bindService(new Intent(this, PhoneProfilesService.class), serviceConnection, Context.BIND_AUTO_CREATE);
+        //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
+		GUIData.profilesDataWrapper.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
 	}
 
 	public void onProfileCountChanged() {
 		// send message into service
-        bindService(new Intent(this, PhoneProfilesService.class), serviceConnection, Context.BIND_AUTO_CREATE);
+        //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
+		GUIData.profilesDataWrapper.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
 	}
 	
 

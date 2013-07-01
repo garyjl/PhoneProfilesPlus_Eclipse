@@ -14,6 +14,7 @@ import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Messenger;
 import android.preference.PreferenceScreen;
  
 public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
@@ -21,23 +22,6 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 	                                                       OnRestartProfilePreferences,
 	                                                       OnRedrawListFragment
 {
-	
-	private boolean serviceConnected = false;
-	
-    private ServiceConnection serviceConnection = new ServiceConnection() {
-
-    	public void onServiceConnected(ComponentName className, IBinder service) {
-    		serviceConnected = true;
-    		GUIData.profilesDataWrapper.sendMessageIntoService(service, PhoneProfilesService.MSG_RELOAD_DATA);
-        }
-
-        public void onServiceDisconnected(ComponentName className) {
-            // This is called when the connection with the service has been unexpectedly disconnected - process crashed.
-        	GUIData.profilesDataWrapper.phoneProfilesService = null;
-        	serviceConnected = false;
-        }
-
-    };
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,8 +56,6 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 	@Override
 	protected void onDestroy()
 	{
-		if (serviceConnected)
-			unbindService(serviceConnection);
 		super.onDestroy();
 	}
 
@@ -111,7 +93,8 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 		// all redraws are in EditorProfilesActivity.onStart()
 
 		// send message into service
-        bindService(new Intent(this, PhoneProfilesService.class), serviceConnection, Context.BIND_AUTO_CREATE);
+        //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
+		GUIData.profilesDataWrapper.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
 	}
 	
 	public void onPreferenceAttached(PreferenceScreen root, int xmlId) {

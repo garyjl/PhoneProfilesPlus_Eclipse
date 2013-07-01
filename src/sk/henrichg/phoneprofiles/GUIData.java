@@ -25,7 +25,7 @@ public class GUIData {
 		//	profilesDataWrapper = PhoneProfilesService.profilesDataWrapper;
 			
 		if (profilesDataWrapper == null)
-			profilesDataWrapper = new ProfilesDataWrapper(context);
+			profilesDataWrapper = new ProfilesDataWrapper(context, true);
 	}
 	
 	public static boolean getApplicationStarted()

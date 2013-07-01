@@ -23,6 +23,7 @@ public class PhoneProfilesService extends Service {
 
 	// messages from GUI
 	static final int MSG_RELOAD_DATA = 1;
+	
 	// Target we publish for clients to send messages to IncomingHandler.
 	final Messenger messenger = new Messenger(new IncomingHandler());   	    
 
@@ -46,7 +47,7 @@ public class PhoneProfilesService extends Service {
 		
 		// initialization
   	    context = getApplicationContext();
-  	    profilesDataWrapper = new ProfilesDataWrapper(context);
+  	    profilesDataWrapper = new ProfilesDataWrapper(context, false);
   	    
   	    GlobalData.loadPreferences(context);
   	    
@@ -67,8 +68,17 @@ public class PhoneProfilesService extends Service {
 	}
 	
 	@Override
-	public IBinder onBind(Intent arg0) {
+	public IBinder onBind(Intent intent)
+	{
+		Log.d("PhoneProfilesService.onBind","xxx");
 		return messenger.getBinder();
+	}
+	
+	@Override
+	public boolean onUnbind(Intent intent)
+	{
+		Log.d("PhoneProfilesService.onUnbind","xxx");
+		return false;
 	}
 
 /*	public class MyBinder extends Binder {
@@ -81,6 +91,7 @@ public class PhoneProfilesService extends Service {
 
 	private void reloadData()
 	{
+		Log.d("PhoneProfilesService.reloadData","xxx");
 		profilesDataWrapper.reloadProfilesData();
 	}
 }

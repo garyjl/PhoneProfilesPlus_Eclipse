@@ -2,24 +2,30 @@ package sk.henrichg.phoneprofiles;
 
 import java.util.List;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.util.Log;
 
 public class ProfilesDataWrapper {
 
 	private Context context = null;
+	private boolean forGUI = false;
 
 	private DatabaseHandler databaseHandler = null;
 	private ActivateProfileHelper activateProfileHelper = null;
 	private List<Profile> profileList = null;
 	
-	ProfilesDataWrapper(Context c)
+	ProfilesDataWrapper(Context c, boolean fgui)
 	{
 		context = c;
+		forGUI = fgui;
 		databaseHandler = getDatabaseHandler();
 		activateProfileHelper = getActivateProfileHelper();
 		profileList = getProfileList();
@@ -47,10 +53,13 @@ public class ProfilesDataWrapper {
 		{
 			profileList = getDatabaseHandler().getAllProfiles();
 		
-			for (Profile profile : profileList)
+			if (forGUI)
 			{
-				profile.generateIconBitmap(context);
-				profile.generatePreferencesIndicator(context);
+				for (Profile profile : profileList)
+				{
+					profile.generateIconBitmap(context);
+					profile.generatePreferencesIndicator(context);
+				}
 			}
 		}
 
@@ -144,6 +153,34 @@ public class ProfilesDataWrapper {
 		return null;
 	}
 	
+	public void reloadProfilesData()
+	{
+		clearProfileList();
+		getProfileList();
+	}
+	
+	//---------------------------------------------------------------------------
+	
+	private int msgForBind;
+
+	public Messenger phoneProfilesService = null;
+	
+    public ServiceConnection serviceConnection = new ServiceConnection() {
+
+    	public void onServiceConnected(ComponentName className, IBinder service) {
+    		Log.d("ProfilesDataWrapper.onServiceConnected","xxx");
+    		phoneProfilesService = new Messenger(service);
+    		sendMessageIntoService(msgForBind);
+        }
+
+        public void onServiceDisconnected(ComponentName className) {
+            // This is called when the connection with the service has been unexpectedly disconnected - process crashed.
+    		Log.d("ProfilesDataWrapper.onServiceDisconnected","xxx");
+        	phoneProfilesService = null;
+        }
+
+    };
+	
     final Messenger mMessenger = new Messenger(new IncomingHandler());
 	
     class IncomingHandler extends Handler {
@@ -156,24 +193,23 @@ public class ProfilesDataWrapper {
         }
     }
     
-	public Messenger phoneProfilesService;
-
-    public void sendMessageIntoService(IBinder service, int message)
+    public void sendMessageIntoService(int message)
 	{
-		phoneProfilesService = new Messenger(service);
-        try {
-            Message msg = Message.obtain(null, message);
-            msg.replyTo = mMessenger;
-            phoneProfilesService.send(msg);
-        } catch (RemoteException e) {
-            // In this case the service has crashed before we could even do anything with it
-        }
+   		msgForBind = message;
+        context.bindService(new Intent(context, PhoneProfilesService.class), serviceConnection, Context.BIND_AUTO_CREATE);
+
+	    if (phoneProfilesService != null)
+    	{
+	
+	    	try {
+	            Message msg = Message.obtain(null, message);
+	            msg.replyTo = mMessenger;
+	            phoneProfilesService.send(msg);
+	        } catch (RemoteException e) {
+	            // In this case the service has crashed before we could even do anything with it
+	        }
+    	}
 	}
 	
-	public void reloadProfilesData()
-	{
-		clearProfileList();
-		getProfileList();
-	}
 	
 }
