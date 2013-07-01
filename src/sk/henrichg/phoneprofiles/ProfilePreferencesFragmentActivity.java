@@ -7,14 +7,9 @@ import sk.henrichg.phoneprofiles.ProfilePreferencesFragment.OnRestartProfilePref
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.os.Messenger;
 import android.preference.PreferenceScreen;
  
 public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity

@@ -11,15 +11,8 @@ import sk.henrichg.phoneprofiles.ProfilePreferencesFragment.OnRestartProfilePref
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import android.os.Bundle;
-import android.os.IBinder;
-import android.os.Message;
-import android.os.Messenger;
-import android.os.RemoteException;
 import android.preference.PreferenceScreen;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import android.util.Log;
 import com.actionbarsherlock.view.Menu;
