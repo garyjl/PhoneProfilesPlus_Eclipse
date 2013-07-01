@@ -101,6 +101,8 @@ public class GlobalData extends Application {
     
 	public void onCreate()
 	{
+	//	Debug.startMethodTracing("phoneprofiles");
+		
 		super.onCreate();
 		
 		context = getApplicationContext();
