@@ -46,6 +46,7 @@
         <item name="actionDeleteIcon">@drawable/ic_action_delete_dark</item>
         <item name="actionProfilePrefSave">@drawable/ic_action_profile_pref_save_dark</item>
         <item name="actionProfilePrefCancel">@drawable/ic_action_profile_pref_cancel_dark</item>
+        <item name="actionProfileToolBackground">@drawable/selectable_background_phoneprofilestheme_dark</item>
         
         <item name="actionModeCloseButtonStyle">@style/NoCloseButton</item>
         <item name="android:actionModeCloseButtonStyle">@style/NoCloseButton</item>

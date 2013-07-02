@@ -36,5 +36,6 @@
     <attr name="actionDeleteIcon" format="reference" />
     <attr name="actionProfilePrefSave" format="reference" />
     <attr name="actionProfilePrefCancel" format="reference" />
+    <attr name="actionProfileToolBackground" format="reference" />
     
 </resources>

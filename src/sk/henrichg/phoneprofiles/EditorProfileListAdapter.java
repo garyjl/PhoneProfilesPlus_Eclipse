@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class EditorProfileListAdapter extends BaseAdapter
@@ -151,10 +152,31 @@ public class EditorProfileListAdapter extends BaseAdapter
         		vi = inflater.inflate(R.layout.editor_profile_list_item_no_indicator, null);
         }
 		
+        RelativeLayout listItemRoot = (RelativeLayout)vi.findViewById(R.id.main_list_item_root);
         TextView profileName = (TextView)vi.findViewById(R.id.main_list_item_profile_name);
         ImageView profileIcon = (ImageView)vi.findViewById(R.id.main_list_item_profile_icon);
         
         Profile profile = profileList.get(position);
+
+        if (!GlobalData.applicationEditorHeader)
+        {
+	        if (profile._checked)
+	        {
+	        	if (GlobalData.applicationTheme.equals("light"))
+	        		listItemRoot.setBackgroundResource(R.drawable.header_card);
+	        	else
+	           	if (GlobalData.applicationTheme.equals("dark"))
+	           		listItemRoot.setBackgroundResource(R.drawable.header_card_dark);
+	        }
+	        else
+	        {
+	        	if (GlobalData.applicationTheme.equals("light"))
+	        		listItemRoot.setBackgroundResource(R.drawable.card);
+	        	else
+	           	if (GlobalData.applicationTheme.equals("dark"))
+	           		listItemRoot.setBackgroundResource(R.drawable.card_dark);
+	        }
+        }
         
         profileName.setText(profile._name);
         if (profile.getIsIconResourceID())
