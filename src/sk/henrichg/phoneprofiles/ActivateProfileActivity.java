@@ -5,7 +5,6 @@ import com.actionbarsherlock.app.SherlockActivity;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Debug;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
