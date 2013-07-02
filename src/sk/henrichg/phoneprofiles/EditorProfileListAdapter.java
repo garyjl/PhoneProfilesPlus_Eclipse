@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -211,7 +210,7 @@ public class EditorProfileListAdapter extends BaseAdapter
 
 				public void onClick(View v) {
 					editIconClicked = true;
-					Log.d("EditorProfileListAdapter.onClick", "activate");
+					//Log.d("EditorProfileListAdapter.onClick", "activate");
 					((EditorProfileListFragment)fragment).finishProfilePreferencesActionMode();
 					((EditorProfileListFragment)fragment).activateProfileWithAlert(_position);
 				}
@@ -223,7 +222,7 @@ public class EditorProfileListAdapter extends BaseAdapter
 
 				public void onClick(View v) {
 					editIconClicked = true;
-					Log.d("EditorProfileListAdapter.onClick", "duplicate");
+					//Log.d("EditorProfileListAdapter.onClick", "duplicate");
 					((EditorProfileListFragment)fragment).finishProfilePreferencesActionMode();
 					((EditorProfileListFragment)fragment).duplicateProfile(_position);
 				}
@@ -235,7 +234,7 @@ public class EditorProfileListAdapter extends BaseAdapter
 
 				public void onClick(View v) {
 					editIconClicked = true;
-					Log.d("EditorProfileListAdapter.onClick", "delete");
+					//Log.d("EditorProfileListAdapter.onClick", "delete");
 					((EditorProfileListFragment)fragment).finishProfilePreferencesActionMode();
 					((EditorProfileListFragment)fragment).deleteProfile(_position);
 				}

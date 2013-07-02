@@ -13,7 +13,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
@@ -145,7 +144,7 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 				// set popup window dimensions
 				activity.getWindow().setLayout(popupWidth, popupHeight);
 				
-				Log.d("ActivateProfilesActivity.onPreDraw", "linlayoutRoot");
+				//Log.d("ActivateProfilesActivity.onPreDraw", "linlayoutRoot");
 				return true;
 			}
 		});

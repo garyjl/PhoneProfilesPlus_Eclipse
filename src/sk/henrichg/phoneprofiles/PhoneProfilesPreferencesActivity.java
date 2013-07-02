@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.Log;
 import net.saik0.android.unifiedpreference.UnifiedPreferenceFragment;
 import net.saik0.android.unifiedpreference.UnifiedSherlockPreferenceActivity;
 
@@ -129,7 +128,7 @@ public class PhoneProfilesPreferencesActivity extends
 		super.onPause();
 		GlobalData.loadPreferences(GlobalData.context);
 		
-		Log.d("PhoneProfilesPreferencesActivity.onPause", "xxx");
+		//Log.d("PhoneProfilesPreferencesActivity.onPause", "xxx");
 		
 		if (activeLanguage != GlobalData.applicationLanguage)
 		{
@@ -140,7 +139,7 @@ public class PhoneProfilesPreferencesActivity extends
 		else
 		if (activeTheme != GlobalData.applicationTheme)
 		{
-    		Log.d("PhoneProfilesPreferencesActivity.onPause","theme changed");
+    		//Log.d("PhoneProfilesPreferencesActivity.onPause","theme changed");
     		//EditorProfilesActivity.setTheme(this, false);
 			invalidateEditor = true;
 		}

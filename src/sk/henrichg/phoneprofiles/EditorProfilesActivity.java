@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.preference.PreferenceScreen;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.util.Log;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -112,7 +111,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 
 		if (PhoneProfilesPreferencesActivity.getInvalidateEditor(true))
 		{
-			Log.d("EditorProfilesActivity.onStart", "invalidate");
+			//Log.d("EditorProfilesActivity.onStart", "invalidate");
 
 			// refresh activity
 			Intent refresh = new Intent(getBaseContext(), EditorProfilesActivity.class);
@@ -130,11 +129,6 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	protected void onDestroy()
 	{
 		applicationsCache.clearCache();
-		GUIData.profilesDataWrapper.phoneProfilesService = null;
-    	try {
-    		GlobalData.context.unbindService(GUIData.profilesDataWrapper.serviceConnection);
-        } catch (Exception e) {
-        }	
 		super.onDestroy();
 	}
 	
@@ -294,7 +288,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		EditorProfileListFragment fragment = (EditorProfileListFragment)activity.getSupportFragmentManager().findFragmentById(R.id.editor_profile_list);
 		if (fragment != null)
 		{
-			Log.d("EditorProfileActivity.updateListView","");
+			//Log.d("EditorProfileActivity.updateListView","");
 			fragment.updateListView();
 		}
 	}

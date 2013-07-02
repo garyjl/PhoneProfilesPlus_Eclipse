@@ -27,7 +27,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class ActivateProfileActivity extends SherlockActivity {
 
@@ -317,6 +316,12 @@ public class ActivateProfileActivity extends SherlockActivity {
 	@Override
 	protected void onDestroy()
 	{
+		GUIData.profilesDataWrapper.phoneProfilesService = null;
+    	try {
+    		GlobalData.context.unbindService(GUIData.profilesDataWrapper.serviceConnection);
+        } catch (Exception e) {
+        }	
+		
 	//	Debug.stopMethodTracing();
 
 		super.onDestroy();
@@ -425,7 +430,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 	
 	private void activateProfile(Profile profile, boolean interactive)
 	{
-		profileListAdapter.activateProfile(profile);
+	/*	profileListAdapter.activateProfile(profile);
 		GUIData.profilesDataWrapper.getDatabaseHandler().activateProfile(profile);
 		
 		activateProfileHelper.execute(profile, interactive);
@@ -453,13 +458,31 @@ public class ActivateProfileActivity extends SherlockActivity {
 				// tymto je vyriesene, ze pri spusteni aplikacie z launchera
 				// sa hned nezavrie
 				finish();
+		} */
+		
+		profileListAdapter.activateProfile(profile);
+
+		GUIData.profilesDataWrapper.sendMessageIntoServiceLong(PhoneProfilesService.MSG_ACTIVATE_PROFILE, 
+				                            profile._id);
+
+		if (GlobalData.applicationClose)
+		{	
+			// ma sa zatvarat aktivita po aktivacii
+			if (GUIData.getApplicationStarted())
+				// aplikacia je uz spustena, mozeme aktivitu zavriet
+				// tymto je vyriesene, ze pri spusteni aplikacie z launchera
+				// sa hned nezavrie
+				finish();
 		}
 	}
 	
 	private void activateProfile(int position, boolean interactive)
 	{
+		//Log.d("ActivateProfileActivity.activateProfile","size="+profileList.size());
+		//Log.d("ActivateProfileActivity.activateProfile","position="+position);
 		Profile profile = profileList.get(position);
+		//Log.d("ActivateProfileActivity.activateProfile","profile_id="+profile._id);
 		activateProfile(profile, interactive);
-	}
+	} 
 	
 }

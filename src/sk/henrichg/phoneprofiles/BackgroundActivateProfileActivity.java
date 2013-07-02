@@ -7,6 +7,7 @@ import android.content.Intent;
 
 public class BackgroundActivateProfileActivity extends Activity {
 
+	private ProfilesDataWrapper profilesDataWrapper;
 	private DatabaseHandler databaseHandler;
 	private ActivateProfileHelper activateProfileHelper;
 	
@@ -16,19 +17,21 @@ public class BackgroundActivateProfileActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		//Log.d("BackgroundActivateProfileActivity.onCreate","xxx");
 		
-		GUIData.getData(GlobalData.context);
+		profilesDataWrapper = new ProfilesDataWrapper(getBaseContext(), true);
 		
 		intent = getIntent();
 		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
 		
-		activateProfileHelper = GUIData.profilesDataWrapper.getActivateProfileHelper();
+		activateProfileHelper = profilesDataWrapper.getActivateProfileHelper();
 		activateProfileHelper.initialize(this, getBaseContext());
 
 		// initialize global profile list
-		GUIData.profilesDataWrapper.getProfileList();
+		profilesDataWrapper.getProfileList();
 
-		databaseHandler = GUIData.profilesDataWrapper.getDatabaseHandler();
+		databaseHandler = profilesDataWrapper.getDatabaseHandler();
 		
 	}
 
@@ -37,7 +40,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 	{
 		super.onStart();
 
-		//Log.d("ActivateProfileActivity.onStart", "startupSource="+startupSource);
+		//Log.d("BackgroundActivateProfileActivity.onStart", "startupSource="+startupSource);
 		
 		boolean actProfile = false;
 		boolean interactive = false;
@@ -48,9 +51,10 @@ public class BackgroundActivateProfileActivity extends Activity {
 			interactive = true;
 		}
 		else
-		if (startupSource == GlobalData.STARTUP_SOURCE_BOOT)
+		if ((startupSource == GlobalData.STARTUP_SOURCE_BOOT) ||
+			(startupSource == GlobalData.STARTUP_SOURCE_SERVICE))	
 		{
-			// aktivita bola spustena po boote telefonu
+			// aktivita bola spustena po boote telefonu alebo zo service
 			
 			if (GlobalData.applicationActivate)
 			{
@@ -63,17 +67,19 @@ public class BackgroundActivateProfileActivity extends Activity {
 		Profile profile;
 		
 		// pre profil, ktory je prave aktivny, treba aktualizovat aktivitu
-		profile = GUIData.profilesDataWrapper.getActivatedProfile();
+		profile = profilesDataWrapper.getActivatedProfile();
 		activateProfileHelper.showNotification(profile);
 		activateProfileHelper.updateWidget();
 		
-		if (startupSource == GlobalData.STARTUP_SOURCE_SHORTCUT)
+		if ((startupSource == GlobalData.STARTUP_SOURCE_SHORTCUT) ||
+			(startupSource == GlobalData.STARTUP_SOURCE_SERVICE))	
 		{
 			long profile_id = intent.getLongExtra(GlobalData.EXTRA_PROFILE_ID, 0);
+			//Log.d("BackgroundActivateProfileActivity.onStart", "profile_id="+profile_id);
 			if (profile_id == 0)
 				profile = null;
 			else
-				profile = GUIData.profilesDataWrapper.getProfileById(profile_id);
+				profile = profilesDataWrapper.getProfileById(profile_id);
 		}
 		
 		if (actProfile && (profile != null))
@@ -90,7 +96,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 	private void activateProfile(Profile profile, boolean interactive)
 	{
 		databaseHandler.activateProfile(profile);
-		GUIData.profilesDataWrapper.activateProfile(profile);
+		profilesDataWrapper.activateProfile(profile);
 
 		activateProfileHelper.execute(profile, interactive);
 		activateProfileHelper.showNotification(profile);

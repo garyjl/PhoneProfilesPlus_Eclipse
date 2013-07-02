@@ -774,15 +774,15 @@ public class ActivateProfileHelper {
 	{
 		boolean isEnabled = Settings.Secure.isLocationProviderEnabled(context.getContentResolver(), LocationManager.GPS_PROVIDER);
 
-		Log.d("ActivateProfileHelper.setGPS", isEnabled + "");
+		//Log.d("ActivateProfileHelper.setGPS", isEnabled + "");
 	    
 	    //if(!provider.contains(LocationManager.GPS_PROVIDER) && enable)
 		if ((!isEnabled)  && enable)
 	    {
-    		Log.d("ActivateProfileHelper.setGPS", "enable=true");
+    		//Log.d("ActivateProfileHelper.setGPS", "enable=true");
 	    	if (GlobalData.canExploitGPS(context))
 	    	{
-	    		Log.d("ActivateProfileHelper.setGPS", "exploit");
+	    		//Log.d("ActivateProfileHelper.setGPS", "exploit");
 		        final Intent poke = new Intent();
 		        poke.setClassName("com.android.settings", "com.android.settings.widget.SettingsAppWidgetProvider"); 
 		        poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
@@ -793,7 +793,7 @@ public class ActivateProfileHelper {
 	    	if ((android.os.Build.VERSION.SDK_INT >= 17) && GlobalData.isRooted())
 			{
 				// zariadenie je rootnute
-	    		Log.d("ActivateProfileHelper.setGPS", "root");
+	    		//Log.d("ActivateProfileHelper.setGPS", "root");
 				String command1;
 				//String command2;
 
@@ -828,7 +828,7 @@ public class ActivateProfileHelper {
 	    	}
 			else
 			{
-	    		Log.d("ActivateProfileHelper.setGPS", "normal");
+	    		//Log.d("ActivateProfileHelper.setGPS", "normal");
 				Intent intent = new Intent("android.location.GPS_ENABLED_CHANGE");
 				intent.putExtra("enabled", enable);
 				context.sendBroadcast(intent); 
@@ -843,10 +843,10 @@ public class ActivateProfileHelper {
         //if(provider.contains(LocationManager.GPS_PROVIDER) && (!enable))
 		if (isEnabled && (!enable))
         {
-    		Log.d("ActivateProfileHelper.setGPS", "enable=false");
+    		//Log.d("ActivateProfileHelper.setGPS", "enable=false");
     		if (GlobalData.canExploitGPS(context))
 	    	{
-	    		Log.d("ActivateProfileHelper.setGPS", "exploit");
+	    		//Log.d("ActivateProfileHelper.setGPS", "exploit");
 	            final Intent poke = new Intent();
 	            poke.setClassName("com.android.settings", "com.android.settings.widget.SettingsAppWidgetProvider");
 	            poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
@@ -857,7 +857,7 @@ public class ActivateProfileHelper {
 	    	if ((android.os.Build.VERSION.SDK_INT >= 17) && GlobalData.isRooted())
 			{
 				// zariadenie je rootnute
-	    		Log.d("ActivateProfileHelper.setGPS", "root");
+	    		//Log.d("ActivateProfileHelper.setGPS", "root");
 				String command1;
 				//String command2;
 
@@ -912,7 +912,7 @@ public class ActivateProfileHelper {
 	    	}
 			else
 			{
-	    		Log.d("ActivateProfileHelper.setGPS", "normal");
+	    		//Log.d("ActivateProfileHelper.setGPS", "normal");
 				Intent intent = new Intent("android.location.GPS_ENABLED_CHANGE");
 				intent.putExtra("enabled", enable);
 				context.sendBroadcast(intent); 

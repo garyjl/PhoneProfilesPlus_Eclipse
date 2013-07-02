@@ -13,8 +13,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.os.Debug;
-import android.util.Log;
 
 public class GlobalData extends Application {
 
@@ -33,6 +31,7 @@ public class GlobalData extends Application {
 	static final int STARTUP_SOURCE_SHORTCUT = 3;
 	static final int STARTUP_SOURCE_BOOT = 4;
 	static final int STARTUP_SOURCE_ACTIVATOR = 5;
+	static final int STARTUP_SOURCE_SERVICE = 6;
 
 	// musi byt tu, pouziva t ActivateProfileHelper
 	static final int NOTIFICATION_ID = 700420;
@@ -112,9 +111,9 @@ public class GlobalData extends Application {
 		// initialization
 		loadPreferences(getApplicationContext());
 
-		Log.d("GlobalData.onCreate", "memory usage (after create activateProfileHelper)=" + Debug.getNativeHeapAllocatedSize());
+		//Log.d("GlobalData.onCreate", "memory usage (after create activateProfileHelper)=" + Debug.getNativeHeapAllocatedSize());
 		
-		Log.d("GlobalData.onCreate","xxx");
+		//Log.d("GlobalData.onCreate","xxx");
 		
 	}
 	
@@ -309,7 +308,7 @@ public class GlobalData extends Application {
 	{
 		if (!isServiceRunning(context))
 		{
-			Log.d("GlobaData.startService","xxx");
+			//Log.d("GlobaData.startService","xxx");
 			
 			//Intent broadcast = new Intent(context, PhoneProfilesServiceSheduler.class);
 			//broadcast.setAction(BROADCAST_ACTION);
@@ -375,11 +374,11 @@ public class GlobalData extends Application {
 	    ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
 	    for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
 	        if (PhoneProfilesService.class.getName().equals(service.service.getClassName())) {
-	        	Log.d("GlobalData.isServiceRunning","true");
+	        	//Log.d("GlobalData.isServiceRunning","true");
 	            return true;
 	        }
 	    }
-    	Log.d("GlobalData.isServiceRunning","false");
+    	//Log.d("GlobalData.isServiceRunning","false");
 	    return false;
 	}
 }

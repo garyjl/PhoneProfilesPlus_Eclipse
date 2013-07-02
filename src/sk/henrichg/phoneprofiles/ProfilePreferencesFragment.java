@@ -17,7 +17,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -105,7 +104,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
         // getting attached fragment data
 		if (getArguments().containsKey(GlobalData.EXTRA_PROFILE_POSITION))
 			profile_position = getArguments().getInt(GlobalData.EXTRA_PROFILE_POSITION);
-    	Log.d("ProfilePreferencesFragment.onCreate", "profile_position=" + profile_position);
+    	//Log.d("ProfilePreferencesFragment.onCreate", "profile_position=" + profile_position);
 		
         context = getSherlockActivity().getBaseContext();
         
@@ -417,7 +416,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
             actionMode.getCustomView().findViewById(R.id.profile_preferences_action_menu_cancel).setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					
-					Log.d("actionMode.onClick", "cancel");
+					//Log.d("actionMode.onClick", "cancel");
 					
 					actionMode.finish();
 					
@@ -427,7 +426,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
             actionMode.getCustomView().findViewById(R.id.profile_preferences_action_menu_save).setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					
-					Log.d("actionMode.onClick", "save");
+					//Log.d("actionMode.onClick", "save");
 			
 					savePreferences();
 					

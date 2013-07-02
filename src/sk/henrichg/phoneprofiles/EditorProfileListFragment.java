@@ -10,7 +10,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.util.Log;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -192,7 +191,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-				Log.d("EditorProfileListFragment.onItemClick", "xxxx");
+				//Log.d("EditorProfileListFragment.onItemClick", "xxxx");
 
 				startProfilePreferencesActivity(position);
 				
@@ -204,7 +203,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 
 			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-				Log.d("EditorProfileListFragment.onItemLongClick", "xxxx");
+				//Log.d("EditorProfileListFragment.onItemLongClick", "xxxx");
 				
 				if (!EditorProfileListAdapter.editIconClicked) // workaround
 				{
@@ -229,7 +228,7 @@ public class EditorProfileListFragment extends SherlockFragment {
         
         //listView.setRemoveListener(onRemove);
 
-		Log.d("EditorProfileListFragment.onActivityCreated", "xxx");
+		//Log.d("EditorProfileListFragment.onActivityCreated", "xxx");
         
 	}
 	
@@ -242,7 +241,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		if (PhoneProfilesPreferencesActivity.getInvalidateEditor(false))
 			return;
 		
-		Log.d("EditorProfileListFragment.onStart", "xxx");
+		//Log.d("EditorProfileListFragment.onStart", "xxx");
 		
 		Profile profile;
 		
@@ -538,7 +537,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 	
 	private void activateProfile(Profile profile, boolean interactive)
 	{
-		profileListAdapter.activateProfile(profile);
+	/*	profileListAdapter.activateProfile(profile);
 		databaseHandler.activateProfile(profile);
 		
 		activateProfileHelper.execute(profile, interactive);
@@ -556,7 +555,13 @@ public class EditorProfileListFragment extends SherlockFragment {
 			msg.show();
 		}
 
-		activateProfileHelper.showNotification(profile);
+		activateProfileHelper.showNotification(profile); */
+		
+		profileListAdapter.activateProfile(profile);
+
+		GUIData.profilesDataWrapper.sendMessageIntoServiceLong(PhoneProfilesService.MSG_ACTIVATE_PROFILE, 
+				                            profile._id);
+		
 
 	}
 	
