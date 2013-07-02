@@ -147,9 +147,9 @@ public class EditorProfileListAdapter extends BaseAdapter
         if (convertView == null)
         {
         	if (GlobalData.applicationEditorPrefIndicator)
-        		vi = inflater.inflate(R.layout.editor_profile_list_item, null);
+        		vi = inflater.inflate(R.layout.editor_profile_list_item, parent, false);
         	else
-        		vi = inflater.inflate(R.layout.editor_profile_list_item_no_indicator, null);
+        		vi = inflater.inflate(R.layout.editor_profile_list_item_no_indicator, parent, false);
         }
 		
         RelativeLayout listItemRoot = (RelativeLayout)vi.findViewById(R.id.main_list_item_root);
@@ -158,24 +158,21 @@ public class EditorProfileListAdapter extends BaseAdapter
         
         Profile profile = profileList.get(position);
 
-        if (!GlobalData.applicationEditorHeader)
+        if (profile._checked && (!GlobalData.applicationEditorHeader))
         {
-	        if (profile._checked)
-	        {
-	        	if (GlobalData.applicationTheme.equals("light"))
-	        		listItemRoot.setBackgroundResource(R.drawable.header_card);
-	        	else
-	           	if (GlobalData.applicationTheme.equals("dark"))
-	           		listItemRoot.setBackgroundResource(R.drawable.header_card_dark);
-	        }
-	        else
-	        {
-	        	if (GlobalData.applicationTheme.equals("light"))
-	        		listItemRoot.setBackgroundResource(R.drawable.card);
-	        	else
-	           	if (GlobalData.applicationTheme.equals("dark"))
-	           		listItemRoot.setBackgroundResource(R.drawable.card_dark);
-	        }
+        	if (GlobalData.applicationTheme.equals("light"))
+        		listItemRoot.setBackgroundResource(R.drawable.header_card);
+        	else
+           	if (GlobalData.applicationTheme.equals("dark"))
+           		listItemRoot.setBackgroundResource(R.drawable.header_card_dark);
+        }
+        else
+        {
+        	if (GlobalData.applicationTheme.equals("light"))
+        		listItemRoot.setBackgroundResource(R.drawable.card);
+        	else
+           	if (GlobalData.applicationTheme.equals("dark"))
+           		listItemRoot.setBackgroundResource(R.drawable.card_dark);
         }
         
         profileName.setText(profile._name);

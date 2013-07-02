@@ -33,10 +33,10 @@
                      android:topRightRadius="2.0dip"
                      android:bottomLeftRadius="2.0dip"
                      android:bottomRightRadius="2.0dip" />
-            <padding android:left="8.0dip"
-                     android:top="8.0dip"
-                     android:right="8.0dip"
-                     android:bottom="8.0dip" />
+            <padding android:left="2.0dip"
+                     android:top="2.0dip"
+                     android:right="2.0dip"
+                     android:bottom="2.0dip" />
         </shape>
     </item>
 

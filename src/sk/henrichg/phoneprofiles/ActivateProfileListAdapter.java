@@ -133,9 +133,9 @@ public class ActivateProfileListAdapter extends BaseAdapter
         if (convertView == null)
         {
         	if (GlobalData.applicationActivatorPrefIndicator)
-        		vi = inflater.inflate(R.layout.activate_profile_list_item, null);
+        		vi = inflater.inflate(R.layout.activate_profile_list_item, parent, false);
         	else
-        		vi = inflater.inflate(R.layout.activate_profile_list_item_no_indicator, null);
+        		vi = inflater.inflate(R.layout.activate_profile_list_item_no_indicator, parent, false);
         }
 
         RelativeLayout listItemRoot = (RelativeLayout)vi.findViewById(R.id.act_prof_list_item_root);
@@ -144,25 +144,22 @@ public class ActivateProfileListAdapter extends BaseAdapter
         
 
         Profile profile = profileList.get(position);
-        
-        if (!GlobalData.applicationActivatorHeader)
+
+        if (profile._checked && (!GlobalData.applicationActivatorHeader))
         {
-	        if (profile._checked)
-	        {
-	        	if (GlobalData.applicationTheme.equals("light"))
-	        		listItemRoot.setBackgroundResource(R.drawable.header_card);
-	        	else
-	           	if (GlobalData.applicationTheme.equals("dark"))
-	           		listItemRoot.setBackgroundResource(R.drawable.header_card_dark);
-	        }
-	        else
-	        {
-	        	if (GlobalData.applicationTheme.equals("light"))
-	        		listItemRoot.setBackgroundResource(R.drawable.card);
-	        	else
-	           	if (GlobalData.applicationTheme.equals("dark"))
-	           		listItemRoot.setBackgroundResource(R.drawable.card_dark);
-	        }
+        	if (GlobalData.applicationTheme.equals("light"))
+        		listItemRoot.setBackgroundResource(R.drawable.header_card);
+        	else
+           	if (GlobalData.applicationTheme.equals("dark"))
+           		listItemRoot.setBackgroundResource(R.drawable.header_card_dark);
+        }
+        else
+        {
+        	if (GlobalData.applicationTheme.equals("light"))
+        		listItemRoot.setBackgroundResource(R.drawable.card);
+        	else
+           	if (GlobalData.applicationTheme.equals("dark"))
+           		listItemRoot.setBackgroundResource(R.drawable.card_dark);
         }
         
         profileName.setText(profile._name);
@@ -192,7 +189,7 @@ public class ActivateProfileListAdapter extends BaseAdapter
 			//profilePrefIndicatorImageView.setImageBitmap(bitmap);
 			profilePrefIndicatorImageView.setImageBitmap(profile._preferencesIndicator);
 		}
-			
+
         /*		ImageView profileItemEditMenu = (ImageView)vi.findViewById(R.id.act_prof_list_item_edit_menu);
 		profileItemEditMenu.setTag(position);
 		profileItemEditMenu.setOnClickListener(new OnClickListener() {
