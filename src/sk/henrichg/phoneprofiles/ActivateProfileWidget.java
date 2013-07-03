@@ -10,12 +10,17 @@ import android.widget.RemoteViews;
 
 public class ActivateProfileWidget extends AppWidgetProvider {
 	
+	private ProfilesDataWrapper profilesDataWrapper;
+	
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
 	{
-		GUIData.getData(GlobalData.context);
-
-		Profile profile = GUIData.profilesDataWrapper.getActivatedProfile();
+		
+		GlobalData.loadPreferences(GlobalData.context);
+		
+		profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, false);
+		
+		Profile profile = profilesDataWrapper.getActivatedProfile();
 
 		// ziskanie vsetkych wigetov tejtor triedy na plochach lauchera
 		ComponentName thisWidget = new ComponentName(context, ActivateProfileWidget.class);

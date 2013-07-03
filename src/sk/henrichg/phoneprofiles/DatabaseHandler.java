@@ -129,65 +129,37 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL("ALTER TABLE " + TABLE_PROFILES + " ADD COLUMN " + KEY_DEVICE_WALLPAPER + " TEXT");
 			
 			// updatneme zaznamy
-			db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_DEVICE_WALLPAPER_CHANGE + "=0");
-			db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_DEVICE_WALLPAPER + "='-'");
+			db.beginTransaction();
+			try {
+				db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_DEVICE_WALLPAPER_CHANGE + "=0");
+				db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_DEVICE_WALLPAPER + "='-'");
+				db.setTransactionSuccessful();
+		     } catch (Exception e){
+		         //Error in between database transaction 
+		     } finally {
+		    	db.endTransaction();
+	         }	
 		}
 		
 		if (oldVersion < 18)
 		{
-			db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_ICON + "=replace(" + KEY_ICON + ",':','|')");
-			db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_VOLUME_RINGTONE + "=replace(" + KEY_VOLUME_RINGTONE + ",':','|')");
-			db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_VOLUME_NOTIFICATION + "=replace(" + KEY_VOLUME_NOTIFICATION + ",':','|')");
-			db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_VOLUME_MEDIA + "=replace(" + KEY_VOLUME_MEDIA + ",':','|')");
-			db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_VOLUME_ALARM + "=replace(" + KEY_VOLUME_ALARM + ",':','|')");
-			db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_VOLUME_SYSTEM + "=replace(" + KEY_VOLUME_SYSTEM + ",':','|')");
-			db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_VOLUME_VOICE + "=replace(" + KEY_VOLUME_VOICE + ",':','|')");
-			db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_DEVICE_BRIGHTNESS + "=replace(" + KEY_DEVICE_BRIGHTNESS + ",':','|')");
-			db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_DEVICE_WALLPAPER + "=replace(" + KEY_DEVICE_WALLPAPER + ",':','|')");
-			
-/*			String selectQuery = "SELECT " + 
-		             KEY_ID + "," +
-                     KEY_ICON + "," +
-	         		 KEY_VOLUME_RINGTONE + "," +
-	         		 KEY_VOLUME_NOTIFICATION + "," +
-	         		 KEY_VOLUME_MEDIA + "," +
-	         		 KEY_VOLUME_ALARM + "," +
-	         		 KEY_VOLUME_SYSTEM + "," +
-	         		 KEY_VOLUME_VOICE + "," +
-	         		 KEY_DEVICE_BRIGHTNESS + "," +
-	         		 KEY_DEVICE_WALLPAPER +
-	         		 " FROM " + TABLE_PROFILES;
-			Cursor cursor = db.rawQuery(selectQuery, null);
-			long id;
-			String icon;
-			String volumeRingtone;
-			String volumeNotification;
-			String volumeMedia;
-			String volumeAlarm;
-			String volumeSystem;
-			String volumeVoice;
-			String deviceBrightness;
-			String deviceWallpaper;
-
-			// looping through all rows and adding to list
-			if (cursor.moveToFirst()) {
-				do {
-					id = Long.parseLong(cursor.getString(0));
-					icon = cursor.getString(1);
-					volumeRingtone = cursor.getString(2).replaceAll(":", "|");
-					volumeNotification = cursor.getString(3).replaceAll(":", "|");
-					volumeMedia = cursor.getString(4).replaceAll(":", "|");
-					volumeAlarm = cursor.getString(5).replaceAll(":", "|");
-					volumeSystem = cursor.getString(6).replaceAll(":", "|");
-					volumeVoice = cursor.getString(7).replaceAll(":", "|");
-					deviceBrightness = cursor.getString(8).replaceAll(":", "|");
-					deviceWallpaper = cursor.getString(9).replaceAll(":", "|");
-					
-				} while (cursor.moveToNext());
-			}
-
-			cursor.close(); */
-			
+			db.beginTransaction();
+			try {
+				db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_ICON + "=replace(" + KEY_ICON + ",':','|')");
+				db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_VOLUME_RINGTONE + "=replace(" + KEY_VOLUME_RINGTONE + ",':','|')");
+				db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_VOLUME_NOTIFICATION + "=replace(" + KEY_VOLUME_NOTIFICATION + ",':','|')");
+				db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_VOLUME_MEDIA + "=replace(" + KEY_VOLUME_MEDIA + ",':','|')");
+				db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_VOLUME_ALARM + "=replace(" + KEY_VOLUME_ALARM + ",':','|')");
+				db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_VOLUME_SYSTEM + "=replace(" + KEY_VOLUME_SYSTEM + ",':','|')");
+				db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_VOLUME_VOICE + "=replace(" + KEY_VOLUME_VOICE + ",':','|')");
+				db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_DEVICE_BRIGHTNESS + "=replace(" + KEY_DEVICE_BRIGHTNESS + ",':','|')");
+				db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_DEVICE_WALLPAPER + "=replace(" + KEY_DEVICE_WALLPAPER + ",':','|')");
+				db.setTransactionSuccessful();
+		     } catch (Exception e){
+		         //Error in between database transaction 
+		     } finally {
+		    	db.endTransaction();
+	         }	
 		}
 		
 		if (oldVersion < 19)
@@ -224,8 +196,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL("ALTER TABLE " + TABLE_PROFILES + " ADD COLUMN " + KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME + " TEXT");
 			
 			// updatneme zaznamy
-			db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_DEVICE_RUN_APPLICATION_CHANGE + "=0");
-			db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME + "=\"-\"");
+			db.beginTransaction();
+			try {
+				db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_DEVICE_RUN_APPLICATION_CHANGE + "=0");
+				db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME + "=\"-\"");
+				db.setTransactionSuccessful();
+		     } catch (Exception e){
+		         //Error in between database transaction 
+		     } finally {
+		    	db.endTransaction();
+	         }	
 		}
 		
 		if (oldVersion < 23)
@@ -559,24 +539,33 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	{
 		SQLiteDatabase db = this.getWritableDatabase();
 
-		// update all profiles checked to false
-		ContentValues valuesAll = new ContentValues();
-		valuesAll.put(KEY_CHECKED, 0);
-
-		db.update(TABLE_PROFILES, valuesAll, null, null);
-
-		// updating checked = true for profile
-		//profile.setChecked(true);
 		
-		ContentValues values = new ContentValues();
-		//values.put(KEY_CHECKED, (profile.getChecked()) ? 1 : 0);
-		values.put(KEY_CHECKED, 1);
+		db.beginTransaction();
+		try {
+			// update all profiles checked to false
+			ContentValues valuesAll = new ContentValues();
+			valuesAll.put(KEY_CHECKED, 0);
+			db.update(TABLE_PROFILES, valuesAll, null, null);
 
-		db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
-				        new String[] { String.valueOf(profile._id) });
+			// updating checked = true for profile
+			//profile.setChecked(true);
+			
+			ContentValues values = new ContentValues();
+			//values.put(KEY_CHECKED, (profile.getChecked()) ? 1 : 0);
+			values.put(KEY_CHECKED, 1);
+
+			db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
+					        new String[] { String.valueOf(profile._id) });
+
+			
+			db.setTransactionSuccessful();
+	     } catch (Exception e){
+	         //Error in between database transaction 
+	     } finally {
+	    	db.endTransaction();
+         }	
 		
-        db.close();
-		
+         db.close();
 	}
 	
 	public Profile getActivatedProfile()
@@ -669,19 +658,140 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 	}
 	
+	public Profile getFirstProfile()
+	{
+		String selectQuery = "SELECT " + KEY_ID + "," +
+						                 KEY_NAME + "," +
+						                 KEY_ICON + "," +
+						                 KEY_CHECKED + "," +
+						                 KEY_PORDER + "," +
+										 KEY_VOLUME_RINGER_MODE + "," +
+						        		 KEY_VOLUME_RINGTONE + "," +
+						        		 KEY_VOLUME_NOTIFICATION + "," +
+						        		 KEY_VOLUME_MEDIA + "," +
+						        		 KEY_VOLUME_ALARM + "," +
+						        		 KEY_VOLUME_SYSTEM + "," +
+						        		 KEY_VOLUME_VOICE + "," +
+						        		 KEY_SOUND_RINGTONE_CHANGE + "," +
+						        		 KEY_SOUND_RINGTONE + "," +
+						        		 KEY_SOUND_NOTIFICATION_CHANGE + "," +
+						        		 KEY_SOUND_NOTIFICATION + "," +
+						        		 KEY_SOUND_ALARM_CHANGE + "," +
+						        		 KEY_SOUND_ALARM + "," +
+						        		 KEY_DEVICE_AIRPLANE_MODE + "," +
+						        		 KEY_DEVICE_WIFI + "," +
+						        		 KEY_DEVICE_BLUETOOTH + "," +
+						        		 KEY_DEVICE_SCREEN_TIMEOUT + "," +
+						        		 KEY_DEVICE_BRIGHTNESS + "," +
+						        		 KEY_DEVICE_WALLPAPER_CHANGE + "," +
+						        		 KEY_DEVICE_WALLPAPER + "," +
+						        		 KEY_DEVICE_MOBILE_DATA + "," +
+						        		 KEY_DEVICE_MOBILE_DATA_PREFS + "," +
+						        		 KEY_DEVICE_GPS + "," +
+						        		 KEY_DEVICE_RUN_APPLICATION_CHANGE + "," +
+						        		 KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME +
+						    " FROM " + TABLE_PROFILES + " ORDER BY " + KEY_PORDER;
+
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.rawQuery(selectQuery, null);
+
+		Profile profile = null; 
+		
+		// looping through all rows and adding to list
+		if (cursor.moveToFirst()) {
+			profile = new Profile();
+			profile._id = Long.parseLong(cursor.getString(0));
+			profile._name = cursor.getString(1);
+			profile._icon = (cursor.getString(2));
+			profile._checked = ((Integer.parseInt(cursor.getString(3)) == 1) ? true : false);
+			profile._porder = (Integer.parseInt(cursor.getString(4)));
+			profile._volumeRingerMode = Integer.parseInt(cursor.getString(5));
+			profile._volumeRingtone = cursor.getString(6);
+			profile._volumeNotification = cursor.getString(7);
+			profile._volumeMedia = cursor.getString(8);
+			profile._volumeAlarm = cursor.getString(9);
+			profile._volumeSystem = cursor.getString(10);
+			profile._volumeVoice = cursor.getString(11);
+			profile._soundRingtoneChange = (Integer.parseInt(cursor.getString(12)) == 1) ? true : false;
+			profile._soundRingtone = cursor.getString(13);
+			profile._soundNotificationChange = (Integer.parseInt(cursor.getString(14)) == 1) ? true : false;
+			profile._soundNotification = cursor.getString(15);
+			profile._soundAlarmChange = (Integer.parseInt(cursor.getString(16)) == 1) ? true : false;
+			profile._soundAlarm = cursor.getString(17);
+			profile._deviceAirplaneMode = Integer.parseInt(cursor.getString(18));
+			profile._deviceWiFi = Integer.parseInt(cursor.getString(19));
+			profile._deviceBluetooth = Integer.parseInt(cursor.getString(20));
+			profile._deviceScreenTimeout = Integer.parseInt(cursor.getString(21));
+			profile._deviceBrightness = cursor.getString(22);
+			profile._deviceWallpaperChange = (Integer.parseInt(cursor.getString(23)) == 1) ? true : false;
+			profile._deviceWallpaper = cursor.getString(24);
+			profile._deviceMobileData = Integer.parseInt(cursor.getString(25));
+			profile._deviceMobileDataPrefs = (Integer.parseInt(cursor.getString(26)) == 1) ? true : false;
+			profile._deviceGPS = Integer.parseInt(cursor.getString(27));
+			profile._deviceRunApplicationChange = (Integer.parseInt(cursor.getString(28)) == 1) ? true : false;
+			profile._deviceRunApplicationPackageName = cursor.getString(29);
+		}
+		
+		cursor.close();
+		db.close();
+		
+		// return profile list
+		return profile;
+		
+	}
+	
+	public int getProfilePosition(Profile profile)
+	{
+		String selectQuery = "SELECT " + KEY_ID +
+							   " FROM " + TABLE_PROFILES + " ORDER BY " + KEY_PORDER;
+
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.rawQuery(selectQuery, null);
+		
+		// looping through all rows and adding to list
+		long lid;
+		int position = 0;
+		if (cursor.moveToFirst()) {
+			do {
+				lid = Long.parseLong(cursor.getString(0));
+				if (lid == profile._id)
+					return position;
+				position++;
+			} while (cursor.moveToNext());
+		}
+		
+		cursor.close();
+		db.close();
+		
+		// return profile list
+		return -1;
+		
+		
+	}
+	
 	public void setPOrder(List<Profile> list)
 	{
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		ContentValues values = new ContentValues();
-		
-		for (Profile profile : list)
-		{
-			values.put(KEY_PORDER, profile._porder);
 
-			db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
-				        new String[] { String.valueOf(profile._id) });
-		}
+		db.beginTransaction();
+		try {
+
+			for (Profile profile : list)
+			{
+				values.put(KEY_PORDER, profile._porder);
+
+				db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
+					        new String[] { String.valueOf(profile._id) });
+			}
+			
+			db.setTransactionSuccessful();
+	     } catch (Exception e){
+	         //Error in between database transaction 
+	     } finally {
+	    	db.endTransaction();
+         }	
 		
         db.close();
 	}
@@ -692,13 +802,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 		ContentValues values = new ContentValues();
 		
-		for (Profile profile : list)
-		{
-			values.put(KEY_CHECKED, profile._checked);
+		db.beginTransaction();
+		try {
 
-			db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
-				        new String[] { String.valueOf(profile._id) });
-		}
+			for (Profile profile : list)
+			{
+				values.put(KEY_CHECKED, profile._checked);
+
+				db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
+					        new String[] { String.valueOf(profile._id) });
+			}
+			
+			db.setTransactionSuccessful();
+	     } catch (Exception e){
+	         //Error in between database transaction 
+	     } finally {
+	    	db.endTransaction();
+         }	
 		
         db.close();
 	}

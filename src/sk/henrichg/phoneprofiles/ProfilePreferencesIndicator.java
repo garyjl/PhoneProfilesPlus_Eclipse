@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.util.Log;
 
 
 public class ProfilePreferencesIndicator {
@@ -110,15 +111,22 @@ public class ProfilePreferencesIndicator {
 				drawables[countDrawables++] = R.drawable.ic_profile_pref_wallpaper;
 			
 		}
+		else
+			countDrawables = -1;
 		
 		Bitmap indicatorBitmap;
-		if (countDrawables > 0)
+		if (countDrawables >= 0)
 		{
-			indicatorBitmap = createIndicatorBitmap(context, countDrawables);
-			Canvas canvas = new Canvas(indicatorBitmap);
+			if (countDrawables > 0)
+			{
+				indicatorBitmap = createIndicatorBitmap(context, countDrawables);
+				Canvas canvas = new Canvas(indicatorBitmap);
 			
-			for (int i = 0; i < countDrawables; i++)
-				addIndicator(indicatorBitmap, drawables[i], i, context, canvas);
+				for (int i = 0; i < countDrawables; i++)
+					addIndicator(indicatorBitmap, drawables[i], i, context, canvas);
+			}
+			else
+				indicatorBitmap = createIndicatorBitmap(context, 1);
 		}
 		else
 			indicatorBitmap = null;

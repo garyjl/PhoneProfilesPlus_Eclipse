@@ -27,8 +27,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class ShortcutCreatorActivity extends SherlockActivity {
 
-	//private DatabaseHandler databaseHandler;
-	
+	private ProfilesDataWrapper profilesDataWrapper;
 	private List<Profile> profileList;
 	private ShortcutProfileListAdapter profileListAdapter;
 	private LinearLayout linlayoutRoot;
@@ -48,8 +47,8 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 		GUIData.setTheme(this, true);
 		GUIData.setLanguage(getBaseContext());
 
-		GUIData.getData(GlobalData.context);
-		
+		profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, true);
+
 		//requestWindowFeature(Window.FEATURE_ACTION_BAR);
 
 		setContentView(R.layout.activity_shortcut_creator);
@@ -59,7 +58,7 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 		linlayoutRoot = (LinearLayout)findViewById(R.id.shortcut_profile_linlayout_root);
 		listView = (ListView)findViewById(R.id.shortcut_profiles_list);
 
-		profileList = GUIData.profilesDataWrapper.getProfileList();
+		profileList = profilesDataWrapper.getProfileList();
 
 		profileListAdapter = new ShortcutProfileListAdapter(this, profileList);
 		listView.setAdapter(profileListAdapter);

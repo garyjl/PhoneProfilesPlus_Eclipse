@@ -9,25 +9,11 @@ import android.content.res.Resources;
 
 public class GUIData {
 
-	public static ProfilesDataWrapper profilesDataWrapper = null;
-
 	private static boolean applicationStarted = false;
 	
 	static final String PROFILE_ICON_DEFAULT = "ic_profile_default";
 	
 
-	public static void getData(Context context)
-	{
-		// TOTO JE PROBLEM!!!
-		// KED PRESUNIE OS SERVICE DO NOVEHO PROCESU, STATIC KOMPONENTY
-		// NEFUNGUJU
-		//if ((profilesDataWrapper == null) && GlobalData.isServiceRunning(context))
-		//	profilesDataWrapper = PhoneProfilesService.profilesDataWrapper;
-			
-		if (profilesDataWrapper == null)
-			profilesDataWrapper = new ProfilesDataWrapper(context, true);
-	}
-	
 	public static boolean getApplicationStarted()
 	{
 		return applicationStarted;

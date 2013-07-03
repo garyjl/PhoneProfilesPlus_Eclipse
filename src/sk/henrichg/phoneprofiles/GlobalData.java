@@ -32,6 +32,7 @@ public class GlobalData extends Application {
 	static final int STARTUP_SOURCE_BOOT = 4;
 	static final int STARTUP_SOURCE_ACTIVATOR = 5;
 	static final int STARTUP_SOURCE_SERVICE = 6;
+	static final int STARTUP_SOURCE_SERVICE_INTERACTIVE = 7;
 
 	// musi byt tu, pouziva t ActivateProfileHelper
 	static final int NOTIFICATION_ID = 700420;

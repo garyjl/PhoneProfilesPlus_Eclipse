@@ -12,6 +12,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.util.Log;
 
 public class ProfilesDataWrapper {
 
@@ -22,13 +23,14 @@ public class ProfilesDataWrapper {
 	private ActivateProfileHelper activateProfileHelper = null;
 	private List<Profile> profileList = null;
 	
-	ProfilesDataWrapper(Context c, boolean fgui)
+	ProfilesDataWrapper(Context c, boolean fgui, boolean loadProfileList)
 	{
 		context = c;
 		forGUI = fgui;
 		databaseHandler = getDatabaseHandler();
 		activateProfileHelper = getActivateProfileHelper();
-		profileList = getProfileList();
+		if (loadProfileList)
+			profileList = getProfileList();
 	}
 	
 	public DatabaseHandler getDatabaseHandler()
@@ -76,14 +78,27 @@ public class ProfilesDataWrapper {
 	public Profile getActivatedProfile()
 	{
 		if (profileList == null)
-			getProfileList();
-
-		Profile profile;
-		for (int i = 0; i < profileList.size(); i++)
 		{
-			profile = profileList.get(i); 
-			if (profile._checked)
-				return profile;
+			//Log.d("ProfilesDataWrapper.getActivatedProfile","profileList=null");
+			Profile profile = getDatabaseHandler().getActivatedProfile();
+			if (forGUI)
+			{
+				//Log.d("ProfilesDataWrapper.getActivatedProfile","forGUI=true");
+				profile.generateIconBitmap(context);
+				profile.generatePreferencesIndicator(context);
+			}
+			return profile;
+		}
+		else
+		{
+			//Log.d("ProfilesDataWrapper.getActivatedProfile","profileList!=null");
+			Profile profile;
+			for (int i = 0; i < profileList.size(); i++)
+			{
+				profile = profileList.get(i); 
+				if (profile._checked)
+					return profile;
+			}
 		}
 		
 		return null;
@@ -92,34 +107,46 @@ public class ProfilesDataWrapper {
 	public Profile getFirstProfile()
 	{
 		if (profileList == null)
-			getProfileList();
-		
-		Profile profile;
-		if (profileList.size() > 0)
-			profile = profileList.get(0);
+		{
+			Profile profile = getDatabaseHandler().getFirstProfile();
+			if (forGUI)
+			{
+				profile.generateIconBitmap(context);
+				profile.generatePreferencesIndicator(context);
+			}
+			return profile;
+		}
 		else
-			profile = null;
-		
-		return profile;
+		{
+			Profile profile;
+			if (profileList.size() > 0)
+				profile = profileList.get(0);
+			else
+				profile = null;
+			
+			return profile;
+		}
 	}
 	
 	public int getItemPosition(Profile profile)
 	{
 		if (profileList == null)
-			getProfileList();
-		
-		for (int i = 0; i < profileList.size(); i++)
+			return getDatabaseHandler().getProfilePosition(profile);
+		else
 		{
-			if (profileList.get(i)._id == profile._id)
-				return i;
+			for (int i = 0; i < profileList.size(); i++)
+			{
+				if (profileList.get(i)._id == profile._id)
+					return i;
+			}
+			return -1;
 		}
-		return -1;
 	}
 	
 	public void activateProfile(Profile profile)
 	{
 		if (profileList == null)
-			getProfileList();
+			return;
 		
 		for (Profile p : profileList)
 		{
@@ -140,17 +167,27 @@ public class ProfilesDataWrapper {
 	public Profile getProfileById(long id)
 	{
 		if (profileList == null)
-			getProfileList();
-
-		Profile profile;
-		for (int i = 0; i < profileList.size(); i++)
 		{
-			profile = profileList.get(i); 
-			if (profile._id == id)
-				return profile;
+			Profile profile = getDatabaseHandler().getProfile(id);
+			if (forGUI)
+			{
+				profile.generateIconBitmap(context);
+				profile.generatePreferencesIndicator(context);
+			}
+			return profile;
 		}
-		
-		return null;
+		else
+		{
+			Profile profile;
+			for (int i = 0; i < profileList.size(); i++)
+			{
+				profile = profileList.get(i); 
+				if (profile._id == id)
+					return profile;
+			}
+			
+			return null;
+		}
 	}
 	
 	public void reloadProfilesData()
@@ -177,6 +214,8 @@ public class ProfilesDataWrapper {
         		sendMessageIntoService(msgForBind);
                 break;
             case PhoneProfilesService.MSG_ACTIVATE_PROFILE:
+            case PhoneProfilesService.MSG_ACTIVATE_PROFILE_INTERACTIVE:
+            //case PhoneProfilesService.MSG_PROFILE_ACTIVATED:
         		sendMessageIntoServiceLong(msgForBind, longDataForBind);
             	break;
             default:

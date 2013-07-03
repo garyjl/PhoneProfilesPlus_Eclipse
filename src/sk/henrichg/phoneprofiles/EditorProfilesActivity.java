@@ -44,8 +44,6 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 
 		super.onCreate(savedInstanceState);
 		
-		GUIData.getData(GlobalData.context);
-
 		applicationsCache = new ApplicationsCache();
 		
 		setContentView(R.layout.activity_editor_profile_list);
@@ -57,10 +55,10 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			// activity should be in two-pane mode.
 			mTwoPane = true;
 
-			Profile profile = GUIData.profilesDataWrapper.getFirstProfile();
+			Profile profile = ActivateProfileActivity.profilesDataWrapper.getFirstProfile();
 			
 			//if (profile != null)
-				onStartProfilePreferences(GUIData.profilesDataWrapper.getItemPosition(profile), false);
+				onStartProfilePreferences(ActivateProfileActivity.profilesDataWrapper.getItemPosition(profile), false);
 
 		}
 		
@@ -242,14 +240,14 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		if (fragment != null)
 		{
 			fragment.updateListView();
-			Profile profile = GUIData.profilesDataWrapper.getActivatedProfile();
+			Profile profile = ActivateProfileActivity.profilesDataWrapper.getActivatedProfile();
 			fragment.updateHeader(profile);
 			fragment.getActivateProfileHelper().showNotification(profile);
 			fragment.getActivateProfileHelper().updateWidget();
 			
 			// send message into service
 	        //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
-			GUIData.profilesDataWrapper.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
+			ActivateProfileActivity.profilesDataWrapper.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
 		}
 	}
 
@@ -268,13 +266,13 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	public void onProfileOrderChanged() {
 		// send message into service
         //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
-		GUIData.profilesDataWrapper.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
+		ActivateProfileActivity.profilesDataWrapper.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
 	}
 
 	public void onProfileCountChanged() {
 		// send message into service
         //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
-		GUIData.profilesDataWrapper.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
+		ActivateProfileActivity.profilesDataWrapper.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
 	}
 	
 

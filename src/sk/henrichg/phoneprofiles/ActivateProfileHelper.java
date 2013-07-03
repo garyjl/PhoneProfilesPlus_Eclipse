@@ -494,7 +494,7 @@ public class ActivateProfileHelper {
 			else
 			{
 				// close showed notification
-				notificationManager.cancel(GlobalData.NOTIFICATION_ID);
+				//notificationManager.cancel(GlobalData.NOTIFICATION_ID);
 				// vytvorenie intentu na aktivitu, ktora sa otvori na kliknutie na notifikaciu
 				Intent intent = new Intent(context, ActivateProfileActivity.class);
 				// nastavime, ze aktivita sa spusti z notifikacnej listy

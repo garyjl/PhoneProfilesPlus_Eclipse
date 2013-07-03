@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
+import android.util.Log;
 
 public class PhoneProfilesService extends Service {
 	
@@ -23,6 +24,8 @@ public class PhoneProfilesService extends Service {
 	// messages from GUI
 	public static final int MSG_RELOAD_DATA = 1;
 	public static final int MSG_ACTIVATE_PROFILE = 2;
+	public static final int MSG_ACTIVATE_PROFILE_INTERACTIVE = 3;
+	//public static final int MSG_PROFILE_ACTIVATED = 4;
 	
 	// Target we publish for clients to send messages to IncomingHandler.
 	final Messenger messenger = new Messenger(new IncomingHandler());   	    
@@ -35,8 +38,14 @@ public class PhoneProfilesService extends Service {
                 reloadData();
                 break;
             case MSG_ACTIVATE_PROFILE:
-            	activateProfile(msg.getData().getLong(GlobalData.EXTRA_PROFILE_ID));
+            	activateProfile(msg.getData().getLong(GlobalData.EXTRA_PROFILE_ID), false);
             	break;
+            case MSG_ACTIVATE_PROFILE_INTERACTIVE:
+            	activateProfile(msg.getData().getLong(GlobalData.EXTRA_PROFILE_ID), true);
+            	break;
+        /*    case MSG_PROFILE_ACTIVATED:
+            	setActivatedProfile(msg.getData().getLong(GlobalData.EXTRA_PROFILE_ID));
+            	break; */
             default:
                 super.handleMessage(msg);
             }
@@ -50,7 +59,7 @@ public class PhoneProfilesService extends Service {
 		
 		// initialization
   	    context = getApplicationContext();
-  	    profilesDataWrapper = new ProfilesDataWrapper(context, false);
+  	    profilesDataWrapper = new ProfilesDataWrapper(context, false, true);
   	    
   	    GlobalData.loadPreferences(context);
   	    
@@ -98,13 +107,26 @@ public class PhoneProfilesService extends Service {
 		profilesDataWrapper.reloadProfilesData();
 	}
 	
-	private void activateProfile(long profile_id)
+	private void activateProfile(long profile_id, boolean interactive)
 	{
 		//Log.d("PhoneProfilesService.activateProfile",profile_id+"");
 		Intent intent = new Intent(this, BackgroundActivateProfileActivity.class);
 	    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_SERVICE);
+	    if (interactive)
+			intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_SERVICE_INTERACTIVE);
+	    else
+	    	intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_SERVICE);
 		intent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile_id);
 	    startActivity(intent);		
+
+	    Profile profile = profilesDataWrapper.getProfileById(profile_id); 
+    	profilesDataWrapper.activateProfile(profile);
 	}
+	
+/*	private void setActivatedProfile(long profile_id)
+	{
+		Log.d("PhoneProfilesService.setActivatedProfile",profile_id+"");
+		Profile profile = profilesDataWrapper.getProfileById(profile_id); 
+    	profilesDataWrapper.activateProfile(profile);
+	}  */
 }

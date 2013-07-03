@@ -143,15 +143,15 @@ public class EditorProfileListFragment extends SherlockFragment {
 
 		super.onCreate(savedInstanceState);
 		
-		databaseHandler = GUIData.profilesDataWrapper.getDatabaseHandler(); 
+		databaseHandler = ActivateProfileActivity.profilesDataWrapper.getDatabaseHandler(); 
 		
 		intent = getSherlockActivity().getIntent();
 		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
 		
-		activateProfileHelper = GUIData.profilesDataWrapper.getActivateProfileHelper();
+		activateProfileHelper = ActivateProfileActivity.profilesDataWrapper.getActivateProfileHelper();
 		activateProfileHelper.initialize(getSherlockActivity(), getActivity().getBaseContext());
 		
-		profileList = GUIData.profilesDataWrapper.getProfileList();
+		profileList = ActivateProfileActivity.profilesDataWrapper.getProfileList();
 		profileListAdapter = new EditorProfileListAdapter(this, profileList);
 		
 		setHasOptionsMenu(true);
@@ -246,7 +246,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		Profile profile;
 		
 		// pre profil, ktory je prave aktivny, treba aktualizovat aktivitu
-		profile = GUIData.profilesDataWrapper.getActivatedProfile();
+		profile = ActivateProfileActivity.profilesDataWrapper.getActivatedProfile();
 		updateHeader(profile);
 		
 		if (startupSource == 0)
@@ -438,7 +438,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 				activateProfileHelper.showNotification(profile);
 				activateProfileHelper.updateWidget();
 				
-				profile = GUIData.profilesDataWrapper.getFirstProfile();
+				profile = ActivateProfileActivity.profilesDataWrapper.getFirstProfile();
 				onStartProfilePreferencesCallback.onStartProfilePreferences(profileListAdapter.getItemId(profile), true);
 				
 			}
@@ -467,7 +467,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 				activateProfileHelper.showNotification(null);
 				activateProfileHelper.updateWidget();
 				
-				Profile profile = GUIData.profilesDataWrapper.getFirstProfile();
+				Profile profile = ActivateProfileActivity.profilesDataWrapper.getFirstProfile();
 				onStartProfilePreferencesCallback.onStartProfilePreferences(profileListAdapter.getItemId(profile), true);
 				
 			}
@@ -558,8 +558,9 @@ public class EditorProfileListFragment extends SherlockFragment {
 		activateProfileHelper.showNotification(profile); */
 		
 		profileListAdapter.activateProfile(profile);
+		updateHeader(profile);
 
-		GUIData.profilesDataWrapper.sendMessageIntoServiceLong(PhoneProfilesService.MSG_ACTIVATE_PROFILE, 
+		ActivateProfileActivity.profilesDataWrapper.sendMessageIntoServiceLong(PhoneProfilesService.MSG_ACTIVATE_PROFILE, 
 				                            profile._id);
 		
 
@@ -602,7 +603,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 			public void onClick(DialogInterface dialog, int which) {
 				if (databaseHandler.importDB()  == 1)
 				{
-					GUIData.profilesDataWrapper.clearProfileList();
+					ActivateProfileActivity.profilesDataWrapper.clearProfileList();
 					onProfileCountChangedCallback.onProfileCountChanged();
 
 					// toast notification

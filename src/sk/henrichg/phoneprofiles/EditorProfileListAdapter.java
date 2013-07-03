@@ -138,6 +138,7 @@ public class EditorProfileListAdapter extends BaseAdapter
 			if (_profile != null)
 				_profile._checked = true;
 		}
+		notifyDataSetChanged();
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent)
