@@ -61,8 +61,8 @@ public class ApplicationsPreference extends Preference {
 
 		//Log.d("ApplicationsPreference.onBindView", "packageName="+packageName);
 		
-		preferenceTitleView = (TextView)view.findViewById(R.id.applications_pref_label);  // resource na title
-		preferenceTitleView.setText(preferenceTitle);
+		//preferenceTitleView = (TextView)view.findViewById(R.id.applications_pref_label);  // resource na title
+		//preferenceTitleView.setText(preferenceTitle);
 		
 		packageIcon = (ImageView)view.findViewById(R.id.applications_pref_icon); // resource na ImageView v custom preference layoute
 

@@ -59,6 +59,7 @@ public class ImageViewPreference extends Preference {
 		//Log.d("ImageViewPreference", "imageSource="+imageSource);
 		
 		setWidgetLayoutResource(R.layout.imageview_preference); // resource na layout custom preference - TextView-ImageView
+		//setLayoutResource(R.layout.imageview_preference); // resource na layout custom preference - TextView-ImageView
 		
 		typedArray.recycle();
 		
@@ -72,8 +73,8 @@ public class ImageViewPreference extends Preference {
 		//Log.d("ImageViewPreference.onBindView", "imageIdentifier="+imageIdentifier);
 		//Log.d("ImageViewPreference.onBindView", "isImageResourceID="+isImageResourceID);
 		
-		imageTitle = (TextView)view.findViewById(R.id.imageview_pref_label);  // resource na image title
-		imageTitle.setText(preferenceTitle);
+		//imageTitle = (TextView)view.findViewById(R.id.imageview_pref_label);  // resource na image title
+		//imageTitle.setText(preferenceTitle);
 		
 		imageView = (ImageView)view.findViewById(R.id.imageview_pref_imageview); // resource na Textview v custom preference layoute
 
