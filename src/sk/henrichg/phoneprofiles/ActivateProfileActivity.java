@@ -74,7 +74,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 		//getSupportActionBar().setHomeButtonEnabled(true);
 		//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, true);
+		profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, true, false);
 
 		profileList = profilesDataWrapper.getProfileList();
 

@@ -289,19 +289,6 @@ public class EditorProfileListFragment extends SherlockFragment {
 			deleteAllProfiles();
 			
 			return true;
-			
-		case R.id.menu_export:
-			//Log.d("EditorProfileListFragment.onOptionsItemSelected", "menu_export");
-
-			exportProfiles();
-			
-			return true;
-		case R.id.menu_import:
-			//Log.d("EditorProfileListFragment.onOptionsItemSelected", "menu_import");
-
-			importProfiles();
-			
-			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -576,82 +563,6 @@ public class EditorProfileListFragment extends SherlockFragment {
 	{
 		onFinishProfilePreferencesActionModeCallback.onFinishProfilePreferencesActionMode();
 	}
-	
-	private void importExportErrorDialog(int importExport)
-	{
-		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getSherlockActivity());
-		dialogBuilder.setTitle(getResources().getString(R.string.import_profiles_alert_title));
-		String resMessage;
-		if (importExport == 1)
-			resMessage = getResources().getString(R.string.import_profiles_alert_error);
-		else
-			resMessage = getResources().getString(R.string.export_profiles_alert_error);
-		dialogBuilder.setMessage(resMessage + "!");
-		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
-		dialogBuilder.setPositiveButton(android.R.string.ok, null);
-		dialogBuilder.show();
-	}
-	
-	private void importProfiles()
-	{
-		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getSherlockActivity());
-		dialogBuilder.setTitle(getResources().getString(R.string.import_profiles_alert_title));
-		dialogBuilder.setMessage(getResources().getString(R.string.import_profiles_alert_message) + "?");
-		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
-		dialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-			
-			public void onClick(DialogInterface dialog, int which) {
-				if (databaseHandler.importDB()  == 1)
-				{
-					ActivateProfileActivity.profilesDataWrapper.clearProfileList();
-					onProfileCountChangedCallback.onProfileCountChanged();
-
-					// toast notification
-					Toast msg = Toast.makeText(getSherlockActivity().getBaseContext(), 
-							getResources().getString(R.string.toast_import_ok), 
-							Toast.LENGTH_LONG);
-					msg.show();
-
-					// refresh activity
-					Intent refresh = new Intent(getSherlockActivity().getBaseContext(), EditorProfilesActivity.class);
-					startActivity(refresh);
-					getSherlockActivity().finish();
-				
-				}
-				else
-				{
-					importExportErrorDialog(1);
-				}
-			}
-		});
-		dialogBuilder.setNegativeButton(android.R.string.no, null);
-		dialogBuilder.show();
-	}
-
-	private void exportProfiles()
-	{
-		if (databaseHandler.exportDB() == 1)
-		{
-
-			// toast notification
-			Toast msg = Toast.makeText(getSherlockActivity().getBaseContext(), 
-					getResources().getString(R.string.toast_export_ok), 
-					Toast.LENGTH_LONG);
-			msg.show();
-		
-		}
-		else
-		{
-			importExportErrorDialog(2);
-		}
-		
-	}
-	
-	public ActivateProfileHelper getActivateProfileHelper()
-	{
-		return activateProfileHelper;
-	}
-	
 	
 	public void updateListView()
 	{

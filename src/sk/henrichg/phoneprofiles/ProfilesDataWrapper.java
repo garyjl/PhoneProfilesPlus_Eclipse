@@ -22,8 +22,9 @@ public class ProfilesDataWrapper {
 	private DatabaseHandler databaseHandler = null;
 	private ActivateProfileHelper activateProfileHelper = null;
 	private List<Profile> profileList = null;
+	private List<Event> eventList = null;
 	
-	ProfilesDataWrapper(Context c, boolean fgui, boolean loadProfileList)
+	ProfilesDataWrapper(Context c, boolean fgui, boolean loadProfileList, boolean loadEventList)
 	{
 		context = c;
 		forGUI = fgui;
@@ -31,6 +32,8 @@ public class ProfilesDataWrapper {
 		activateProfileHelper = getActivateProfileHelper();
 		if (loadProfileList)
 			profileList = getProfileList();
+		if (loadEventList)
+			eventList = getEventList();
 	}
 	
 	public DatabaseHandler getDatabaseHandler()
@@ -128,7 +131,7 @@ public class ProfilesDataWrapper {
 		}
 	}
 	
-	public int getItemPosition(Profile profile)
+	public int getProfileItemPosition(Profile profile)
 	{
 		if (profileList == null)
 			return getDatabaseHandler().getProfilePosition(profile);
@@ -154,7 +157,7 @@ public class ProfilesDataWrapper {
 		}
 		
 		// teraz musime najst profile v profileList 
-		int position = getItemPosition(profile);
+		int position = getProfileItemPosition(profile);
 		if (position != -1)
 		{
 			// najdenemu objektu nastavime _checked
@@ -195,6 +198,85 @@ public class ProfilesDataWrapper {
 		clearProfileList();
 		getProfileList();
 	}
+
+	public List<Event> getEventList()
+	{
+		if (eventList == null)
+		{
+			eventList = getDatabaseHandler().getAllEvents();
+		}
+
+		return eventList;
+	}
+
+	public void clearEventList()
+	{
+		if (eventList != null)
+			eventList.clear();
+		eventList = null;
+	}
+	
+	public Event getFirstEvent()
+	{
+		if (eventList == null)
+		{
+			Event event = getDatabaseHandler().getFirstEvent();
+			return event;
+		}
+		else
+		{
+			Event event;
+			if (eventList.size() > 0)
+				event = eventList.get(0);
+			else
+				event = null;
+			
+			return event;
+		}
+	}
+	
+	public int getEventItemPosition(Event event)
+	{
+		if (eventList == null)
+			return getDatabaseHandler().getEventPosition(event);
+		else
+		{
+			for (int i = 0; i < eventList.size(); i++)
+			{
+				if (eventList.get(i)._id == event._id)
+					return i;
+			}
+			return -1;
+		}
+	}
+	
+	public Event getEventById(long id)
+	{
+		if (eventList == null)
+		{
+			Event event = getDatabaseHandler().getEvent(id);
+			return event;
+		}
+		else
+		{
+			Event event;
+			for (int i = 0; i < eventList.size(); i++)
+			{
+				event = eventList.get(i); 
+				if (event._id == id)
+					return event;
+			}
+			
+			return null;
+		}
+	}
+	
+	public void reloadEventsData()
+	{
+		clearEventList();
+		getEventList();
+	}
+	
 	
 	//---------------------------------------------------------------------------
 	

@@ -12,6 +12,9 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import android.os.Bundle;
 import android.preference.PreferenceScreen;
+import android.widget.Toast;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import com.actionbarsherlock.view.Menu;
@@ -58,7 +61,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			Profile profile = ActivateProfileActivity.profilesDataWrapper.getFirstProfile();
 			
 			//if (profile != null)
-				onStartProfilePreferences(ActivateProfileActivity.profilesDataWrapper.getItemPosition(profile), false);
+				onStartProfilePreferences(ActivateProfileActivity.profilesDataWrapper.getProfileItemPosition(profile), false);
 
 		}
 		
@@ -152,13 +155,23 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			startActivity(intent);
 
 			return true;
+		case R.id.menu_export:
+			//Log.d("EditorProfileListFragment.onOptionsItemSelected", "menu_export");
+
+			exportData();
+			
+			return true;
+		case R.id.menu_import:
+			//Log.d("EditorProfileListFragment.onOptionsItemSelected", "menu_import");
+
+			importData();
+			
+			return true;
 		case R.id.menu_exit:
 			//Log.d("EditorProfilesActivity.onOptionsItemSelected", "menu_exit");
 			
 			// zrusenie notifikacie
-			EditorProfileListFragment fragment = (EditorProfileListFragment)getSupportFragmentManager().findFragmentById(R.id.editor_profile_list);
-			if (fragment != null)
-				fragment.getActivateProfileHelper().showNotification(null);
+			ActivateProfileActivity.profilesDataWrapper.getActivateProfileHelper().showNotification(null);
 			
 			// zrusenie service
 			GlobalData.stopService(getApplicationContext());
@@ -171,6 +184,76 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		}
 	}
 
+	private void importExportErrorDialog(int importExport)
+	{
+		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+		dialogBuilder.setTitle(getResources().getString(R.string.import_profiles_alert_title));
+		String resMessage;
+		if (importExport == 1)
+			resMessage = getResources().getString(R.string.import_profiles_alert_error);
+		else
+			resMessage = getResources().getString(R.string.export_profiles_alert_error);
+		dialogBuilder.setMessage(resMessage + "!");
+		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
+		dialogBuilder.setPositiveButton(android.R.string.ok, null);
+		dialogBuilder.show();
+	}
+	
+	private void importData()
+	{
+		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+		dialogBuilder.setTitle(getResources().getString(R.string.import_profiles_alert_title));
+		dialogBuilder.setMessage(getResources().getString(R.string.import_profiles_alert_message) + "?");
+		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
+		dialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+			
+			public void onClick(DialogInterface dialog, int which) {
+				if (ActivateProfileActivity.profilesDataWrapper.getDatabaseHandler().importDB()  == 1)
+				{
+					ActivateProfileActivity.profilesDataWrapper.clearProfileList();
+					onProfileCountChanged();
+
+					// toast notification
+					Toast msg = Toast.makeText(getBaseContext(), 
+							getResources().getString(R.string.toast_import_ok), 
+							Toast.LENGTH_LONG);
+					msg.show();
+
+					// refresh activity
+					Intent refresh = new Intent(getBaseContext(), EditorProfilesActivity.class);
+					startActivity(refresh);
+					finish();
+				
+				}
+				else
+				{
+					importExportErrorDialog(1);
+				}
+			}
+		});
+		dialogBuilder.setNegativeButton(android.R.string.no, null);
+		dialogBuilder.show();
+	}
+
+	private void exportData()
+	{
+		if (ActivateProfileActivity.profilesDataWrapper.getDatabaseHandler().exportDB() == 1)
+		{
+
+			// toast notification
+			Toast msg = Toast.makeText(getBaseContext(), 
+					getResources().getString(R.string.toast_export_ok), 
+					Toast.LENGTH_LONG);
+			msg.show();
+		
+		}
+		else
+		{
+			importExportErrorDialog(2);
+		}
+		
+	}
+	
 	@Override
 	public void onConfigurationChanged(Configuration newConfig)
 	{
@@ -242,8 +325,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			fragment.updateListView();
 			Profile profile = ActivateProfileActivity.profilesDataWrapper.getActivatedProfile();
 			fragment.updateHeader(profile);
-			fragment.getActivateProfileHelper().showNotification(profile);
-			fragment.getActivateProfileHelper().updateWidget();
+			ActivateProfileActivity.profilesDataWrapper.getActivateProfileHelper().showNotification(profile);
+			ActivateProfileActivity.profilesDataWrapper.getActivateProfileHelper().updateWidget();
 			
 			// send message into service
 	        //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);

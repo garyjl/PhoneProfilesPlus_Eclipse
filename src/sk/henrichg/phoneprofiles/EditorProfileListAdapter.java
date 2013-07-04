@@ -152,9 +152,9 @@ public class EditorProfileListAdapter extends BaseAdapter
         		vi = inflater.inflate(R.layout.editor_profile_list_item_no_indicator, parent, false);
         }
 		
-        RelativeLayout listItemRoot = (RelativeLayout)vi.findViewById(R.id.main_list_item_root);
-        TextView profileName = (TextView)vi.findViewById(R.id.main_list_item_profile_name);
-        ImageView profileIcon = (ImageView)vi.findViewById(R.id.main_list_item_profile_icon);
+        RelativeLayout listItemRoot = (RelativeLayout)vi.findViewById(R.id.profile_list_item_root);
+        TextView profileName = (TextView)vi.findViewById(R.id.profile_list_item_profile_name);
+        ImageView profileIcon = (ImageView)vi.findViewById(R.id.profile_list_item_profile_icon);
         
         Profile profile = profileList.get(position);
 
@@ -196,7 +196,7 @@ public class EditorProfileListAdapter extends BaseAdapter
         
 		if (GlobalData.applicationEditorPrefIndicator)
 		{
-			ImageView profilePrefIndicatorImageView = (ImageView)vi.findViewById(R.id.main_list_profile_pref_indicator);
+			ImageView profilePrefIndicatorImageView = (ImageView)vi.findViewById(R.id.profile_list_profile_pref_indicator);
 			//profilePrefIndicatorImageView.setImageBitmap(null);
 			//Bitmap bitmap = ProfilePreferencesIndicator.paint(profile, vi.getContext());
 			//profilePrefIndicatorImageView.setImageBitmap(bitmap);
@@ -205,8 +205,8 @@ public class EditorProfileListAdapter extends BaseAdapter
         
         final int _position = position;
 		
-		ImageView profileItemActivate = (ImageView)vi.findViewById(R.id.main_list_item_activate);
-		profileItemActivate.setTag(R.id.main_list_item_activate);
+		ImageView profileItemActivate = (ImageView)vi.findViewById(R.id.profile_list_item_activate);
+		profileItemActivate.setTag(R.id.profile_list_item_activate);
 		profileItemActivate.setOnClickListener(new OnClickListener() {
 
 				public void onClick(View v) {
@@ -217,8 +217,8 @@ public class EditorProfileListAdapter extends BaseAdapter
 				}
 			}); 
 
-		ImageView profileItemDuplicate = (ImageView)vi.findViewById(R.id.main_list_item_duplicate);
-		profileItemDuplicate.setTag(R.id.main_list_item_duplicate);
+		ImageView profileItemDuplicate = (ImageView)vi.findViewById(R.id.profile_list_item_duplicate);
+		profileItemDuplicate.setTag(R.id.profile_list_item_duplicate);
 		profileItemDuplicate.setOnClickListener(new OnClickListener() {
 
 				public void onClick(View v) {
@@ -229,8 +229,8 @@ public class EditorProfileListAdapter extends BaseAdapter
 				}
 			}); 
 
-		ImageView profileItemDelete = (ImageView)vi.findViewById(R.id.main_list_item_delete);
-		profileItemDelete.setTag(R.id.main_list_item_delete);
+		ImageView profileItemDelete = (ImageView)vi.findViewById(R.id.profile_list_item_delete);
+		profileItemDelete.setTag(R.id.profile_list_item_delete);
 		profileItemDelete.setOnClickListener(new OnClickListener() {
 
 				public void onClick(View v) {

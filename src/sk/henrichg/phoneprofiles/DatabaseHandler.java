@@ -794,7 +794,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		// return profile list
 		return -1;
 		
-		
 	}
 	
 	public void setPOrder(List<Profile> list)
@@ -989,6 +988,68 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.close();
 		
 		return r;
+	}
+	
+	public Event getFirstEvent()
+	{
+		String selectQuery = "SELECT " + KEY_E_ID + "," +
+						                 KEY_E_NAME + "," +
+						                 KEY_E_TYPE + "," +
+						                 KEY_E_FK_PROFILE + "," +
+						                 KEY_E_FK_PARAMS + "," +
+										 KEY_E_FK_PARAMS_EDIT +
+						    " FROM " + TABLE_EVENTS;
+
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.rawQuery(selectQuery, null);
+
+		Event event = null; 
+		
+		// looping through all rows and adding to list
+		if (cursor.moveToFirst()) {
+			event = new Event();
+			event._id = Long.parseLong(cursor.getString(0));
+			event._name = cursor.getString(1);
+			event._type = Integer.parseInt(cursor.getString(2));
+			event._fkProfile = Long.parseLong(cursor.getString(3));
+			event._fkParams = Long.parseLong(cursor.getString(4));
+			event._fkParamsEdit = Long.parseLong(cursor.getString(5));
+		}
+		
+		cursor.close();
+		db.close();
+		
+		// return profile list
+		return event;
+		
+	}
+	
+	public int getEventPosition(Event event)
+	{
+		String selectQuery = "SELECT " + KEY_E_ID +
+							   " FROM " + TABLE_EVENTS;
+
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.rawQuery(selectQuery, null);
+		
+		// looping through all rows and adding to list
+		long lid;
+		int position = 0;
+		if (cursor.moveToFirst()) {
+			do {
+				lid = Long.parseLong(cursor.getString(0));
+				if (lid == event._id)
+					return position;
+				position++;
+			} while (cursor.moveToNext());
+		}
+		
+		cursor.close();
+		db.close();
+		
+		// return profile list
+		return -1;
+		
 	}
 	
 // OTHERS -------------------------------------------------------------------------

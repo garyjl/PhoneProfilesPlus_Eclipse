@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--  Single List Item Design -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/profile_list_item_root"
+    android:id="@+id/event_list_item_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="1dp"
@@ -9,23 +9,11 @@
     android:background="?attr/cardShape" >
 
     <ImageView
-        android:id="@+id/profile_list_drag_handle"
-        android:layout_width="25dp"
-        android:layout_height="55dp"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:contentDescription="@string/empty_string"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:scaleType="center"
-        android:src="?attr/dragHandleIcon" />
-    
-    <ImageView
-        android:id="@+id/profile_list_item_profile_icon"
+        android:id="@+id/event_list_item_event_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@id/profile_list_drag_handle"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
         android:adjustViewBounds="true"
         android:contentDescription="@string/empty_string"
         android:maxHeight="40dp"
@@ -36,18 +24,18 @@
         android:src="@drawable/ic_profile_default" />
     
     <TextView
-        android:id="@+id/profile_list_item_profile_name"
+        android:id="@+id/event_list_item_event_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="3dp"
-        android:layout_toRightOf="@+id/profile_list_item_profile_icon"
+        android:layout_toRightOf="@+id/event_list_item_event_icon"
         android:paddingLeft="10dp"
-        android:text="@string/profile_name_default"
+        android:text="@string/event_name_default"
         android:textSize="15sp" />
 
     <ImageView
-        android:id="@+id/profile_list_item_delete"
+        android:id="@+id/event_list_item_delete"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_centerVertical="true"
@@ -61,11 +49,11 @@
         android:src="?attr/actionDeleteIcon" />
 
     <ImageView
-        android:id="@+id/profile_list_item_duplicate"
+        android:id="@+id/event_list_item_duplicate"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/profile_list_item_delete"
+        android:layout_toLeftOf="@+id/event_list_item_delete"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:scaleType="center"
@@ -74,19 +62,5 @@
         android:contentDescription="@string/empty_string"
         android:src="?attr/actionDuplicateIcon" />
 
-    <ImageView
-        android:id="@+id/profile_list_item_activate"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/profile_list_item_duplicate"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:scaleType="center"
-        android:clickable="true"
-        android:background="?attr/actionProfileToolBackground"
-        android:contentDescription="@string/empty_string"
-        android:src="?attr/actionActivateIcon" />
-    
 </RelativeLayout>
 

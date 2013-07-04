@@ -12,7 +12,6 @@ public class GUIData {
 	private static boolean applicationStarted = false;
 	
 	static final String PROFILE_ICON_DEFAULT = "ic_profile_default";
-	
 
 	public static boolean getApplicationStarted()
 	{

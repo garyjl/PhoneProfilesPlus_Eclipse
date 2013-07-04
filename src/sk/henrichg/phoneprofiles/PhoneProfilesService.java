@@ -59,7 +59,7 @@ public class PhoneProfilesService extends Service {
 		
 		// initialization
   	    context = getApplicationContext();
-  	    profilesDataWrapper = new ProfilesDataWrapper(context, false, true);
+  	    profilesDataWrapper = new ProfilesDataWrapper(context, false, true, true);
   	    
   	    GlobalData.loadPreferences(context);
   	    

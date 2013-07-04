@@ -47,7 +47,7 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 		GUIData.setTheme(this, true);
 		GUIData.setLanguage(getBaseContext());
 
-		profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, true);
+		profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, true, false);
 
 		//requestWindowFeature(Window.FEATURE_ACTION_BAR);
 

@@ -18,7 +18,7 @@ public class ActivateProfileWidget extends AppWidgetProvider {
 		
 		GlobalData.loadPreferences(GlobalData.context);
 		
-		profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, false);
+		profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, false, false);
 		
 		Profile profile = profilesDataWrapper.getActivatedProfile();
 
