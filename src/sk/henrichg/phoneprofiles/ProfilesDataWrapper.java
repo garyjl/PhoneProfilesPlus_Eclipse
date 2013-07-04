@@ -81,7 +81,7 @@ public class ProfilesDataWrapper {
 		{
 			//Log.d("ProfilesDataWrapper.getActivatedProfile","profileList=null");
 			Profile profile = getDatabaseHandler().getActivatedProfile();
-			if (forGUI)
+			if (forGUI && (profile != null))
 			{
 				//Log.d("ProfilesDataWrapper.getActivatedProfile","forGUI=true");
 				profile.generateIconBitmap(context);
@@ -109,7 +109,7 @@ public class ProfilesDataWrapper {
 		if (profileList == null)
 		{
 			Profile profile = getDatabaseHandler().getFirstProfile();
-			if (forGUI)
+			if (forGUI && (profile != null))
 			{
 				profile.generateIconBitmap(context);
 				profile.generatePreferencesIndicator(context);
@@ -169,7 +169,7 @@ public class ProfilesDataWrapper {
 		if (profileList == null)
 		{
 			Profile profile = getDatabaseHandler().getProfile(id);
-			if (forGUI)
+			if (forGUI && (profile != null))
 			{
 				profile.generateIconBitmap(context);
 				profile.generatePreferencesIndicator(context);
