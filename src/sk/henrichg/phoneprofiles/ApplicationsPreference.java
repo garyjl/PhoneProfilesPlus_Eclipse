@@ -10,6 +10,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.preference.Preference;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -74,16 +75,19 @@ public class ApplicationsPreference extends Preference {
 				app = packageManager.getApplicationInfo(packageName, 0);
 				if (app != null)
 				{
+					setSummary(packageManager.getApplicationLabel(app));
 					Drawable icon = packageManager.getApplicationIcon(app);
 					//CharSequence name = packageManager.getApplicationLabel(app);
 					packageIcon.setImageDrawable(icon);
 				}
 				else
 				{
+					setSummary("");
 					packageIcon.setImageDrawable(null);
 				}
 			} catch (NameNotFoundException e) {
 				//e.printStackTrace();
+				setSummary("");
 				packageIcon.setImageDrawable(null);
 			}
 	    }
@@ -175,6 +179,20 @@ public class ApplicationsPreference extends Preference {
 		}
 
 		packageName = newValue;
+
+		// set summary
+		PackageManager packageManager = prefContext.getPackageManager();
+		ApplicationInfo app;
+		try {
+			app = packageManager.getApplicationInfo(packageName, 0);
+			if (app != null)
+				setSummary(packageManager.getApplicationLabel(app));
+			else
+				setSummary("");
+		} catch (NameNotFoundException e) {
+			//e.printStackTrace();
+			setSummary("");
+		}
 
 		// zapis do preferences
 		persistString(newValue);
