@@ -129,77 +129,91 @@ public class ActivateProfileListAdapter extends BaseAdapter
 			notifyDataSetChanged();
 	}
 
+	static class ViewHolder {
+		  RelativeLayout listItemRoot;
+		  ImageView profileIcon;
+		  TextView profileName;
+		  ImageView profileIndicator;
+		  int position;
+		}
+	
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
-
+		ViewHolder holder;
+		
 		View vi = convertView;
-        if (convertView == null)
-        {
-        	if (GlobalData.applicationActivatorPrefIndicator)
-        		vi = inflater.inflate(R.layout.activate_profile_list_item, parent, false);
-        	else
-        		vi = inflater.inflate(R.layout.activate_profile_list_item_no_indicator, parent, false);
-        }
+      if (convertView == null)
+      {
+      	if (GlobalData.applicationActivatorPrefIndicator)
+      		vi = inflater.inflate(R.layout.activate_profile_list_item, parent, false);
+      	else
+      		vi = inflater.inflate(R.layout.activate_profile_list_item_no_indicator, parent, false);
+          holder = new ViewHolder();
+          holder.listItemRoot = (RelativeLayout)vi.findViewById(R.id.act_prof_list_item_root);
+          holder.profileName = (TextView)vi.findViewById(R.id.act_prof_list_item_profile_name);
+          holder.profileIcon = (ImageView)vi.findViewById(R.id.act_prof_list_item_profile_icon);
+  		if (GlobalData.applicationActivatorPrefIndicator)
+  			holder.profileIndicator = (ImageView)vi.findViewById(R.id.act_prof_list_profile_pref_indicator);
+          vi.setTag(holder);        
+      }
+      else
+      {
+      	holder = (ViewHolder)vi.getTag();
+      }
 
-        RelativeLayout listItemRoot = (RelativeLayout)vi.findViewById(R.id.act_prof_list_item_root);
-        TextView profileName = (TextView)vi.findViewById(R.id.act_prof_list_item_profile_name);
-        ImageView profileIcon = (ImageView)vi.findViewById(R.id.act_prof_list_item_profile_icon);
-        
+      Profile profile = profileList.get(position);
 
-        Profile profile = profileList.get(position);
-
-        if (profile._checked && (!GlobalData.applicationActivatorHeader))
-        {
-        	if (GlobalData.applicationTheme.equals("light"))
-        		listItemRoot.setBackgroundResource(R.drawable.header_card);
-        	else
-           	if (GlobalData.applicationTheme.equals("dark"))
-           		listItemRoot.setBackgroundResource(R.drawable.header_card_dark);
-           	else
-           	if (GlobalData.applicationTheme.equals("dlight"))
-           		listItemRoot.setBackgroundResource(R.drawable.header_card);
-        }
-        else
-        {
-        	if (GlobalData.applicationTheme.equals("light"))
-        		listItemRoot.setBackgroundResource(R.drawable.card);
-        	else
-           	if (GlobalData.applicationTheme.equals("dark"))
-           		listItemRoot.setBackgroundResource(R.drawable.card_dark);
-           	else
-           	if (GlobalData.applicationTheme.equals("dlight"))
-           		listItemRoot.setBackgroundResource(R.drawable.card);
-        }
-        
-        profileName.setText(profile._name);
-        if (profile.getIsIconResourceID())
-        {
-        	profileIcon.setImageResource(0);
-        	int res = vi.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", 
-        				vi.getContext().getPackageName());
-        	profileIcon.setImageResource(res); // resource na ikonu
-        }
-        else
-        {
-        	//profileIcon.setImageBitmap(null);
-        /*	Resources resources = vi.getResources();
-    		int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
-    		int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
-    		Bitmap bitmap = BitmapResampler.resample(profile.getIconIdentifier(), width, height);
-        	profileIcon.setImageBitmap(bitmap); */
-        	profileIcon.setImageBitmap(profile._iconBitmap);
-        }
+      if (profile._checked && (!GlobalData.applicationActivatorHeader))
+      {
+      	if (GlobalData.applicationTheme.equals("light"))
+      		holder.listItemRoot.setBackgroundResource(R.drawable.header_card);
+      	else
+         	if (GlobalData.applicationTheme.equals("dark"))
+         		holder.listItemRoot.setBackgroundResource(R.drawable.header_card_dark);
+      	else
+         	if (GlobalData.applicationTheme.equals("dlight"))
+         		holder.listItemRoot.setBackgroundResource(R.drawable.header_card);
+      }
+      else
+      {
+      	if (GlobalData.applicationTheme.equals("light"))
+      		holder.listItemRoot.setBackgroundResource(R.drawable.card);
+      	else
+         	if (GlobalData.applicationTheme.equals("dark"))
+         		holder.listItemRoot.setBackgroundResource(R.drawable.card_dark);
+      	else
+         	if (GlobalData.applicationTheme.equals("dlight"))
+         		holder.listItemRoot.setBackgroundResource(R.drawable.card);
+      }
+      
+      holder.profileName.setText(profile._name);
+      if (profile.getIsIconResourceID())
+      {
+      	holder.profileIcon.setImageResource(0);
+      	int res = vi.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", 
+      				vi.getContext().getPackageName());
+      	holder.profileIcon.setImageResource(res); // resource na ikonu
+      }
+      else
+      {
+      	//profileIcon.setImageBitmap(null);
+      /*	Resources resources = vi.getResources();
+  		int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
+  		int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
+  		Bitmap bitmap = BitmapResampler.resample(profile.getIconIdentifier(), width, height);
+      	profileIcon.setImageBitmap(bitmap); */
+      	holder.profileIcon.setImageBitmap(profile._iconBitmap);
+      }
 
 		if (GlobalData.applicationActivatorPrefIndicator)
 		{
-			ImageView profilePrefIndicatorImageView = (ImageView)vi.findViewById(R.id.act_prof_list_profile_pref_indicator);
 			//profilePrefIndicatorImageView.setImageBitmap(null);
 			//Bitmap bitmap = ProfilePreferencesIndicator.paint(profile, vi.getContext());
 			//profilePrefIndicatorImageView.setImageBitmap(bitmap);
-			profilePrefIndicatorImageView.setImageBitmap(profile._preferencesIndicator);
+			holder.profileIndicator.setImageBitmap(profile._preferencesIndicator);
 		}
 
-        /*		ImageView profileItemEditMenu = (ImageView)vi.findViewById(R.id.act_prof_list_item_edit_menu);
+      /*		ImageView profileItemEditMenu = (ImageView)vi.findViewById(R.id.act_prof_list_item_edit_menu);
 		profileItemEditMenu.setTag(position);
 		profileItemEditMenu.setOnClickListener(new OnClickListener() {
 
@@ -212,8 +226,8 @@ public class ActivateProfileListAdapter extends BaseAdapter
 			
 		//Log.d("ActivateProfileListAdapter.onGetView", "memory usage (after complete View)=" + Debug.getNativeHeapAllocatedSize());
 	
-        //Log.d("ProfileListAdapter.getView", profile.getName());
-        
+      //Log.d("ProfileListAdapter.getView", profile.getName());
+
 		return vi;
 	}
 
