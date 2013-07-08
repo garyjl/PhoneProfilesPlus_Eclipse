@@ -6,13 +6,13 @@
   <item 
     android:state_focused="true" 
     android:state_selected="false" 
-    android:drawable="@drawable/list_focused_phoneprofilestheme_dark"/> 
+    android:drawable="@drawable/abs__list_focused_holo"/> 
 
   <!-- Pressed -->
   <item 
     android:state_selected="true" 
     android:state_focused="false"
-    android:drawable="@drawable/list_focused_phoneprofilestheme_dark" />
+    android:drawable="@drawable/abs__list_focused_holo" />
   
   <item android:drawable="@android:color/transparent" />
   

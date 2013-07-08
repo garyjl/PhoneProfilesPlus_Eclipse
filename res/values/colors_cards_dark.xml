@@ -2,4 +2,5 @@
 <resources>
     <color name="activityPopupBackground_phoneprofilestheme_dark">#FF0F0F0F</color>
     <color name="activityCardBackground_phoneprofilestheme_dark">#FF202020</color>
+    <color name="activityCardSelected_phoneprofilestheme_dark">#FF33b5e5</color>
 </resources>

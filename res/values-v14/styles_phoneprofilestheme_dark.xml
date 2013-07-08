@@ -20,7 +20,7 @@
 <resources>
 
     <style name="Theme.Phoneprofilestheme_dark" parent="@style/Theme.Sherlock">
-        <item name="android:actionBarItemBackground">@drawable/selectable_background_phoneprofilestheme_dark</item>
+<!--         <item name="android:actionBarItemBackground">@drawable/selectable_background_phoneprofilestheme_dark</item>
         <item name="android:popupMenuStyle">@style/PopupMenu.Phoneprofilestheme_dark</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Phoneprofilestheme_dark</item>
         <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Phoneprofilestheme_dark</item>
@@ -29,7 +29,7 @@
         <item name="android:actionModeBackground">@drawable/cab_background_top_phoneprofilestheme_dark</item>
         <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_phoneprofilestheme_dark</item>
         <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Phoneprofilestheme_dark</item>
-        
+ -->        
         <item name="actionNewProfileIcon">@drawable/ic_action_new_profile_dark</item>
         <item name="actionDeleteAllIcon">@drawable/ic_action_delete_all_dark</item>
         <item name="actionSettingsIcon">@drawable/ic_action_settings_dark</item>
@@ -46,13 +46,14 @@
         <item name="actionDeleteIcon">@drawable/ic_action_delete_dark</item>
         <item name="actionProfilePrefSave">@drawable/ic_action_profile_pref_save_dark</item>
         <item name="actionProfilePrefCancel">@drawable/ic_action_profile_pref_cancel_dark</item>
-        <item name="actionProfileToolBackground">@drawable/selectable_background_phoneprofilestheme_dark</item>
+        <item name="actionProfileToolBackground">@drawable/abs__list_selector_holo_dark</item>
         
         <item name="actionModeCloseButtonStyle">@style/NoCloseButton</item>
         <item name="android:actionModeCloseButtonStyle">@style/NoCloseButton</item>
         
     </style>
-
+    
+<!-- 
     <style name="ActionBar.Solid.Phoneprofilestheme_dark" parent="@style/Widget.Sherlock.ActionBar.Solid">
         <item name="android:background">@drawable/ab_solid_phoneprofilestheme_dark</item>
         <item name="android:backgroundStacked">@drawable/ab_stacked_solid_phoneprofilestheme_dark</item>
@@ -64,11 +65,11 @@
         <item name="android:background">@drawable/ab_transparent_phoneprofilestheme_dark</item>
         <item name="android:progressBarStyle">@style/ProgressBar.Phoneprofilestheme_dark</item>
     </style>
-    
+ -->    
     <!-- this style is only referenced in a Light.DarkActionBar based theme -->
-    <style name="Theme.Phoneprofilestheme_dark.Widget" parent="@style/Theme.Sherlock">
+<!--     <style name="Theme.Phoneprofilestheme_dark.Widget" parent="@style/Theme.Sherlock">
         <item name="android:popupMenuStyle">@style/PopupMenu.Phoneprofilestheme_dark</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Phoneprofilestheme_dark</item>
     </style>
-
+ -->
 </resources>
