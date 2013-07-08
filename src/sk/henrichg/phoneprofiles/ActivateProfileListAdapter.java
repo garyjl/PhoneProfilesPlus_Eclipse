@@ -155,6 +155,9 @@ public class ActivateProfileListAdapter extends BaseAdapter
         	else
            	if (GlobalData.applicationTheme.equals("dark"))
            		listItemRoot.setBackgroundResource(R.drawable.header_card_dark);
+           	else
+           	if (GlobalData.applicationTheme.equals("dlight"))
+           		listItemRoot.setBackgroundResource(R.drawable.header_card);
         }
         else
         {
@@ -163,6 +166,9 @@ public class ActivateProfileListAdapter extends BaseAdapter
         	else
            	if (GlobalData.applicationTheme.equals("dark"))
            		listItemRoot.setBackgroundResource(R.drawable.card_dark);
+           	else
+           	if (GlobalData.applicationTheme.equals("dlight"))
+           		listItemRoot.setBackgroundResource(R.drawable.card);
         }
         
         profileName.setText(profile._name);
