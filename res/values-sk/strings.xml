@@ -138,6 +138,10 @@
     <string name="phone_profiles_pref_applicationTheme">Téma aplikácie</string>
     <string name="phone_profiles_pref_applicationTheme_light">Svetlá téma</string>
     <string name="phone_profiles_pref_applicationTheme_dark">Tmavá téma</string>
+    <string name="phone_profiles_pref_applicationTheme_dlight">Svetlá s tmavým titulkom</string>
+    <string name="array_pref_value_light">light</string>
+    <string name="array_pref_value_dark">dark</string>
+    <string name="array_pref_value_dlight">dlight</string>
     <string name="phone_preferences_actionmode_title">Uložiť zmeny?</string>
     <string name="phone_preferences_actionmode_save">Uložiť</string>
     <string name="phone_preferences_actionmode_cancel">Zrušiť</string>

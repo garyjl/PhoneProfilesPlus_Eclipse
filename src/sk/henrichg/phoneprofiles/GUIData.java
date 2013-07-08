@@ -68,6 +68,15 @@ public class GUIData {
 			else
 				activity.setTheme(R.style.Theme_Phoneprofilestheme_dark);
 		}
+		else
+		if (GlobalData.applicationTheme.equals("dlight"))
+		{
+			//Log.d("EditorProfilesActivity.setTheme","dark");
+			if (forPopup)
+				activity.setTheme(R.style.PopupTheme_dlight);
+			else
+				activity.setTheme(R.style.Theme_Phoneprofilestheme_dlight);
+		}
 	}
 	
 }

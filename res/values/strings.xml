@@ -138,8 +138,10 @@
     <string name="phone_profiles_pref_applicationTheme">Application theme</string>
     <string name="phone_profiles_pref_applicationTheme_light">Light</string>
     <string name="phone_profiles_pref_applicationTheme_dark">Dark</string>
+    <string name="phone_profiles_pref_applicationTheme_dlight">Light with dark title</string>
     <string name="array_pref_value_light">light</string>
     <string name="array_pref_value_dark">dark</string>
+    <string name="array_pref_value_dlight">dlight</string>
     <string name="phone_preferences_actionmode_save">Save</string>
     <string name="phone_preferences_actionmode_cancel">Cancel</string>
     
