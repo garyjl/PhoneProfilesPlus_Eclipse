@@ -37,51 +37,66 @@ public class ShortcutProfileListAdapter extends BaseAdapter {
 		return position;
 	}
 
+	static class ViewHolder {
+		  ImageView profileIcon;
+		  TextView profileName;
+		  ImageView profileIndicator;
+		  int position;
+		}
+	
 	public View getView(int position, View convertView, ViewGroup parent) {
-        View vi = convertView;
-        if (convertView == null)
-        {
-        	if (GlobalData.applicationActivatorPrefIndicator)
-        		vi = inflater.inflate(R.layout.shortcut_list_item, null);
-        	else
-        		vi = inflater.inflate(R.layout.shortcut_list_item_no_indicator, null);
-        }
+		ViewHolder holder;
+		
+      View vi = convertView;
+      if (convertView == null)
+      {
+      	if (GlobalData.applicationActivatorPrefIndicator)
+      		vi = inflater.inflate(R.layout.shortcut_list_item, null);
+      	else
+      		vi = inflater.inflate(R.layout.shortcut_list_item_no_indicator, null);
+          holder = new ViewHolder();
+          holder.profileName = (TextView)vi.findViewById(R.id.shortcut_list_item_profile_name);
+          holder.profileIcon = (ImageView)vi.findViewById(R.id.shortcut_list_item_profile_icon);
+  		if (GlobalData.applicationActivatorPrefIndicator)
+  			holder.profileIndicator = (ImageView)vi.findViewById(R.id.shortcut_list_profile_pref_indicator);
+          vi.setTag(holder);        
+      }
+      else
+      {
+      	holder = (ViewHolder)vi.getTag();
+      }
 
-        TextView profileName = (TextView)vi.findViewById(R.id.shortcut_list_item_profile_name);
-        ImageView profileIcon = (ImageView)vi.findViewById(R.id.shortcut_list_item_profile_icon);
-        
-        Profile profile = profileList.get(position);
-        
-        profileName.setText(profile._name);
-        if (profile.getIsIconResourceID())
-        {
-        	profileIcon.setImageResource(0);
-        	int res = vi.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", 
-        				vi.getContext().getPackageName());
-        	profileIcon.setImageResource(res); // resource na ikonu
-        }
-        else
-        {
-        	//profileIcon.setImageBitmap(null);
-    		//Resources resources = vi.getResources();
-    		//int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
-    		//int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
-    		//Bitmap bitmap = BitmapResampler.resample(profile.getIconIdentifier(), width, height);
-        	//profileIcon.setImageBitmap(bitmap);
-        	profileIcon.setImageBitmap(profile._iconBitmap);
-        }
-        
+      Profile profile = profileList.get(position);
+      
+      holder.profileName.setText(profile._name);
+      if (profile.getIsIconResourceID())
+      {
+      	holder.profileIcon.setImageResource(0);
+      	int res = vi.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", 
+      				vi.getContext().getPackageName());
+      	holder.profileIcon.setImageResource(res); // resource na ikonu
+      }
+      else
+      {
+      	//profileIcon.setImageBitmap(null);
+  		//Resources resources = vi.getResources();
+  		//int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
+  		//int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
+  		//Bitmap bitmap = BitmapResampler.resample(profile.getIconIdentifier(), width, height);
+      	//profileIcon.setImageBitmap(bitmap);
+      	holder.profileIcon.setImageBitmap(profile._iconBitmap);
+      }
+      
 		if (GlobalData.applicationActivatorPrefIndicator)
 		{
-			ImageView profilePrefIndicatorImageView = (ImageView)vi.findViewById(R.id.shortcut_list_profile_pref_indicator);
 			//profilePrefIndicatorImageView.setImageBitmap(null);
 			//Bitmap bitmap = ProfilePreferencesIndicator.paint(profile, vi.getContext());
 			//profilePrefIndicatorImageView.setImageBitmap(bitmap);
-			profilePrefIndicatorImageView.setImageBitmap(profile._preferencesIndicator);
+			holder.profileIndicator.setImageBitmap(profile._preferencesIndicator);
 		}
-        
-        //Log.d("ShortcutProfileListAdapter.getView", profile.getName());
-        
+      
+      //Log.d("ShortcutProfileListAdapter.getView", profile.getName());
+      
 		return vi;
 	}
 

@@ -35,19 +35,34 @@ public class ApplicationsPreferenceAdapter extends BaseAdapter {
 		return position;
 	}
 
-	public View getView(int position, View convertView, ViewGroup parent) {
+	static class ViewHolder {
+		  ImageView applicationIcon;
+		  TextView applicationLabel;
+		  int position;
+		}
+	
+	public View getView(int position, View convertView, ViewGroup parent)
+	{
+		ViewHolder holder;
 		
 		View vi = convertView;
-        if (convertView == null)
-        	vi = inflater.inflate(R.layout.applications_preference_list_item, null);
-		
-		ImageView applicationIcon = (ImageView)vi.findViewById(R.id.applications_pref_dlg_item_icon);
-		TextView applicationLabel = (TextView)vi.findViewById(R.id.applications_pref_dlg_item_label);
+      if (convertView == null)
+      {
+      	vi = inflater.inflate(R.layout.applications_preference_list_item, null);
+        holder = new ViewHolder();
+  		holder.applicationIcon = (ImageView)vi.findViewById(R.id.applications_pref_dlg_item_icon);
+  		holder.applicationLabel = (TextView)vi.findViewById(R.id.applications_pref_dlg_item_label);
+          vi.setTag(holder);        
+      }
+      else
+      {
+      	holder = (ViewHolder)vi.getTag();
+      }
 		
 		//Log.d("ApplicationsPreferenceAdapter.getView", EditorProfilesActivity.getApplicationsCache().getApplicationLabel(position).toString());
 		//Log.d("ApplicationsPreferenceAdapter.getView", EditorProfilesActivity.getApplicationsCache().getApplicationIcon(position).toString());
 		
-		applicationLabel.setText(EditorProfilesActivity.getApplicationsCache().getApplicationLabel(position));
+		holder.applicationLabel.setText(EditorProfilesActivity.getApplicationsCache().getApplicationLabel(position));
 
 		Drawable icon = EditorProfilesActivity.getApplicationsCache().getApplicationIcon(position);
 		//Resources resources = context.getResources();
@@ -55,7 +70,7 @@ public class ApplicationsPreferenceAdapter extends BaseAdapter {
 		//int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
 		//icon.setBounds(0, 0, width, height);
 		//applicationIcon.setCompoundDrawables(icon, null, null, null);
-		applicationIcon.setImageDrawable(icon);
+		holder.applicationIcon.setImageDrawable(icon);
 
 		return vi;
 	}

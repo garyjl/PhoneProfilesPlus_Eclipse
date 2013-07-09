@@ -141,79 +141,100 @@ public class EditorProfileListAdapter extends BaseAdapter
 		notifyDataSetChanged();
 	}
 
+	static class ViewHolder {
+		  RelativeLayout listItemRoot;
+		  ImageView profileIcon;
+		  TextView profileName;
+		  ImageView profileIndicator;
+		  ImageView profileItemActivate;
+		  ImageView profileItemDuplicate;
+		  ImageView profileItemDelete;
+		  int position;
+		}
+	
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
-		View vi = convertView;
-        if (convertView == null)
-        {
-        	if (GlobalData.applicationEditorPrefIndicator)
-        		vi = inflater.inflate(R.layout.editor_profile_list_item, parent, false);
-        	else
-        		vi = inflater.inflate(R.layout.editor_profile_list_item_no_indicator, parent, false);
-        }
+		ViewHolder holder;
 		
-        RelativeLayout listItemRoot = (RelativeLayout)vi.findViewById(R.id.profile_list_item_root);
-        TextView profileName = (TextView)vi.findViewById(R.id.profile_list_item_profile_name);
-        ImageView profileIcon = (ImageView)vi.findViewById(R.id.profile_list_item_profile_icon);
-        
-        Profile profile = profileList.get(position);
+		View vi = convertView;
+      if (convertView == null)
+      {
+      	if (GlobalData.applicationEditorPrefIndicator)
+      		vi = inflater.inflate(R.layout.editor_profile_list_item, parent, false);
+      	else
+      		vi = inflater.inflate(R.layout.editor_profile_list_item_no_indicator, parent, false);
+          holder = new ViewHolder();
+          holder.listItemRoot = (RelativeLayout)vi.findViewById(R.id.profile_list_item_root);
+          holder.profileName = (TextView)vi.findViewById(R.id.profile_list_item_profile_name);
+          holder.profileIcon = (ImageView)vi.findViewById(R.id.profile_list_item_profile_icon);
+  		holder.profileItemActivate = (ImageView)vi.findViewById(R.id.profile_list_item_activate);
+  		holder.profileItemDuplicate = (ImageView)vi.findViewById(R.id.profile_list_item_duplicate);
+  		holder.profileItemDelete = (ImageView)vi.findViewById(R.id.profile_list_item_delete);
+  		if (GlobalData.applicationEditorPrefIndicator)
+  			holder.profileIndicator = (ImageView)vi.findViewById(R.id.profile_list_profile_pref_indicator);
+          vi.setTag(holder);        
+      }
+      else
+      {
+      	holder = (ViewHolder)vi.getTag();
+      }
+		
+      Profile profile = profileList.get(position);
 
-        if (profile._checked && (!GlobalData.applicationEditorHeader))
-        {
-        	if (GlobalData.applicationTheme.equals("light"))
-        		listItemRoot.setBackgroundResource(R.drawable.header_card);
-        	else
-           	if (GlobalData.applicationTheme.equals("dark"))
-           		listItemRoot.setBackgroundResource(R.drawable.header_card_dark);
-           	else
-           	if (GlobalData.applicationTheme.equals("dlight"))
-           		listItemRoot.setBackgroundResource(R.drawable.header_card);
-        }
-        else
-        {
-        	if (GlobalData.applicationTheme.equals("light"))
-        		listItemRoot.setBackgroundResource(R.drawable.card);
-        	else
-           	if (GlobalData.applicationTheme.equals("dark"))
-           		listItemRoot.setBackgroundResource(R.drawable.card_dark);
-           	else
-           	if (GlobalData.applicationTheme.equals("dlight"))
-           		listItemRoot.setBackgroundResource(R.drawable.card);
-        }
-        
-        profileName.setText(profile._name);
-        if (profile.getIsIconResourceID())
-        {
-        	profileIcon.setImageResource(0);
-        	int res = vi.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", 
-        				vi.getContext().getPackageName());
-        	profileIcon.setImageResource(res); // resource na ikonu
-        }
-        else
-        {
-        	//profileIcon.setImageBitmap(null);
-    		//Resources resources = vi.getResources();
-    		//int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
-    		//int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
-    		//Bitmap bitmap = BitmapResampler.resample(profile.getIconIdentifier(), width, height);
-        	//profileIcon.setImageBitmap(bitmap);
-        	profileIcon.setImageBitmap(profile._iconBitmap);
-        }
-        
+      if (profile._checked && (!GlobalData.applicationEditorHeader))
+      {
+      	if (GlobalData.applicationTheme.equals("light"))
+      		holder.listItemRoot.setBackgroundResource(R.drawable.header_card);
+      	else
+         	if (GlobalData.applicationTheme.equals("dark"))
+         		holder.listItemRoot.setBackgroundResource(R.drawable.header_card_dark);
+         	else
+         	if (GlobalData.applicationTheme.equals("dlight"))
+         		holder.listItemRoot.setBackgroundResource(R.drawable.header_card);
+      }
+      else
+      {
+      	if (GlobalData.applicationTheme.equals("light"))
+      		holder.listItemRoot.setBackgroundResource(R.drawable.card);
+      	else
+         	if (GlobalData.applicationTheme.equals("dark"))
+         		holder.listItemRoot.setBackgroundResource(R.drawable.card_dark);
+         	else
+         	if (GlobalData.applicationTheme.equals("dlight"))
+         		holder.listItemRoot.setBackgroundResource(R.drawable.card);
+      }
+      
+      holder.profileName.setText(profile._name);
+      if (profile.getIsIconResourceID())
+      {
+      	holder.profileIcon.setImageResource(0);
+      	int res = vi.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", 
+      				vi.getContext().getPackageName());
+      	holder.profileIcon.setImageResource(res); // resource na ikonu
+      }
+      else
+      {
+      	//profileIcon.setImageBitmap(null);
+  		//Resources resources = vi.getResources();
+  		//int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
+  		//int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
+  		//Bitmap bitmap = BitmapResampler.resample(profile.getIconIdentifier(), width, height);
+      	//profileIcon.setImageBitmap(bitmap);
+      	holder.profileIcon.setImageBitmap(profile._iconBitmap);
+      }
+      
 		if (GlobalData.applicationEditorPrefIndicator)
 		{
-			ImageView profilePrefIndicatorImageView = (ImageView)vi.findViewById(R.id.profile_list_profile_pref_indicator);
 			//profilePrefIndicatorImageView.setImageBitmap(null);
 			//Bitmap bitmap = ProfilePreferencesIndicator.paint(profile, vi.getContext());
 			//profilePrefIndicatorImageView.setImageBitmap(bitmap);
-			profilePrefIndicatorImageView.setImageBitmap(profile._preferencesIndicator);
+			holder.profileIndicator.setImageBitmap(profile._preferencesIndicator);
 		}
-        
-        final int _position = position;
+      
+      final int _position = position;
 		
-		ImageView profileItemActivate = (ImageView)vi.findViewById(R.id.profile_list_item_activate);
-		profileItemActivate.setTag(R.id.profile_list_item_activate);
-		profileItemActivate.setOnClickListener(new OnClickListener() {
+      holder.profileItemActivate.setTag(R.id.profile_list_item_activate);
+      holder.profileItemActivate.setOnClickListener(new OnClickListener() {
 
 				public void onClick(View v) {
 					editIconClicked = true;
@@ -223,9 +244,8 @@ public class EditorProfileListAdapter extends BaseAdapter
 				}
 			}); 
 
-		ImageView profileItemDuplicate = (ImageView)vi.findViewById(R.id.profile_list_item_duplicate);
-		profileItemDuplicate.setTag(R.id.profile_list_item_duplicate);
-		profileItemDuplicate.setOnClickListener(new OnClickListener() {
+      holder.profileItemDuplicate.setTag(R.id.profile_list_item_duplicate);
+      holder.profileItemDuplicate.setOnClickListener(new OnClickListener() {
 
 				public void onClick(View v) {
 					editIconClicked = true;
@@ -235,9 +255,8 @@ public class EditorProfileListAdapter extends BaseAdapter
 				}
 			}); 
 
-		ImageView profileItemDelete = (ImageView)vi.findViewById(R.id.profile_list_item_delete);
-		profileItemDelete.setTag(R.id.profile_list_item_delete);
-		profileItemDelete.setOnClickListener(new OnClickListener() {
+      holder.profileItemDelete.setTag(R.id.profile_list_item_delete);
+      holder.profileItemDelete.setOnClickListener(new OnClickListener() {
 
 				public void onClick(View v) {
 					editIconClicked = true;
@@ -247,8 +266,8 @@ public class EditorProfileListAdapter extends BaseAdapter
 				}
 			}); 
 		
-        //Log.d("ProfileListAdapter.getView", profile.getName());
-        
+      //Log.d("ProfileListAdapter.getView", profile.getName());
+      
 		return vi;
 	}
 
