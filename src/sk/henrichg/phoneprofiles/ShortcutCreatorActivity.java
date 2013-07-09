@@ -114,14 +114,6 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 		
 	//-----------------------------------------------------------------------------------
 
-		//requestWindowFeature(Window.FEATURE_ACTION_BAR);
-
-		setContentView(R.layout.activity_shortcut_creator);
-
-		//databaseHandler = new DatabaseHandler(this);
-		
-		listView = (ListView)findViewById(R.id.shortcut_profiles_list);
-
 		new AsyncTask<Void, Integer, Void>() {
 			
 			@Override
@@ -142,13 +134,25 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 			{
 				super.onPostExecute(result);
 
-				profileListAdapter = new ShortcutProfileListAdapter(getBaseContext(), profileList);
-				listView.setAdapter(profileListAdapter);
+				if (listView != null)
+				{
+					profileListAdapter = new ShortcutProfileListAdapter(getBaseContext(), profileList);
+					listView.setAdapter(profileListAdapter);
+				}
 				
 			}
 			
 		}.execute();
 		
+		
+		//requestWindowFeature(Window.FEATURE_ACTION_BAR);
+
+		setContentView(R.layout.activity_shortcut_creator);
+
+		//databaseHandler = new DatabaseHandler(this);
+		
+		listView = (ListView)findViewById(R.id.shortcut_profiles_list);
+
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -161,6 +165,21 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 			
 		});
 		
+	}
+	
+	@Override
+	protected void onStart()
+	{
+		super.onStart();
+		
+		if (profileList != null)
+		{
+			if (profileListAdapter == null)
+			{
+				profileListAdapter = new ShortcutProfileListAdapter(getBaseContext(), profileList);
+				listView.setAdapter(profileListAdapter);
+			}
+		}
 	}
 	
 	@Override

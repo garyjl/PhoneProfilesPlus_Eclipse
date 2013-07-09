@@ -125,44 +125,14 @@ public class ActivateProfileActivity extends SherlockActivity {
 		getWindow().setLayout((int) (popupWidth + 0.5f), (int) (popupHeight + 0.5f));
 		
 	//-----------------------------------------------------------------------------------
-		
-		//Debug.startMethodTracing("phoneprofiles");
-		
-		//requestWindowFeature(Window.FEATURE_ACTION_BAR);
-		
-		//long nanoTimeStart = GlobalData.startMeasuringRunTime();
-		
-		if (GlobalData.applicationActivatorPrefIndicator && GlobalData.applicationActivatorHeader)
-			setContentView(R.layout.activity_activate_profile);
-		else
-		if (GlobalData.applicationActivatorHeader)
-			setContentView(R.layout.activity_activate_profile_no_indicator);
-		else
-			setContentView(R.layout.activity_activate_profile_no_header);
-		
-		//GlobalData.getMeasuredRunTime(nanoTimeStart, "ActivateProfileActivity.onCreate - setContnetView");
 
-		//getSupportActionBar().setHomeButtonEnabled(true);
-		//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-		intent = getIntent();
-		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
-		
-		activateProfileHelper = profilesDataWrapper.getActivateProfileHelper();
-		activateProfileHelper.initialize(this, getBaseContext());
-
-		activeProfileName = (TextView)findViewById(R.id.act_prof_activated_profile_name);
-		activeProfileIcon = (ImageView)findViewById(R.id.act_prof_activated_profile_icon);
-		listView = (ListView)findViewById(R.id.act_prof_profiles_list);
-
-		
 		new AsyncTask<Void, Integer, Void>() {
 			
 			@Override
 			protected void onPreExecute()
 			{
 				super.onPreExecute();
-				updateHeader(null);
+				//updateHeader(null);
 			}
 			
 			@Override
@@ -189,17 +159,50 @@ public class ActivateProfileActivity extends SherlockActivity {
 					finish();
 
 					return;
-				} 
-
-				profileListAdapter = new ActivateProfileListAdapter(getBaseContext(), profileList);
-				listView.setAdapter(profileListAdapter);
+				}
 				
-				doOnStart();
+				if (listView != null)
+				{
+					profileListAdapter = new ActivateProfileListAdapter(getBaseContext(), profileList);
+					listView.setAdapter(profileListAdapter);
+					
+					doOnStart();
+				}
 				
 			}
 			
 		}.execute();
 
+		intent = getIntent();
+		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
+		
+		activateProfileHelper = profilesDataWrapper.getActivateProfileHelper();
+		activateProfileHelper.initialize(this, getBaseContext());
+		
+		//Debug.startMethodTracing("phoneprofiles");
+
+	// Layout ---------------------------------------------------------------------------------
+		
+		//requestWindowFeature(Window.FEATURE_ACTION_BAR);
+		
+		//long nanoTimeStart = GlobalData.startMeasuringRunTime();
+		
+		if (GlobalData.applicationActivatorPrefIndicator && GlobalData.applicationActivatorHeader)
+			setContentView(R.layout.activity_activate_profile);
+		else
+		if (GlobalData.applicationActivatorHeader)
+			setContentView(R.layout.activity_activate_profile_no_indicator);
+		else
+			setContentView(R.layout.activity_activate_profile_no_header);
+		
+		//GlobalData.getMeasuredRunTime(nanoTimeStart, "ActivateProfileActivity.onCreate - setContnetView");
+
+		//getSupportActionBar().setHomeButtonEnabled(true);
+		//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+		activeProfileName = (TextView)findViewById(R.id.act_prof_activated_profile_name);
+		activeProfileIcon = (ImageView)findViewById(R.id.act_prof_activated_profile_icon);
+		listView = (ListView)findViewById(R.id.act_prof_profiles_list);
 		
 		//listView.setLongClickable(false);
 
@@ -231,6 +234,8 @@ public class ActivateProfileActivity extends SherlockActivity {
 		});
 
         //listView.setRemoveListener(onRemove);
+		
+    //-----------------------------------------------------------------------------------------		
 		
 		
 		//Log.d("PhoneProfileActivity.onCreate", "xxxx");
@@ -299,7 +304,17 @@ public class ActivateProfileActivity extends SherlockActivity {
 	protected void onStart()
 	{
 		super.onStart();
-
+		
+		if (profileList != null)
+		{
+			if (profileListAdapter == null)
+			{
+				profileListAdapter = new ActivateProfileListAdapter(getBaseContext(), profileList);
+				listView.setAdapter(profileListAdapter);
+			}
+		
+			doOnStart();
+		}
 	}
 	
 	@Override
