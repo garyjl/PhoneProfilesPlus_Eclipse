@@ -3,6 +3,7 @@ package sk.henrichg.phoneprofiles;
 import java.util.List;
 import com.actionbarsherlock.app.SherlockActivity;
 
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.AlertDialog;
@@ -132,6 +133,8 @@ public class ActivateProfileActivity extends SherlockActivity {
 		
 		//requestWindowFeature(Window.FEATURE_ACTION_BAR);
 		
+		//long nanoTimeStart = GlobalData.startMeasuringRunTime();
+		
 		if (GlobalData.applicationActivatorPrefIndicator && GlobalData.applicationActivatorHeader)
 			setContentView(R.layout.activity_activate_profile);
 		else
@@ -140,24 +143,10 @@ public class ActivateProfileActivity extends SherlockActivity {
 		else
 			setContentView(R.layout.activity_activate_profile_no_header);
 		
+		//GlobalData.getMeasuredRunTime(nanoTimeStart, "ActivateProfileActivity.onCreate - setContnetView");
+
 		//getSupportActionBar().setHomeButtonEnabled(true);
 		//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-		profileList = profilesDataWrapper.getProfileList();
-		
-		if (profileList.size() == 0)
-		{
-			// nie je ziaden profile, staretnene Editor
-			
-			Intent intent = new Intent(getBaseContext(), EditorProfilesActivity.class);
-			intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_ACTIVATOR);
-
-			startActivity(intent);
-			
-			finish();
-
-			return;
-		} 
 
 		intent = getIntent();
 		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
@@ -169,9 +158,52 @@ public class ActivateProfileActivity extends SherlockActivity {
 		activeProfileIcon = (ImageView)findViewById(R.id.act_prof_activated_profile_icon);
 		listView = (ListView)findViewById(R.id.act_prof_profiles_list);
 
-		profileListAdapter = new ActivateProfileListAdapter(this, profileList);
-		listView.setAdapter(profileListAdapter);
+		
+		new AsyncTask<Void, Integer, Void>() {
+			
+			@Override
+			protected void onPreExecute()
+			{
+				super.onPreExecute();
+				updateHeader(null);
+			}
+			
+			@Override
+			protected Void doInBackground(Void... params) {
+				profileList = profilesDataWrapper.getProfileList();
+				
+				return null;
+			}
+			
+			@Override
+			protected void onPostExecute(Void result)
+			{
+				super.onPostExecute(result);
 
+				if (profileList.size() == 0)
+				{
+					// nie je ziaden profile, staretnene Editor
+					
+					Intent intent = new Intent(getBaseContext(), EditorProfilesActivity.class);
+					intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_ACTIVATOR);
+
+					startActivity(intent);
+					
+					finish();
+
+					return;
+				} 
+
+				profileListAdapter = new ActivateProfileListAdapter(getBaseContext(), profileList);
+				listView.setAdapter(profileListAdapter);
+				
+				doOnStart();
+				
+			}
+			
+		}.execute();
+
+		
 		//listView.setLongClickable(false);
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
@@ -208,10 +240,9 @@ public class ActivateProfileActivity extends SherlockActivity {
 		
 	}
 
-	@Override
-	protected void onStart()
+	private void doOnStart()
 	{
-		super.onStart();
+		//long nanoTimeStart = GlobalData.startMeasuringRunTime();
 
 		//Log.d("ActivateProfilesActivity.onStart", "startupSource="+startupSource);
 		
@@ -260,9 +291,18 @@ public class ActivateProfileActivity extends SherlockActivity {
 
 		// na onStart dame, ze aplikacia uz je nastartovana
 		GUIData.setApplicationStarted(true);
+
+		//GlobalData.getMeasuredRunTime(nanoTimeStart, "ActivateProfileActivity.onStart");
 		
 		//Log.d("PhoneProfileActivity.onStart", "xxxx");
 		
+	}
+	
+	@Override
+	protected void onStart()
+	{
+		super.onStart();
+
 	}
 	
 	@Override

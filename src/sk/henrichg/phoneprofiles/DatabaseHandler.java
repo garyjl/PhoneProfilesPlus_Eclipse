@@ -79,7 +79,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		String CREATE_PROFILES_TABLE = "CREATE TABLE " + TABLE_PROFILES + "("
+		final String CREATE_PROFILES_TABLE = "CREATE TABLE " + TABLE_PROFILES + "("
 				+ KEY_ID + " INTEGER PRIMARY KEY,"
 				+ KEY_NAME + " TEXT,"
 				+ KEY_ICON + " TEXT," 
@@ -115,7 +115,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 		db.execSQL("CREATE INDEX IDX_PORDER ON " + TABLE_PROFILES + " (" + KEY_PORDER + ")");
 
-		String CREATE_EVENTS_TABLE = "CREATE TABLE " + TABLE_EVENTS + "("
+		final String CREATE_EVENTS_TABLE = "CREATE TABLE " + TABLE_EVENTS + "("
 				+ KEY_E_ID + " INTEGER PRIMARY KEY,"
 				+ KEY_E_NAME + " TEXT,"
 				+ KEY_E_TYPE + " INTEGER,"
@@ -234,7 +234,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 		if (oldVersion < 24)
 		{
-			String CREATE_EVENTS_TABLE = "CREATE TABLE " + TABLE_EVENTS + "("
+			final String CREATE_EVENTS_TABLE = "CREATE TABLE " + TABLE_EVENTS + "("
 					+ KEY_E_ID + " INTEGER PRIMARY KEY,"
 					+ KEY_E_NAME + " TEXT,"
 					+ KEY_E_TYPE + " INTEGER,"
@@ -382,7 +382,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public List<Profile> getAllProfiles() {
 		List<Profile> profileList = new ArrayList<Profile>();
 		// Select All Query
-		String selectQuery = "SELECT " + KEY_ID + "," +
+		final String selectQuery = "SELECT " + KEY_ID + "," +
 				                         KEY_NAME + "," +
 				                         KEY_ICON + "," +
 				                         KEY_CHECKED + "," +
@@ -524,7 +524,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	// Getting profiles Count
 	public int getProfilesCount() {
-		String countQuery = "SELECT  count(*) FROM " + TABLE_PROFILES;
+		final String countQuery = "SELECT  count(*) FROM " + TABLE_PROFILES;
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery(countQuery, null);
 		
@@ -695,7 +695,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	
 	public Profile getFirstProfile()
 	{
-		String selectQuery = "SELECT " + KEY_ID + "," +
+		final String selectQuery = "SELECT " + KEY_ID + "," +
 						                 KEY_NAME + "," +
 						                 KEY_ICON + "," +
 						                 KEY_CHECKED + "," +
@@ -777,7 +777,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	
 	public int getProfilePosition(Profile profile)
 	{
-		String selectQuery = "SELECT " + KEY_ID +
+		final String selectQuery = "SELECT " + KEY_ID +
 							   " FROM " + TABLE_PROFILES + " ORDER BY " + KEY_PORDER;
 
 		SQLiteDatabase db = this.getReadableDatabase();
@@ -915,7 +915,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public List<Event> getAllEvents() {
 		List<Event> eventList = new ArrayList<Event>();
 		// Select All Query
-		String selectQuery = "SELECT " + KEY_E_ID + "," +
+		final String selectQuery = "SELECT " + KEY_E_ID + "," +
 				                         KEY_E_NAME + "," +
 				                         KEY_E_TYPE + "," +
 				                         KEY_E_FK_PROFILE + "," +
@@ -984,22 +984,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	// Getting events Count
 	public int getEventsCount() {
-		String countQuery = "SELECT  * FROM " + TABLE_EVENTS;
+		final String countQuery = "SELECT  count(*) FROM " + TABLE_EVENTS;
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery(countQuery, null);
-
-		// return count
-		int r = cursor.getCount();
+		
+		int r;
+		
+		if (cursor != null)
+		{
+			cursor.moveToFirst();
+			r = Integer.parseInt(cursor.getString(0));
+		}
+		else
+			r = 0;
 
 		cursor.close();
 		db.close();
 		
-		return r;
-	}
+		return r;	}
 	
 	public Event getFirstEvent()
 	{
-		String selectQuery = "SELECT " + KEY_E_ID + "," +
+		final String selectQuery = "SELECT " + KEY_E_ID + "," +
 						                 KEY_E_NAME + "," +
 						                 KEY_E_TYPE + "," +
 						                 KEY_E_FK_PROFILE + "," +
