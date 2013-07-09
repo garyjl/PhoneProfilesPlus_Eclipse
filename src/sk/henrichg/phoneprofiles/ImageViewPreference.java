@@ -11,7 +11,6 @@ import android.preference.Preference;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 public class ImageViewPreference extends Preference {
 	
@@ -21,7 +20,6 @@ public class ImageViewPreference extends Preference {
 	private String imageSource;
 
 	private ImageView imageView;
-	private TextView imageTitle;
 	private Context prefContext;
 	
 	CharSequence preferenceTitle;

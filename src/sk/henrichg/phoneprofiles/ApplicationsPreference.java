@@ -13,14 +13,12 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 public class ApplicationsPreference extends Preference {
 	
 	private String packageName;
 
-	private TextView preferenceTitleView;
- 	private ImageView packageIcon;
+	private ImageView packageIcon;
 
 	private Context prefContext;
 	

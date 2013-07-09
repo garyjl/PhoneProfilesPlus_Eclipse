@@ -2,15 +2,9 @@ package sk.henrichg.phoneprofiles;
 
 import java.util.List;
 
-import sk.henrichg.phoneprofiles.EditorProfileListFragment.OnFinishProfilePreferencesActionMode;
-import sk.henrichg.phoneprofiles.EditorProfileListFragment.OnProfileCountChanged;
-import sk.henrichg.phoneprofiles.EditorProfileListFragment.OnProfileOrderChanged;
-import sk.henrichg.phoneprofiles.EditorProfileListFragment.OnStartProfilePreferences;
-
 import com.actionbarsherlock.app.SherlockFragment;
 
 import android.os.Bundle;
-import android.provider.Settings;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -25,11 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class EditorEventListFragment extends SherlockFragment {
 

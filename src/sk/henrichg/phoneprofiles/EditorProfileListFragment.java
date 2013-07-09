@@ -23,7 +23,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class EditorProfileListFragment extends SherlockFragment {
 

@@ -4,24 +4,21 @@ import java.util.List;
 
 import com.actionbarsherlock.app.SherlockActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
-import android.view.ViewTreeObserver.OnPreDrawListener;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -30,13 +27,12 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 	private ProfilesDataWrapper profilesDataWrapper;
 	private List<Profile> profileList;
 	private ShortcutProfileListAdapter profileListAdapter;
-	private LinearLayout linlayoutRoot;
 	private ListView listView;
 	
-	private int popupWidth;
-	private int popupMaxHeight;
-	private int popupHeight;
-	private int actionBarHeight;
+	private float popupWidth;
+	private float popupMaxHeight;
+	private float popupHeight;
+	private float actionBarHeight;
 
 	
 	@SuppressWarnings("deprecation")
@@ -47,39 +43,12 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 		GUIData.setTheme(this, true);
 		GUIData.setLanguage(getBaseContext());
 
-		profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, true, false);
+		profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, false, false);
 
-		//requestWindowFeature(Window.FEATURE_ACTION_BAR);
-
-		setContentView(R.layout.activity_shortcut_creator);
-
-		//databaseHandler = new DatabaseHandler(this);
-		
-		linlayoutRoot = (LinearLayout)findViewById(R.id.shortcut_profile_linlayout_root);
-		listView = (ListView)findViewById(R.id.shortcut_profiles_list);
-
-		profileList = profilesDataWrapper.getProfileList();
-
-		profileListAdapter = new ShortcutProfileListAdapter(this, profileList);
-		listView.setAdapter(profileListAdapter);
-
-		listView.setOnItemClickListener(new OnItemClickListener() {
-
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-				//Log.d("ShortcutCreatorActivity.onItemClick", "xxxx");
-				
-				createShortcut(position);
-
-			}
-			
-		});
+	// set window dimensions ----------------------------------------------------------
 		
 		Display display = getWindowManager().getDefaultDisplay();
 		
-		// set popup width into display width - fix graphical glitch
-		getWindow().setLayout(0, display.getHeight());
-
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND, WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 		LayoutParams params = getWindow().getAttributes();
 		params.alpha = 1.0f;
@@ -108,44 +77,88 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 		// set max. dimensions for display orientation
 		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
 		{
-			popupWidth = Math.round(popupWidth / 100f * 50f);
-			popupMaxHeight = Math.round(popupMaxHeight / 100f * 90f);
+			//popupWidth = Math.round(popupWidth / 100f * 50f);
+			//popupMaxHeight = Math.round(popupMaxHeight / 100f * 90f);
+			popupWidth = popupWidth / 100f * 50f;
+			popupMaxHeight = popupMaxHeight / 100f * 90f;
 		}
 		else
 		{
-			popupWidth = Math.round(popupWidth / 100f * 70f);
-			popupMaxHeight = Math.round(popupMaxHeight / 100f * 90f);
+			//popupWidth = Math.round(popupWidth / 100f * 70f);
+			//popupMaxHeight = Math.round(popupMaxHeight / 100f * 90f);
+			popupWidth = popupWidth / 100f * 70f;
+			popupMaxHeight = popupMaxHeight / 100f * 90f;
 		}
 
 		// add action bar height
-		popupHeight = popupHeight + actionBarHeight; 
+		popupHeight = popupHeight + actionBarHeight;
 		
-		// get views height and add it into popupHeight
-		final Activity activity = this;
-		listView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+		final float scale = getResources().getDisplayMetrics().density;
+		
+		// add header height
+		if (GlobalData.applicationActivatorHeader)
+			popupHeight = popupHeight + 64f * scale;
+		
+		// add list items height
+		int profileCount = profilesDataWrapper.getDatabaseHandler().getProfilesCount();
+		popupHeight = popupHeight + (50f * scale * profileCount); // item
+		popupHeight = popupHeight + (5f * scale * (profileCount-1)); // divider
+
+		popupHeight = popupHeight + (20f * scale); // listview padding
+		
+		if (popupHeight > popupMaxHeight)
+			popupHeight = popupMaxHeight;
+	
+		// set popup window dimensions
+		getWindow().setLayout((int) (popupWidth + 0.5f), (int) (popupHeight + 0.5f));
+		
+	//-----------------------------------------------------------------------------------
+
+		//requestWindowFeature(Window.FEATURE_ACTION_BAR);
+
+		setContentView(R.layout.activity_shortcut_creator);
+
+		//databaseHandler = new DatabaseHandler(this);
+		
+		listView = (ListView)findViewById(R.id.shortcut_profiles_list);
+
+		new AsyncTask<Void, Integer, Void>() {
 			
-			public void onGlobalLayout() {
-				listView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-
-				popupHeight = popupHeight + listView.getHeight();
-
+			@Override
+			protected void onPreExecute()
+			{
+				super.onPreExecute();
 			}
-		});
-
-		linlayoutRoot.getViewTreeObserver().addOnPreDrawListener(new OnPreDrawListener() {
 			
-			public boolean onPreDraw() {
-				linlayoutRoot.getViewTreeObserver().removeOnPreDrawListener(this);
-
-				if (popupHeight > popupMaxHeight)
-					popupHeight = popupMaxHeight;
-
-				// set popup window dimensions
-				activity.getWindow().setLayout(popupWidth, popupHeight);
+			@Override
+			protected Void doInBackground(Void... params) {
+				profileList = profilesDataWrapper.getProfileList();
 				
-				//Log.d("ActivateProfilesActivity.onPreDraw", "linlayoutRoot");
-				return true;
+				return null;
 			}
+			
+			@Override
+			protected void onPostExecute(Void result)
+			{
+				super.onPostExecute(result);
+
+				profileListAdapter = new ShortcutProfileListAdapter(getBaseContext(), profileList);
+				listView.setAdapter(profileListAdapter);
+				
+			}
+			
+		}.execute();
+		
+		listView.setOnItemClickListener(new OnItemClickListener() {
+
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+				//Log.d("ShortcutCreatorActivity.onItemClick", "xxxx");
+				
+				createShortcut(position);
+
+			}
+			
 		});
 		
 	}

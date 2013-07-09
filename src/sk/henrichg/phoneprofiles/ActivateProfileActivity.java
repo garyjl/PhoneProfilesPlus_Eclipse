@@ -17,15 +17,12 @@ import com.actionbarsherlock.view.MenuItem;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
-import android.view.ViewTreeObserver.OnPreDrawListener;
 import android.view.WindowManager;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
