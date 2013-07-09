@@ -34,17 +34,15 @@ public class ActivateProfileActivity extends SherlockActivity {
 	private ActivateProfileHelper activateProfileHelper;
 	private List<Profile> profileList;
 	private ActivateProfileListAdapter profileListAdapter;
-	private LinearLayout linlayoutRoot;
-	private LinearLayout linlayoutHeader;
 	private ListView listView;
 	private TextView activeProfileName;
 	private ImageView activeProfileIcon;
 	private int startupSource = 0;
 	private Intent intent;
 	
-	private int popupWidth;
-	private int popupMaxHeight;
-	private int popupHeight;
+	private float popupWidth;
+	private float popupMaxHeight;
+	private float popupHeight;
 	private int actionBarHeight;
 	
 
@@ -59,6 +57,77 @@ public class ActivateProfileActivity extends SherlockActivity {
 		GUIData.setTheme(this, true);
 		GUIData.setLanguage(getBaseContext());
 		
+		profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, false, false);
+
+	// set window dimensions ----------------------------------------------------------
+		
+		Display display = getWindowManager().getDefaultDisplay();
+		
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND, WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+		LayoutParams params = getWindow().getAttributes();
+		params.alpha = 1.0f;
+		params.dimAmount = 0.5f;
+		getWindow().setAttributes(params);
+		
+		// display dimensions
+		popupWidth = display.getWidth();
+		popupMaxHeight = display.getHeight();
+		popupHeight = 0;
+		actionBarHeight = 0;
+
+		// action bar height
+		TypedValue tv = new TypedValue();
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+		{
+			if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
+		        actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
+		}
+		else 
+		if (getTheme().resolveAttribute(com.actionbarsherlock.R.attr.actionBarSize, tv, true))
+		{
+			actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
+		}
+		
+		// set max. dimensions for display orientation
+		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+		{
+			//popupWidth = Math.round(popupWidth / 100f * 50f);
+			//popupMaxHeight = Math.round(popupMaxHeight / 100f * 90f);
+			popupWidth = popupWidth / 100f * 50f;
+			popupMaxHeight = popupMaxHeight / 100f * 90f;
+		}
+		else
+		{
+			//popupWidth = Math.round(popupWidth / 100f * 70f);
+			//popupMaxHeight = Math.round(popupMaxHeight / 100f * 90f);
+			popupWidth = popupWidth / 100f * 70f;
+			popupMaxHeight = popupMaxHeight / 100f * 90f;
+		}
+
+		// add action bar height
+		popupHeight = popupHeight + actionBarHeight;
+		
+		final float scale = getResources().getDisplayMetrics().density;
+		
+		// add header height
+		if (GlobalData.applicationActivatorHeader)
+			popupHeight = popupHeight + 64f * scale;
+		
+		// add list items height
+		int profileCount = profilesDataWrapper.getDatabaseHandler().getProfilesCount();
+		popupHeight = popupHeight + (50f * scale * profileCount); // item
+		popupHeight = popupHeight + (5f * scale * (profileCount-1)); // divider
+
+		popupHeight = popupHeight + (20f * scale); // listview padding
+		
+		if (popupHeight > popupMaxHeight)
+			popupHeight = popupMaxHeight;
+	
+		// set popup window dimensions
+		getWindow().setLayout((int) (popupWidth + 0.5f), (int) (popupHeight + 0.5f));
+		
+	//-----------------------------------------------------------------------------------
+		
 		//Debug.startMethodTracing("phoneprofiles");
 		
 		//requestWindowFeature(Window.FEATURE_ACTION_BAR);
@@ -70,14 +139,12 @@ public class ActivateProfileActivity extends SherlockActivity {
 			setContentView(R.layout.activity_activate_profile_no_indicator);
 		else
 			setContentView(R.layout.activity_activate_profile_no_header);
-
+		
 		//getSupportActionBar().setHomeButtonEnabled(true);
 		//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, true, false);
-
 		profileList = profilesDataWrapper.getProfileList();
-
+		
 		if (profileList.size() == 0)
 		{
 			// nie je ziaden profile, staretnene Editor
@@ -98,9 +165,6 @@ public class ActivateProfileActivity extends SherlockActivity {
 		activateProfileHelper = profilesDataWrapper.getActivateProfileHelper();
 		activateProfileHelper.initialize(this, getBaseContext());
 
-		linlayoutRoot = (LinearLayout)findViewById(R.id.act_prof_linlayout_root);
-		if (GlobalData.applicationActivatorHeader)
-			linlayoutHeader = (LinearLayout)findViewById(R.id.act_prof_linlayout_header);
 		activeProfileName = (TextView)findViewById(R.id.act_prof_activated_profile_name);
 		activeProfileIcon = (ImageView)findViewById(R.id.act_prof_activated_profile_icon);
 		listView = (ListView)findViewById(R.id.act_prof_profiles_list);
@@ -138,100 +202,6 @@ public class ActivateProfileActivity extends SherlockActivity {
 		});
 
         //listView.setRemoveListener(onRemove);
-		
-		Display display = getWindowManager().getDefaultDisplay();
-		
-		// set popup width into display width - fix graphical glitch
-		getWindow().setLayout(0, display.getHeight());
-
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND, WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-		LayoutParams params = getWindow().getAttributes();
-		params.alpha = 1.0f;
-		params.dimAmount = 0.5f;
-		getWindow().setAttributes(params);
-		
-		// display dimensions
-		popupWidth = display.getWidth();
-		popupMaxHeight = display.getHeight();
-		popupHeight = 0;
-		actionBarHeight = 0;
-
-		// action bar height
-		TypedValue tv = new TypedValue();
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-		{
-			if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
-		        actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
-		}
-		else 
-		if (getTheme().resolveAttribute(com.actionbarsherlock.R.attr.actionBarSize, tv, true))
-		{
-			actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
-		}
-		
-		// set max. dimensions for display orientation
-		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-		{
-			popupWidth = Math.round(popupWidth / 100f * 50f);
-			popupMaxHeight = Math.round(popupMaxHeight / 100f * 90f);
-		}
-		else
-		{
-			popupWidth = Math.round(popupWidth / 100f * 70f);
-			popupMaxHeight = Math.round(popupMaxHeight / 100f * 90f);
-		}
-
-		// add action bar height
-		popupHeight = popupHeight + actionBarHeight; 
-		
-		// get views height and add it into popupHeight
-		final SherlockActivity activity = this;
-		
-		if (GlobalData.applicationActivatorHeader)
-		{
-			linlayoutHeader.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-				
-				public void onGlobalLayout() {
-					linlayoutHeader.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-	
-		        	final float scale = getResources().getDisplayMetrics().density;
-	
-					popupHeight = popupHeight + linlayoutHeader.getHeight();
-					// add 1dp
-					popupHeight = popupHeight + (int) (12 * scale + 0.5f);
-	
-					//Log.d("ActivateProfilesActivity.onGlobalLayout", "header");
-					
-				}
-			});
-		}
-		
-		listView.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-			
-			public void onGlobalLayout() {
-				listView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-
-				popupHeight = popupHeight + listView.getHeight();
-
-				//Log.d("ActivateProfilesActivity.onGlobalLayout", "listview");
-			}
-		});
-		
-		linlayoutRoot.getViewTreeObserver().addOnPreDrawListener(new OnPreDrawListener() {
-			
-			public boolean onPreDraw() {
-				linlayoutRoot.getViewTreeObserver().removeOnPreDrawListener(this);
-
-				if (popupHeight > popupMaxHeight)
-					popupHeight = popupMaxHeight;
-
-				// set popup window dimensions
-				activity.getWindow().setLayout(popupWidth, popupHeight);
-				
-				//Log.d("ActivateProfilesActivity.onPreDraw", "linlayoutRoot");
-				return true;
-			}
-		});
 		
 		
 		//Log.d("PhoneProfileActivity.onCreate", "xxxx");

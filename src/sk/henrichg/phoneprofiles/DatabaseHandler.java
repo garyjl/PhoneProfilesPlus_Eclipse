@@ -524,12 +524,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	// Getting profiles Count
 	public int getProfilesCount() {
-		String countQuery = "SELECT  * FROM " + TABLE_PROFILES;
+		String countQuery = "SELECT  count(*) FROM " + TABLE_PROFILES;
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery(countQuery, null);
-
-		// return count
-		int r = cursor.getCount();
+		
+		int r;
+		
+		if (cursor != null)
+		{
+			cursor.moveToFirst();
+			r = Integer.parseInt(cursor.getString(0));
+		}
+		else
+			r = 0;
 
 		cursor.close();
 		db.close();
