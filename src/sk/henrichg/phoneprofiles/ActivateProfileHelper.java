@@ -680,7 +680,8 @@ public class ActivateProfileHelper {
 	
 	private void setMobileData(Context context, boolean enable)
 	{
-    	if (android.os.Build.VERSION.SDK_INT <= 8)
+    /* podpora pre Froyo skoncena
+		if (android.os.Build.VERSION.SDK_INT <= 8)
     	{
     		
     		//     <uses-permission android:name="android.permission.MODIFY_PHONE_STATE"/>
@@ -735,7 +736,7 @@ public class ActivateProfileHelper {
     		
     	}
     	else
-    	{
+    	{  */
     		final ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
     		try {
 				final Class<?> connectivityManagerClass = Class.forName(connectivityManager.getClass().getName());
@@ -766,7 +767,7 @@ public class ActivateProfileHelper {
 				e.printStackTrace();
 				Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
 			}
-    	}
+    /*	}  */
 		
 	}
 	
@@ -790,7 +791,7 @@ public class ActivateProfileHelper {
 		        context.sendBroadcast(poke);
 	    	}
 	    	else
-	    	if ((android.os.Build.VERSION.SDK_INT >= 17) && GlobalData.isRooted())
+	    	if ((android.os.Build.VERSION.SDK_INT >= 17) && GlobalData.grantRoot())
 			{
 				// zariadenie je rootnute
 	    		//Log.d("ActivateProfileHelper.setGPS", "root");
@@ -854,7 +855,7 @@ public class ActivateProfileHelper {
 	            context.sendBroadcast(poke);
 	    	}
 	    	else
-	    	if ((android.os.Build.VERSION.SDK_INT >= 17) && GlobalData.isRooted())
+	    	if ((android.os.Build.VERSION.SDK_INT >= 17) && GlobalData.grantRoot())
 			{
 				// zariadenie je rootnute
 	    		//Log.d("ActivateProfileHelper.setGPS", "root");
@@ -949,7 +950,7 @@ public class ActivateProfileHelper {
 				context.sendBroadcast(intent);
 			}
 			else
-			if (GlobalData.isRooted())
+			if (GlobalData.grantRoot())
 			{
 				// zariadenie je rootnute
 				String command1;
@@ -976,7 +977,7 @@ public class ActivateProfileHelper {
 				// for normal apps it is only possible to open the system settings dialog
 			/*	Intent intent = new Intent(android.provider.Settings.ACTION_AIRPLANE_MODE_SETTINGS);
 				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				context.startActivity(intent); */ 
+				context.startActivity(intent); */
 			}
 			
 		}

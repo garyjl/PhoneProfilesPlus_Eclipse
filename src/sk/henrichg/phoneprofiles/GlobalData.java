@@ -286,9 +286,13 @@ public class GlobalData extends Application {
 	
 	static boolean isRooted()
 	{
-		if (!rootChecked)
+		rootChecked = true;
+		rooted = true;
+		// tis method ivokes grant access dialog :-/
+		// not exists best methot for check root :-/
+	/*	if (!rootChecked)
 		{
-			if (RootTools.isAccessGiven())
+			if (RootTools.isRootAvailable())
 			{
 				// zariadenie je rootnute
 				rootChecked = true;
@@ -299,8 +303,22 @@ public class GlobalData extends Application {
 				rootChecked = true;
 				rooted = false;
 			}
-		}
+		}  */
 		return rooted;
+	}
+	
+	static boolean grantRoot()
+	{
+		if (RootTools.isAccessGiven())
+		{
+			// root grantnuty
+			return true;
+		}
+		else
+		{
+			// grant odmietnuty
+			return false;
+		}
 	}
 	
 	//------------------------------------------------------------
