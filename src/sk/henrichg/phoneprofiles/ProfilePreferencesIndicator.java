@@ -52,48 +52,33 @@ public class ProfilePreferencesIndicator {
 			if (profile._soundRingtoneChange || profile._soundNotificationChange || profile._soundAlarmChange)
 				drawables[countDrawables++] = R.drawable.ic_profile_pref_sound;
 			// airplane mode
-			if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE, context))
-			{
-				if ((profile._deviceAirplaneMode == 1) || (profile._deviceAirplaneMode == 3))
-					drawables[countDrawables++] = R.drawable.ic_profile_pref_airplane_mode;
-				if (profile._deviceAirplaneMode == 2)
-					drawables[countDrawables++] = R.drawable.ic_profile_pref_airplane_mode_off;
-			}
+			if ((profile._deviceAirplaneMode == 1) || (profile._deviceAirplaneMode == 3))
+				drawables[countDrawables++] = R.drawable.ic_profile_pref_airplane_mode;
+			if (profile._deviceAirplaneMode == 2)
+				drawables[countDrawables++] = R.drawable.ic_profile_pref_airplane_mode_off;
 			// mobile data
-			if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA, context))
-			{
-				if ((profile._deviceMobileData == 1) || (profile._deviceMobileData == 3))
-					drawables[countDrawables++] = R.drawable.ic_profile_pref_mobiledata;
-				if (profile._deviceMobileData == 2)
-					drawables[countDrawables++] = R.drawable.ic_profile_pref_mobiledata_off;
-				// mobile data preferences
-				if (profile._deviceMobileDataPrefs)
-					drawables[countDrawables++] = R.drawable.ic_profile_pref_mobiledata_pref;
-			}
+			if ((profile._deviceMobileData == 1) || (profile._deviceMobileData == 3))
+				drawables[countDrawables++] = R.drawable.ic_profile_pref_mobiledata;
+			if (profile._deviceMobileData == 2)
+				drawables[countDrawables++] = R.drawable.ic_profile_pref_mobiledata_off;
+			// mobile data preferences
+			if (profile._deviceMobileDataPrefs)
+				drawables[countDrawables++] = R.drawable.ic_profile_pref_mobiledata_pref;
 			// wifi
-			if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_WIFI, context))
-			{
-				if ((profile._deviceWiFi == 1) || (profile._deviceWiFi == 3))
-					drawables[countDrawables++] = R.drawable.ic_profile_pref_wifi;
-				if (profile._deviceWiFi == 2)
-					drawables[countDrawables++] = R.drawable.ic_profile_pref_wifi_off;
-			}
+			if ((profile._deviceWiFi == 1) || (profile._deviceWiFi == 3))
+				drawables[countDrawables++] = R.drawable.ic_profile_pref_wifi;
+			if (profile._deviceWiFi == 2)
+				drawables[countDrawables++] = R.drawable.ic_profile_pref_wifi_off;
 			// bluetooth
-			if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_BLUETOOTH, context))
-			{
-				if ((profile._deviceBluetooth == 1) || (profile._deviceBluetooth == 3))
-					drawables[countDrawables++] = R.drawable.ic_profile_pref_bluetooth;
-				if (profile._deviceBluetooth == 2)
-					drawables[countDrawables++] = R.drawable.ic_profile_pref_bluetooth_off;
-			}
+			if ((profile._deviceBluetooth == 1) || (profile._deviceBluetooth == 3))
+				drawables[countDrawables++] = R.drawable.ic_profile_pref_bluetooth;
+			if (profile._deviceBluetooth == 2)
+				drawables[countDrawables++] = R.drawable.ic_profile_pref_bluetooth_off;
 			// gps
-			if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_GPS, context))
-			{
-				if ((profile._deviceGPS == 1) || (profile._deviceGPS == 3))
-					drawables[countDrawables++] = R.drawable.ic_profile_pref_gps_on;
-				if (profile._deviceGPS == 2)
-					drawables[countDrawables++] = R.drawable.ic_profile_pref_gps_off;
-			}
+			if ((profile._deviceGPS == 1) || (profile._deviceGPS == 3))
+				drawables[countDrawables++] = R.drawable.ic_profile_pref_gps_on;
+			if (profile._deviceGPS == 2)
+				drawables[countDrawables++] = R.drawable.ic_profile_pref_gps_off;
 			// screen timeout
 			if (profile._deviceScreenTimeout != 0)
 				drawables[countDrawables++] = R.drawable.ic_profile_pref_screen_timeout;

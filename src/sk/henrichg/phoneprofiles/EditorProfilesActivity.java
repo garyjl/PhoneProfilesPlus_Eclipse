@@ -10,10 +10,13 @@ import sk.henrichg.phoneprofiles.ProfilePreferencesFragment.OnRestartProfilePref
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceScreen;
 import android.widget.Toast;
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -205,30 +208,82 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		dialogBuilder.setTitle(getResources().getString(R.string.import_profiles_alert_title));
 		dialogBuilder.setMessage(getResources().getString(R.string.import_profiles_alert_message) + "?");
 		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
+
+		final Activity activity = this;
+		
 		dialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 			
 			public void onClick(DialogInterface dialog, int which) {
-				if (ActivateProfileActivity.profilesDataWrapper.getDatabaseHandler().importDB()  == 1)
-				{
-					ActivateProfileActivity.profilesDataWrapper.clearProfileList();
-					onProfileCountChanged();
-
-					// toast notification
-					Toast msg = Toast.makeText(getBaseContext(), 
-							getResources().getString(R.string.toast_import_ok), 
-							Toast.LENGTH_LONG);
-					msg.show();
-
-					// refresh activity
-					Intent refresh = new Intent(getBaseContext(), EditorProfilesActivity.class);
-					startActivity(refresh);
-					finish();
 				
-				}
-				else
+				class ImportAsyncTask extends AsyncTask<Void, Integer, Integer> 
 				{
-					importExportErrorDialog(1);
+					private ProgressDialog dialog;
+					
+					ImportAsyncTask()
+					{
+				         this.dialog = new ProgressDialog(activity);
+					}
+					
+					@Override
+					protected void onPreExecute()
+					{
+						super.onPreExecute();
+						
+					     this.dialog.setMessage(getResources().getString(R.string.import_profiles_alert_title));
+					     this.dialog.show();						
+						
+						// check root, this set GlobalData.rooted for doInBackgroud()
+						GlobalData.isRooted();
+					}
+					
+					@Override
+					protected Integer doInBackground(Void... params) {
+						int ret = ActivateProfileActivity.profilesDataWrapper.getDatabaseHandler().importDB();
+						
+						if (ret == 1)
+						{
+							// check for hardware capability and update data
+							ret = ActivateProfileActivity.profilesDataWrapper.getDatabaseHandler().updateForHardware(GlobalData.context);
+						}
+						
+						return ret;
+					}
+					
+					@Override
+					protected void onPostExecute(Integer result)
+					{
+						super.onPostExecute(result);
+						
+					    if (dialog.isShowing())
+				            dialog.dismiss();
+						
+						if (result == 1)
+						{
+							ActivateProfileActivity.profilesDataWrapper.clearProfileList();
+							onProfileCountChanged();
+
+							// toast notification
+							Toast msg = Toast.makeText(getBaseContext(), 
+									getResources().getString(R.string.toast_import_ok), 
+									Toast.LENGTH_LONG);
+							msg.show();
+
+							// refresh activity
+							Intent refresh = new Intent(getBaseContext(), EditorProfilesActivity.class);
+							startActivity(refresh);
+							finish();
+						
+						}
+						else
+						{
+							importExportErrorDialog(1);
+						}
+					}
+					
 				}
+				
+				new ImportAsyncTask().execute();
+				
 			}
 		});
 		dialogBuilder.setNegativeButton(android.R.string.no, null);
@@ -237,22 +292,44 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 
 	private void exportData()
 	{
-		if (ActivateProfileActivity.profilesDataWrapper.getDatabaseHandler().exportDB() == 1)
-		{
+		new AsyncTask<Void, Integer, Integer>() {
+			
+			@Override
+			protected void onPreExecute()
+			{
+				super.onPreExecute();
+			}
+			
+			@Override
+			protected Integer doInBackground(Void... params) {
+				return ActivateProfileActivity.profilesDataWrapper.getDatabaseHandler().exportDB();
+			}
+			
+			@Override
+			protected void onPostExecute(Integer result)
+			{
+				super.onPostExecute(result);
+				
+				if (result == 1)
+				{
 
-			// toast notification
-			Toast msg = Toast.makeText(getBaseContext(), 
-					getResources().getString(R.string.toast_export_ok), 
-					Toast.LENGTH_LONG);
-			msg.show();
-		
-		}
-		else
-		{
-			importExportErrorDialog(2);
-		}
+					// toast notification
+					Toast msg = Toast.makeText(getBaseContext(), 
+							getResources().getString(R.string.toast_export_ok), 
+							Toast.LENGTH_LONG);
+					msg.show();
+				
+				}
+				else
+				{
+					importExportErrorDialog(2);
+				}
+			}
+			
+		}.execute();
 		
 	}
+	
 	
 	@Override
 	public void onConfigurationChanged(Configuration newConfig)

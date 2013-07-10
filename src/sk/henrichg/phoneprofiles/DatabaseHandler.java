@@ -1088,6 +1088,97 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	
 // OTHERS -------------------------------------------------------------------------
 	
+	public int updateForHardware(Context context)
+	{
+		int ret = 0;
+		
+		final String selectQuery = "SELECT " + KEY_ID + "," +
+										KEY_DEVICE_AIRPLANE_MODE + "," +
+										KEY_DEVICE_WIFI + "," +
+										KEY_DEVICE_BLUETOOTH + "," +
+										KEY_DEVICE_MOBILE_DATA + "," +
+										KEY_DEVICE_MOBILE_DATA_PREFS + "," +
+										KEY_DEVICE_GPS + 
+							" FROM " + TABLE_PROFILES;
+
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+
+		Cursor cursor = db.rawQuery(selectQuery, null);
+		
+		db.beginTransaction();
+		try {
+
+			if (cursor.moveToFirst()) {
+				do {
+						if ((Integer.parseInt(cursor.getString(1)) != 0) &&	
+							GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE, context))
+						{
+							values.put(KEY_DEVICE_AIRPLANE_MODE, 0);
+							db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
+							   new String[] { String.valueOf(Integer.parseInt(cursor.getString(0))) });							
+						}
+							
+						if ((Integer.parseInt(cursor.getString(2)) != 0) &&
+							GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_WIFI, context))
+						{
+							values.put(KEY_DEVICE_WIFI, 0);
+							db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
+							   new String[] { String.valueOf(Integer.parseInt(cursor.getString(0))) });							
+						}
+						
+						if ((Integer.parseInt(cursor.getString(3)) != 0) &&
+							GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_BLUETOOTH, context))
+						{
+							values.put(KEY_DEVICE_BLUETOOTH, 0);
+							db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
+							   new String[] { String.valueOf(Integer.parseInt(cursor.getString(0))) });							
+						}
+						
+						if ((Integer.parseInt(cursor.getString(4)) != 0) &&
+							GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA, context))
+						{
+							values.put(KEY_DEVICE_MOBILE_DATA, 0);
+							db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
+							   new String[] { String.valueOf(Integer.parseInt(cursor.getString(0))) });							
+						}
+
+						if ((Integer.parseInt(cursor.getString(5)) != 0) &&
+								GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS, context))
+						{
+							values.put(KEY_DEVICE_MOBILE_DATA_PREFS, 0);
+							db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
+							   new String[] { String.valueOf(Integer.parseInt(cursor.getString(0))) });							
+						}
+						
+						if ((Integer.parseInt(cursor.getString(6)) != 0) &&
+							GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_GPS, context))
+						{
+							values.put(KEY_DEVICE_GPS, 0);
+							db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
+							   new String[] { String.valueOf(Integer.parseInt(cursor.getString(0))) });							
+						}
+
+				} while (cursor.moveToNext());
+			}
+
+			cursor.close();
+
+			db.setTransactionSuccessful();
+
+			ret = 1;
+	   } catch (Exception e){
+	        //Error in between database transaction
+		   ret = 0;
+	   } finally {
+		   db.endTransaction();
+       }	
+		
+       db.close();
+		
+       return ret;
+	}
+	
 	//@SuppressWarnings("resource")
 	public int importDB()
 	{
@@ -1116,17 +1207,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					
 					// db z SQLiteOpenHelper
 					SQLiteDatabase db = this.getWritableDatabase();
+
+					// cusor na data exportedDB
+					Cursor cursor = exportedDBObj.rawQuery("SELECT * FROM "+TABLE_PROFILES, null);
+					String[] columnNames = cursor.getColumnNames();
+
+					ContentValues values = new ContentValues();
 					
 					try {
 						db.beginTransaction();
 						
 						db.execSQL("DELETE FROM " + TABLE_PROFILES);
 						
-						// cusor na data exportedDB
-						Cursor cursor = exportedDBObj.rawQuery("SELECT * FROM "+TABLE_PROFILES, null);
-						String[] columnNames = cursor.getColumnNames();
-						ContentValues values = new ContentValues();
-	
 						if (cursor.moveToFirst()) {
 							do {
 									values.clear();
@@ -1166,16 +1258,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 							} while (cursor.moveToNext());
 						}
 	
-						cursor.close();
-						
 						db.setTransactionSuccessful();
 						
 						ret = 1;
 					}
 					finally {
 						db.endTransaction();
+						cursor.close();
+						db.close();
 					}
-					db.close();
 					
 					//FileChannel src = new FileInputStream(exportedDB).getChannel();
 					//FileChannel dst = new FileOutputStream(dataDB).getChannel();

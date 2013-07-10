@@ -146,6 +146,7 @@ public class GlobalData extends Application {
 	
 	static private boolean rootChecked = false;
 	static private boolean rooted = false;
+	static public boolean rootGranted = false;
 
 	static boolean hardwareCheck(String preferenceKey, Context context)
 	{
@@ -287,11 +288,7 @@ public class GlobalData extends Application {
 	
 	static boolean isRooted()
 	{
-		rootChecked = true;
-		rooted = true;
-		// tis method ivokes grant access dialog :-/
-		// not exists best methot for check root :-/
-	/*	if (!rootChecked)
+		if (!rootChecked)
 		{
 			if (RootTools.isRootAvailable())
 			{
@@ -304,22 +301,33 @@ public class GlobalData extends Application {
 				rootChecked = true;
 				rooted = false;
 			}
-		}  */
+		}
 		return rooted;
 	}
 	
 	static boolean grantRoot()
 	{
-		if (RootTools.isAccessGiven())
+		if (!rootGranted)
 		{
-			// root grantnuty
-			return true;
+			if (RootTools.isAccessGiven())
+			{
+				// root grantnuty
+				rootChecked = true;
+				rooted = true;
+				rootGranted = true;
+				return true;
+			}
+			else
+			{
+				// grant odmietnuty
+				rootChecked = false;
+				rooted = false;
+				rootGranted = false;
+				return false;
+			}
 		}
 		else
-		{
-			// grant odmietnuty
-			return false;
-		}
+			return true;
 	}
 	
 	//------------------------------------------------------------

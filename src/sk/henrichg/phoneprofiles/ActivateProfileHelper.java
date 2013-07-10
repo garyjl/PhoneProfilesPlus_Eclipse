@@ -60,6 +60,9 @@ public class ActivateProfileHelper {
 	@SuppressWarnings("deprecation")
 	public void execute(Profile profile, boolean interactive)
 	{
+		// regrant root, maybe application is deleted from Superuser.apk
+		GlobalData.rootGranted = false;
+		
 		// rozdelit zvonenie a notifikacie - zial je to oznacene ako @Hide :-(
 		//Settings.System.putInt(getContentResolver(), Settings.System.NOTIFICATIONS_USE_RING_VOLUME, 0);
 
