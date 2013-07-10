@@ -47,6 +47,7 @@
         <item name="actionProfilePrefSave">@drawable/ic_action_profile_pref_save_dark</item>
         <item name="actionProfilePrefCancel">@drawable/ic_action_profile_pref_cancel_dark</item>
         <item name="actionProfileToolBackground">@drawable/abs__list_selector_holo_light</item> 
+        <item name="actionProfileButtonTextStyle">@style/TextAppearance.Sherlock.Widget.ActionMode.Title</item> 
         
         <item name="actionModeCloseButtonStyle">@style/NoCloseButton</item>
         

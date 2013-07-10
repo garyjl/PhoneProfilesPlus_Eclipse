@@ -37,5 +37,6 @@
     <attr name="actionProfilePrefSave" format="reference" />
     <attr name="actionProfilePrefCancel" format="reference" />
     <attr name="actionProfileToolBackground" format="reference" />
+    <attr name="actionProfileButtonTextStyle" format="reference" />
     
 </resources>
