@@ -224,6 +224,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	        editor.putString(GlobalData.PREF_PROFILE_DEVICE_GPS, Integer.toString(profile._deviceGPS));
 	        editor.putBoolean(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE, profile._deviceRunApplicationChange);
 	        editor.putString(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME, profile._deviceRunApplicationPackageName);
+	        editor.putBoolean(GlobalData.PREF_PROFILE_SHOW_IN_ACTIVATOR, profile._showInActivator);
 			editor.commit();
     	}
 		
@@ -266,6 +267,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
         		profile._deviceRunApplicationPackageName = preferences.getString(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME, "-");
         	else
         		profile._deviceRunApplicationPackageName = "-";
+        	profile._showInActivator = preferences.getBoolean(GlobalData.PREF_PROFILE_SHOW_IN_ACTIVATOR, true);
 
         	//Log.d("ProfilePreferencesFragment.onPause", "profile activated="+profile.getChecked());
         	
@@ -398,7 +400,8 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	    		key.equals(GlobalData.PREF_PROFILE_SOUND_ALARM_CHANGE) ||
 	    		key.equals(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER_CHANGE) ||
 	    		key.equals(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS) || 
-	    		key.equals(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE) 
+	    		key.equals(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE) ||
+	    		key.equals(GlobalData.PREF_PROFILE_SHOW_IN_ACTIVATOR) 
 	    		))
 	    		setSummary(key, sharedPreferences.getString(key, ""));
     	

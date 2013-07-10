@@ -182,7 +182,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		// az tu mame layout, tak mozeme ziskat view-y
 		activeProfileName = (TextView)getSherlockActivity().findViewById(R.id.activated_profile_name);
 		activeProfileIcon = (ImageView)getSherlockActivity().findViewById(R.id.activated_profile_icon);
-		listView = (DragSortListView)getSherlockActivity().findViewById(R.id.main_profiles_list);
+		listView = (DragSortListView)getSherlockActivity().findViewById(R.id.editor_profiles_list);
 
 		listView.setAdapter(profileListAdapter);
 		
@@ -332,7 +332,8 @@ public class EditorProfileListFragment extends SherlockFragment {
 								  false,
 								  0,
 								  false,
-								  "-"
+								  "-",
+								  true
 					);
 			profileListAdapter.addItem(profile); // pridame profil do listview a nastavime jeho order
 			databaseHandler.addProfile(profile);
@@ -384,7 +385,8 @@ public class EditorProfileListFragment extends SherlockFragment {
 				   origProfile._deviceMobileDataPrefs,
 				   origProfile._deviceGPS,
 				   origProfile._deviceRunApplicationChange,
-				   origProfile._deviceRunApplicationPackageName);
+				   origProfile._deviceRunApplicationPackageName,
+				   origProfile._showInActivator);
 
 		profileListAdapter.addItem(newProfile);
 		databaseHandler.addProfile(newProfile);

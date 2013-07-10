@@ -19,7 +19,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	// All Static variables
 	// Database Version
-	private static final int DATABASE_VERSION = 24;
+	private static final int DATABASE_VERSION = 25;
 
 	// Database Name
 	private static final String DATABASE_NAME = "phoneProfilesManager";
@@ -65,6 +65,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_DEVICE_GPS = "deviceGPS";
 	private static final String KEY_DEVICE_RUN_APPLICATION_CHANGE = "deviceRunApplicationChange";
 	private static final String KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME = "deviceRunApplicationPackageName";
+	private static final String KEY_SHOW_IN_ACTIVATOR = "showInActivator";
 
 	private static final String KEY_E_ID = "id";
 	private static final String KEY_E_NAME = "name";
@@ -109,7 +110,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_DEVICE_MOBILE_DATA_PREFS + " INTEGER,"
 				+ KEY_DEVICE_GPS + " INTEGER,"
 				+ KEY_DEVICE_RUN_APPLICATION_CHANGE + " INTEGER,"
-				+ KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME + " TEXT"
+				+ KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME + " TEXT,"
+				+ KEY_SHOW_IN_ACTIVATOR + " INTEGER"
 				+ ")";
 		db.execSQL(CREATE_PROFILES_TABLE);
 		
@@ -244,6 +246,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					+ ")";
 			db.execSQL(CREATE_EVENTS_TABLE);
 		}
+
+		if (oldVersion < 25)
+		{
+			// pridame nove stlpce
+			db.execSQL("ALTER TABLE " + TABLE_PROFILES + " ADD COLUMN " + KEY_SHOW_IN_ACTIVATOR + " INTEGER");
+			
+			// updatneme zaznamy
+			db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_SHOW_IN_ACTIVATOR + "=1");
+		}
 		
 	}
 	
@@ -288,6 +299,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_DEVICE_GPS, profile._deviceGPS);
 		values.put(KEY_DEVICE_RUN_APPLICATION_CHANGE, (profile._deviceRunApplicationChange) ? 1 : 0);
 		values.put(KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME, profile._deviceRunApplicationPackageName);
+		values.put(KEY_SHOW_IN_ACTIVATOR, (profile._showInActivator) ? 1 : 0);
 		
 
 		// Inserting Row
@@ -332,7 +344,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 								         		KEY_DEVICE_MOBILE_DATA_PREFS,
 								         		KEY_DEVICE_GPS,
 								         		KEY_DEVICE_RUN_APPLICATION_CHANGE,
-								         		KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME
+								         		KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME,
+								         		KEY_SHOW_IN_ACTIVATOR
 												}, 
 				                 KEY_ID + "=?",
 				                 new String[] { String.valueOf(profile_id) }, null, null, null, null);
@@ -368,7 +381,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				                      (Integer.parseInt(cursor.getString(26)) == 1) ? true : false,
 				                      Integer.parseInt(cursor.getString(27)),
 				                      (Integer.parseInt(cursor.getString(28)) == 1) ? true : false,
-				                      cursor.getString(29)
+				                      cursor.getString(29),
+				                      (Integer.parseInt(cursor.getString(30)) == 1) ? true : false
 				                      );
 
 		cursor.close();
@@ -411,7 +425,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						         		 KEY_DEVICE_MOBILE_DATA_PREFS + "," +
 						         		 KEY_DEVICE_GPS + "," +
 						         		 KEY_DEVICE_RUN_APPLICATION_CHANGE + "," +
-						         		 KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME +
+						         		 KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME + "," +
+						         		 KEY_SHOW_IN_ACTIVATOR +
 		                     " FROM " + TABLE_PROFILES + " ORDER BY " + KEY_PORDER;
 
 		SQLiteDatabase db = this.getReadableDatabase();
@@ -451,6 +466,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 profile._deviceGPS = Integer.parseInt(cursor.getString(27));
                 profile._deviceRunApplicationChange = (Integer.parseInt(cursor.getString(28)) == 1) ? true : false;
                 profile._deviceRunApplicationPackageName = cursor.getString(29);
+                profile._showInActivator = (Integer.parseInt(cursor.getString(30)) == 1) ? true : false;
 				// Adding contact to list
 				profileList.add(profile);
 			} while (cursor.moveToNext());
@@ -497,6 +513,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_DEVICE_GPS, profile._deviceGPS);
 		values.put(KEY_DEVICE_RUN_APPLICATION_CHANGE, (profile._deviceRunApplicationChange) ? 1 : 0);
 		values.put(KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME, profile._deviceRunApplicationPackageName);
+		values.put(KEY_SHOW_IN_ACTIVATOR, (profile._showInActivator) ? 1 : 0);
 		
 
 		// updating row
@@ -638,7 +655,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 								         		KEY_DEVICE_MOBILE_DATA_PREFS,
 								         		KEY_DEVICE_GPS,
 								         		KEY_DEVICE_RUN_APPLICATION_CHANGE,
-								         		KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME
+								         		KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME,
+								         		KEY_SHOW_IN_ACTIVATOR
 												}, 
 				                 KEY_CHECKED + "=?",
 				                 new String[] { "1" }, null, null, null, null);
@@ -679,7 +697,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					                      (Integer.parseInt(cursor.getString(26)) == 1) ? true : false,
 					                      Integer.parseInt(cursor.getString(27)),
 					                      (Integer.parseInt(cursor.getString(28)) == 1) ? true : false,
-					                      cursor.getString(29)
+					                      cursor.getString(29),
+					                      (Integer.parseInt(cursor.getString(30)) == 1) ? true : false
 					                      );
 		}
 		else
@@ -724,7 +743,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						        		 KEY_DEVICE_MOBILE_DATA_PREFS + "," +
 						        		 KEY_DEVICE_GPS + "," +
 						        		 KEY_DEVICE_RUN_APPLICATION_CHANGE + "," +
-						        		 KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME +
+						        		 KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME + "," +
+						        		 KEY_SHOW_IN_ACTIVATOR +
 						    " FROM " + TABLE_PROFILES + " ORDER BY " + KEY_PORDER;
 
 		SQLiteDatabase db = this.getReadableDatabase();
@@ -765,6 +785,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			profile._deviceGPS = Integer.parseInt(cursor.getString(27));
 			profile._deviceRunApplicationChange = (Integer.parseInt(cursor.getString(28)) == 1) ? true : false;
 			profile._deviceRunApplicationPackageName = cursor.getString(29);
+			profile._showInActivator = (Integer.parseInt(cursor.getString(30)) == 1) ? true : false;
 		}
 		
 		cursor.close();
@@ -1132,6 +1153,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 									{
 										values.put(KEY_DEVICE_RUN_APPLICATION_CHANGE, 0);
 										values.put(KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME, "-");
+									}
+									if (exportedDBObj.getVersion() < 25)
+									{
+										values.put(KEY_SHOW_IN_ACTIVATOR, 1);
 									}
 									
 									

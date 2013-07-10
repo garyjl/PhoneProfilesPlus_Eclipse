@@ -13,6 +13,10 @@
             android:key="profileIcon"
             android:title="@string/profile_preferences_profileIcon"
             henrichg:imageSource="resource_file" />
+		<CheckBoxPreference 
+		    android:key="showInActivator"
+		    android:title="@string/profile_preferences_showInActivator"
+		    android:defaultValue="true" />
     </PreferenceCategory>
     <PreferenceCategory
         android:summary="@string/profile_preferences_category_volumes"

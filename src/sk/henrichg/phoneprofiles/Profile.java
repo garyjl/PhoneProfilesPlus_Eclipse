@@ -37,6 +37,7 @@ public class Profile {
 	public String _deviceWallpaper;
 	public boolean _deviceRunApplicationChange;
 	public String _deviceRunApplicationPackageName;
+	public boolean _showInActivator;
 	
 	public Bitmap _iconBitmap;
 	public Bitmap _preferencesIndicator;
@@ -77,7 +78,8 @@ public class Profile {
 			   	   boolean deviceMobileDataPrefs,
 			   	   int deviceGPS,
 			   	   boolean deviceRunApplicationChange,
-			   	   String deviceRunApplicationPackageName)
+			   	   String deviceRunApplicationPackageName,
+			   	   boolean showInActivator)
 	{
 		this._id = id;
 		this._name = name;
@@ -109,6 +111,7 @@ public class Profile {
 		this._deviceWallpaper = deviceWallpaper;
 		this._deviceRunApplicationChange = deviceRunApplicationChange;
 		this._deviceRunApplicationPackageName = deviceRunApplicationPackageName;
+		this._showInActivator = showInActivator;
 		
 		this._iconBitmap = null;
 		this._preferencesIndicator = null;
@@ -143,7 +146,8 @@ public class Profile {
 			   	   boolean deviceMobileDataPrefs,
 			   	   int deviceGPS,
 			   	   boolean deviceRunApplicationChange,
-			   	   String deviceRunApplicationPackageName)
+			   	   String deviceRunApplicationPackageName,
+			   	   boolean showInActivator)
 	{
 		this._name = name;
 		this._icon = icon;
@@ -174,6 +178,7 @@ public class Profile {
 		this._deviceWallpaper = deviceWallpaper;
 		this._deviceRunApplicationChange = deviceRunApplicationChange;
 		this._deviceRunApplicationPackageName = deviceRunApplicationPackageName;
+		this._showInActivator = showInActivator;
 		
 		this._iconBitmap = null;
 		this._preferencesIndicator = null;

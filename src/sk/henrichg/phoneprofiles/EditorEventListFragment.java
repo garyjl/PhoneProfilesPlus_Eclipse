@@ -163,7 +163,7 @@ public class EditorEventListFragment extends SherlockFragment {
 		super.onActivityCreated(savedInstanceState);
 		
 		// az tu mame layout, tak mozeme ziskat view-y
-		listView = (DragSortListView)getSherlockActivity().findViewById(R.id.main_profiles_list);
+		listView = (DragSortListView)getSherlockActivity().findViewById(R.id.editor_events_list);
 
 		listView.setAdapter(eventListAdapter);
 		

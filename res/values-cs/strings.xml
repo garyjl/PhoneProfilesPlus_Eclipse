@@ -146,5 +146,6 @@
     <string name="phone_preferences_actionmode_title">Uložit změny?</string>
     <string name="phone_preferences_actionmode_save">Uložit</string>
     <string name="phone_preferences_actionmode_cancel">Zrušit</string>
+    <string name="profile_preferences_showInActivator">Zobrazuj v Aktivátore</string>
     
 </resources>
