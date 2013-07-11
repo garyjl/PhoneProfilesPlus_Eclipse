@@ -1,5 +1,6 @@
 package sk.henrichg.phoneprofiles;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.ComponentName;
@@ -69,6 +70,21 @@ public class ProfilesDataWrapper {
 		}
 
 		return profileList;
+	}
+	
+	public List<Profile> getProfileListForActivator()
+	{
+		getProfileList();
+		
+		List<Profile> profileListForActivator = new ArrayList<Profile>();
+		
+		for (Profile profile : profileList)
+		{
+			if (profile._showInActivator)
+				profileListForActivator.add(profile);
+		}
+		
+		return profileListForActivator;
 	}
 
 	public void clearProfileList()

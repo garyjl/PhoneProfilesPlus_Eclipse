@@ -53,6 +53,7 @@
         <item name="android:actionModeCloseButtonStyle">@style/NoCloseButton</item>
         
     </style>
+    
 <!-- 
     <style name="ActionBar.Solid.Phoneprofilestheme" parent="@style/Widget.Sherlock.Light.ActionBar.Solid">
         <item name="android:background">@drawable/ab_solid_phoneprofilestheme</item>

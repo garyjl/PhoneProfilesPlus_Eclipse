@@ -137,7 +137,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 			
 			@Override
 			protected Void doInBackground(Void... params) {
-				profileList = profilesDataWrapper.getProfileList();
+				profileList = profilesDataWrapper.getProfileListForActivator();
 				
 				return null;
 			}
