@@ -9,6 +9,7 @@ public class Event {
 	public long _fkProfile;
 	public long _fkParams;
 	public long _fkParamsEdit;
+	public boolean _enabled;
 	
 	
 	// Empty constructorn
@@ -22,7 +23,8 @@ public class Event {
 		         int type,
 		         long fkProfile,
 		         long fkParams,
-		         long fkParamsEdit)
+		         long fkParamsEdit,
+		         boolean enabled)
 	{
 		this._id = id;
 		this._name = name;
@@ -30,6 +32,7 @@ public class Event {
         this._fkProfile = fkProfile;
         this._fkParams = fkParams;
         this._fkParamsEdit = fkParamsEdit;
+        this._enabled = enabled;
 	}
 	
 	// constructor
@@ -37,13 +40,15 @@ public class Event {
 	         	 int type,
 	         	 long fkProfile,
 	         	 long fkParams,
-	         	 long fkParamsEdit)
+	         	 long fkParamsEdit,
+	         	 boolean enabled)
 	{
 		this._name = name;
 	    this._type = type;
 	    this._fkProfile = fkProfile;
 	    this._fkParams = fkParams;
 	    this._fkParamsEdit = fkParamsEdit;
+	    this._enabled = enabled;
 	}
 	
 }

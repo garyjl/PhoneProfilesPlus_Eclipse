@@ -19,7 +19,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	// All Static variables
 	// Database Version
-	private static final int DATABASE_VERSION = 25;
+	private static final int DATABASE_VERSION = 26;
 
 	// Database Name
 	private static final String DATABASE_NAME = "phoneProfilesManager";
@@ -73,6 +73,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_E_FK_PROFILE = "fkProfile";
 	private static final String KEY_E_FK_PARAMS = "fkParams";
 	private static final String KEY_E_FK_PARAMS_EDIT = "fkParamsEdit";
+	private static final String KEY_E_ENABLED = "enabled";
 	
 	public DatabaseHandler(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -123,7 +124,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_E_TYPE + " INTEGER,"
 				+ KEY_E_FK_PROFILE + " INTEGER,"
 				+ KEY_E_FK_PARAMS + " INTEGER,"
-				+ KEY_E_FK_PARAMS_EDIT + " INTEGER"
+				+ KEY_E_FK_PARAMS_EDIT + " INTEGER,"
+				+ KEY_E_ENABLED + " INTEGER"
 				+ ")";
 		db.execSQL(CREATE_EVENTS_TABLE);
 		
@@ -254,6 +256,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			
 			// updatneme zaznamy
 			db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_SHOW_IN_ACTIVATOR + "=1");
+		}
+
+		if (oldVersion < 26)
+		{
+			// pridame nove stlpce
+			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_ENABLED + " INTEGER");
+			
+			// updatneme zaznamy
+			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_ENABLED + "=1");
 		}
 		
 	}
@@ -877,217 +888,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
         db.close();
 	}
-	
-// EVENTS --------------------------------------------------------------------------------
-	
-	// Adding new event
-	void addEvent(Event event) {
-	
-		SQLiteDatabase db = this.getWritableDatabase();
-		
-		ContentValues values = new ContentValues();
-		values.put(KEY_E_NAME, event._name); // Event Name
-		values.put(KEY_E_TYPE, event._type); // Event type
-		values.put(KEY_E_FK_PROFILE, event._fkProfile); // profile
-		values.put(KEY_E_FK_PARAMS, event._fkParams); // event parameters
-		values.put(KEY_E_FK_PARAMS_EDIT, event._fkParamsEdit); // event parameters for undo
-		
 
-		// Inserting Row
-		long id = db.insert(TABLE_EVENTS, null, values);
-		db.close(); // Closing database connection
-		
-		event._id = id;
-	}
-
-	// Getting single event
-	Event getEvent(long event_id) {
-		SQLiteDatabase db = this.getReadableDatabase();
-
-		Cursor cursor = db.query(TABLE_EVENTS, 
-				                 new String[] { KEY_E_ID, 
-												KEY_E_NAME, 
-												KEY_E_TYPE, 
-												KEY_E_FK_PROFILE, 
-												KEY_E_FK_PARAMS, 
-												KEY_E_FK_PARAMS_EDIT
-												}, 
-				                 KEY_ID + "=?",
-				                 new String[] { String.valueOf(event_id) }, null, null, null, null);
-		if (cursor != null)
-			cursor.moveToFirst();
-
-		Event event = new Event(Long.parseLong(cursor.getString(0)),
-				                      cursor.getString(1), 
-				                      Integer.parseInt(cursor.getString(2)),
-				                      Long.parseLong(cursor.getString(3)),
-				                      Long.parseLong(cursor.getString(4)),
-				                      Long.parseLong(cursor.getString(5))
-				                      );
-
-		cursor.close();
-		db.close();
-
-		// return profile
-		return event;
-	}
-	
-	// Getting All Events
-	public List<Event> getAllEvents() {
-		List<Event> eventList = new ArrayList<Event>();
-		// Select All Query
-		final String selectQuery = "SELECT " + KEY_E_ID + "," +
-				                         KEY_E_NAME + "," +
-				                         KEY_E_TYPE + "," +
-				                         KEY_E_FK_PROFILE + "," +
-				                         KEY_E_FK_PARAMS + "," +
-						         		 KEY_E_FK_PARAMS_EDIT +
-		                     " FROM " + TABLE_EVENTS;
-
-		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor cursor = db.rawQuery(selectQuery, null);
-
-		// looping through all rows and adding to list
-		if (cursor.moveToFirst()) {
-			do {
-				Event event = new Event();
-				event._id = Long.parseLong(cursor.getString(0));
-				event._name = cursor.getString(1);
-				event._type = Integer.parseInt(cursor.getString(2));
-				event._fkProfile = Long.parseLong(cursor.getString(3));
-				event._fkParams = Long.parseLong(cursor.getString(4));
-				event._fkParamsEdit = Long.parseLong(cursor.getString(5));
-				// Adding contact to list
-				eventList.add(event);
-			} while (cursor.moveToNext());
-		}
-
-		cursor.close();
-		db.close();
-		
-		// return evemt list
-		return eventList;
-	}
-
-	// Updating single event
-	public int updateEvent(Event event) {
-		SQLiteDatabase db = this.getWritableDatabase();
-
-		ContentValues values = new ContentValues();
-		values.put(KEY_E_NAME, event._name);
-		values.put(KEY_E_TYPE, event._type);
-		values.put(KEY_E_FK_PROFILE, event._fkProfile);
-		values.put(KEY_E_FK_PARAMS, event._fkParams);
-		values.put(KEY_E_FK_PARAMS_EDIT, event._fkParamsEdit);
-
-		// updating row
-		int r = db.update(TABLE_EVENTS, values, KEY_ID + " = ?",
-				        new String[] { String.valueOf(event._id) });
-        db.close();
-        
-		return r;
-	}
-
-	// Deleting single event
-	public void deleteEvent(Event event) {
-		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_EVENTS, KEY_ID + " = ?",
-				new String[] { String.valueOf(event._id) });
-		db.close();
-	}
-
-	// Deleting all events
-	public void deleteAllEvents() {
-		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_EVENTS, null,	null);
-		db.close();
-	}
-
-	// Getting events Count
-	public int getEventsCount() {
-		final String countQuery = "SELECT  count(*) FROM " + TABLE_EVENTS;
-		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor cursor = db.rawQuery(countQuery, null);
-		
-		int r;
-		
-		if (cursor != null)
-		{
-			cursor.moveToFirst();
-			r = Integer.parseInt(cursor.getString(0));
-		}
-		else
-			r = 0;
-
-		cursor.close();
-		db.close();
-		
-		return r;	}
-	
-	public Event getFirstEvent()
-	{
-		final String selectQuery = "SELECT " + KEY_E_ID + "," +
-						                 KEY_E_NAME + "," +
-						                 KEY_E_TYPE + "," +
-						                 KEY_E_FK_PROFILE + "," +
-						                 KEY_E_FK_PARAMS + "," +
-										 KEY_E_FK_PARAMS_EDIT +
-						    " FROM " + TABLE_EVENTS;
-
-		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor cursor = db.rawQuery(selectQuery, null);
-
-		Event event = null; 
-		
-		// looping through all rows and adding to list
-		if (cursor.moveToFirst()) {
-			event = new Event();
-			event._id = Long.parseLong(cursor.getString(0));
-			event._name = cursor.getString(1);
-			event._type = Integer.parseInt(cursor.getString(2));
-			event._fkProfile = Long.parseLong(cursor.getString(3));
-			event._fkParams = Long.parseLong(cursor.getString(4));
-			event._fkParamsEdit = Long.parseLong(cursor.getString(5));
-		}
-		
-		cursor.close();
-		db.close();
-		
-		// return profile list
-		return event;
-		
-	}
-	
-	public int getEventPosition(Event event)
-	{
-		String selectQuery = "SELECT " + KEY_E_ID +
-							   " FROM " + TABLE_EVENTS;
-
-		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor cursor = db.rawQuery(selectQuery, null);
-		
-		// looping through all rows and adding to list
-		long lid;
-		int position = 0;
-		if (cursor.moveToFirst()) {
-			do {
-				lid = Long.parseLong(cursor.getString(0));
-				if (lid == event._id)
-					return position;
-				position++;
-			} while (cursor.moveToNext());
-		}
-		
-		cursor.close();
-		db.close();
-		
-		// return profile list
-		return -1;
-		
-	}
-	
-// OTHERS -------------------------------------------------------------------------
-	
 	public int updateForHardware(Context context)
 	{
 		int ret = 0;
@@ -1178,6 +979,224 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
        return ret;
 	}
+	
+// EVENTS --------------------------------------------------------------------------------
+	
+	// Adding new event
+	void addEvent(Event event) {
+	
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		ContentValues values = new ContentValues();
+		values.put(KEY_E_NAME, event._name); // Event Name
+		values.put(KEY_E_TYPE, event._type); // Event type
+		values.put(KEY_E_FK_PROFILE, event._fkProfile); // profile
+		values.put(KEY_E_FK_PARAMS, event._fkParams); // event parameters
+		values.put(KEY_E_FK_PARAMS_EDIT, event._fkParamsEdit); // event parameters for undo
+		values.put(KEY_E_ENABLED, (event._enabled) ? 1 : 0); // event enabled
+		
+
+		// Inserting Row
+		long id = db.insert(TABLE_EVENTS, null, values);
+		db.close(); // Closing database connection
+		
+		event._id = id;
+	}
+
+	// Getting single event
+	Event getEvent(long event_id) {
+		SQLiteDatabase db = this.getReadableDatabase();
+
+		Cursor cursor = db.query(TABLE_EVENTS, 
+				                 new String[] { KEY_E_ID, 
+												KEY_E_NAME, 
+												KEY_E_TYPE, 
+												KEY_E_FK_PROFILE, 
+												KEY_E_FK_PARAMS, 
+												KEY_E_FK_PARAMS_EDIT,
+												KEY_E_ENABLED
+												}, 
+				                 KEY_ID + "=?",
+				                 new String[] { String.valueOf(event_id) }, null, null, null, null);
+		if (cursor != null)
+			cursor.moveToFirst();
+
+		Event event = new Event(Long.parseLong(cursor.getString(0)),
+				                      cursor.getString(1), 
+				                      Integer.parseInt(cursor.getString(2)),
+				                      Long.parseLong(cursor.getString(3)),
+				                      Long.parseLong(cursor.getString(4)),
+				                      Long.parseLong(cursor.getString(5)),
+				                      (Integer.parseInt(cursor.getString(6)) == 1) ? true : false
+				                      );
+
+		cursor.close();
+		db.close();
+
+		// return profile
+		return event;
+	}
+	
+	// Getting All Events
+	public List<Event> getAllEvents() {
+		List<Event> eventList = new ArrayList<Event>();
+		// Select All Query
+		final String selectQuery = "SELECT " + KEY_E_ID + "," +
+				                         KEY_E_NAME + "," +
+				                         KEY_E_TYPE + "," +
+				                         KEY_E_FK_PROFILE + "," +
+				                         KEY_E_FK_PARAMS + "," +
+						         		 KEY_E_FK_PARAMS_EDIT + "," +
+				                         KEY_E_ENABLED +
+		                     " FROM " + TABLE_EVENTS;
+
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.rawQuery(selectQuery, null);
+
+		// looping through all rows and adding to list
+		if (cursor.moveToFirst()) {
+			do {
+				Event event = new Event();
+				event._id = Long.parseLong(cursor.getString(0));
+				event._name = cursor.getString(1);
+				event._type = Integer.parseInt(cursor.getString(2));
+				event._fkProfile = Long.parseLong(cursor.getString(3));
+				event._fkParams = Long.parseLong(cursor.getString(4));
+				event._fkParamsEdit = Long.parseLong(cursor.getString(5));
+				event._enabled = (Integer.parseInt(cursor.getString(6)) == 1) ? true : false;
+				// Adding contact to list
+				eventList.add(event);
+			} while (cursor.moveToNext());
+		}
+
+		cursor.close();
+		db.close();
+		
+		// return evemt list
+		return eventList;
+	}
+
+	// Updating single event
+	public int updateEvent(Event event) {
+		SQLiteDatabase db = this.getWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put(KEY_E_NAME, event._name);
+		values.put(KEY_E_TYPE, event._type);
+		values.put(KEY_E_FK_PROFILE, event._fkProfile);
+		values.put(KEY_E_FK_PARAMS, event._fkParams);
+		values.put(KEY_E_FK_PARAMS_EDIT, event._fkParamsEdit);
+		values.put(KEY_E_ENABLED, (event._enabled) ? 1 : 0);
+
+		// updating row
+		int r = db.update(TABLE_EVENTS, values, KEY_ID + " = ?",
+				        new String[] { String.valueOf(event._id) });
+        db.close();
+        
+		return r;
+	}
+
+	// Deleting single event
+	public void deleteEvent(Event event) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(TABLE_EVENTS, KEY_ID + " = ?",
+				new String[] { String.valueOf(event._id) });
+		db.close();
+	}
+
+	// Deleting all events
+	public void deleteAllEvents() {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(TABLE_EVENTS, null,	null);
+		db.close();
+	}
+
+	// Getting events Count
+	public int getEventsCount() {
+		final String countQuery = "SELECT  count(*) FROM " + TABLE_EVENTS;
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.rawQuery(countQuery, null);
+		
+		int r;
+		
+		if (cursor != null)
+		{
+			cursor.moveToFirst();
+			r = Integer.parseInt(cursor.getString(0));
+		}
+		else
+			r = 0;
+
+		cursor.close();
+		db.close();
+		
+		return r;	}
+	
+	public Event getFirstEvent()
+	{
+		final String selectQuery = "SELECT " + KEY_E_ID + "," +
+						                 KEY_E_NAME + "," +
+						                 KEY_E_TYPE + "," +
+						                 KEY_E_FK_PROFILE + "," +
+						                 KEY_E_FK_PARAMS + "," +
+										 KEY_E_FK_PARAMS_EDIT + "," +
+						                 KEY_E_ENABLED +
+						    " FROM " + TABLE_EVENTS;
+
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.rawQuery(selectQuery, null);
+
+		Event event = null; 
+		
+		// looping through all rows and adding to list
+		if (cursor.moveToFirst()) {
+			event = new Event();
+			event._id = Long.parseLong(cursor.getString(0));
+			event._name = cursor.getString(1);
+			event._type = Integer.parseInt(cursor.getString(2));
+			event._fkProfile = Long.parseLong(cursor.getString(3));
+			event._fkParams = Long.parseLong(cursor.getString(4));
+			event._fkParamsEdit = Long.parseLong(cursor.getString(5));
+			event._enabled = (Integer.parseInt(cursor.getString(6)) == 1) ? true : false;
+		}
+		
+		cursor.close();
+		db.close();
+		
+		// return profile list
+		return event;
+		
+	}
+	
+	public int getEventPosition(Event event)
+	{
+		String selectQuery = "SELECT " + KEY_E_ID +
+							   " FROM " + TABLE_EVENTS;
+
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.rawQuery(selectQuery, null);
+		
+		// looping through all rows and adding to list
+		long lid;
+		int position = 0;
+		if (cursor.moveToFirst()) {
+			do {
+				lid = Long.parseLong(cursor.getString(0));
+				if (lid == event._id)
+					return position;
+				position++;
+			} while (cursor.moveToNext());
+		}
+		
+		cursor.close();
+		db.close();
+		
+		// return profile list
+		return -1;
+		
+	}
+	
+// OTHERS -------------------------------------------------------------------------
 	
 	//@SuppressWarnings("resource")
 	public int importDB()

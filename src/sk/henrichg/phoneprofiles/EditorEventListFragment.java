@@ -36,7 +36,6 @@ public class EditorEventListFragment extends SherlockFragment {
 	private OnStartEventPreferences onStartEventPreferencesCallback = sDummyOnStartEventPreferencesCallback;
 	private OnFinishEventPreferencesActionMode onFinishEventPreferencesActionModeCallback = sDummyOnFinishEventPreferencesActionModeCallback;
 	private OnEventCountChanged onEventCountChangedCallback = sDummyOnEventCountChangedCallback; 
-	private OnEventOrderChanged onEventOrderChangedCallback = sDummyOnEventOrderChangedCallback; 
 	
 	/**
 	 * A callback interface that all activities containing this fragment must
@@ -81,11 +80,6 @@ public class EditorEventListFragment extends SherlockFragment {
 		public void onEventOrderChanged();
 	}
 
-	private static OnEventOrderChanged sDummyOnEventOrderChangedCallback = new OnEventOrderChanged() {
-		public void onEventOrderChanged() {
-		}
-	};
-	
 	public EditorEventListFragment() {
 	}
 	
@@ -106,12 +100,6 @@ public class EditorEventListFragment extends SherlockFragment {
 		}
 		onEventCountChangedCallback = (OnEventCountChanged) activity;
 		
-		if (!(activity instanceof OnEventOrderChanged)) {
-			throw new IllegalStateException(
-					"Activity must implement fragment's callbacks.");
-		}
-		onEventOrderChangedCallback = (OnEventOrderChanged) activity;
-		
 		
 		if (activity instanceof OnFinishEventPreferencesActionMode)
 			onFinishEventPreferencesActionModeCallback = (OnFinishEventPreferencesActionMode) activity;
@@ -126,7 +114,6 @@ public class EditorEventListFragment extends SherlockFragment {
 		onStartEventPreferencesCallback = sDummyOnStartEventPreferencesCallback;
 		onFinishEventPreferencesActionModeCallback = sDummyOnFinishEventPreferencesActionModeCallback;
 		onEventCountChangedCallback = sDummyOnEventCountChangedCallback;
-		onEventOrderChangedCallback = sDummyOnEventOrderChangedCallback;
 	}
 	
 
@@ -244,7 +231,8 @@ public class EditorEventListFragment extends SherlockFragment {
 								  0, 
 								  0,
 								  0,
-					         	  0
+					         	  0,
+					         	  true
 					         );
 			eventListAdapter.addItem(event); // pridame udalost do listview
 			databaseHandler.addEvent(event);
@@ -268,7 +256,8 @@ public class EditorEventListFragment extends SherlockFragment {
 				   origEvent._type, 
 				   origEvent._fkProfile, 
 				   origEvent._fkParams, 
-				   origEvent._fkParamsEdit 
+				   origEvent._fkParamsEdit,
+				   origEvent._enabled
 					);
 
 		eventListAdapter.addItem(newEvent);
