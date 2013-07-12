@@ -1,5 +1,8 @@
 package sk.henrichg.phoneprofiles;
 
+import sk.henrichg.phoneprofiles.EditorEventListFragment.OnEventCountChanged;
+import sk.henrichg.phoneprofiles.EditorEventListFragment.OnFinishEventPreferencesActionMode;
+import sk.henrichg.phoneprofiles.EditorEventListFragment.OnStartEventPreferences;
 import sk.henrichg.phoneprofiles.EditorProfileListFragment.OnFinishProfilePreferencesActionMode;
 import sk.henrichg.phoneprofiles.EditorProfileListFragment.OnProfileCountChanged;
 import sk.henrichg.phoneprofiles.EditorProfileListFragment.OnProfileOrderChanged;
@@ -33,7 +36,10 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
                                                OnRedrawListFragment,
                                                OnFinishProfilePreferencesActionMode,
                                                OnProfileCountChanged,
-                                               OnProfileOrderChanged
+                                               OnProfileOrderChanged,
+                                               OnStartEventPreferences,
+                                               OnFinishEventPreferencesActionMode,
+                                               OnEventCountChanged
 {
 
 	private static ApplicationsCache applicationsCache;
@@ -54,9 +60,15 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		
 		applicationsCache = new ApplicationsCache();
 		
-		setContentView(R.layout.activity_editor_profile_list);
+		setContentView(R.layout.activity_editor_list_onepane);
 		
-		if (findViewById(R.id.editor_profile_detail_container) != null) {
+		// add profile list into list container
+		EditorProfileListFragment fragment = new EditorProfileListFragment();
+		getSupportFragmentManager().beginTransaction()
+			.replace(R.id.editor_list_container, fragment).commit();
+		
+		
+		if (findViewById(R.id.editor_detail_container) != null) {
 			// The detail container view will be present only in the
 			// large-screen layouts (res/values-large and
 			// res/values-sw600dp). If this view is present, then the
@@ -78,7 +90,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		
 		// Create an array adapter to populate dropdownlist 
 	    ArrayAdapter<CharSequence> navigationAdapter =
-	            ArrayAdapter.createFromResource(getBaseContext(), R.array.phoneProfilesNavigator, R.layout.sherlock_spinner_item);
+	            ArrayAdapter.createFromResource(getSupportActionBar().getThemedContext(), R.array.phoneProfilesNavigator, R.layout.sherlock_spinner_item);
 
 	    // Enabling dropdown list navigation for the action bar 
 	    getSupportActionBar().setNavigationMode(com.actionbarsherlock.app.ActionBar.NAVIGATION_MODE_LIST);
@@ -89,10 +101,14 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	        public boolean onNavigationItemSelected(int itemPosition, long itemId) {
 	            switch(itemPosition) {
 	            case 0:
-	            	//
+	        		EditorProfileListFragment profileFragment = new EditorProfileListFragment();
+	        		getSupportFragmentManager().beginTransaction()
+	        			.replace(R.id.editor_list_container, profileFragment).commit();
 	                break;
 	            case 1:
-	                //...
+	        		EditorEventListFragment eventFragment = new EditorEventListFragment();
+	        		getSupportFragmentManager().beginTransaction()
+	        			.replace(R.id.editor_list_container, eventFragment).commit();
 	                break;
 	            }
 	            return false;
@@ -354,11 +370,11 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 				ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 				fragment.setArguments(arguments);
 				getSupportFragmentManager().beginTransaction()
-					.replace(R.id.editor_profile_detail_container, fragment).commit();
+					.replace(R.id.editor_detail_container, fragment).commit();
 			}
 			else
 			{
-				ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.editor_profile_detail_container);
+				ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
 				if (fragment != null)
 				{
 					getSupportFragmentManager().beginTransaction()
@@ -391,13 +407,13 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.editor_profile_detail_container, fragment).commit();
+					.replace(R.id.editor_detail_container, fragment).commit();
 		}
 	}
 
 	public void onRedrawListFragment() {
 		// redraw headeru list fragmentu, notifikacie a widgetov
-		EditorProfileListFragment fragment = (EditorProfileListFragment)getSupportFragmentManager().findFragmentById(R.id.editor_profile_list);
+		EditorProfileListFragment fragment = (EditorProfileListFragment)getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
 		if (fragment != null)
 		{
 			fragment.updateListView();
@@ -414,7 +430,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 
 	public void onFinishProfilePreferencesActionMode() {
 		if (mTwoPane) {
-			ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.editor_profile_detail_container);
+			ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
 			if (fragment != null)
 				fragment.finishActionMode();
 		}
@@ -436,15 +452,29 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		ActivateProfileActivity.profilesDataWrapper.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
 	}
 	
+	public void onEventCountChanged() {
+		// TODO Auto-generated method stub
+		
+	}
 
-	public void finishProfilePreferencesActionMode()
+	public void onFinishEventPreferencesActionMode() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void onStartEventPreferences(int position, boolean afterDelete) {
+		// TODO Auto-generated method stub
+		
+	}
+
+/*	public void finishProfilePreferencesActionMode()
 	{
 		
 	}
-	
+*/	
 	public static void updateListView(SherlockFragmentActivity activity)
 	{
-		EditorProfileListFragment fragment = (EditorProfileListFragment)activity.getSupportFragmentManager().findFragmentById(R.id.editor_profile_list);
+		EditorProfileListFragment fragment = (EditorProfileListFragment)activity.getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
 		if (fragment != null)
 		{
 			//Log.d("EditorProfileActivity.updateListView","");

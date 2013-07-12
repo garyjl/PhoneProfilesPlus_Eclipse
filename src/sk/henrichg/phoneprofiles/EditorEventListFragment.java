@@ -219,7 +219,8 @@ public class EditorEventListFragment extends SherlockFragment {
 		
 		//Log.d("EditorProfileListFragment.onStart", "xxx");
 		
-		eventListAdapter.notifyDataSetChanged();
+		if (eventListAdapter != null)		
+			eventListAdapter.notifyDataSetChanged();
 
 		//Log.d("EditorProfileListFragment.onStart", "xxxx");
 		

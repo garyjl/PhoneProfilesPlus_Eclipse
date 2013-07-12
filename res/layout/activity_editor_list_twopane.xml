@@ -18,15 +18,14 @@
     http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
     -->
 
-    <fragment
-        android:id="@+id/editor_profile_list"
-        android:name="sk.henrichg.phoneprofiles.EditorProfileListFragment"
+    <FrameLayout
+        android:id="@+id/editor_list_container"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="2" />
-
+    
     <FrameLayout
-        android:id="@+id/editor_profile_detail_container"
+        android:id="@+id/editor_detail_container"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp"
