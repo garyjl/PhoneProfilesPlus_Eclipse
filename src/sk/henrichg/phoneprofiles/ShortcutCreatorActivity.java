@@ -145,9 +145,9 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 		}.execute();
 		
 		
-		//requestWindowFeature(Window.FEATURE_ACTION_BAR);
-
 		setContentView(R.layout.activity_shortcut_creator);
+
+		getSupportActionBar().setTitle(R.string.title_activity_shortcut_creator);
 
 		//databaseHandler = new DatabaseHandler(this);
 		

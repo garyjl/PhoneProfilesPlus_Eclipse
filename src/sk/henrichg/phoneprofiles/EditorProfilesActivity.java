@@ -71,6 +71,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		
 		//getSupportActionBar().setHomeButtonEnabled(true);
 		//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setTitle(R.string.title_activity_phone_profiles);
 
 	/*	getSupportActionBar().setDisplayShowTitleEnabled(false);
 		

@@ -199,6 +199,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 
 		//getSupportActionBar().setHomeButtonEnabled(true);
 		//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setTitle(R.string.app_name);
 
 		activeProfileName = (TextView)findViewById(R.id.act_prof_activated_profile_name);
 		activeProfileIcon = (ImageView)findViewById(R.id.act_prof_activated_profile_icon);

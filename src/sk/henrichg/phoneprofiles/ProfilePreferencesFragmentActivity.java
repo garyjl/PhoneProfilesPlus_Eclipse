@@ -32,6 +32,7 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 
 		getSupportActionBar().setHomeButtonEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setTitle(R.string.title_activity_profile_preferences);
 
         int profile_position = getIntent().getIntExtra(GlobalData.EXTRA_PROFILE_POSITION, -1);
 

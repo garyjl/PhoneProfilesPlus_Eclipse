@@ -51,6 +51,7 @@ public class PhoneProfilesPreferencesActivity extends
 		
 		getSupportActionBar().setHomeButtonEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setTitle(R.string.title_activity_phone_profiles_preferences);
 		
         preferences = getApplicationContext().getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, MODE_PRIVATE);
         activeLanguage = preferences.getString(GlobalData.PREF_APPLICATION_LANGUAGE, "system");
