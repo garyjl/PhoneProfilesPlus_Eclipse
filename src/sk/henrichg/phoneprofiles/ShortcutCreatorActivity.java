@@ -100,7 +100,7 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 			popupHeight = popupHeight + 64f * scale;
 		
 		// add list items height
-		int profileCount = profilesDataWrapper.getDatabaseHandler().getProfilesCount();
+		int profileCount = profilesDataWrapper.getDatabaseHandler().getProfilesCount(false);
 		popupHeight = popupHeight + (50f * scale * profileCount); // item
 		popupHeight = popupHeight + (5f * scale * (profileCount-1)); // divider
 

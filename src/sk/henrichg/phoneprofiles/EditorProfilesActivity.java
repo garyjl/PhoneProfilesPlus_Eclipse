@@ -8,11 +8,13 @@ import sk.henrichg.phoneprofiles.PreferenceListFragment.OnPreferenceAttachedList
 import sk.henrichg.phoneprofiles.ProfilePreferencesFragment.OnRedrawListFragment;
 import sk.henrichg.phoneprofiles.ProfilePreferencesFragment.OnRestartProfilePreferences;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceScreen;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -71,9 +73,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		
 		//getSupportActionBar().setHomeButtonEnabled(true);
 		//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setDisplayShowTitleEnabled(false);
 		getSupportActionBar().setTitle(R.string.title_activity_phone_profiles);
-
-	/*	getSupportActionBar().setDisplayShowTitleEnabled(false);
 		
 		// Create an array adapter to populate dropdownlist 
 	    ArrayAdapter<CharSequence> navigationAdapter =
@@ -81,9 +82,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 
 	    // Enabling dropdown list navigation for the action bar 
 	    getSupportActionBar().setNavigationMode(com.actionbarsherlock.app.ActionBar.NAVIGATION_MODE_LIST);
-	*/
 
-	/*    // Defining Navigation listener 
+	    // Defining Navigation listener 
 	    ActionBar.OnNavigationListener navigationListener = new ActionBar.OnNavigationListener() {
 
 	        public boolean onNavigationItemSelected(int itemPosition, long itemId) {
@@ -102,7 +102,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	    // Setting dropdown items and item navigation listener for the actionbar 
 	    getSupportActionBar().setListNavigationCallbacks(navigationAdapter, navigationListener);
 	    navigationAdapter.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
-	*/	
+		
 
 		
 		//Log.d("EditorProfilesActivity.onCreate", "xxxx");

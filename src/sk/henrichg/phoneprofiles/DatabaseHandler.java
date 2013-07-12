@@ -19,7 +19,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	// All Static variables
 	// Database Version
-	private static final int DATABASE_VERSION = 26;
+	private static final int DATABASE_VERSION = 27;
 
 	// Database Name
 	private static final String DATABASE_NAME = "phoneProfilesManager";
@@ -117,6 +117,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.execSQL(CREATE_PROFILES_TABLE);
 		
 		db.execSQL("CREATE INDEX IDX_PORDER ON " + TABLE_PROFILES + " (" + KEY_PORDER + ")");
+		db.execSQL("CREATE INDEX IDX_SHOW_IN_ACTIVATOR ON " + TABLE_PROFILES + " (" + KEY_SHOW_IN_ACTIVATOR + ")");
 
 		final String CREATE_EVENTS_TABLE = "CREATE TABLE " + TABLE_EVENTS + "("
 				+ KEY_E_ID + " INTEGER PRIMARY KEY,"
@@ -266,6 +267,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			// updatneme zaznamy
 			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_ENABLED + "=1");
 		}
+
+		if (oldVersion < 27)
+		{
+			// index na SHOW_IN_ACTIVATOR
+			db.execSQL("CREATE INDEX IDX_SHOW_IN_ACTIVATOR ON " + TABLE_PROFILES + " (" + KEY_SHOW_IN_ACTIVATOR + ")");
+		}
+		
 		
 	}
 	
@@ -551,8 +559,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 
 	// Getting profiles Count
-	public int getProfilesCount() {
-		final String countQuery = "SELECT  count(*) FROM " + TABLE_PROFILES;
+	public int getProfilesCount(boolean forActivator) {
+		final String countQuery;
+		if (forActivator)
+		  countQuery = "SELECT  count(*) FROM " + TABLE_PROFILES + " WHERE " + KEY_SHOW_IN_ACTIVATOR + "=1";
+		else
+		  countQuery = "SELECT  count(*) FROM " + TABLE_PROFILES;
+
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery(countQuery, null);
 		
