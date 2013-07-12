@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -122,12 +123,42 @@ public class EditorEventListFragment extends SherlockFragment {
 
 		super.onCreate(savedInstanceState);
 		
-		databaseHandler = ActivateProfileActivity.profilesDataWrapper.getDatabaseHandler(); 
+		databaseHandler = ActivateProfileActivity.profilesDataWrapper.getDatabaseHandler();
+		
+		final SherlockFragment fragment = this;
+		
+		new AsyncTask<Void, Integer, Void>() {
+			
+			@Override
+			protected void onPreExecute()
+			{
+				super.onPreExecute();
+				//updateHeader(null);
+			}
+			
+			@Override
+			protected Void doInBackground(Void... params) {
+				eventList = ActivateProfileActivity.profilesDataWrapper.getEventList();
+				
+				return null;
+			}
+			
+			@Override
+			protected void onPostExecute(Void result)
+			{
+				super.onPostExecute(result);
+
+				if (listView != null)
+				{
+					eventListAdapter = new EditorEventListAdapter(fragment, eventList);
+					listView.setAdapter(eventListAdapter);
+				}
+				
+			}
+			
+		}.execute();
 		
 		intent = getSherlockActivity().getIntent();
-		
-		eventList = ActivateProfileActivity.profilesDataWrapper.getEventList();
-		eventListAdapter = new EditorEventListAdapter(this, eventList);
 		
 		setHasOptionsMenu(true);
 
@@ -150,10 +181,7 @@ public class EditorEventListFragment extends SherlockFragment {
 		super.onActivityCreated(savedInstanceState);
 		
 		// az tu mame layout, tak mozeme ziskat view-y
-		listView = (DragSortListView)getSherlockActivity().findViewById(R.id.editor_events_list);
-
-		listView.setAdapter(eventListAdapter);
-		
+		listView = (ListView)getSherlockActivity().findViewById(R.id.editor_events_list);
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -166,8 +194,16 @@ public class EditorEventListFragment extends SherlockFragment {
 			
 		}); 
 		
-        //listView.setRemoveListener(onRemove);
-
+		if (eventList != null)
+		{
+			if (eventListAdapter == null)
+			{
+				eventListAdapter = new EditorEventListAdapter(this, eventList);
+				listView.setAdapter(eventListAdapter);
+			}
+		}
+		
+		
 		//Log.d("EditorProfileListFragment.onActivityCreated", "xxx");
         
 	}
