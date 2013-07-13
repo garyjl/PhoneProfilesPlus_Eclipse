@@ -146,5 +146,7 @@
     <string name="phone_preferences_actionmode_save">Uložiť</string>
     <string name="phone_preferences_actionmode_cancel">Zrušiť</string>
     <string name="profile_preferences_showInActivator">Zobrazuj v Aktivátore</string>
+    <string name="array_phone_profiles_navigator_profiles">Profily</string>
+    <string name="array_phone_profiles_navigator_events">Udalosti</string>
     
 </resources>

@@ -145,5 +145,7 @@
     <string name="phone_preferences_actionmode_save">Save</string>
     <string name="phone_preferences_actionmode_cancel">Cancel</string>
     <string name="profile_preferences_showInActivator">Show in Activator</string>
+    <string name="array_phone_profiles_navigator_profiles">Profiles</string>
+    <string name="array_phone_profiles_navigator_events">Events</string>
     
 </resources>
