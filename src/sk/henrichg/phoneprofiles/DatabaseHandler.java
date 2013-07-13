@@ -926,7 +926,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			if (cursor.moveToFirst()) {
 				do {
 						if ((Integer.parseInt(cursor.getString(1)) != 0) &&	
-							GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE, context))
+							(!GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE, context)))
 						{
 							values.put(KEY_DEVICE_AIRPLANE_MODE, 0);
 							db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
@@ -934,7 +934,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						}
 							
 						if ((Integer.parseInt(cursor.getString(2)) != 0) &&
-							GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_WIFI, context))
+							(!GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_WIFI, context)))
 						{
 							values.put(KEY_DEVICE_WIFI, 0);
 							db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
@@ -942,7 +942,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						}
 						
 						if ((Integer.parseInt(cursor.getString(3)) != 0) &&
-							GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_BLUETOOTH, context))
+							(!GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_BLUETOOTH, context)))
 						{
 							values.put(KEY_DEVICE_BLUETOOTH, 0);
 							db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
@@ -950,7 +950,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						}
 						
 						if ((Integer.parseInt(cursor.getString(4)) != 0) &&
-							GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA, context))
+							(!GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA, context)))
 						{
 							values.put(KEY_DEVICE_MOBILE_DATA, 0);
 							db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
@@ -958,7 +958,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						}
 
 						if ((Integer.parseInt(cursor.getString(5)) != 0) &&
-								GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS, context))
+							(!GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS, context)))
 						{
 							values.put(KEY_DEVICE_MOBILE_DATA_PREFS, 0);
 							db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
@@ -966,7 +966,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						}
 						
 						if ((Integer.parseInt(cursor.getString(6)) != 0) &&
-							GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_GPS, context))
+							(!GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_GPS, context)))
 						{
 							values.put(KEY_DEVICE_GPS, 0);
 							db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
