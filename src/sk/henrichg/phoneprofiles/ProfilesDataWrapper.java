@@ -19,16 +19,18 @@ public class ProfilesDataWrapper {
 
 	private Context context = null;
 	private boolean forGUI = false;
+	private boolean generateIndicators = false;
 
 	private DatabaseHandler databaseHandler = null;
 	private ActivateProfileHelper activateProfileHelper = null;
 	private List<Profile> profileList = null;
 	private List<Event> eventList = null;
 	
-	ProfilesDataWrapper(Context c, boolean fgui, boolean loadProfileList, boolean loadEventList)
+	ProfilesDataWrapper(Context c, boolean fgui, boolean generIndicators, boolean loadProfileList, boolean loadEventList)
 	{
 		context = c;
 		forGUI = fgui;
+		generateIndicators = generIndicators;
 		databaseHandler = getDatabaseHandler();
 		activateProfileHelper = getActivateProfileHelper();
 		if (loadProfileList)
