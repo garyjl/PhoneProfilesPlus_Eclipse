@@ -42,6 +42,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
                                                OnEventCountChanged
 {
 
+	public static ProfilesDataWrapper profilesDataWrapper;
 	private static ApplicationsCache applicationsCache;
 	
 	/**
@@ -57,6 +58,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		GUIData.setLanguage(getBaseContext());
 
 		super.onCreate(savedInstanceState);
+		
+		profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, false, false);
 		
 		applicationsCache = new ApplicationsCache();
 		
@@ -75,10 +78,10 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			// activity should be in two-pane mode.
 			mTwoPane = true;
 
-			Profile profile = ActivateProfileActivity.profilesDataWrapper.getFirstProfile();
+			//Profile profile = profilesDataWrapper.getFirstProfile();
 			
-			//if (profile != null)
-				onStartProfilePreferences(ActivateProfileActivity.profilesDataWrapper.getProfileItemPosition(profile), false);
+			//onStartProfilePreferences(profilesDataWrapper.getProfileItemPosition(profile), false);
+			onStartProfilePreferences(-1, false);
 
 		}
 		
@@ -191,7 +194,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			//Log.d("EditorProfilesActivity.onOptionsItemSelected", "menu_exit");
 			
 			// zrusenie notifikacie
-			ActivateProfileActivity.profilesDataWrapper.getActivateProfileHelper().showNotification(null);
+			profilesDataWrapper.getActivateProfileHelper().showNotification(null);
 			
 			// zrusenie service
 			GlobalData.stopService(getApplicationContext());
@@ -255,12 +258,12 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 					
 					@Override
 					protected Integer doInBackground(Void... params) {
-						int ret = ActivateProfileActivity.profilesDataWrapper.getDatabaseHandler().importDB();
+						int ret = profilesDataWrapper.getDatabaseHandler().importDB();
 						
 						if (ret == 1)
 						{
 							// check for hardware capability and update data
-							ret = ActivateProfileActivity.profilesDataWrapper.getDatabaseHandler().updateForHardware(GlobalData.context);
+							ret = profilesDataWrapper.getDatabaseHandler().updateForHardware(GlobalData.context);
 						}
 						
 						return ret;
@@ -276,7 +279,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 						
 						if (result == 1)
 						{
-							ActivateProfileActivity.profilesDataWrapper.clearProfileList();
+							profilesDataWrapper.clearProfileList();
 							onProfileCountChanged();
 
 							// toast notification
@@ -319,7 +322,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			
 			@Override
 			protected Integer doInBackground(Void... params) {
-				return ActivateProfileActivity.profilesDataWrapper.getDatabaseHandler().exportDB();
+				return profilesDataWrapper.getDatabaseHandler().exportDB();
 			}
 			
 			@Override
@@ -417,14 +420,14 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		if (fragment != null)
 		{
 			fragment.updateListView();
-			Profile profile = ActivateProfileActivity.profilesDataWrapper.getActivatedProfile();
+			Profile profile = profilesDataWrapper.getActivatedProfile();
 			fragment.updateHeader(profile);
-			ActivateProfileActivity.profilesDataWrapper.getActivateProfileHelper().showNotification(profile);
-			ActivateProfileActivity.profilesDataWrapper.getActivateProfileHelper().updateWidget();
+			profilesDataWrapper.getActivateProfileHelper().showNotification(profile);
+			profilesDataWrapper.getActivateProfileHelper().updateWidget();
 			
 			// send message into service
 	        //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
-			ActivateProfileActivity.profilesDataWrapper.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
+			profilesDataWrapper.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
 		}
 	}
 
@@ -443,13 +446,13 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	public void onProfileOrderChanged() {
 		// send message into service
         //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
-		ActivateProfileActivity.profilesDataWrapper.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
+		profilesDataWrapper.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
 	}
 
 	public void onProfileCountChanged() {
 		// send message into service
         //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
-		ActivateProfileActivity.profilesDataWrapper.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
+		profilesDataWrapper.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
 	}
 	
 	public void onEventCountChanged() {

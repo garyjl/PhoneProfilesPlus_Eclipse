@@ -28,7 +28,7 @@ import android.widget.TextView;
 
 public class ActivateProfileActivity extends SherlockActivity {
 
-	public static ProfilesDataWrapper profilesDataWrapper;
+	private ProfilesDataWrapper profilesDataWrapper;
 	private ActivateProfileHelper activateProfileHelper;
 	private List<Profile> profileList;
 	private ActivateProfileListAdapter profileListAdapter;

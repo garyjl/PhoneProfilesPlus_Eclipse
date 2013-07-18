@@ -90,7 +90,7 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 
 		// send message into service
         //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
-		ActivateProfileActivity.profilesDataWrapper.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
+		EditorProfilesActivity.profilesDataWrapper.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
 	}
 	
 	public void onPreferenceAttached(PreferenceScreen root, int xmlId) {

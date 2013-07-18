@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.app.Activity;
@@ -142,16 +143,48 @@ public class EditorProfileListFragment extends SherlockFragment {
 
 		super.onCreate(savedInstanceState);
 		
-		databaseHandler = ActivateProfileActivity.profilesDataWrapper.getDatabaseHandler(); 
+		databaseHandler = EditorProfilesActivity.profilesDataWrapper.getDatabaseHandler(); 
 		
 		intent = getSherlockActivity().getIntent();
 		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
 		
-		activateProfileHelper = ActivateProfileActivity.profilesDataWrapper.getActivateProfileHelper();
+		activateProfileHelper = EditorProfilesActivity.profilesDataWrapper.getActivateProfileHelper();
 		activateProfileHelper.initialize(getSherlockActivity(), getActivity().getBaseContext());
 		
-		profileList = ActivateProfileActivity.profilesDataWrapper.getProfileList();
-		profileListAdapter = new EditorProfileListAdapter(this, profileList);
+		final SherlockFragment fragment = this;
+		
+		new AsyncTask<Void, Integer, Void>() {
+			
+			@Override
+			protected void onPreExecute()
+			{
+				super.onPreExecute();
+				//updateHeader(null);
+			}
+			
+			@Override
+			protected Void doInBackground(Void... params) {
+				profileList = EditorProfilesActivity.profilesDataWrapper.getProfileList();
+				
+				return null;
+			}
+			
+			@Override
+			protected void onPostExecute(Void result)
+			{
+				super.onPostExecute(result);
+
+				if (listView != null)
+				{
+					profileListAdapter = new EditorProfileListAdapter(fragment, profileList);
+					listView.setAdapter(profileListAdapter);
+				}
+				
+				doOnStart();
+				
+			}
+			
+		}.execute();
 		
 		setHasOptionsMenu(true);
 
@@ -225,10 +258,46 @@ public class EditorProfileListFragment extends SherlockFragment {
             }
         });
         
-        //listView.setRemoveListener(onRemove);
+		if (profileList != null)
+		{
+			if (profileListAdapter == null)
+			{
+				profileListAdapter = new EditorProfileListAdapter(this, profileList);
+				listView.setAdapter(profileListAdapter);
+			}
+		}
 
 		//Log.d("EditorProfileListFragment.onActivityCreated", "xxx");
         
+	}
+	
+	private void doOnStart()
+	{
+		// ak sa ma refreshnut aktivita, nebudeme robit nic, co je v onStart
+		if (PhoneProfilesPreferencesActivity.getInvalidateEditor(false))
+			return;
+		
+		if (profileListAdapter != null)
+		{
+			Profile profile;
+			
+			// pre profil, ktory je prave aktivny, treba aktualizovat aktivitu
+			profile = EditorProfilesActivity.profilesDataWrapper.getActivatedProfile();
+			updateHeader(profile);
+			
+			if (startupSource == 0)
+			{
+				// aktivita nebola spustena z notifikacie, ani z widgetu
+				// pre profil, ktory je prave aktivny, treba aktualizovat notifikaciu a widgety 
+				activateProfileHelper.showNotification(profile);
+				activateProfileHelper.updateWidget();
+			}
+			
+			profileListAdapter.notifyDataSetChanged();
+		}
+
+		// reset, aby sa to dalej chovalo ako normalne spustenie z lauchera
+		startupSource = 0;
 	}
 	
 	@Override
@@ -236,31 +305,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 	{
 		super.onStart();
 
-		// ak sa ma refreshnut aktivita, nebudeme robit nic, co je v onStart
-		if (PhoneProfilesPreferencesActivity.getInvalidateEditor(false))
-			return;
-		
-		//Log.d("EditorProfileListFragment.onStart", "xxx");
-		
-		Profile profile;
-		
-		// pre profil, ktory je prave aktivny, treba aktualizovat aktivitu
-		profile = ActivateProfileActivity.profilesDataWrapper.getActivatedProfile();
-		updateHeader(profile);
-		
-		if (startupSource == 0)
-		{
-			// aktivita nebola spustena z notifikacie, ani z widgetu
-			// pre profil, ktory je prave aktivny, treba aktualizovat notifikaciu a widgety 
-			activateProfileHelper.showNotification(profile);
-			activateProfileHelper.updateWidget();
-		}
-		
-		profileListAdapter.notifyDataSetChanged();
-
-
-		// reset, aby sa to dalej chovalo ako normalne spustenie z lauchera
-		startupSource = 0;
+		doOnStart();
 		
 		//Log.d("EditorProfileListFragment.onStart", "xxxx");
 		
@@ -426,7 +471,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 				activateProfileHelper.showNotification(profile);
 				activateProfileHelper.updateWidget();
 				
-				profile = ActivateProfileActivity.profilesDataWrapper.getFirstProfile();
+				profile = EditorProfilesActivity.profilesDataWrapper.getFirstProfile();
 				onStartProfilePreferencesCallback.onStartProfilePreferences(profileListAdapter.getItemId(profile), true);
 				
 			}
@@ -455,7 +500,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 				activateProfileHelper.showNotification(null);
 				activateProfileHelper.updateWidget();
 				
-				Profile profile = ActivateProfileActivity.profilesDataWrapper.getFirstProfile();
+				Profile profile = EditorProfilesActivity.profilesDataWrapper.getFirstProfile();
 				onStartProfilePreferencesCallback.onStartProfilePreferences(profileListAdapter.getItemId(profile), true);
 				
 			}
@@ -548,7 +593,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		profileListAdapter.activateProfile(profile);
 		updateHeader(profile);
 
-		ActivateProfileActivity.profilesDataWrapper.sendMessageIntoServiceLong(PhoneProfilesService.MSG_ACTIVATE_PROFILE, 
+		EditorProfilesActivity.profilesDataWrapper.sendMessageIntoServiceLong(PhoneProfilesService.MSG_ACTIVATE_PROFILE, 
 				                            profile._id);
 		
 

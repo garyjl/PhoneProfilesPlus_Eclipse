@@ -123,7 +123,9 @@ public class EditorEventListFragment extends SherlockFragment {
 
 		super.onCreate(savedInstanceState);
 		
-		databaseHandler = ActivateProfileActivity.profilesDataWrapper.getDatabaseHandler();
+		databaseHandler = EditorProfilesActivity.profilesDataWrapper.getDatabaseHandler();
+		
+		intent = getSherlockActivity().getIntent();
 		
 		final SherlockFragment fragment = this;
 		
@@ -138,7 +140,7 @@ public class EditorEventListFragment extends SherlockFragment {
 			
 			@Override
 			protected Void doInBackground(Void... params) {
-				eventList = ActivateProfileActivity.profilesDataWrapper.getEventList();
+				eventList = EditorProfilesActivity.profilesDataWrapper.getEventList();
 				
 				return null;
 			}
@@ -154,11 +156,11 @@ public class EditorEventListFragment extends SherlockFragment {
 					listView.setAdapter(eventListAdapter);
 				}
 				
+				doOnStart();
+				
 			}
 			
 		}.execute();
-		
-		intent = getSherlockActivity().getIntent();
 		
 		setHasOptionsMenu(true);
 
@@ -208,20 +210,23 @@ public class EditorEventListFragment extends SherlockFragment {
         
 	}
 	
+	private void doOnStart()
+	{
+		// ak sa ma refreshnut aktivita, nebudeme robit nic, co je v onStart
+		if (PhoneProfilesPreferencesActivity.getInvalidateEditor(false))
+			return;
+		
+		if (eventListAdapter != null)		
+			eventListAdapter.notifyDataSetChanged();
+	}
+	
 	@Override
 	public void onStart()
 	{
 		super.onStart();
 
-		// ak sa ma refreshnut aktivita, nebudeme robit nic, co je v onStart
-		if (PhoneProfilesPreferencesActivity.getInvalidateEditor(false))
-			return;
+		doOnStart();
 		
-		//Log.d("EditorProfileListFragment.onStart", "xxx");
-		
-		if (eventListAdapter != null)		
-			eventListAdapter.notifyDataSetChanged();
-
 		//Log.d("EditorProfileListFragment.onStart", "xxxx");
 		
 	}
@@ -324,7 +329,7 @@ public class EditorEventListFragment extends SherlockFragment {
 				onEventCountChangedCallback.onEventCountChanged();
 				//updateListView();
 				
-				Event event = ActivateProfileActivity.profilesDataWrapper.getFirstEvent();
+				Event event = EditorProfilesActivity.profilesDataWrapper.getFirstEvent();
 				onStartEventPreferencesCallback.onStartEventPreferences(eventListAdapter.getItemId(event), true);
 				
 			}
@@ -347,7 +352,7 @@ public class EditorEventListFragment extends SherlockFragment {
 				onEventCountChangedCallback.onEventCountChanged();
 				//updateListView();
 				
-				Event event = ActivateProfileActivity.profilesDataWrapper.getFirstEvent();
+				Event event = EditorProfilesActivity.profilesDataWrapper.getFirstEvent();
 				onStartEventPreferencesCallback.onStartEventPreferences(eventListAdapter.getItemId(event), true);
 				
 			}
