@@ -66,6 +66,10 @@ public class GlobalData extends Application {
 	static final String PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME = "deviceRunApplicationPackageName";
 	static final String PREF_PROFILE_SHOW_IN_ACTIVATOR = "showInActivator";
 	
+	static final String PREF_EVENT_NAME = "eventName";
+	static final String PREF_EVENT_TYPE = "eventType";
+	static final String PREF_EVENT_PROFILE_ID = "eventProfileId";
+	static final String PREF_EVENT_ENABLED = "eventEnabled";
 	
 	static final String APPLICATION_PREFS_NAME = "phone_profile_preferences";
 	

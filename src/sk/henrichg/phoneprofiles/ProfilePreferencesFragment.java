@@ -45,7 +45,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 
 	public interface OnRestartProfilePreferences {
 		/**
-		 * Callback for when an item has been selected.
+		 * Callback for restart fragment.
 		 */
 		public void onRestartProfilePreferences(int position);
 	}
@@ -57,7 +57,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	
 	public interface OnRedrawListFragment {
 		/**
-		 * Callback for when an item has been selected.
+		 * Callback for redraw profile list fragment.
 		 */
 		public void onRedrawListFragment();
 	}

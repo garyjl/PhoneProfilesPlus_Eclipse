@@ -25,7 +25,7 @@ public class PhoneProfilesServiceSheduler extends BroadcastReceiver {
 		/*	AlarmManager service = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 	
 		    Intent i = new Intent(context, PhoneProfilesServiceStarter.class);
-		    PendingIntent pending = PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
+		    PendingIntent pending = PendingIntent.getBroadcast(context, <uniquie_alarm_id>, i, PendingIntent.FLAG_CANCEL_CURRENT);
 	
 		    Calendar cal = Calendar.getInstance();
 		    // Start 30 seconds after boot completed

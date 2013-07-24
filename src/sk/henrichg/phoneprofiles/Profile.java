@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 
 public class Profile {
 	
-	//private variables
 	public long _id;
 	public String _name;
 	public String _icon;
