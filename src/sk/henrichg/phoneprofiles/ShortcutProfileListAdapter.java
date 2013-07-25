@@ -15,14 +15,10 @@ public class ShortcutProfileListAdapter extends BaseAdapter {
 	private Context context;
 	private List<Profile> profileList;
 	
-	private LayoutInflater inflater = null;
-	
 	public ShortcutProfileListAdapter(Context c, List<Profile> pl)
 	{
 		context = c;
 		profileList = pl;
-		
-		inflater = LayoutInflater.from(context);
 	}   
 	
 	public int getCount() {
@@ -50,6 +46,7 @@ public class ShortcutProfileListAdapter extends BaseAdapter {
       View vi = convertView;
       if (convertView == null)
       {
+  		LayoutInflater inflater = LayoutInflater.from(context);
       	if (GlobalData.applicationActivatorPrefIndicator)
       		vi = inflater.inflate(R.layout.shortcut_list_item, null);
       	else

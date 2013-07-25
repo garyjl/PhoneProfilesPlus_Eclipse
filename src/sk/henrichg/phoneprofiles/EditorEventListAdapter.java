@@ -19,16 +19,12 @@ public class EditorEventListAdapter extends BaseAdapter
 	private SherlockFragment fragment;
 	private List<Event> eventList;
 	
-	private LayoutInflater inflater = null;
-	
 	public static boolean editIconClicked = false;
 	
 	public EditorEventListAdapter(SherlockFragment f, List<Event> el)
 	{
 		fragment = f;
 		eventList = el;
-		
-		inflater = LayoutInflater.from(fragment.getSherlockActivity());
 	}   
 	
 	public int getCount()
@@ -94,6 +90,7 @@ public class EditorEventListAdapter extends BaseAdapter
 		View vi = convertView;
         if (convertView == null)
         {
+    		LayoutInflater inflater = LayoutInflater.from(fragment.getSherlockActivity());
        		vi = inflater.inflate(R.layout.editor_event_list_item, parent, false);
         }
 		

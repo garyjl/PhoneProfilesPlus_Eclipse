@@ -17,14 +17,12 @@ public class ActivateProfileListAdapter extends BaseAdapter
 	private List<Profile> profileList;
 	
 	private Context context;
-	private LayoutInflater inflater = null;
 	
 	public ActivateProfileListAdapter(Context c, List<Profile> pl)
 	{
 		profileList = pl;
 		
 		context = c;
-		inflater = LayoutInflater.from(context);
 	}   
 	
 	public int getCount()
@@ -144,6 +142,7 @@ public class ActivateProfileListAdapter extends BaseAdapter
 		View vi = convertView;
       if (convertView == null)
       {
+  		LayoutInflater inflater = LayoutInflater.from(context);
       	if (GlobalData.applicationActivatorPrefIndicator)
       		vi = inflater.inflate(R.layout.activate_profile_list_item, parent, false);
       	else

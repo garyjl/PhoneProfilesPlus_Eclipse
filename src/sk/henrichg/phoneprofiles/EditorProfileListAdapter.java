@@ -19,16 +19,12 @@ public class EditorProfileListAdapter extends BaseAdapter
 	private SherlockFragment fragment;
 	private List<Profile> profileList;
 	
-	private LayoutInflater inflater = null;
-	
 	public static boolean editIconClicked = false;
 	
 	public EditorProfileListAdapter(SherlockFragment f, List<Profile> pl)
 	{
 		fragment = f;
 		profileList = pl;
-		
-		inflater = LayoutInflater.from(fragment.getSherlockActivity());
 	}   
 	
 	public int getCount()
@@ -159,6 +155,7 @@ public class EditorProfileListAdapter extends BaseAdapter
 		View vi = convertView;
       if (convertView == null)
       {
+    	LayoutInflater inflater = LayoutInflater.from(fragment.getSherlockActivity());
       	if (GlobalData.applicationEditorPrefIndicator)
       		vi = inflater.inflate(R.layout.editor_profile_list_item, parent, false);
       	else
