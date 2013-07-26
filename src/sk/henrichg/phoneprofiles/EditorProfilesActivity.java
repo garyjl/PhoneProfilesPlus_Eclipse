@@ -206,6 +206,14 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			return super.onOptionsItemSelected(item);
 		}
 	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
+		if (fragment != null)
+			fragment.doOnActivityResult(requestCode, resultCode, data);
+	}
 
 	private void importExportErrorDialog(int importExport)
 	{

@@ -1,12 +1,20 @@
 package sk.henrichg.phoneprofiles;
 
+import java.lang.reflect.Method;
+
 import com.actionbarsherlock.view.MenuItem;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.provider.MediaStore;
+import android.util.Log;
 import net.saik0.android.unifiedpreference.UnifiedPreferenceFragment;
 import net.saik0.android.unifiedpreference.UnifiedSherlockPreferenceActivity;
 
@@ -170,7 +178,7 @@ public class PhoneProfilesPreferencesActivity extends
     	preferences.unregisterOnSharedPreferenceChangeListener(prefListener);
 		super.onDestroy();
 	}
-
+	
 	/*
 	private void setSummary(String key, Object value)
 	{

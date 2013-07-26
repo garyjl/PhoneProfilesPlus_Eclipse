@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceScreen;
+import android.util.Log;
  
 public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 												implements OnPreferenceAttachedListener,
@@ -74,6 +75,14 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 		Intent intent = getIntent();
 		startActivity(intent);
 		finish();
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.activity_profile_preferences_container);
+		if (fragment != null)
+			fragment.doOnActivityResult(requestCode, resultCode, data);
 	}
 
 	public void onRestartProfilePreferences(int position) {

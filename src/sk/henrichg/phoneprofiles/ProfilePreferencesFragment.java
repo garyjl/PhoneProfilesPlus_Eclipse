@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -161,8 +162,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		super.onDestroy();
 	}
 
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data)
+	public void doOnActivityResult(int requestCode, int resultCode, Intent data)
 	{
 		super.onActivityResult(requestCode, resultCode, data);
 		
@@ -185,6 +185,12 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 			changedImageViewPreference.setImageIdentifierAndType(picturePath, false);
 			
 		}
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		doOnActivityResult(requestCode, resultCode, data);
 	}
 	
 	private void loadPreferences()
