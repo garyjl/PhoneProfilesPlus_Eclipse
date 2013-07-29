@@ -20,9 +20,14 @@ public class Event {
 	
 	public boolean _running;
 
+	static final String PREF_EVENT_NAME = "eventName";
+	static final String PREF_EVENT_TYPE = "eventType";
+	static final String PREF_EVENT_PROFILE_ID = "eventProfileId";
+	static final String PREF_EVENT_ENABLED = "eventEnabled";
+	
 	public static final int ETYPE_TIME_RANGE = 1;
 	public static final int ETYPE_TIME_REPEAT = 2;
-	
+
 	// Empty constructorn
 	public Event(){
 		
@@ -103,20 +108,20 @@ public class Event {
 	public void loadSharedPrefereces(SharedPreferences preferences)
 	{
     	Editor editor = preferences.edit();
-        editor.putString(GlobalData.PREF_EVENT_NAME, this._name);
-        editor.putString(GlobalData.PREF_EVENT_TYPE, Integer.toString(this._type));
-        editor.putString(GlobalData.PREF_EVENT_PROFILE_ID, Long.toString(this._fkProfile));
-        editor.putBoolean(GlobalData.PREF_EVENT_ENABLED, this._enabled);
+        editor.putString(PREF_EVENT_NAME, this._name);
+        editor.putString(PREF_EVENT_TYPE, Integer.toString(this._type));
+        editor.putString(PREF_EVENT_PROFILE_ID, Long.toString(this._fkProfile));
+        editor.putBoolean(PREF_EVENT_ENABLED, this._enabled);
         this._eventPreferences.loadSharedPrefereces(preferences);
 		editor.commit();
 	}
 
 	public void saveSharedPrefereces(SharedPreferences preferences)
 	{
-    	this._name = preferences.getString(GlobalData.PREF_EVENT_NAME, "");
-		this._type = Integer.parseInt(preferences.getString(GlobalData.PREF_EVENT_TYPE, "0"));
-		this._fkProfile = Long.parseLong(preferences.getString(GlobalData.PREF_EVENT_PROFILE_ID, "0"));
-		this._enabled = preferences.getBoolean(GlobalData.PREF_EVENT_ENABLED, false);
+    	this._name = preferences.getString(PREF_EVENT_NAME, "");
+		this._type = Integer.parseInt(preferences.getString(PREF_EVENT_TYPE, "0"));
+		this._fkProfile = Long.parseLong(preferences.getString(PREF_EVENT_PROFILE_ID, "0"));
+		this._enabled = preferences.getBoolean(PREF_EVENT_ENABLED, false);
 		this._eventPreferences.saveSharedPrefereces(preferences);
 	}
 	
