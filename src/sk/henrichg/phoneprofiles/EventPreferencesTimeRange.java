@@ -17,8 +17,8 @@ public class EventPreferencesTimeRange extends EventPreferences {
 	public EventPreferencesTimeRange(Event event,
 									int startDay,
 									int endDay,
-									int startTime,
-									int endTime)
+									long startTime,
+									long endTime)
 	{
 		super(event);
 

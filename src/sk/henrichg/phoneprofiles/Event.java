@@ -11,7 +11,6 @@ public class Event {
 	public String _name;
 	public int _type;
 	public long _fkProfile;
-	public long _fkParams;
 	public boolean _enabled;
 
 	public EventPreferences _eventPreferences;
@@ -38,14 +37,12 @@ public class Event {
 		         String name,
 		         int type,
 		         long fkProfile,
-		         long fkParams,
 		         boolean enabled)
 	{
 		this._id = id;
 		this._name = name;
         this._type = type;
         this._fkProfile = fkProfile;
-        this._fkParams = fkParams;
         this._enabled = enabled;
         
         createEventPreferences();
@@ -57,13 +54,11 @@ public class Event {
 	public Event(String name,
 	         	 int type,
 	         	 long fkProfile,
-	         	 long fkParams,
 	         	 boolean enabled)
 	{
 		this._name = name;
 	    this._type = type;
 	    this._fkProfile = fkProfile;
-	    this._fkParams = fkParams;
 	    this._enabled = enabled;
 	    
 	    createEventPreferences();
@@ -76,10 +71,10 @@ public class Event {
         switch (this._type)
         {
         case ETYPE_TIME_RANGE:
-        	_eventPreferences = new EventPreferencesTimeRange(this, 0, 0, 0, 0, 0, 0);
+        	_eventPreferences = new EventPreferencesTimeRange(this, 0, 0, 0, 0);
         	break;
         case ETYPE_TIME_REPEAT:
-        	_eventPreferences = new EventPreferencesTimeRepeat(this, false, false, false, false, false, false, false, 0, 0, 0, 0);
+        	_eventPreferences = new EventPreferencesTimeRepeat(this, false, false, false, false, false, false, false, 0, 0);
         	break;
         }
 	}

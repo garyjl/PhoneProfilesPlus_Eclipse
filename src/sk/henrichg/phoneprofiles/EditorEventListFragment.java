@@ -272,7 +272,6 @@ public class EditorEventListFragment extends SherlockFragment {
 			event = new Event(getResources().getString(R.string.event_name_default), 
 								  0, 
 								  0,
-								  0,
 					         	  true
 					         );
 			eventListAdapter.addItem(event); // pridame udalost do listview
@@ -296,7 +295,6 @@ public class EditorEventListFragment extends SherlockFragment {
 				   origEvent._name+"_d", 
 				   origEvent._type, 
 				   origEvent._fkProfile, 
-				   origEvent._fkParams, 
 				   origEvent._enabled
 					);
 
