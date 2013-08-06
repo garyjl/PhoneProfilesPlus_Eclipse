@@ -1226,6 +1226,111 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 	}
 	
+	public void getEventPreferencesTimeRange(Event event) {
+		SQLiteDatabase db = this.getReadableDatabase();
+
+		Cursor cursor = db.query(TABLE_EVENTS, 
+				                 new String[] { KEY_E_START_DAY_OF_WEEK,
+				         						KEY_E_END_DAY_OF_WEEK,
+				         						KEY_E_START_TIME,
+				         						KEY_E_END_TIME
+												}, 
+				                 KEY_ID + "=?",
+				                 new String[] { String.valueOf(event._id) }, null, null, null, null);
+		if (cursor != null)
+			cursor.moveToFirst();
+
+		EventPreferencesTimeRange eventPreferences = (EventPreferencesTimeRange)event._eventPreferences;
+		
+		eventPreferences._startDay = Integer.parseInt(cursor.getString(0));
+		eventPreferences._endDay = Integer.parseInt(cursor.getString(1));
+		eventPreferences._startTime = Long.parseLong(cursor.getString(2));
+		eventPreferences._endTime = Long.parseLong(cursor.getString(3));
+		
+		cursor.close();
+		db.close();
+	}
+
+	public void getEventPreferencesTimeRepeat(Event event) {
+		SQLiteDatabase db = this.getReadableDatabase();
+
+		Cursor cursor = db.query(TABLE_EVENTS, 
+				                 new String[] { KEY_E_DAYS_OF_WEEK,
+				         						KEY_E_START_TIME,
+				         						KEY_E_END_TIME
+												}, 
+				                 KEY_ID + "=?",
+				                 new String[] { String.valueOf(event._id) }, null, null, null, null);
+		if (cursor != null)
+			cursor.moveToFirst();
+
+		EventPreferencesTimeRepeat eventPreferences = (EventPreferencesTimeRepeat)event._eventPreferences;
+		
+		String daysOfWeek = cursor.getString(0);
+		eventPreferences._sunday = (daysOfWeek.charAt(0) == '1') ? true : false;
+		eventPreferences._monday = (daysOfWeek.charAt(1) == '1') ? true : false;
+		eventPreferences._tuesday = (daysOfWeek.charAt(2) == '1') ? true : false;
+		eventPreferences._wendesday = (daysOfWeek.charAt(3) == '1') ? true : false;
+		eventPreferences._thursday = (daysOfWeek.charAt(4) == '1') ? true : false;
+		eventPreferences._friday = (daysOfWeek.charAt(5) == '1') ? true : false;
+		eventPreferences._saturday = (daysOfWeek.charAt(6) == '1') ? true : false;
+		eventPreferences._startTime = Long.parseLong(cursor.getString(1));
+		eventPreferences._endTime = Long.parseLong(cursor.getString(2));
+		
+		cursor.close();
+		db.close();
+	}
+	
+	public int updateEventPreferencesTimeRange(Event event) {
+		SQLiteDatabase db = this.getWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		
+		EventPreferencesTimeRange eventPreferences = (EventPreferencesTimeRange)event._eventPreferences; 
+
+		values.put(KEY_E_TYPE, event._type);
+		values.put(KEY_E_START_DAY_OF_WEEK, eventPreferences._startDay);
+		values.put(KEY_E_END_DAY_OF_WEEK, eventPreferences._endDay);
+		values.put(KEY_E_START_TIME, eventPreferences._startTime);
+		values.put(KEY_E_END_TIME, eventPreferences._endTime);
+
+		// updating row
+		int r = db.update(TABLE_EVENTS, values, KEY_ID + " = ?",
+				        new String[] { String.valueOf(event._id) });
+        db.close();
+        
+		return r;
+	}
+
+	public int updateEventPreferencesTimeRepeat(Event event) {
+		SQLiteDatabase db = this.getWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		
+		EventPreferencesTimeRepeat eventPreferences = (EventPreferencesTimeRepeat)event._eventPreferences; 
+
+		String daysOfWeek = "";
+		if (eventPreferences._sunday) daysOfWeek = daysOfWeek + "1"; else daysOfWeek = daysOfWeek + "0";
+		if (eventPreferences._monday) daysOfWeek = daysOfWeek + "1"; else daysOfWeek = daysOfWeek + "0";
+		if (eventPreferences._tuesday) daysOfWeek = daysOfWeek + "1"; else daysOfWeek = daysOfWeek + "0";
+		if (eventPreferences._wendesday) daysOfWeek = daysOfWeek + "1"; else daysOfWeek = daysOfWeek + "0";
+		if (eventPreferences._thursday) daysOfWeek = daysOfWeek + "1"; else daysOfWeek = daysOfWeek + "0";
+		if (eventPreferences._friday) daysOfWeek = daysOfWeek + "1"; else daysOfWeek = daysOfWeek + "0";
+		if (eventPreferences._saturday) daysOfWeek = daysOfWeek + "1"; else daysOfWeek = daysOfWeek + "0";
+		
+		values.put(KEY_E_TYPE, event._type);
+		values.put(KEY_E_DAYS_OF_WEEK, daysOfWeek);
+		values.put(KEY_E_START_TIME, eventPreferences._startTime);
+		values.put(KEY_E_END_TIME, eventPreferences._endTime);
+
+		// updating row
+		int r = db.update(TABLE_EVENTS, values, KEY_ID + " = ?",
+				        new String[] { String.valueOf(event._id) });
+        db.close();
+        
+		return r;
+	}
+	
 // OTHERS -------------------------------------------------------------------------
 	
 	//@SuppressWarnings("resource")
