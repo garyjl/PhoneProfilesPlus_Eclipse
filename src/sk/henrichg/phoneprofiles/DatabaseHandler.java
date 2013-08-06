@@ -1071,6 +1071,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				                      );
 
 		cursor.close();
+		
+		getEventPreferences(event, db);
+		
 		db.close();
 
 		// return profile
@@ -1100,6 +1103,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				event._type = Integer.parseInt(cursor.getString(2));
 				event._fkProfile = Long.parseLong(cursor.getString(3));
 				event._enabled = (Integer.parseInt(cursor.getString(4)) == 1) ? true : false;
+				getEventPreferences(event, db);
 				// Adding contact to list
 				eventList.add(event);
 			} while (cursor.moveToNext());
@@ -1122,9 +1126,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_E_FK_PROFILE, event._fkProfile);
 		values.put(KEY_E_ENABLED, (event._enabled) ? 1 : 0);
 
-		// updating row
-		int r = db.update(TABLE_EVENTS, values, KEY_ID + " = ?",
-				        new String[] { String.valueOf(event._id) });
+		int r = 0;
+		
+		db.beginTransaction();
+		
+		try {
+			// updating row
+			r = db.update(TABLE_EVENTS, values, KEY_ID + " = ?",
+				new String[] { String.valueOf(event._id) });
+			updateEventPreferences(event, db);
+		
+			db.setTransactionSuccessful();
+
+		} catch (Exception e){
+			//Error in between database transaction
+			r = 0;
+		} finally {
+			db.endTransaction();
+		}	
+		
         db.close();
         
 		return r;
@@ -1226,9 +1246,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 	}
 	
-	public void getEventPreferencesTimeRange(Event event) {
+	public void getEventPreferences(Event event) {
 		SQLiteDatabase db = this.getReadableDatabase();
+		getEventPreferences(event, db);
+		db.close();
+	}
 
+	public void getEventPreferences(Event event, SQLiteDatabase db) {
+		switch (event._type)
+        {
+        case Event.ETYPE_TIME_RANGE:
+        	getEventPreferencesTimeRange(event, db);
+        	break;
+        case Event.ETYPE_TIME_REPEAT:
+        	getEventPreferencesTimeRepeat(event, db);
+        	break;
+        }
+	}
+	
+	private void getEventPreferencesTimeRange(Event event, SQLiteDatabase db) {
 		Cursor cursor = db.query(TABLE_EVENTS, 
 				                 new String[] { KEY_E_START_DAY_OF_WEEK,
 				         						KEY_E_END_DAY_OF_WEEK,
@@ -1248,12 +1284,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		eventPreferences._endTime = Long.parseLong(cursor.getString(3));
 		
 		cursor.close();
-		db.close();
 	}
 
-	public void getEventPreferencesTimeRepeat(Event event) {
-		SQLiteDatabase db = this.getReadableDatabase();
-
+	private void getEventPreferencesTimeRepeat(Event event, SQLiteDatabase db) {
 		Cursor cursor = db.query(TABLE_EVENTS, 
 				                 new String[] { KEY_E_DAYS_OF_WEEK,
 				         						KEY_E_START_TIME,
@@ -1278,12 +1311,32 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		eventPreferences._endTime = Long.parseLong(cursor.getString(2));
 		
 		cursor.close();
-		db.close();
 	}
 	
-	public int updateEventPreferencesTimeRange(Event event) {
-		SQLiteDatabase db = this.getWritableDatabase();
+	public int updateEventPreferences(Event event) {
+		SQLiteDatabase db = this.getReadableDatabase();
+		int r = updateEventPreferences(event, db);
+		db.close();
+		return r;
+	}
 
+	public int updateEventPreferences(Event event, SQLiteDatabase db) {
+		int r;
+		switch (event._type)
+        {
+        case Event.ETYPE_TIME_RANGE:
+        	r = updateEventPreferencesTimeRange(event, db);
+        	break;
+        case Event.ETYPE_TIME_REPEAT:
+        	r = updateEventPreferencesTimeRepeat(event, db);
+        	break;
+        default:
+        	r = 0;
+        }
+		return r;
+	}
+	
+	private int updateEventPreferencesTimeRange(Event event, SQLiteDatabase db) {
 		ContentValues values = new ContentValues();
 		
 		EventPreferencesTimeRange eventPreferences = (EventPreferencesTimeRange)event._eventPreferences; 
@@ -1297,14 +1350,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		// updating row
 		int r = db.update(TABLE_EVENTS, values, KEY_ID + " = ?",
 				        new String[] { String.valueOf(event._id) });
-        db.close();
         
 		return r;
 	}
 
-	public int updateEventPreferencesTimeRepeat(Event event) {
-		SQLiteDatabase db = this.getWritableDatabase();
-
+	private int updateEventPreferencesTimeRepeat(Event event, SQLiteDatabase db) {
 		ContentValues values = new ContentValues();
 		
 		EventPreferencesTimeRepeat eventPreferences = (EventPreferencesTimeRepeat)event._eventPreferences; 
@@ -1326,7 +1376,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		// updating row
 		int r = db.update(TABLE_EVENTS, values, KEY_ID + " = ?",
 				        new String[] { String.valueOf(event._id) });
-        db.close();
         
 		return r;
 	}
