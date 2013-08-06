@@ -14,8 +14,8 @@ public class Event {
 	public boolean _enabled;
 
 	public EventPreferences _eventPreferences;
-	public int _typeEdit;
-	public EventPreferences _eventPreferencesEdit;
+	public int _typeOld;
+	public EventPreferences _eventPreferencesOld;
 	
 	public boolean _running;
 
@@ -81,8 +81,8 @@ public class Event {
 	
 	public void changeEventType(int type)
 	{
-		this._typeEdit = this._type;
-		this._eventPreferencesEdit = this._eventPreferences;
+		this._typeOld = this._type;
+		this._eventPreferencesOld = this._eventPreferences;
 		
 		this._type = type;
 		createEventPreferences();
@@ -90,14 +90,14 @@ public class Event {
 	
 	public void undoEventType()
 	{
-		if (this._typeEdit != 0)
+		if (this._typeOld != 0)
 		{
-			this._type = this._typeEdit;
-			this._eventPreferences = this._eventPreferencesEdit;
+			this._type = this._typeOld;
+			this._eventPreferences = this._eventPreferencesOld;
 		}
 		
-		this._typeEdit = 0;
-		this._eventPreferencesEdit = null;
+		this._typeOld = 0;
+		this._eventPreferencesOld = null;
 	}
 	
 	public void loadSharedPrefereces(SharedPreferences preferences)
