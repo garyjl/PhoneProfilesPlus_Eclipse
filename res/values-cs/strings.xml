@@ -152,5 +152,6 @@
     <string name="event_type_time_range">Čas - rozsah</string>
     <string name="event_type_time_repeat">Čas - opakováni</string>
     <string name="title_activity_event_type_preference_dialog">Výběr typu události</string>
+    <string name="title_activity_profile_preference_dialog">Výběr profilu</string>
     
 </resources>

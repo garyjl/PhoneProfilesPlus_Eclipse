@@ -4,12 +4,12 @@
     android:layout_height="match_parent" >
 
     <ImageView
-        android:id="@+id/event_type_pref_dlg_item_icon"
+        android:id="@+id/profile_pref_dlg_item_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:padding="3dp"
-        android:src="@drawable/ic_event_time_range"
+        android:src="@drawable/ic_profile_default"
         android:contentDescription="@string/empty_string"
         android:adjustViewBounds="true"
         android:maxHeight="50dp"
@@ -17,11 +17,11 @@
         android:scaleType="centerCrop" />
 
     <TextView
-        android:id="@+id/event_type_pref_dlg_item_label"
+        android:id="@+id/profile_pref_dlg_item_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/event_type_pref_dlg_item_icon"
+        android:layout_toRightOf="@id/profile_pref_dlg_item_icon"
         android:paddingLeft="3dp"
         android:text="@string/empty_string"
         android:textAppearance="?android:attr/textAppearanceMedium" />

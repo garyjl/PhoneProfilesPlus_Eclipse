@@ -150,5 +150,6 @@
     <string name="event_type_time_range">Time - range</string>
     <string name="event_type_time_repeat">Time - repeat</string>
     <string name="title_activity_event_type_preference_dialog">Set event type</string>
+    <string name="title_activity_profile_preference_dialog">Set profile</string>
     
 </resources>
