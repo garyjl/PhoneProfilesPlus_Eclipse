@@ -147,5 +147,8 @@
     <string name="profile_preferences_showInActivator">Show in Activator</string>
     <string name="array_phone_profiles_navigator_profiles">Profiles</string>
     <string name="array_phone_profiles_navigator_events">Events</string>
+    <string name="event_type_time_range">Time - range</string>
+    <string name="event_type_time_repeat">Time - repeat</string>
+    <string name="title_activity_event_type_preference_dialog">Set event type</string>
     
 </resources>
