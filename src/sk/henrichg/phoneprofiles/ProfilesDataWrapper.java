@@ -89,7 +89,7 @@ public class ProfilesDataWrapper {
 		return profileListForActivator;
 	}
 
-	public void clearProfileList()
+	public void invalidateProfileList()
 	{
 		if (profileList != null)
 			profileList.clear();
@@ -213,9 +213,36 @@ public class ProfilesDataWrapper {
 	
 	public void reloadProfilesData()
 	{
-		clearProfileList();
+		invalidateProfileList();
 		getProfileList();
 	}
+	
+	public void deleteProfile(Profile profile)
+	{
+		profileList.remove(profile);
+		if (eventList == null)
+			eventList = getEventList();
+		// unlink profile from events
+		for (Event event : eventList)
+		{
+			if (event._fkProfile == profile._id) 
+				event._fkProfile = 0;
+		}
+	}
+	
+	public void deleteAllProfiles()
+	{
+		profileList.clear();
+		if (eventList == null)
+			eventList = getEventList();
+		// unlink profiles from events
+		for (Event event : eventList)
+		{
+			event._fkProfile = 0;
+		}
+	}
+	
+//---------------------------------------------------
 
 	public List<Event> getEventList()
 	{
@@ -227,7 +254,7 @@ public class ProfilesDataWrapper {
 		return eventList;
 	}
 
-	public void clearEventList()
+	public void invalidateEventList()
 	{
 		if (eventList != null)
 			eventList.clear();
@@ -291,7 +318,7 @@ public class ProfilesDataWrapper {
 	
 	public void reloadEventsData()
 	{
-		clearEventList();
+		invalidateEventList();
 		getEventList();
 	}
 	

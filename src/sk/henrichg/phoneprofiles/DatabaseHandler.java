@@ -580,15 +580,48 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	// Deleting single profile
 	public void deleteProfile(Profile profile) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_PROFILES, KEY_ID + " = ?",
-				new String[] { String.valueOf(profile._id) });
+		
+		db.beginTransaction();
+		try {
+			db.delete(TABLE_PROFILES, KEY_ID + " = ?",
+					new String[] { String.valueOf(profile._id) });
+	
+			// unlink profile from events
+			ContentValues values = new ContentValues();
+			values.put(KEY_E_FK_PROFILE, 0);
+			db.update(TABLE_EVENTS, values, KEY_E_FK_PROFILE + " = ?",
+			        new String[] { String.valueOf(profile._id) });
+
+			db.setTransactionSuccessful();
+	    } catch (Exception e){
+	        //Error in between database transaction 
+	    } finally {
+	    	db.endTransaction();
+        }	
+		
 		db.close();
 	}
 
 	// Deleting all profiles
 	public void deleteAllProfiles() {
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_PROFILES, null,	null);
+		db.beginTransaction();
+
+		try {
+			db.delete(TABLE_PROFILES, null,	null);
+			
+			// unlink profiles from events
+			ContentValues values = new ContentValues();
+			values.put(KEY_E_FK_PROFILE, 0);
+			db.update(TABLE_EVENTS, values, null, null);
+			
+			db.setTransactionSuccessful();
+	    } catch (Exception e){
+	        //Error in between database transaction 
+	    } finally {
+	    	db.endTransaction();
+        }	
+
 		db.close();
 	}
 

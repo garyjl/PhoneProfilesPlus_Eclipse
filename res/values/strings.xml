@@ -151,5 +151,8 @@
     <string name="event_type_time_repeat">Time - repeat</string>
     <string name="title_activity_event_type_preference_dialog">Set event type</string>
     <string name="title_activity_profile_preference_dialog">Set profile</string>
+    <string name="title_activity_profile_preference_dialog">Set profile</string>
+    <string name="delete_profile_progress_title">Deleting profile</string>
+    <string name="delete_profiles_progress_title">Deleting profiles</string>
     
 </resources>

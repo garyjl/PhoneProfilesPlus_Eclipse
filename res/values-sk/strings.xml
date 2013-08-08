@@ -152,5 +152,7 @@
     <string name="event_type_time_repeat">Čas - opakovanie</string>
     <string name="title_activity_event_type_preference_dialog">Výber typu udalosti</string>
     <string name="title_activity_profile_preference_dialog">Výber profilu</string>
+    <string name="delete_profile_progress_title">Vymazáva sa profil</string>
+    <string name="delete_profiles_progress_title">Vymazávajú sa profily</string>
     
 </resources>

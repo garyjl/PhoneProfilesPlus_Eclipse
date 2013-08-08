@@ -33,7 +33,7 @@ public class ProfilePreference extends Preference {
 		*/
 		
 
-		profileId = -1;
+		profileId = 0;
 		
 		prefContext = context;
 		

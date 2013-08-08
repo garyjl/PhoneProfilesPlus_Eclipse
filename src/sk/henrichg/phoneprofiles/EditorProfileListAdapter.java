@@ -17,14 +17,17 @@ public class EditorProfileListAdapter extends BaseAdapter
 {
 
 	private SherlockFragment fragment;
+	private ProfilesDataWrapper profilesDataWrapper;
 	private List<Profile> profileList;
+	private List<Event> eventList;
 	
 	public static boolean editIconClicked = false;
 	
-	public EditorProfileListAdapter(SherlockFragment f, List<Profile> pl)
+	public EditorProfileListAdapter(SherlockFragment f, ProfilesDataWrapper pdw)
 	{
 		fragment = f;
-		profileList = pl;
+		profilesDataWrapper = pdw;
+		profileList = profilesDataWrapper.getProfileList();
 	}   
 	
 	public int getCount()
@@ -83,13 +86,13 @@ public class EditorProfileListAdapter extends BaseAdapter
 */	
 	public void deleteItem(Profile profile)
 	{
-		profileList.remove(profile);
+		profilesDataWrapper.deleteProfile(profile);
 		notifyDataSetChanged();
 	}
 	
 	public void clear()
 	{
-		profileList.clear();
+		profilesDataWrapper.deleteAllProfiles();
 		notifyDataSetChanged();
 	}
 	

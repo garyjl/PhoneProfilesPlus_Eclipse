@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import com.actionbarsherlock.view.Menu;
@@ -24,6 +25,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class EditorProfileListFragment extends SherlockFragment {
 
@@ -176,7 +178,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 
 				if (listView != null)
 				{
-					profileListAdapter = new EditorProfileListAdapter(fragment, profileList);
+					profileListAdapter = new EditorProfileListAdapter(fragment, EditorProfilesActivity.profilesDataWrapper);
 					listView.setAdapter(profileListAdapter);
 				}
 				
@@ -262,7 +264,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		{
 			if (profileListAdapter == null)
 			{
-				profileListAdapter = new EditorProfileListAdapter(this, profileList);
+				profileListAdapter = new EditorProfileListAdapter(this, EditorProfilesActivity.profilesDataWrapper);
 				listView.setAdapter(profileListAdapter);
 			}
 		}
@@ -457,23 +459,67 @@ public class EditorProfileListFragment extends SherlockFragment {
 		dialogBuilder.setTitle(getResources().getString(R.string.profile_string_0) + ": " + profile._name);
 		dialogBuilder.setMessage(getResources().getString(R.string.delete_profile_alert_message) + "?");
 		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
+		
+		final Activity activity = getActivity();
+		
 		dialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 			
 			public void onClick(DialogInterface dialog, int which) {
-				profileListAdapter.deleteItem(profile);
-				databaseHandler.deleteProfile(profile);
-				onProfileCountChangedCallback.onProfileCountChanged();
-				//updateListView();
-				// v pripade, ze sa odmaze aktivovany profil, nastavime, ze nic nie je aktivovane
-				//Profile profile = databaseHandler.getActivatedProfile();
-				Profile profile = profileListAdapter.getActivatedProfile();
-				updateHeader(profile);
-				activateProfileHelper.showNotification(profile);
-				activateProfileHelper.updateWidget();
 				
-				profile = EditorProfilesActivity.profilesDataWrapper.getFirstProfile();
-				onStartProfilePreferencesCallback.onStartProfilePreferences(profileListAdapter.getItemId(profile), true);
+				class DeleteAsyncTask extends AsyncTask<Void, Integer, Integer> 
+				{
+					private ProgressDialog dialog;
+					
+					DeleteAsyncTask()
+					{
+				         this.dialog = new ProgressDialog(activity);
+					}
+					
+					@Override
+					protected void onPreExecute()
+					{
+						super.onPreExecute();
+						
+					     this.dialog.setMessage(getResources().getString(R.string.delete_profile_progress_title) + "...");
+					     this.dialog.show();						
+					}
+					
+					@Override
+					protected Integer doInBackground(Void... params) {
+						
+						profileListAdapter.deleteItem(profile);
+						databaseHandler.deleteProfile(profile);
+						
+						return 1;
+					}
+					
+					@Override
+					protected void onPostExecute(Integer result)
+					{
+						super.onPostExecute(result);
+						
+					    if (dialog.isShowing())
+				            dialog.dismiss();
+						
+						if (result == 1)
+						{
+							onProfileCountChangedCallback.onProfileCountChanged();
+							//updateListView();
+							// v pripade, ze sa odmaze aktivovany profil, nastavime, ze nic nie je aktivovane
+							//Profile profile = databaseHandler.getActivatedProfile();
+							Profile profile = profileListAdapter.getActivatedProfile();
+							updateHeader(profile);
+							activateProfileHelper.showNotification(profile);
+							activateProfileHelper.updateWidget();
+							
+							profile = EditorProfilesActivity.profilesDataWrapper.getFirstProfile();
+							onStartProfilePreferencesCallback.onStartProfilePreferences(profileListAdapter.getItemId(profile), true);
+						}
+					}
+					
+				}
 				
+				new DeleteAsyncTask().execute();
 			}
 		});
 		dialogBuilder.setNegativeButton(android.R.string.no, null);
@@ -486,22 +532,67 @@ public class EditorProfileListFragment extends SherlockFragment {
 		dialogBuilder.setTitle(getResources().getString(R.string.alert_title_delete_all_profiles));
 		dialogBuilder.setMessage(getResources().getString(R.string.alert_message_delete_all_profiles) + "?");
 		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
+		
+		final Activity activity = getActivity();
+		
 		dialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 			
 			public void onClick(DialogInterface dialog, int which) {
-				databaseHandler.deleteAllProfiles();
-				profileListAdapter.clear();
-				onProfileCountChangedCallback.onProfileCountChanged();
-				//updateListView();
-				// v pripade, ze sa odmaze aktivovany profil, nastavime, ze nic nie je aktivovane
-				//Profile profile = databaseHandler.getActivatedProfile();
-				//Profile profile = profileListAdapter.getActivatedProfile();
-				updateHeader(null);
-				activateProfileHelper.showNotification(null);
-				activateProfileHelper.updateWidget();
 				
-				Profile profile = EditorProfilesActivity.profilesDataWrapper.getFirstProfile();
-				onStartProfilePreferencesCallback.onStartProfilePreferences(profileListAdapter.getItemId(profile), true);
+				class DeleteAsyncTask extends AsyncTask<Void, Integer, Integer> 
+				{
+					private ProgressDialog dialog;
+					
+					DeleteAsyncTask()
+					{
+				         this.dialog = new ProgressDialog(activity);
+					}
+					
+					@Override
+					protected void onPreExecute()
+					{
+						super.onPreExecute();
+						
+					     this.dialog.setMessage(getResources().getString(R.string.delete_profiles_progress_title) + "...");
+					     this.dialog.show();						
+					}
+					
+					@Override
+					protected Integer doInBackground(Void... params) {
+						
+						databaseHandler.deleteAllProfiles();
+						profileListAdapter.clear();
+						
+						return 1;
+					}
+					
+					@Override
+					protected void onPostExecute(Integer result)
+					{
+						super.onPostExecute(result);
+						
+					    if (dialog.isShowing())
+				            dialog.dismiss();
+						
+						if (result == 1)
+						{
+							onProfileCountChangedCallback.onProfileCountChanged();
+							//updateListView();
+							// v pripade, ze sa odmaze aktivovany profil, nastavime, ze nic nie je aktivovane
+							//Profile profile = databaseHandler.getActivatedProfile();
+							//Profile profile = profileListAdapter.getActivatedProfile();
+							updateHeader(null);
+							activateProfileHelper.showNotification(null);
+							activateProfileHelper.updateWidget();
+							
+							Profile profile = EditorProfilesActivity.profilesDataWrapper.getFirstProfile();
+							onStartProfilePreferencesCallback.onStartProfilePreferences(profileListAdapter.getItemId(profile), true);
+						}
+					}
+					
+				}
+				
+				new DeleteAsyncTask().execute();
 				
 			}
 		});

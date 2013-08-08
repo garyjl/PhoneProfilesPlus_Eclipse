@@ -287,7 +287,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 						
 						if (result == 1)
 						{
-							profilesDataWrapper.clearProfileList();
+							profilesDataWrapper.invalidateProfileList();
 							onProfileCountChanged();
 
 							// toast notification
