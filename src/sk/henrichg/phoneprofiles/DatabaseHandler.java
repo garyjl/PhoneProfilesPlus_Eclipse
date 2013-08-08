@@ -20,6 +20,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	// All Static variables
 	// Database Version
 	private static final int DATABASE_VERSION = 29;
+	private static final int DATABASE_VERSION_EVENTS = 24;
 
 	// Database Name
 	private static final String DATABASE_NAME = "phoneProfilesManager";
@@ -1386,6 +1387,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public int importDB()
 	{
 		int ret = 0;
+		List<Long> exportedDBEventProfileIds = new ArrayList<Long>();
+		List<Long> importDBEventProfileIds = new ArrayList<Long>();
+		long profileId;
+		long eventId;
+		
 		
 		// Close SQLiteOpenHelper so it will commit the created empty
 		// database to internal storage
@@ -1411,16 +1417,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					// db z SQLiteOpenHelper
 					SQLiteDatabase db = this.getWritableDatabase();
 
-					// cusor na data exportedDB
-					Cursor cursor = exportedDBObj.rawQuery("SELECT * FROM "+TABLE_PROFILES, null);
-					String[] columnNames = cursor.getColumnNames();
-
+					Cursor cursor = null;
+					String[] columnNames;
+					
 					ContentValues values = new ContentValues();
 					
 					try {
 						db.beginTransaction();
 						
 						db.execSQL("DELETE FROM " + TABLE_PROFILES);
+
+						// cusor na profily exportedDB
+						cursor = exportedDBObj.rawQuery("SELECT * FROM "+TABLE_PROFILES, null);
+						columnNames = cursor.getColumnNames();
 						
 						if (cursor.moveToFirst()) {
 							do {
@@ -1454,20 +1463,60 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 										values.put(KEY_SHOW_IN_ACTIVATOR, 1);
 									}
 									
-									
-									
 									// Inserting Row do db z SQLiteOpenHelper
-									db.insert(TABLE_PROFILES, null, values);
+									profileId = db.insert(TABLE_PROFILES, null, values);
+									// save profile ids
+									exportedDBEventProfileIds.add(cursor.getLong(cursor.getColumnIndex(KEY_ID)));
+									importDBEventProfileIds.add(profileId);
+									
 							} while (cursor.moveToNext());
 						}
-	
+						cursor.close();
+
+						if (exportedDBObj.getVersion() >= DATABASE_VERSION_EVENTS)
+						{
+							db.execSQL("DELETE FROM " + TABLE_EVENTS);
+						
+							// cusor na profily exportedDB
+							cursor = exportedDBObj.rawQuery("SELECT * FROM "+TABLE_EVENTS, null);
+							columnNames = cursor.getColumnNames();
+							
+							if (cursor.moveToFirst()) {
+								do {
+										values.clear();
+										for (int i = 0; i < columnNames.length; i++)
+										{
+											if (columnNames[i].equals(KEY_E_FK_PROFILE))
+											{
+												// importnuty profil ma nove id
+												// ale mame mapovacie polia, z ktorych vieme
+												// ktore povodne id za zmenilo na ktore nove
+												int profileIdx = exportedDBEventProfileIds.indexOf(cursor.getLong(i));
+												values.put(columnNames[i], importDBEventProfileIds.get(profileIdx));
+											}
+											else
+												values.put(columnNames[i], cursor.getString(i));
+											//Log.d("DatabaseHandler.importDB", "cn="+columnNames[i]+" val="+cursor.getString(i));
+										}
+										
+										// for non existent fields set default value
+										
+										// Inserting Row do db z SQLiteOpenHelper
+										eventId = db.insert(TABLE_EVENTS, null, values);
+										
+								} while (cursor.moveToNext());
+							}
+							cursor.close();
+						}
+						
 						db.setTransactionSuccessful();
 						
 						ret = 1;
 					}
 					finally {
 						db.endTransaction();
-						cursor.close();
+						if ((cursor != null) && (!cursor.isClosed()))
+							cursor.close();
 						db.close();
 					}
 					
