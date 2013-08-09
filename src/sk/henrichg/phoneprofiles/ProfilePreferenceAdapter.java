@@ -42,6 +42,7 @@ public class ProfilePreferenceAdapter extends BaseAdapter {
 	static class ViewHolder {
 		  ImageView profileIcon;
 		  TextView profileLabel;
+		  ImageView profileIndicator;
 		  int position;
 		}
 	
@@ -52,10 +53,16 @@ public class ProfilePreferenceAdapter extends BaseAdapter {
 		View vi = convertView;
 	    if (convertView == null)
 	    {
-	      	vi = inflater.inflate(R.layout.profile_preference_list_item, null);
+	      	if (GlobalData.applicationEditorPrefIndicator)
+	      		vi = inflater.inflate(R.layout.profile_preference_list_item, null);
+	      	else
+	      		vi = inflater.inflate(R.layout.profile_preference_list_item_no_indicator, null);
+	      	
 	        holder = new ViewHolder();
 	  		holder.profileIcon = (ImageView)vi.findViewById(R.id.profile_pref_dlg_item_icon);
 	  		holder.profileLabel = (TextView)vi.findViewById(R.id.profile_pref_dlg_item_label);
+	  		if (GlobalData.applicationEditorPrefIndicator)
+	  			holder.profileIndicator = (ImageView)vi.findViewById(R.id.profile_pref_dlg_item_indicator);
 	        vi.setTag(holder);        
 	    }
 	    else
@@ -75,14 +82,15 @@ public class ProfilePreferenceAdapter extends BaseAdapter {
 		      	holder.profileIcon.setImageResource(res); // resource na ikonu
 		    }
 		    else
-		    {
 		      	holder.profileIcon.setImageBitmap(profile._iconBitmap);
-		    }
+			if (GlobalData.applicationEditorPrefIndicator)
+				holder.profileIndicator.setImageBitmap(profile._preferencesIndicator);
 	    }
 	    else
 	    {
 	    	holder.profileLabel.setText("");
 	    	holder.profileIcon.setImageResource(0);
+			holder.profileIndicator.setImageResource(0);
 	    }
 	    
 		return vi;
