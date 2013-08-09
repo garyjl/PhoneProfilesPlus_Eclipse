@@ -1073,12 +1073,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_E_FK_PROFILE, event._fkProfile); // profile
 		values.put(KEY_E_ENABLED, (event._enabled) ? 1 : 0); // event enabled
 		
-
-		// Inserting Row
-		long id = db.insert(TABLE_EVENTS, null, values);
-		db.close(); // Closing database connection
+		db.beginTransaction();
 		
-		event._id = id;
+		try {
+			// Inserting Row
+			event._id = db.insert(TABLE_EVENTS, null, values);
+			updateEventPreferences(event, db);
+			
+			db.setTransactionSuccessful();
+
+		} catch (Exception e){
+			//Error in between database transaction
+		} finally {
+			db.endTransaction();
+		}	
+
+		db.close(); // Closing database connection
 	}
 
 	// Getting single event
@@ -1137,6 +1147,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				event._type = Integer.parseInt(cursor.getString(2));
 				event._fkProfile = Long.parseLong(cursor.getString(3));
 				event._enabled = (Integer.parseInt(cursor.getString(4)) == 1) ? true : false;
+				event.createEventPreferences();
 				getEventPreferences(event, db);
 				// Adding contact to list
 				eventList.add(event);
@@ -1312,10 +1323,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 		EventPreferencesTimeRange eventPreferences = (EventPreferencesTimeRange)event._eventPreferences;
 		
+		if (!cursor.isNull(0))
 		eventPreferences._startDay = Integer.parseInt(cursor.getString(0));
+		else
+			Log.e("DatabaseHandler.getEventPreferencesTimeRange","0=null");
+		if (!cursor.isNull(1))
 		eventPreferences._endDay = Integer.parseInt(cursor.getString(1));
+		else
+			Log.e("DatabaseHandler.getEventPreferencesTimeRange","1=null");
+		if (!cursor.isNull(2))
 		eventPreferences._startTime = Long.parseLong(cursor.getString(2));
+		else
+			Log.e("DatabaseHandler.getEventPreferencesTimeRange","2=null");
+		if (!cursor.isNull(3))
 		eventPreferences._endTime = Long.parseLong(cursor.getString(3));
+		else
+			Log.e("DatabaseHandler.getEventPreferencesTimeRange","3=null");
 		
 		cursor.close();
 	}
@@ -1333,16 +1356,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 		EventPreferencesTimeRepeat eventPreferences = (EventPreferencesTimeRepeat)event._eventPreferences;
 		
-		String daysOfWeek = cursor.getString(0);
-		eventPreferences._sunday = (daysOfWeek.charAt(0) == '1') ? true : false;
-		eventPreferences._monday = (daysOfWeek.charAt(1) == '1') ? true : false;
-		eventPreferences._tuesday = (daysOfWeek.charAt(2) == '1') ? true : false;
-		eventPreferences._wendesday = (daysOfWeek.charAt(3) == '1') ? true : false;
-		eventPreferences._thursday = (daysOfWeek.charAt(4) == '1') ? true : false;
-		eventPreferences._friday = (daysOfWeek.charAt(5) == '1') ? true : false;
-		eventPreferences._saturday = (daysOfWeek.charAt(6) == '1') ? true : false;
+		if (!cursor.isNull(0))
+		{
+			String daysOfWeek = cursor.getString(0);
+			eventPreferences._sunday = (daysOfWeek.charAt(0) == '1') ? true : false;
+			eventPreferences._monday = (daysOfWeek.charAt(1) == '1') ? true : false;
+			eventPreferences._tuesday = (daysOfWeek.charAt(2) == '1') ? true : false;
+			eventPreferences._wendesday = (daysOfWeek.charAt(3) == '1') ? true : false;
+			eventPreferences._thursday = (daysOfWeek.charAt(4) == '1') ? true : false;
+			eventPreferences._friday = (daysOfWeek.charAt(5) == '1') ? true : false;
+			eventPreferences._saturday = (daysOfWeek.charAt(6) == '1') ? true : false;
+		}
+		else
+			Log.e("DatabaseHandler.getEventPreferencesTimeRepeat","0=null");
+		if (!cursor.isNull(1))
 		eventPreferences._startTime = Long.parseLong(cursor.getString(1));
+		else
+			Log.e("DatabaseHandler.getEventPreferencesTimeRepeat","1=null");
+		if (!cursor.isNull(2))
 		eventPreferences._endTime = Long.parseLong(cursor.getString(2));
+		else
+			Log.e("DatabaseHandler.getEventPreferencesTimeRepeat","2=null");
 		
 		cursor.close();
 	}

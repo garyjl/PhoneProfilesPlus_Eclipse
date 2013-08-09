@@ -4,7 +4,7 @@
     android:id="@+id/event_list_item_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="1dp"
+    android:padding="5dp"
     android:orientation="horizontal"
     android:background="?attr/cardShape" >
 
