@@ -3,6 +3,7 @@ package sk.henrichg.phoneprofiles;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +14,6 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
-import android.util.Log;
 
 public class ProfilesDataWrapper {
 
@@ -66,7 +66,8 @@ public class ProfilesDataWrapper {
 				for (Profile profile : profileList)
 				{
 					profile.generateIconBitmap(context);
-					profile.generatePreferencesIndicator(context);
+					//if (generateIndicators)
+						profile.generatePreferencesIndicator(context);
 				}
 			}
 		}
@@ -360,7 +361,8 @@ public class ProfilesDataWrapper {
 	
     final Messenger mMessenger = new Messenger(new IncomingHandler());
 	
-    class IncomingHandler extends Handler {
+    @SuppressLint("HandlerLeak")
+	class IncomingHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {

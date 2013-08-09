@@ -1,5 +1,6 @@
 package sk.henrichg.phoneprofiles;
 
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -7,7 +8,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
-import android.util.Log;
 
 public class PhoneProfilesService extends Service {
 	
@@ -30,7 +30,8 @@ public class PhoneProfilesService extends Service {
 	// Target we publish for clients to send messages to IncomingHandler.
 	final Messenger messenger = new Messenger(new IncomingHandler());   	    
 
-    class IncomingHandler extends Handler { // Handler of incoming messages from clients.
+    @SuppressLint("HandlerLeak")
+	class IncomingHandler extends Handler { // Handler of incoming messages from clients.
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {

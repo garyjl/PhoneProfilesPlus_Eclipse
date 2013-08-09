@@ -9,12 +9,9 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.mobeta.android.dslv.DragSortListView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +24,6 @@ public class EditorEventListFragment extends SherlockFragment {
 	private List<Event> eventList;
 	private EditorEventListAdapter eventListAdapter;
 	private ListView listView;
-	private Intent intent;
 	private DatabaseHandler databaseHandler;
 
 	/**
@@ -125,7 +121,7 @@ public class EditorEventListFragment extends SherlockFragment {
 		
 		databaseHandler = EditorProfilesActivity.profilesDataWrapper.getDatabaseHandler();
 		
-		intent = getSherlockActivity().getIntent();
+		getSherlockActivity().getIntent();
 		
 		final SherlockFragment fragment = this;
 		

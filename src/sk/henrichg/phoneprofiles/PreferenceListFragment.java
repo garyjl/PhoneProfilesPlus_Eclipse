@@ -3,6 +3,7 @@ package sk.henrichg.phoneprofiles;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +13,6 @@ import android.os.Message;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,8 +31,9 @@ public class PreferenceListFragment extends SherlockListFragment{
     private static final int FIRST_REQUEST_CODE = 100;
     
     private static final int MSG_BIND_PREFERENCES = 0;
-    private Handler mHandler = new Handler() {
-        @Override
+    @SuppressLint("HandlerLeak")
+	private Handler mHandler = new Handler() {
+		@Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 

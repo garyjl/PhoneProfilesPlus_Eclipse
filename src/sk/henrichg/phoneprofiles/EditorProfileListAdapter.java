@@ -19,8 +19,6 @@ public class EditorProfileListAdapter extends BaseAdapter
 	private SherlockFragment fragment;
 	private ProfilesDataWrapper profilesDataWrapper;
 	private List<Profile> profileList;
-	private List<Event> eventList;
-	
 	public static boolean editIconClicked = false;
 	
 	public EditorProfileListAdapter(SherlockFragment f, ProfilesDataWrapper pdw)

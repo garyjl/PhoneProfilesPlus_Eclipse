@@ -1423,7 +1423,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		List<Long> exportedDBEventProfileIds = new ArrayList<Long>();
 		List<Long> importDBEventProfileIds = new ArrayList<Long>();
 		long profileId;
-		long eventId;
+		
 		
 		
 		// Close SQLiteOpenHelper so it will commit the created empty
@@ -1533,9 +1533,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 										}
 										
 										// for non existent fields set default value
-										
-										// Inserting Row do db z SQLiteOpenHelper
-										eventId = db.insert(TABLE_EVENTS, null, values);
+
 										
 								} while (cursor.moveToNext());
 							}
