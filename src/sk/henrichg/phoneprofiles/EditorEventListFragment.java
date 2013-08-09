@@ -12,6 +12,8 @@ import android.content.DialogInterface;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -237,14 +239,14 @@ public class EditorEventListFragment extends SherlockFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		
 		switch (item.getItemId()) {
-		case R.id.menu_new_profile:
-			//Log.d("PhoneProfileActivity.onOptionsItemSelected", "menu_new_profile");
+		case R.id.menu_new_event:
+			//Log.e("EditorProfileListFragment.onOptionsItemSelected", "menu_new_event");
 
 			startEventPreferencesActivity(-1);
 			
 			return true;
-		case R.id.menu_delete_all_profiles:
-			//Log.d("EditorProfileListFragment.onOptionsItemSelected", "menu_delete_all_profiles");
+		case R.id.menu_delete_all_events:
+			//Log.d("EditorProfileListFragment.onOptionsItemSelected", "menu_delete_all_events");
 			
 			deleteAllEvents();
 			
@@ -266,7 +268,7 @@ public class EditorEventListFragment extends SherlockFragment {
 		{
 			// pridanie novej udalost
 			event = new Event(getResources().getString(R.string.event_name_default), 
-								  0, 
+								  Event.ETYPE_TIME_RANGE, 
 								  0,
 					         	  true
 					         );

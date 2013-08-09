@@ -493,7 +493,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 					@Override
 					protected Integer doInBackground(Void... params) {
 						
-						profileListAdapter.deleteItem(profile);
+						profileListAdapter.deleteItemNoNotify(profile);
 						databaseHandler.deleteProfile(profile);
 						
 						return 1;
@@ -509,6 +509,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 						
 						if (result == 1)
 						{
+							profileListAdapter.notifyDataSetChanged();
 							onProfileCountChangedCallback.onProfileCountChanged();
 							//updateListView();
 							// v pripade, ze sa odmaze aktivovany profil, nastavime, ze nic nie je aktivovane
@@ -567,7 +568,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 					protected Integer doInBackground(Void... params) {
 						
 						databaseHandler.deleteAllProfiles();
-						profileListAdapter.clear();
+						profileListAdapter.clearNoNotify();
 						
 						return 1;
 					}
@@ -582,6 +583,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 						
 						if (result == 1)
 						{
+							profileListAdapter.notifyDataSetChanged();
 							onProfileCountChangedCallback.onProfileCountChanged();
 							//updateListView();
 							// v pripade, ze sa odmaze aktivovany profil, nastavime, ze nic nie je aktivovane

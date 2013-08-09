@@ -155,5 +155,10 @@
     <string name="title_activity_profile_preference_dialog">Výběr profilu</string>
     <string name="delete_profile_progress_title">Vymazáva se profil</string>
     <string name="delete_profiles_progress_title">Vymazávají se profily</string>
+    <string name="event_preferences_category_eventidentification">Identifikace události</string>
+    <string name="event_preferences_eventEnabled">Zapnutá událost</string>
+    <string name="event_preferences_eventName">Název události</string>
+    <string name="event_preferences_eventType">Typ události</string>
+    <string name="event_preferences_eventProfile">Aktivovanej profil</string>
     
 </resources>

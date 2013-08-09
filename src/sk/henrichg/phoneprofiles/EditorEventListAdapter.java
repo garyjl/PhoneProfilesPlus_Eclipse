@@ -2,6 +2,8 @@ package sk.henrichg.phoneprofiles;
 
 import java.util.List;
 
+import sk.henrichg.phoneprofiles.EditorProfileListAdapter.ViewHolder;
+
 import com.actionbarsherlock.app.SherlockFragment;
 
 import android.view.LayoutInflater;
@@ -85,35 +87,47 @@ public class EditorEventListAdapter extends BaseAdapter
 		notifyDataSetChanged();
 	}
 	
+	static class ViewHolder {
+		  RelativeLayout listItemRoot;
+		  ImageView eventIcon;
+		  TextView eventName;
+		  int position;
+		}
+	
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
+		ViewHolder holder;
+		
 		View vi = convertView;
         if (convertView == null)
         {
     		LayoutInflater inflater = LayoutInflater.from(fragment.getSherlockActivity());
        		vi = inflater.inflate(R.layout.editor_event_list_item, parent, false);
+            holder = new ViewHolder();
+            holder.listItemRoot = (RelativeLayout)vi.findViewById(R.id.event_list_item_root);
+            holder.eventName = (TextView)vi.findViewById(R.id.event_list_item_event_name);
+            holder.eventIcon = (ImageView)vi.findViewById(R.id.event_list_item_event_icon);
+            vi.setTag(holder);        
         }
-		
-        RelativeLayout listItemRoot = (RelativeLayout)vi.findViewById(R.id.event_list_item_root);
-        TextView eventName = (TextView)vi.findViewById(R.id.event_list_item_event_name);
-        ImageView eventIcon = (ImageView)vi.findViewById(R.id.event_list_item_event_icon);
+        else
+        {
+      	    holder = (ViewHolder)vi.getTag();
+        }
         
+		
         Event event = eventList.get(position);
 
        	if (GlobalData.applicationTheme.equals("light"))
-       		listItemRoot.setBackgroundResource(R.drawable.card);
+       		holder.listItemRoot.setBackgroundResource(R.drawable.card);
        	else
        	if (GlobalData.applicationTheme.equals("dark"))
-       		listItemRoot.setBackgroundResource(R.drawable.card_dark);
+       		holder.listItemRoot.setBackgroundResource(R.drawable.card_dark);
         
-        eventName.setText(event._name);
-       	eventIcon.setImageResource(0);
-       	int res;
-       	switch (event._type) {
-	       	case 0: res = 0;
-	       	default: res = 0;
-       	}
-       	eventIcon.setImageResource(res); // resource na ikonu
+        holder.eventName.setText(event._name);
+        if (event._eventPreferences != null)
+        	holder.eventIcon.setImageResource(event._eventPreferences._iconResourceID); // resource na ikonu
+        else
+        	holder.eventIcon.setImageResource(0);
         
         final int _position = position;
 		

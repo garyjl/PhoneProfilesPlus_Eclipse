@@ -76,21 +76,30 @@ public class EditorProfileListAdapter extends BaseAdapter
 		notifyDataSetChanged();
 	}
 
-/*	
-	public void updateItem(Profile profile)
+/*	public void updateItem(Profile profile)
 	{
 		notifyDataSetChanged();
 	}
 */	
-	public void deleteItem(Profile profile)
+	public void deleteItemNoNotify(Profile profile)
 	{
 		profilesDataWrapper.deleteProfile(profile);
+	}
+
+	public void deleteItem(Profile profile)
+	{
+		deleteItemNoNotify(profile);
 		notifyDataSetChanged();
+	}
+
+	public void clearNoNotify()
+	{
+		profilesDataWrapper.deleteAllProfiles();
 	}
 	
 	public void clear()
 	{
-		profilesDataWrapper.deleteAllProfiles();
+		clearNoNotify();
 		notifyDataSetChanged();
 	}
 	

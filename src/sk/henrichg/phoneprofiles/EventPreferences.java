@@ -6,6 +6,7 @@ public class EventPreferences {
 	
 	public Event _event;
 	public int _preferencesResourceID;
+	public int _iconResourceID;
 	
 	public EventPreferences()
 	{
