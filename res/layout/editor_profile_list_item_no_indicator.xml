@@ -87,6 +87,18 @@
         android:background="?attr/actionProfileToolBackground"
         android:contentDescription="@string/empty_string"
         android:src="?attr/actionActivateIcon" />
+
+    <ImageView
+        android:id="@+id/profile_list_item_show_in_activator"
+        android:layout_width="27dp"
+        android:layout_height="27dp"
+        android:layout_below="@id/profile_list_item_profile_name"
+        android:layout_toRightOf="@+id/profile_list_item_profile_icon"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/empty_string"
+        android:scaleType="fitStart"
+        android:src="@drawable/ic_profile_activated"
+        android:paddingLeft="10dp" />
     
 </RelativeLayout>
 

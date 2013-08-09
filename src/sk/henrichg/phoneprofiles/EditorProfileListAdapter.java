@@ -148,6 +148,7 @@ public class EditorProfileListAdapter extends BaseAdapter
 		  ImageView profileItemActivate;
 		  ImageView profileItemDuplicate;
 		  ImageView profileItemDelete;
+		  ImageView profileShowInActivator;
 		  int position;
 		}
 	
@@ -156,73 +157,79 @@ public class EditorProfileListAdapter extends BaseAdapter
 		ViewHolder holder;
 		
 		View vi = convertView;
-      if (convertView == null)
-      {
-    	LayoutInflater inflater = LayoutInflater.from(fragment.getSherlockActivity());
-      	if (GlobalData.applicationEditorPrefIndicator)
-      		vi = inflater.inflate(R.layout.editor_profile_list_item, parent, false);
-      	else
-      		vi = inflater.inflate(R.layout.editor_profile_list_item_no_indicator, parent, false);
-          holder = new ViewHolder();
-          holder.listItemRoot = (RelativeLayout)vi.findViewById(R.id.profile_list_item_root);
-          holder.profileName = (TextView)vi.findViewById(R.id.profile_list_item_profile_name);
-          holder.profileIcon = (ImageView)vi.findViewById(R.id.profile_list_item_profile_icon);
-  		holder.profileItemActivate = (ImageView)vi.findViewById(R.id.profile_list_item_activate);
-  		holder.profileItemDuplicate = (ImageView)vi.findViewById(R.id.profile_list_item_duplicate);
-  		holder.profileItemDelete = (ImageView)vi.findViewById(R.id.profile_list_item_delete);
-  		if (GlobalData.applicationEditorPrefIndicator)
-  			holder.profileIndicator = (ImageView)vi.findViewById(R.id.profile_list_profile_pref_indicator);
-          vi.setTag(holder);        
-      }
-      else
-      {
-      	holder = (ViewHolder)vi.getTag();
-      }
+        if (convertView == null)
+        {
+    	    LayoutInflater inflater = LayoutInflater.from(fragment.getSherlockActivity());
+      	    if (GlobalData.applicationEditorPrefIndicator)
+      		    vi = inflater.inflate(R.layout.editor_profile_list_item, parent, false);
+      	    else
+      		    vi = inflater.inflate(R.layout.editor_profile_list_item_no_indicator, parent, false);
+            holder = new ViewHolder();
+            holder.listItemRoot = (RelativeLayout)vi.findViewById(R.id.profile_list_item_root);
+            holder.profileName = (TextView)vi.findViewById(R.id.profile_list_item_profile_name);
+            holder.profileIcon = (ImageView)vi.findViewById(R.id.profile_list_item_profile_icon);
+  		    holder.profileItemActivate = (ImageView)vi.findViewById(R.id.profile_list_item_activate);
+  		    holder.profileItemDuplicate = (ImageView)vi.findViewById(R.id.profile_list_item_duplicate);
+  		    holder.profileItemDelete = (ImageView)vi.findViewById(R.id.profile_list_item_delete);
+  		    holder.profileShowInActivator = (ImageView)vi.findViewById(R.id.profile_list_item_show_in_activator);
+  		    if (GlobalData.applicationEditorPrefIndicator)
+  			    holder.profileIndicator = (ImageView)vi.findViewById(R.id.profile_list_profile_pref_indicator);
+            vi.setTag(holder);        
+        }
+        else
+        {
+      	    holder = (ViewHolder)vi.getTag();
+        }
 		
-      Profile profile = profileList.get(position);
+        Profile profile = profileList.get(position);
 
-      if (profile._checked && (!GlobalData.applicationEditorHeader))
-      {
-      	if (GlobalData.applicationTheme.equals("light"))
-      		holder.listItemRoot.setBackgroundResource(R.drawable.header_card);
-      	else
+        if (profile._checked && (!GlobalData.applicationEditorHeader))
+        {
+      	    if (GlobalData.applicationTheme.equals("light"))
+      	    	holder.listItemRoot.setBackgroundResource(R.drawable.header_card);
+      	    else
          	if (GlobalData.applicationTheme.equals("dark"))
          		holder.listItemRoot.setBackgroundResource(R.drawable.header_card_dark);
          	else
          	if (GlobalData.applicationTheme.equals("dlight"))
          		holder.listItemRoot.setBackgroundResource(R.drawable.header_card);
-      }
-      else
-      {
-      	if (GlobalData.applicationTheme.equals("light"))
-      		holder.listItemRoot.setBackgroundResource(R.drawable.card);
-      	else
-         	if (GlobalData.applicationTheme.equals("dark"))
-         		holder.listItemRoot.setBackgroundResource(R.drawable.card_dark);
+        }
+        else
+        {
+        	if (GlobalData.applicationTheme.equals("light"))
+        		holder.listItemRoot.setBackgroundResource(R.drawable.card);
+        	else
+        	if (GlobalData.applicationTheme.equals("dark"))
+        		holder.listItemRoot.setBackgroundResource(R.drawable.card_dark);
          	else
          	if (GlobalData.applicationTheme.equals("dlight"))
          		holder.listItemRoot.setBackgroundResource(R.drawable.card);
-      }
+        }
       
-      holder.profileName.setText(profile._name);
-      if (profile.getIsIconResourceID())
-      {
-      	holder.profileIcon.setImageResource(0);
-      	int res = vi.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", 
-      				vi.getContext().getPackageName());
-      	holder.profileIcon.setImageResource(res); // resource na ikonu
-      }
-      else
-      {
-      	//profileIcon.setImageBitmap(null);
-  		//Resources resources = vi.getResources();
-  		//int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
-  		//int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
-  		//Bitmap bitmap = BitmapResampler.resample(profile.getIconIdentifier(), width, height);
-      	//profileIcon.setImageBitmap(bitmap);
-      	holder.profileIcon.setImageBitmap(profile._iconBitmap);
-      }
-      
+        holder.profileName.setText(profile._name);
+        if (profile.getIsIconResourceID())
+        {
+        	holder.profileIcon.setImageResource(0);
+        	int res = vi.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", 
+        						vi.getContext().getPackageName());
+        	holder.profileIcon.setImageResource(res); // resource na ikonu
+        }
+        else
+        {
+        	//profileIcon.setImageBitmap(null);
+        	//Resources resources = vi.getResources();
+        	//int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
+        	//int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
+        	//Bitmap bitmap = BitmapResampler.resample(profile.getIconIdentifier(), width, height);
+        	//profileIcon.setImageBitmap(bitmap);
+        	holder.profileIcon.setImageBitmap(profile._iconBitmap);
+        }
+
+        if (profile._showInActivator)
+        	holder.profileShowInActivator.setImageResource(R.drawable.ic_profile_activated);
+        else
+        	holder.profileShowInActivator.setImageResource(0);
+        
 		if (GlobalData.applicationEditorPrefIndicator)
 		{
 			//profilePrefIndicatorImageView.setImageBitmap(null);
@@ -230,43 +237,40 @@ public class EditorProfileListAdapter extends BaseAdapter
 			//profilePrefIndicatorImageView.setImageBitmap(bitmap);
 			holder.profileIndicator.setImageBitmap(profile._preferencesIndicator);
 		}
-      
-      final int _position = position;
 		
-      holder.profileItemActivate.setTag(R.id.profile_list_item_activate);
-      holder.profileItemActivate.setOnClickListener(new OnClickListener() {
-
-				public void onClick(View v) {
-					editIconClicked = true;
-					//Log.d("EditorProfileListAdapter.onClick", "activate");
-					((EditorProfileListFragment)fragment).finishProfilePreferencesActionMode();
-					((EditorProfileListFragment)fragment).activateProfileWithAlert(_position);
-				}
-			}); 
-
-      holder.profileItemDuplicate.setTag(R.id.profile_list_item_duplicate);
-      holder.profileItemDuplicate.setOnClickListener(new OnClickListener() {
-
-				public void onClick(View v) {
-					editIconClicked = true;
-					//Log.d("EditorProfileListAdapter.onClick", "duplicate");
-					((EditorProfileListFragment)fragment).finishProfilePreferencesActionMode();
-					((EditorProfileListFragment)fragment).duplicateProfile(_position);
-				}
-			}); 
-
-      holder.profileItemDelete.setTag(R.id.profile_list_item_delete);
-      holder.profileItemDelete.setOnClickListener(new OnClickListener() {
-
-				public void onClick(View v) {
-					editIconClicked = true;
-					//Log.d("EditorProfileListAdapter.onClick", "delete");
-					((EditorProfileListFragment)fragment).finishProfilePreferencesActionMode();
-					((EditorProfileListFragment)fragment).deleteProfile(_position);
-				}
-			}); 
+		final int _position = position;
 		
-      //Log.d("ProfileListAdapter.getView", profile.getName());
+		holder.profileItemActivate.setTag(R.id.profile_list_item_activate);
+		holder.profileItemActivate.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				editIconClicked = true;
+				//Log.d("EditorProfileListAdapter.onClick", "activate");
+				((EditorProfileListFragment)fragment).finishProfilePreferencesActionMode();
+				((EditorProfileListFragment)fragment).activateProfileWithAlert(_position);
+			}
+		}); 
+
+		holder.profileItemDuplicate.setTag(R.id.profile_list_item_duplicate);
+		holder.profileItemDuplicate.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				editIconClicked = true;
+				//Log.d("EditorProfileListAdapter.onClick", "duplicate");
+				((EditorProfileListFragment)fragment).finishProfilePreferencesActionMode();
+				((EditorProfileListFragment)fragment).duplicateProfile(_position);
+			}
+		}); 
+
+		holder.profileItemDelete.setTag(R.id.profile_list_item_delete);
+		holder.profileItemDelete.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				editIconClicked = true;
+				//Log.d("EditorProfileListAdapter.onClick", "delete");
+				((EditorProfileListFragment)fragment).finishProfilePreferencesActionMode();
+				((EditorProfileListFragment)fragment).deleteProfile(_position);
+			}
+		}); 
+		
+		//Log.d("ProfileListAdapter.getView", profile.getName());
       
 		return vi;
 	}

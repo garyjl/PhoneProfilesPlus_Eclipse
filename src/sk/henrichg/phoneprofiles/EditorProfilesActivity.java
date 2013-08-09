@@ -65,10 +65,10 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		
 		setContentView(R.layout.activity_editor_list_onepane);
 		
-		// add profile list into list container
+	/*	// add profile list into list container
 		EditorProfileListFragment fragment = new EditorProfileListFragment();
 		getSupportFragmentManager().beginTransaction()
-			.replace(R.id.editor_list_container, fragment).commit();
+			.replace(R.id.editor_list_container, fragment).commit(); */
 		
 		
 		if (findViewById(R.id.editor_detail_container) != null) {

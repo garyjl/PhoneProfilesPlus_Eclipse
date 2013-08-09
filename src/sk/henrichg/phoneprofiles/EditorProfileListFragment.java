@@ -17,6 +17,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.mobeta.android.dslv.DragSortListView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,6 +103,8 @@ public class EditorProfileListFragment extends SherlockFragment {
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
+		
+		Log.e("EditorProfileListFragment.onAttach","xxx");
 
 		// Activities containing this fragment must implement its callbacks.
 		if (!(activity instanceof OnStartProfilePreferences)) {
@@ -144,6 +147,8 @@ public class EditorProfileListFragment extends SherlockFragment {
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
+
+		Log.e("EditorProfileListFragment.onCreate","xxx");
 		
 		databaseHandler = EditorProfilesActivity.profilesDataWrapper.getDatabaseHandler(); 
 		
@@ -181,7 +186,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 					profileListAdapter = new EditorProfileListAdapter(fragment, EditorProfilesActivity.profilesDataWrapper);
 					listView.setAdapter(profileListAdapter);
 				}
-				
+
 				doOnStart();
 				
 			}
@@ -275,6 +280,9 @@ public class EditorProfileListFragment extends SherlockFragment {
 	
 	private void doOnStart()
 	{
+	
+		Log.e("EditorProfileListFragment.doOnStart","xxx");
+		
 		// ak sa ma refreshnut aktivita, nebudeme robit nic, co je v onStart
 		if (PhoneProfilesPreferencesActivity.getInvalidateEditor(false))
 			return;
@@ -631,6 +639,8 @@ public class EditorProfileListFragment extends SherlockFragment {
 		
 		if (GlobalData.applicationEditorPrefIndicator)
 		{
+			Log.e("EditorProfileListFragment.updateHeader","indicator");
+
 			ImageView profilePrefIndicatorImageView = (ImageView)getSherlockActivity().findViewById(R.id.activated_profile_pref_indicator);
 			//profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, getSherlockActivity().getBaseContext()));
 			if (profile == null)
