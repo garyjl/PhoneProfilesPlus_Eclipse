@@ -17,6 +17,7 @@ import android.app.WallpaperManager;
 import android.appwidget.AppWidgetManager;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -63,7 +64,7 @@ public class ActivateProfileHelper {
 		GlobalData.rootGranted = false;
 		
 		// rozdelit zvonenie a notifikacie - zial je to oznacene ako @Hide :-(
-		//Settings.System.putInt(getContentResolver(), Settings.System.NOTIFICATIONS_USE_RING_VOLUME, 0);
+		//Settings.System.putInt(context.getContentResolver(), Settings.System.NOTIFICATIONS_USE_RING_VOLUME, 0);
 
 		AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
 		
@@ -73,21 +74,25 @@ public class ActivateProfileHelper {
 				audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
 				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_OFF);
 				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION, AudioManager.VIBRATE_SETTING_OFF);
+				Settings.System.putInt(context.getContentResolver(), "vibrate_when_ringing", 0);
 				break;
 			case 2:  // Ring & Vibrate
 				audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
 				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_ON);
 				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION, AudioManager.VIBRATE_SETTING_ON);
+				Settings.System.putInt(context.getContentResolver(), "vibrate_when_ringing", 1);
 				break;
 			case 3:  // Vibrate
 				audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
 				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_ON);
 				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION, AudioManager.VIBRATE_SETTING_ON);
+				Settings.System.putInt(context.getContentResolver(), "vibrate_when_ringing", 1);
 				break;
 			case 4:  // Silent
 				audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
 				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_OFF);
 				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION, AudioManager.VIBRATE_SETTING_OFF);
+				Settings.System.putInt(context.getContentResolver(), "vibrate_when_ringing", 0);
 				break;
 		}
 		
@@ -483,6 +488,11 @@ public class ActivateProfileHelper {
 		
 	}
 	
+	private ContentResolver getContentResolver() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	//@SuppressWarnings("deprecation")
 	@SuppressLint("InlinedApi")
 	public void showNotification(Profile profile)
