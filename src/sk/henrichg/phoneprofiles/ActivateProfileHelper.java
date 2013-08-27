@@ -17,7 +17,6 @@ import android.app.WallpaperManager;
 import android.appwidget.AppWidgetManager;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ComponentName;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -488,11 +487,6 @@ public class ActivateProfileHelper {
 		
 	}
 	
-	private ContentResolver getContentResolver() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	//@SuppressWarnings("deprecation")
 	@SuppressLint("InlinedApi")
 	public void showNotification(Profile profile)
@@ -620,6 +614,12 @@ public class ActivateProfileHelper {
 		int ids[] = AppWidgetManager.getInstance(activity.getApplication()).getAppWidgetIds(new ComponentName(activity.getApplication(), ActivateProfileWidget.class));
 		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
 		context.sendBroadcast(intent);
+
+		Intent intent2 = new Intent(context, ProfileListWidgetProvider.class);
+		intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+		int ids2[] = AppWidgetManager.getInstance(activity.getApplication()).getAppWidgetIds(new ComponentName(activity.getApplication(), ProfileListWidgetProvider.class));
+		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids2);
+		context.sendBroadcast(intent2);
 	}
 	
 	

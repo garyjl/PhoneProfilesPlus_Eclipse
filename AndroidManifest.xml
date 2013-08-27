@@ -114,7 +114,21 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/activate_profile_widget_info" />
         </receiver>
-        <receiver 
+        <receiver
+            android:name=".ProfileListWidgetProvider"
+            android:icon="@drawable/ic_launcher"
+            android:label="Phone Profiles" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/profile_list_widget_info" />
+        </receiver>
+    	<service android:name=".ProfileListWidgetService"
+             	android:permission="android.permission.BIND_REMOTEVIEWS" />        
+
+    	<receiver 
             android:name=".LocaleChangedReceiver" 
             android:enabled="true" >
             <intent-filter>

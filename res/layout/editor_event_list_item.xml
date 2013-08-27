@@ -28,7 +28,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="3dp"
         android:layout_toRightOf="@+id/event_list_item_event_icon"
         android:paddingLeft="10dp"
         android:text="@string/event_name_default"
