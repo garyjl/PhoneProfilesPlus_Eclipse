@@ -159,5 +159,7 @@
     <string name="event_preferences_eventName">Názov udalosti</string>
     <string name="event_preferences_eventType">Typ udalosti</string>
     <string name="event_preferences_eventProfile">Aktivovaný profil</string>
+    <string name="widget_label_icon">PhoneProfiles - ikona</string>
+    <string name="widget_label_list">PhoneProfiles - zoznam</string>
     
 </resources>
