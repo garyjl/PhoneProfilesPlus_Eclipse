@@ -1,10 +1,9 @@
 package sk.henrichg.phoneprofiles;
 
-import java.util.List;
-
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -14,7 +13,6 @@ import android.widget.RemoteViews;
 public class ProfileListWidgetProvider extends AppWidgetProvider {
 
 	public static ProfilesDataWrapper profilesDataWrapper;
-	public static List<Profile> profileList;
 	
 	@SuppressWarnings("deprecation")
 	@Override
@@ -24,8 +22,6 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 		GlobalData.loadPreferences(GlobalData.context);
 		
 		profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, true, false, false);
-		profileList = profilesDataWrapper.getProfileListForActivator();
-		
 		
 		for (int i=0; i<appWidgetIds.length; i++)
 		{
@@ -49,5 +45,23 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 		}
 			    
 		super.onUpdate(ctxt, appWidgetManager, appWidgetIds);
+	}
+
+	@Override
+	public void onReceive(Context context, Intent intent) {
+		super.onReceive(context, intent);
+		String action = intent.getAction();
+		if ((action != null) &&
+		    (action.equalsIgnoreCase("android.appwidget.action.APPWIDGET_UPDATE")))
+		{
+			updateWidget(context);
+		}
+	}
+
+	private void updateWidget(Context context) {
+		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+	    int appWidgetIds[] = appWidgetManager.getAppWidgetIds(new ComponentName(context, ProfileListWidgetProvider.class));
+	    appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_profile_list);
 	}	
+	
 }

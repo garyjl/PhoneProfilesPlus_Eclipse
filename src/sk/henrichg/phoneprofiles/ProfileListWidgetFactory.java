@@ -2,7 +2,6 @@ package sk.henrichg.phoneprofiles;
 
 import java.util.List;
 
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,12 +13,13 @@ import android.widget.RemoteViewsService;
 public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
 
 	private Context ctxt=null;
-	private int appWidgetId;
+	//private int appWidgetId;
+	private List<Profile> profileList;
 
 	public ProfileListWidgetFactory(Context ctxt, Intent intent) {
 		this.ctxt=ctxt;
-		appWidgetId=intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-                                       AppWidgetManager.INVALID_APPWIDGET_ID);
+		/*appWidgetId=intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
+                                       AppWidgetManager.INVALID_APPWIDGET_ID);*/
 		ProfileListWidgetProvider.profilesDataWrapper.getProfileListForActivator();
 	}
   
@@ -32,13 +32,13 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 	}
 
 	public int getCount() {
-		return(ProfileListWidgetProvider.profileList.size());
+		return(profileList.size());
 	}
 
 	public RemoteViews getViewAt(int position) {
 		RemoteViews row=new RemoteViews(ctxt.getPackageName(), R.layout.profile_list_widget_item);
     
-		Profile profile = ProfileListWidgetProvider.profileList.get(position);
+		Profile profile = profileList.get(position);
 
 		if (profile.getIsIconResourceID())
 		{
@@ -82,6 +82,8 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 	}
 
 	public void onDataSetChanged() {
-		// no-op
+		ProfileListWidgetProvider.profilesDataWrapper.reloadProfilesData();
+		profileList = ProfileListWidgetProvider.profilesDataWrapper.getProfileList();
 	}
+
 }
