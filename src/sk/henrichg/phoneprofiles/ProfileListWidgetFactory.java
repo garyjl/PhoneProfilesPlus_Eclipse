@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -20,7 +22,6 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 		this.ctxt=ctxt;
 		/*appWidgetId=intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                                        AppWidgetManager.INVALID_APPWIDGET_ID);*/
-		ProfileListWidgetProvider.profilesDataWrapper.getProfileListForActivator();
 	}
   
 	public void onCreate() {
@@ -52,7 +53,23 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 			row.setImageViewBitmap(R.id.widget_profile_list_item_profile_icon, icon);
 		}
 		row.setTextViewText(R.id.widget_profile_list_item_profile_name, profile._name);
-        row.setImageViewBitmap(R.id.widget_profile_list_profile_pref_indicator, profile._preferencesIndicator);
+		if (!GlobalData.applicationWidgetListHeader)
+		{
+			if (profile._checked)
+			{
+				row.setTextViewTextSize(R.id.widget_profile_list_item_profile_name, TypedValue.COMPLEX_UNIT_SP, 17);
+				row.setTextColor(R.id.widget_profile_list_item_profile_name, Color.parseColor("#33b5e5"));
+			}
+			else
+			{
+				row.setTextViewTextSize(R.id.widget_profile_list_item_profile_name, TypedValue.COMPLEX_UNIT_SP, 15);
+				row.setTextColor(R.id.widget_profile_list_item_profile_name, Color.parseColor("#FFFFFF"));
+			}
+		}
+		if (GlobalData.applicationWidgetListPrefIndicator)
+			row.setImageViewBitmap(R.id.widget_profile_list_profile_pref_indicator, profile._preferencesIndicator);
+		else
+			row.setImageViewBitmap(R.id.widget_profile_list_profile_pref_indicator, null);
 
 		Intent i=new Intent();
 		Bundle extras=new Bundle();
@@ -83,7 +100,7 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 
 	public void onDataSetChanged() {
 		ProfileListWidgetProvider.profilesDataWrapper.reloadProfilesData();
-		profileList = ProfileListWidgetProvider.profilesDataWrapper.getProfileList();
+		profileList = ProfileListWidgetProvider.profilesDataWrapper.getProfileListForActivator();
 	}
 
 }

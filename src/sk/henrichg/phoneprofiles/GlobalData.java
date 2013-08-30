@@ -82,6 +82,9 @@ public class GlobalData extends Application {
     public static final String PREF_NOTIFICATION_TOAST = "notificationsToast";
     public static final String PREF_NOTIFICATION_STATUS_BAR  = "notificationStatusBar";
     public static final String PREF_NOTIFICATION_STATUS_BAR_STYLE  = "notificationStatusBarStyle";
+    public static final String PREF_APPLICATION_WIDGET_LIST_PREF_INDICATOR = "applicationWidgetListPrefIndicator";
+    public static final String PREF_APPLICATION_WIDGET_LIST_HEADER = "applicationWidgetListHeader";
+    public static final String PREF_APPLICATION_WIDGET_LIST_BACKGROUND = "applicationWidgetListBackground";
 
     public static boolean applicationStartOnBoot;
     public static boolean applicationActivate;
@@ -97,6 +100,9 @@ public class GlobalData extends Application {
     public static boolean notificationsToast;
     public static boolean notificationStatusBar;
     public static String notificationStatusBarStyle;
+    public static boolean applicationWidgetListPrefIndicator;
+    public static boolean applicationWidgetListHeader;
+    public static String applicationWidgetListBackground;
     
     
 	public void onCreate()
@@ -138,6 +144,9 @@ public class GlobalData extends Application {
 	    notificationsToast = preferences.getBoolean(PREF_NOTIFICATION_TOAST, true);
 	    notificationStatusBar = preferences.getBoolean(PREF_NOTIFICATION_STATUS_BAR, true);
 	    notificationStatusBarStyle = preferences.getString(PREF_NOTIFICATION_STATUS_BAR_STYLE, "0");
+	    applicationWidgetListPrefIndicator = preferences.getBoolean(PREF_APPLICATION_WIDGET_LIST_PREF_INDICATOR, true);
+	    applicationWidgetListHeader = preferences.getBoolean(PREF_APPLICATION_WIDGET_LIST_HEADER, true);
+	    applicationWidgetListBackground = preferences.getString(PREF_APPLICATION_WIDGET_LIST_BACKGROUND, "25");
 		
 	}
 

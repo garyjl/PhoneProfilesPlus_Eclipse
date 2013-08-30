@@ -11,7 +11,7 @@
               android:scaleType="fitXY"
                />
 
-	<LinearLayout 
+	<LinearLayout
 	    android:id="@+id/widget_profile_list_root"
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
@@ -67,18 +67,6 @@
 		        android:scaleType="centerCrop"
 		        android:src="@drawable/ic_profile_activated" />
 		    	    
-		    <ImageView
-		        android:id="@+id/widget_profile_list_header_profile_pref_indicator"
-		        android:layout_width="200dp"
-		        android:layout_height="15dp"
-		        android:layout_below="@id/widget_profile_list_header_profile_name"
-		        android:layout_toRightOf="@+id/widget_profile_list_header_profile_icon"
-		        android:adjustViewBounds="true"
-		        android:contentDescription="@string/empty_string"
-		        android:scaleType="fitStart"
-		        android:src="@drawable/ic_profile_pref_volume_on"
-		        android:paddingLeft="10dp" />
-		        
 		</RelativeLayout>
 	    
 		<LinearLayout
@@ -99,5 +87,4 @@
 	    </ListView>
 	
 	</LinearLayout>
-
- </RelativeLayout>	
+</RelativeLayout>
