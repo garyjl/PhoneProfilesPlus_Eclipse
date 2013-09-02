@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -235,7 +236,7 @@ public class EditorProfileListAdapter extends BaseAdapter
         if (profile._showInActivator)
         	holder.profileShowInActivator.setImageResource(R.drawable.ic_profile_activated);
         else
-        	holder.profileShowInActivator.setImageResource(0);
+        	holder.profileShowInActivator.setImageBitmap(null);
         
 		if (GlobalData.applicationEditorPrefIndicator)
 		{
