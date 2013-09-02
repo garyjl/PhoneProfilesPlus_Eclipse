@@ -2,6 +2,7 @@ package sk.henrichg.phoneprofiles;
 
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,6 +13,7 @@ import android.util.TypedValue;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+@SuppressLint("NewApi")
 public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
 
 	private Context ctxt=null;
@@ -99,7 +101,6 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 	}
 
 	public void onDataSetChanged() {
-		ProfileListWidgetProvider.profilesDataWrapper.reloadProfilesData();
 		profileList = ProfileListWidgetProvider.profilesDataWrapper.getProfileListForActivator();
 	}
 

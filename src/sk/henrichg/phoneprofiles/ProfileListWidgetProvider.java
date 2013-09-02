@@ -1,5 +1,6 @@
 package sk.henrichg.phoneprofiles;
 
+import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -13,7 +14,7 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-
+@SuppressLint("NewApi")
 public class ProfileListWidgetProvider extends AppWidgetProvider {
 
 	public static ProfilesDataWrapper profilesDataWrapper;
@@ -28,6 +29,7 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 
 		if (profilesDataWrapper == null)
 			profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, true, false, false);
+		ProfileListWidgetProvider.profilesDataWrapper.reloadProfilesData();
 		
 		for (int i=0; i<appWidgetIds.length; i++)
 		{
