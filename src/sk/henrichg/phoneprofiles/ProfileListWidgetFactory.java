@@ -55,6 +55,15 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 			row.setImageViewBitmap(R.id.widget_profile_list_item_profile_icon, icon);
 		}
 		row.setTextViewText(R.id.widget_profile_list_item_profile_name, profile._name);
+		int red = 0xFF;
+		int green = 0xFF;
+		int blue = 0xFF;
+		if (GlobalData.applicationWidgetListLightnessT.equals("0")) red = 0x00;
+		if (GlobalData.applicationWidgetListLightnessT.equals("25")) red = 0x40;
+		if (GlobalData.applicationWidgetListLightnessT.equals("50")) red = 0x80;
+		if (GlobalData.applicationWidgetListLightnessT.equals("75")) red = 0xC0;
+		if (GlobalData.applicationWidgetListLightnessT.equals("100")) red = 0xFF;
+		green = red; blue = red;
 		if (!GlobalData.applicationWidgetListHeader)
 		{
 			if (profile._checked)
@@ -65,8 +74,12 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 			else
 			{
 				row.setTextViewTextSize(R.id.widget_profile_list_item_profile_name, TypedValue.COMPLEX_UNIT_SP, 15);
-				row.setTextColor(R.id.widget_profile_list_item_profile_name, Color.parseColor("#FFFFFF"));
+				row.setTextColor(R.id.widget_profile_list_item_profile_name, Color.argb(0xFF, red, green, blue));
 			}
+		}
+		else
+		{
+			row.setTextColor(R.id.widget_profile_list_item_profile_name, Color.argb(0xFF, red, green, blue));
 		}
 		if (GlobalData.applicationWidgetListPrefIndicator)
 			row.setImageViewBitmap(R.id.widget_profile_list_profile_pref_indicator, profile._preferencesIndicator);

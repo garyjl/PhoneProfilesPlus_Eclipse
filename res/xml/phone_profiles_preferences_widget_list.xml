@@ -14,4 +14,16 @@
            android:defaultValue="25"
            android:entries="@array/widgetBackgroundArray"
            android:entryValues="@array/widgetBackgroundValues" />        
+	<ListPreference android:title="@string/phone_profiles_pref_applicationWidgetLightnessB"
+           android:summary="0"
+           android:key="applicationWidgetListLightnessB"
+           android:defaultValue="0"
+           android:entries="@array/widgetLightnessArray"
+           android:entryValues="@array/widgetLightnessValues" />        
+	<ListPreference android:title="@string/phone_profiles_pref_applicationWidgetLightnessT"
+           android:summary="100"
+           android:key="applicationWidgetListLightnessT"
+           android:defaultValue="100"
+           android:entries="@array/widgetLightnessArray"
+           android:entryValues="@array/widgetLightnessValues" />        
 </PreferenceScreen>    

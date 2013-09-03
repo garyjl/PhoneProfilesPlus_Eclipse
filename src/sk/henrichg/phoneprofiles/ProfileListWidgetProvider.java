@@ -50,13 +50,22 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 				widget=new RemoteViews(ctxt.getPackageName(), R.layout.profile_list_widget_no_header);
 
 			// set background
-			String color = "40000000";
-			if (GlobalData.applicationWidgetListBackground.equals("0")) color = "#00000000";
-			if (GlobalData.applicationWidgetListBackground.equals("25")) color = "#40000000";
-			if (GlobalData.applicationWidgetListBackground.equals("50")) color = "#80000000";
-			if (GlobalData.applicationWidgetListBackground.equals("75")) color = "#C0000000";
-			if (GlobalData.applicationWidgetListBackground.equals("110")) color = "#FF000000";
-			widget.setImageViewBitmap(R.id.widget_profile_list_background, getBackground(Color.parseColor(color)));
+			int red = 0;
+			int green = 0;
+			int blue = 0;
+			if (GlobalData.applicationWidgetListLightnessB.equals("0")) red = 0x00;
+			if (GlobalData.applicationWidgetListLightnessB.equals("25")) red = 0x40;
+			if (GlobalData.applicationWidgetListLightnessB.equals("50")) red = 0x80;
+			if (GlobalData.applicationWidgetListLightnessB.equals("75")) red = 0xC0;
+			if (GlobalData.applicationWidgetListLightnessB.equals("100")) red = 0xFF;
+			green = red; blue = red;
+			int alpha = 0x40;
+			if (GlobalData.applicationWidgetListBackground.equals("0")) alpha = 0x00;
+			if (GlobalData.applicationWidgetListBackground.equals("25")) alpha = 0x40;
+			if (GlobalData.applicationWidgetListBackground.equals("50")) alpha = 0x80;
+			if (GlobalData.applicationWidgetListBackground.equals("75")) alpha = 0xC0;
+			if (GlobalData.applicationWidgetListBackground.equals("100")) alpha = 0xFF;
+			widget.setImageViewBitmap(R.id.widget_profile_list_background, getBackground(Color.argb(alpha, red, green, blue)));
 			
 			// header
 			if (GlobalData.applicationWidgetListHeader)
@@ -95,6 +104,16 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 					else
 						widget.setImageViewBitmap(R.id.widget_profile_list_header_profile_pref_indicator, profile._preferencesIndicator);
 				}
+				red = 0xFF;
+				green = 0xFF;
+				blue = 0xFF;
+				if (GlobalData.applicationWidgetListLightnessT.equals("0")) red = 0x00;
+				if (GlobalData.applicationWidgetListLightnessT.equals("25")) red = 0x40;
+				if (GlobalData.applicationWidgetListLightnessT.equals("50")) red = 0x80;
+				if (GlobalData.applicationWidgetListLightnessT.equals("75")) red = 0xC0;
+				if (GlobalData.applicationWidgetListLightnessT.equals("100")) red = 0xFF;
+				green = red; blue = red;
+				widget.setImageViewBitmap(R.id.widget_profile_list_header_separator, getBackground(Color.argb(0x40, red, green, blue)));
 			}
 			////////////////////////////////////////////////
 			      

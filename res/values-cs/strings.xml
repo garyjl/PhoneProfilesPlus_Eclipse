@@ -163,7 +163,8 @@
     <string name="widget_label_icon">PhoneProfiles - ikona</string>
     <string name="widget_label_list">PhoneProfiles - seznam</string>
     <string name="phone_profiles_pref_category_widget_list">Miniaplikace - Seznam</string>
-    <string name="phone_profiles_pref_applicationWidgetBackground">Průhlednost pozadí</string>
-    
+    <string name="phone_profiles_pref_applicationWidgetBackground">Neprůhlednost pozadí</string>
+    <string name="phone_profiles_pref_applicationWidgetLightnessB">Světlost pozadí</string>
+    <string name="phone_profiles_pref_applicationWidgetLightnessT">Světlost textu</string>
     
 </resources>

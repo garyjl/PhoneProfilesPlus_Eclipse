@@ -85,6 +85,8 @@ public class GlobalData extends Application {
     public static final String PREF_APPLICATION_WIDGET_LIST_PREF_INDICATOR = "applicationWidgetListPrefIndicator";
     public static final String PREF_APPLICATION_WIDGET_LIST_HEADER = "applicationWidgetListHeader";
     public static final String PREF_APPLICATION_WIDGET_LIST_BACKGROUND = "applicationWidgetListBackground";
+    public static final String PREF_APPLICATION_WIDGET_LIST_LIGHTNESS_B = "applicationWidgetListLightnessB";
+    public static final String PREF_APPLICATION_WIDGET_LIST_LIGHTNESS_T = "applicationWidgetListLightnessT";
 
     public static boolean applicationStartOnBoot;
     public static boolean applicationActivate;
@@ -103,6 +105,8 @@ public class GlobalData extends Application {
     public static boolean applicationWidgetListPrefIndicator;
     public static boolean applicationWidgetListHeader;
     public static String applicationWidgetListBackground;
+    public static String applicationWidgetListLightnessB;
+    public static String applicationWidgetListLightnessT;
     
     
 	public void onCreate()
@@ -147,6 +151,8 @@ public class GlobalData extends Application {
 	    applicationWidgetListPrefIndicator = preferences.getBoolean(PREF_APPLICATION_WIDGET_LIST_PREF_INDICATOR, true);
 	    applicationWidgetListHeader = preferences.getBoolean(PREF_APPLICATION_WIDGET_LIST_HEADER, true);
 	    applicationWidgetListBackground = preferences.getString(PREF_APPLICATION_WIDGET_LIST_BACKGROUND, "25");
+	    applicationWidgetListLightnessB = preferences.getString(PREF_APPLICATION_WIDGET_LIST_LIGHTNESS_B, "0");
+	    applicationWidgetListLightnessT = preferences.getString(PREF_APPLICATION_WIDGET_LIST_LIGHTNESS_T, "100");
 		
 	}
 
