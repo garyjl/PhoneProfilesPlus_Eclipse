@@ -137,6 +137,13 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 			      
 			widget.setPendingIntentTemplate(R.id.widget_profile_list, clickPI);
 		}
+		else
+		{
+			Intent intent = new Intent(ctxt, ActivateProfileActivity.class);
+			intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_WIDGET);
+			PendingIntent pendingIntent = PendingIntent.getActivity(ctxt, 1, intent, Intent.FLAG_ACTIVITY_NEW_TASK);
+			widget.setOnClickPendingIntent(R.id.widget_profile_list_header, pendingIntent);
+		}
 		
 		return widget;
 	}
