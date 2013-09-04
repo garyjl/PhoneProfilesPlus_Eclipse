@@ -694,7 +694,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		profileListAdapter.activateProfile(profile);
 		updateHeader(profile);
 
-		EditorProfilesActivity.profilesDataWrapper.sendMessageIntoServiceLong(PhoneProfilesService.MSG_ACTIVATE_PROFILE, 
+		EditorProfilesActivity.serviceCommunication.sendMessageIntoServiceLong(PhoneProfilesService.MSG_ACTIVATE_PROFILE, 
 				                            profile._id);
 		
 

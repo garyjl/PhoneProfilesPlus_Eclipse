@@ -150,6 +150,7 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 
 		if (profilesDataWrapper == null)
 			profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, true, false, false);
+
 		ProfileListWidgetProvider.profilesDataWrapper.reloadProfilesData();
 		
 		for (int i=0; i<appWidgetIds.length; i++)
@@ -167,12 +168,13 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		super.onReceive(context, intent);
+
+		Log.e("ProfileListWidgetProvider.onReceive","xxx");
 		
 		String action = intent.getAction();
 		if ((action != null) &&
 		    (action.equalsIgnoreCase("android.appwidget.action.APPWIDGET_UPDATE")))
 		{
-			Log.e("ProfileListWidgetProvider.onReceive","xxx");
 			updateWidget(context);
 		}
 	}
@@ -214,18 +216,19 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager,
             int appWidgetId, Bundle newOptions) 
     {
+		Log.e("ProfileListWidgetProvider.onAppWidgetOptionsChanged","xxx");
+
         setLayoutParams(context, appWidgetManager, appWidgetId, newOptions);
         RemoteViews layout;
         layout = buildLayout(context, appWidgetManager, appWidgetId, isLargeLayout);
         appWidgetManager.updateAppWidget(appWidgetId, layout);
         if (isLargeLayout)
+        {
 	    	appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_profile_list);
+        }
     }	
 
 	private void updateWidget(Context context) {
-		if (profilesDataWrapper == null)
-			profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, true, false, false);
-		
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 	    int appWidgetIds[] = appWidgetManager.getAppWidgetIds(new ComponentName(context, ProfileListWidgetProvider.class));
 

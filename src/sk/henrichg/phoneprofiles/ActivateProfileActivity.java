@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -29,6 +30,7 @@ import android.widget.TextView;
 public class ActivateProfileActivity extends SherlockActivity {
 
 	private ProfilesDataWrapper profilesDataWrapper;
+	private ServiceCommunication serviceCommunication;
 	private ActivateProfileHelper activateProfileHelper;
 	private List<Profile> profileList;
 	private ActivateProfileListAdapter profileListAdapter;
@@ -56,6 +58,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 		GUIData.setLanguage(getBaseContext());
 		
 		profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, GlobalData.applicationActivatorPrefIndicator, false, false);
+		serviceCommunication = new ServiceCommunication(GlobalData.context);
 
 	// set window dimensions ----------------------------------------------------------
 		
@@ -341,9 +344,9 @@ public class ActivateProfileActivity extends SherlockActivity {
 	@Override
 	protected void onDestroy()
 	{
-		profilesDataWrapper.phoneProfilesService = null;
+		serviceCommunication.phoneProfilesService = null;
     	try {
-    		GlobalData.context.unbindService(profilesDataWrapper.serviceConnection);
+    		GlobalData.context.unbindService(serviceCommunication.serviceConnection);
         } catch (Exception e) {
         }	
 		
@@ -493,7 +496,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 			message = PhoneProfilesService.MSG_ACTIVATE_PROFILE_INTERACTIVE;
 		else
 			message = PhoneProfilesService.MSG_ACTIVATE_PROFILE;
-		profilesDataWrapper.sendMessageIntoServiceLong(message, profile._id);
+		serviceCommunication.sendMessageIntoServiceLong(message, profile._id);
 
 		if (GlobalData.applicationClose)
 		{	

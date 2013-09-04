@@ -14,8 +14,9 @@
 	<LinearLayout 
 	    android:id="@+id/widget_profile_list_root"
 	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
-	    android:orientation="vertical" >
+	    android:layout_height="60dp"
+	    android:orientation="vertical"
+	    android:layout_centerVertical="true" >
 	
 		<RelativeLayout
 		    android:id="@+id/widget_profile_list_header"

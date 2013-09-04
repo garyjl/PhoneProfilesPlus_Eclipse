@@ -43,6 +43,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 {
 
 	public static ProfilesDataWrapper profilesDataWrapper;
+	public static ServiceCommunication serviceCommunication;
 	private static ApplicationsCache applicationsCache;
 	
 	/**
@@ -60,6 +61,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		super.onCreate(savedInstanceState);
 		
 		profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, GlobalData.applicationEditorPrefIndicator, false, false);
+		serviceCommunication = new ServiceCommunication(GlobalData.context);
 		
 		applicationsCache = new ApplicationsCache();
 		
@@ -435,7 +437,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			
 			// send message into service
 	        //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
-			profilesDataWrapper.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
+			serviceCommunication.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
 		}
 	}
 
@@ -454,13 +456,13 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	public void onProfileOrderChanged() {
 		// send message into service
         //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
-		profilesDataWrapper.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
+		serviceCommunication.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
 	}
 
 	public void onProfileCountChanged() {
 		// send message into service
         //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
-		profilesDataWrapper.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
+		serviceCommunication.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
 	}
 	
 	public void onEventCountChanged() {
