@@ -2,7 +2,9 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:layout_marginTop="20dp"
+    android:layout_marginBottom="20dp" >
 
         <ImageView
               android:layout_width="fill_parent"
@@ -14,8 +16,9 @@
 	<LinearLayout 
 	    android:id="@+id/widget_profile_list_root"
 	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
-	    android:orientation="vertical" >
+	    android:layout_height="60dp"
+	    android:orientation="vertical"
+	    android:layout_centerVertical="true" >
 	
 		<RelativeLayout
 		    android:id="@+id/widget_profile_list_header"
@@ -77,31 +80,6 @@
 		        
 		</RelativeLayout>
 	    
-		<RelativeLayout
-		    android:layout_width="match_parent"
-		    android:layout_height="1dp"
-		    android:layout_marginLeft="10dp"
-		    android:layout_marginRight="10dp"
-		    android:layout_marginTop="5dp"
-		    android:orientation="horizontal" >
-		    
-	        <ImageView
-	              android:layout_width="fill_parent"
-	              android:layout_height="fill_parent"
-	              android:id="@+id/widget_profile_list_header_separator"
-	              android:scaleType="fitXY"
-	               />
-		    		    
-		</RelativeLayout>
-	    
-	    <ListView
-	        android:id="@+id/widget_profile_list"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:padding="10dip"
-        	android:divider="@android:color/transparent" >
-	    </ListView>
-	
 	</LinearLayout>
 
  </RelativeLayout>	

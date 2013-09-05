@@ -48,10 +48,20 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 		}
 		else
 		{
-			if (GlobalData.applicationWidgetListPrefIndicator)
-				widget=new RemoteViews(ctxt.getPackageName(), R.layout.profile_list_widget_small);
+			if (isKeyguard)
+			{
+				if (GlobalData.applicationWidgetListPrefIndicator)
+					widget=new RemoteViews(ctxt.getPackageName(), R.layout.profile_list_widget_small_keyguard);
+				else
+					widget=new RemoteViews(ctxt.getPackageName(), R.layout.profile_list_widget_small_no_indicator_keyguard);
+			}
 			else
-				widget=new RemoteViews(ctxt.getPackageName(), R.layout.profile_list_widget_small_no_indicator);
+			{
+				if (GlobalData.applicationWidgetListPrefIndicator)
+					widget=new RemoteViews(ctxt.getPackageName(), R.layout.profile_list_widget_small);
+				else
+					widget=new RemoteViews(ctxt.getPackageName(), R.layout.profile_list_widget_small_no_indicator);
+			}
 		}
 
 		// set background

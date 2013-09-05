@@ -50,9 +50,7 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 		}
 		else
 		{
-			int iconResource = ctxt.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", ctxt.getPackageName());
-			Bitmap icon = BitmapFactory.decodeResource(ctxt.getResources(), iconResource);
-			row.setImageViewBitmap(R.id.widget_profile_list_item_profile_icon, icon);
+    		row.setImageViewBitmap(R.id.widget_profile_list_item_profile_icon, profile._iconBitmap);
 		}
 		row.setTextViewText(R.id.widget_profile_list_item_profile_name, profile._name);
 		int red = 0xFF;
