@@ -620,6 +620,10 @@ public class ActivateProfileHelper {
 		int ids2[] = AppWidgetManager.getInstance(activity.getApplication()).getAppWidgetIds(new ComponentName(activity.getApplication(), ProfileListWidgetProvider.class));
 		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids2);
 		context.sendBroadcast(intent2);
+
+		Intent intent3 = new Intent();
+	    intent3.setAction(DashClockBroadcastReceiver.INTENT_REFRESH_DASHCLOCK);
+		context.sendBroadcast(intent3);
 	}
 	
 	
