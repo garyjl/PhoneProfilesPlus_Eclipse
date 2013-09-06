@@ -34,6 +34,21 @@ public class PhoneProfilesDashClockExtension extends DashClockExtension {
 	
 		setUpdateWhenScreenOn(true);
 	}
+
+	private int maxLength;
+	private String addIntoIndicator(String indicator, String preference)
+	{
+		String ind = indicator;
+		if (ind.length() > maxLength)
+		{
+			ind = ind + '\n';
+			maxLength += 25;
+		}
+		else
+			if (ind != "") ind = ind + "-";
+		ind = ind + preference;
+		return ind;
+	}
 	
 	@Override
 	protected void onUpdateData(int reason) {
@@ -62,125 +77,65 @@ public class PhoneProfilesDashClockExtension extends DashClockExtension {
 			iconResource = context.getResources().getIdentifier(GUIData.PROFILE_ICON_DEFAULT, "drawable", context.getPackageName());
 	
 		// profile preferences indicator
+		maxLength = 25;
 		String indicator1 = "";
 		// volume on
 		if ((profile._volumeRingerMode == 1) || (profile._volumeRingerMode == 2))
-		{
-			if (indicator1 != "") indicator1 = indicator1+"-";
-			indicator1 = indicator1 + "rng";
-		}
+			indicator1 = addIntoIndicator(indicator1, "rng");
 		// vibration
 		if ((profile._volumeRingerMode == 2) || (profile._volumeRingerMode == 3))
-		{
-			if (indicator1 != "") indicator1 = indicator1+"-";
-			indicator1 = indicator1 + "vib";
-		}
+			indicator1 = addIntoIndicator(indicator1, "vib");
 		// volume off
 		if (profile._volumeRingerMode == 4)
-		{
-			if (indicator1 != "") indicator1 = indicator1+"-";
-			indicator1 = indicator1 + "sil";
-		}
+			indicator1 = addIntoIndicator(indicator1, "sil");
 		// sound
 		if (profile._soundRingtoneChange || profile._soundNotificationChange || profile._soundAlarmChange)
-		{
-			if (indicator1 != "") indicator1 = indicator1+"-";
-			indicator1 = indicator1 + "snd";
-		}
-		String indicator2 = "";
+			indicator1 = addIntoIndicator(indicator1, "snd");
 		// airplane mode
 		if ((profile._deviceAirplaneMode == 1) || (profile._deviceAirplaneMode == 3))
-		{
-			if (indicator2 != "") indicator2 = indicator2+"-";
-			indicator2 = indicator2 + "am1";
-		}
+			indicator1 = addIntoIndicator(indicator1, "am1");
 		if (profile._deviceAirplaneMode == 2)
-		{
-			if (indicator2 != "") indicator2 = indicator2+"-";
-			indicator2 = indicator2 + "am0";
-		}
+			indicator1 = addIntoIndicator(indicator1, "am0");
 		// mobile data
 		if ((profile._deviceMobileData == 1) || (profile._deviceMobileData == 3))
-		{
-			if (indicator2 != "") indicator2 = indicator2+"-";
-			indicator2 = indicator2 + "md1";
-		}
+			indicator1 = addIntoIndicator(indicator1, "md1");
 		if (profile._deviceMobileData == 2)
-		{
-			if (indicator2 != "") indicator2 = indicator2+"-";
-			indicator2 = indicator2 + "md0";
-		}
+			indicator1 = addIntoIndicator(indicator1, "md0");
 		// mobile data preferences
 		if (profile._deviceMobileDataPrefs)
-		{
-			if (indicator2 != "") indicator2 = indicator2+"-";
-			indicator2 = indicator2 + "mdP";
-		}
+			indicator1 = addIntoIndicator(indicator1, "mdP");
 		// wifi
 		if ((profile._deviceWiFi == 1) || (profile._deviceWiFi == 3))
-		{
-			if (indicator2 != "") indicator2 = indicator2+"-";
-			indicator2 = indicator2 + "wf1";
-		}
+			indicator1 = addIntoIndicator(indicator1, "wf1");
 		if (profile._deviceWiFi == 2)
-		{
-			if (indicator2 != "") indicator2 = indicator2+"-";
-			indicator2 = indicator2 + "wf0";
-		}	
+			indicator1 = addIntoIndicator(indicator1, "wf0");
 		// bluetooth
 		if ((profile._deviceBluetooth == 1) || (profile._deviceBluetooth == 3))
-		{
-			if (indicator2 != "") indicator2 = indicator2+"-";
-			indicator2 = indicator2 + "bt1";
-		}
+			indicator1 = addIntoIndicator(indicator1, "bt1");
 		if (profile._deviceBluetooth == 2)
-		{
-			if (indicator2 != "") indicator2 = indicator2+"-";
-			indicator2 = indicator2 + "bt0";
-		}
+			indicator1 = addIntoIndicator(indicator1, "bt0");
 		// gps
 		if ((profile._deviceGPS == 1) || (profile._deviceGPS == 3))
-		{
-			if (indicator2 != "") indicator2 = indicator2+"-";
-			indicator2 = indicator2 + "gp1";
-		}
+			indicator1 = addIntoIndicator(indicator1, "gp1");
 		if (profile._deviceGPS == 2)
-		{
-			if (indicator2 != "") indicator2 = indicator2+"-";
-			indicator2 = indicator2 + "gp0";
-		}
-		String indicator3 = "";
+			indicator1 = addIntoIndicator(indicator1, "gp0");
 		// screen timeout
 		if (profile._deviceScreenTimeout != 0)
-		{
-			if (indicator3 != "") indicator3 = indicator3+"-";
-			indicator3 = indicator3 + "sct";
-		}
+			indicator1 = addIntoIndicator(indicator1, "stm");
 		// brightness/autobrightness
 		if (profile.getDeviceBrightnessChange())
 		{
-			if (indicator3 != "") indicator3 = indicator3+"-";
 			if (profile.getDeviceBrightnessAutomatic())
-				indicator3 = indicator3 + "brA";
+				indicator1 = addIntoIndicator(indicator1, "brA");
 			else
-				indicator3 = indicator3 + "brt";
+				indicator1 = addIntoIndicator(indicator1, "brt");
 		}
 		// run application
 		if (profile._deviceRunApplicationChange)
-		{
-			if (indicator3 != "") indicator3 = indicator3+"-";
-			indicator3 = indicator3 + "rna";
-		}
+			indicator1 = addIntoIndicator(indicator1, "rap");
 		// wallpaper
 		if (profile._deviceWallpaperChange)
-		{
-			if (indicator3 != "") indicator3 = indicator3+"-";
-			indicator3 = indicator3 + "wlp";
-		}
-
-		String indicator =  indicator1 + "\n" +
-							indicator2 + "\n" +
-							indicator3;
+			indicator1 = addIntoIndicator(indicator1, "wlp");
 		/////////////////////////////////////////////////////////////
 		
 		// intent
@@ -193,7 +148,7 @@ public class PhoneProfilesDashClockExtension extends DashClockExtension {
                 .icon(iconResource)
                 .status("")
                 .expandedTitle(profileName)
-                .expandedBody(indicator)
+                .expandedBody(indicator1)
                 .contentDescription("PhoneProfiles - "+profileName)
                 .clickIntent(intent));		
 	}
