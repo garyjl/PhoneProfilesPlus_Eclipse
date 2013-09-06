@@ -193,7 +193,7 @@ public class PhoneProfilesDashClockExtension extends DashClockExtension {
                 .icon(iconResource)
                 .status("")
                 .expandedTitle(profileName)
-                .expandedBody("abcd\n123")   // indicator??
+                .expandedBody(indicator)
                 .contentDescription("PhoneProfiles - "+profileName)
                 .clickIntent(intent));		
 	}
