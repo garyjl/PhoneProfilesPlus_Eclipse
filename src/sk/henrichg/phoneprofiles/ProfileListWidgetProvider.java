@@ -138,13 +138,13 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 		// clicks
 		if (largeLayout)
 		{
-			if (!isKeyguard)
-			{
+			//if (!isKeyguard)
+			//{
 				Intent intent = new Intent(ctxt, EditorProfilesActivity.class);
 				PendingIntent pendingIntent = PendingIntent.getActivity(ctxt, 1, intent, 
 	                    									PendingIntent.FLAG_UPDATE_CURRENT);
 				widget.setOnClickPendingIntent(R.id.widget_profile_list_header, pendingIntent);
-			}
+			//}
 
 			widget.setRemoteAdapter(appWidgetId, R.id.widget_profile_list, svcIntent);
 			
@@ -158,14 +158,14 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 		}
 		else
 		{
-			if (!isKeyguard)
-			{
+			//if (!isKeyguard)
+			//{
 				Intent intent = new Intent(ctxt, ActivateProfileActivity.class);
 				intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_WIDGET);
 				PendingIntent pendingIntent = PendingIntent.getActivity(ctxt, 1, intent,  
 															PendingIntent.FLAG_UPDATE_CURRENT);
 				widget.setOnClickPendingIntent(R.id.widget_profile_list_header, pendingIntent);
-			}
+			//}
 		}
 		
 		return widget;
