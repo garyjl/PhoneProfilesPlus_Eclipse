@@ -165,5 +165,6 @@
     <string name="phone_profiles_pref_applicationWidgetBackground">Nepriehľadnosť pozadia</string>
     <string name="phone_profiles_pref_applicationWidgetLightnessB">Svetlosť pozadia</string>
     <string name="phone_profiles_pref_applicationWidgetLightnessT">Svetlosť textu</string>
+    <string name="dashclock_extension_description">Zobrazí aktívny profil s indikátorom preferencií profilu. Na kliknutie sa otvorí Aktivátor.</string>
     
 </resources>

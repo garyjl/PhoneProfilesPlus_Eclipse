@@ -165,5 +165,6 @@
     <string name="phone_profiles_pref_applicationWidgetBackground">Background opaque</string>
     <string name="phone_profiles_pref_applicationWidgetLightnessB">Background lightness</string>
     <string name="phone_profiles_pref_applicationWidgetLightnessT">Text lightness</string>
+    <string name="dashclock_extension_description">Display active profile with preferences indicator. On click will be open Activator.</string>
     
 </resources>

@@ -455,8 +455,11 @@ public class ActivateProfileHelper {
 			Intent intent;
 			PackageManager packageManager = context.getPackageManager();
 			intent = packageManager.getLaunchIntentForPackage(profile._deviceRunApplicationPackageName);
-			intent.addCategory(Intent.CATEGORY_LAUNCHER);
-			activity.startActivity(intent);			
+			if (intent != null)
+			{
+				intent.addCategory(Intent.CATEGORY_LAUNCHER);
+				activity.startActivity(intent);
+			}
 		}
 		
 		if (interactive)
