@@ -39,23 +39,30 @@ public class BitmapManipulator {
 			return null;
 	}
 	
-	public static Bitmap monochromeDrawable(Drawable drawable, int value, Context context)
+	public static Bitmap monochromeBitmap(Bitmap bitmap, int value, Context context)
 	{
-    	// change color into White
-    	Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
-    										drawable.getIntrinsicHeight(),
-    										Config.ARGB_8888);
-    	Canvas canvas = new Canvas(bitmap);
-    	drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-    	int color = Color.argb(0, value, value, value);
-    	ColorFilter filter = new LightingColorFilter(0xFFFFFFFF, color);
-    	drawable.setColorFilter(filter);
-    	drawable.draw(canvas);
-    	
-    	return bitmap;
+    	Bitmap monochromeBitmap = Bitmap.createBitmap(bitmap.getWidth(),
+														bitmap.getHeight(),
+														bitmap.getConfig());
+														//Config.ARGB_8888);
+		
+		Canvas canvas = new Canvas(monochromeBitmap);
+		Paint paint = new Paint();
+		Matrix matrix = new Matrix();
+		
+		ColorFilter filter = new LightingColorFilter(0xFFFFFFFF, 0x00FFFFFF);
+		paint.setColorFilter(filter);
+		canvas.drawBitmap(bitmap, matrix, paint);
+		
+		int color = Color.argb(0xFF, value, value, value);
+		ColorFilter filter2 = new LightingColorFilter(color, 0x00000000);
+		paint.setColorFilter(filter2);
+		canvas.drawBitmap(monochromeBitmap, matrix, paint); 
+		
+		return monochromeBitmap;
 	}
 
-	public static Bitmap monochromeBitmap(Bitmap bitmap)
+	public static Bitmap grayscaleBitmap(Bitmap bitmap)
 	{
     	Bitmap monochromeBitmap = Bitmap.createBitmap(bitmap.getWidth(),
 													bitmap.getHeight(),

@@ -236,6 +236,22 @@ public class ShortcutCreatorActivity extends SherlockActivity {
     		int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
     		profileBitmap = BitmapManipulator.resampleBitmap(iconIdentifier, width, height);
         }
+        
+        if (GlobalData.applicationWidgetIconColor.equals("1"))
+        {
+    		int monochromeValue = 0xFF;
+    		if (GlobalData.applicationWidgetIconLightness.equals("0")) monochromeValue = 0x00;
+    		if (GlobalData.applicationWidgetIconLightness.equals("25")) monochromeValue = 0x40;
+    		if (GlobalData.applicationWidgetIconLightness.equals("50")) monochromeValue = 0x80;
+    		if (GlobalData.applicationWidgetIconLightness.equals("75")) monochromeValue = 0xC0;
+    		if (GlobalData.applicationWidgetIconLightness.equals("100")) monochromeValue = 0xFF;
+            
+            if (isIconResourceID)
+            	profileBitmap = BitmapManipulator.monochromeBitmap(profileBitmap, monochromeValue, getBaseContext());
+            else
+            	profileBitmap = BitmapManipulator.grayscaleBitmap(profileBitmap);
+        }
+        
     	shortcutOverlayBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_shortcut_overlay);
     	profileShortcutBitmap = combineImages(profileBitmap, shortcutOverlayBitmap);
     	intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, profileShortcutBitmap);

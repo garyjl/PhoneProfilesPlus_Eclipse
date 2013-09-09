@@ -3,6 +3,7 @@ package sk.henrichg.phoneprofiles;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
@@ -421,14 +422,14 @@ public class Profile {
     		_iconBitmap = BitmapManipulator.resampleBitmap(getIconIdentifier(), width, height);
 
     		if (monochrome)
-    			_iconBitmap = BitmapManipulator.monochromeBitmap(_iconBitmap);
+    			_iconBitmap = BitmapManipulator.grayscaleBitmap(_iconBitmap);
         }
         else
         if (monochrome)
         {
         	int iconResource = context.getResources().getIdentifier(getIconIdentifier(), "drawable", context.getPackageName());
-        	Drawable iconDrawable = context.getResources().getDrawable(iconResource);
-        	_iconBitmap = BitmapManipulator.monochromeDrawable(iconDrawable, monochromeValue, context);
+        	Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), iconResource);
+        	_iconBitmap = BitmapManipulator.monochromeBitmap(bitmap, monochromeValue, context);
         	// getIsIconResourceID must return false
         	_icon = getIconIdentifier() + "|0";
         }
@@ -444,10 +445,8 @@ public class Profile {
     	_preferencesIndicator = ProfilePreferencesIndicator.paint(this, context);
 
     	if (monochrome)
-    	{
-        	Drawable indicatorDrawable = new BitmapDrawable(context.getResources(), _preferencesIndicator);
-    		_preferencesIndicator = BitmapManipulator.monochromeDrawable(indicatorDrawable, monochromeValue, context);
-    	}
+    		_preferencesIndicator = BitmapManipulator.monochromeBitmap(_preferencesIndicator, monochromeValue, context);
+
 	}
 	
 }

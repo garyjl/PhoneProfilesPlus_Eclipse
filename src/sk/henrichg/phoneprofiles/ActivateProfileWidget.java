@@ -18,7 +18,17 @@ public class ActivateProfileWidget extends AppWidgetProvider {
 		
 		GlobalData.loadPreferences(GlobalData.context);
 		
-		profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, false, 0, false, false, false);
+		int monochromeValue = 0xFF;
+		if (GlobalData.applicationWidgetIconLightness.equals("0")) monochromeValue = 0x00;
+		if (GlobalData.applicationWidgetIconLightness.equals("25")) monochromeValue = 0x40;
+		if (GlobalData.applicationWidgetIconLightness.equals("50")) monochromeValue = 0x80;
+		if (GlobalData.applicationWidgetIconLightness.equals("75")) monochromeValue = 0xC0;
+		if (GlobalData.applicationWidgetIconLightness.equals("100")) monochromeValue = 0xFF;
+
+		profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true,  
+																GlobalData.applicationWidgetIconColor.equals("1"), 
+																monochromeValue, 
+																false, false, false);
 		
 		Profile profile = profilesDataWrapper.getActivatedProfile();
 
