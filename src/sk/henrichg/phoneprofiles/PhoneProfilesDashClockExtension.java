@@ -30,7 +30,7 @@ public class PhoneProfilesDashClockExtension extends DashClockExtension {
 		context = getApplicationContext();
 		
 		if (profilesDataWrapper == null)
-			profilesDataWrapper = new ProfilesDataWrapper(context, true, false, false, false);
+			profilesDataWrapper = new ProfilesDataWrapper(context, true, false, 0, false, false, false);
 	
 		setUpdateWhenScreenOn(true);
 	}

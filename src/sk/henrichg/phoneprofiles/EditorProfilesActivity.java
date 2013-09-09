@@ -60,7 +60,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 
 		super.onCreate(savedInstanceState);
 		
-		profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, GlobalData.applicationEditorPrefIndicator, false, false);
+		profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, false, 0, GlobalData.applicationEditorPrefIndicator, false, false);
 		serviceCommunication = new ServiceCommunication(GlobalData.context);
 		
 		applicationsCache = new ApplicationsCache();

@@ -19,18 +19,22 @@ public class ProfilesDataWrapper {
 
 	private Context context = null;
 	private boolean forGUI = false;
-	private boolean generateIndicators = false;
+	private boolean monochrome = false;
+	private int monochromeValue = 0xFF;
+	//private boolean generateIndicators = false;
 
 	private DatabaseHandler databaseHandler = null;
 	private ActivateProfileHelper activateProfileHelper = null;
 	private List<Profile> profileList = null;
 	private List<Event> eventList = null;
 	
-	ProfilesDataWrapper(Context c, boolean fgui, boolean generIndicators, boolean loadProfileList, boolean loadEventList)
+	ProfilesDataWrapper(Context c, boolean fgui, boolean mono, int monoVal, boolean generIndicators, boolean loadProfileList, boolean loadEventList)
 	{
 		context = c;
 		forGUI = fgui;
-		generateIndicators = generIndicators;
+		monochrome = mono;
+		monochromeValue = monoVal; 
+		//generateIndicators = generIndicators;
 		databaseHandler = getDatabaseHandler();
 		activateProfileHelper = getActivateProfileHelper();
 		if (loadProfileList)
@@ -65,9 +69,9 @@ public class ProfilesDataWrapper {
 			{
 				for (Profile profile : profileList)
 				{
-					profile.generateIconBitmap(context);
+					profile.generateIconBitmap(context, monochrome, monochromeValue);
 					//if (generateIndicators)
-						profile.generatePreferencesIndicator(context);
+						profile.generatePreferencesIndicator(context, monochrome, monochromeValue);
 				}
 			}
 		}
@@ -106,8 +110,8 @@ public class ProfilesDataWrapper {
 			if (forGUI && (profile != null))
 			{
 				//Log.d("ProfilesDataWrapper.getActivatedProfile","forGUI=true");
-				profile.generateIconBitmap(context);
-				profile.generatePreferencesIndicator(context);
+				profile.generateIconBitmap(context, monochrome, monochromeValue);
+				profile.generatePreferencesIndicator(context, monochrome, monochromeValue);
 			}
 			return profile;
 		}
@@ -133,8 +137,8 @@ public class ProfilesDataWrapper {
 			Profile profile = getDatabaseHandler().getFirstProfile();
 			if (forGUI && (profile != null))
 			{
-				profile.generateIconBitmap(context);
-				profile.generatePreferencesIndicator(context);
+				profile.generateIconBitmap(context, monochrome, monochromeValue);
+				profile.generatePreferencesIndicator(context, monochrome, monochromeValue);
 			}
 			return profile;
 		}
@@ -193,8 +197,8 @@ public class ProfilesDataWrapper {
 			Profile profile = getDatabaseHandler().getProfile(id);
 			if (forGUI && (profile != null))
 			{
-				profile.generateIconBitmap(context);
-				profile.generatePreferencesIndicator(context);
+				profile.generateIconBitmap(context, monochrome, monochromeValue);
+				profile.generatePreferencesIndicator(context, monochrome, monochromeValue);
 			}
 			return profile;
 		}

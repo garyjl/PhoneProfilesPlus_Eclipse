@@ -393,8 +393,8 @@ public class EditorProfileListFragment extends SherlockFragment {
 			onProfileCountChangedCallback.onProfileCountChanged();
 
         	// generate bitmaps
-			profile.generateIconBitmap(getSherlockActivity().getBaseContext());
-			profile.generatePreferencesIndicator(getSherlockActivity().getBaseContext());
+			profile.generateIconBitmap(getSherlockActivity().getBaseContext(), false, 0);
+			profile.generatePreferencesIndicator(getSherlockActivity().getBaseContext(), false, 0);
 			
 		}
 
@@ -446,8 +446,8 @@ public class EditorProfileListFragment extends SherlockFragment {
 		onProfileCountChangedCallback.onProfileCountChanged();
 		
     	// generate bitmaps
-		newProfile.generateIconBitmap(getSherlockActivity().getBaseContext());
-		newProfile.generatePreferencesIndicator(getSherlockActivity().getBaseContext());
+		newProfile.generateIconBitmap(getSherlockActivity().getBaseContext(), false, 0);
+		newProfile.generatePreferencesIndicator(getSherlockActivity().getBaseContext(), false, 0);
 		
 		
 		//updateListView();

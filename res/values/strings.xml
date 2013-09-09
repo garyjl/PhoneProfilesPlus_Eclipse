@@ -165,6 +165,11 @@
     <string name="phone_profiles_pref_applicationWidgetBackground">Background opaque</string>
     <string name="phone_profiles_pref_applicationWidgetLightnessB">Background lightness</string>
     <string name="phone_profiles_pref_applicationWidgetLightnessT">Text lightness</string>
+    <string name="phone_profiles_pref_applicationWidgetLightnessI">Icon lightness</string>
     <string name="dashclock_extension_description">Display active profile with preferences indicator. On click will be open Activator.</string>
+    <string name="phone_profiles_pref_category_widget_icon_shortcut">Widget - Icon; Shortcut</string>
+	<string name="array_pref_widgetColor_colorfull">Colorfull</string>
+	<string name="array_pref_widgetColor_monochrome">Monochrome</string>
+	<string name="phone_profiles_pref_applicationWidgetColor">Icon color type</string>
     
 </resources>

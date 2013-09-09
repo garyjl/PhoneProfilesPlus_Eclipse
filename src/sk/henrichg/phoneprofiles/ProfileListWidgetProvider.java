@@ -179,7 +179,7 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 		GlobalData.loadPreferences(GlobalData.context);
 
 		if (profilesDataWrapper == null)
-			profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, true, false, false);
+			profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, false, 0, true, false, false);
 
 		ProfileListWidgetProvider.profilesDataWrapper.reloadProfilesData();
 		

@@ -113,7 +113,7 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 
 	public void onDataSetChanged() {
 		if (ProfileListWidgetProvider.profilesDataWrapper == null)
-			ProfileListWidgetProvider.profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, true, false, false);
+			ProfileListWidgetProvider.profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, false, 0, true, false, false);
 		
 		profileList = ProfileListWidgetProvider.profilesDataWrapper.getProfileListForActivator();
 	}

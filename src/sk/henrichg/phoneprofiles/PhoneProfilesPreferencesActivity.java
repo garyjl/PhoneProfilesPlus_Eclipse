@@ -86,6 +86,7 @@ public class PhoneProfilesPreferencesActivity extends
 	public static class NotificationsPreferencesFragment extends UnifiedPreferenceFragment {}
 	public static class StartPreferencesFragment extends UnifiedPreferenceFragment {}
 	public static class WidgetListPreferencesFragment extends UnifiedPreferenceFragment {}
+	public static class WidgetIconShortcutPreferencesFragment extends UnifiedPreferenceFragment {}
 	
 	@Override
 	public void onConfigurationChanged(Configuration newConfig)

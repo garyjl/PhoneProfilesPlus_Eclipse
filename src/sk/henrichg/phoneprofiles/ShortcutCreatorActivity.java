@@ -43,7 +43,7 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 		GUIData.setTheme(this, true);
 		GUIData.setLanguage(getBaseContext());
 
-		profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, GlobalData.applicationActivatorPrefIndicator, false, false);
+		profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, false, 0, GlobalData.applicationActivatorPrefIndicator, false, false);
 
 	// set window dimensions ----------------------------------------------------------
 		
@@ -234,7 +234,7 @@ public class ShortcutCreatorActivity extends SherlockActivity {
     		Resources resources = getResources();
     		int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
     		int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
-    		profileBitmap = BitmapResampler.resample(iconIdentifier, width, height);
+    		profileBitmap = BitmapManipulator.resampleBitmap(iconIdentifier, width, height);
         }
     	shortcutOverlayBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_shortcut_overlay);
     	profileShortcutBitmap = combineImages(profileBitmap, shortcutOverlayBitmap);

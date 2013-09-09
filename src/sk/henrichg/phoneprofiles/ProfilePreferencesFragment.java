@@ -277,8 +277,8 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
         	//Log.d("ProfilePreferencesFragment.onPause", "profile activated="+profile.getChecked());
         	
         	// update bitmaps
-			profile.generateIconBitmap(context);
-			profile.generatePreferencesIndicator(context);
+			profile.generateIconBitmap(context, false, 0);
+			profile.generatePreferencesIndicator(context, false, 0);
         	
 
         	//Log.d("ProfilePreferencesFragment.onPause", "profile activated="+profile.getChecked());

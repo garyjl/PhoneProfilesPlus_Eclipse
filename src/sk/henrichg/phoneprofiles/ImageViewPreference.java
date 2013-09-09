@@ -93,7 +93,7 @@ public class ImageViewPreference extends Preference {
         		Resources resources = prefContext.getResources();
         		int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
         		int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
-        		Bitmap bitmap = BitmapResampler.resample(imageIdentifier, width, height);
+        		Bitmap bitmap = BitmapManipulator.resampleBitmap(imageIdentifier, width, height);
         		
         		//if (bitmap != null)
         			imageView.setImageBitmap(bitmap);

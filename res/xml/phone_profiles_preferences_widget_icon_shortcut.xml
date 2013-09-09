@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+	<ListPreference android:title="@string/phone_profiles_pref_applicationWidgetColor"
+           android:summary="0"
+           android:key="applicationWidgetIconColor"
+           android:defaultValue="0"
+           android:entries="@array/widgetColorArray"
+           android:entryValues="@array/widgetColorValues" />        
+    <ListPreference android:title="@string/phone_profiles_pref_applicationWidgetLightnessI"
+           android:summary="100"
+           android:key="applicationWidgetIconLightness"
+           android:defaultValue="100"
+           android:entries="@array/widgetLightnessArray"
+           android:entryValues="@array/widgetLightnessValues" />        
+</PreferenceScreen>    

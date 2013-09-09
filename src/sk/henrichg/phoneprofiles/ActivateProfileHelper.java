@@ -437,7 +437,7 @@ public class ActivateProfileHelper {
 			activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 			int height = displayMetrics.heightPixels;
 			int width = displayMetrics.widthPixels << 1; // best wallpaper width is twice screen width
-			Bitmap decodedSampleBitmap = BitmapResampler.resample(profile.getDeviceWallpaperIdentifier(), width, height);
+			Bitmap decodedSampleBitmap = BitmapManipulator.resampleBitmap(profile.getDeviceWallpaperIdentifier(), width, height);
 			if (decodedSampleBitmap != null)
 			{
 				// set wallpaper

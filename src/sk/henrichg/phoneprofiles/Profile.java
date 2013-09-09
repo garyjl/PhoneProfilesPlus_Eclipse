@@ -3,6 +3,8 @@ package sk.henrichg.phoneprofiles;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 
 public class Profile {
 	
@@ -406,7 +408,7 @@ public class Profile {
 	
 	//----------------------------------
 	
-	public void generateIconBitmap(Context context)
+	public void generateIconBitmap(Context context, boolean monochrome, int monochromeValue)
 	{
         if (!getIsIconResourceID())
         {
@@ -416,18 +418,36 @@ public class Profile {
         	Resources resources = context.getResources();
     		int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
     		int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
-    		_iconBitmap = BitmapResampler.resample(getIconIdentifier(), width, height);
+    		_iconBitmap = BitmapManipulator.resampleBitmap(getIconIdentifier(), width, height);
+
+    		if (monochrome)
+    			_iconBitmap = BitmapManipulator.monochromeBitmap(_iconBitmap);
+        }
+        else
+        if (monochrome)
+        {
+        	int iconResource = context.getResources().getIdentifier(getIconIdentifier(), "drawable", context.getPackageName());
+        	Drawable iconDrawable = context.getResources().getDrawable(iconResource);
+        	_iconBitmap = BitmapManipulator.monochromeDrawable(iconDrawable, monochromeValue, context);
+        	// getIsIconResourceID must return false
+        	_icon = getIconIdentifier() + "|0";
         }
         else
         	_iconBitmap = null;
 	}
 	
-	public void generatePreferencesIndicator(Context context)
+	public void generatePreferencesIndicator(Context context, boolean monochrome, int monochromeValue)
 	{
     	if (_preferencesIndicator != null)
     		_preferencesIndicator.recycle();
 
     	_preferencesIndicator = ProfilePreferencesIndicator.paint(this, context);
+
+    	if (monochrome)
+    	{
+        	Drawable indicatorDrawable = new BitmapDrawable(context.getResources(), _preferencesIndicator);
+    		_preferencesIndicator = BitmapManipulator.monochromeDrawable(indicatorDrawable, monochromeValue, context);
+    	}
 	}
 	
 }
