@@ -67,12 +67,19 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 			if (profile._checked)
 			{
 				row.setTextViewTextSize(R.id.widget_profile_list_item_profile_name, TypedValue.COMPLEX_UNIT_SP, 17);
-				row.setTextColor(R.id.widget_profile_list_item_profile_name, Color.parseColor("#33b5e5"));
+		        if (GlobalData.applicationWidgetListIconColor.equals("1"))
+					row.setTextColor(R.id.widget_profile_list_item_profile_name, Color.argb(0xFF, red, green, blue));
+		        else
+					row.setTextColor(R.id.widget_profile_list_item_profile_name, Color.parseColor("#33b5e5"));
 			}
 			else
 			{
 				row.setTextViewTextSize(R.id.widget_profile_list_item_profile_name, TypedValue.COMPLEX_UNIT_SP, 15);
-				row.setTextColor(R.id.widget_profile_list_item_profile_name, Color.argb(0xFF, red, green, blue));
+				
+		        if (GlobalData.applicationWidgetListIconColor.equals("1"))
+		        	row.setTextColor(R.id.widget_profile_list_item_profile_name, Color.argb(0xCC, red, green, blue));
+		        else
+		        	row.setTextColor(R.id.widget_profile_list_item_profile_name, Color.argb(0xFF, red, green, blue));
 			}
 		}
 		else
@@ -112,8 +119,7 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 	}
 
 	public void onDataSetChanged() {
-		if (ProfileListWidgetProvider.profilesDataWrapper == null)
-			ProfileListWidgetProvider.profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, false, 0, true, false, false);
+		ProfileListWidgetProvider.createProfilesDataWrapper();
 		
 		profileList = ProfileListWidgetProvider.profilesDataWrapper.getProfileListForActivator();
 	}

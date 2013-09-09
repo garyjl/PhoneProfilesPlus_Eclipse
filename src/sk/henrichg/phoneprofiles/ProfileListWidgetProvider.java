@@ -9,8 +9,18 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.LightingColorFilter;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -105,11 +115,29 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 	        if (isIconResourceID)
 	        {
 	        	int iconResource = ctxt.getResources().getIdentifier(iconIdentifier, "drawable", ctxt.getPackageName());
+	        	
 	        	widget.setImageViewResource(R.id.widget_profile_list_header_profile_icon, iconResource);
 	        }
 	        else
 	        {
-	        	widget.setImageViewBitmap(R.id.widget_profile_list_header_profile_icon, profile._iconBitmap);
+        		widget.setImageViewBitmap(R.id.widget_profile_list_header_profile_icon, profile._iconBitmap);
+	        }
+	        if (GlobalData.applicationWidgetListIconColor.equals("1"))
+	        {
+	    		red = 0xFF;
+	    		green = 0xFF;
+	    		blue = 0xFF;
+	    		if (GlobalData.applicationWidgetListLightnessT.equals("0")) red = 0x00;
+	    		if (GlobalData.applicationWidgetListLightnessT.equals("25")) red = 0x40;
+	    		if (GlobalData.applicationWidgetListLightnessT.equals("50")) red = 0x80;
+	    		if (GlobalData.applicationWidgetListLightnessT.equals("75")) red = 0xC0;
+	    		if (GlobalData.applicationWidgetListLightnessT.equals("100")) red = 0xFF;
+	    		green = red; blue = red;
+	        	widget.setTextColor(R.id.widget_profile_list_header_profile_name, Color.argb(0xFF, red, green, blue));
+	        }
+	        else
+	        {
+				widget.setTextColor(R.id.widget_profile_list_header_profile_name, Color.parseColor("#33b5e5"));
 	        }
 			widget.setTextViewText(R.id.widget_profile_list_header_profile_name, profileName);
 			if (GlobalData.applicationWidgetListPrefIndicator)
@@ -117,7 +145,7 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 				if (profile == null)
 					widget.setImageViewBitmap(R.id.widget_profile_list_header_profile_pref_indicator, null);
 				else
-					widget.setImageViewBitmap(R.id.widget_profile_list_header_profile_pref_indicator, profile._preferencesIndicator);
+	        		widget.setImageViewBitmap(R.id.widget_profile_list_header_profile_pref_indicator, profile._preferencesIndicator);
 			}
 			if (largeLayout)
 			{	
@@ -132,6 +160,23 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 				green = red; blue = red;
 				widget.setImageViewBitmap(R.id.widget_profile_list_header_separator, getBackground(Color.argb(0x40, red, green, blue)));
 			}
+	        if (GlobalData.applicationWidgetListIconColor.equals("1"))
+	        {
+				int monochromeValue = 0xFF;
+				if (GlobalData.applicationWidgetListIconLightness.equals("0")) monochromeValue = 0x00;
+				if (GlobalData.applicationWidgetListIconLightness.equals("25")) monochromeValue = 0x40;
+				if (GlobalData.applicationWidgetListIconLightness.equals("50")) monochromeValue = 0x80;
+				if (GlobalData.applicationWidgetListIconLightness.equals("75")) monochromeValue = 0xC0;
+				if (GlobalData.applicationWidgetListIconLightness.equals("100")) monochromeValue = 0xFF;
+	        	
+	        	Bitmap bitmap = BitmapFactory.decodeResource(ctxt.getResources(), R.drawable.ic_profile_activated);
+	        	bitmap = BitmapManipulator.monochromeBitmap(bitmap, monochromeValue, ctxt);
+				widget.setImageViewBitmap(R.id.widget_profile_list_header_profile_activated, bitmap);
+	        }
+	        else
+	        {
+	        	widget.setImageViewResource(R.id.widget_profile_list_header_profile_activated, R.drawable.ic_profile_activated);
+	        }
 		}
 		////////////////////////////////////////////////
 		
@@ -171,6 +216,24 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 		return widget;
 	}
 	
+	public static void createProfilesDataWrapper()
+	{
+		if (profilesDataWrapper == null)
+		{
+			int monochromeValue = 0xFF;
+			if (GlobalData.applicationWidgetListIconLightness.equals("0")) monochromeValue = 0x00;
+			if (GlobalData.applicationWidgetListIconLightness.equals("25")) monochromeValue = 0x40;
+			if (GlobalData.applicationWidgetListIconLightness.equals("50")) monochromeValue = 0x80;
+			if (GlobalData.applicationWidgetListIconLightness.equals("75")) monochromeValue = 0xC0;
+			if (GlobalData.applicationWidgetListIconLightness.equals("100")) monochromeValue = 0xFF;
+			
+			profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true,  
+														GlobalData.applicationWidgetListIconColor.equals("1"), 
+														monochromeValue,
+														true, false, false);
+		}
+	}
+	
 	@Override
 	public void onUpdate(Context ctxt, AppWidgetManager appWidgetManager, int[] appWidgetIds)
 	{
@@ -178,8 +241,7 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 		
 		GlobalData.loadPreferences(GlobalData.context);
 
-		if (profilesDataWrapper == null)
-			profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, false, 0, true, false, false);
+		createProfilesDataWrapper();
 
 		ProfileListWidgetProvider.profilesDataWrapper.reloadProfilesData();
 		
@@ -262,6 +324,12 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 	    int appWidgetIds[] = appWidgetManager.getAppWidgetIds(new ComponentName(context, ProfileListWidgetProvider.class));
 
+	    if (profilesDataWrapper != null)
+	    {
+	    	profilesDataWrapper.invalidateProfileList();
+	    	profilesDataWrapper = null;
+	    }
+	    
     	onUpdate(context, appWidgetManager, appWidgetIds);
 	    if (isLargeLayout)
 	    	appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_profile_list);

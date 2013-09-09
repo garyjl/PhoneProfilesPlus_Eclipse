@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-	<ListPreference android:title="@string/phone_profiles_pref_applicationWidgetColor"
+	<ListPreference android:title="@string/phone_profiles_pref_applicationWidgetIconColor"
            android:summary="0"
            android:key="applicationWidgetIconColor"
            android:defaultValue="0"
