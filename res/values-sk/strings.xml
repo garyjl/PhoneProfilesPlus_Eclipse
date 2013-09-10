@@ -162,7 +162,7 @@
     <string name="widget_label_icon">PhoneProfiles-ikona</string>
     <string name="widget_label_one_row">PhoneProfiles-jednoriadkový</string>
     <string name="widget_label_list">PhoneProfiles-zoznam</string>
-    <string name="phone_profiles_pref_category_widget_list">Miniaplikácia - Zoznam</string>
+    <string name="phone_profiles_pref_category_widget_list">Miniaplikácia-Zoznam</string>
     <string name="phone_profiles_pref_applicationWidgetBackground">Nepriehľadnosť pozadia</string>
     <string name="phone_profiles_pref_applicationWidgetLightnessB">Svetlosť pozadia</string>
     <string name="phone_profiles_pref_applicationWidgetLightnessT">Svetlosť textu</string>
@@ -172,5 +172,6 @@
 	<string name="array_pref_widgetColor_colorfull">Farebné</string>
 	<string name="array_pref_widgetColor_monochrome">Monochromatické</string>
 	<string name="phone_profiles_pref_applicationWidgetIconColor">Typ farby ikony</string>
-    
+    <string name="phone_profiles_pref_category_widget_one_row">Miniaplikácia-jednoriadková</string>
+	
 </resources>
