@@ -104,7 +104,7 @@
         </service>
 
         <receiver
-            android:name=".ActivateProfileWidget"
+            android:name=".IconWidgetProvider"
             android:icon="@drawable/ic_launcher"
             android:label="@string/widget_label_icon" >
             <intent-filter>
@@ -112,7 +112,18 @@
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/activate_profile_widget_info" />
+                android:resource="@xml/icon_widget_info" />
+        </receiver>
+        <receiver
+            android:name=".OneRowWidgetProvider"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/widget_label_one_row" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/one_row_widget_info" />
         </receiver>
         <receiver
             android:name=".ProfileListWidgetProvider"

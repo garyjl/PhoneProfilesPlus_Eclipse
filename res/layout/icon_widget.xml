@@ -6,7 +6,7 @@
     android:orientation="vertical" >
 
     <ImageView
-        android:id="@+id/activate_profile_widget_icon"
+        android:id="@+id/icon_widget_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
@@ -17,7 +17,7 @@
         android:contentDescription="@string/empty_string"/>
 
     <TextView
-        android:id="@+id/activate_profile_widget_name"
+        android:id="@+id/icon_widget_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:shadowColor="#ff000000"

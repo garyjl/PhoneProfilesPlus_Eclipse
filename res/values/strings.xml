@@ -159,8 +159,9 @@
     <string name="event_preferences_eventName">Event name</string>
     <string name="event_preferences_eventType">Event type</string>
     <string name="event_preferences_eventProfile">Activated profile</string>
-    <string name="widget_label_icon">PhoneProfiles - icon</string>
-    <string name="widget_label_list">PhoneProfiles - list</string>
+    <string name="widget_label_icon">PhoneProfiles-icon</string>
+    <string name="widget_label_one_row">PhoneProfiles-one row</string>
+    <string name="widget_label_list">PhoneProfiles-list</string>
     <string name="phone_profiles_pref_category_widget_list">Widget - List</string>
     <string name="phone_profiles_pref_applicationWidgetBackground">Background opaque</string>
     <string name="phone_profiles_pref_applicationWidgetLightnessB">Background lightness</string>

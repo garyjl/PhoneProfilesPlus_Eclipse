@@ -612,18 +612,28 @@ public class ActivateProfileHelper {
 	
 	public void updateWidget()
 	{
-		Intent intent = new Intent(context, ActivateProfileWidget.class);
+		// icon widget
+		Intent intent = new Intent(context, IconWidgetProvider.class);
 		intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
-		int ids[] = AppWidgetManager.getInstance(activity.getApplication()).getAppWidgetIds(new ComponentName(activity.getApplication(), ActivateProfileWidget.class));
+		int ids[] = AppWidgetManager.getInstance(activity.getApplication()).getAppWidgetIds(new ComponentName(activity.getApplication(), IconWidgetProvider.class));
 		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
 		context.sendBroadcast(intent);
 
+		// one row widget
+		Intent intent4 = new Intent(context, OneRowWidgetProvider.class);
+		intent4.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+		int ids4[] = AppWidgetManager.getInstance(activity.getApplication()).getAppWidgetIds(new ComponentName(activity.getApplication(), OneRowWidgetProvider.class));
+		intent4.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids4);
+		context.sendBroadcast(intent4);
+		
+		// list widget
 		Intent intent2 = new Intent(context, ProfileListWidgetProvider.class);
 		intent2.setAction("android.appwidget.action.APPWIDGET_UPDATE");
 		int ids2[] = AppWidgetManager.getInstance(activity.getApplication()).getAppWidgetIds(new ComponentName(activity.getApplication(), ProfileListWidgetProvider.class));
-		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids2);
+		intent2.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids2);
 		context.sendBroadcast(intent2);
 
+		// dashclock extension
 		Intent intent3 = new Intent();
 	    intent3.setAction(DashClockBroadcastReceiver.INTENT_REFRESH_DASHCLOCK);
 		context.sendBroadcast(intent3);

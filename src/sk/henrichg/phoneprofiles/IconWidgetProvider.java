@@ -8,7 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
-public class ActivateProfileWidget extends AppWidgetProvider {
+public class IconWidgetProvider extends AppWidgetProvider {
 	
 	private ProfilesDataWrapper profilesDataWrapper;
 	
@@ -33,7 +33,7 @@ public class ActivateProfileWidget extends AppWidgetProvider {
 		Profile profile = profilesDataWrapper.getActivatedProfile();
 
 		// ziskanie vsetkych wigetov tejtor triedy na plochach lauchera
-		ComponentName thisWidget = new ComponentName(context, ActivateProfileWidget.class);
+		ComponentName thisWidget = new ComponentName(context, IconWidgetProvider.class);
 		int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
 
 		// prechadzame vsetky ziskane widgety
@@ -56,12 +56,12 @@ public class ActivateProfileWidget extends AppWidgetProvider {
 			}
 			
 			// priprava view-u na aktualizacia widgetu
-			RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.activate_profile_widget);
+			RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.icon_widget);
 	        if (isIconResourceID)
 	        {
 	        	//remoteViews.setImageViewResource(R.id.activate_profile_widget_icon, 0);
 	        	int iconResource = context.getResources().getIdentifier(iconIdentifier, "drawable", context.getPackageName());
-	        	remoteViews.setImageViewResource(R.id.activate_profile_widget_icon, iconResource);
+	        	remoteViews.setImageViewResource(R.id.icon_widget_icon, iconResource);
 	        }
 	        else
 	        {
@@ -71,16 +71,16 @@ public class ActivateProfileWidget extends AppWidgetProvider {
 	    		//int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
 	    		//Bitmap bitmap = BitmapResampler.resample(iconIdentifier, width, height);
 	        	//remoteViews.setImageViewBitmap(R.id.activate_profile_widget_icon, bitmap);
-	        	remoteViews.setImageViewBitmap(R.id.activate_profile_widget_icon, profile._iconBitmap);
+	        	remoteViews.setImageViewBitmap(R.id.icon_widget_icon, profile._iconBitmap);
 	        }
-			remoteViews.setTextViewText(R.id.activate_profile_widget_name, profileName);
+			remoteViews.setTextViewText(R.id.icon_widget_name, profileName);
 			
 			// konfiguracia, ze ma spustit hlavnu aktivitu zoznamu profilov, ked kliknme na widget
 			Intent intent = new Intent(context, ActivateProfileActivity.class);
 			intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_WIDGET);
 			PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-			remoteViews.setOnClickPendingIntent(R.id.activate_profile_widget_icon, pendingIntent);
-			remoteViews.setOnClickPendingIntent(R.id.activate_profile_widget_name, pendingIntent);
+			remoteViews.setOnClickPendingIntent(R.id.icon_widget_icon, pendingIntent);
+			remoteViews.setOnClickPendingIntent(R.id.icon_widget_name, pendingIntent);
 			
 			// aktualizacia widgetu
 			appWidgetManager.updateAppWidget(widgetId, remoteViews);
