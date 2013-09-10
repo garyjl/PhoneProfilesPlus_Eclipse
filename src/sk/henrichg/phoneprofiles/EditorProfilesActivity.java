@@ -457,6 +457,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		// send message into service
         //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
 		serviceCommunication.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
+		profilesDataWrapper.getActivateProfileHelper().updateWidget();
 	}
 
 	public void onProfileCountChanged() {
