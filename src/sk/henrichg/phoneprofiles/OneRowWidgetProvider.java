@@ -56,7 +56,7 @@ public class OneRowWidgetProvider extends AppWidgetProvider {
 			{
 				isIconResourceID = true;
 				iconIdentifier = GUIData.PROFILE_ICON_DEFAULT;
-				profileName = context.getResources().getString(R.string.profile_name_default);
+				profileName = context.getResources().getString(R.string.profiles_header_profile_name_no_activated);
 			}
 			
 			RemoteViews remoteViews;
@@ -82,7 +82,7 @@ public class OneRowWidgetProvider extends AppWidgetProvider {
 			if (GlobalData.applicationWidgetListBackground.equals("50")) alpha = 0x80;
 			if (GlobalData.applicationWidgetListBackground.equals("75")) alpha = 0xC0;
 			if (GlobalData.applicationWidgetListBackground.equals("100")) alpha = 0xFF;
-			remoteViews.setImageViewBitmap(R.id.widget_one_row_background, getBackground(Color.argb(alpha, red, green, blue)));
+			remoteViews.setInt(R.id.widget_one_row_root, "setBackgroundColor", Color.argb(alpha, red, green, blue));
 			
 			if (isIconResourceID)
 	        {
@@ -121,7 +121,7 @@ public class OneRowWidgetProvider extends AppWidgetProvider {
 			if (GlobalData.applicationWidgetListPrefIndicator)
 			{
 				if (profile == null)
-					remoteViews.setImageViewBitmap(R.id.widget_one_row_header_profile_pref_indicator, null);
+					remoteViews.setImageViewResource(R.id.widget_one_row_header_profile_pref_indicator, R.drawable.ic_empty);
 				else
 					remoteViews.setImageViewBitmap(R.id.widget_one_row_header_profile_pref_indicator, profile._preferencesIndicator);
 			}
@@ -156,23 +156,5 @@ public class OneRowWidgetProvider extends AppWidgetProvider {
 		}
 		
 	}
-	
-	public static Bitmap getBackground (int bgcolor)
-	{
-	try
-	    {
-	        Bitmap.Config config = Bitmap.Config.ARGB_8888; // Bitmap.Config.ARGB_8888 Bitmap.Config.ARGB_4444 to be used as these two config constant supports transparency
-	        Bitmap bitmap = Bitmap.createBitmap(2, 2, config); // Create a Bitmap
-	 
-	        Canvas canvas =  new Canvas(bitmap); // Load the Bitmap to the Canvas
-	        canvas.drawColor(bgcolor); //Set the color
-	 
-	        return bitmap;
-	    }
-	    catch (Exception e)
-	    {
-	        return null;
-	    }
-	}	
 	
 }

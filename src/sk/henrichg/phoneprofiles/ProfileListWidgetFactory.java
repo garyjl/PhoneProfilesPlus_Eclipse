@@ -89,7 +89,7 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 		if (GlobalData.applicationWidgetListPrefIndicator)
 			row.setImageViewBitmap(R.id.widget_profile_list_profile_pref_indicator, profile._preferencesIndicator);
 		else
-			row.setImageViewBitmap(R.id.widget_profile_list_profile_pref_indicator, null);
+			row.setImageViewResource(R.id.widget_profile_list_profile_pref_indicator, R.drawable.ic_empty);
 
 		Intent i=new Intent();
 		Bundle extras=new Bundle();

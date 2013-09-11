@@ -90,7 +90,7 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 		if (GlobalData.applicationWidgetListBackground.equals("50")) alpha = 0x80;
 		if (GlobalData.applicationWidgetListBackground.equals("75")) alpha = 0xC0;
 		if (GlobalData.applicationWidgetListBackground.equals("100")) alpha = 0xFF;
-		widget.setImageViewBitmap(R.id.widget_profile_list_background, getBackground(Color.argb(alpha, red, green, blue)));
+		widget.setInt(R.id.widget_profile_list_root, "setBackgroundColor", Color.argb(alpha, red, green, blue));
 		
 		// header
 		if (GlobalData.applicationWidgetListHeader || (!largeLayout))
@@ -110,7 +110,7 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 			{
 				isIconResourceID = true;
 				iconIdentifier = GUIData.PROFILE_ICON_DEFAULT;
-				profileName = ctxt.getResources().getString(R.string.profile_name_default);
+				profileName = ctxt.getResources().getString(R.string.profiles_header_profile_name_no_activated);
 			}
 	        if (isIconResourceID)
 	        {
@@ -143,7 +143,7 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 			if (GlobalData.applicationWidgetListPrefIndicator)
 			{
 				if (profile == null)
-					widget.setImageViewBitmap(R.id.widget_profile_list_header_profile_pref_indicator, null);
+					widget.setImageViewResource(R.id.widget_profile_list_header_profile_pref_indicator, R.drawable.ic_empty);
 				else
 	        		widget.setImageViewBitmap(R.id.widget_profile_list_header_profile_pref_indicator, profile._preferencesIndicator);
 			}
@@ -158,7 +158,7 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 				if (GlobalData.applicationWidgetListLightnessT.equals("75")) red = 0xC0;
 				if (GlobalData.applicationWidgetListLightnessT.equals("100")) red = 0xFF;
 				green = red; blue = red;
-				widget.setImageViewBitmap(R.id.widget_profile_list_header_separator, getBackground(Color.argb(0x40, red, green, blue)));
+				widget.setInt(R.id.widget_profile_list_header_separator, "setBackgroundColor", Color.argb(alpha, red, green, blue));
 			}
 	        if (GlobalData.applicationWidgetListIconColor.equals("1"))
 	        {
@@ -335,22 +335,4 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 	    	appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_profile_list);
 	}	
 	
-	
-	public static Bitmap getBackground (int bgcolor)
-	{
-	try
-	    {
-	        Bitmap.Config config = Bitmap.Config.ARGB_8888; // Bitmap.Config.ARGB_8888 Bitmap.Config.ARGB_4444 to be used as these two config constant supports transparency
-	        Bitmap bitmap = Bitmap.createBitmap(2, 2, config); // Create a Bitmap
-	 
-	        Canvas canvas =  new Canvas(bitmap); // Load the Bitmap to the Canvas
-	        canvas.drawColor(bgcolor); //Set the color
-	 
-	        return bitmap;
-	    }
-	    catch (Exception e)
-	    {
-	        return null;
-	    }
-	}	
 }
