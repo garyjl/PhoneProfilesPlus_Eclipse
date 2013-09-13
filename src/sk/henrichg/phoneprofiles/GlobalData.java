@@ -24,6 +24,7 @@ public class GlobalData extends Application {
 	static final String EXTRA_PROFILE_POSITION = "profile_position";
 	static final String EXTRA_PROFILE_ID = "profile_id";
 	static final String EXTRA_START_APP_SOURCE = "start_app_source";
+	static final String EXTRA_EVENT_POSITION = "event_position";
 
 	// musi byt tu, pouziva t ActivateProfileHelper
 	static final int STARTUP_SOURCE_NOTIFICATION = 1;

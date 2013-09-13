@@ -467,25 +467,57 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	}
 	
 	public void onEventCountChanged() {
-		// TODO Auto-generated method stub
-		
+		// send message into service
+        //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
+		serviceCommunication.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
 	}
 
 	public void onFinishEventPreferencesActionMode() {
-		// TODO Auto-generated method stub
-		
+		if (mTwoPane) {
+			EventPreferencesFragment fragment = (EventPreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
+			if (fragment != null)
+				fragment.finishActionMode();
+		}
 	}
 
 	public void onStartEventPreferences(int position, boolean afterDelete) {
-		// TODO Auto-generated method stub
-		
+		if (mTwoPane) {
+			// In two-pane mode, show the detail view in this activity by
+			// adding or replacing the detail fragment using a
+			// fragment transaction.
+
+			if (position >= 0)
+			{
+				Bundle arguments = new Bundle();
+				arguments.putInt(GlobalData.EXTRA_EVENT_POSITION, position);
+				EventPreferencesFragment fragment = new EventPreferencesFragment();
+				fragment.setArguments(arguments);
+				getSupportFragmentManager().beginTransaction()
+					.replace(R.id.editor_detail_container, fragment).commit();
+			}
+			else
+			{
+				EventPreferencesFragment fragment = (EventPreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
+				if (fragment != null)
+				{
+					getSupportFragmentManager().beginTransaction()
+						.remove(fragment).commit();
+				}
+				
+			}
+
+		} else {
+			// In single-pane mode, simply start the profile preferences activity
+			// for the profile position.
+			if (position >= 0 && (!afterDelete))
+			{
+				Intent intent = new Intent(getBaseContext(), ProfilePreferencesFragmentActivity.class);
+				intent.putExtra(GlobalData.EXTRA_EVENT_POSITION, position);
+				startActivity(intent);
+			}
+		}
 	}
 
-/*	public void finishProfilePreferencesActionMode()
-	{
-		
-	}
-*/	
 	public static void updateListView(SherlockFragmentActivity activity)
 	{
 		EditorProfileListFragment fragment = (EditorProfileListFragment)activity.getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
