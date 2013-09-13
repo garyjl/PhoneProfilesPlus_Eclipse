@@ -644,7 +644,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 			ImageView profilePrefIndicatorImageView = (ImageView)getSherlockActivity().findViewById(R.id.activated_profile_pref_indicator);
 			//profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, getSherlockActivity().getBaseContext()));
 			if (profile == null)
-				profilePrefIndicatorImageView.setImageBitmap(null);
+				profilePrefIndicatorImageView.setImageResource(R.drawable.ic_empty);
 			else
 				profilePrefIndicatorImageView.setImageBitmap(profile._preferencesIndicator);
 		}

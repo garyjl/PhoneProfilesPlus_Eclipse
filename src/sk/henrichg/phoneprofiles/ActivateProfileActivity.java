@@ -426,7 +426,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 			ImageView profilePrefIndicatorImageView = (ImageView)findViewById(R.id.act_prof_activated_profile_pref_indicator);
 			//profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, getBaseContext()));
 			if (profile == null)
-				profilePrefIndicatorImageView.setImageBitmap(null);
+				profilePrefIndicatorImageView.setImageResource(R.drawable.ic_empty);
 			else
 				profilePrefIndicatorImageView.setImageBitmap(profile._preferencesIndicator);
 		}
