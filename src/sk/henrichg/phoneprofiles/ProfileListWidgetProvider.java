@@ -247,7 +247,11 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 		
 		for (int i=0; i<appWidgetIds.length; i++)
 		{
-			Bundle myOptions = appWidgetManager.getAppWidgetOptions (appWidgetIds[i]);
+			Bundle myOptions;
+			if (android.os.Build.VERSION.SDK_INT >= 16)
+				myOptions = appWidgetManager.getAppWidgetOptions (appWidgetIds[i]);
+			else
+				myOptions = null;
 	        setLayoutParams(ctxt, appWidgetManager, appWidgetIds[i], myOptions);
 
 			RemoteViews widget = buildLayout(ctxt, appWidgetManager, appWidgetIds[i], isLargeLayout);			
@@ -274,17 +278,24 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 	private void setLayoutParams(Context context, AppWidgetManager appWidgetManager,
             int appWidgetId, Bundle newOptions)
 	{
-		//Bundle myOptions = appWidgetManager.getAppWidgetOptions (appWidgetId);
-		// Get the value of OPTION_APPWIDGET_HOST_CATEGORY
-		//int category = myOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_HOST_CATEGORY, -1);
-		int category = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_HOST_CATEGORY, -1);
-		// If the value is WIDGET_CATEGORY_KEYGUARD, it's a lockscreen widget
-		isKeyguard = category == AppWidgetProviderInfo.WIDGET_CATEGORY_KEYGUARD;
-
-        //int minWidth = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-        //int maxWidth = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH);
-        int minHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
-        //int maxHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
+		int minHeight;
+		if (newOptions != null)
+		{
+			// Get the value of OPTION_APPWIDGET_HOST_CATEGORY
+			int category = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_HOST_CATEGORY, -1);
+			// If the value is WIDGET_CATEGORY_KEYGUARD, it's a lockscreen widget
+			isKeyguard = category == AppWidgetProviderInfo.WIDGET_CATEGORY_KEYGUARD;
+	
+	        //int minWidth = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+	        //int maxWidth = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH);
+	        minHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
+	        //int maxHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
+		}
+		else
+		{
+			isKeyguard = false;
+			minHeight = appWidgetManager.getAppWidgetInfo(appWidgetId).minHeight;
+		}
 
         if (isKeyguard)
         {
