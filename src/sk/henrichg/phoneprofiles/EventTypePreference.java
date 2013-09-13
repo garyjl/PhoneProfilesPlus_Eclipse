@@ -92,7 +92,12 @@ public class EventTypePreference extends Preference {
 	{
 		if (restoreValue) {
 			// restore state
-			int value = getPersistedInt(eventType);
+			int value;
+			try {
+			    value = getPersistedInt(eventType);
+			} catch (Exception e) {
+				value = eventType;
+			}
 			eventType = value;
 		}
 		else {

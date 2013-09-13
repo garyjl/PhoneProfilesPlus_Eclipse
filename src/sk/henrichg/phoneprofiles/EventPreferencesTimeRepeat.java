@@ -42,7 +42,7 @@ public class EventPreferencesTimeRepeat extends EventPreferences {
 		this._startTime = startTime;
 		this._endTime = endTime;
 		
-		_preferencesResourceID = R.xml.editor_preferences_time_repeat;
+		_preferencesResourceID = R.xml.event_preferences_time_repeat;
 		_iconResourceID = R.drawable.ic_event_time_repeat; 
 	}
 	

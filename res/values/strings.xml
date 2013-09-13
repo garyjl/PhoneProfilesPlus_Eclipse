@@ -6,6 +6,7 @@
     <string name="menu_settings">Settings</string>
     <string name="title_activity_phone_profiles">Phone Profiles</string>
     <string name="title_activity_profile_preferences">Profile preferences</string>
+    <string name="title_activity_event_preferences">Event preferences</string>
     <string name="menu_new_profile">New profile</string>
     <string name="menu_delete_all_profiles">Delete all profiles</string>
     <string name="menu_new_event">New event</string>

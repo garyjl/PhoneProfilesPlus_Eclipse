@@ -6,6 +6,7 @@
     <string name="menu_settings">Nastavenia</string>
     <string name="title_activity_phone_profiles">Phone Profiles</string>
     <string name="title_activity_profile_preferences">Parametre profilu</string>
+    <string name="title_activity_profile_preferences">Parametre udalosti</string>
     <string name="menu_new_profile">Nový profil</string>
     <string name="menu_delete_all_profiles">Vymazať všetky profily</string>
     <string name="menu_new_event">Nová udalosť</string>

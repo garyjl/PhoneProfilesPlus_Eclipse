@@ -111,7 +111,12 @@ public class ProfilePreference extends Preference {
 	{
 		if (restoreValue) {
 			// restore state
-			long value = getPersistedLong(profileId);
+			long value;
+			try {
+				value = getPersistedLong(profileId);
+			} catch  (Exception e) {
+				value = profileId;
+			}
 			profileId = value;
 		}
 		else {

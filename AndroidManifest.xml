@@ -70,6 +70,11 @@
             android:configChanges="locale|layoutDirection" >
         </activity>
         <activity
+            android:name=".EventPreferencesFragmentActivity"
+            android:label="@string/title_activity_event_preferences"
+            android:configChanges="locale|layoutDirection" >
+        </activity>
+        <activity
             android:name=".PhoneProfilesPreferencesActivity"
             android:label="@string/title_activity_phone_profiles_preferences"
             android:configChanges="locale|layoutDirection" >

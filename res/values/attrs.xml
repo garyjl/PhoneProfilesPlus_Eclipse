@@ -4,7 +4,7 @@
 	<declare-styleable name="ImageViewPreference">
 		<attr name="imageSource" format="string" />
 	</declare-styleable>
-    	<declare-styleable name="SeekBarDialogPreference">
+   	<declare-styleable name="SeekBarDialogPreference">
 		<attr name="maximumValue" format="integer" />
 		<attr name="minimumValue" format="integer" />
 		<attr name="stepSize" format="integer" />
@@ -18,7 +18,11 @@
 		<attr name="bNoChange" format="integer" />
 		<attr name="bAutomatic" format="integer" />
 	</declare-styleable>
-	
+	<declare-styleable name="EventTypePreference">
+	</declare-styleable>
+	<declare-styleable name="ProfilePreference">
+	</declare-styleable>
+			
 	<!-- theme dependent drawables -->
     <attr name="actionNewProfileIcon" format="reference" />
     <attr name="actionDeleteAllIcon" format="reference" />

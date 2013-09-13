@@ -27,7 +27,7 @@ public class EventPreferencesTimeRange extends EventPreferences {
 		this._startTime = startTime;
 		this._endTime = endTime;
 		
-		_preferencesResourceID = R.xml.editor_preferences_time_range;
+		_preferencesResourceID = R.xml.event_preferences_time_range;
 		_iconResourceID = R.drawable.ic_event_time_range; 
 	}
 	

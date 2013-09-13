@@ -511,7 +511,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			// for the profile position.
 			if (position >= 0 && (!afterDelete))
 			{
-				Intent intent = new Intent(getBaseContext(), ProfilePreferencesFragmentActivity.class);
+				Intent intent = new Intent(getBaseContext(), EventPreferencesFragmentActivity.class);
 				intent.putExtra(GlobalData.EXTRA_EVENT_POSITION, position);
 				startActivity(intent);
 			}
