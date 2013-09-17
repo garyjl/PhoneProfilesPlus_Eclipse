@@ -135,6 +135,12 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		super.onStart();
 
 		updateSharedPreference();
+
+		//Log.e("EventPreferencesFragment.onStart",String.valueOf(event._typeOld));
+		// _typeOld is set, event type changed
+		// _typeOld si reset in Event.saveSharedPrefereces() and Event.undoEventType()
+		if (event._typeOld != 0)
+			showActionMode();
 		
     	//Log.d("EventPreferencesFragment.onStart", preferences.getString(PREF_EVENT_NAME, ""));
 
@@ -214,42 +220,28 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
 
-		event.setSummary(prefMng, key, sharedPreferences.getString(key, ""), context);
-    	
-        if (actionMode == null)
-        {
-        	
-        	restart = true;
-        	
-        	LayoutInflater inflater = LayoutInflater.from(getSherlockActivity());
-        	View actionView = inflater.inflate(R.layout.event_preferences_action_mode, null);
-
-            actionMode = getSherlockActivity().startActionMode(actionModeCallback);
-            actionMode.setCustomView(actionView); 
-            
-            actionMode.getCustomView().findViewById(R.id.event_preferences_action_menu_cancel).setOnClickListener(new OnClickListener() {
-				public void onClick(View v) {
-					
-					//Log.d("actionMode.onClick", "cancel");
-					
-					actionMode.finish();
-					
-				}
-           	});
-
-            actionMode.getCustomView().findViewById(R.id.event_preferences_action_menu_save).setOnClickListener(new OnClickListener() {
-				public void onClick(View v) {
-					
-					//Log.d("actionMode.onClick", "save");
+		//eventTypeChanged = false;
+		
+		if (key.equals(Event.PREF_EVENT_TYPE))
+		{
+			// event type changed
+			// change event._eventpreferences
+			String sEventType = sharedPreferences.getString(key, "");
+			int iEventType;
+			try {
+				iEventType = Integer.parseInt(sEventType);
+			} catch (Exception e) {
+				iEventType = 1;
+			}
 			
-					savePreferences();
-					
-					restart = false; // nerestartovat fragment
-					actionMode.finish();
-					
-				}
-           	});
-        }
+			event.changeEventType(iEventType);
+     	    onRestartEventPreferencesCallback.onRestartEventPreferences(event_position);
+			
+		}
+
+		event.setSummary(prefMng, key, sharedPreferences, context);
+		
+		showActionMode();
 	}
 	
 	private void createActionMode()
@@ -265,7 +257,10 @@ public class EventPreferencesFragment extends PreferenceListFragment
             public void onDestroyActionMode(ActionMode mode) {
                actionMode = null;
                if (restart)
+               {
+            	   event.undoEventType();
             	   onRestartEventPreferencesCallback.onRestartEventPreferences(event_position);
+               }   
             }
  
             /** This is called when the action mode is created. This is called by startActionMode() */
@@ -293,6 +288,45 @@ public class EventPreferencesFragment extends PreferenceListFragment
             }
 
         };		
+	}
+	
+	public void showActionMode()
+	{
+        if (actionMode == null)
+        {
+        	
+        	restart = true;
+        	
+        	LayoutInflater inflater = LayoutInflater.from(getSherlockActivity());
+        	View actionView = inflater.inflate(R.layout.event_preferences_action_mode, null);
+
+            actionMode = getSherlockActivity().startActionMode(actionModeCallback);
+            actionMode.setCustomView(actionView); 
+            
+            actionMode.getCustomView().findViewById(R.id.event_preferences_action_menu_cancel).setOnClickListener(new OnClickListener() {
+				public void onClick(View v) {
+					
+					//Log.d("actionMode.onClick", "cancel");
+					
+					actionMode.finish();
+					
+				}
+           	});
+
+            actionMode.getCustomView().findViewById(R.id.event_preferences_action_menu_save).setOnClickListener(new OnClickListener() {
+				public void onClick(View v) {
+					
+					//Log.d("actionMode.onClick", "save");
+
+					savePreferences();
+					
+					restart = false; // nerestartovat fragment
+					actionMode.finish();
+					
+				}
+           	});
+        }
+		
 	}
 	
 	public void finishActionMode()

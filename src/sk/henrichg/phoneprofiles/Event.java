@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 public class Event {
 	
@@ -72,6 +73,7 @@ public class Event {
 	
 	public void createEventPreferences()
 	{
+		Log.e("Event.createEventPreferences","type="+_type);
         switch (this._type)
         {
         case ETYPE_TIME_RANGE:
@@ -122,17 +124,20 @@ public class Event {
 		this._fkProfile = Long.parseLong(preferences.getString(PREF_EVENT_PROFILE, "0"));
 		this._enabled = preferences.getBoolean(PREF_EVENT_ENABLED, false);
 		this._eventPreferences.saveSharedPrefereces(preferences);
+		
+		this._typeOld = 0;
+		this._eventPreferencesOld = null;
 	}
 	
-	public void setSummary(PreferenceManager prefMng, String key, Object value, Context context)
+	public void setSummary(PreferenceManager prefMng, String key, String value, Context context)
 	{
 		if (key.equals(PREF_EVENT_NAME))
 		{	
-	        prefMng.findPreference(key).setSummary(value.toString());
+	        prefMng.findPreference(key).setSummary(value);
 		}
 		if (key.equals(PREF_EVENT_TYPE))
 		{	
-			String sEventType = value.toString();
+			String sEventType = value;
 			int iEventType;
 			try {
 				iEventType = Integer.parseInt(sEventType);
@@ -150,7 +155,7 @@ public class Event {
 		}
 		if (key.equals(PREF_EVENT_PROFILE))
 		{
-			String sProfileId = value.toString();
+			String sProfileId = value;
 			long lProfileId;
 			try {
 				lProfileId = Long.parseLong(sProfileId);
@@ -168,12 +173,20 @@ public class Event {
 		    }
 		}
 	}
+
+	public void setSummary(PreferenceManager prefMng, String key, SharedPreferences preferences, Context context)
+	{
+		if (key.equals(PREF_EVENT_NAME) ||
+			key.equals(PREF_EVENT_TYPE) ||
+			key.equals(PREF_EVENT_PROFILE))
+			setSummary(prefMng, key, preferences.getString(key, ""), context);
+	}
 	
 	public void setAllSummary(PreferenceManager prefMng, Context context)
 	{
 		setSummary(prefMng, PREF_EVENT_NAME, _name, context);
-		setSummary(prefMng, PREF_EVENT_TYPE, _type, context);
-		setSummary(prefMng, PREF_EVENT_PROFILE, _fkProfile, context);
+		setSummary(prefMng, PREF_EVENT_TYPE, Integer.toString(_type), context);
+		setSummary(prefMng, PREF_EVENT_PROFILE, Long.toString(_fkProfile), context);
 	}
 	
 	public Profile startEvent(ProfilesDataWrapper profilesDataWrapper,
