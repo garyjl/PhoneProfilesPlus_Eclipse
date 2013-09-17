@@ -91,6 +91,8 @@ public class EditorEventListAdapter extends BaseAdapter
 		  RelativeLayout listItemRoot;
 		  ImageView eventIcon;
 		  TextView eventName;
+		  ImageView profileIcon;
+		  TextView profileName;
 		  int position;
 		}
 	
@@ -107,6 +109,8 @@ public class EditorEventListAdapter extends BaseAdapter
             holder.listItemRoot = (RelativeLayout)vi.findViewById(R.id.event_list_item_root);
             holder.eventName = (TextView)vi.findViewById(R.id.event_list_item_event_name);
             holder.eventIcon = (ImageView)vi.findViewById(R.id.event_list_item_event_icon);
+            holder.profileName = (TextView)vi.findViewById(R.id.event_list_item_profile_name);
+            holder.profileIcon = (ImageView)vi.findViewById(R.id.event_list_item_profile_icon);
             vi.setTag(holder);        
         }
         else
@@ -127,7 +131,30 @@ public class EditorEventListAdapter extends BaseAdapter
         if (event._eventPreferences != null)
         	holder.eventIcon.setImageResource(event._eventPreferences._iconResourceID); // resource na ikonu
         else
-        	holder.eventIcon.setImageResource(0);
+        	holder.eventIcon.setImageResource(R.drawable.ic_empty);
+
+        Profile profile =  EditorProfilesActivity.profilesDataWrapper.getProfileById(event._fkProfile);
+        if (profile != null)
+        {
+        	holder.profileName.setText(profile._name);
+		    if (profile.getIsIconResourceID())
+		    {
+		    	holder.profileIcon.setImageResource(0);
+		      	int res = vi.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", 
+		      				vi.getContext().getPackageName());
+		      	holder.profileIcon.setImageResource(res); // resource na ikonu
+		    }
+		    else
+		    {
+		      	holder.profileIcon.setImageBitmap(profile._iconBitmap);
+		    }
+        	
+        }
+        else
+        {
+        	holder.profileName.setText(R.string.event_preferences_profile_not_set);
+        	holder.profileIcon.setImageResource(R.drawable.ic_empty);
+        }
         
         final int _position = position;
 		

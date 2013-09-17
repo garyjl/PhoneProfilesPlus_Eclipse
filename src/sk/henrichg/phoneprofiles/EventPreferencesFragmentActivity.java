@@ -1,7 +1,7 @@
 package sk.henrichg.phoneprofiles;
  
 import sk.henrichg.phoneprofiles.PreferenceListFragment.OnPreferenceAttachedListener;
-import sk.henrichg.phoneprofiles.EventPreferencesFragment.OnRedrawListFragment;
+import sk.henrichg.phoneprofiles.EventPreferencesFragment.OnRedrawEventListFragment;
 import sk.henrichg.phoneprofiles.EventPreferencesFragment.OnRestartEventPreferences;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -15,7 +15,7 @@ import android.preference.PreferenceScreen;
 public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
 												implements OnPreferenceAttachedListener,
 	                                                       OnRestartEventPreferences,
-	                                                       OnRedrawListFragment
+	                                                       OnRedrawEventListFragment
 {
 	
 	@Override
@@ -93,7 +93,7 @@ public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
 				.replace(R.id.activity_event_preferences_container, fragment).commit();
 	}
 
-	public void onRedrawListFragment() {
+	public void onRedrawEventListFragment() {
 		// all redraws are in EditorProfilesActivity.onStart()
 
 		// send message into service

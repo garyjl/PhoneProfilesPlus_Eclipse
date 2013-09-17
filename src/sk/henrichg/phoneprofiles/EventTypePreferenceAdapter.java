@@ -38,7 +38,7 @@ public class EventTypePreferenceAdapter extends BaseAdapter {
 	}
 
 	public Object getItem(int position) {
-		return eventTypes[position];
+		return String.valueOf(eventTypes[position]);
 	}
 
 	public long getItemId(int position) {

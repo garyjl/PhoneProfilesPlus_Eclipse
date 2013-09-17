@@ -270,7 +270,7 @@ public class EditorEventListFragment extends SherlockFragment {
 			event = new Event(getResources().getString(R.string.event_name_default), 
 								  Event.ETYPE_TIME_RANGE, 
 								  0,
-					         	  true
+					         	  false
 					         );
 			eventListAdapter.addItem(event); // pridame udalost do listview
 			databaseHandler.addEvent(event);

@@ -41,7 +41,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	static final String PREFS_NAME = "profile_preferences";
 	
 	private OnRestartProfilePreferences onRestartProfilePreferencesCallback = sDummyOnRestartProfilePreferencesCallback;
-	private OnRedrawListFragment onRedrawListFragmentCallback = sDummyOnRedrawListFragmentCallback;
+	private OnRedrawProfileListFragment onRedrawProfileListFragmentCallback = sDummyOnRedrawProfileListFragmentCallback;
 
 	public interface OnRestartProfilePreferences {
 		/**
@@ -55,15 +55,15 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		}
 	};
 	
-	public interface OnRedrawListFragment {
+	public interface OnRedrawProfileListFragment {
 		/**
 		 * Callback for redraw profile list fragment.
 		 */
-		public void onRedrawListFragment();
+		public void onRedrawProfileListFragment();
 	}
 
-	private static OnRedrawListFragment sDummyOnRedrawListFragmentCallback = new OnRedrawListFragment() {
-		public void onRedrawListFragment() {
+	private static OnRedrawProfileListFragment sDummyOnRedrawProfileListFragmentCallback = new OnRedrawProfileListFragment() {
+		public void onRedrawProfileListFragment() {
 		}
 	};
 	
@@ -77,11 +77,11 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		}
 		onRestartProfilePreferencesCallback = (OnRestartProfilePreferences) activity;
 		
-		if (!(activity instanceof OnRedrawListFragment)) {
+		if (!(activity instanceof OnRedrawProfileListFragment)) {
 			throw new IllegalStateException(
 					"Activity must implement fragment's callbacks.");
 		}
-		onRedrawListFragmentCallback = (OnRedrawListFragment) activity;
+		onRedrawProfileListFragmentCallback = (OnRedrawProfileListFragment) activity;
 		
 	}
 
@@ -91,7 +91,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 
 		// Reset the active callbacks interface to the dummy implementation.
 		onRestartProfilePreferencesCallback = sDummyOnRestartProfilePreferencesCallback;
-		onRedrawListFragmentCallback = sDummyOnRedrawListFragmentCallback;
+		onRedrawProfileListFragmentCallback = sDummyOnRedrawProfileListFragmentCallback;
 	}
 	
 	@Override
@@ -289,7 +289,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 
         }
 
-        onRedrawListFragmentCallback.onRedrawListFragment();
+        onRedrawProfileListFragmentCallback.onRedrawProfileListFragment();
 	}
 	
 	private void setSummary(String key, Object value)

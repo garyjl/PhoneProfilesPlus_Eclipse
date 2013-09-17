@@ -2,8 +2,10 @@ package sk.henrichg.phoneprofiles;
 
 import java.util.List;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.preference.PreferenceManager;
 
 public class Event {
 	
@@ -19,13 +21,15 @@ public class Event {
 	
 	public boolean _running;
 
-	static final String PREF_EVENT_NAME = "eventName";
-	static final String PREF_EVENT_TYPE = "eventType";
-	static final String PREF_EVENT_PROFILE_ID = "eventProfileId";
-	static final String PREF_EVENT_ENABLED = "eventEnabled";
-	
 	public static final int ETYPE_TIME_RANGE = 1;
 	public static final int ETYPE_TIME_REPEAT = 2;
+	
+    static final String PREF_EVENT_ENABLED = "eventEnabled";
+    static final String PREF_EVENT_NAME = "eventName";
+    static final String PREF_EVENT_TYPE = "eventType";
+    static final String PREF_EVENT_PROFILE = "eventProfile";
+	
+	
 
 	// Empty constructorn
 	public Event(){
@@ -105,7 +109,7 @@ public class Event {
     	Editor editor = preferences.edit();
         editor.putString(PREF_EVENT_NAME, this._name);
         editor.putString(PREF_EVENT_TYPE, Integer.toString(this._type));
-        editor.putString(PREF_EVENT_PROFILE_ID, Long.toString(this._fkProfile));
+        editor.putString(PREF_EVENT_PROFILE, Long.toString(this._fkProfile));
         editor.putBoolean(PREF_EVENT_ENABLED, this._enabled);
         this._eventPreferences.loadSharedPrefereces(preferences);
 		editor.commit();
@@ -115,9 +119,61 @@ public class Event {
 	{
     	this._name = preferences.getString(PREF_EVENT_NAME, "");
 		this._type = Integer.parseInt(preferences.getString(PREF_EVENT_TYPE, "0"));
-		this._fkProfile = Long.parseLong(preferences.getString(PREF_EVENT_PROFILE_ID, "0"));
+		this._fkProfile = Long.parseLong(preferences.getString(PREF_EVENT_PROFILE, "0"));
 		this._enabled = preferences.getBoolean(PREF_EVENT_ENABLED, false);
 		this._eventPreferences.saveSharedPrefereces(preferences);
+	}
+	
+	public void setSummary(PreferenceManager prefMng, String key, Object value, Context context)
+	{
+		if (key.equals(PREF_EVENT_NAME))
+		{	
+	        prefMng.findPreference(key).setSummary(value.toString());
+		}
+		if (key.equals(PREF_EVENT_TYPE))
+		{	
+			String sEventType = value.toString();
+			int iEventType;
+			try {
+				iEventType = Integer.parseInt(sEventType);
+			} catch (Exception e) {
+				iEventType = 1;
+			}
+			
+	    	for (int pos = 0; pos < EventTypePreferenceAdapter.eventTypes.length; pos++)
+	    	{
+	    		if (iEventType == EventTypePreferenceAdapter.eventTypes[pos])
+	    		{
+	    	        prefMng.findPreference(key).setSummary(EventTypePreferenceAdapter.eventTypeNameIds[pos]);
+	    		}
+	    	}
+		}
+		if (key.equals(PREF_EVENT_PROFILE))
+		{
+			String sProfileId = value.toString();
+			long lProfileId;
+			try {
+				lProfileId = Long.parseLong(sProfileId);
+			} catch (Exception e) {
+				lProfileId = 0;
+			}
+		    Profile profile = EditorProfilesActivity.profilesDataWrapper.getProfileById(lProfileId);
+		    if (profile != null)
+		    {
+    	        prefMng.findPreference(key).setSummary(profile._name);
+		    }
+		    else
+		    {
+    	        prefMng.findPreference(key).setSummary(context.getResources().getString(R.string.event_preferences_profile_not_set));
+		    }
+		}
+	}
+	
+	public void setAllSummary(PreferenceManager prefMng, Context context)
+	{
+		setSummary(prefMng, PREF_EVENT_NAME, _name, context);
+		setSummary(prefMng, PREF_EVENT_TYPE, _type, context);
+		setSummary(prefMng, PREF_EVENT_PROFILE, _fkProfile, context);
 	}
 	
 	public Profile startEvent(ProfilesDataWrapper profilesDataWrapper,

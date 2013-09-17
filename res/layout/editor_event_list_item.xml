@@ -10,29 +10,48 @@
 
     <ImageView
         android:id="@+id/event_list_item_event_icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:contentDescription="@string/empty_string"
+        android:scaleType="centerCrop"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:src="@drawable/ic_event_time_range" />
+    
+    <TextView
+        android:id="@+id/event_list_item_event_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/event_list_item_event_icon"
+        android:layout_toRightOf="@+id/event_list_item_event_icon"
+        android:paddingLeft="10dp"
+        android:text="@string/event_name_default"
+        android:textSize="15sp" />
+
+    <ImageView
+        android:id="@+id/event_list_item_profile_icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:adjustViewBounds="true"
+        android:layout_below="@+id/event_list_item_event_icon"
         android:contentDescription="@string/empty_string"
-        android:maxHeight="40dp"
-        android:maxWidth="40dp"
         android:scaleType="centerCrop"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:src="@drawable/ic_profile_default" />
     
     <TextView
-        android:id="@+id/event_list_item_event_name"
+        android:id="@+id/event_list_item_profile_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/event_list_item_event_icon"
+        android:layout_alignTop="@+id/event_list_item_profile_icon"
+        android:layout_toRightOf="@+id/event_list_item_profile_icon"
         android:paddingLeft="10dp"
-        android:text="@string/event_name_default"
+        android:text="@string/event_preferences_profile_not_set"
         android:textSize="15sp" />
-
+    
     <ImageView
         android:id="@+id/event_list_item_delete"
         android:layout_width="25dp"

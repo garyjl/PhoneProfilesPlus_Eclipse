@@ -11,7 +11,7 @@ import android.widget.ImageView;
 
 public class EventTypePreference extends Preference {
 	
-	private int eventType;
+	private String eventType;
 
 	private ImageView eventTypeIcon;
 
@@ -33,7 +33,7 @@ public class EventTypePreference extends Preference {
 		*/
 		
 
-		eventType = Event.ETYPE_TIME_RANGE;
+		eventType = String.valueOf(Event.ETYPE_TIME_RANGE);
 		
 		prefContext = context;
 		
@@ -62,8 +62,15 @@ public class EventTypePreference extends Preference {
 
 	    if (eventTypeIcon != null)
 	    {
-	    	eventTypeIcon.setImageResource(EventTypePreferenceAdapter.eventTypeIconIds[eventType]);
-	    	setSummary(EventTypePreferenceAdapter.eventTypeNameIds[eventType]);
+	    	int iEventType = Integer.parseInt(eventType); 
+	    	for (int pos = 0; pos < EventTypePreferenceAdapter.eventTypes.length; pos++)
+	    	{
+	    		if (iEventType == EventTypePreferenceAdapter.eventTypes[pos])
+	    		{
+	    			eventTypeIcon.setImageResource(EventTypePreferenceAdapter.eventTypeIconIds[pos]);
+	    			setSummary(EventTypePreferenceAdapter.eventTypeNameIds[pos]);
+	    		}
+	    	}
 	    }
 	}
 	
@@ -84,7 +91,7 @@ public class EventTypePreference extends Preference {
 	{
 		super.onGetDefaultValue(a, index);
 		
-		return a.getString(index);  // packageName vratene ako retazec
+		return a.getString(index);
 	}
 	
 	@Override
@@ -92,9 +99,9 @@ public class EventTypePreference extends Preference {
 	{
 		if (restoreValue) {
 			// restore state
-			int value;
+			String value;
 			try {
-			    value = getPersistedInt(eventType);
+			    value = getPersistedString(eventType);
 			} catch (Exception e) {
 				value = eventType;
 			}
@@ -102,9 +109,9 @@ public class EventTypePreference extends Preference {
 		}
 		else {
 			// set state
-			int value = (Integer) defaultValue;
+			String value = (String) defaultValue;
 			eventType = value;
-			persistInt(value);
+			persistString(value);
 		}
 	}
 	
@@ -138,19 +145,19 @@ public class EventTypePreference extends Preference {
 		// restore instance state
 		SavedState myState = (SavedState)state;
 		super.onRestoreInstanceState(myState.getSuperState());
-		int value = (Integer) myState.eventType;
+		String value = (String) myState.eventType;
 		eventType = value;
 		notifyChanged();
 	}
 	
-	public int getEventType()
+	public String getEventType()
 	{
 		return eventType;
 	}
 	
 	public void setEventType(int newEventType)
 	{
-		int newValue = newEventType;
+		String newValue = String.valueOf(newEventType);
 
 		if (!callChangeListener(newValue)) {
 			// nema sa nova hodnota zapisat
@@ -160,10 +167,17 @@ public class EventTypePreference extends Preference {
 		eventType = newValue;
 
 		// set summary
-    	setSummary(EventTypePreferenceAdapter.eventTypeNameIds[eventType]);
-
+    	int iEventType = Integer.parseInt(eventType); 
+    	for (int pos = 0; pos < EventTypePreferenceAdapter.eventTypes.length; pos++)
+    	{
+    		if (iEventType == EventTypePreferenceAdapter.eventTypes[pos])
+    		{
+    			setSummary(EventTypePreferenceAdapter.eventTypeNameIds[pos]);
+    		}
+    	}
+		
 		// zapis do preferences
-		persistInt(newValue);
+		persistString(newValue);
 		
 		// Data sa zmenili,notifikujeme
 		notifyChanged();
@@ -173,14 +187,14 @@ public class EventTypePreference extends Preference {
 	// SavedState class
 	private static class SavedState extends BaseSavedState
 	{
-		int eventType;
+		String eventType;
 		
 		public SavedState(Parcel source)
 		{
 			super(source);
 			
 			// restore eventType
-			eventType = source.readInt();
+			eventType = source.readString();
 		}
 		
 		@Override
@@ -189,7 +203,7 @@ public class EventTypePreference extends Preference {
 			super.writeToParcel(dest, flags);
 			
 			// save eventType
-			dest.writeInt(eventType);
+			dest.writeString(eventType);
 		}
 		
 		public SavedState(Parcelable superState)

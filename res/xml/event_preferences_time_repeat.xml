@@ -13,7 +13,7 @@
             android:summary="@string/event_preferences_eventName"
             android:title="@string/event_preferences_eventName" /> 
         <sk.henrichg.phoneprofiles.EventTypePreference
-            android:defaultValue="1"
+            android:defaultValue="2"
             android:key="eventType"
             android:title="@string/event_preferences_eventType" />
         <sk.henrichg.phoneprofiles.ProfilePreference

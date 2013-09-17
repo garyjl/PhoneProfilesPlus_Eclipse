@@ -41,7 +41,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	static final String PREFS_NAME = "event_preferences";
 	
 	private OnRestartEventPreferences onRestartEventPreferencesCallback = sDummyOnRestartEventPreferencesCallback;
-	private OnRedrawListFragment onRedrawListFragmentCallback = sDummyOnRedrawListFragmentCallback;
+	private OnRedrawEventListFragment onRedrawEventListFragmentCallback = sDummyOnRedrawEventListFragmentCallback;
 
 	public interface OnRestartEventPreferences {
 		/**
@@ -55,15 +55,15 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		}
 	};
 	
-	public interface OnRedrawListFragment {
+	public interface OnRedrawEventListFragment {
 		/**
 		 * Callback for redraw event list fragment.
 		 */
-		public void onRedrawListFragment();
+		public void onRedrawEventListFragment();
 	}
 
-	private static OnRedrawListFragment sDummyOnRedrawListFragmentCallback = new OnRedrawListFragment() {
-		public void onRedrawListFragment() {
+	private static OnRedrawEventListFragment sDummyOnRedrawEventListFragmentCallback = new OnRedrawEventListFragment() {
+		public void onRedrawEventListFragment() {
 		}
 	};
 	
@@ -77,11 +77,11 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		}
 		onRestartEventPreferencesCallback = (OnRestartEventPreferences) activity;
 		
-		if (!(activity instanceof OnRedrawListFragment)) {
+		if (!(activity instanceof OnRedrawEventListFragment)) {
 			throw new IllegalStateException(
 					"Activity must implement fragment's callbacks.");
 		}
-		onRedrawListFragmentCallback = (OnRedrawListFragment) activity;
+		onRedrawEventListFragmentCallback = (OnRedrawEventListFragment) activity;
 		
 	}
 
@@ -91,7 +91,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 
 		// Reset the active callbacks interface to the dummy implementation.
 		onRestartEventPreferencesCallback = sDummyOnRestartEventPreferencesCallback;
-		onRedrawListFragmentCallback = sDummyOnRedrawListFragmentCallback;
+		onRedrawEventListFragmentCallback = sDummyOnRedrawEventListFragmentCallback;
 	}
 	
 	@Override
@@ -175,19 +175,10 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	
 	private void loadPreferences()
 	{
-		
     	if (event != null)
     	{
 	    	SharedPreferences preferences = getSherlockActivity().getSharedPreferences(EventPreferencesFragment.PREFS_NAME, Activity.MODE_PRIVATE);
-	
-	    	Editor editor = preferences.edit();
-
-	    	editor.putBoolean(GlobalData.PREF_EVENT_ENABLED, event._enabled);
-	    	editor.putString(GlobalData.PREF_EVENT_NAME, event._name);
-	    	editor.putString(GlobalData.PREF_EVENT_TYPE, Integer.toString(event._type));
-	    	editor.putString(GlobalData.PREF_EVENT_PROFILE, Long.toString(event._fkProfile));
-	    	
-			editor.commit();
+	    	event.loadSharedPrefereces(preferences);
     	}
 		
 	}
@@ -196,42 +187,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	{
         if (event_position > -1) 
         {
-        	/*
-        	profile._name = preferences.getString(GlobalData.PREF_PROFILE_NAME, "");
-        	profile._icon = preferences.getString(GlobalData.PREF_PROFILE_ICON, "");
-        	profile._volumeRingerMode = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE, ""));
-        	profile._volumeRingtone = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_RINGTONE, "");
-        	profile._volumeNotification = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_NOTIFICATION, "");
-        	profile._volumeMedia = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_MEDIA, "");
-        	profile._volumeAlarm = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_ALARM, "");
-        	profile._volumeSystem = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_SYSTEM, "");
-        	profile._volumeVoice = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_VOICE, "");
-        	profile._soundRingtoneChange = preferences.getBoolean(GlobalData.PREF_PROFILE_SOUND_RINGTONE_CHANGE, false);
-        	profile._soundRingtone = preferences.getString(GlobalData.PREF_PROFILE_SOUND_RINGTONE, "");
-        	profile._soundNotificationChange = preferences.getBoolean(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION_CHANGE, false);
-        	profile._soundNotification = preferences.getString(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION, "");
-        	profile._soundAlarmChange = preferences.getBoolean(GlobalData.PREF_PROFILE_SOUND_ALARM_CHANGE, false);
-        	profile._soundAlarm = preferences.getString(GlobalData.PREF_PROFILE_SOUND_ALARM, "");
-        	profile._deviceAirplaneMode = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE, ""));
-        	profile._deviceWiFi = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_WIFI, ""));
-        	profile._deviceBluetooth = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_BLUETOOTH, ""));
-        	profile._deviceScreenTimeout = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_SCREEN_TIMEOUT, ""));
-        	profile._deviceBrightness = preferences.getString(GlobalData.PREF_PROFILE_DEVICE_BRIGHTNESS, "");
-        	profile._deviceWallpaperChange = preferences.getBoolean(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER_CHANGE, false);
-        	if (profile._deviceWallpaperChange)
-        		profile._deviceWallpaper = preferences.getString(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER, "");
-        	else
-        		profile._deviceWallpaper = "-|0";
-        	profile._deviceMobileData = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA, ""));
-        	profile._deviceMobileDataPrefs = preferences.getBoolean(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS, false);
-        	profile._deviceGPS = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_GPS, ""));
-        	profile._deviceRunApplicationChange = preferences.getBoolean(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE, false);
-        	if (profile._deviceRunApplicationChange)
-        		profile._deviceRunApplicationPackageName = preferences.getString(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME, "-");
-        	else
-        		profile._deviceRunApplicationPackageName = "-";
-        	profile._showInActivator = preferences.getBoolean(GlobalData.PREF_PROFILE_SHOW_IN_ACTIVATOR, true);
-			*/
+        	event.saveSharedPrefereces(preferences);
         	
 			EditorProfilesActivity.profilesDataWrapper.getDatabaseHandler().updateEvent(event);
         	
@@ -239,91 +195,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 
         }
 
-        onRedrawListFragmentCallback.onRedrawListFragment();
-	}
-	
-	private void setSummary(String key, Object value)
-	{
-		//Log.d("EventPreferencesFragment.setSummary",key);
-		/*
-		if (key.equals(GlobalData.PREF_PROFILE_NAME))
-		{	
-	        prefMng.findPreference(key).setSummary(value.toString());
-		}
-		if (key.equals(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE))
-		{
-			String sPrefVolumeMode = value.toString();
-			int iPrefVolumeMode;
-			try {
-				iPrefVolumeMode = Integer.parseInt(sPrefVolumeMode);
-			} catch (Exception e) {
-				iPrefVolumeMode = 0;
-			}
-			String[] prefVolumeModes = getResources().getStringArray(R.array.ringerModeArray);
-			prefMng.findPreference(key).setSummary(prefVolumeModes[iPrefVolumeMode]);
-		}
-		if (key.equals(GlobalData.PREF_PROFILE_SOUND_RINGTONE) ||
-			key.equals(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION) ||
-			key.equals(GlobalData.PREF_PROFILE_SOUND_ALARM))
-		{
-			String ringtoneUri = value.toString();
-			
-			//Log.d("ProfilePreferencesFragment.setSummary", ringtoneUri);
-			
-			Uri uri = Uri.parse(ringtoneUri);
-			Ringtone ringtone = RingtoneManager.getRingtone(context, uri);
-			String ringtoneName;
-			if (ringtone == null)
-				ringtoneName = "[no ringtones]";
-			else
-				ringtoneName = ringtone.getTitle(context);
-			
-	        prefMng.findPreference(key).setSummary(ringtoneName);
-		}
-		if (key.equals(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE) || 
-			key.equals(GlobalData.PREF_PROFILE_DEVICE_WIFI) ||
-			key.equals(GlobalData.PREF_PROFILE_DEVICE_BLUETOOTH) ||
-			key.equals(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA) ||
-			key.equals(GlobalData.PREF_PROFILE_DEVICE_GPS))
-		{
-			boolean canChange = GlobalData.hardwareCheck(key, context);
-			if (!canChange)
-			{
-				prefMng.findPreference(key).setEnabled(false);
-				prefMng.findPreference(key).setSummary(getResources().getString(R.string.profile_preferences_device_not_allowed));
-				if (key.equals(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA))
-				{
-					prefMng.findPreference(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS).setEnabled(false);
-				}
-			}
-			else
-			{
-				String sPrefDeviceMode = value.toString();
-				int iPrefDeviceMode;
-				try {
-					iPrefDeviceMode = Integer.parseInt(sPrefDeviceMode);
-				} catch (Exception e) {
-					iPrefDeviceMode = 0;
-				}
-				String[] PrefDeviceModes = getResources().getStringArray(R.array.hardwareModeArray);
-				prefMng.findPreference(key).setSummary(PrefDeviceModes[iPrefDeviceMode]);
-			}
-			
-		}
-		if (key.equals(GlobalData.PREF_PROFILE_DEVICE_SCREEN_TIMEOUT))
-		{
-			String sPrefScreenTimeout = value.toString();
-			int iPrefScreenTimeout;
-			try {
-				iPrefScreenTimeout = Integer.parseInt(sPrefScreenTimeout);
-			} catch (Exception e) {
-				iPrefScreenTimeout = 0;
-			}
-			String[] PrefScreenTimeouts = getResources().getStringArray(R.array.screenTimeoutArray);
-			prefMng.findPreference(key).setSummary(PrefScreenTimeouts[iPrefScreenTimeout]);
-		}
-		*/
-		
+        onRedrawEventListFragmentCallback.onRedrawEventListFragment();
 	}
 	
 	private void updateSharedPreference()
@@ -333,37 +205,16 @@ public class EventPreferencesFragment extends PreferenceListFragment
 
 	    	// updating activity with selected event preferences
 	    	
-        	//Log.d("PhonePreferencesActivity.updateSharedPreference", event.getName());
-        	/*
-	        setSummary(GlobalData.PREF_PROFILE_NAME, profile._name);
-	        setSummary(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE, profile._volumeRingerMode);
-	        setSummary(GlobalData.PREF_PROFILE_SOUND_RINGTONE, profile._soundRingtone);
-	        setSummary(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION, profile._soundNotification);
-	        setSummary(GlobalData.PREF_PROFILE_SOUND_ALARM, profile._soundAlarm);
-	        setSummary(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE, profile._deviceAirplaneMode);
-	        setSummary(GlobalData.PREF_PROFILE_DEVICE_WIFI, profile._deviceWiFi);
-	        setSummary(GlobalData.PREF_PROFILE_DEVICE_BLUETOOTH, profile._deviceBluetooth);
-	        setSummary(GlobalData.PREF_PROFILE_DEVICE_SCREEN_TIMEOUT, profile._deviceScreenTimeout);
-	        setSummary(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA, profile._deviceMobileData);
-	        setSummary(GlobalData.PREF_PROFILE_DEVICE_GPS, profile._deviceGPS);
-	        */
+        	//Log.d("EventPreferencesActivity.updateSharedPreference", event.getName());
+    		event.setAllSummary(prefMng, context);
 			
         }
 	}
 	
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
-		/*
-    	if (!(key.equals(GlobalData.PREF_PROFILE_SOUND_RINGTONE_CHANGE) ||
-	    		key.equals(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION_CHANGE) ||
-	    		key.equals(GlobalData.PREF_PROFILE_SOUND_ALARM_CHANGE) ||
-	    		key.equals(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER_CHANGE) ||
-	    		key.equals(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS) || 
-	    		key.equals(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE) ||
-	    		key.equals(GlobalData.PREF_PROFILE_SHOW_IN_ACTIVATOR) 
-	    		))
-	    		setSummary(key, sharedPreferences.getString(key, ""));
-	    */
+
+		event.setSummary(prefMng, key, sharedPreferences.getString(key, ""), context);
     	
         if (actionMode == null)
         {

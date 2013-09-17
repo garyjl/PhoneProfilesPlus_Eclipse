@@ -7,8 +7,10 @@ import sk.henrichg.phoneprofiles.EditorProfileListFragment.OnFinishProfilePrefer
 import sk.henrichg.phoneprofiles.EditorProfileListFragment.OnProfileCountChanged;
 import sk.henrichg.phoneprofiles.EditorProfileListFragment.OnProfileOrderChanged;
 import sk.henrichg.phoneprofiles.EditorProfileListFragment.OnStartProfilePreferences;
+import sk.henrichg.phoneprofiles.EventPreferencesFragment.OnRedrawEventListFragment;
+import sk.henrichg.phoneprofiles.EventPreferencesFragment.OnRestartEventPreferences;
 import sk.henrichg.phoneprofiles.PreferenceListFragment.OnPreferenceAttachedListener;
-import sk.henrichg.phoneprofiles.ProfilePreferencesFragment.OnRedrawListFragment;
+import sk.henrichg.phoneprofiles.ProfilePreferencesFragment.OnRedrawProfileListFragment;
 import sk.henrichg.phoneprofiles.ProfilePreferencesFragment.OnRestartProfilePreferences;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -33,11 +35,13 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
                                     implements OnStartProfilePreferences,
                                                OnPreferenceAttachedListener,
                                                OnRestartProfilePreferences,
-                                               OnRedrawListFragment,
+                                               OnRedrawProfileListFragment,
                                                OnFinishProfilePreferencesActionMode,
                                                OnProfileCountChanged,
                                                OnProfileOrderChanged,
                                                OnStartEventPreferences,
+                                               OnRestartEventPreferences,
+                                               OnRedrawEventListFragment,
                                                OnFinishEventPreferencesActionMode,
                                                OnEventCountChanged
 {
@@ -424,7 +428,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		}
 	}
 
-	public void onRedrawListFragment() {
+	public void onRedrawProfileListFragment() {
 		// redraw headeru list fragmentu, notifikacie a widgetov
 		EditorProfileListFragment fragment = (EditorProfileListFragment)getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
 		if (fragment != null)
@@ -518,6 +522,35 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		}
 	}
 
+	public void onRedrawEventListFragment() {
+		// redraw headeru list fragmentu, notifikacie a widgetov
+		EditorEventListFragment fragment = (EditorEventListFragment)getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
+		if (fragment != null)
+		{
+			fragment.updateListView();
+			
+			// send message into service
+	        //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
+			serviceCommunication.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
+		}
+	}
+
+	public void onRestartEventPreferences(int position) {
+		if (mTwoPane) {
+			// In two-pane mode, show the detail view in this activity by
+			// adding or replacing the detail fragment using a
+			// fragment transaction.
+
+			// restart event preferences fragmentu
+			Bundle arguments = new Bundle();
+			arguments.putInt(GlobalData.EXTRA_EVENT_POSITION, position);
+			EventPreferencesFragment fragment = new EventPreferencesFragment();
+			fragment.setArguments(arguments);
+			getSupportFragmentManager().beginTransaction()
+					.replace(R.id.editor_detail_container, fragment).commit();
+		}
+	}
+	
 	public static void updateListView(SherlockFragmentActivity activity)
 	{
 		EditorProfileListFragment fragment = (EditorProfileListFragment)activity.getSupportFragmentManager().findFragmentById(R.id.editor_list_container);

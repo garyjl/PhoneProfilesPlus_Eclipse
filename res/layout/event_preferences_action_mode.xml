@@ -23,7 +23,7 @@
         android:layout_marginLeft="10dp"
         android:paddingRight="5dp"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/profile_preferences_action_menu_cancel"
+        android:layout_toRightOf="@+id/event_preferences_action_menu_cancel"
         android:text="@string/phone_preferences_actionmode_save"
         android:background="?attr/actionProfileToolBackground"
         android:drawableLeft="?attr/actionProfilePrefSave"

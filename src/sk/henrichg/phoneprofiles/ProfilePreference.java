@@ -11,7 +11,7 @@ import android.widget.ImageView;
 
 public class ProfilePreference extends Preference {
 	
-	private long profileId;
+	private String profileId;
 
 	private ImageView profileIcon;
 
@@ -33,7 +33,7 @@ public class ProfilePreference extends Preference {
 		*/
 		
 
-		profileId = 0;
+		profileId = "0";
 		
 		prefContext = context;
 		
@@ -62,7 +62,7 @@ public class ProfilePreference extends Preference {
 
 	    if (profileIcon != null)
 	    {
-		    Profile profile = EditorProfilesActivity.profilesDataWrapper.getProfileById(profileId);
+		    Profile profile = EditorProfilesActivity.profilesDataWrapper.getProfileById(Long.parseLong(profileId));
 		    if (profile != null)
 		    {
 			    if (profile.getIsIconResourceID())
@@ -81,7 +81,7 @@ public class ProfilePreference extends Preference {
 		    else
 		    {
 		      	profileIcon.setImageResource(0); // resource na ikonu
-		    	setSummary("");
+		    	setSummary(prefContext.getResources().getString(R.string.event_preferences_profile_not_set));
 		    }
 	    }
 	}
@@ -103,7 +103,7 @@ public class ProfilePreference extends Preference {
 	{
 		super.onGetDefaultValue(a, index);
 		
-		return a.getString(index);  // packageName vratene ako retazec
+		return a.getString(index);
 	}
 	
 	@Override
@@ -111,9 +111,9 @@ public class ProfilePreference extends Preference {
 	{
 		if (restoreValue) {
 			// restore state
-			long value;
+			String value;
 			try {
-				value = getPersistedLong(profileId);
+				value = getPersistedString(profileId);
 			} catch  (Exception e) {
 				value = profileId;
 			}
@@ -121,9 +121,9 @@ public class ProfilePreference extends Preference {
 		}
 		else {
 			// set state
-			long value = (Long) defaultValue;
+			String value = (String) defaultValue;
 			profileId = value;
-			persistLong(value);
+			persistString(value);
 		}
 	}
 	
@@ -157,19 +157,19 @@ public class ProfilePreference extends Preference {
 		// restore instance state
 		SavedState myState = (SavedState)state;
 		super.onRestoreInstanceState(myState.getSuperState());
-		long value = (Long) myState.profileId;
+		String value = (String) myState.profileId;
 		profileId = value;
 		notifyChanged();
 	}
 	
-	public long getProfileId()
+	public String getProfileId()
 	{
 		return profileId;
 	}
 	
 	public void setProfileId(long newProfileId)
 	{
-		long newValue = newProfileId;
+		String newValue = String.valueOf(newProfileId);
 
 		if (!callChangeListener(newValue)) {
 			// nema sa nova hodnota zapisat
@@ -179,18 +179,18 @@ public class ProfilePreference extends Preference {
 		profileId = newValue;
 
 		// set summary
-	    Profile profile = EditorProfilesActivity.profilesDataWrapper.getProfileById(profileId);
+	    Profile profile = EditorProfilesActivity.profilesDataWrapper.getProfileById(Long.parseLong(profileId));
 	    if (profile != null)
 	    {
 	    	setSummary(profile._name);
 	    }
 	    else
 	    {
-	    	setSummary("");
+	    	setSummary(prefContext.getResources().getString(R.string.event_preferences_profile_not_set));
 	    }
 
 		// zapis do preferences
-		persistLong(newValue);
+		persistString(newValue);
 		
 		// Data sa zmenili,notifikujeme
 		notifyChanged();
@@ -200,14 +200,14 @@ public class ProfilePreference extends Preference {
 	// SavedState class
 	private static class SavedState extends BaseSavedState
 	{
-		long profileId;
+		String profileId;
 		
 		public SavedState(Parcel source)
 		{
 			super(source);
 			
-			// restore eventType
-			profileId = source.readLong();
+			// restore profileId
+			profileId = source.readString();
 		}
 		
 		@Override
@@ -215,8 +215,8 @@ public class ProfilePreference extends Preference {
 		{
 			super.writeToParcel(dest, flags);
 			
-			// save eventType
-			dest.writeLong(profileId);
+			// save profileId
+			dest.writeString(profileId);
 		}
 		
 		public SavedState(Parcelable superState)
