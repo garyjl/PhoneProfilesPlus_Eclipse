@@ -137,6 +137,11 @@ public class GlobalData extends Application {
 		
 	}
 	
+	public void onTerminate ()
+	{
+		DatabaseHandler.getInstance(context).closeConnecion();
+	}
+	
 	//--------------------------------------------------------------
 	
 	static public void loadPreferences(Context context)

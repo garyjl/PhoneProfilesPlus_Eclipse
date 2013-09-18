@@ -17,7 +17,13 @@ import android.util.Log;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
+	
 	// All Static variables
+
+	// singleton fields 
+    private static DatabaseHandler instance;
+    private static SQLiteDatabase writableDb;	
+    
 	// Database Version
 	private static final int DATABASE_VERSION = 29;
 	private static final int DATABASE_VERSION_EVENTS = 24;
@@ -81,10 +87,64 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_E_END_TIME = "endTime";
 	private static final String KEY_E_DAYS_OF_WEEK = "daysOfWeek";
 	
-	public DatabaseHandler(Context context) {
+	/**
+     * Constructor takes and keeps a reference of the passed context in order to
+     * access to the application assets and resources.
+     *
+     * @param context
+     *            the application context
+     */	
+	private DatabaseHandler(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
 	
+	/**
+     * Get default instance of the class to keep it a singleton
+     *
+     * @param context
+     *            the application context
+     */
+    public static DatabaseHandler getInstance(Context context) {
+        if (instance == null) {
+            instance = new DatabaseHandler(context);
+        }
+        return instance;
+    }
+    
+    /**
+     * Returns a writable database instance in order not to open and close many
+     * SQLiteDatabase objects simultaneously
+     *
+     * @return a writable instance to SQLiteDatabase
+     */
+    public SQLiteDatabase getMyWritableDatabase() {
+        if ((writableDb == null) || (!writableDb.isOpen())) {
+            writableDb = this.getWritableDatabase();
+        }
+ 
+        return writableDb;
+    }
+ 
+    @Override
+    public synchronized void close() {
+        super.close();
+        if (writableDb != null) {
+            writableDb.close();
+            writableDb = null;
+        }
+    }
+    
+    // be sure to call this method by: DatabaseHandler.getInstance().closeConnecion() 
+    // when application is closed by somemeans most likely
+    // onDestroy method of application
+    public synchronized void closeConnecion() {
+    	if (instance != null)
+    	{
+    		instance.close();
+            instance = null;
+        }
+    }    
+    
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		final String CREATE_PROFILES_TABLE = "CREATE TABLE " + TABLE_PROFILES + "("
@@ -319,7 +379,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	
 		//int porder = getMaxPOrder() + 1;
 
-		SQLiteDatabase db = this.getWritableDatabase();
+		//SQLiteDatabase db = this.getWritableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
 		
 		ContentValues values = new ContentValues();
 		values.put(KEY_NAME, profile._name); // Profile Name
@@ -357,7 +418,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 		// Inserting Row
 		long id = db.insert(TABLE_PROFILES, null, values);
-		db.close(); // Closing database connection
+		//db.close(); // Closing database connection
 		
 		profile._id = id;
 		//profile.setPOrder(porder);
@@ -365,7 +426,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	// Getting single profile
 	Profile getProfile(long profile_id) {
-		SQLiteDatabase db = this.getReadableDatabase();
+		//SQLiteDatabase db = this.getReadableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
 
 		Cursor cursor = db.query(TABLE_PROFILES, 
 				                 new String[] { KEY_ID, 
@@ -439,7 +501,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				                      );
 
 		cursor.close();
-		db.close();
+		//db.close();
 
 		// return profile
 		return profile;
@@ -482,7 +544,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						         		 KEY_SHOW_IN_ACTIVATOR +
 		                     " FROM " + TABLE_PROFILES + " ORDER BY " + KEY_PORDER;
 
-		SQLiteDatabase db = this.getReadableDatabase();
+		//SQLiteDatabase db = this.getReadableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+		
 		Cursor cursor = db.rawQuery(selectQuery, null);
 
 		// looping through all rows and adding to list
@@ -526,7 +590,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		}
 
 		cursor.close();
-		db.close();
+		//db.close();
 		
 		// return profile list
 		return profileList;
@@ -534,7 +598,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	// Updating single profile
 	public int updateProfile(Profile profile) {
-		SQLiteDatabase db = this.getWritableDatabase();
+		//SQLiteDatabase db = this.getWritableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
 
 		ContentValues values = new ContentValues();
 		values.put(KEY_NAME, profile._name);
@@ -572,14 +637,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		// updating row
 		int r = db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
 				        new String[] { String.valueOf(profile._id) });
-        db.close();
+        //db.close();
         
 		return r;
 	}
 
 	// Deleting single profile
 	public void deleteProfile(Profile profile) {
-		SQLiteDatabase db = this.getWritableDatabase();
+		//SQLiteDatabase db = this.getWritableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
 		
 		db.beginTransaction();
 		try {
@@ -599,12 +665,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    	db.endTransaction();
         }	
 		
-		db.close();
+		//db.close();
 	}
 
 	// Deleting all profiles
 	public void deleteAllProfiles() {
-		SQLiteDatabase db = this.getWritableDatabase();
+		//SQLiteDatabase db = this.getWritableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+		
 		db.beginTransaction();
 
 		try {
@@ -622,7 +690,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    	db.endTransaction();
         }	
 
-		db.close();
+		//db.close();
 	}
 
 	// Getting profiles Count
@@ -633,7 +701,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		else
 		  countQuery = "SELECT  count(*) FROM " + TABLE_PROFILES;
 
-		SQLiteDatabase db = this.getReadableDatabase();
+		//SQLiteDatabase db = this.getReadableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+		
 		Cursor cursor = db.rawQuery(countQuery, null);
 		
 		int r;
@@ -647,7 +717,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			r = 0;
 
 		cursor.close();
-		db.close();
+		//db.close();
 		
 		return r;
 	}
@@ -655,7 +725,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 /*	// Getting max(porder)
 	public int getMaxPOrder() {
 		String countQuery = "SELECT MAX(PORDER) FROM " + TABLE_PROFILES;
-		SQLiteDatabase db = this.getReadableDatabase();
+		//SQLiteDatabase db = this.getReadableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+
 		Cursor cursor = db.rawQuery(countQuery, null);
 
 		int r;
@@ -672,7 +744,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		}
 
 		cursor.close();
-		db.close();
+		//db.close();
 		
 		return r;
 		
@@ -680,8 +752,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 */	
 	public void activateProfile(Profile profile)
 	{
-		SQLiteDatabase db = this.getWritableDatabase();
-
+		//SQLiteDatabase db = this.getWritableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
 		
 		db.beginTransaction();
 		try {
@@ -708,12 +780,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    	db.endTransaction();
          }	
 		
-         db.close();
+         //db.close();
 	}
 	
 	public Profile getActivatedProfile()
 	{
-		SQLiteDatabase db = this.getReadableDatabase();
+		//SQLiteDatabase db = this.getReadableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+
 		Profile profile;
 
 		Cursor cursor = db.query(TABLE_PROFILES, 
@@ -796,7 +870,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			profile = null;
 
 		cursor.close();
-		db.close();
+		//db.close();
 
 		// return profile
 		return profile;
@@ -838,7 +912,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						        		 KEY_SHOW_IN_ACTIVATOR +
 						    " FROM " + TABLE_PROFILES + " ORDER BY " + KEY_PORDER;
 
-		SQLiteDatabase db = this.getReadableDatabase();
+		//SQLiteDatabase db = this.getReadableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+		
 		Cursor cursor = db.rawQuery(selectQuery, null);
 
 		Profile profile = null; 
@@ -880,7 +956,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		}
 		
 		cursor.close();
-		db.close();
+		//db.close();
 		
 		// return profile list
 		return profile;
@@ -892,7 +968,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		final String selectQuery = "SELECT " + KEY_ID +
 							   " FROM " + TABLE_PROFILES + " ORDER BY " + KEY_PORDER;
 
-		SQLiteDatabase db = this.getReadableDatabase();
+		//SQLiteDatabase db = this.getReadableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+		
 		Cursor cursor = db.rawQuery(selectQuery, null);
 		
 		// looping through all rows and adding to list
@@ -908,7 +986,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		}
 		
 		cursor.close();
-		db.close();
+		//db.close();
 		
 		// return profile list
 		return -1;
@@ -917,7 +995,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	
 	public void setPOrder(List<Profile> list)
 	{
-		SQLiteDatabase db = this.getWritableDatabase();
+		//SQLiteDatabase db = this.getWritableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
 		
 		ContentValues values = new ContentValues();
 
@@ -939,12 +1018,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    	db.endTransaction();
          }	
 		
-        db.close();
+        //db.close();
 	}
 	
 	public void setChecked(List<Profile> list)
 	{
-		SQLiteDatabase db = this.getWritableDatabase();
+		//SQLiteDatabase db = this.getWritableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
 		
 		ContentValues values = new ContentValues();
 		
@@ -966,7 +1046,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	    	db.endTransaction();
          }	
 		
-        db.close();
+        //db.close();
 	}
 
 	public int updateForHardware(Context context)
@@ -982,7 +1062,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 										KEY_DEVICE_GPS + 
 							" FROM " + TABLE_PROFILES;
 
-		SQLiteDatabase db = this.getWritableDatabase();
+		//SQLiteDatabase db = this.getWritableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+		
 		ContentValues values = new ContentValues();
 
 		Cursor cursor = db.rawQuery(selectQuery, null);
@@ -1055,7 +1137,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		   db.endTransaction();
        }	
 		
-       db.close();
+       //db.close();
 		
        return ret;
 	}
@@ -1065,7 +1147,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	// Adding new event
 	void addEvent(Event event) {
 	
-		SQLiteDatabase db = this.getWritableDatabase();
+		//SQLiteDatabase db = this.getWritableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
 		
 		ContentValues values = new ContentValues();
 		values.put(KEY_E_NAME, event._name); // Event Name
@@ -1088,12 +1171,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.endTransaction();
 		}	
 
-		db.close(); // Closing database connection
+		//db.close(); // Closing database connection
 	}
 
 	// Getting single event
 	Event getEvent(long event_id) {
-		SQLiteDatabase db = this.getReadableDatabase();
+		//SQLiteDatabase db = this.getReadableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
 
 		Cursor cursor = db.query(TABLE_EVENTS, 
 				                 new String[] { KEY_E_ID, 
@@ -1118,7 +1202,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 		getEventPreferences(event, db);
 		
-		db.close();
+		//db.close();
 
 		// return profile
 		return event;
@@ -1135,7 +1219,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				                         KEY_E_ENABLED +
 		                     " FROM " + TABLE_EVENTS;
 
-		SQLiteDatabase db = this.getReadableDatabase();
+		//SQLiteDatabase db = this.getReadableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+
 		Cursor cursor = db.rawQuery(selectQuery, null);
 
 		// looping through all rows and adding to list
@@ -1156,7 +1242,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		}
 
 		cursor.close();
-		db.close();
+		//db.close();
 		
 		// return evemt list
 		return eventList;
@@ -1164,7 +1250,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	// Updating single event
 	public int updateEvent(Event event) {
-		SQLiteDatabase db = this.getWritableDatabase();
+		//SQLiteDatabase db = this.getWritableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
 
 		ContentValues values = new ContentValues();
 		values.put(KEY_E_NAME, event._name);
@@ -1192,30 +1279,34 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.endTransaction();
 		}	
 		
-        db.close();
+        //db.close();
         
 		return r;
 	}
 
 	// Deleting single event
 	public void deleteEvent(Event event) {
-		SQLiteDatabase db = this.getWritableDatabase();
+		//SQLiteDatabase db = this.getWritableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
 		db.delete(TABLE_EVENTS, KEY_ID + " = ?",
 				new String[] { String.valueOf(event._id) });
-		db.close();
+		//db.close();
 	}
 
 	// Deleting all events
 	public void deleteAllEvents() {
-		SQLiteDatabase db = this.getWritableDatabase();
+		//SQLiteDatabase db = this.getWritableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
 		db.delete(TABLE_EVENTS, null,	null);
-		db.close();
+		//db.close();
 	}
 
 	// Getting events Count
 	public int getEventsCount() {
 		final String countQuery = "SELECT  count(*) FROM " + TABLE_EVENTS;
-		SQLiteDatabase db = this.getReadableDatabase();
+		//SQLiteDatabase db = this.getReadableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+
 		Cursor cursor = db.rawQuery(countQuery, null);
 		
 		int r;
@@ -1229,9 +1320,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			r = 0;
 
 		cursor.close();
-		db.close();
+		//db.close();
 		
-		return r;	}
+		return r;	
+	}
 	
 	public Event getFirstEvent()
 	{
@@ -1242,7 +1334,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						                 KEY_E_ENABLED +
 						    " FROM " + TABLE_EVENTS;
 
-		SQLiteDatabase db = this.getReadableDatabase();
+		//SQLiteDatabase db = this.getReadableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+		
 		Cursor cursor = db.rawQuery(selectQuery, null);
 
 		Event event = null; 
@@ -1258,7 +1352,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		}
 		
 		cursor.close();
-		db.close();
+		//db.close();
 		
 		// return profile list
 		return event;
@@ -1270,7 +1364,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		String selectQuery = "SELECT " + KEY_E_ID +
 							   " FROM " + TABLE_EVENTS;
 
-		SQLiteDatabase db = this.getReadableDatabase();
+		//SQLiteDatabase db = this.getReadableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+		
 		Cursor cursor = db.rawQuery(selectQuery, null);
 		
 		// looping through all rows and adding to list
@@ -1286,7 +1382,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		}
 		
 		cursor.close();
-		db.close();
+		//db.close();
 		
 		// return profile list
 		return -1;
@@ -1294,9 +1390,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 	
 	public void getEventPreferences(Event event) {
-		SQLiteDatabase db = this.getReadableDatabase();
+		//SQLiteDatabase db = this.getReadableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
 		getEventPreferences(event, db);
-		db.close();
+		//db.close();
 	}
 
 	public void getEventPreferences(Event event, SQLiteDatabase db) {
@@ -1384,9 +1481,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 	
 	public int updateEventPreferences(Event event) {
-		SQLiteDatabase db = this.getReadableDatabase();
+		//SQLiteDatabase db = this.getReadableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
 		int r = updateEventPreferences(event, db);
-		db.close();
+		//db.close();
 		return r;
 	}
 
@@ -1490,7 +1588,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				{	
 					
 					// db z SQLiteOpenHelper
-					SQLiteDatabase db = this.getWritableDatabase();
+					//SQLiteDatabase db = this.getWritableDatabase();
+					SQLiteDatabase db = getMyWritableDatabase();
 
 					Cursor cursor = null;
 					String[] columnNames;
@@ -1590,7 +1689,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						db.endTransaction();
 						if ((cursor != null) && (!cursor.isClosed()))
 							cursor.close();
-						db.close();
+						//db.close();
 					}
 					
 					//FileChannel src = new FileInputStream(exportedDB).getChannel();
@@ -1633,6 +1732,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			
 			if (dataDB.exists())
 			{
+				// close db
+				close();
 				
 				File exportDir = new File(sd, EXPORT_DBPATH);
 				if (!(exportDir.exists() && exportDir.isDirectory()))

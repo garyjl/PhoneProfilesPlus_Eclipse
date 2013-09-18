@@ -46,7 +46,8 @@ public class ProfilesDataWrapper {
 	public DatabaseHandler getDatabaseHandler()
 	{
 		if (databaseHandler == null)
-			databaseHandler = new DatabaseHandler(context);
+			// parameter must by application context
+			databaseHandler = DatabaseHandler.getInstance(context.getApplicationContext());
 			
 		return databaseHandler;
 	}
