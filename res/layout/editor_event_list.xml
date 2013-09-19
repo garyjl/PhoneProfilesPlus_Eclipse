@@ -18,5 +18,13 @@
         android:choiceMode="singleChoice" >
 
     </ListView>
+    
+	<TextView
+	    android:id="@+id/editor_events_list_empty"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:text="@string/event_list_empty"
+	    android:gravity="center"
+	    android:textSize="15sp" />
         
 </LinearLayout>

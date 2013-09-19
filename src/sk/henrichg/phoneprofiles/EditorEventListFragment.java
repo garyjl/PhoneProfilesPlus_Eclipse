@@ -182,6 +182,8 @@ public class EditorEventListFragment extends SherlockFragment {
 		
 		// az tu mame layout, tak mozeme ziskat view-y
 		listView = (ListView)getSherlockActivity().findViewById(R.id.editor_events_list);
+		listView.setEmptyView(getSherlockActivity().findViewById(R.id.editor_events_list_empty));
+		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

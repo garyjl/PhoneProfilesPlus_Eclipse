@@ -19,6 +19,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceScreen;
+import android.support.v4.app.Fragment;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 import android.app.Activity;
@@ -113,11 +114,13 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	        		EditorProfileListFragment profileFragment = new EditorProfileListFragment();
 	        		getSupportFragmentManager().beginTransaction()
 	        			.replace(R.id.editor_list_container, profileFragment).commit();
+	    			onStartProfilePreferences(-1, false);
 	                break;
 	            case 1:
 	        		EditorEventListFragment eventFragment = new EditorEventListFragment();
 	        		getSupportFragmentManager().beginTransaction()
 	        			.replace(R.id.editor_list_container, eventFragment).commit();
+	    			onStartEventPreferences(-1, false);
 	                break;
 	            }
 	            return false;
@@ -391,7 +394,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			}
 			else
 			{
-				ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
+				Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
 				if (fragment != null)
 				{
 					getSupportFragmentManager().beginTransaction()
@@ -501,7 +504,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			}
 			else
 			{
-				EventPreferencesFragment fragment = (EventPreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
+				Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
 				if (fragment != null)
 				{
 					getSupportFragmentManager().beginTransaction()

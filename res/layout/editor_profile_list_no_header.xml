@@ -32,4 +32,12 @@
 	    dslv:drag_start_mode="onMove"
 	    dslv:remove_mode="flingRemove" />
 
+	<TextView
+	    android:id="@+id/editor_profiles_list_empty"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:text="@string/profile_list_empty"
+	    android:gravity="center"
+	    android:textSize="15sp" />
+    
 </LinearLayout>

@@ -221,6 +221,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		activeProfileName = (TextView)getSherlockActivity().findViewById(R.id.activated_profile_name);
 		activeProfileIcon = (ImageView)getSherlockActivity().findViewById(R.id.activated_profile_icon);
 		listView = (DragSortListView)getSherlockActivity().findViewById(R.id.editor_profiles_list);
+		listView.setEmptyView(getSherlockActivity().findViewById(R.id.editor_profiles_list_empty));
 
 		listView.setAdapter(profileListAdapter);
 		

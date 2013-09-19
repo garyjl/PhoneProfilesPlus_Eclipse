@@ -233,6 +233,17 @@ public class Event {
 		return profile;
 	}
 	
+	public String getPreferecesDescription()
+	{
+		String description;
+		
+		description = "";
+		
+		if (_eventPreferences != null)
+			description = _eventPreferences.getPreferencesDescription(description);
+		
+		return description;
+	}
 	
 }
 

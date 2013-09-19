@@ -93,6 +93,9 @@ public class EditorEventListAdapter extends BaseAdapter
 		  TextView eventName;
 		  ImageView profileIcon;
 		  TextView profileName;
+		  TextView eventPreferencesDescription;
+		  ImageView profileIndicator;
+		  ImageView eventEnabled;
 		  int position;
 		}
 	
@@ -104,13 +107,22 @@ public class EditorEventListAdapter extends BaseAdapter
         if (convertView == null)
         {
     		LayoutInflater inflater = LayoutInflater.from(fragment.getSherlockActivity());
-       		vi = inflater.inflate(R.layout.editor_event_list_item, parent, false);
+      	    if (GlobalData.applicationEditorPrefIndicator)
+      		    vi = inflater.inflate(R.layout.editor_event_list_item, parent, false);
+      	    else
+      		    vi = inflater.inflate(R.layout.editor_event_list_item_no_indicator, parent, false);
             holder = new ViewHolder();
             holder.listItemRoot = (RelativeLayout)vi.findViewById(R.id.event_list_item_root);
             holder.eventName = (TextView)vi.findViewById(R.id.event_list_item_event_name);
             holder.eventIcon = (ImageView)vi.findViewById(R.id.event_list_item_event_icon);
             holder.profileName = (TextView)vi.findViewById(R.id.event_list_item_profile_name);
             holder.profileIcon = (ImageView)vi.findViewById(R.id.event_list_item_profile_icon);
+            holder.eventEnabled = (ImageView)vi.findViewById(R.id.event_list_item_enabled);
+  		    if (GlobalData.applicationEditorPrefIndicator)
+  		    {
+  		    	holder.eventPreferencesDescription  = (TextView)vi.findViewById(R.id.event_list_item_preferences_description);
+  		    	holder.profileIndicator = (ImageView)vi.findViewById(R.id.event_list_item_profile_pref_indicator);
+  		    }
             vi.setTag(holder);        
         }
         else
@@ -127,11 +139,19 @@ public class EditorEventListAdapter extends BaseAdapter
        	if (GlobalData.applicationTheme.equals("dark"))
        		holder.listItemRoot.setBackgroundResource(R.drawable.card_dark);
         
+       	if (event._enabled)
+       		holder.eventEnabled.setImageResource(R.drawable.ic_profile_activated);
+       	else
+       		holder.eventEnabled.setImageResource(R.drawable.ic_empty);
+       	
         holder.eventName.setText(event._name);
         if (event._eventPreferences != null)
         	holder.eventIcon.setImageResource(event._eventPreferences._iconResourceID); // resource na ikonu
         else
         	holder.eventIcon.setImageResource(R.drawable.ic_empty);
+        
+	    if (GlobalData.applicationEditorPrefIndicator)
+	    	holder.eventPreferencesDescription.setText(event.getPreferecesDescription());
 
         Profile profile =  EditorProfilesActivity.profilesDataWrapper.getProfileById(event._fkProfile);
         if (profile != null)
@@ -148,12 +168,26 @@ public class EditorEventListAdapter extends BaseAdapter
 		    {
 		      	holder.profileIcon.setImageBitmap(profile._iconBitmap);
 		    }
-        	
+		    
+			if (GlobalData.applicationEditorPrefIndicator)
+			{
+				//profilePrefIndicatorImageView.setImageBitmap(null);
+				//Bitmap bitmap = ProfilePreferencesIndicator.paint(profile, vi.getContext());
+				//profilePrefIndicatorImageView.setImageBitmap(bitmap);
+				holder.profileIndicator.setImageBitmap(profile._preferencesIndicator);
+			}
         }
         else
         {
         	holder.profileName.setText(R.string.event_preferences_profile_not_set);
         	holder.profileIcon.setImageResource(R.drawable.ic_empty);
+			if (GlobalData.applicationEditorPrefIndicator)
+			{
+				//profilePrefIndicatorImageView.setImageBitmap(null);
+				//Bitmap bitmap = ProfilePreferencesIndicator.paint(profile, vi.getContext());
+				//profilePrefIndicatorImageView.setImageBitmap(bitmap);
+				holder.profileIndicator.setImageResource(R.drawable.ic_empty);
+			}
         }
         
         final int _position = position;

@@ -175,5 +175,7 @@
 	<string name="phone_profiles_pref_applicationWidgetIconColor">Typ farby ikony</string>
     <string name="phone_profiles_pref_category_widget_one_row">Miniaplikácia-jednoriadková</string>
     <string name="event_preferences_profile_not_set">Nevybraný žíadny profil</string>
+    <string name="profile_list_empty">Žiadne profily</string>
+    <string name="event_list_empty">Žiadne udalosti</string>
     	
 </resources>

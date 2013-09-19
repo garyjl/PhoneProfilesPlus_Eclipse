@@ -80,4 +80,14 @@ public class EventPreferencesTimeRepeat extends EventPreferences {
 		this._endTime = preferences.getLong(PREF_EVENT_TIME_REPEAT_END_TIME, System.currentTimeMillis());
 	}
 	
+	@Override
+	public String getPreferencesDescription(String description)
+	{
+		String descr = description;
+		
+		descr = descr + "time repeat";
+		
+		return descr;
+	}
+	
 }

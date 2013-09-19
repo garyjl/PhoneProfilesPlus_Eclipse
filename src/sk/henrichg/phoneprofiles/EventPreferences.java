@@ -25,5 +25,10 @@ public class EventPreferences {
 	public void saveSharedPrefereces(SharedPreferences preferences)
 	{
 	}
+	
+	public String getPreferencesDescription(String description)
+	{
+		return description;
+	}
 
 }

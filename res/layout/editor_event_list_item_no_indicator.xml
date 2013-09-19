@@ -42,17 +42,7 @@
         android:paddingLeft="3dp"
         android:text="@string/event_name_default"
         android:textSize="15sp" />
-
-    <TextView 
-        android:id="@+id/event_list_item_preferences_description"
-   		android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/event_list_item_event_name"
-        android:layout_toRightOf="@+id/event_list_item_event_icon" 
-        android:paddingLeft="10dp"
-        android:text="description"
-        android:textSize="11sp" />
-
+    
     <ImageView
         android:id="@+id/event_list_item_profile_icon"
         android:layout_width="30dp"
@@ -63,7 +53,6 @@
         android:scaleType="centerCrop"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:layout_marginTop="5dp"
         android:src="@drawable/ic_profile_default" />
     
     <TextView
@@ -75,18 +64,6 @@
         android:paddingLeft="10dp"
         android:text="@string/event_preferences_profile_not_set"
         android:textSize="15sp" />
-    
-    <ImageView
-        android:id="@+id/event_list_item_profile_pref_indicator"
-        android:layout_width="200dp"
-        android:layout_height="15dp"
-        android:layout_below="@id/event_list_item_profile_name"
-        android:layout_toRightOf="@+id/event_list_item_profile_icon"
-        android:adjustViewBounds="true"
-        android:contentDescription="@string/empty_string"
-        android:scaleType="fitStart"
-        android:src="@drawable/ic_profile_pref_volume_on"
-        android:paddingLeft="10dp" />
     
     
     <ImageView
