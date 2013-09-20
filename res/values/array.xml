@@ -114,5 +114,25 @@
 	<item>@string/array_pref_value_0</item>
 	<item>@string/array_pref_value_1</item>
 </string-array>
+<string-array name="daysOfWeekArray">
+    <item>@string/array_pref_event_all</item>
+	<item>@string/array_pref_event_sunday</item>
+	<item>@string/array_pref_event_monday</item>
+	<item>@string/array_pref_event_tuesday</item>
+	<item>@string/array_pref_event_wendesday</item>
+	<item>@string/array_pref_event_thursday</item>
+	<item>@string/array_pref_event_friday</item>
+	<item>@string/array_pref_event_saturday</item>
+</string-array>
+<string-array name="daysOfWeekValues">
+    <item>#ALL#</item>
+	<item>@string/array_pref_value_0</item>
+	<item>@string/array_pref_value_1</item>
+	<item>@string/array_pref_value_2</item>
+	<item>@string/array_pref_value_3</item>
+	<item>@string/array_pref_value_4</item>
+	<item>@string/array_pref_value_5</item>
+	<item>@string/array_pref_value_6</item>
+</string-array>
 
 </resources>

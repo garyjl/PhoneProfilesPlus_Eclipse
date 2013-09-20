@@ -16,19 +16,12 @@ public class TimePreference extends DialogPreference {
     private Calendar calendar;
     private TimePicker picker = null;
 
-    public TimePreference(Context ctxt) {
-        this(ctxt, null);
-    }
-
     public TimePreference(Context ctxt, AttributeSet attrs) {
-        this(ctxt, attrs, 0);
-    }
-
-    public TimePreference(Context ctxt, AttributeSet attrs, int defStyle) {
-        super(ctxt, attrs, defStyle);
+        super(ctxt, attrs);
 
         setPositiveButtonText(android.R.string.ok);
         setNegativeButtonText(android.R.string.cancel);
+
         calendar = new GregorianCalendar();
     }
 

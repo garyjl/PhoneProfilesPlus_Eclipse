@@ -177,8 +177,17 @@
     <string name="profile_list_empty">No profiles</string>
     <string name="event_list_empty">No events</string>
     <string name="event_preferences_category_eventParameters">Event parameters</string>
+    <string name="event_preferences_time_timeDays">Days of week</string>
     <string name="event_preferences_time_startTime">Start time</string>
     <string name="event_preferences_time_useEndTime">Use end time</string>
     <string name="event_preferences_time_endTime">End time</string>
+    <string name="array_pref_event_all">All</string>
+	<string name="array_pref_event_sunday">Sunday</string>
+	<string name="array_pref_event_monday">Monday</string>
+	<string name="array_pref_event_tuesday">Tuesday</string>
+	<string name="array_pref_event_wendesday">Wendesday</string>
+	<string name="array_pref_event_thursday">Thursday</string>
+	<string name="array_pref_event_friday">Friday</string>
+	<string name="array_pref_event_saturday">Saturday</string>
     	
 </resources>

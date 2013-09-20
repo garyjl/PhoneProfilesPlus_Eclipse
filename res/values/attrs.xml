@@ -22,6 +22,10 @@
 	</declare-styleable>
 	<declare-styleable name="ProfilePreference">
 	</declare-styleable>
+	<declare-styleable name="ListPreferenceMultiSelect">
+        <attr format="string" name="checkAll" />
+        <attr format="string" name="separator" />
+    </declare-styleable>
 			
 	<!-- theme dependent drawables -->
     <attr name="actionNewProfileIcon" format="reference" />

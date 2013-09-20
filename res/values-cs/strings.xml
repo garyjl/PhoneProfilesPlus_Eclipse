@@ -178,8 +178,17 @@
     <string name="profile_list_empty">Žádne profily</string>
     <string name="event_list_empty">Žádne události</string>
     <string name="event_preferences_category_eventParameters">Parametre události</string>
+    <string name="event_preferences_time_timeDays">Dny v týdnu</string>
     <string name="event_preferences_time_startTime">Čas začátku</string>
     <string name="event_preferences_time_useEndTime">Použij čas konce</string>
     <string name="event_preferences_time_endTime">Čas konce</string>
+    <string name="array_pref_event_all">Všechno</string>
+    <string name="array_pref_event_sunday">Neděle</string>
+	<string name="array_pref_event_monday">Pondělí</string>
+	<string name="array_pref_event_tuesday">Úterý</string>
+	<string name="array_pref_event_wendesday">Středa</string>
+	<string name="array_pref_event_thursday">Čtvrtek</string>
+	<string name="array_pref_event_friday">Pátek</string>
+	<string name="array_pref_event_saturday">Sobota</string>
     	
 </resources>
