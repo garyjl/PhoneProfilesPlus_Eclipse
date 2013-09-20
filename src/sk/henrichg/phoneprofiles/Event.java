@@ -22,8 +22,7 @@ public class Event {
 	
 	public boolean _running;
 
-	public static final int ETYPE_TIME_RANGE = 1;
-	public static final int ETYPE_TIME_REPEAT = 2;
+	public static final int ETYPE_TIME = 1;
 	
     static final String PREF_EVENT_ENABLED = "eventEnabled";
     static final String PREF_EVENT_NAME = "eventName";
@@ -76,11 +75,8 @@ public class Event {
 		Log.e("Event.createEventPreferences","type="+_type);
         switch (this._type)
         {
-        case ETYPE_TIME_RANGE:
-        	_eventPreferences = new EventPreferencesTimeRange(this, 0, 0, 0, 0);
-        	break;
-        case ETYPE_TIME_REPEAT:
-        	_eventPreferences = new EventPreferencesTimeRepeat(this, false, false, false, false, false, false, false, 0, 0);
+        case ETYPE_TIME:
+        	_eventPreferences = new EventPreferencesTime(this, false, false, false, false, false, false, false, 0, 0, false);
         	break;
         }
 	}

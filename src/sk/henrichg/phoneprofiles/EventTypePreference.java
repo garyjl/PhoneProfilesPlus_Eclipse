@@ -33,7 +33,7 @@ public class EventTypePreference extends Preference {
 		*/
 		
 
-		eventType = String.valueOf(Event.ETYPE_TIME_RANGE);
+		eventType = String.valueOf(Event.ETYPE_TIME);
 		
 		prefContext = context;
 		

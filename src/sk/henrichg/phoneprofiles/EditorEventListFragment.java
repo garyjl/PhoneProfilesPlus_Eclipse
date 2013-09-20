@@ -270,7 +270,7 @@ public class EditorEventListFragment extends SherlockFragment {
 		{
 			// pridanie novej udalost
 			event = new Event(getResources().getString(R.string.event_name_default), 
-								  Event.ETYPE_TIME_RANGE, 
+								  Event.ETYPE_TIME, 
 								  0,
 					         	  false
 					         );

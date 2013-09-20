@@ -15,15 +15,15 @@ public class EventTypePreferenceAdapter extends BaseAdapter {
 	private LayoutInflater inflater = null;
 	
 	static final int[] eventTypes = {
-		Event.ETYPE_TIME_RANGE, Event.ETYPE_TIME_REPEAT
+		Event.ETYPE_TIME
 	};
 
 	static final int[] eventTypeIconIds = {
-		R.drawable.ic_event_time_range, R.drawable.ic_event_time_repeat
+		R.drawable.ic_event_time
 	};
 
 	static final int[] eventTypeNameIds = {
-		R.string.event_type_time_range, R.string.event_type_time_repeat
+		R.string.event_type_time
 	};
 	
 	public EventTypePreferenceAdapter(Context c)

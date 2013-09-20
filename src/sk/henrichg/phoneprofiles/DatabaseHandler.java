@@ -25,8 +25,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static SQLiteDatabase writableDb;	
     
 	// Database Version
-	private static final int DATABASE_VERSION = 29;
-	private static final int DATABASE_VERSION_EVENTS = 24;
+	private static final int DATABASE_VERSION = 30;
+	// starting version when added Events table
+	private static final int DATABASE_VERSION_EVENTS = 25;
 
 	// Database Name
 	private static final String DATABASE_NAME = "phoneProfilesManager";
@@ -81,11 +82,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	//private static final String KEY_E_FK_PARAMS = "fkParams";  // nepouzivat
 	//private static final String KEY_E_FK_PARAMS_EDIT = "fkParamsEdit"; // nepouzivat
 	private static final String KEY_E_ENABLED = "enabled";
-	private static final String KEY_E_START_DAY_OF_WEEK = "startDayOfWeek";
-	private static final String KEY_E_END_DAY_OF_WEEK = "endDayOfWeek";
+	//private static final String KEY_E_START_DAY_OF_WEEK = "startDayOfWeek"; // nepouzivat
+	//private static final String KEY_E_END_DAY_OF_WEEK = "endDayOfWeek";  // nepouzivat
 	private static final String KEY_E_START_TIME = "startTime";
 	private static final String KEY_E_END_TIME = "endTime";
 	private static final String KEY_E_DAYS_OF_WEEK = "daysOfWeek";
+	private static final String KEY_E_USE_END_TIME = "useEndTime";
 	
 	/**
      * Constructor takes and keeps a reference of the passed context in order to
@@ -191,11 +193,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_E_TYPE + " INTEGER,"
 				+ KEY_E_FK_PROFILE + " INTEGER,"
 				+ KEY_E_ENABLED + " INTEGER,"
-				+ KEY_E_START_DAY_OF_WEEK + " INTEGER,"
-				+ KEY_E_END_DAY_OF_WEEK + " INTEGER,"
 				+ KEY_E_START_TIME + " INTEGER,"
 				+ KEY_E_END_TIME + " INTEGER,"
-				+ KEY_E_DAYS_OF_WEEK + " TEXT"
+				+ KEY_E_DAYS_OF_WEEK + " TEXT,"
+				+ KEY_E_USE_END_TIME + " INTEGER"
 				+ ")";
 		db.execSQL(CREATE_EVENTS_TABLE);
 
@@ -351,15 +352,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		if (oldVersion < 29)
 		{
 			// pridame nove stlpce
-			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_START_DAY_OF_WEEK + " INTEGER");
-			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_END_DAY_OF_WEEK + " INTEGER");
 			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_START_TIME + " INTEGER");
 			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_END_TIME + " INTEGER");
 			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_DAYS_OF_WEEK + " TEXT");
 			
 			// updatneme zaznamy
-			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_START_DAY_OF_WEEK + "=0");
-			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_END_DAY_OF_WEEK + "=0");
 			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_START_TIME + "=0");
 			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_END_TIME + "=0");
 			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_DAYS_OF_WEEK + "=\"0000000\"");
@@ -367,7 +364,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			// pridame index
 			db.execSQL("CREATE INDEX IDX_FK_PROFILE ON " + TABLE_EVENTS + " (" + KEY_E_FK_PROFILE + ")");
 		}
-		
+
+		if (oldVersion < 30)
+		{
+			// pridame nove stlpce
+			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_USE_END_TIME + " INTEGER");
+			
+			// updatneme zaznamy
+			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_USE_END_TIME + "=0");
+		}
 		
 	}
 	
@@ -1399,83 +1404,37 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public void getEventPreferences(Event event, SQLiteDatabase db) {
 		switch (event._type)
         {
-        case Event.ETYPE_TIME_RANGE:
-        	getEventPreferencesTimeRange(event, db);
-        	break;
-        case Event.ETYPE_TIME_REPEAT:
-        	getEventPreferencesTimeRepeat(event, db);
+        case Event.ETYPE_TIME:
+        	getEventPreferencesTime(event, db);
         	break;
         }
 	}
 	
-	private void getEventPreferencesTimeRange(Event event, SQLiteDatabase db) {
-		Cursor cursor = db.query(TABLE_EVENTS, 
-				                 new String[] { KEY_E_START_DAY_OF_WEEK,
-				         						KEY_E_END_DAY_OF_WEEK,
-				         						KEY_E_START_TIME,
-				         						KEY_E_END_TIME
-												}, 
-				                 KEY_ID + "=?",
-				                 new String[] { String.valueOf(event._id) }, null, null, null, null);
-		if (cursor != null)
-			cursor.moveToFirst();
-
-		EventPreferencesTimeRange eventPreferences = (EventPreferencesTimeRange)event._eventPreferences;
-		
-		if (!cursor.isNull(0))
-		eventPreferences._startDay = Integer.parseInt(cursor.getString(0));
-		else
-			Log.e("DatabaseHandler.getEventPreferencesTimeRange","0=null");
-		if (!cursor.isNull(1))
-		eventPreferences._endDay = Integer.parseInt(cursor.getString(1));
-		else
-			Log.e("DatabaseHandler.getEventPreferencesTimeRange","1=null");
-		if (!cursor.isNull(2))
-		eventPreferences._startTime = Long.parseLong(cursor.getString(2));
-		else
-			Log.e("DatabaseHandler.getEventPreferencesTimeRange","2=null");
-		if (!cursor.isNull(3))
-		eventPreferences._endTime = Long.parseLong(cursor.getString(3));
-		else
-			Log.e("DatabaseHandler.getEventPreferencesTimeRange","3=null");
-		
-		cursor.close();
-	}
-
-	private void getEventPreferencesTimeRepeat(Event event, SQLiteDatabase db) {
+	private void getEventPreferencesTime(Event event, SQLiteDatabase db) {
 		Cursor cursor = db.query(TABLE_EVENTS, 
 				                 new String[] { KEY_E_DAYS_OF_WEEK,
 				         						KEY_E_START_TIME,
-				         						KEY_E_END_TIME
+				         						KEY_E_END_TIME,
+				         						KEY_E_USE_END_TIME
 												}, 
 				                 KEY_ID + "=?",
 				                 new String[] { String.valueOf(event._id) }, null, null, null, null);
 		if (cursor != null)
 			cursor.moveToFirst();
 
-		EventPreferencesTimeRepeat eventPreferences = (EventPreferencesTimeRepeat)event._eventPreferences;
+		EventPreferencesTime eventPreferences = (EventPreferencesTime)event._eventPreferences;
 		
-		if (!cursor.isNull(0))
-		{
-			String daysOfWeek = cursor.getString(0);
-			eventPreferences._sunday = (daysOfWeek.charAt(0) == '1') ? true : false;
-			eventPreferences._monday = (daysOfWeek.charAt(1) == '1') ? true : false;
-			eventPreferences._tuesday = (daysOfWeek.charAt(2) == '1') ? true : false;
-			eventPreferences._wendesday = (daysOfWeek.charAt(3) == '1') ? true : false;
-			eventPreferences._thursday = (daysOfWeek.charAt(4) == '1') ? true : false;
-			eventPreferences._friday = (daysOfWeek.charAt(5) == '1') ? true : false;
-			eventPreferences._saturday = (daysOfWeek.charAt(6) == '1') ? true : false;
-		}
-		else
-			Log.e("DatabaseHandler.getEventPreferencesTimeRepeat","0=null");
-		if (!cursor.isNull(1))
+		String daysOfWeek = cursor.getString(0);
+		eventPreferences._sunday = (daysOfWeek.charAt(0) == '1') ? true : false;
+		eventPreferences._monday = (daysOfWeek.charAt(1) == '1') ? true : false;
+		eventPreferences._tuesday = (daysOfWeek.charAt(2) == '1') ? true : false;
+		eventPreferences._wendesday = (daysOfWeek.charAt(3) == '1') ? true : false;
+		eventPreferences._thursday = (daysOfWeek.charAt(4) == '1') ? true : false;
+		eventPreferences._friday = (daysOfWeek.charAt(5) == '1') ? true : false;
+		eventPreferences._saturday = (daysOfWeek.charAt(6) == '1') ? true : false;
 		eventPreferences._startTime = Long.parseLong(cursor.getString(1));
-		else
-			Log.e("DatabaseHandler.getEventPreferencesTimeRepeat","1=null");
-		if (!cursor.isNull(2))
 		eventPreferences._endTime = Long.parseLong(cursor.getString(2));
-		else
-			Log.e("DatabaseHandler.getEventPreferencesTimeRepeat","2=null");
+		eventPreferences._useEndTime = (Integer.parseInt(cursor.getString(3)) == 1) ? true : false;
 		
 		cursor.close();
 	}
@@ -1494,11 +1453,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 		switch (event._type)
         {
-        case Event.ETYPE_TIME_RANGE:
-        	r = updateEventPreferencesTimeRange(event, db);
-        	break;
-        case Event.ETYPE_TIME_REPEAT:
-        	r = updateEventPreferencesTimeRepeat(event, db);
+        case Event.ETYPE_TIME:
+        	r = updateEventPreferencesTime(event, db);
         	break;
         default:
         	r = 0;
@@ -1506,30 +1462,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		return r;
 	}
 	
-	private int updateEventPreferencesTimeRange(Event event, SQLiteDatabase db) {
+	private int updateEventPreferencesTime(Event event, SQLiteDatabase db) {
 		ContentValues values = new ContentValues();
 		
-		EventPreferencesTimeRange eventPreferences = (EventPreferencesTimeRange)event._eventPreferences; 
-
-		Log.e("DatabaseHandler.updateEventPreferencesTimeRepeat","type="+event._type);
-		
-		values.put(KEY_E_TYPE, event._type);
-		values.put(KEY_E_START_DAY_OF_WEEK, eventPreferences._startDay);
-		values.put(KEY_E_END_DAY_OF_WEEK, eventPreferences._endDay);
-		values.put(KEY_E_START_TIME, eventPreferences._startTime);
-		values.put(KEY_E_END_TIME, eventPreferences._endTime);
-
-		// updating row
-		int r = db.update(TABLE_EVENTS, values, KEY_ID + " = ?",
-				        new String[] { String.valueOf(event._id) });
-        
-		return r;
-	}
-
-	private int updateEventPreferencesTimeRepeat(Event event, SQLiteDatabase db) {
-		ContentValues values = new ContentValues();
-		
-		EventPreferencesTimeRepeat eventPreferences = (EventPreferencesTimeRepeat)event._eventPreferences; 
+		EventPreferencesTime eventPreferences = (EventPreferencesTime)event._eventPreferences; 
 
 		Log.e("DatabaseHandler.updateEventPreferencesTimeRepeat","type="+event._type);
 		
@@ -1546,6 +1482,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_E_DAYS_OF_WEEK, daysOfWeek);
 		values.put(KEY_E_START_TIME, eventPreferences._startTime);
 		values.put(KEY_E_END_TIME, eventPreferences._endTime);
+		values.put(KEY_E_USE_END_TIME, (eventPreferences._useEndTime) ? 1 : 0);
 
 		// updating row
 		int r = db.update(TABLE_EVENTS, values, KEY_ID + " = ?",
@@ -1674,7 +1611,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 										}
 										
 										// for non existent fields set default value
+										if (exportedDBObj.getVersion() < 30)
+										{
+											values.put(KEY_E_USE_END_TIME, 0);
+										}
 
+										// Inserting Row do db z SQLiteOpenHelper
+										db.insert(TABLE_EVENTS, null, values);
 										
 								} while (cursor.moveToNext());
 							}

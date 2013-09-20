@@ -3,7 +3,7 @@ package sk.henrichg.phoneprofiles;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
-public class EventPreferencesTimeRepeat extends EventPreferences {
+public class EventPreferencesTime extends EventPreferences {
 
 	public boolean _sunday;
 	public boolean _monday;
@@ -14,12 +14,14 @@ public class EventPreferencesTimeRepeat extends EventPreferences {
 	public boolean _saturday;
 	public long _startTime;
 	public long _endTime;
+	public boolean _useEndTime;
 	
-	static final String PREF_EVENT_TIME_REPEAT_DAYS = "eventTimeRepeatDays";
-	static final String PREF_EVENT_TIME_REPEAT_START_TIME = "eventTimeRepeatStartTime";
-	static final String PREF_EVENT_TIME_REPEAT_END_TIME = "eventTimeRepeatEndTime";
+	static final String PREF_EVENT_TIME_DAYS = "eventTimeDays";
+	static final String PREF_EVENT_TIME_START_TIME = "eventTimeStartTime";
+	static final String PREF_EVENT_TIME_END_TIME = "eventTimeEndTime";
+	static final String PREF_EVENT_TIME_USE_END_TIME = "eventTimeUseEndTime";
 	
-	public EventPreferencesTimeRepeat(Event event,
+	public EventPreferencesTime(Event event,
 										boolean sunday,
 										boolean monday,
 										boolean tuesday,
@@ -28,7 +30,8 @@ public class EventPreferencesTimeRepeat extends EventPreferences {
 										boolean friday,
 										boolean saturday,
 										long startTime,
-										long endTime)
+										long endTime,
+										boolean useEndTime)
 	{
 		super(event);
 
@@ -41,9 +44,10 @@ public class EventPreferencesTimeRepeat extends EventPreferences {
 		this._saturday = saturday;
 		this._startTime = startTime;
 		this._endTime = endTime;
+		this._useEndTime = useEndTime;
 		
-		_preferencesResourceID = R.xml.event_preferences_time_repeat;
-		_iconResourceID = R.drawable.ic_event_time_repeat; 
+		_preferencesResourceID = R.xml.event_preferences_time;
+		_iconResourceID = R.drawable.ic_event_time; 
 	}
 	
 	@Override
@@ -58,16 +62,17 @@ public class EventPreferencesTimeRepeat extends EventPreferences {
     	if (this._thursday) sValue = sValue + "1|"; else sValue = sValue + "0|";
     	if (this._friday) sValue = sValue + "1|"; else sValue = sValue + "0|";
     	if (this._saturday) sValue = sValue + "1|"; else sValue = sValue + "0|";
-        editor.putString(PREF_EVENT_TIME_REPEAT_DAYS, sValue);
-        editor.putLong(PREF_EVENT_TIME_REPEAT_START_TIME, this._startTime);
-        editor.putLong(PREF_EVENT_TIME_REPEAT_END_TIME, this._endTime);
+        editor.putString(PREF_EVENT_TIME_DAYS, sValue);
+        editor.putLong(PREF_EVENT_TIME_START_TIME, this._startTime);
+        editor.putLong(PREF_EVENT_TIME_END_TIME, this._endTime);
+        editor.putBoolean(PREF_EVENT_TIME_USE_END_TIME, this._useEndTime);
 		editor.commit();
 	}
 
 	@Override
 	public void saveSharedPrefereces(SharedPreferences preferences)
 	{
-		String sDays = preferences.getString(PREF_EVENT_TIME_REPEAT_DAYS, "0|0|0|0|0|0|0");
+		String sDays = preferences.getString(PREF_EVENT_TIME_DAYS, "0|0|0|0|0|0|0");
 		String[] splits = sDays.split("\\|");
 		this._sunday = splits[0].equals("1");
 		this._monday = splits[1].equals("1");
@@ -76,8 +81,9 @@ public class EventPreferencesTimeRepeat extends EventPreferences {
 		this._thursday = splits[4].equals("1");
 		this._friday = splits[5].equals("1");
 		this._saturday = splits[6].equals("1");
-		this._startTime = preferences.getLong(PREF_EVENT_TIME_REPEAT_START_TIME, System.currentTimeMillis());
-		this._endTime = preferences.getLong(PREF_EVENT_TIME_REPEAT_END_TIME, System.currentTimeMillis());
+		this._startTime = preferences.getLong(PREF_EVENT_TIME_START_TIME, System.currentTimeMillis());
+		this._endTime = preferences.getLong(PREF_EVENT_TIME_END_TIME, System.currentTimeMillis());
+		this._useEndTime = preferences.getBoolean(PREF_EVENT_TIME_USE_END_TIME, false);
 	}
 	
 	@Override
@@ -85,7 +91,7 @@ public class EventPreferencesTimeRepeat extends EventPreferences {
 	{
 		String descr = description;
 		
-		descr = descr + "time repeat";
+		descr = descr + "time";
 		
 		return descr;
 	}

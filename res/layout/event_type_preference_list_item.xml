@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:padding="3dp"
-        android:src="@drawable/ic_event_time_range"
+        android:src="@drawable/ic_event_time"
         android:contentDescription="@string/empty_string"
         android:adjustViewBounds="true"
         android:maxHeight="50dp"
