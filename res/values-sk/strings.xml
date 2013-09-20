@@ -176,5 +176,9 @@
     <string name="event_preferences_profile_not_set">Nevybraný žíadny profil</string>
     <string name="profile_list_empty">Žiadne profily</string>
     <string name="event_list_empty">Žiadne udalosti</string>
+    <string name="event_preferences_category_eventParameters">Parametre udalosti</string>
+    <string name="event_preferences_time_startTime">Čas začiatku</string>
+    <string name="event_preferences_time_useEndTime">Použi čas konca</string>
+    <string name="event_preferences_time_endTime">Čas konca</string>
     	
 </resources>

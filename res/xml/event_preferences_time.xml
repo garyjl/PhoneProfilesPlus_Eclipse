@@ -21,4 +21,21 @@
             android:key="eventProfile"
             android:title="@string/event_preferences_eventProfile" />
     </PreferenceCategory>
+    <PreferenceCategory
+        android:summary="@string/event_preferences_category_eventParameters"
+        android:title="@string/event_preferences_category_eventParameters"  >
+        <sk.henrichg.phoneprofiles.TimePreference
+            android:key="eventTimeStartTime"
+            android:defaultValue="0"
+            android:title="@string/event_preferences_time_startTime" />
+		<CheckBoxPreference 
+		    android:key="eventTimeUseEndTime"
+		    android:title="@string/event_preferences_time_useEndTime"
+		    android:defaultValue="false" />
+        <sk.henrichg.phoneprofiles.TimePreference
+            android:key="eventTimeEndTime"
+            android:defaultValue="0"
+            android:title="@string/event_preferences_time_endTime"
+            android:dependency="eventTimeUseEndTime" />
+    </PreferenceCategory>
 </PreferenceScreen>    
