@@ -1427,6 +1427,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		String daysOfWeek = cursor.getString(0);
 		Log.e("DatabaseHandler.getEventPreferencesTime","daysOfWeek="+daysOfWeek);
 
+		if (daysOfWeek != null)
+		{
 		String[] splits = daysOfWeek.split("\\|");
 		if (splits[0].equals(ListPreferenceMultiSelect.allValue))
 		{
@@ -1457,6 +1459,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				eventPreferences._friday = eventPreferences._friday || value.equals("5");
 				eventPreferences._saturday = eventPreferences._saturday || value.equals("6");
 			}
+		}
 		}
 		eventPreferences._startTime = Long.parseLong(cursor.getString(1));
 		eventPreferences._endTime = Long.parseLong(cursor.getString(2));
