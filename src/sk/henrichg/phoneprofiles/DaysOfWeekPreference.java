@@ -176,10 +176,10 @@ public class DaysOfWeekPreference extends ListPreference {
     	else
     	{
     		
-	        for ( int i=0; i<mClickedDialogEntryIndices.length; i++ )
+	        for ( int i=1; i<mClickedDialogEntryIndices.length; i++ )
 	    		if (mClickedDialogEntryIndices[i])
 	    		{
-	    			summary = summary + namesOfDay[EventPreferencesTime.getDayOfWeekByLocale(i)] + " ";
+	    			summary = summary + namesOfDay[EventPreferencesTime.getDayOfWeekByLocale(i-1)+1] + " ";
 	    		}
 	    	
     	}
