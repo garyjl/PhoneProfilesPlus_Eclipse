@@ -1,5 +1,6 @@
 package sk.henrichg.phoneprofiles;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 
 public class EventPreferences {
@@ -26,7 +27,7 @@ public class EventPreferences {
 	{
 	}
 	
-	public String getPreferencesDescription(String description)
+	public String getPreferencesDescription(String description, Context context)
 	{
 		return description;
 	}

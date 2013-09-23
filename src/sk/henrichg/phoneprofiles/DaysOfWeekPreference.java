@@ -144,7 +144,7 @@ public class DaysOfWeekPreference extends ListPreference {
     	int dayOfWeek;
     	for (int i = 1; i < 8; i++)
     	{
-    		dayOfWeek = getDayOfWeekByLocale(i-1);
+    		dayOfWeek = EventPreferencesTime.getDayOfWeekByLocale(i-1);
     		newEntries[i] = namesOfDay[dayOfWeek+1];
     		newEntryValues[i] = String.valueOf(dayOfWeek); 
     	}
@@ -179,29 +179,12 @@ public class DaysOfWeekPreference extends ListPreference {
 	        for ( int i=0; i<mClickedDialogEntryIndices.length; i++ )
 	    		if (mClickedDialogEntryIndices[i])
 	    		{
-	    			summary = summary + namesOfDay[getDayOfWeekByLocale(i)] + " ";
+	    			summary = summary + namesOfDay[EventPreferencesTime.getDayOfWeekByLocale(i)] + " ";
 	    		}
 	    	
     	}
     	
         return summary;
-    }
-    
-    // dayOfWeek: value are (for exapmple) Calendar.SUNDAY-1
-    // return: value are (for exapmple) Calendar.MONDAY-1
-    private int getDayOfWeekByLocale(int dayOfWeek)
-    {
-    	
-    	Calendar cal = Calendar.getInstance(); 
-    	int firstDayOfWeek = cal.getFirstDayOfWeek();
-    	
-    	int resDayOfWeek = dayOfWeek + (firstDayOfWeek-1);
-    	if (resDayOfWeek > 6)
-    		resDayOfWeek = resDayOfWeek - 7;
-
-    	//Log.e("DaysOfWeekPreference.getDayOfWeekByLocale","resDayOfWeek="+resDayOfWeek);
-    	
-    	return resDayOfWeek;
     }
     
 }

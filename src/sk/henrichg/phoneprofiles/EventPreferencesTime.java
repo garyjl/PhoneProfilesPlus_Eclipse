@@ -1,7 +1,14 @@
 package sk.henrichg.phoneprofiles;
 
+import java.sql.Date;
+import java.text.DateFormatSymbols;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.text.format.DateFormat;
 import android.util.Log;
 
 public class EventPreferencesTime extends EventPreferences {
@@ -113,13 +120,73 @@ public class EventPreferencesTime extends EventPreferences {
 	}
 	
 	@Override
-	public String getPreferencesDescription(String description)
+	public String getPreferencesDescription(String description, Context context)
 	{
 		String descr = description;
+
+    	boolean[] daySet = new boolean[7];
+		daySet[0] = this._sunday;
+		daySet[1] = this._monday;
+		daySet[2] = this._tuesday;
+		daySet[3] = this._wendesday;
+		daySet[4] = this._thursday;
+		daySet[5] = this._friday;
+		daySet[6] = this._saturday;
+    	
+		boolean allDays = true;
+    	for (int i = 0; i < 7; i++)
+    		allDays = allDays && daySet[i]; 
 		
-		descr = descr + "time";
+    	if (allDays)
+    	{
+    		descr = descr + context.getString(R.string.array_pref_event_all);
+    		descr = descr + " ";
+    	}
+    	else
+    	{
+	    	String[] namesOfDay = DateFormatSymbols.getInstance().getShortWeekdays();
+	    	
+	    	int dayOfWeek;
+	    	for (int i = 0; i < 7; i++)
+	    	{
+	    		dayOfWeek = getDayOfWeekByLocale(i);
+	    		
+	    		if (daySet[dayOfWeek])
+	    			descr = descr + namesOfDay[dayOfWeek+1] + " ";
+	    	}
+    	}
+    	
+        Calendar calendar = new GregorianCalendar();
+
+        calendar.setTimeInMillis(this._startTime);
+		descr = descr + "- ";
+		descr = descr + DateFormat.getTimeFormat(context).format(new Date(calendar.getTimeInMillis()));
+		if (this._useEndTime)
+		{
+	        calendar.setTimeInMillis(this._endTime);
+			descr = descr + "-";
+			descr = descr + DateFormat.getTimeFormat(context).format(new Date(calendar.getTimeInMillis()));
+		}
 		
 		return descr;
 	}
+	
+    // dayOfWeek: value are (for exapmple) Calendar.SUNDAY-1
+    // return: value are (for exapmple) Calendar.MONDAY-1
+    public static int getDayOfWeekByLocale(int dayOfWeek)
+    {
+    	
+    	Calendar cal = Calendar.getInstance(); 
+    	int firstDayOfWeek = cal.getFirstDayOfWeek();
+    	
+    	int resDayOfWeek = dayOfWeek + (firstDayOfWeek-1);
+    	if (resDayOfWeek > 6)
+    		resDayOfWeek = resDayOfWeek - 7;
+
+    	//Log.e("DaysOfWeekPreference.getDayOfWeekByLocale","resDayOfWeek="+resDayOfWeek);
+    	
+    	return resDayOfWeek;
+    }
+	
 	
 }

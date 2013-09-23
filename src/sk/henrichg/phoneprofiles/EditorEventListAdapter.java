@@ -151,7 +151,7 @@ public class EditorEventListAdapter extends BaseAdapter
         	holder.eventIcon.setImageResource(R.drawable.ic_empty);
         
 	    if (GlobalData.applicationEditorPrefIndicator)
-	    	holder.eventPreferencesDescription.setText(event.getPreferecesDescription());
+	    	holder.eventPreferencesDescription.setText(event.getPreferecesDescription(vi.getContext()));
 
         Profile profile =  EditorProfilesActivity.profilesDataWrapper.getProfileById(event._fkProfile);
         if (profile != null)

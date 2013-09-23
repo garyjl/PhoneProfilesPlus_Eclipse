@@ -229,14 +229,14 @@ public class Event {
 		return profile;
 	}
 	
-	public String getPreferecesDescription()
+	public String getPreferecesDescription(Context context)
 	{
 		String description;
 		
 		description = "";
 		
 		if (_eventPreferences != null)
-			description = _eventPreferences.getPreferencesDescription(description);
+			description = _eventPreferences.getPreferencesDescription(description, context);
 		
 		return description;
 	}
