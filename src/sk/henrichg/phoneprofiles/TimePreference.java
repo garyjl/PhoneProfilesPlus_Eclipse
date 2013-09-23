@@ -7,18 +7,26 @@ import java.util.GregorianCalendar;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.preference.DialogPreference;
+import android.provider.Settings;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.TimePicker;
 
 public class TimePreference extends DialogPreference {
-    private Calendar calendar;
+    
+	private Context context;
+	private AttributeSet attributeSet;
+	private Calendar calendar;
     private TimePicker picker = null;
 
     public TimePreference(Context ctxt, AttributeSet attrs) {
         super(ctxt, attrs);
 
+        context = ctxt;
+        attributeSet = attrs;
+        
         setPositiveButtonText(android.R.string.ok);
         setNegativeButtonText(android.R.string.cancel);
 
@@ -27,7 +35,19 @@ public class TimePreference extends DialogPreference {
 
     @Override
     protected View onCreateDialogView() {
-        picker = new TimePicker(getContext());
+        picker = new TimePicker(context, attributeSet);
+        //String clockType = android.provider.Settings.System.getString(
+        //						context.getContentResolver(), 
+        //						android.provider.Settings.System.TIME_12_24);
+        //String clockType  = Settings.System.getString(context.getContentResolver(), 
+        //		                           Settings.System.TIME_12_24);
+        //if (clockTtype = null)
+        //{
+        //	 DateFormat.is24HourFormat(context);
+        //}
+        //Log.e("TimePreference.onCreateDialogView", "clockType="+clockType);
+        //Log.e("TimePreference.onCreateDialogView", "is24Hour="+DateFormat.is24HourFormat(context));
+        picker.setIs24HourView(DateFormat.is24HourFormat(context));
         return (picker);
     }
 

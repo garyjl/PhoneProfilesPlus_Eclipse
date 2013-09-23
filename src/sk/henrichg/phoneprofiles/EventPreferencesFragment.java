@@ -110,11 +110,11 @@ public class EventPreferencesFragment extends PreferenceListFragment
 
     	event = (Event)EditorProfilesActivity.profilesDataWrapper.getEventList().get(event_position);
 		
-        loadPreferences();
-        
 		prefMng = getPreferenceManager();
 		prefMng.setSharedPreferencesName(PREFS_NAME);
 		prefMng.setSharedPreferencesMode(Activity.MODE_PRIVATE);
+
+        loadPreferences();
 		
     	// get preference resource id from EventPreference
 		addPreferencesFromResource(event._eventPreferences._preferencesResourceID);

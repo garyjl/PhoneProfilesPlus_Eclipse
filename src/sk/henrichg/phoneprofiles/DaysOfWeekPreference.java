@@ -1,17 +1,15 @@
 package sk.henrichg.phoneprofiles;
 
 
-import java.sql.Date;
 import java.text.DateFormatSymbols;
-
+import java.util.Calendar;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.text.format.DateFormat;
 import android.util.AttributeSet;
+import android.util.Log;
 
 /**
  * A {@link Preference} that displays a list of entries as
@@ -21,7 +19,7 @@ import android.util.AttributeSet;
  * from the {@link #setEntryValues(CharSequence[])} array.
  * </p>
  */
-public class ListPreferenceMultiSelect extends ListPreference {
+public class DaysOfWeekPreference extends ListPreference {
 	//Need to make sure the SEPARATOR is unique and weird enough that it doesn't match one of the entries.
 	//Not using any fancy symbols because this is interpreted as a regex for splitting strings.
 	private static final String SEPARATOR = "|";
@@ -29,33 +27,46 @@ public class ListPreferenceMultiSelect extends ListPreference {
 	public static final String allValue = "#ALL#";
 	
     private boolean[] mClickedDialogEntryIndices;
+    
+    Context context;
 
-    public ListPreferenceMultiSelect(Context context, AttributeSet attrs) {
+    public DaysOfWeekPreference(Context context) {
+        super(context);
+        mClickedDialogEntryIndices = new boolean[8];
+        this.context = context; 
+    }
+
+    
+    public DaysOfWeekPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
-        
-        mClickedDialogEntryIndices = new boolean[getEntries().length];
+        mClickedDialogEntryIndices = new boolean[8];
+        this.context = context; 
     }
  
     @Override
     public void setEntries(CharSequence[] entries) {
     	super.setEntries(entries);
-        mClickedDialogEntryIndices = new boolean[entries.length];
+        mClickedDialogEntryIndices = new boolean[8];
     }
     
-    public ListPreferenceMultiSelect(Context context) {
-        this(context, null);
+    @Override
+    public void setEntryValues(CharSequence[] entries) {
+    	super.setEntryValues(entries);
     }
-
+    
     @Override
     protected void onPrepareDialogBuilder(Builder builder) {
+
+    	
     	CharSequence[] entries = getEntries();
     	CharSequence[] entryValues = getEntryValues();
-    	
+
         if (entries == null || entryValues == null || entries.length != entryValues.length ) {
             throw new IllegalStateException(
                     "ListPreference requires an entries array and an entryValues array which are both the same length");
         }
-
+        
+    	
         //restoreCheckedEntries();
         builder.setMultiChoiceItems(entries, mClickedDialogEntryIndices, 
                 new DialogInterface.OnMultiChoiceClickListener() {
@@ -118,6 +129,29 @@ public class ListPreferenceMultiSelect extends ListPreference {
 	
     @Override
     protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
+    	
+    	// change entries order by firts day of week //////////////////
+    	CharSequence[] newEntries = new CharSequence[8];
+    	CharSequence[] newEntryValues = new CharSequence[8];
+    	
+    	newEntries[0] = context.getString(R.string.array_pref_event_all);
+    	newEntryValues[0] = allValue;
+    	
+    	String[] namesOfDay = DateFormatSymbols.getInstance().getWeekdays();
+    	//for (int i = 1; i < 8; i++)
+    	//	Log.e("DaysOfWeekPreference.onPrepareDialogBuilder", "namesOfDay="+namesOfDay[i]);
+
+    	int dayOfWeek;
+    	for (int i = 1; i < 8; i++)
+    	{
+    		dayOfWeek = getDayOfWeekByLocale(i-1);
+    		newEntries[i] = namesOfDay[dayOfWeek+1];
+    		newEntryValues[i] = String.valueOf(dayOfWeek); 
+    	}
+    	setEntries(newEntries);
+    	setEntryValues(newEntryValues);
+    	/////////////////////////////////////////////////////
+    	
         if (restoreValue) {
         	String sVal = getPersistedString((String)defaultValue);
         	restoreCheckedEntries(sVal);
@@ -130,23 +164,44 @@ public class ListPreferenceMultiSelect extends ListPreference {
 
     @Override
     public CharSequence getSummary() {
-    	String[] namesOfDays = DateFormatSymbols.getInstance().getShortWeekdays();
+    	String[] namesOfDay = DateFormatSymbols.getInstance().getShortWeekdays();
     	
     	String summary = "";
     	
     	if (mClickedDialogEntryIndices[0])
     	{
-	    	for ( int i=0; i<namesOfDays.length; i++ )
-    			summary = summary + namesOfDays[i] + " ";
+	    	for ( int i=0; i<namesOfDay.length; i++ )
+    			summary = summary + namesOfDay[i] + " ";
     	}
     	else
     	{
-	    	for ( int i=0; i<mClickedDialogEntryIndices.length; i++ )
+    		
+	        for ( int i=0; i<mClickedDialogEntryIndices.length; i++ )
 	    		if (mClickedDialogEntryIndices[i])
-	    			summary = summary + namesOfDays[i] + " ";
+	    		{
+	    			summary = summary + namesOfDay[getDayOfWeekByLocale(i)] + " ";
+	    		}
+	    	
     	}
     	
         return summary;
+    }
+    
+    // dayOfWeek: value are (for exapmple) Calendar.SUNDAY-1
+    // return: value are (for exapmple) Calendar.MONDAY-1
+    private int getDayOfWeekByLocale(int dayOfWeek)
+    {
+    	
+    	Calendar cal = Calendar.getInstance(); 
+    	int firstDayOfWeek = cal.getFirstDayOfWeek();
+    	
+    	int resDayOfWeek = dayOfWeek + (firstDayOfWeek-1);
+    	if (resDayOfWeek > 6)
+    		resDayOfWeek = resDayOfWeek - 7;
+
+    	//Log.e("DaysOfWeekPreference.getDayOfWeekByLocale","resDayOfWeek="+resDayOfWeek);
+    	
+    	return resDayOfWeek;
     }
     
 }

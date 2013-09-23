@@ -72,7 +72,7 @@ public class Event {
 	
 	public void createEventPreferences()
 	{
-		Log.e("Event.createEventPreferences","type="+_type);
+		//Log.e("Event.createEventPreferences","type="+_type);
         switch (this._type)
         {
         case ETYPE_TIME:

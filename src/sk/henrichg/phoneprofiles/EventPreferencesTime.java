@@ -63,7 +63,7 @@ public class EventPreferencesTime extends EventPreferences {
     	if (this._thursday) sValue = sValue + "4|";
     	if (this._friday) sValue = sValue + "5|";
     	if (this._saturday) sValue = sValue + "6|";
-		Log.e("EventPreferencesTime.loadSharedPreferences",sValue);
+		//Log.e("EventPreferencesTime.loadSharedPreferences",sValue);
         editor.putString(PREF_EVENT_TIME_DAYS, sValue);
         editor.putLong(PREF_EVENT_TIME_START_TIME, this._startTime);
         editor.putLong(PREF_EVENT_TIME_END_TIME, this._endTime);
@@ -74,10 +74,10 @@ public class EventPreferencesTime extends EventPreferences {
 	@Override
 	public void saveSharedPrefereces(SharedPreferences preferences)
 	{
-		String sDays = preferences.getString(PREF_EVENT_TIME_DAYS, ListPreferenceMultiSelect.allValue);
-		Log.e("EventPreferencesTime.saveSharedPreferences",sDays);
+		String sDays = preferences.getString(PREF_EVENT_TIME_DAYS, DaysOfWeekPreference.allValue);
+		//Log.e("EventPreferencesTime.saveSharedPreferences",sDays);
 		String[] splits = sDays.split("\\|");
-		if (splits[0].equals(ListPreferenceMultiSelect.allValue))
+		if (splits[0].equals(DaysOfWeekPreference.allValue))
 		{
 			this._sunday = true;
 			this._monday = true;

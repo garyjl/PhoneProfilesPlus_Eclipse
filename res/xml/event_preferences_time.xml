@@ -24,7 +24,7 @@
     <PreferenceCategory
         android:summary="@string/event_preferences_category_eventParameters"
         android:title="@string/event_preferences_category_eventParameters" >
-        <sk.henrichg.phoneprofiles.ListPreferenceMultiSelect
+        <sk.henrichg.phoneprofiles.DaysOfWeekPreference
             android:defaultValue="#ALL#"
             android:key="eventTimeDays"
             android:title="@string/event_preferences_time_timeDays"

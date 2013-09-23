@@ -1236,7 +1236,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				event._id = Long.parseLong(cursor.getString(0));
 				event._name = cursor.getString(1);
 				event._type = Integer.parseInt(cursor.getString(2));
-				Log.e("DatabaseHandler.getAllEvents","type="+event._type);
+				//Log.e("DatabaseHandler.getAllEvents","type="+event._type);
 				event._fkProfile = Long.parseLong(cursor.getString(3));
 				event._enabled = (Integer.parseInt(cursor.getString(4)) == 1) ? true : false;
 				event.createEventPreferences();
@@ -1425,12 +1425,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		EventPreferencesTime eventPreferences = (EventPreferencesTime)event._eventPreferences;
 		
 		String daysOfWeek = cursor.getString(0);
-		Log.e("DatabaseHandler.getEventPreferencesTime","daysOfWeek="+daysOfWeek);
+		//Log.e("DatabaseHandler.getEventPreferencesTime","daysOfWeek="+daysOfWeek);
 
 		if (daysOfWeek != null)
 		{
 		String[] splits = daysOfWeek.split("\\|");
-		if (splits[0].equals(ListPreferenceMultiSelect.allValue))
+		if (splits[0].equals(DaysOfWeekPreference.allValue))
 		{
 			eventPreferences._sunday = true;
 			eventPreferences._monday = true;
@@ -1478,7 +1478,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	public int updateEventPreferences(Event event, SQLiteDatabase db) {
 		int r;
-		Log.e("DatabaseHandler.updateEventPreferences","type="+event._type);
+		//Log.e("DatabaseHandler.updateEventPreferences","type="+event._type);
 		
 		switch (event._type)
         {
@@ -1496,7 +1496,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 		EventPreferencesTime eventPreferences = (EventPreferencesTime)event._eventPreferences; 
 
-		Log.e("DatabaseHandler.updateEventPreferencesTime","type="+event._type);
+		//Log.e("DatabaseHandler.updateEventPreferencesTime","type="+event._type);
 		
     	String daysOfWeek = "";
     	if (eventPreferences._sunday) daysOfWeek = daysOfWeek + "0|";
@@ -1507,7 +1507,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     	if (eventPreferences._friday) daysOfWeek = daysOfWeek + "5|";
     	if (eventPreferences._saturday) daysOfWeek = daysOfWeek + "6|";
 
-		Log.e("DatabaseHandler.updateEventPreferencesTime","daysOfWeek="+daysOfWeek);
+		//Log.e("DatabaseHandler.updateEventPreferencesTime","daysOfWeek="+daysOfWeek);
     	
 		values.put(KEY_E_TYPE, event._type);
 		values.put(KEY_E_DAYS_OF_WEEK, daysOfWeek);
