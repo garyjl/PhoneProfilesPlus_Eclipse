@@ -24,6 +24,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -66,6 +67,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	ListView drawerListView;
 	ActionBarDrawerToggle drawerToggle;
 	
+	String[] drawerItemsTitle;
+	EditorDrawerListAdapter drawerAdapter;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +114,25 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
         else
         	drawerShadowId = R.drawable.drawer_shadow;
 		drawerLayout.setDrawerShadow(drawerShadowId, GravityCompat.START);
+
+		// drawer item titles
+		drawerItemsTitle = new String[] { "Profiles - all", 
+                "Profiles - show in Activator",
+				  "Profiles - no show in Activator",
+                "Editor - all",
+                "Editor - enabled",
+                "Editor - disabled"
+              };
+
+		
+        // Pass string arrays to MenuListAdapter
+        drawerAdapter = new EditorDrawerListAdapter(getBaseContext(), drawerItemsTitle);
+        
+        // Set the MenuListAdapter to the ListView
+        drawerListView.setAdapter(drawerAdapter);
+ 
+        // Capture listview menu item click
+        drawerListView.setOnItemClickListener(new DrawerItemClickListener());
 		
 		 // Enable ActionBar app icon to behave as action to toggle nav drawer
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -145,9 +167,10 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
  
         drawerLayout.setDrawerListener(drawerToggle);
         
-		getSupportActionBar().setDisplayShowTitleEnabled(false);
+		//getSupportActionBar().setDisplayShowTitleEnabled(false);
 		getSupportActionBar().setTitle(R.string.title_activity_phone_profiles);
 		
+	/*	
 		// Create an array adapter to populate dropdownlist 
 	    ArrayAdapter<CharSequence> navigationAdapter =
 	            ArrayAdapter.createFromResource(getSupportActionBar().getThemedContext(), R.array.phoneProfilesNavigator, R.layout.sherlock_spinner_item);
@@ -180,10 +203,15 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	    // Setting dropdown items and item navigation listener for the actionbar 
 	    getSupportActionBar().setListNavigationCallbacks(navigationAdapter, navigationListener);
 	    navigationAdapter.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
-		
+	*/	
 
-		
+		// select first drawer item
+        if (savedInstanceState == null) {
+            selectItem(0);
+        }
+        
 		//Log.d("EditorProfilesActivity.onCreate", "xxxx");
+		
 		
 	}
 	
@@ -272,6 +300,67 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			return super.onOptionsItemSelected(item);
 		}
 	}
+	
+    // ListView click listener in the navigation drawer
+    private class DrawerItemClickListener implements
+            ListView.OnItemClickListener {
+
+        public void onItemClick(AdapterView<?> parent, View view, int position,
+                long id) {
+            selectItem(position);
+        }
+    }
+ 
+    private void selectItem(int position) {
+ 
+        // Locate Position
+    	Fragment fragment;
+    	
+        switch (position) {
+        case 0:
+    		fragment = new EditorProfileListFragment();
+    		getSupportFragmentManager().beginTransaction()
+    			.replace(R.id.editor_list_container, fragment).commit();
+			onStartProfilePreferences(-1, false);
+            break;
+        case 1:
+    		fragment = new EditorProfileListFragment();
+    		getSupportFragmentManager().beginTransaction()
+    			.replace(R.id.editor_list_container, fragment).commit();
+			onStartProfilePreferences(-1, false);
+            break;
+        case 2:
+    		fragment = new EditorProfileListFragment();
+    		getSupportFragmentManager().beginTransaction()
+    			.replace(R.id.editor_list_container, fragment).commit();
+			onStartProfilePreferences(-1, false);
+            break;
+        case 3:
+    		fragment = new EditorEventListFragment();
+    		getSupportFragmentManager().beginTransaction()
+    			.replace(R.id.editor_list_container, fragment).commit();
+			onStartEventPreferences(-1, false);
+			break;	
+        case 4:
+    		fragment = new EditorEventListFragment();
+    		getSupportFragmentManager().beginTransaction()
+    			.replace(R.id.editor_list_container, fragment).commit();
+			onStartEventPreferences(-1, false);
+			break;	
+        case 5:
+    		fragment = new EditorEventListFragment();
+    		getSupportFragmentManager().beginTransaction()
+    			.replace(R.id.editor_list_container, fragment).commit();
+			onStartEventPreferences(-1, false);
+			break;	
+        }
+        drawerListView.setItemChecked(position, true);
+ 
+        // Get the title followed by the position
+        setTitle(drawerItemsTitle[position]);
+        // Close drawer
+        drawerLayout.closeDrawer(drawerListView);
+    }	
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -445,6 +534,12 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		startActivity(intent);
 		finish();
 	}
+	
+	 @Override
+	 public void setTitle(CharSequence title) {
+	     //mTitle = title;
+	     getSupportActionBar().setTitle(title);
+	 }	
 
 	public void onStartProfilePreferences(int position, boolean afterDelete) {
 		if (mTwoPane) {

@@ -49,6 +49,7 @@
         <item name="actionProfileToolBackground">@drawable/abs__list_selector_holo_light</item>
         <item name="actionProfileButtonTextStyle">@style/TextAppearance.Sherlock.Widget.ActionMode.Title</item> 
         <item name="navigationDrawerBackground">@drawable/abs__ab_solid_light_holo</item> 
+        <item name="navigationDrawerText">@color/navigationDrawerTextColor_phoneprofiletheme</item>
         
         <item name="actionModeCloseButtonStyle">@style/NoCloseButton</item>
         <item name="android:actionModeCloseButtonStyle">@style/NoCloseButton</item>

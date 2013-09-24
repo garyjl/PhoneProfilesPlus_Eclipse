@@ -4,4 +4,5 @@
     <color name="activityCardBackground_phoneprofilestheme_dark">#FF202020</color>
     <color name="activityCardSelected_phoneprofilestheme_dark">#FF33b5e5</color>
     <color name="navigationDrawerBackground_phoneprofilestheme_dark">#FF000000</color>
+    <color name="navigationDrawerTextColor_phoneprofiletheme_dark">#ffffffff</color>
 </resources>

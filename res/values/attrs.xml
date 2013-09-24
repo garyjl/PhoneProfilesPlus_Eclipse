@@ -47,5 +47,6 @@
     <attr name="actionProfileToolBackground" format="reference" />
     <attr name="actionProfileButtonTextStyle" format="reference" />
     <attr name="navigationDrawerBackground" format="reference" />
+    <attr name="navigationDrawerText" format="reference"/>
     
 </resources>
