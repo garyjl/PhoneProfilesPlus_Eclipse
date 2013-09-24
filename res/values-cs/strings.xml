@@ -190,5 +190,7 @@
 	<string name="array_pref_event_thursday">Čtvrtek</string>
 	<string name="array_pref_event_friday">Pátek</string>
 	<string name="array_pref_event_saturday">Sobota</string>
-    	
+    <string name="editor_list_drawer_open">Otevři navigační panel</string>
+    <string name="editor_list_drawer_close">Zavři navigační panel</string>	
+		
 </resources>

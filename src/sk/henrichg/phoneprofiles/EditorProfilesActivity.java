@@ -19,8 +19,13 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceScreen;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -57,6 +62,11 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	 */
 	private boolean mTwoPane;
 	
+	DrawerLayout drawerLayout;
+	ListView drawerListView;
+	ActionBarDrawerToggle drawerToggle;
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -92,9 +102,49 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 
 		}
 		
+		drawerLayout = (DrawerLayout) findViewById(R.id.editor_list_drawer_layout);
+		drawerListView = (ListView) findViewById(R.id.editor_list_drawer);
 		
-		//getSupportActionBar().setHomeButtonEnabled(true);
-		//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		int drawerShadowId;
+        if (GlobalData.applicationTheme.equals("dark"))
+        	drawerShadowId = R.drawable.drawer_shadow_dark;
+        else
+        	drawerShadowId = R.drawable.drawer_shadow;
+		drawerLayout.setDrawerShadow(drawerShadowId, GravityCompat.START);
+		
+		 // Enable ActionBar app icon to behave as action to toggle nav drawer
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        
+        // ActionBarDrawerToggle ties together the the proper interactions
+        // between the sliding drawer and the action bar app icon
+        int drawerIconId;
+        if (GlobalData.applicationTheme.equals("light"))
+        	drawerIconId = R.drawable.ic_drawer;
+        else
+        	drawerIconId = R.drawable.ic_drawer_dark;
+        
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
+								                drawerIconId, 
+								                R.string.editor_list_drawer_open,
+								                R.string.editor_list_drawer_close) 
+        {
+ 
+            public void onDrawerClosed(View view) {
+                // TODO Auto-generated method stub
+                super.onDrawerClosed(view);
+            }
+ 
+            public void onDrawerOpened(View drawerView) {
+                // TODO Auto-generated method stub
+                // Set the title on the action when drawer open
+                //getSupportActionBar().setTitle(mDrawerTitle);
+                super.onDrawerOpened(drawerView);
+            }
+        };
+ 
+        drawerLayout.setDrawerListener(drawerToggle);
+        
 		getSupportActionBar().setDisplayShowTitleEnabled(false);
 		getSupportActionBar().setTitle(R.string.title_activity_phone_profiles);
 		
@@ -179,6 +229,13 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		Intent intent;
 			
 		switch (item.getItemId()) {
+		case android.R.id.home:
+            if (drawerLayout.isDrawerOpen(drawerListView)) {
+                drawerLayout.closeDrawer(drawerListView);
+            } else {
+                drawerLayout.openDrawer(drawerListView);
+            }	
+			return super.onOptionsItemSelected(item);
 		case R.id.menu_settings:
 			//Log.d("EditorProfilesActivity.onOptionsItemSelected", "menu_settings");
 			
@@ -368,9 +425,21 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	}
 	
 	
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        drawerToggle.syncState();
+    }
+ 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig)
 	{
+		// activity will restarted
+        /*super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggles
+        drawerToggle.onConfigurationChanged(newConfig); */
+		
 		getBaseContext().getResources().updateConfiguration(newConfig, getBaseContext().getResources().getDisplayMetrics());
 		Intent intent = getIntent();
 		startActivity(intent);
