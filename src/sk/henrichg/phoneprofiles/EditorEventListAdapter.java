@@ -142,7 +142,7 @@ public class EditorEventListAdapter extends BaseAdapter
        	if (event._enabled)
        		holder.eventEnabled.setImageResource(R.drawable.ic_profile_activated);
        	else
-       		holder.eventEnabled.setImageResource(R.drawable.ic_empty);
+       		holder.eventEnabled.setImageResource(R.drawable.ic_profile_deactivated);
        	
         holder.eventName.setText(event._name);
         if (event._eventPreferences != null)

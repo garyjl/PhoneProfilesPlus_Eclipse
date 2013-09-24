@@ -236,7 +236,7 @@ public class EditorProfileListAdapter extends BaseAdapter
         if (profile._showInActivator)
         	holder.profileShowInActivator.setImageResource(R.drawable.ic_profile_activated);
         else
-        	holder.profileShowInActivator.setImageResource(R.drawable.ic_empty);
+        	holder.profileShowInActivator.setImageResource(R.drawable.ic_profile_deactivated);
         
 		if (GlobalData.applicationEditorPrefIndicator)
 		{
