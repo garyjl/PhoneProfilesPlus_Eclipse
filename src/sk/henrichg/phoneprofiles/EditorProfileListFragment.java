@@ -37,7 +37,11 @@ public class EditorProfileListFragment extends SherlockFragment {
 	private int startupSource = 0;
 	private Intent intent;
 	private DatabaseHandler databaseHandler;
+	
+	public static final String FILTER_TYPE_ARGUMENT = "filter_type";
 
+	private int filterType = DatabaseHandler.FILTER_TYPE_PROFILES_ALL;  
+	
 	/**
 	 * The fragment's current callback object, which is notified of list item
 	 * clicks.
@@ -56,7 +60,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		/**
 		 * Callback for when an item has been selected.
 		 */
-		public void onStartProfilePreferences(int position, boolean afterDelete);
+		public void onStartProfilePreferences(int position, int filterType, boolean afterDelete);
 	}
 
 	/**
@@ -64,7 +68,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 	 * nothing. Used only when this fragment is not attached to an activity.
 	 */
 	private static OnStartProfilePreferences sDummyOnStartProfilePreferencesCallback = new OnStartProfilePreferences() {
-		public void onStartProfilePreferences(int position, boolean afterDelete) {
+		public void onStartProfilePreferences(int position, int filterType, boolean afterDelete) {
 		}
 	};
 	
@@ -97,7 +101,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 	
 	public EditorProfileListFragment() {
 	}
-	
+
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -145,6 +149,10 @@ public class EditorProfileListFragment extends SherlockFragment {
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
+		
+        filterType = getArguments() != null ? 
+        		getArguments().getInt(FILTER_TYPE_ARGUMENT, DatabaseHandler.FILTER_TYPE_PROFILES_ALL) : 
+        		DatabaseHandler.FILTER_TYPE_PROFILES_ALL;
 
 		//Log.e("EditorProfileListFragment.onCreate","xxx");
 		
@@ -156,7 +164,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		activateProfileHelper = EditorProfilesActivity.profilesDataWrapper.getActivateProfileHelper();
 		activateProfileHelper.initialize(getSherlockActivity(), getActivity().getBaseContext());
 		
-		final SherlockFragment fragment = this;
+		final EditorProfileListFragment fragment = this;
 		
 		new AsyncTask<Void, Integer, Void>() {
 			
@@ -169,7 +177,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 			
 			@Override
 			protected Void doInBackground(Void... params) {
-				profileList = EditorProfilesActivity.profilesDataWrapper.getProfileList();
+				profileList = EditorProfilesActivity.profilesDataWrapper.getProfileList(filterType);
 				
 				return null;
 			}
@@ -403,7 +411,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		
 		// Notify the active callbacks interface (the activity, if the
 		// fragment is attached to one) one must start profile preferences
-		onStartProfilePreferencesCallback.onStartProfilePreferences(profileListAdapter.getItemId(profile), false);
+		onStartProfilePreferencesCallback.onStartProfilePreferences(profileListAdapter.getItemId(profile), filterType, false);
 	}
 
 	public void duplicateProfile(int position)
@@ -521,7 +529,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 							activateProfileHelper.updateWidget();
 							
 							profile = EditorProfilesActivity.profilesDataWrapper.getFirstProfile();
-							onStartProfilePreferencesCallback.onStartProfilePreferences(profileListAdapter.getItemId(profile), true);
+							onStartProfilePreferencesCallback.onStartProfilePreferences(profileListAdapter.getItemId(profile), filterType, true);
 						}
 					}
 					
@@ -595,7 +603,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 							activateProfileHelper.updateWidget();
 							
 							Profile profile = EditorProfilesActivity.profilesDataWrapper.getFirstProfile();
-							onStartProfilePreferencesCallback.onStartProfilePreferences(profileListAdapter.getItemId(profile), true);
+							onStartProfilePreferencesCallback.onStartProfilePreferences(profileListAdapter.getItemId(profile), filterType, true);
 						}
 					}
 					
@@ -715,6 +723,11 @@ public class EditorProfileListFragment extends SherlockFragment {
 	public void updateListView()
 	{
 		profileListAdapter.notifyDataSetChanged();
+	}
+	
+	public int getFilterType()
+	{
+		return filterType;
 	}
 
 

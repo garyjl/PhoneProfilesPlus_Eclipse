@@ -2,8 +2,6 @@ package sk.henrichg.phoneprofiles;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-
 import com.google.android.apps.dashclock.api.DashClockExtension;
 import com.google.android.apps.dashclock.api.ExtensionData;
 
@@ -30,7 +28,7 @@ public class PhoneProfilesDashClockExtension extends DashClockExtension {
 		context = getApplicationContext();
 		
 		if (profilesDataWrapper == null)
-			profilesDataWrapper = new ProfilesDataWrapper(context, true, false, 0, false, false, false);
+			profilesDataWrapper = new ProfilesDataWrapper(context, true, false, 0);
 	
 		setUpdateWhenScreenOn(true);
 	}

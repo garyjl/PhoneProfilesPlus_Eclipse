@@ -27,6 +27,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	
 	private Profile profile;
 	private int profile_position;
+	private int filter_type;
 	private PreferenceManager prefMng;
 	private SharedPreferences preferences;
 	private Context context;
@@ -47,11 +48,11 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		/**
 		 * Callback for restart fragment.
 		 */
-		public void onRestartProfilePreferences(int position);
+		public void onRestartProfilePreferences(int position, int filterType);
 	}
 
 	private static OnRestartProfilePreferences sDummyOnRestartProfilePreferencesCallback = new OnRestartProfilePreferences() {
-		public void onRestartProfilePreferences(int position) {
+		public void onRestartProfilePreferences(int position, int filterType) {
 		}
 	};
 	
@@ -105,6 +106,9 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		if (getArguments().containsKey(GlobalData.EXTRA_PROFILE_POSITION))
 			profile_position = getArguments().getInt(GlobalData.EXTRA_PROFILE_POSITION);
     	//Log.d("ProfilePreferencesFragment.onCreate", "profile_position=" + profile_position);
+		if (getArguments().containsKey(GlobalData.EXTRA_FILTER_TYPE))
+			filter_type = getArguments().getInt(GlobalData.EXTRA_FILTER_TYPE);
+    	//Log.d("ProfilePreferencesFragment.onCreate", "filter_type=" + filter_type);
 		
         context = getSherlockActivity().getBaseContext();
         
@@ -195,7 +199,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	private void loadPreferences()
 	{
 		
-    	profile = (Profile)EditorProfilesActivity.profilesDataWrapper.getProfileList().get(profile_position);
+    	profile = (Profile)EditorProfilesActivity.profilesDataWrapper.getProfileList(filter_type).get(profile_position);
     	
     	if (profile != null)
     	{
@@ -459,7 +463,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
             public void onDestroyActionMode(ActionMode mode) {
                actionMode = null;
                if (restart)
-            	   onRestartProfilePreferencesCallback.onRestartProfilePreferences(profile_position);
+            	   onRestartProfilePreferencesCallback.onRestartProfilePreferences(profile_position, filter_type);
             }
  
             /** This is called when the action mode is created. This is called by startActionMode() */

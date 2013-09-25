@@ -121,7 +121,7 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 	public void onDataSetChanged() {
 		ProfileListWidgetProvider.createProfilesDataWrapper();
 		
-		profileList = ProfileListWidgetProvider.profilesDataWrapper.getProfileListForActivator();
+		profileList = ProfileListWidgetProvider.profilesDataWrapper.getProfileList(DatabaseHandler.FILTER_TYPE_PROFILES_SHOW_IN_ACTIVATOR);
 	}
 
 }

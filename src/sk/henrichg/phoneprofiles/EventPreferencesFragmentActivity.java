@@ -35,10 +35,12 @@ public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
 		getSupportActionBar().setTitle(R.string.title_activity_event_preferences);
 
         int event_position = getIntent().getIntExtra(GlobalData.EXTRA_EVENT_POSITION, -1);
+        int filter_type = getIntent().getIntExtra(GlobalData.EXTRA_FILTER_TYPE, DatabaseHandler.FILTER_TYPE_EVENTS_ALL);
 
 		if (savedInstanceState == null) {
 			Bundle arguments = new Bundle();
 			arguments.putInt(GlobalData.EXTRA_EVENT_POSITION, event_position);
+			arguments.putInt(GlobalData.EXTRA_FILTER_TYPE, filter_type);
 			EventPreferencesFragment fragment = new EventPreferencesFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
@@ -84,9 +86,10 @@ public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
 			fragment.doOnActivityResult(requestCode, resultCode, data);
 	}
 
-	public void onRestartEventPreferences(int position) {
+	public void onRestartEventPreferences(int position, int filterType) {
 		Bundle arguments = new Bundle();
 		arguments.putInt(GlobalData.EXTRA_EVENT_POSITION, position);
+		arguments.putInt(GlobalData.EXTRA_FILTER_TYPE, filterType);
 		EventPreferencesFragment fragment = new EventPreferencesFragment();
 		fragment.setArguments(arguments);
 		getSupportFragmentManager().beginTransaction()

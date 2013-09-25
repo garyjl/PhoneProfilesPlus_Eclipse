@@ -1,19 +1,8 @@
 package sk.henrichg.phoneprofiles;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import android.annotation.SuppressLint;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.IBinder;
-import android.os.Message;
-import android.os.Messenger;
-import android.os.RemoteException;
 
 public class ProfilesDataWrapper {
 
@@ -21,26 +10,27 @@ public class ProfilesDataWrapper {
 	private boolean forGUI = false;
 	private boolean monochrome = false;
 	private int monochromeValue = 0xFF;
-	//private boolean generateIndicators = false;
+	private int profilesFilterType = DatabaseHandler.FILTER_TYPE_PROFILES_ALL;
+	private int eventsFilterType = DatabaseHandler.FILTER_TYPE_EVENTS_ALL;
+	
 
 	private DatabaseHandler databaseHandler = null;
 	private ActivateProfileHelper activateProfileHelper = null;
 	private List<Profile> profileList = null;
 	private List<Event> eventList = null;
 	
-	ProfilesDataWrapper(Context c, boolean fgui, boolean mono, int monoVal, boolean generIndicators, boolean loadProfileList, boolean loadEventList)
+	ProfilesDataWrapper(Context c, 
+						boolean fgui, 
+						boolean mono, 
+						int monoVal)
 	{
 		context = c;
 		forGUI = fgui;
 		monochrome = mono;
 		monochromeValue = monoVal; 
-		//generateIndicators = generIndicators;
+		
 		databaseHandler = getDatabaseHandler();
 		activateProfileHelper = getActivateProfileHelper();
-		if (loadProfileList)
-			profileList = getProfileList();
-		if (loadEventList)
-			eventList = getEventList();
 	}
 	
 	public DatabaseHandler getDatabaseHandler()
@@ -60,11 +50,13 @@ public class ProfilesDataWrapper {
 		return activateProfileHelper;
 	}
 	
-	public List<Profile> getProfileList()
+	public List<Profile> getProfileList(int profilesFilterType)
 	{
+		this.profilesFilterType = profilesFilterType;
+		
 		if (profileList == null)
 		{
-			profileList = getDatabaseHandler().getAllProfiles();
+			profileList = getDatabaseHandler().getAllProfiles(profilesFilterType);
 		
 			if (forGUI)
 			{
@@ -80,21 +72,6 @@ public class ProfilesDataWrapper {
 		return profileList;
 	}
 	
-	public List<Profile> getProfileListForActivator()
-	{
-		getProfileList();
-		
-		List<Profile> profileListForActivator = new ArrayList<Profile>();
-		
-		for (Profile profile : profileList)
-		{
-			if (profile._showInActivator)
-				profileListForActivator.add(profile);
-		}
-		
-		return profileListForActivator;
-	}
-
 	public void invalidateProfileList()
 	{
 		if (profileList != null)
@@ -220,14 +197,14 @@ public class ProfilesDataWrapper {
 	public void reloadProfilesData()
 	{
 		invalidateProfileList();
-		getProfileList();
+		getProfileList(profilesFilterType);
 	}
 	
 	public void deleteProfile(Profile profile)
 	{
 		profileList.remove(profile);
 		if (eventList == null)
-			eventList = getEventList();
+			eventList = getEventList(eventsFilterType);
 		// unlink profile from events
 		for (Event event : eventList)
 		{
@@ -240,7 +217,7 @@ public class ProfilesDataWrapper {
 	{
 		profileList.clear();
 		if (eventList == null)
-			eventList = getEventList();
+			eventList = getEventList(eventsFilterType);
 		// unlink profiles from events
 		for (Event event : eventList)
 		{
@@ -250,11 +227,13 @@ public class ProfilesDataWrapper {
 	
 //---------------------------------------------------
 
-	public List<Event> getEventList()
+	public List<Event> getEventList(int eventsFilterType)
 	{
+		this.eventsFilterType = eventsFilterType;
+		
 		if (eventList == null)
 		{
-			eventList = getDatabaseHandler().getAllEvents();
+			eventList = getDatabaseHandler().getAllEvents(eventsFilterType);
 		}
 
 		return eventList;
@@ -325,7 +304,7 @@ public class ProfilesDataWrapper {
 	public void reloadEventsData()
 	{
 		invalidateEventList();
-		getEventList();
+		getEventList(eventsFilterType);
 	}
 	
 }

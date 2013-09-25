@@ -35,10 +35,12 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 		getSupportActionBar().setTitle(R.string.title_activity_profile_preferences);
 
         int profile_position = getIntent().getIntExtra(GlobalData.EXTRA_PROFILE_POSITION, -1);
+        int filter_type = getIntent().getIntExtra(GlobalData.EXTRA_FILTER_TYPE, DatabaseHandler.FILTER_TYPE_PROFILES_ALL);
 
 		if (savedInstanceState == null) {
 			Bundle arguments = new Bundle();
 			arguments.putInt(GlobalData.EXTRA_PROFILE_POSITION, profile_position);
+			arguments.putInt(GlobalData.EXTRA_FILTER_TYPE, filter_type);
 			ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
@@ -84,9 +86,10 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 			fragment.doOnActivityResult(requestCode, resultCode, data);
 	}
 
-	public void onRestartProfilePreferences(int position) {
+	public void onRestartProfilePreferences(int position, int filterType) {
 		Bundle arguments = new Bundle();
 		arguments.putInt(GlobalData.EXTRA_PROFILE_POSITION, position);
+		arguments.putInt(GlobalData.EXTRA_FILTER_TYPE, filterType);
 		ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 		fragment.setArguments(arguments);
 		getSupportFragmentManager().beginTransaction()

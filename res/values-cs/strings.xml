@@ -192,5 +192,11 @@
 	<string name="array_pref_event_saturday">Sobota</string>
     <string name="editor_list_drawer_open">Otevři navigační panel</string>
     <string name="editor_list_drawer_close">Zavři navigační panel</string>	
-		
+    <string name="editor_list_drawer_item_profiles_all">Profily - všechny</string>
+    <string name="editor_list_drawer_item_profiles_show_in_activator">Profily - zobrazny v Aktivátore</string>
+    <string name="editor_list_drawer_item_profiles_no_show_in_activator">Profily - nezobrazeny v Aktivátore</string>
+    <string name="editor_list_drawer_item_events_all">Události - všechny</string>
+    <string name="editor_list_drawer_item_events_enabled">Události - povolené</string>
+    <string name="editor_list_drawer_item_events_disabled">Události - zakázané</string>
+    		
 </resources>

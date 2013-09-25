@@ -12,12 +12,13 @@ import android.widget.ImageView;
 public class ProfilePreference extends Preference {
 	
 	private String profileId;
-
 	private ImageView profileIcon;
+	CharSequence preferenceTitle;
 
 	private Context prefContext;
 	
-	CharSequence preferenceTitle;
+	public static ProfilesDataWrapper profilesDataWrapper;
+	
 	
 	public ProfilePreference(Context context, AttributeSet attrs)
 	{
@@ -34,10 +35,11 @@ public class ProfilePreference extends Preference {
 		
 
 		profileId = "0";
-		
 		prefContext = context;
-		
 		preferenceTitle = getTitle();
+		
+		profilesDataWrapper = new ProfilesDataWrapper(context, true, false, 0);
+		profilesDataWrapper.getProfileList(DatabaseHandler.FILTER_TYPE_PROFILES_ALL);
 		
 		//Log.d("ApplicationsPreference", "title="+preferenceTitle);
 		//Log.d("ApplicationsPreference", "imageSource="+imageSource);
@@ -62,7 +64,7 @@ public class ProfilePreference extends Preference {
 
 	    if (profileIcon != null)
 	    {
-		    Profile profile = EditorProfilesActivity.profilesDataWrapper.getProfileById(Long.parseLong(profileId));
+		    Profile profile = profilesDataWrapper.getProfileById(Long.parseLong(profileId));
 		    if (profile != null)
 		    {
 			    if (profile.getIsIconResourceID())
@@ -179,7 +181,7 @@ public class ProfilePreference extends Preference {
 		profileId = newValue;
 
 		// set summary
-	    Profile profile = EditorProfilesActivity.profilesDataWrapper.getProfileById(Long.parseLong(profileId));
+	    Profile profile = profilesDataWrapper.getProfileById(Long.parseLong(profileId));
 	    if (profile != null)
 	    {
 	    	setSummary(profile._name);

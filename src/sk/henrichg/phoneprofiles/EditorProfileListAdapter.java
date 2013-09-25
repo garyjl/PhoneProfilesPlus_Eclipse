@@ -2,9 +2,6 @@ package sk.henrichg.phoneprofiles;
 
 import java.util.List;
 
-import com.actionbarsherlock.app.SherlockFragment;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,16 +14,16 @@ import android.widget.TextView;
 public class EditorProfileListAdapter extends BaseAdapter
 {
 
-	private SherlockFragment fragment;
+	private EditorProfileListFragment fragment;
 	private ProfilesDataWrapper profilesDataWrapper;
 	private List<Profile> profileList;
 	public static boolean editIconClicked = false;
 	
-	public EditorProfileListAdapter(SherlockFragment f, ProfilesDataWrapper pdw)
+	public EditorProfileListAdapter(EditorProfileListFragment f, ProfilesDataWrapper pdw)
 	{
 		fragment = f;
 		profilesDataWrapper = pdw;
-		profileList = profilesDataWrapper.getProfileList();
+		profileList = profilesDataWrapper.getProfileList(fragment.getFilterType());
 	}   
 	
 	public int getCount()

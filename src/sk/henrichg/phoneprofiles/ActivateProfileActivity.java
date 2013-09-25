@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -57,7 +56,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 		GUIData.setTheme(this, true);
 		GUIData.setLanguage(getBaseContext());
 		
-		profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, false, 0, GlobalData.applicationActivatorPrefIndicator, false, false);
+		profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, false, 0);
 		serviceCommunication = new ServiceCommunication(GlobalData.context);
 
 	// set window dimensions ----------------------------------------------------------
@@ -140,7 +139,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 			
 			@Override
 			protected Void doInBackground(Void... params) {
-				profileList = profilesDataWrapper.getProfileListForActivator();
+				profileList = profilesDataWrapper.getProfileList(DatabaseHandler.FILTER_TYPE_PROFILES_SHOW_IN_ACTIVATOR);
 				
 				return null;
 			}

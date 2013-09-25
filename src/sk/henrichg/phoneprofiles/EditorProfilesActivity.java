@@ -13,7 +13,6 @@ import sk.henrichg.phoneprofiles.PreferenceListFragment.OnPreferenceAttachedList
 import sk.henrichg.phoneprofiles.ProfilePreferencesFragment.OnRedrawProfileListFragment;
 import sk.henrichg.phoneprofiles.ProfilePreferencesFragment.OnRestartProfilePreferences;
 
-import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import android.os.AsyncTask;
@@ -25,7 +24,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.app.Activity;
@@ -70,6 +68,9 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	String[] drawerItemsTitle;
 	EditorDrawerListAdapter drawerAdapter;
 	
+	private int profilesFilterType = DatabaseHandler.FILTER_TYPE_PROFILES_ALL;
+	private int eventsFilterType = DatabaseHandler.FILTER_TYPE_EVENTS_ALL;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -78,7 +79,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 
 		super.onCreate(savedInstanceState);
 		
-		profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, false, 0, GlobalData.applicationEditorPrefIndicator, false, false);
+		profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, false, 0);
+		
 		serviceCommunication = new ServiceCommunication(GlobalData.context);
 		
 		applicationsCache = new ApplicationsCache();
@@ -101,7 +103,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			//Profile profile = profilesDataWrapper.getFirstProfile();
 			
 			//onStartProfilePreferences(profilesDataWrapper.getProfileItemPosition(profile), false);
-			onStartProfilePreferences(-1, false);
+			onStartProfilePreferences(-1, profilesFilterType, false);
 
 		}
 		
@@ -116,14 +118,14 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		drawerLayout.setDrawerShadow(drawerShadowId, GravityCompat.START);
 
 		// drawer item titles
-		drawerItemsTitle = new String[] { "Profiles - all", 
-                "Profiles - show in Activator",
-				  "Profiles - no show in Activator",
-                "Editor - all",
-                "Editor - enabled",
-                "Editor - disabled"
+		drawerItemsTitle = new String[] { 
+				getResources().getString(R.string.editor_list_drawer_item_profiles_all), 
+				getResources().getString(R.string.editor_list_drawer_item_profiles_show_in_activator),
+				getResources().getString(R.string.editor_list_drawer_item_profiles_no_show_in_activator),
+				getResources().getString(R.string.editor_list_drawer_item_events_all),
+				getResources().getString(R.string.editor_list_drawer_item_events_enabled),
+				getResources().getString(R.string.editor_list_drawer_item_events_disabled)
               };
-
 		
         // Pass string arrays to MenuListAdapter
         drawerAdapter = new EditorDrawerListAdapter(getBaseContext(), drawerItemsTitle);
@@ -153,12 +155,10 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
         {
  
             public void onDrawerClosed(View view) {
-                // TODO Auto-generated method stub
                 super.onDrawerClosed(view);
             }
  
             public void onDrawerOpened(View drawerView) {
-                // TODO Auto-generated method stub
                 // Set the title on the action when drawer open
                 //getSupportActionBar().setTitle(mDrawerTitle);
                 super.onDrawerOpened(drawerView);
@@ -273,13 +273,13 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 
 			return true;
 		case R.id.menu_export:
-			//Log.d("EditorProfileListFragment.onOptionsItemSelected", "menu_export");
+			//Log.d("EditorProfilesActivity.onOptionsItemSelected", "menu_export");
 
 			exportData();
 			
 			return true;
 		case R.id.menu_import:
-			//Log.d("EditorProfileListFragment.onOptionsItemSelected", "menu_import");
+			//Log.d("EditorProfilesActivity.onOptionsItemSelected", "menu_import");
 
 			importData();
 			
@@ -315,43 +315,68 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
  
         // Locate Position
     	Fragment fragment;
+	    Bundle arguments;
     	
         switch (position) {
         case 0:
+        	profilesFilterType = DatabaseHandler.FILTER_TYPE_PROFILES_ALL;
     		fragment = new EditorProfileListFragment();
+    	    arguments = new Bundle();
+   		    arguments.putInt(EditorProfileListFragment.FILTER_TYPE_ARGUMENT, profilesFilterType);
+   		    fragment.setArguments(arguments);
     		getSupportFragmentManager().beginTransaction()
     			.replace(R.id.editor_list_container, fragment).commit();
-			onStartProfilePreferences(-1, false);
+			onStartProfilePreferences(-1, profilesFilterType, false);
             break;
         case 1:
+        	profilesFilterType = DatabaseHandler.FILTER_TYPE_PROFILES_SHOW_IN_ACTIVATOR;
     		fragment = new EditorProfileListFragment();
+    	    arguments = new Bundle();
+   		    arguments.putInt(EditorProfileListFragment.FILTER_TYPE_ARGUMENT, profilesFilterType);
+   		    fragment.setArguments(arguments);
     		getSupportFragmentManager().beginTransaction()
     			.replace(R.id.editor_list_container, fragment).commit();
-			onStartProfilePreferences(-1, false);
+			onStartProfilePreferences(-1, profilesFilterType, false);
             break;
         case 2:
+        	profilesFilterType = DatabaseHandler.FILTER_TYPE_PROFILES_NO_SHOW_IN_ACTIVATOR;
     		fragment = new EditorProfileListFragment();
+    	    arguments = new Bundle();
+   		    arguments.putInt(EditorProfileListFragment.FILTER_TYPE_ARGUMENT, profilesFilterType);
+   		    fragment.setArguments(arguments);
     		getSupportFragmentManager().beginTransaction()
     			.replace(R.id.editor_list_container, fragment).commit();
-			onStartProfilePreferences(-1, false);
+			onStartProfilePreferences(-1, profilesFilterType, false);
             break;
         case 3:
+        	eventsFilterType = DatabaseHandler.FILTER_TYPE_EVENTS_ALL;
     		fragment = new EditorEventListFragment();
+    	    arguments = new Bundle();
+   		    arguments.putInt(EditorEventListFragment.FILTER_TYPE_ARGUMENT, eventsFilterType);
+   		    fragment.setArguments(arguments);
     		getSupportFragmentManager().beginTransaction()
     			.replace(R.id.editor_list_container, fragment).commit();
-			onStartEventPreferences(-1, false);
+			onStartEventPreferences(-1, eventsFilterType, false);
 			break;	
         case 4:
+        	eventsFilterType = DatabaseHandler.FILTER_TYPE_EVENTS_ENABLED;
     		fragment = new EditorEventListFragment();
+    	    arguments = new Bundle();
+   		    arguments.putInt(EditorEventListFragment.FILTER_TYPE_ARGUMENT, eventsFilterType);
+   		    fragment.setArguments(arguments);
     		getSupportFragmentManager().beginTransaction()
     			.replace(R.id.editor_list_container, fragment).commit();
-			onStartEventPreferences(-1, false);
+			onStartEventPreferences(-1, eventsFilterType, false);
 			break;	
         case 5:
+        	eventsFilterType = DatabaseHandler.FILTER_TYPE_EVENTS_DISABLED;
     		fragment = new EditorEventListFragment();
+    	    arguments = new Bundle();
+   		    arguments.putInt(EditorEventListFragment.FILTER_TYPE_ARGUMENT, eventsFilterType);
+   		    fragment.setArguments(arguments);
     		getSupportFragmentManager().beginTransaction()
     			.replace(R.id.editor_list_container, fragment).commit();
-			onStartEventPreferences(-1, false);
+			onStartEventPreferences(-1, eventsFilterType, false);
 			break;	
         }
         drawerListView.setItemChecked(position, true);
@@ -541,7 +566,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	     getSupportActionBar().setTitle(title);
 	 }	
 
-	public void onStartProfilePreferences(int position, boolean afterDelete) {
+	public void onStartProfilePreferences(int position, int filterType, boolean afterDelete) {
 		if (mTwoPane) {
 			// In two-pane mode, show the detail view in this activity by
 			// adding or replacing the detail fragment using a
@@ -551,6 +576,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			{
 				Bundle arguments = new Bundle();
 				arguments.putInt(GlobalData.EXTRA_PROFILE_POSITION, position);
+				arguments.putInt(GlobalData.EXTRA_FILTER_TYPE, filterType);
 				ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 				fragment.setArguments(arguments);
 				getSupportFragmentManager().beginTransaction()
@@ -574,12 +600,13 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			{
 				Intent intent = new Intent(getBaseContext(), ProfilePreferencesFragmentActivity.class);
 				intent.putExtra(GlobalData.EXTRA_PROFILE_POSITION, position);
+				intent.putExtra(GlobalData.EXTRA_FILTER_TYPE, filterType);
 				startActivity(intent);
 			}
 		}
 	}
 
-	public void onRestartProfilePreferences(int position) {
+	public void onRestartProfilePreferences(int position, int filterType) {
 		if (mTwoPane) {
 			// In two-pane mode, show the detail view in this activity by
 			// adding or replacing the detail fragment using a
@@ -588,6 +615,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			// restart profile preferences fragmentu
 			Bundle arguments = new Bundle();
 			arguments.putInt(GlobalData.EXTRA_PROFILE_POSITION, position);
+			arguments.putInt(GlobalData.EXTRA_FILTER_TYPE, filterType);
 			ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
@@ -651,7 +679,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		}
 	}
 
-	public void onStartEventPreferences(int position, boolean afterDelete) {
+	public void onStartEventPreferences(int position, int filterType, boolean afterDelete) {
 		if (mTwoPane) {
 			// In two-pane mode, show the detail view in this activity by
 			// adding or replacing the detail fragment using a
@@ -661,6 +689,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			{
 				Bundle arguments = new Bundle();
 				arguments.putInt(GlobalData.EXTRA_EVENT_POSITION, position);
+				arguments.putInt(GlobalData.EXTRA_FILTER_TYPE, filterType);
 				EventPreferencesFragment fragment = new EventPreferencesFragment();
 				fragment.setArguments(arguments);
 				getSupportFragmentManager().beginTransaction()
@@ -684,6 +713,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			{
 				Intent intent = new Intent(getBaseContext(), EventPreferencesFragmentActivity.class);
 				intent.putExtra(GlobalData.EXTRA_EVENT_POSITION, position);
+				intent.putExtra(GlobalData.EXTRA_FILTER_TYPE, filterType);
 				startActivity(intent);
 			}
 		}
@@ -702,7 +732,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		}
 	}
 
-	public void onRestartEventPreferences(int position) {
+	public void onRestartEventPreferences(int position, int filterType) {
 		if (mTwoPane) {
 			// In two-pane mode, show the detail view in this activity by
 			// adding or replacing the detail fragment using a
@@ -711,6 +741,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			// restart event preferences fragmentu
 			Bundle arguments = new Bundle();
 			arguments.putInt(GlobalData.EXTRA_EVENT_POSITION, position);
+			arguments.putInt(GlobalData.EXTRA_FILTER_TYPE, filterType);
 			EventPreferencesFragment fragment = new EventPreferencesFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()

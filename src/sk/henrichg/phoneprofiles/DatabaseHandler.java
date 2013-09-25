@@ -89,6 +89,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_E_DAYS_OF_WEEK = "daysOfWeek";
 	private static final String KEY_E_USE_END_TIME = "useEndTime";
 	
+	public static final int FILTER_TYPE_PROFILES_ALL = 0;
+	public static final int FILTER_TYPE_PROFILES_SHOW_IN_ACTIVATOR = 1;
+	public static final int FILTER_TYPE_PROFILES_NO_SHOW_IN_ACTIVATOR = 2;
+
+	public static final int FILTER_TYPE_EVENTS_ALL = 0;
+	public static final int FILTER_TYPE_EVENTS_ENABLED = 1;
+	public static final int FILTER_TYPE_EVENTS_DISABLED = 2;
+	
+	
 	/**
      * Constructor takes and keeps a reference of the passed context in order to
      * access to the application assets and resources.
@@ -513,7 +522,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 	
 	// Getting All Profiles
-	public List<Profile> getAllProfiles() {
+	public List<Profile> getAllProfiles(int filterType) {
 		List<Profile> profileList = new ArrayList<Profile>();
 		// Select All Query
 		final String selectQuery = "SELECT " + KEY_ID + "," +
@@ -1214,7 +1223,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 	
 	// Getting All Events
-	public List<Event> getAllEvents() {
+	public List<Event> getAllEvents(int filterType) {
 		List<Event> eventList = new ArrayList<Event>();
 		// Select All Query
 		final String selectQuery = "SELECT " + KEY_E_ID + "," +

@@ -9,18 +9,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
-import android.graphics.LightingColorFilter;
-import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -229,8 +219,7 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 			
 			profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true,  
 														GlobalData.applicationWidgetListIconColor.equals("1"), 
-														monochromeValue,
-														true, false, false);
+														monochromeValue);
 		}
 	}
 	

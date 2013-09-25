@@ -23,7 +23,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 		
 		GlobalData.loadPreferences(getApplicationContext());
 		
-		profilesDataWrapper = new ProfilesDataWrapper(getApplicationContext(), true, false, 0, true, false, false);
+		profilesDataWrapper = new ProfilesDataWrapper(getApplicationContext(), true, false, 0);
 		
 		intent = getIntent();
 		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
