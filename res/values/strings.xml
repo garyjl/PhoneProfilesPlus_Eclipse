@@ -193,11 +193,11 @@
     <string name="editor_list_drawer_close">Close navigation drawer</string>
     <string name="editor_list_drawer_title_profiles">Profiles</string>
     <string name="editor_list_drawer_title_events">Events</string>
-    <string name="editor_list_drawer_item_profiles_all">Profiles - all</string>
-    <string name="editor_list_drawer_item_profiles_show_in_activator">Profiles - show in Activator</string>
-    <string name="editor_list_drawer_item_profiles_no_show_in_activator">Profiles - no show in Activator</string>
-    <string name="editor_list_drawer_item_events_all">Events - all</string>
-    <string name="editor_list_drawer_item_events_enabled">Events - enabled</string>
-    <string name="editor_list_drawer_item_events_disabled">Events - disabled</string>
+    <string name="editor_list_drawer_item_profiles_all">All</string>
+    <string name="editor_list_drawer_item_profiles_show_in_activator">Show in Activator</string>
+    <string name="editor_list_drawer_item_profiles_no_show_in_activator">No show in Activator</string>
+    <string name="editor_list_drawer_item_events_all">All</string>
+    <string name="editor_list_drawer_item_events_enabled">Enabled</string>
+    <string name="editor_list_drawer_item_events_disabled">Disabled</string>
     	
 </resources>

@@ -65,8 +65,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	ListView drawerListView;
 	ActionBarDrawerToggle drawerToggle;
 	
-	String[] actionBarTitle;
 	String[] drawerItemsTitle;
+	String[] drawerItemsSubtitle;
 	EditorDrawerListAdapter drawerAdapter;
 	
 	private int profilesFilterType = DatabaseHandler.FILTER_TYPE_PROFILES_ALL;
@@ -119,7 +119,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		drawerLayout.setDrawerShadow(drawerShadowId, GravityCompat.START);
 
 		// actionbar titles
-		actionBarTitle = new String[] { 
+		drawerItemsTitle = new String[] { 
 				getResources().getString(R.string.editor_list_drawer_title_profiles), 
 				getResources().getString(R.string.editor_list_drawer_title_profiles),
 				getResources().getString(R.string.editor_list_drawer_title_profiles),
@@ -129,7 +129,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
               };
 		
 		// drawer item titles
-		drawerItemsTitle = new String[] { 
+		drawerItemsSubtitle = new String[] { 
 				getResources().getString(R.string.editor_list_drawer_item_profiles_all), 
 				getResources().getString(R.string.editor_list_drawer_item_profiles_show_in_activator),
 				getResources().getString(R.string.editor_list_drawer_item_profiles_no_show_in_activator),
@@ -140,7 +140,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		
         // Pass string arrays to EditorDrawerListAdapter
 		// use sherlock action bar themed context
-        drawerAdapter = new EditorDrawerListAdapter(drawerListView, getSupportActionBar().getThemedContext(), drawerItemsTitle);
+        drawerAdapter = new EditorDrawerListAdapter(drawerListView, getSupportActionBar().getThemedContext(), drawerItemsTitle, drawerItemsSubtitle);
         
         // Set the MenuListAdapter to the ListView
         drawerListView.setAdapter(drawerAdapter);
@@ -394,7 +394,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
         drawerListView.setItemChecked(position, true);
  
         // Get the title followed by the position
-        setTitle(actionBarTitle[position]);
+        setTitle(drawerItemsTitle[position]);
         // Close drawer
         drawerLayout.closeDrawer(drawerListView);
     }	

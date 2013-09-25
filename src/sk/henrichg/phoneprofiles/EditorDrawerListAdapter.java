@@ -1,6 +1,7 @@
 package sk.henrichg.phoneprofiles;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +14,15 @@ public class EditorDrawerListAdapter extends BaseAdapter {
     Context context;
     ListView listView;
     String[] drawerItemsTitle;
+    String[] drawerItemsSubtitle;
     
-    public EditorDrawerListAdapter(ListView listView, Context context, String[] itemTitle) {
+    public EditorDrawerListAdapter(ListView listView, Context context, 
+    								String[] itemTitle, String[] itemSubtitle)
+    {
         this.context = context;
         this.listView = listView;
         this.drawerItemsTitle = itemTitle;
+        this.drawerItemsSubtitle = itemSubtitle;
     }
     
 	public int getCount() {
@@ -35,6 +40,7 @@ public class EditorDrawerListAdapter extends BaseAdapter {
 	
 	static class ViewHolder {
 		  TextView itemTitle;
+		  TextView itemSubtitle;
 		  int position;
 		}
 	
@@ -51,6 +57,7 @@ public class EditorDrawerListAdapter extends BaseAdapter {
     	    		
             holder = new ViewHolder();
             holder.itemTitle = (TextView)vi.findViewById(R.id.editor_drawer_list_item_title);
+            holder.itemSubtitle = (TextView)vi.findViewById(R.id.editor_drawer_list_item_subtitle);
             vi.setTag(holder);        
         }
         else
@@ -58,11 +65,23 @@ public class EditorDrawerListAdapter extends BaseAdapter {
       	    holder = (ViewHolder)vi.getTag();
         }
         
-        if ((android.os.Build.VERSION.SDK_INT < 11) && listView.isItemChecked(position))
-        	holder.itemTitle.setText(">> "+drawerItemsTitle[position] + " <<");
-        else
-        	holder.itemTitle.setText(drawerItemsTitle[position]);
- 
+       	holder.itemTitle.setText(drawerItemsTitle[position]);
+    	holder.itemSubtitle.setText(drawerItemsSubtitle[position]);
+
+        if (android.os.Build.VERSION.SDK_INT < 11)
+        {
+        	if (listView.isItemChecked(position))
+        	{
+        		holder.itemTitle.setTypeface(null,Typeface.BOLD);
+        		holder.itemSubtitle.setTypeface(null,Typeface.BOLD);
+        	}
+        	else
+        	{
+        		holder.itemTitle.setTypeface(null,Typeface.NORMAL);
+        		holder.itemSubtitle.setTypeface(null,Typeface.NORMAL);
+        	}
+        }
+    	
         return vi;	
     }
 
