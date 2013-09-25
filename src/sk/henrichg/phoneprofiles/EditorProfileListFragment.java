@@ -528,7 +528,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 							activateProfileHelper.showNotification(profile);
 							activateProfileHelper.updateWidget();
 							
-							profile = EditorProfilesActivity.profilesDataWrapper.getFirstProfile();
+							profile = EditorProfilesActivity.profilesDataWrapper.getFirstProfile(filterType);
 							onStartProfilePreferencesCallback.onStartProfilePreferences(profileListAdapter.getItemId(profile), filterType, true);
 						}
 					}
@@ -602,7 +602,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 							activateProfileHelper.showNotification(null);
 							activateProfileHelper.updateWidget();
 							
-							Profile profile = EditorProfilesActivity.profilesDataWrapper.getFirstProfile();
+							Profile profile = EditorProfilesActivity.profilesDataWrapper.getFirstProfile(filterType);
 							onStartProfilePreferencesCallback.onStartProfilePreferences(profileListAdapter.getItemId(profile), filterType, true);
 						}
 					}

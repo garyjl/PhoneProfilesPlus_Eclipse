@@ -216,7 +216,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		
-		//Log.d("DatabaseHandler.onUpgrade", "xxxx");
+		Log.d("DatabaseHandler.onUpgrade", "oldVersion="+oldVersion);
+		Log.d("DatabaseHandler.onUpgrade", "newVersion="+newVersion);
 		
 		/*
 		// Drop older table if existed
@@ -318,7 +319,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL("CREATE INDEX IDX_PORDER ON " + TABLE_PROFILES + " (" + KEY_PORDER + ")");
 		}
 		
-		if (oldVersion < 24)
+		if (oldVersion < 25)
 		{
 			final String CREATE_EVENTS_TABLE = "CREATE TABLE " + TABLE_EVENTS + "("
 					+ KEY_E_ID + " INTEGER PRIMARY KEY,"
@@ -329,7 +330,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL(CREATE_EVENTS_TABLE);
 		}
 
-		if (oldVersion < 25)
+		if (oldVersion < 26)
 		{
 			// pridame nove stlpce
 			db.execSQL("ALTER TABLE " + TABLE_PROFILES + " ADD COLUMN " + KEY_SHOW_IN_ACTIVATOR + " INTEGER");
@@ -338,7 +339,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_SHOW_IN_ACTIVATOR + "=1");
 		}
 
-		if (oldVersion < 26)
+		if (oldVersion < 27)
 		{
 			// pridame nove stlpce
 			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_ENABLED + " INTEGER");
@@ -347,15 +348,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_ENABLED + "=1");
 		}
 
-		if (oldVersion < 27)
+		if (oldVersion < 28)
 		{
 			// index na SHOW_IN_ACTIVATOR
 			db.execSQL("CREATE INDEX IDX_SHOW_IN_ACTIVATOR ON " + TABLE_PROFILES + " (" + KEY_SHOW_IN_ACTIVATOR + ")");
-		}
-		
-		if (oldVersion < 28)
-		{
-			// sqlite nevie vymazat stlpec, chcel som vymazat KEY_E_FK_PARAMS_EDIT
 		}
 		
 		if (oldVersion < 29)
@@ -480,39 +476,44 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				                 new String[] { String.valueOf(profile_id) }, null, null, null, null);
 		if (cursor != null)
 			cursor.moveToFirst();
-
-		Profile profile = new Profile(Long.parseLong(cursor.getString(0)),
-				                      cursor.getString(1), 
-				                      cursor.getString(2),
-				                      (Integer.parseInt(cursor.getString(3)) == 1) ? true : false,
-				                      Integer.parseInt(cursor.getString(4)),
-				                      Integer.parseInt(cursor.getString(5)),
-				                      cursor.getString(6),
-				                      cursor.getString(7),
-				                      cursor.getString(8),
-				                      cursor.getString(9),
-				                      cursor.getString(10),
-				                      cursor.getString(11),
-				                      (Integer.parseInt(cursor.getString(12)) == 1) ? true : false,
-				                      cursor.getString(13),
-				                      (Integer.parseInt(cursor.getString(14)) == 1) ? true : false,
-				                      cursor.getString(15),
-				                      (Integer.parseInt(cursor.getString(16)) == 1) ? true : false,
-				                      cursor.getString(17),
-				                      Integer.parseInt(cursor.getString(18)),
-				                      Integer.parseInt(cursor.getString(19)),
-				                      Integer.parseInt(cursor.getString(20)),
-				                      Integer.parseInt(cursor.getString(21)),
-				                      cursor.getString(22),
-				                      (Integer.parseInt(cursor.getString(23)) == 1) ? true : false,
-				                      cursor.getString(24),
-				                      Integer.parseInt(cursor.getString(25)),
-				                      (Integer.parseInt(cursor.getString(26)) == 1) ? true : false,
-				                      Integer.parseInt(cursor.getString(27)),
-				                      (Integer.parseInt(cursor.getString(28)) == 1) ? true : false,
-				                      cursor.getString(29),
-				                      (Integer.parseInt(cursor.getString(30)) == 1) ? true : false
-				                      );
+		
+		Profile profile = null;
+		
+		if (cursor.getCount() > 0)
+		{
+			profile = new Profile(Long.parseLong(cursor.getString(0)),
+					                      cursor.getString(1), 
+					                      cursor.getString(2),
+					                      (Integer.parseInt(cursor.getString(3)) == 1) ? true : false,
+					                      Integer.parseInt(cursor.getString(4)),
+					                      Integer.parseInt(cursor.getString(5)),
+					                      cursor.getString(6),
+					                      cursor.getString(7),
+					                      cursor.getString(8),
+					                      cursor.getString(9),
+					                      cursor.getString(10),
+					                      cursor.getString(11),
+					                      (Integer.parseInt(cursor.getString(12)) == 1) ? true : false,
+					                      cursor.getString(13),
+					                      (Integer.parseInt(cursor.getString(14)) == 1) ? true : false,
+					                      cursor.getString(15),
+					                      (Integer.parseInt(cursor.getString(16)) == 1) ? true : false,
+					                      cursor.getString(17),
+					                      Integer.parseInt(cursor.getString(18)),
+					                      Integer.parseInt(cursor.getString(19)),
+					                      Integer.parseInt(cursor.getString(20)),
+					                      Integer.parseInt(cursor.getString(21)),
+					                      cursor.getString(22),
+					                      (Integer.parseInt(cursor.getString(23)) == 1) ? true : false,
+					                      cursor.getString(24),
+					                      Integer.parseInt(cursor.getString(25)),
+					                      (Integer.parseInt(cursor.getString(26)) == 1) ? true : false,
+					                      Integer.parseInt(cursor.getString(27)),
+					                      (Integer.parseInt(cursor.getString(28)) == 1) ? true : false,
+					                      cursor.getString(29),
+					                      (Integer.parseInt(cursor.getString(30)) == 1) ? true : false
+					                      );
+		}
 
 		cursor.close();
 		//db.close();
@@ -524,6 +525,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	// Getting All Profiles
 	public List<Profile> getAllProfiles(int filterType) {
 		List<Profile> profileList = new ArrayList<Profile>();
+		
+		String whereString = "";
+		switch (filterType)
+		{
+		case FILTER_TYPE_PROFILES_ALL:
+			whereString = "";
+			break;
+		case FILTER_TYPE_PROFILES_SHOW_IN_ACTIVATOR:
+			whereString = "WHERE " + KEY_SHOW_IN_ACTIVATOR + "=1";
+			break;
+		case FILTER_TYPE_PROFILES_NO_SHOW_IN_ACTIVATOR:
+			whereString = "WHERE " + KEY_SHOW_IN_ACTIVATOR + "=0";
+			break;
+		}
+		
 		// Select All Query
 		final String selectQuery = "SELECT " + KEY_ID + "," +
 				                         KEY_NAME + "," +
@@ -556,7 +572,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						         		 KEY_DEVICE_RUN_APPLICATION_CHANGE + "," +
 						         		 KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME + "," +
 						         		 KEY_SHOW_IN_ACTIVATOR +
-		                     " FROM " + TABLE_PROFILES + " ORDER BY " + KEY_PORDER;
+		                     " FROM " + TABLE_PROFILES + 
+						     " " + whereString +
+		                     " ORDER BY " + KEY_PORDER;
 
 		//SQLiteDatabase db = this.getReadableDatabase();
 		SQLiteDatabase db = getMyWritableDatabase();
@@ -891,8 +909,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 	}
 	
-	public Profile getFirstProfile()
+	public Profile getFirstProfile(int filterType)
 	{
+		String whereString = "";
+		switch (filterType)
+		{
+		case FILTER_TYPE_PROFILES_ALL:
+			whereString = "";
+			break;
+		case FILTER_TYPE_PROFILES_SHOW_IN_ACTIVATOR:
+			whereString = "WHERE " + KEY_SHOW_IN_ACTIVATOR + "=1";
+			break;
+		case FILTER_TYPE_PROFILES_NO_SHOW_IN_ACTIVATOR:
+			whereString = "WHERE " + KEY_SHOW_IN_ACTIVATOR + "=0";
+			break;
+		}
+		
 		final String selectQuery = "SELECT " + KEY_ID + "," +
 						                 KEY_NAME + "," +
 						                 KEY_ICON + "," +
@@ -924,7 +956,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						        		 KEY_DEVICE_RUN_APPLICATION_CHANGE + "," +
 						        		 KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME + "," +
 						        		 KEY_SHOW_IN_ACTIVATOR +
-						    " FROM " + TABLE_PROFILES + " ORDER BY " + KEY_PORDER;
+						    " FROM " + TABLE_PROFILES + 
+						    " " + whereString +
+						    " ORDER BY " + KEY_PORDER;
 
 		//SQLiteDatabase db = this.getReadableDatabase();
 		SQLiteDatabase db = getMyWritableDatabase();
@@ -1205,12 +1239,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		if (cursor != null)
 			cursor.moveToFirst();
 
-		Event event = new Event(Long.parseLong(cursor.getString(0)),
+		Event event = null;
+		
+		if (cursor.getCount() > 0)
+		{
+		
+			event = new Event(Long.parseLong(cursor.getString(0)),
 				                      cursor.getString(1), 
 				                      Integer.parseInt(cursor.getString(2)),
 				                      Long.parseLong(cursor.getString(3)),
 				                      (Integer.parseInt(cursor.getString(4)) == 1) ? true : false
 				                      );
+		}
 
 		cursor.close();
 		
@@ -1225,13 +1265,31 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	// Getting All Events
 	public List<Event> getAllEvents(int filterType) {
 		List<Event> eventList = new ArrayList<Event>();
+		
+        Log.e("DatabaseHandler.getAllEvents","filterType="+filterType);
+		
+		String whereString = "";
+		switch (filterType)
+		{
+		case FILTER_TYPE_EVENTS_ALL:
+			whereString = "";
+			break;
+		case FILTER_TYPE_EVENTS_ENABLED:
+			whereString = "WHERE " + KEY_E_ENABLED + "=1";
+			break;
+		case FILTER_TYPE_EVENTS_DISABLED:
+			whereString = "WHERE " + KEY_E_ENABLED + "=0";
+			break;
+		}
+		
 		// Select All Query
 		final String selectQuery = "SELECT " + KEY_E_ID + "," +
 				                         KEY_E_NAME + "," +
 				                         KEY_E_TYPE + "," +
 				                         KEY_E_FK_PROFILE + "," +
 				                         KEY_E_ENABLED +
-		                     " FROM " + TABLE_EVENTS;
+		                     " FROM " + TABLE_EVENTS +
+				             " " + whereString;
 
 		//SQLiteDatabase db = this.getReadableDatabase();
 		SQLiteDatabase db = getMyWritableDatabase();
@@ -1339,14 +1397,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		return r;	
 	}
 	
-	public Event getFirstEvent()
+	public Event getFirstEvent(int filterType)
 	{
+		String whereString = "";
+		switch (filterType)
+		{
+		case FILTER_TYPE_EVENTS_ALL:
+			whereString = "";
+			break;
+		case FILTER_TYPE_EVENTS_ENABLED:
+			whereString = "WHERE " + KEY_E_ENABLED + "=1";
+			break;
+		case FILTER_TYPE_EVENTS_DISABLED:
+			whereString = "WHERE " + KEY_E_ENABLED + "=0";
+			break;
+		}
+		
 		final String selectQuery = "SELECT " + KEY_E_ID + "," +
 						                 KEY_E_NAME + "," +
 						                 KEY_E_TYPE + "," +
 						                 KEY_E_FK_PROFILE + "," +
 						                 KEY_E_ENABLED +
-						    " FROM " + TABLE_EVENTS;
+						    " FROM " + TABLE_EVENTS +
+						    " " + whereString;
+						    
 
 		//SQLiteDatabase db = this.getReadableDatabase();
 		SQLiteDatabase db = getMyWritableDatabase();

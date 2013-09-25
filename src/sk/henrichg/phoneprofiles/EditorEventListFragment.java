@@ -13,6 +13,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -127,6 +128,7 @@ public class EditorEventListFragment extends SherlockFragment {
         filterType = getArguments() != null ? 
         		getArguments().getInt(FILTER_TYPE_ARGUMENT, DatabaseHandler.FILTER_TYPE_EVENTS_ALL) : 
         		DatabaseHandler.FILTER_TYPE_EVENTS_ALL;
+        //Log.e("EditorEventListFragment.onCreate","filterType="+filterType);
 		
 		databaseHandler = EditorProfilesActivity.profilesDataWrapper.getDatabaseHandler();
 		
@@ -332,7 +334,7 @@ public class EditorEventListFragment extends SherlockFragment {
 				onEventCountChangedCallback.onEventCountChanged();
 				//updateListView();
 				
-				Event event = EditorProfilesActivity.profilesDataWrapper.getFirstEvent();
+				Event event = EditorProfilesActivity.profilesDataWrapper.getFirstEvent(filterType);
 				onStartEventPreferencesCallback.onStartEventPreferences(eventListAdapter.getItemId(event), filterType, true);
 				
 			}
@@ -355,7 +357,7 @@ public class EditorEventListFragment extends SherlockFragment {
 				onEventCountChangedCallback.onEventCountChanged();
 				//updateListView();
 				
-				Event event = EditorProfilesActivity.profilesDataWrapper.getFirstEvent();
+				Event event = EditorProfilesActivity.profilesDataWrapper.getFirstEvent(filterType);
 				onStartEventPreferencesCallback.onStartEventPreferences(eventListAdapter.getItemId(event), filterType, true);
 				
 			}

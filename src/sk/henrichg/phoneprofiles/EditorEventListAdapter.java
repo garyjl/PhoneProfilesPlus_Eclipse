@@ -180,7 +180,7 @@ public class EditorEventListAdapter extends BaseAdapter
         else
         {
         	holder.profileName.setText(R.string.event_preferences_profile_not_set);
-        	holder.profileIcon.setImageResource(R.drawable.ic_empty);
+        	holder.profileIcon.setImageResource(R.drawable.ic_profile_default);
 			if (GlobalData.applicationEditorPrefIndicator)
 			{
 				//profilePrefIndicatorImageView.setImageBitmap(null);

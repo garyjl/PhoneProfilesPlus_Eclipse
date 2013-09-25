@@ -52,10 +52,13 @@ public class ProfilesDataWrapper {
 	
 	public List<Profile> getProfileList(int profilesFilterType)
 	{
-		this.profilesFilterType = profilesFilterType;
-		
-		if (profileList == null)
+		if ((profileList == null) || (this.profilesFilterType != profilesFilterType))
 		{
+			this.profilesFilterType = profilesFilterType;
+			
+			if (profileList != null)
+				profileList.clear();
+			
 			profileList = getDatabaseHandler().getAllProfiles(profilesFilterType);
 		
 			if (forGUI)
@@ -79,19 +82,24 @@ public class ProfilesDataWrapper {
 		profileList = null;
 	}
 	
+	private Profile getActivatedProfileFromDB()
+	{
+		Profile profile = getDatabaseHandler().getActivatedProfile();
+		if (forGUI && (profile != null))
+		{
+			//Log.d("ProfilesDataWrapper.getActivatedProfile","forGUI=true");
+			profile.generateIconBitmap(context, monochrome, monochromeValue);
+			profile.generatePreferencesIndicator(context, monochrome, monochromeValue);
+		}
+		return profile;
+	}
+	
 	public Profile getActivatedProfile()
 	{
 		if (profileList == null)
 		{
 			//Log.d("ProfilesDataWrapper.getActivatedProfile","profileList=null");
-			Profile profile = getDatabaseHandler().getActivatedProfile();
-			if (forGUI && (profile != null))
-			{
-				//Log.d("ProfilesDataWrapper.getActivatedProfile","forGUI=true");
-				profile.generateIconBitmap(context, monochrome, monochromeValue);
-				profile.generatePreferencesIndicator(context, monochrome, monochromeValue);
-			}
-			return profile;
+			return getActivatedProfileFromDB();
 		}
 		else
 		{
@@ -103,16 +111,16 @@ public class ProfilesDataWrapper {
 				if (profile._checked)
 					return profile;
 			}
+			// when filter is set and profile not found, get profile from db
+			return getActivatedProfileFromDB();
 		}
-		
-		return null;
 	}
 	
-	public Profile getFirstProfile()
+	public Profile getFirstProfile(int filterType)
 	{
 		if (profileList == null)
 		{
-			Profile profile = getDatabaseHandler().getFirstProfile();
+			Profile profile = getDatabaseHandler().getFirstProfile(filterType);
 			if (forGUI && (profile != null))
 			{
 				profile.generateIconBitmap(context, monochrome, monochromeValue);
@@ -168,17 +176,22 @@ public class ProfilesDataWrapper {
 		}
 	}
 	
+	private Profile getProfileByIdFromDB(long id)
+	{
+		Profile profile = getDatabaseHandler().getProfile(id);
+		if (forGUI && (profile != null))
+		{
+			profile.generateIconBitmap(context, monochrome, monochromeValue);
+			profile.generatePreferencesIndicator(context, monochrome, monochromeValue);
+		}
+		return profile;
+	}
+	
 	public Profile getProfileById(long id)
 	{
 		if (profileList == null)
 		{
-			Profile profile = getDatabaseHandler().getProfile(id);
-			if (forGUI && (profile != null))
-			{
-				profile.generateIconBitmap(context, monochrome, monochromeValue);
-				profile.generatePreferencesIndicator(context, monochrome, monochromeValue);
-			}
-			return profile;
+			return getProfileByIdFromDB(id);
 		}
 		else
 		{
@@ -190,7 +203,8 @@ public class ProfilesDataWrapper {
 					return profile;
 			}
 			
-			return null;
+			// when filter is set and profile not found, get profile from db
+			return getProfileByIdFromDB(id);
 		}
 	}
 	
@@ -229,10 +243,13 @@ public class ProfilesDataWrapper {
 
 	public List<Event> getEventList(int eventsFilterType)
 	{
-		this.eventsFilterType = eventsFilterType;
-		
-		if (eventList == null)
+		if ((eventList == null) || (this.eventsFilterType != eventsFilterType))
 		{
+			this.eventsFilterType = eventsFilterType;
+
+			if (eventList != null)
+				eventList.clear();
+			
 			eventList = getDatabaseHandler().getAllEvents(eventsFilterType);
 		}
 
@@ -246,11 +263,11 @@ public class ProfilesDataWrapper {
 		eventList = null;
 	}
 	
-	public Event getFirstEvent()
+	public Event getFirstEvent(int filterType)
 	{
 		if (eventList == null)
 		{
-			Event event = getDatabaseHandler().getFirstEvent();
+			Event event = getDatabaseHandler().getFirstEvent(filterType);
 			return event;
 		}
 		else
@@ -296,8 +313,9 @@ public class ProfilesDataWrapper {
 				if (event._id == id)
 					return event;
 			}
-			
-			return null;
+
+			// when filter is set and profile not found, get profile from db
+			return getDatabaseHandler().getEvent(id);
 		}
 	}
 	

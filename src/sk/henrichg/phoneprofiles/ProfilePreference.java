@@ -39,7 +39,6 @@ public class ProfilePreference extends Preference {
 		preferenceTitle = getTitle();
 		
 		profilesDataWrapper = new ProfilesDataWrapper(context, true, false, 0);
-		profilesDataWrapper.getProfileList(DatabaseHandler.FILTER_TYPE_PROFILES_ALL);
 		
 		//Log.d("ApplicationsPreference", "title="+preferenceTitle);
 		//Log.d("ApplicationsPreference", "imageSource="+imageSource);

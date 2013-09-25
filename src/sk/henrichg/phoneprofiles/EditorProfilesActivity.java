@@ -65,6 +65,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	ListView drawerListView;
 	ActionBarDrawerToggle drawerToggle;
 	
+	String[] actionBarTitle;
 	String[] drawerItemsTitle;
 	EditorDrawerListAdapter drawerAdapter;
 	
@@ -117,6 +118,16 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
         	drawerShadowId = R.drawable.drawer_shadow;
 		drawerLayout.setDrawerShadow(drawerShadowId, GravityCompat.START);
 
+		// actionbar titles
+		actionBarTitle = new String[] { 
+				getResources().getString(R.string.editor_list_drawer_title_profiles), 
+				getResources().getString(R.string.editor_list_drawer_title_profiles),
+				getResources().getString(R.string.editor_list_drawer_title_profiles),
+				getResources().getString(R.string.editor_list_drawer_title_events),
+				getResources().getString(R.string.editor_list_drawer_title_events),
+				getResources().getString(R.string.editor_list_drawer_title_events)
+              };
+		
 		// drawer item titles
 		drawerItemsTitle = new String[] { 
 				getResources().getString(R.string.editor_list_drawer_item_profiles_all), 
@@ -127,8 +138,9 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 				getResources().getString(R.string.editor_list_drawer_item_events_disabled)
               };
 		
-        // Pass string arrays to MenuListAdapter
-        drawerAdapter = new EditorDrawerListAdapter(getBaseContext(), drawerItemsTitle);
+        // Pass string arrays to EditorDrawerListAdapter
+		// use sherlock action bar themed context
+        drawerAdapter = new EditorDrawerListAdapter(drawerListView, getSupportActionBar().getThemedContext(), drawerItemsTitle);
         
         // Set the MenuListAdapter to the ListView
         drawerListView.setAdapter(drawerAdapter);
@@ -168,7 +180,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
         drawerLayout.setDrawerListener(drawerToggle);
         
 		//getSupportActionBar().setDisplayShowTitleEnabled(false);
-		getSupportActionBar().setTitle(R.string.title_activity_phone_profiles);
+		//getSupportActionBar().setTitle(R.string.title_activity_phone_profiles);
 		
 	/*	
 		// Create an array adapter to populate dropdownlist 
@@ -382,7 +394,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
         drawerListView.setItemChecked(position, true);
  
         // Get the title followed by the position
-        setTitle(drawerItemsTitle[position]);
+        setTitle(actionBarTitle[position]);
         // Close drawer
         drawerLayout.closeDrawer(drawerListView);
     }	
