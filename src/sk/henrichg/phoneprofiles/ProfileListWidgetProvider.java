@@ -226,7 +226,7 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 	@Override
 	public void onUpdate(Context ctxt, AppWidgetManager appWidgetManager, int[] appWidgetIds)
 	{
-		Log.e("ProfileListWidgetProvider.onUpdate","xxx");
+		//Log.e("ProfileListWidgetProvider.onUpdate","xxx");
 		
 		GlobalData.loadPreferences(GlobalData.context);
 
@@ -254,7 +254,7 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 	public void onReceive(Context context, Intent intent) {
 		super.onReceive(context, intent);
 
-		Log.e("ProfileListWidgetProvider.onReceive","xxx");
+		//Log.e("ProfileListWidgetProvider.onReceive","xxx");
 		
 		String action = intent.getAction();
 		if ((action != null) &&
@@ -308,7 +308,7 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager,
             int appWidgetId, Bundle newOptions) 
     {
-		Log.e("ProfileListWidgetProvider.onAppWidgetOptionsChanged","xxx");
+		//Log.e("ProfileListWidgetProvider.onAppWidgetOptionsChanged","xxx");
 
         setLayoutParams(context, appWidgetManager, appWidgetId, newOptions);
         RemoteViews layout;

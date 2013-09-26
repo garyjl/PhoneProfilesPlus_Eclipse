@@ -216,8 +216,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		
-		Log.d("DatabaseHandler.onUpgrade", "oldVersion="+oldVersion);
-		Log.d("DatabaseHandler.onUpgrade", "newVersion="+newVersion);
+		//Log.d("DatabaseHandler.onUpgrade", "oldVersion="+oldVersion);
+		//Log.d("DatabaseHandler.onUpgrade", "newVersion="+newVersion);
 		
 		/*
 		// Drop older table if existed
@@ -1266,7 +1266,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public List<Event> getAllEvents(int filterType) {
 		List<Event> eventList = new ArrayList<Event>();
 		
-        Log.e("DatabaseHandler.getAllEvents","filterType="+filterType);
+        //Log.e("DatabaseHandler.getAllEvents","filterType="+filterType);
 		
 		String whereString = "";
 		switch (filterType)
@@ -1345,7 +1345,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 		} catch (Exception e){
 			//Error in between database transaction
-			Log.e("DatabaseHandler.updateEvent", e.getMessage());
+			Log.e("DatabaseHandler.updateEvent", e.toString());
 			r = 0;
 		} finally {
 			db.endTransaction();
@@ -1765,7 +1765,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				}
 			}
 		} catch (Exception e) {
-			Log.e("DatabaseHandler.importDB", e.getMessage());
+			Log.e("DatabaseHandler.importDB", e.toString());
 		}
 		
 		return ret;
@@ -1808,7 +1808,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				ret = 1;
 			}
 		} catch (Exception e) {
-			Log.e("DatabaseHandler.exportDB", e.getMessage());
+			Log.e("DatabaseHandler.exportDB", e.toString());
 		}
 
 		return ret;

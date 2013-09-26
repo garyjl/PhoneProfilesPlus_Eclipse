@@ -747,19 +747,19 @@ public class ActivateProfileHelper {
 				
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
-				Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
+				//Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
 			} catch (NoSuchMethodException e) {
 				e.printStackTrace();
-				Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
+				//Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
-				Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
+				//Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
-				Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
+				//Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
 			} catch (InvocationTargetException e) {
 				e.printStackTrace();
-				Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
+				//Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
 			}
     		
     		
@@ -779,22 +779,22 @@ public class ActivateProfileHelper {
 				setMobileDataEnabledMethod.invoke(iConnectivityManager, enable);
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
-				Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
+				//Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
 			} catch (NoSuchFieldException e) {
 				e.printStackTrace();
-				Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
+				//Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
-				Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
+				//Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
-				Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
+				//Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
 			} catch (NoSuchMethodException e) {
 				e.printStackTrace();
-				Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
+				//Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
 			} catch (InvocationTargetException e) {
 				e.printStackTrace();
-				Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
+				//Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
 			}
     /*	}  */
 		
