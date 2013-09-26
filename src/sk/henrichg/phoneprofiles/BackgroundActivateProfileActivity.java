@@ -1,13 +1,17 @@
 package sk.henrichg.phoneprofiles;
 
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
 import android.widget.Toast;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 
 public class BackgroundActivateProfileActivity extends Activity {
 
 	private ProfilesDataWrapper profilesDataWrapper;
+	private ServiceCommunication serviceCommunication;
 	private DatabaseHandler databaseHandler;
 	private ActivateProfileHelper activateProfileHelper;
 	
@@ -24,6 +28,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 		GlobalData.loadPreferences(getApplicationContext());
 		
 		profilesDataWrapper = new ProfilesDataWrapper(getApplicationContext(), true, false, 0);
+		serviceCommunication = new ServiceCommunication(getApplicationContext());
 		
 		intent = getIntent();
 		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
@@ -49,6 +54,9 @@ public class BackgroundActivateProfileActivity extends Activity {
 		boolean actProfile = false;
 		boolean interactive = false;
 		if ((startupSource == GlobalData.STARTUP_SOURCE_SHORTCUT) ||
+			(startupSource == GlobalData.STARTUP_SOURCE_WIDGET) ||
+			(startupSource == GlobalData.STARTUP_SOURCE_ACTIVATOR) ||
+			(startupSource == GlobalData.STARTUP_SOURCE_EDITOR) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_SERVICE) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_SERVICE_INTERACTIVE))
 		{
@@ -78,6 +86,9 @@ public class BackgroundActivateProfileActivity extends Activity {
 		//Log.d("BackgroundActivateProfileActivity.onStart","_preferencesIndicator="+String.valueOf(profile._preferencesIndicator));
 		
 		if ((startupSource == GlobalData.STARTUP_SOURCE_SHORTCUT) ||
+			(startupSource == GlobalData.STARTUP_SOURCE_WIDGET) ||
+			(startupSource == GlobalData.STARTUP_SOURCE_ACTIVATOR) ||
+			(startupSource == GlobalData.STARTUP_SOURCE_EDITOR) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_SERVICE) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_SERVICE_INTERACTIVE))	
 		{
@@ -94,17 +105,90 @@ public class BackgroundActivateProfileActivity extends Activity {
 		if (actProfile && (profile != null))
 		{
 			// aktivacia profilu
-			activateProfile(profile, interactive);
+			activateProfileWithAlert(profile, interactive);
 		}
 		else
 		{
 			activateProfileHelper.showNotification(profile);
 			activateProfileHelper.updateWidget();
+			
+			// for startActivityForResult
+			Intent returnIntent = new Intent();
+			returnIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile_id);
+			setResult(RESULT_OK,returnIntent);
+			
+			finish();
 		}
 		
 		//Log.d("ActivateProfileActivity.onStart", "xxxx");
 		
-		finish();
+	}
+	
+	private void activateProfileWithAlert(Profile profile, boolean interactive)
+	{
+		if ((GlobalData.applicationActivateWithAlert || (startupSource == GlobalData.STARTUP_SOURCE_EDITOR))
+				&& interactive)
+		{	
+			final Profile _profile = profile;
+			final boolean _interactive = interactive;
+			final Activity activity = this;
+
+			// set theme and language for dialog alert ;-)
+			// not working on Android 2.3.x
+			GUIData.setTheme(this, true);
+			GUIData.setLanguage(getBaseContext());
+			
+			AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+			dialogBuilder.setTitle(getResources().getString(R.string.profile_string_0) + ": " + profile._name);
+			dialogBuilder.setMessage(getResources().getString(R.string.activate_profile_alert_message) + "?");
+			//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
+			dialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+				
+				public void onClick(DialogInterface dialog, int which) {
+					activateProfile(_profile, _interactive);
+					
+					// for startActivityForResult
+					Intent returnIntent = new Intent();
+					returnIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile_id);
+					setResult(RESULT_OK,returnIntent);
+					
+					activity.finish();
+				}
+			});
+			dialogBuilder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+				
+				public void onClick(DialogInterface dialog, int which) {
+
+					// for startActivityForResult
+					Intent returnIntent = new Intent();
+					setResult(RESULT_CANCELED,returnIntent);
+
+					activity.finish();
+				}
+			});
+			dialogBuilder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+				
+				public void onCancel(DialogInterface dialog) {
+					// for startActivityForResult
+					Intent returnIntent = new Intent();
+					setResult(RESULT_CANCELED,returnIntent);
+
+					activity.finish();
+				}
+			});
+			dialogBuilder.show();
+		}
+		else
+		{
+			activateProfile(profile, interactive);
+
+			// for startActivityForResult
+			Intent returnIntent = new Intent();
+			returnIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile_id);
+			setResult(RESULT_OK,returnIntent);
+			
+			finish();
+		}
 	}
 	
 	private void activateProfile(Profile profile, boolean interactive)
@@ -116,7 +200,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 		activateProfileHelper.showNotification(profile);
 		activateProfileHelper.updateWidget();
 		
-		//profilesDataWrapper.sendMessageIntoServiceLong(PhoneProfilesService.MSG_PROFILE_ACTIVATED, profile_id);
+		serviceCommunication.sendMessageIntoServiceLong(PhoneProfilesService.MSG_PROFILE_ACTIVATED, profile_id);
 
 		if (GlobalData.notificationsToast)
 		{	

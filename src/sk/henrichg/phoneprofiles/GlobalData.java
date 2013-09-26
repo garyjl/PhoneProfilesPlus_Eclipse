@@ -27,7 +27,7 @@ public class GlobalData extends Application {
 	static final String EXTRA_EVENT_POSITION = "event_position";
 	static final String EXTRA_FILTER_TYPE = "filter_type";
 
-	// musi byt tu, pouziva t ActivateProfileHelper
+	// musi byt tu, pouziva to ActivateProfileHelper
 	static final int STARTUP_SOURCE_NOTIFICATION = 1;
 	static final int STARTUP_SOURCE_WIDGET = 2;
 	static final int STARTUP_SOURCE_SHORTCUT = 3;
@@ -35,8 +35,12 @@ public class GlobalData extends Application {
 	static final int STARTUP_SOURCE_ACTIVATOR = 5;
 	static final int STARTUP_SOURCE_SERVICE = 6;
 	static final int STARTUP_SOURCE_SERVICE_INTERACTIVE = 7;
+	static final int STARTUP_SOURCE_EDITOR = 8;
 
-	// musi byt tu, pouziva t ActivateProfileHelper
+	// request code for startActivityForResult with intent BackgroundActivateProfileActivity
+	static final int REQUEST_CODE_ACTIVATE_PROFILE = 6220;
+	
+	// musi byt tu, pouziva to ActivateProfileHelper
 	static final int NOTIFICATION_ID = 700420;
 
 	static final String PREF_PROFILE_NAME = "profileName";

@@ -402,9 +402,18 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
-		ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
-		if (fragment != null)
-			fragment.doOnActivityResult(requestCode, resultCode, data);
+		if (requestCode == GlobalData.REQUEST_CODE_ACTIVATE_PROFILE)
+		{
+			EditorProfileListFragment fragment = (EditorProfileListFragment)getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
+			if (fragment != null)
+				fragment.doOnActivityResult(requestCode, resultCode, data);
+		}
+		else
+		{
+			ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
+			if (fragment != null)
+				fragment.doOnActivityResult(requestCode, resultCode, data);
+		}
 	}
 
 	private void importExportErrorDialog(int importExport)

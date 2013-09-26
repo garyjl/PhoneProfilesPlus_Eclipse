@@ -11,6 +11,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.util.Log;
 
 public class ServiceCommunication {
 
@@ -33,7 +34,7 @@ public class ServiceCommunication {
                 break;
             case PhoneProfilesService.MSG_ACTIVATE_PROFILE:
             case PhoneProfilesService.MSG_ACTIVATE_PROFILE_INTERACTIVE:
-            //case PhoneProfilesService.MSG_PROFILE_ACTIVATED:
+            case PhoneProfilesService.MSG_PROFILE_ACTIVATED:
         		sendMessageIntoServiceLong(msgForBind, longDataForBind);
             	break;
             default:
@@ -93,7 +94,7 @@ public class ServiceCommunication {
 
 	    if (phoneProfilesService != null)
     	{
-	    	//Log.d("ProfilesDataWrapper.sendMessageIntoServiceLong","data="+data);
+	    	Log.e("ServiceCommunication.sendMessageIntoServiceLong","data="+data);
 	    	try {
                 Bundle b = new Bundle();
                 b.putLong(GlobalData.EXTRA_PROFILE_ID, data);

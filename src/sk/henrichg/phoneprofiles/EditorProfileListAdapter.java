@@ -251,7 +251,7 @@ public class EditorProfileListAdapter extends BaseAdapter
 				editIconClicked = true;
 				//Log.d("EditorProfileListAdapter.onClick", "activate");
 				((EditorProfileListFragment)fragment).finishProfilePreferencesActionMode();
-				((EditorProfileListFragment)fragment).activateProfileWithAlert(_position);
+				((EditorProfileListFragment)fragment).activateProfile(_position, true);
 			}
 		}); 
 

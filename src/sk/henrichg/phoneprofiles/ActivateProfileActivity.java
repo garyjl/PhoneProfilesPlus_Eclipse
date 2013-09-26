@@ -216,7 +216,8 @@ public class ActivateProfileActivity extends SherlockActivity {
 				//Log.d("ActivateProfilesActivity.onItemClick", "xxxx");
 
 				if (!GlobalData.applicationLongClickActivation)
-					activateProfileWithAlert(position);
+					//activateProfileWithAlert(position);
+					activateProfile(position, true);
 
 			}
 			
@@ -229,7 +230,8 @@ public class ActivateProfileActivity extends SherlockActivity {
 				//Log.d("ActivateProfilesActivity.onItemLongClick", "xxxx");
 				
 				if (GlobalData.applicationLongClickActivation)
-					activateProfileWithAlert(position);
+					//activateProfileWithAlert(position);
+					activateProfile(position, true);
 
 				return false;
 			}
@@ -430,82 +432,43 @@ public class ActivateProfileActivity extends SherlockActivity {
 				profilePrefIndicatorImageView.setImageBitmap(profile._preferencesIndicator);
 		}
 	}
-	
-	private void activateProfileWithAlert(int position)
-	{
-		if (GlobalData.applicationActivateWithAlert)
-		{	
-			final int _position = position;
-			final Profile profile = profileList.get(_position);
 
-			AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-			dialogBuilder.setTitle(getResources().getString(R.string.profile_string_0) + ": " + profile._name);
-			dialogBuilder.setMessage(getResources().getString(R.string.activate_profile_alert_message) + "?");
-			//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
-			dialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-				
-				public void onClick(DialogInterface dialog, int which) {
-					activateProfile(_position, true);
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
+	{
+		if (requestCode == GlobalData.REQUEST_CODE_ACTIVATE_PROFILE)
+		{
+			if(resultCode == RESULT_OK)
+			{      
+		    	long profile_id = data.getLongExtra(GlobalData.EXTRA_PROFILE_ID, -1);
+		    	Profile profile = profilesDataWrapper.getProfileById(profile_id);
+		    	 
+		    	profileListAdapter.activateProfile(profile);
+				updateHeader(profile);
+
+				if (GlobalData.applicationClose)
+				{	
+					// ma sa zatvarat aktivita po aktivacii
+					if (GUIData.getApplicationStarted())
+						// aplikacia je uz spustena, mozeme aktivitu zavriet
+						// tymto je vyriesene, ze pri spusteni aplikacie z launchera
+						// sa hned nezavrie
+						finish();
 				}
-			});
-			dialogBuilder.setNegativeButton(android.R.string.no, null);
-			dialogBuilder.show();
+
+		     }
+		     if (resultCode == RESULT_CANCELED)
+		     {    
+		         //Write your code if there's no result
+		     }
 		}
-		else
-			activateProfile(position, true);
 	}
 	
 	private void activateProfile(Profile profile, boolean interactive)
 	{
-	/*	profileListAdapter.activateProfile(profile);
-		GUIData.profilesDataWrapper.getDatabaseHandler().activateProfile(profile);
-		
-		activateProfileHelper.execute(profile, interactive);
-
-		updateHeader(profile);
-		activateProfileHelper.updateWidget();
-
-		if (GlobalData.notificationsToast)
-		{	
-			// toast notification
-			Toast msg = Toast.makeText(getBaseContext(), 
-					getResources().getString(R.string.toast_profile_activated_0) + ": " + profile._name + " " +
-					getResources().getString(R.string.toast_profile_activated_1), 
-					Toast.LENGTH_LONG);
-			msg.show();
-		}
-
-		activateProfileHelper.showNotification(profile);
-
-		if (GlobalData.applicationClose)
-		{	
-			// ma sa zatvarat aktivita po aktivacii
-			if (GUIData.getApplicationStarted())
-				// aplikacia je uz spustena, mozeme aktivitu zavriet
-				// tymto je vyriesene, ze pri spusteni aplikacie z launchera
-				// sa hned nezavrie
-				finish();
-		} */
-		
-		profileListAdapter.activateProfile(profile);
-		updateHeader(profile);
-
-		int message;
-		if (interactive)
-			message = PhoneProfilesService.MSG_ACTIVATE_PROFILE_INTERACTIVE;
-		else
-			message = PhoneProfilesService.MSG_ACTIVATE_PROFILE;
-		serviceCommunication.sendMessageIntoServiceLong(message, profile._id);
-
-		if (GlobalData.applicationClose)
-		{	
-			// ma sa zatvarat aktivita po aktivacii
-			if (GUIData.getApplicationStarted())
-				// aplikacia je uz spustena, mozeme aktivitu zavriet
-				// tymto je vyriesene, ze pri spusteni aplikacie z launchera
-				// sa hned nezavrie
-				finish();
-		}
+		Intent intent = new Intent(getBaseContext(), BackgroundActivateProfileActivity.class);
+		intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_ACTIVATOR);
+		intent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
+		startActivityForResult(intent, GlobalData.REQUEST_CODE_ACTIVATE_PROFILE);
 	}
 	
 	private void activateProfile(int position, boolean interactive)

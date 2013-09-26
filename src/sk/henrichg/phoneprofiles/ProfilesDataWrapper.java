@@ -142,6 +142,9 @@ public class ProfilesDataWrapper {
 	
 	public int getProfileItemPosition(Profile profile)
 	{
+		if (profile == null)
+			return -1;
+		
 		if (profileList == null)
 			return getDatabaseHandler().getProfilePosition(profile);
 		else
@@ -157,7 +160,7 @@ public class ProfilesDataWrapper {
 	
 	public void activateProfile(Profile profile)
 	{
-		if (profileList == null)
+		if ((profileList == null) || (profile == null))
 			return;
 		
 		for (Profile p : profileList)
@@ -216,6 +219,9 @@ public class ProfilesDataWrapper {
 	
 	public void deleteProfile(Profile profile)
 	{
+		if (profile == null)
+			return;
+		
 		profileList.remove(profile);
 		if (eventList == null)
 			eventList = getEventList(eventsFilterType);
@@ -284,6 +290,9 @@ public class ProfilesDataWrapper {
 	
 	public int getEventItemPosition(Event event)
 	{
+		if (event == null)
+			return - 1;
+
 		if (eventList == null)
 			return getDatabaseHandler().getEventPosition(event);
 		else

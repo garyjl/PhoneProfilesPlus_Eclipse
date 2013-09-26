@@ -184,6 +184,7 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 			widget.setRemoteAdapter(appWidgetId, R.id.widget_profile_list, svcIntent);
 			
 			Intent clickIntent=new Intent(ctxt, BackgroundActivateProfileActivity.class);
+			clickIntent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_WIDGET);
 			PendingIntent clickPI=PendingIntent.getActivity(ctxt, 0,
 			                                            clickIntent,
 			                                            PendingIntent.FLAG_UPDATE_CURRENT);

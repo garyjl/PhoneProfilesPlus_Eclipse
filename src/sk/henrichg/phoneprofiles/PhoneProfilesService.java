@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
+import android.util.Log;
 
 public class PhoneProfilesService extends Service {
 	
@@ -25,7 +26,7 @@ public class PhoneProfilesService extends Service {
 	public static final int MSG_RELOAD_DATA = 1;
 	public static final int MSG_ACTIVATE_PROFILE = 2;
 	public static final int MSG_ACTIVATE_PROFILE_INTERACTIVE = 3;
-	//public static final int MSG_PROFILE_ACTIVATED = 4;
+	public static final int MSG_PROFILE_ACTIVATED = 4;
 	
 	// Target we publish for clients to send messages to IncomingHandler.
 	final Messenger messenger = new Messenger(new IncomingHandler());   	    
@@ -44,9 +45,9 @@ public class PhoneProfilesService extends Service {
             case MSG_ACTIVATE_PROFILE_INTERACTIVE:
             	activateProfile(msg.getData().getLong(GlobalData.EXTRA_PROFILE_ID), true);
             	break;
-        /*    case MSG_PROFILE_ACTIVATED:
+            case MSG_PROFILE_ACTIVATED:
             	setActivatedProfile(msg.getData().getLong(GlobalData.EXTRA_PROFILE_ID));
-            	break; */
+            	break;
             default:
                 super.handleMessage(msg);
             }
@@ -126,10 +127,10 @@ public class PhoneProfilesService extends Service {
     	profilesDataWrapper.activateProfile(profile);
 	}
 	
-/*	private void setActivatedProfile(long profile_id)
+	private void setActivatedProfile(long profile_id)
 	{
-		Log.d("PhoneProfilesService.setActivatedProfile",profile_id+"");
+		//Log.e("PhoneProfilesService.setActivatedProfile",profile_id+"");
 		Profile profile = profilesDataWrapper.getProfileById(profile_id); 
     	profilesDataWrapper.activateProfile(profile);
-	}  */
+	}  
 }

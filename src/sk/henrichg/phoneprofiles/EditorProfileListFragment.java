@@ -253,7 +253,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 				
 				if (!EditorProfileListAdapter.editIconClicked) // workaround
 				{
-					activateProfileWithAlert(position);
+					activateProfile(position, true);
 				}
 				
 				EditorProfileListAdapter.editIconClicked = false;
@@ -658,58 +658,35 @@ public class EditorProfileListFragment extends SherlockFragment {
 				profilePrefIndicatorImageView.setImageBitmap(profile._preferencesIndicator);
 		}
 	}
-	
-	public void activateProfileWithAlert(int position)
+
+	public void doOnActivityResult(int requestCode, int resultCode, Intent data)
 	{
-		final int _position = position;
-		final Profile profile = profileList.get(_position);
-
-		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getSherlockActivity());
-		dialogBuilder.setTitle(getResources().getString(R.string.profile_string_0) + ": " + profile._name);
-		dialogBuilder.setMessage(getResources().getString(R.string.activate_profile_alert_message) + "?");
-		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
-		dialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-			
-			public void onClick(DialogInterface dialog, int which) {
-				activateProfile(_position, true);
-			}
-		});
-		dialogBuilder.setNegativeButton(android.R.string.no, null);
-		dialogBuilder.show();
-	}
-	
-	private void activateProfile(Profile profile, boolean interactive)
-	{
-	/*	profileListAdapter.activateProfile(profile);
-		databaseHandler.activateProfile(profile);
-		
-		activateProfileHelper.execute(profile, interactive);
-
-		updateHeader(profile);
-		activateProfileHelper.updateWidget();
-
-		if (GlobalData.notificationsToast)
-		{	
-			// toast notification
-			Toast msg = Toast.makeText(getSherlockActivity().getBaseContext(), 
-					getResources().getString(R.string.toast_profile_activated_0) + ": " + profile._name + " " +
-					getResources().getString(R.string.toast_profile_activated_1), 
-					Toast.LENGTH_LONG);
-			msg.show();
+		if (requestCode == GlobalData.REQUEST_CODE_ACTIVATE_PROFILE)
+		{
+			if(resultCode == Activity.RESULT_OK)
+			{      
+		    	long profile_id = data.getLongExtra(GlobalData.EXTRA_PROFILE_ID, -1);
+		    	Profile profile = EditorProfilesActivity.profilesDataWrapper.getProfileById(profile_id);
+		    	 
+		    	profileListAdapter.activateProfile(profile);
+				updateHeader(profile);
+		     }
+		     if (resultCode == Activity.RESULT_CANCELED)
+		     {    
+		         //Write your code if there's no result
+		     }
 		}
-
-		activateProfileHelper.showNotification(profile); */
-		
-		profileListAdapter.activateProfile(profile);
-		updateHeader(profile);
-
-		EditorProfilesActivity.serviceCommunication.sendMessageIntoServiceLong(PhoneProfilesService.MSG_ACTIVATE_PROFILE, 
-				                            profile._id);
-		
-
 	}
 	
-	private void activateProfile(int position, boolean interactive)
+	public void activateProfile(Profile profile, boolean interactive)
+	{
+		Intent intent = new Intent(getActivity().getBaseContext(), BackgroundActivateProfileActivity.class);
+		intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_EDITOR);
+		intent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
+		getActivity().startActivityForResult(intent, GlobalData.REQUEST_CODE_ACTIVATE_PROFILE);
+	}
+
+	public void activateProfile(int position, boolean interactive)
 	{
 		Profile profile = profileList.get(position);
 		activateProfile(profile, interactive);
