@@ -57,9 +57,9 @@ public class ServiceCommunication {
     
     final Messenger mMessenger = new Messenger(new IncomingHandler());
 	
-    @SuppressLint("HandlerLeak")
-	class IncomingHandler extends Handler {
-        @Override
+	static class IncomingHandler extends Handler {
+
+		@Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
             default:

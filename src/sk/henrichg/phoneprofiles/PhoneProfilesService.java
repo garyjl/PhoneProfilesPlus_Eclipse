@@ -1,5 +1,7 @@
 package sk.henrichg.phoneprofiles;
 
+import java.lang.ref.WeakReference;
+
 import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Context;
@@ -29,24 +31,35 @@ public class PhoneProfilesService extends Service {
 	public static final int MSG_PROFILE_ACTIVATED = 4;
 	
 	// Target we publish for clients to send messages to IncomingHandler.
-	final Messenger messenger = new Messenger(new IncomingHandler());   	    
+	final Messenger messenger = new Messenger(new IncomingHandler(this));   	    
 
-    @SuppressLint("HandlerLeak")
-	class IncomingHandler extends Handler { // Handler of incoming messages from clients.
-        @Override
+    static class IncomingHandler extends Handler { // Handler of incoming messages from clients.
+
+    	private final WeakReference<PhoneProfilesService> serviceWakeReference; 
+    	
+    	IncomingHandler(PhoneProfilesService service) {
+            this.serviceWakeReference = new WeakReference<PhoneProfilesService>(service);
+        }    	
+    	
+    	@Override
         public void handleMessage(Message msg) {
+    		
+    		Log.e("PhoneProfilesService.IncommingHandler.handleMessage",msg.what+"");
+    		
+    		PhoneProfilesService service = serviceWakeReference.get();
+    		
             switch (msg.what) {
             case MSG_RELOAD_DATA:
-                reloadData();
+                service.reloadData();
                 break;
             case MSG_ACTIVATE_PROFILE:
-            	activateProfile(msg.getData().getLong(GlobalData.EXTRA_PROFILE_ID), false);
+            	service.activateProfile(msg.getData().getLong(GlobalData.EXTRA_PROFILE_ID), false);
             	break;
             case MSG_ACTIVATE_PROFILE_INTERACTIVE:
-            	activateProfile(msg.getData().getLong(GlobalData.EXTRA_PROFILE_ID), true);
+            	service.activateProfile(msg.getData().getLong(GlobalData.EXTRA_PROFILE_ID), true);
             	break;
             case MSG_PROFILE_ACTIVATED:
-            	setActivatedProfile(msg.getData().getLong(GlobalData.EXTRA_PROFILE_ID));
+            	service.setActivatedProfile(msg.getData().getLong(GlobalData.EXTRA_PROFILE_ID));
             	break;
             default:
                 super.handleMessage(msg);

@@ -126,8 +126,8 @@ public class BackgroundActivateProfileActivity extends Activity {
 	
 	private void activateProfileWithAlert(Profile profile, boolean interactive)
 	{
-		if ((GlobalData.applicationActivateWithAlert || (startupSource == GlobalData.STARTUP_SOURCE_EDITOR))
-				&& interactive)
+		if ((GlobalData.applicationActivateWithAlert && interactive && GUIData.applicationStarted) ||
+			(startupSource == GlobalData.STARTUP_SOURCE_EDITOR))	
 		{	
 			final Profile _profile = profile;
 			final boolean _interactive = interactive;

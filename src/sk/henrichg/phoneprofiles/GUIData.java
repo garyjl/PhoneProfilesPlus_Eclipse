@@ -9,19 +9,9 @@ import android.content.res.Resources;
 
 public class GUIData {
 
-	private static boolean applicationStarted = false;
+	public static boolean applicationStarted = false;
 	
 	static final String PROFILE_ICON_DEFAULT = "ic_profile_default";
-
-	public static boolean getApplicationStarted()
-	{
-		return applicationStarted;
-	}
-	
-	public static void setApplicationStarted(boolean started)
-	{
-		applicationStarted = started;
-	}
 
 	public static void setLanguage(Context context)//, boolean restart)
 	{
