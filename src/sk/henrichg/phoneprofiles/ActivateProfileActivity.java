@@ -296,9 +296,6 @@ public class ActivateProfileActivity extends SherlockActivity {
 		// reset, aby sa to dalej chovalo ako normalne spustenie z lauchera
 		startupSource = 0;
 
-		// na onStart dame, ze aplikacia uz je nastartovana
-		GUIData.applicationStarted = true;
-
 		//GlobalData.getMeasuredRunTime(nanoTimeStart, "ActivateProfileActivity.onStart");
 		
 		//Log.d("PhoneProfileActivity.onStart", "xxxx");
@@ -340,6 +337,10 @@ public class ActivateProfileActivity extends SherlockActivity {
 	protected void onStop()
 	{
 		super.onStop();
+		
+		//  aplikacia uz je 1. krat spustena
+		GUIData.applicationStarted = true;
+		
 	}
 	
 	@Override
