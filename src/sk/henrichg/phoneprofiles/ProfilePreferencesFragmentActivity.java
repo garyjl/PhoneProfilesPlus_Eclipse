@@ -96,7 +96,7 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 				.replace(R.id.activity_profile_preferences_container, fragment).commit();
 	}
 
-	public void onRedrawProfileListFragment() {
+	public void onRedrawProfileListFragment(Profile profile) {
 		// all redraws are in EditorProfilesActivity.onStart()
 
 		// send message into service

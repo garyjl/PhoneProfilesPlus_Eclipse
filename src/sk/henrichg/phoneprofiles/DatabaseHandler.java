@@ -387,7 +387,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	// Adding new profile
 	void addProfile(Profile profile) {
 	
-		//int porder = getMaxPOrder() + 1;
+		int porder = getMaxPOrder() + 1;
 
 		//SQLiteDatabase db = this.getWritableDatabase();
 		SQLiteDatabase db = getMyWritableDatabase();
@@ -396,8 +396,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_NAME, profile._name); // Profile Name
 		values.put(KEY_ICON, profile._icon); // Icon
 		values.put(KEY_CHECKED, (profile._checked) ? 1 : 0); // Checked
-		//values.put(KEY_PORDER, porder); // POrder
-		values.put(KEY_PORDER, profile._porder); // POrder
+		values.put(KEY_PORDER, porder); // POrder
+		//values.put(KEY_PORDER, profile._porder); // POrder
 		values.put(KEY_VOLUME_RINGER_MODE, profile._volumeRingerMode);
 		values.put(KEY_VOLUME_RINGTONE, profile._volumeRingtone);
 		values.put(KEY_VOLUME_NOTIFICATION, profile._volumeNotification);
@@ -758,7 +758,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		return r;
 	}
 	
-/*	// Getting max(porder)
+	// Getting max(porder)
 	public int getMaxPOrder() {
 		String countQuery = "SELECT MAX(PORDER) FROM " + TABLE_PROFILES;
 		//SQLiteDatabase db = this.getReadableDatabase();
@@ -773,7 +773,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		else
 		{	
 			if (cursor.moveToFirst())
-				// return max(porder)
 				r = cursor.getInt(0);
 			else
 				r = 0;
@@ -785,7 +784,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		return r;
 		
 	}
-*/	
+	
 	public void activateProfile(Profile profile)
 	{
 		//SQLiteDatabase db = this.getWritableDatabase();
@@ -1059,8 +1058,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.beginTransaction();
 		try {
 
-			for (Profile profile : list)
+			for (int i = 0; i < list.size(); i++)
 			{
+				Profile profile = list.get(i);
+				profile._porder = i+1;
+						
 				values.put(KEY_PORDER, profile._porder);
 
 				db.update(TABLE_PROFILES, values, KEY_ID + " = ?",

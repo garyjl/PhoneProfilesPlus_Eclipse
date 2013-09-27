@@ -96,7 +96,7 @@ public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
 				.replace(R.id.activity_event_preferences_container, fragment).commit();
 	}
 
-	public void onRedrawEventListFragment() {
+	public void onRedrawEventListFragment(Event event) {
 		// all redraws are in EditorProfilesActivity.onStart()
 
 		// send message into service

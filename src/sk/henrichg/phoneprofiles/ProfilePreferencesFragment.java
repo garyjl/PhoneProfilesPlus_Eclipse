@@ -60,11 +60,11 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		/**
 		 * Callback for redraw profile list fragment.
 		 */
-		public void onRedrawProfileListFragment();
+		public void onRedrawProfileListFragment(Profile profile);
 	}
 
 	private static OnRedrawProfileListFragment sDummyOnRedrawProfileListFragmentCallback = new OnRedrawProfileListFragment() {
-		public void onRedrawProfileListFragment() {
+		public void onRedrawProfileListFragment(Profile profile) {
 		}
 	};
 	
@@ -293,7 +293,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 
         }
 
-        onRedrawProfileListFragmentCallback.onRedrawProfileListFragment();
+        onRedrawProfileListFragmentCallback.onRedrawProfileListFragment(profile);
 	}
 	
 	private void setSummary(String key, Object value)

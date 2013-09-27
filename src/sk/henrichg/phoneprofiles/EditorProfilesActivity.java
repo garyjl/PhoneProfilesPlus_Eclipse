@@ -644,15 +644,16 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		}
 	}
 
-	public void onRedrawProfileListFragment() {
+	public void onRedrawProfileListFragment(Profile profile) {
 		// redraw headeru list fragmentu, notifikacie a widgetov
 		EditorProfileListFragment fragment = (EditorProfileListFragment)getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
 		if (fragment != null)
 		{
-			fragment.updateListView();
-			Profile profile = profilesDataWrapper.getActivatedProfile();
-			fragment.updateHeader(profile);
-			profilesDataWrapper.getActivateProfileHelper().showNotification(profile);
+			fragment.updateListView(profile);
+
+			Profile activeProfile = profilesDataWrapper.getActivatedProfile();
+			fragment.updateHeader(activeProfile);
+			profilesDataWrapper.getActivateProfileHelper().showNotification(activeProfile);
 			profilesDataWrapper.getActivateProfileHelper().updateWidget();
 			
 			// send message into service
@@ -740,12 +741,12 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		}
 	}
 
-	public void onRedrawEventListFragment() {
+	public void onRedrawEventListFragment(Event event) {
 		// redraw headeru list fragmentu, notifikacie a widgetov
 		EditorEventListFragment fragment = (EditorEventListFragment)getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
 		if (fragment != null)
 		{
-			fragment.updateListView();
+			fragment.updateListView(event);
 			
 			// send message into service
 	        //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
@@ -770,6 +771,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		}
 	}
 	
+/*
 	public static void updateListView(SherlockFragmentActivity activity)
 	{
 		EditorProfileListFragment fragment = (EditorProfileListFragment)activity.getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
@@ -779,7 +781,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			fragment.updateListView();
 		}
 	}
-	
+*/	
 	public static ApplicationsCache getApplicationsCache()
 	{
 		return applicationsCache;

@@ -265,8 +265,8 @@ public class EditorProfileListFragment extends SherlockFragment {
 		
         listView.setDropListener(new DragSortListView.DropListener() {
             public void drop(int from, int to) {
-            	profileListAdapter.changeItemOrder(from, to);
-            	databaseHandler.setPOrder(profileList);
+            	profileListAdapter.changeItemOrder(from, to); // swap profiles
+            	databaseHandler.setPOrder(profileList);  // set profiles _porder and write it into db
         		onProfileOrderChangedCallback.onProfileOrderChanged();
         		//Log.d("EditorProfileListFragment.drop", "xxxx");
             }
@@ -309,8 +309,15 @@ public class EditorProfileListFragment extends SherlockFragment {
 				activateProfileHelper.showNotification(profile);
 				activateProfileHelper.updateWidget();
 			}
-			
-			profileListAdapter.notifyDataSetChanged();
+
+			// update checked profile in listview
+			profile = null;
+			for (int i = 0; i < profileListAdapter.profileList.size(); i++)
+			{
+				if (listView.isItemChecked(i))
+					profile = profileListAdapter.profileList.get(i);
+			}
+			updateListView(profile);
 		}
 
 		// reset, aby sa to dalej chovalo ako normalne spustenie z lauchera
@@ -361,8 +368,12 @@ public class EditorProfileListFragment extends SherlockFragment {
 		Profile profile;
 		
 		if (position != -1)
+		{
 			// editacia profilu
 			profile = profileList.get(position);
+			listView.setSelection(position);
+			listView.setItemChecked(position, true);
+		}
 		else
 		{
 			// pridanie noveho profilu
@@ -397,8 +408,14 @@ public class EditorProfileListFragment extends SherlockFragment {
 								  "-",
 								  true
 					);
-			profileListAdapter.addItem(profile); // pridame profil do listview a nastavime jeho order
-			databaseHandler.addProfile(profile);
+
+			// add profile into db and set id and order
+			databaseHandler.addProfile(profile); 
+			// add profile into listview
+			profileListAdapter.addItem(profile, filterType == DatabaseHandler.FILTER_TYPE_PROFILES_SHOW_IN_ACTIVATOR);
+			
+			updateListView(profile);
+
 			onProfileCountChangedCallback.onProfileCountChanged();
 
         	// generate bitmaps
@@ -450,8 +467,13 @@ public class EditorProfileListFragment extends SherlockFragment {
 				   origProfile._deviceRunApplicationPackageName,
 				   origProfile._showInActivator);
 
-		profileListAdapter.addItem(newProfile);
-		databaseHandler.addProfile(newProfile);
+		// add profile into db and set id and order
+		databaseHandler.addProfile(newProfile); 
+		// add profile into listview
+		profileListAdapter.addItem(newProfile, filterType == DatabaseHandler.FILTER_TYPE_PROFILES_SHOW_IN_ACTIVATOR);
+		
+		updateListView(newProfile);
+		
 		onProfileCountChangedCallback.onProfileCountChanged();
 		
     	// generate bitmaps
@@ -697,9 +719,20 @@ public class EditorProfileListFragment extends SherlockFragment {
 		onFinishProfilePreferencesActionModeCallback.onFinishProfilePreferencesActionMode();
 	}
 	
-	public void updateListView()
+	public void updateListView(Profile profile)
 	{
 		profileListAdapter.notifyDataSetChanged();
+
+		// sort list
+		if (filterType != DatabaseHandler.FILTER_TYPE_PROFILES_SHOW_IN_ACTIVATOR)
+			profileListAdapter.sortAlphabetically(false);
+		// set profile visible in list
+		if (profile == null)
+		{	
+			int profilePos = profileList.indexOf(profile);
+			listView.setSelection(profilePos);
+			listView.setItemChecked(profilePos, true);
+		}
 	}
 	
 	public int getFilterType()

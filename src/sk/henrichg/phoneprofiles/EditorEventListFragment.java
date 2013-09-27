@@ -225,8 +225,17 @@ public class EditorEventListFragment extends SherlockFragment {
 		if (PhoneProfilesPreferencesActivity.getInvalidateEditor(false))
 			return;
 		
-		if (eventListAdapter != null)		
-			eventListAdapter.notifyDataSetChanged();
+		if (eventListAdapter != null)
+		{
+			// update checked event in listview
+			Event event = null;
+			for (int i = 0; i < eventListAdapter.eventList.size(); i++)
+			{
+				if (listView.isItemChecked(i))
+					event = eventListAdapter.eventList.get(i);
+			}
+			updateListView(event);
+		}
 	}
 	
 	@Override
@@ -371,7 +380,7 @@ public class EditorEventListFragment extends SherlockFragment {
 		onFinishEventPreferencesActionModeCallback.onFinishEventPreferencesActionMode();
 	}
 	
-	public void updateListView()
+	public void updateListView(Event event)
 	{
 		eventListAdapter.notifyDataSetChanged();
 	}

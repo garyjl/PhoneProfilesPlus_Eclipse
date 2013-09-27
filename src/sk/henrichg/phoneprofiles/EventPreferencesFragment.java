@@ -60,11 +60,11 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		/**
 		 * Callback for redraw event list fragment.
 		 */
-		public void onRedrawEventListFragment();
+		public void onRedrawEventListFragment(Event event);
 	}
 
 	private static OnRedrawEventListFragment sDummyOnRedrawEventListFragmentCallback = new OnRedrawEventListFragment() {
-		public void onRedrawEventListFragment() {
+		public void onRedrawEventListFragment(Event event) {
 		}
 	};
 	
@@ -205,7 +205,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 
         }
 
-        onRedrawEventListFragmentCallback.onRedrawEventListFragment();
+        onRedrawEventListFragmentCallback.onRedrawEventListFragment(event);
 	}
 	
 	private void updateSharedPreference()

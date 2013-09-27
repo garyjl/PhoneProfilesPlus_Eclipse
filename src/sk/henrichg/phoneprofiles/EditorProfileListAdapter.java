@@ -1,5 +1,7 @@
 package sk.henrichg.phoneprofiles;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import android.view.LayoutInflater;
@@ -17,7 +19,7 @@ public class EditorProfileListAdapter extends BaseAdapter
 	private EditorProfileListFragment fragment;
 	private ProfilesDataWrapper profilesDataWrapper;
 	private int filterType;
-	private List<Profile> profileList;
+	public List<Profile> profileList;
 	public static boolean editIconClicked = false;
 	
 	
@@ -63,18 +65,11 @@ public class EditorProfileListAdapter extends BaseAdapter
 		notifyDataSetChanged();
 	}
 	
-	public void addItem(Profile profile)
+	public void addItem(Profile profile, boolean refresh)
 	{
-		int maxPOrder = 0;
-		int pOrder;
-		for (Profile p : profileList)
-		{
-			pOrder = p._porder;
-			if (pOrder > maxPOrder) maxPOrder = pOrder;
-		}
-		profile._porder = maxPOrder+1;
 		profileList.add(profile);
-		notifyDataSetChanged();
+		if (refresh)
+			notifyDataSetChanged();
 	}
 
 /*	public void updateItem(Profile profile)
@@ -109,11 +104,25 @@ public class EditorProfileListAdapter extends BaseAdapter
 		Profile profile = profileList.get(from);
 		profileList.remove(from);
 		profileList.add(to, profile);
-		for (int i = 0; i < profileList.size(); i++)
-		{
-			profileList.get(i)._porder = i+1;
-		}
 		notifyDataSetChanged();
+	}
+	
+	class ProfileComparator implements Comparator<Profile> {
+
+		public int compare(Profile lhs, Profile rhs) {
+
+		    int res =  (lhs._name).compareToIgnoreCase(rhs._name);
+	        return res;
+	    }
+
+	}
+	
+	public void sortAlphabetically(boolean refresh)
+	{
+	    Collections.sort(profileList, new ProfileComparator());
+	    
+	    if (refresh)
+	    	notifyDataSetChanged();		
 	}
 	
 	public Profile getActivatedProfile()

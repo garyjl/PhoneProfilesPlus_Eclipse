@@ -19,7 +19,7 @@ public class EditorEventListAdapter extends BaseAdapter
 {
 
 	private SherlockFragment fragment;
-	private List<Event> eventList;
+	public List<Event> eventList;
 	
 	public static boolean editIconClicked = false;
 	
