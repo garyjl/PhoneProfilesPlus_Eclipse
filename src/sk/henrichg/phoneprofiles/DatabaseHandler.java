@@ -527,16 +527,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		List<Profile> profileList = new ArrayList<Profile>();
 		
 		String whereString = "";
+		String orderByString = "";
 		switch (filterType)
 		{
 		case FILTER_TYPE_PROFILES_ALL:
 			whereString = "";
+			orderByString = "ORDER BY " + KEY_NAME;
 			break;
 		case FILTER_TYPE_PROFILES_SHOW_IN_ACTIVATOR:
 			whereString = "WHERE " + KEY_SHOW_IN_ACTIVATOR + "=1";
+			orderByString = "ORDER BY " + KEY_PORDER;
 			break;
 		case FILTER_TYPE_PROFILES_NO_SHOW_IN_ACTIVATOR:
 			whereString = "WHERE " + KEY_SHOW_IN_ACTIVATOR + "=0";
+			orderByString = "ORDER BY " + KEY_NAME;
 			break;
 		}
 		
@@ -574,7 +578,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						         		 KEY_SHOW_IN_ACTIVATOR +
 		                     " FROM " + TABLE_PROFILES + 
 						     " " + whereString +
-		                     " ORDER BY " + KEY_PORDER;
+		                     " " + orderByString;
 
 		//SQLiteDatabase db = this.getReadableDatabase();
 		SQLiteDatabase db = getMyWritableDatabase();
@@ -912,16 +916,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public Profile getFirstProfile(int filterType)
 	{
 		String whereString = "";
+		String orderByString = "";
 		switch (filterType)
 		{
 		case FILTER_TYPE_PROFILES_ALL:
 			whereString = "";
+			orderByString = "ORDER BY " + KEY_NAME;
 			break;
 		case FILTER_TYPE_PROFILES_SHOW_IN_ACTIVATOR:
 			whereString = "WHERE " + KEY_SHOW_IN_ACTIVATOR + "=1";
+			orderByString = "ORDER BY " + KEY_PORDER;
 			break;
 		case FILTER_TYPE_PROFILES_NO_SHOW_IN_ACTIVATOR:
 			whereString = "WHERE " + KEY_SHOW_IN_ACTIVATOR + "=0";
+			orderByString = "ORDER BY " + KEY_NAME;
 			break;
 		}
 		
@@ -958,7 +966,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						        		 KEY_SHOW_IN_ACTIVATOR +
 						    " FROM " + TABLE_PROFILES + 
 						    " " + whereString +
-						    " ORDER BY " + KEY_PORDER;
+						    " " + orderByString;
 
 		//SQLiteDatabase db = this.getReadableDatabase();
 		SQLiteDatabase db = getMyWritableDatabase();

@@ -189,7 +189,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 
 				if (listView != null)
 				{
-					profileListAdapter = new EditorProfileListAdapter(fragment, EditorProfilesActivity.profilesDataWrapper);
+					profileListAdapter = new EditorProfileListAdapter(fragment, EditorProfilesActivity.profilesDataWrapper, filterType);
 					listView.setAdapter(profileListAdapter);
 				}
 
@@ -276,7 +276,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		{
 			if (profileListAdapter == null)
 			{
-				profileListAdapter = new EditorProfileListAdapter(this, EditorProfilesActivity.profilesDataWrapper);
+				profileListAdapter = new EditorProfileListAdapter(this, EditorProfilesActivity.profilesDataWrapper, filterType);
 				listView.setAdapter(profileListAdapter);
 			}
 		}

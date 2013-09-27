@@ -16,14 +16,17 @@ public class EditorProfileListAdapter extends BaseAdapter
 
 	private EditorProfileListFragment fragment;
 	private ProfilesDataWrapper profilesDataWrapper;
+	private int filterType;
 	private List<Profile> profileList;
 	public static boolean editIconClicked = false;
 	
-	public EditorProfileListAdapter(EditorProfileListFragment f, ProfilesDataWrapper pdw)
+	
+	public EditorProfileListAdapter(EditorProfileListFragment f, ProfilesDataWrapper pdw, int filterType)
 	{
 		fragment = f;
 		profilesDataWrapper = pdw;
 		profileList = profilesDataWrapper.getProfileList(fragment.getFilterType());
+		this.filterType = filterType;
 	}   
 	
 	public int getCount()
@@ -165,10 +168,20 @@ public class EditorProfileListAdapter extends BaseAdapter
         if (convertView == null)
         {
     	    LayoutInflater inflater = LayoutInflater.from(fragment.getSherlockActivity());
-      	    if (GlobalData.applicationEditorPrefIndicator)
-      		    vi = inflater.inflate(R.layout.editor_profile_list_item, parent, false);
-      	    else
-      		    vi = inflater.inflate(R.layout.editor_profile_list_item_no_indicator, parent, false);
+    	    if (filterType == DatabaseHandler.FILTER_TYPE_PROFILES_SHOW_IN_ACTIVATOR)
+    	    {
+	      	    if (GlobalData.applicationEditorPrefIndicator)
+	      		    vi = inflater.inflate(R.layout.editor_profile_list_item, parent, false);
+	      	    else
+	      		    vi = inflater.inflate(R.layout.editor_profile_list_item_no_indicator, parent, false);
+    	    }
+    	    else
+    	    {
+	      	    if (GlobalData.applicationEditorPrefIndicator)
+	      		    vi = inflater.inflate(R.layout.editor_profile_list_item_no_order_handler, parent, false);
+	      	    else
+	      		    vi = inflater.inflate(R.layout.editor_profile_list_item_no_indicator_no_order_handler, parent, false);
+    	    }
             holder = new ViewHolder();
             holder.listItemRoot = (RelativeLayout)vi.findViewById(R.id.profile_list_item_root);
             holder.profileName = (TextView)vi.findViewById(R.id.profile_list_item_profile_name);

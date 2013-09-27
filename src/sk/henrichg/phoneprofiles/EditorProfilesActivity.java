@@ -69,7 +69,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	String[] drawerItemsSubtitle;
 	EditorDrawerListAdapter drawerAdapter;
 	
-	private int profilesFilterType = DatabaseHandler.FILTER_TYPE_PROFILES_ALL;
+	private int profilesFilterType = DatabaseHandler.FILTER_TYPE_PROFILES_SHOW_IN_ACTIVATOR;
 	private int eventsFilterType = DatabaseHandler.FILTER_TYPE_EVENTS_ALL;
 	
 	@Override
@@ -219,7 +219,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 
 		// select first drawer item
         if (savedInstanceState == null) {
-            selectItem(0);
+            selectItem(1); // show profile filter FILTER_TYPE_PROFILES_SHOW_IN_ACTIVATOR 
         }
         
 		//Log.d("EditorProfilesActivity.onCreate", "xxxx");
