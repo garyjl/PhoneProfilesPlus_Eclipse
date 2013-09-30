@@ -17,6 +17,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.mobeta.android.dslv.DragSortListView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -411,7 +412,8 @@ public class EditorProfileListFragment extends SherlockFragment {
 					);
 
 			// add profile into db and set id and order
-			databaseHandler.addProfile(profile); 
+			databaseHandler.addProfile(profile);
+			//Log.e("EditorProfileListFragment.startProfilePreferencesActivity","porder="+profile._porder);
 			// add profile into listview
 			profileListAdapter.addItem(profile, filterType == DatabaseHandler.FILTER_TYPE_PROFILES_SHOW_IN_ACTIVATOR);
 			

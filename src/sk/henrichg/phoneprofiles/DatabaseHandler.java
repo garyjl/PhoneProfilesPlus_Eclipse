@@ -459,7 +459,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		//db.close(); // Closing database connection
 		
 		profile._id = id;
-		//profile.setPOrder(porder);
+		profile._porder = porder;
 	}
 
 	// Getting single profile
@@ -802,13 +802,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		int r;
 		
 		if (cursor.getCount() == 0)
+		{
+			//Log.e("DatabaseHandler.getMaxPOrder","count=0");
 			r = 0;
+		}
 		else
 		{	
 			if (cursor.moveToFirst())
+			{
 				r = cursor.getInt(0);
+				//Log.e("DatabaseHandler.getMaxPOrder","porder="+r);
+			}
 			else
+			{
 				r = 0;
+				//Log.e("DatabaseHandler.getMaxPOrder","moveToFirst=false");
+			}
 		}
 
 		cursor.close();
