@@ -47,6 +47,14 @@ public class ProfilePreferencesIndicator {
 			// volume off
 			if (profile._volumeRingerMode == 4)
 				drawables[countDrawables++] = R.drawable.ic_profile_pref_volume_off;
+			// volume level
+			if (profile.getVolumeAlarmChange() ||
+				profile.getVolumeMediaChange() ||
+				profile.getVolumeNotificationChange() ||
+				profile.getVolumeRingtoneChange() ||
+				profile.getVolumeSystemChange() ||
+				profile.getVolumeVoiceChange())
+				drawables[countDrawables++] = R.drawable.ic_profile_pref_volume_level;
 			// sound
 			if (profile._soundRingtoneChange || profile._soundNotificationChange || profile._soundAlarmChange)
 				drawables[countDrawables++] = R.drawable.ic_profile_pref_sound;
@@ -55,6 +63,11 @@ public class ProfilePreferencesIndicator {
 				drawables[countDrawables++] = R.drawable.ic_profile_pref_airplane_mode;
 			if (profile._deviceAirplaneMode == 2)
 				drawables[countDrawables++] = R.drawable.ic_profile_pref_airplane_mode_off;
+			// auto-sync
+			if ((profile._deviceAutosync == 1) || (profile._deviceAutosync == 3))
+				drawables[countDrawables++] = R.drawable.ic_profile_pref_autosync;
+			if (profile._deviceAutosync == 2)
+				drawables[countDrawables++] = R.drawable.ic_profile_pref_autosync_off;
 			// mobile data
 			if ((profile._deviceMobileData == 1) || (profile._deviceMobileData == 3))
 				drawables[countDrawables++] = R.drawable.ic_profile_pref_mobiledata;

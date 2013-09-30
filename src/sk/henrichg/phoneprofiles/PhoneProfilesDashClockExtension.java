@@ -88,6 +88,14 @@ public class PhoneProfilesDashClockExtension extends DashClockExtension {
 			// volume off
 			if (profile._volumeRingerMode == 4)
 				indicator1 = addIntoIndicator(indicator1, "sil");
+			// volume level
+			if (profile.getVolumeAlarmChange() ||
+				profile.getVolumeMediaChange() ||
+				profile.getVolumeNotificationChange() ||
+				profile.getVolumeRingtoneChange() ||
+				profile.getVolumeSystemChange() ||
+				profile.getVolumeVoiceChange())
+				indicator1 = addIntoIndicator(indicator1, "vol");
 			// sound
 			if (profile._soundRingtoneChange || profile._soundNotificationChange || profile._soundAlarmChange)
 				indicator1 = addIntoIndicator(indicator1, "snd");
@@ -96,6 +104,11 @@ public class PhoneProfilesDashClockExtension extends DashClockExtension {
 				indicator1 = addIntoIndicator(indicator1, "am1");
 			if (profile._deviceAirplaneMode == 2)
 				indicator1 = addIntoIndicator(indicator1, "am0");
+			// auto-sync
+			if ((profile._deviceAutosync == 1) || (profile._deviceAutosync == 3))
+				indicator1 = addIntoIndicator(indicator1, "as1");
+			if (profile._deviceAutosync == 2)
+				indicator1 = addIntoIndicator(indicator1, "as0");
 			// mobile data
 			if ((profile._deviceMobileData == 1) || (profile._deviceMobileData == 3))
 				indicator1 = addIntoIndicator(indicator1, "md1");
