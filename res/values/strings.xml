@@ -199,5 +199,6 @@
     <string name="editor_list_drawer_item_events_all">All</string>
     <string name="editor_list_drawer_item_events_enabled">Enabled</string>
     <string name="editor_list_drawer_item_events_disabled">Disabled</string>
+    <string name="profile_preferences_deviceAutosync">Auto. synchronization</string>
     	
 </resources>

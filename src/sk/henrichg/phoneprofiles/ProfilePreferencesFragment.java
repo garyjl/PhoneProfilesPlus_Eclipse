@@ -233,6 +233,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	        editor.putString(GlobalData.PREF_PROFILE_DEVICE_GPS, Integer.toString(profile._deviceGPS));
 	        editor.putBoolean(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE, profile._deviceRunApplicationChange);
 	        editor.putString(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME, profile._deviceRunApplicationPackageName);
+	        editor.putString(GlobalData.PREF_PROFILE_DEVICE_AUTOSYNC, Integer.toString(profile._deviceAutosync));
 	        editor.putBoolean(GlobalData.PREF_PROFILE_SHOW_IN_ACTIVATOR, profile._showInActivator);
 			editor.commit();
     	}
@@ -276,6 +277,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
         		profile._deviceRunApplicationPackageName = preferences.getString(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME, "-");
         	else
         		profile._deviceRunApplicationPackageName = "-";
+        	profile._deviceAutosync = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_AUTOSYNC, ""));
         	profile._showInActivator = preferences.getBoolean(GlobalData.PREF_PROFILE_SHOW_IN_ACTIVATOR, true);
 
         	//Log.d("ProfilePreferencesFragment.onPause", "profile activated="+profile.getChecked());
@@ -335,6 +337,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	        prefMng.findPreference(key).setSummary(ringtoneName);
 		}
 		if (key.equals(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE) || 
+			key.equals(GlobalData.PREF_PROFILE_DEVICE_AUTOSYNC) ||
 			key.equals(GlobalData.PREF_PROFILE_DEVICE_WIFI) ||
 			key.equals(GlobalData.PREF_PROFILE_DEVICE_BLUETOOTH) ||
 			key.equals(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA) ||
@@ -398,6 +401,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	        setSummary(GlobalData.PREF_PROFILE_DEVICE_SCREEN_TIMEOUT, profile._deviceScreenTimeout);
 	        setSummary(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA, profile._deviceMobileData);
 	        setSummary(GlobalData.PREF_PROFILE_DEVICE_GPS, profile._deviceGPS);
+	        setSummary(GlobalData.PREF_PROFILE_DEVICE_AUTOSYNC, profile._deviceAutosync);
 			
         }
 	}

@@ -56,13 +56,15 @@ public class BackgroundActivateProfileActivity extends Activity {
 		if ((startupSource == GlobalData.STARTUP_SOURCE_SHORTCUT) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_WIDGET) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_ACTIVATOR) ||
+			(startupSource == GlobalData.STARTUP_SOURCE_ACTIVATOR_START) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_EDITOR) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_SERVICE) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_SERVICE_INTERACTIVE))
 		{
 			// aktivita spustena z shortcutu alebo zo service, profil aktivujeme
 			actProfile = true;
-			interactive = (startupSource != GlobalData.STARTUP_SOURCE_SERVICE);
+			interactive = ((startupSource != GlobalData.STARTUP_SOURCE_SERVICE) &&
+				       	   (startupSource != GlobalData.STARTUP_SOURCE_ACTIVATOR_START));
 		}
 		else
 		if (startupSource == GlobalData.STARTUP_SOURCE_BOOT)	
@@ -88,6 +90,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 		if ((startupSource == GlobalData.STARTUP_SOURCE_SHORTCUT) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_WIDGET) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_ACTIVATOR) ||
+			(startupSource == GlobalData.STARTUP_SOURCE_ACTIVATOR_START) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_EDITOR) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_SERVICE) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_SERVICE_INTERACTIVE))	
@@ -126,7 +129,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 	
 	private void activateProfileWithAlert(Profile profile, boolean interactive)
 	{
-		if ((GlobalData.applicationActivateWithAlert && interactive && GUIData.applicationStarted) ||
+		if ((GlobalData.applicationActivateWithAlert && interactive) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_EDITOR))	
 		{	
 			final Profile _profile = profile;

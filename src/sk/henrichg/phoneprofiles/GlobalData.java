@@ -36,6 +36,7 @@ public class GlobalData extends Application {
 	static final int STARTUP_SOURCE_SERVICE = 6;
 	static final int STARTUP_SOURCE_SERVICE_INTERACTIVE = 7;
 	static final int STARTUP_SOURCE_EDITOR = 8;
+	static final int STARTUP_SOURCE_ACTIVATOR_START = 9;
 
 	// request code for startActivityForResult with intent BackgroundActivateProfileActivity
 	static final int REQUEST_CODE_ACTIVATE_PROFILE = 6220;
@@ -70,6 +71,7 @@ public class GlobalData extends Application {
 	static final String PREF_PROFILE_DEVICE_GPS = "deviceGPS";
 	static final String PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE = "deviceRunApplicationChange";
 	static final String PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME = "deviceRunApplicationPackageName";
+	static final String PREF_PROFILE_DEVICE_AUTOSYNC = "deviceAutosync";
 	static final String PREF_PROFILE_SHOW_IN_ACTIVATOR = "showInActivator";
 	
 	static final String APPLICATION_PREFS_NAME = "phone_profile_preferences";

@@ -14,6 +14,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
@@ -43,6 +44,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 	private float popupMaxHeight;
 	private float popupHeight;
 	private int actionBarHeight;
+	private boolean doOnStartCalled;
 	
 
 	@SuppressWarnings("deprecation")
@@ -50,6 +52,8 @@ public class ActivateProfileActivity extends SherlockActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
+		
+		doOnStartCalled = false;
 		
 		GlobalData.startService(getApplicationContext());
 
@@ -217,7 +221,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 
 				if (!GlobalData.applicationLongClickActivation)
 					//activateProfileWithAlert(position);
-					activateProfile(position, true);
+					activateProfile(position, GlobalData.STARTUP_SOURCE_ACTIVATOR);
 
 			}
 			
@@ -231,7 +235,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 				
 				if (GlobalData.applicationLongClickActivation)
 					//activateProfileWithAlert(position);
-					activateProfile(position, true);
+					activateProfile(position, GlobalData.STARTUP_SOURCE_ACTIVATOR);
 
 				return false;
 			}
@@ -252,7 +256,15 @@ public class ActivateProfileActivity extends SherlockActivity {
 		//long nanoTimeStart = GlobalData.startMeasuringRunTime();
 
 		//Log.d("ActivateProfilesActivity.onStart", "startupSource="+startupSource);
-		
+
+		// call doOnStart only one (from AsyncTask or from onStart) 
+		if (doOnStartCalled)
+		{
+			doOnStartCalled = false;
+			return;
+		}
+		doOnStartCalled = true;
+			
 		boolean actProfile = false;
 		if (startupSource == 0)
 		{
@@ -279,7 +291,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 		if (actProfile && (profile != null))
 		{
 			// aktivacia profilu
-			activateProfile(profile, false);
+			activateProfile(profile, GlobalData.STARTUP_SOURCE_ACTIVATOR_START);
 		}
 		else
 		{
@@ -291,15 +303,23 @@ public class ActivateProfileActivity extends SherlockActivity {
 				activateProfileHelper.showNotification(profile);
 				activateProfileHelper.updateWidget();
 			}
+			endOnStart();
 		}
 		
-		// reset, aby sa to dalej chovalo ako normalne spustenie z lauchera
-		startupSource = 0;
-
 		//GlobalData.getMeasuredRunTime(nanoTimeStart, "ActivateProfileActivity.onStart");
 		
 		//Log.d("PhoneProfileActivity.onStart", "xxxx");
 		
+	}
+	
+	private void endOnStart()
+	{
+		Log.e("ActivateProfileActivity.endOnStart","xxx");
+		// reset, aby sa to dalej chovalo ako normalne spustenie z lauchera
+		startupSource = 0;
+
+		//  aplikacia uz je 1. krat spustena
+		GUIData.applicationStarted = true;
 	}
 	
 	@Override
@@ -337,10 +357,6 @@ public class ActivateProfileActivity extends SherlockActivity {
 	protected void onStop()
 	{
 		super.onStop();
-		
-		//  aplikacia uz je 1. krat spustena
-		GUIData.applicationStarted = true;
-		
 	}
 	
 	@Override
@@ -438,6 +454,8 @@ public class ActivateProfileActivity extends SherlockActivity {
 	{
 		if (requestCode == GlobalData.REQUEST_CODE_ACTIVATE_PROFILE)
 		{
+			Log.e("ActivateProfileActivity.onActivityResult","xxx");
+
 			if(resultCode == RESULT_OK)
 			{      
 		    	long profile_id = data.getLongExtra(GlobalData.EXTRA_PROFILE_ID, -1);
@@ -461,24 +479,26 @@ public class ActivateProfileActivity extends SherlockActivity {
 		     {    
 		         //Write your code if there's no result
 		     }
+		     
+		     endOnStart();
 		}
 	}
 	
-	private void activateProfile(Profile profile, boolean interactive)
+	private void activateProfile(Profile profile, int startupSource)
 	{
 		Intent intent = new Intent(getBaseContext(), BackgroundActivateProfileActivity.class);
-		intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_ACTIVATOR);
+		intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, startupSource);
 		intent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
 		startActivityForResult(intent, GlobalData.REQUEST_CODE_ACTIVATE_PROFILE);
 	}
 	
-	private void activateProfile(int position, boolean interactive)
+	private void activateProfile(int position, int startupSource)
 	{
 		//Log.d("ActivateProfileActivity.activateProfile","size="+profileList.size());
 		//Log.d("ActivateProfileActivity.activateProfile","position="+position);
 		Profile profile = profileList.get(position);
 		//Log.d("ActivateProfileActivity.activateProfile","profile_id="+profile._id);
-		activateProfile(profile, interactive);
+		activateProfile(profile, startupSource);
 	} 
 	
 }

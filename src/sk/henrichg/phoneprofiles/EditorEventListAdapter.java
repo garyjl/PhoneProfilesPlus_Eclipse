@@ -1,7 +1,10 @@
 package sk.henrichg.phoneprofiles;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import sk.henrichg.phoneprofiles.EditorProfileListAdapter.ProfileComparator;
 import sk.henrichg.phoneprofiles.EditorProfileListAdapter.ViewHolder;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -63,10 +66,11 @@ public class EditorEventListAdapter extends BaseAdapter
 		notifyDataSetChanged();
 	}
 	
-	public void addItem(Event event)
+	public void addItem(Event event, boolean refresh)
 	{
 		eventList.add(event);
-		notifyDataSetChanged();
+		if (refresh)
+			notifyDataSetChanged();
 	}
 
 /*	
@@ -85,6 +89,24 @@ public class EditorEventListAdapter extends BaseAdapter
 	{
 		eventList.clear();
 		notifyDataSetChanged();
+	}
+	
+	class EventComparator implements Comparator<Event> {
+
+		public int compare(Event lhs, Event rhs) {
+
+		    int res =  (lhs._name).compareToIgnoreCase(rhs._name);
+	        return res;
+	    }
+
+	}
+	
+	public void sortAlphabetically(boolean refresh)
+	{
+	    Collections.sort(eventList, new EventComparator());
+	    
+	    if (refresh)
+	    	notifyDataSetChanged();		
 	}
 	
 	static class ViewHolder {

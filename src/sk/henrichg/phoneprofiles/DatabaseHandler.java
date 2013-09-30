@@ -25,7 +25,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static SQLiteDatabase writableDb;	
     
 	// Database Version
-	private static final int DATABASE_VERSION = 30;
+	private static final int DATABASE_VERSION = 31;
 	// starting version when added Events table
 	private static final int DATABASE_VERSION_EVENTS = 25;
 
@@ -73,6 +73,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_DEVICE_GPS = "deviceGPS";
 	private static final String KEY_DEVICE_RUN_APPLICATION_CHANGE = "deviceRunApplicationChange";
 	private static final String KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME = "deviceRunApplicationPackageName";
+	private static final String KEY_DEVICE_AUTOSYNC = "deviceAutosync";
 	private static final String KEY_SHOW_IN_ACTIVATOR = "showInActivator";
 
 	private static final String KEY_E_ID = "id";
@@ -189,12 +190,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_DEVICE_GPS + " INTEGER,"
 				+ KEY_DEVICE_RUN_APPLICATION_CHANGE + " INTEGER,"
 				+ KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME + " TEXT,"
+				+ KEY_DEVICE_AUTOSYNC + " INTEGER,"
 				+ KEY_SHOW_IN_ACTIVATOR + " INTEGER"
 				+ ")";
 		db.execSQL(CREATE_PROFILES_TABLE);
 		
 		db.execSQL("CREATE INDEX IDX_PORDER ON " + TABLE_PROFILES + " (" + KEY_PORDER + ")");
 		db.execSQL("CREATE INDEX IDX_SHOW_IN_ACTIVATOR ON " + TABLE_PROFILES + " (" + KEY_SHOW_IN_ACTIVATOR + ")");
+		db.execSQL("CREATE INDEX IDX_P_NAME ON " + TABLE_PROFILES + " (" + KEY_NAME + ")");
 
 		final String CREATE_EVENTS_TABLE = "CREATE TABLE " + TABLE_EVENTS + "("
 				+ KEY_E_ID + " INTEGER PRIMARY KEY,"
@@ -210,6 +213,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.execSQL(CREATE_EVENTS_TABLE);
 
 		db.execSQL("CREATE INDEX IDX_FK_PROFILE ON " + TABLE_EVENTS + " (" + KEY_E_FK_PROFILE + ")");
+		db.execSQL("CREATE INDEX IDX_E_NAME ON " + TABLE_EVENTS + " (" + KEY_E_NAME + ")");
 		
 	}
 
@@ -318,6 +322,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			// index na PORDER
 			db.execSQL("CREATE INDEX IDX_PORDER ON " + TABLE_PROFILES + " (" + KEY_PORDER + ")");
 		}
+
+		if (oldVersion < 24)
+		{
+			// pridame nove stlpce
+			db.execSQL("ALTER TABLE " + TABLE_PROFILES + " ADD COLUMN " + KEY_DEVICE_AUTOSYNC + " INTEGER");
+			
+			// updatneme zaznamy
+			db.beginTransaction();
+			try {
+				db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_DEVICE_AUTOSYNC + "=0");
+				db.setTransactionSuccessful();
+		     } catch (Exception e){
+		         //Error in between database transaction 
+		     } finally {
+		    	db.endTransaction();
+	         }	
+		}
 		
 		if (oldVersion < 25)
 		{
@@ -379,6 +400,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_USE_END_TIME + "=0");
 		}
 		
+		if (oldVersion < 31)
+		{
+			db.execSQL("CREATE INDEX IDX_P_NAME ON " + TABLE_PROFILES + " (" + KEY_NAME + ")");
+			db.execSQL("CREATE INDEX IDX_E_NAME ON " + TABLE_EVENTS + " (" + KEY_E_NAME + ")");
+		}
+		
 	}
 	
 
@@ -423,6 +450,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_DEVICE_GPS, profile._deviceGPS);
 		values.put(KEY_DEVICE_RUN_APPLICATION_CHANGE, (profile._deviceRunApplicationChange) ? 1 : 0);
 		values.put(KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME, profile._deviceRunApplicationPackageName);
+		values.put(KEY_DEVICE_AUTOSYNC, profile._deviceAutosync);
 		values.put(KEY_SHOW_IN_ACTIVATOR, (profile._showInActivator) ? 1 : 0);
 		
 
@@ -470,6 +498,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 								         		KEY_DEVICE_GPS,
 								         		KEY_DEVICE_RUN_APPLICATION_CHANGE,
 								         		KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME,
+								         		KEY_DEVICE_AUTOSYNC, 
 								         		KEY_SHOW_IN_ACTIVATOR
 												}, 
 				                 KEY_ID + "=?",
@@ -511,7 +540,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					                      Integer.parseInt(cursor.getString(27)),
 					                      (Integer.parseInt(cursor.getString(28)) == 1) ? true : false,
 					                      cursor.getString(29),
-					                      (Integer.parseInt(cursor.getString(30)) == 1) ? true : false
+					                      Integer.parseInt(cursor.getString(30)),
+					                      (Integer.parseInt(cursor.getString(31)) == 1) ? true : false
 					                      );
 		}
 
@@ -575,6 +605,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						         		 KEY_DEVICE_GPS + "," +
 						         		 KEY_DEVICE_RUN_APPLICATION_CHANGE + "," +
 						         		 KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME + "," +
+						         		 KEY_DEVICE_AUTOSYNC + "," +
 						         		 KEY_SHOW_IN_ACTIVATOR +
 		                     " FROM " + TABLE_PROFILES + 
 						     " " + whereString +
@@ -619,7 +650,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 profile._deviceGPS = Integer.parseInt(cursor.getString(27));
                 profile._deviceRunApplicationChange = (Integer.parseInt(cursor.getString(28)) == 1) ? true : false;
                 profile._deviceRunApplicationPackageName = cursor.getString(29);
-                profile._showInActivator = (Integer.parseInt(cursor.getString(30)) == 1) ? true : false;
+                profile._deviceAutosync = Integer.parseInt(cursor.getString(30));
+                profile._showInActivator = (Integer.parseInt(cursor.getString(31)) == 1) ? true : false;
 				// Adding contact to list
 				profileList.add(profile);
 			} while (cursor.moveToNext());
@@ -667,6 +699,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_DEVICE_GPS, profile._deviceGPS);
 		values.put(KEY_DEVICE_RUN_APPLICATION_CHANGE, (profile._deviceRunApplicationChange) ? 1 : 0);
 		values.put(KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME, profile._deviceRunApplicationPackageName);
+		values.put(KEY_DEVICE_AUTOSYNC, profile._deviceAutosync);
 		values.put(KEY_SHOW_IN_ACTIVATOR, (profile._showInActivator) ? 1 : 0);
 		
 
@@ -856,6 +889,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 								         		KEY_DEVICE_GPS,
 								         		KEY_DEVICE_RUN_APPLICATION_CHANGE,
 								         		KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME,
+								         		KEY_DEVICE_AUTOSYNC,
 								         		KEY_SHOW_IN_ACTIVATOR
 												}, 
 				                 KEY_CHECKED + "=?",
@@ -898,7 +932,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					                      Integer.parseInt(cursor.getString(27)),
 					                      (Integer.parseInt(cursor.getString(28)) == 1) ? true : false,
 					                      cursor.getString(29),
-					                      (Integer.parseInt(cursor.getString(30)) == 1) ? true : false
+					                      Integer.parseInt(cursor.getString(30)),
+					                      (Integer.parseInt(cursor.getString(31)) == 1) ? true : false
 					                      );
 		}
 		else
@@ -962,6 +997,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						        		 KEY_DEVICE_GPS + "," +
 						        		 KEY_DEVICE_RUN_APPLICATION_CHANGE + "," +
 						        		 KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME + "," +
+						        		 KEY_DEVICE_AUTOSYNC + "," +
 						        		 KEY_SHOW_IN_ACTIVATOR +
 						    " FROM " + TABLE_PROFILES + 
 						    " " + whereString +
@@ -1007,7 +1043,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			profile._deviceGPS = Integer.parseInt(cursor.getString(27));
 			profile._deviceRunApplicationChange = (Integer.parseInt(cursor.getString(28)) == 1) ? true : false;
 			profile._deviceRunApplicationPackageName = cursor.getString(29);
-			profile._showInActivator = (Integer.parseInt(cursor.getString(30)) == 1) ? true : false;
+			profile._deviceAutosync = Integer.parseInt(cursor.getString(30));
+			profile._showInActivator = (Integer.parseInt(cursor.getString(31)) == 1) ? true : false;
 		}
 		
 		cursor.close();
@@ -1279,16 +1316,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         //Log.e("DatabaseHandler.getAllEvents","filterType="+filterType);
 		
 		String whereString = "";
+		String orderByString = "";
 		switch (filterType)
 		{
 		case FILTER_TYPE_EVENTS_ALL:
 			whereString = "";
+			orderByString = "ORDER BY " + KEY_E_NAME;
 			break;
 		case FILTER_TYPE_EVENTS_ENABLED:
 			whereString = "WHERE " + KEY_E_ENABLED + "=1";
+			orderByString = "ORDER BY " + KEY_E_NAME;
 			break;
 		case FILTER_TYPE_EVENTS_DISABLED:
 			whereString = "WHERE " + KEY_E_ENABLED + "=0";
+			orderByString = "ORDER BY " + KEY_E_NAME;
 			break;
 		}
 		
@@ -1299,7 +1340,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				                         KEY_E_FK_PROFILE + "," +
 				                         KEY_E_ENABLED +
 		                     " FROM " + TABLE_EVENTS +
-				             " " + whereString;
+				             " " + whereString +
+		                     " " + orderByString;
 
 		//SQLiteDatabase db = this.getReadableDatabase();
 		SQLiteDatabase db = getMyWritableDatabase();
@@ -1410,16 +1452,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public Event getFirstEvent(int filterType)
 	{
 		String whereString = "";
+		String orderByString = "";
 		switch (filterType)
 		{
 		case FILTER_TYPE_EVENTS_ALL:
 			whereString = "";
+			orderByString = "ORDER BY " + KEY_E_NAME;
 			break;
 		case FILTER_TYPE_EVENTS_ENABLED:
 			whereString = "WHERE " + KEY_E_ENABLED + "=1";
+			orderByString = "ORDER BY " + KEY_E_NAME;
 			break;
 		case FILTER_TYPE_EVENTS_DISABLED:
 			whereString = "WHERE " + KEY_E_ENABLED + "=0";
+			orderByString = "ORDER BY " + KEY_E_NAME;
 			break;
 		}
 		
@@ -1429,7 +1475,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						                 KEY_E_FK_PROFILE + "," +
 						                 KEY_E_ENABLED +
 						    " FROM " + TABLE_EVENTS +
-						    " " + whereString;
+						    " " + whereString +
+						    " " + orderByString;
 						    
 
 		//SQLiteDatabase db = this.getReadableDatabase();
@@ -1692,6 +1739,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 									{
 										values.put(KEY_DEVICE_RUN_APPLICATION_CHANGE, 0);
 										values.put(KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME, "-");
+									}
+									if (exportedDBObj.getVersion() < 24)
+									{
+										values.put(KEY_DEVICE_AUTOSYNC, 0);
 									}
 									if (exportedDBObj.getVersion() < 25)
 									{

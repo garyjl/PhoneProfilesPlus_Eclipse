@@ -282,8 +282,12 @@ public class EditorEventListFragment extends SherlockFragment {
 		Event event;
 		
 		if (position != -1)
+		{
 			// editacia udalosti
 			event = eventList.get(position);
+			listView.setSelection(position);
+			listView.setItemChecked(position, true);
+		}
 		else
 		{
 			// pridanie novej udalost
@@ -292,8 +296,14 @@ public class EditorEventListFragment extends SherlockFragment {
 								  0,
 					         	  false
 					         );
-			eventListAdapter.addItem(event); // pridame udalost do listview
-			databaseHandler.addEvent(event);
+			
+			// add event into db and set id
+			databaseHandler.addEvent(event); 
+			// add event into listview
+			eventListAdapter.addItem(event, false);
+			
+			updateListView(event);
+			
 			onEventCountChangedCallback.onEventCountChanged();
 
 		}
@@ -316,8 +326,13 @@ public class EditorEventListFragment extends SherlockFragment {
 				   origEvent._enabled
 					);
 
-		eventListAdapter.addItem(newEvent);
-		databaseHandler.addEvent(newEvent);
+		// add event into db and set id and order
+		databaseHandler.addEvent(newEvent); 
+		// add event into listview
+		eventListAdapter.addItem(newEvent, false);
+		
+		updateListView(newEvent);
+
 		onEventCountChangedCallback.onEventCountChanged();
 		
 		//updateListView();
@@ -383,6 +398,16 @@ public class EditorEventListFragment extends SherlockFragment {
 	public void updateListView(Event event)
 	{
 		eventListAdapter.notifyDataSetChanged();
+
+		// sort list
+		eventListAdapter.sortAlphabetically(false);
+		// set event visible in list
+		if (event == null)
+		{	
+			int eventPos = eventList.indexOf(event);
+			listView.setSelection(eventPos);
+			listView.setItemChecked(eventPos, true);
+		}
 	}
 
 	public int getFilterType()

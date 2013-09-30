@@ -406,6 +406,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 								  0,
 								  false,
 								  "-",
+								  0,
 								  true
 					);
 
@@ -465,6 +466,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 				   origProfile._deviceGPS,
 				   origProfile._deviceRunApplicationChange,
 				   origProfile._deviceRunApplicationPackageName,
+				   origProfile._deviceAutosync,
 				   origProfile._showInActivator);
 
 		// add profile into db and set id and order

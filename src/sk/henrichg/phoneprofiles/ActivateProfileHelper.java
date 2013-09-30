@@ -17,6 +17,7 @@ import android.app.WallpaperManager;
 import android.appwidget.AppWidgetManager;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -269,7 +270,32 @@ public class ActivateProfileHelper {
 			if (_setAirplaneMode)
 				setAirplaneMode(context.getApplicationContext(), _isAirplaneMode);
 		}
-		
+
+		// nahodenie auto-sync
+		boolean _isAutosync = ContentResolver.getMasterSyncAutomatically();
+		boolean _setAutosync = false;
+		switch (profile._deviceAutosync) {
+			case 1:
+				if (!_isAutosync)
+				{
+					_isAutosync = true;
+					_setAutosync = true;
+				}
+				break;
+			case 2:
+				if (_isAutosync)
+				{
+					_isAutosync = false;
+					_setAutosync = true;
+				}
+				break;
+			case 3:
+				_isAutosync = !_isAutosync;
+				_setAutosync = true;
+				break;
+		}
+		if (_setAutosync)
+			ContentResolver.setMasterSyncAutomatically(_isAutosync);
 		
 /*		Intent intent = new Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED);
 		String enabledRadios = "";
