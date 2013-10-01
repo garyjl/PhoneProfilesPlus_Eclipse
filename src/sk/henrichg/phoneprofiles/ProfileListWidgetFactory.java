@@ -1,6 +1,10 @@
 package sk.henrichg.phoneprofiles;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+
+import sk.henrichg.phoneprofiles.ActivateProfileActivity.ProfileComparator;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -35,13 +39,45 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 	}
 
 	public int getCount() {
-		return(profileList.size());
+
+		int count = 0;
+		for (Profile profile : profileList)
+		{
+			if (profile._showInActivator)
+				++count;
+		}
+		return count;
 	}
 
+	private Profile getItem(int position)
+	{
+		if (getCount() == 0)
+			return null;
+		else
+		{
+			Profile _profile = null;
+			
+			int pos = -1;
+			for (Profile profile : profileList)
+			{
+				if (profile._showInActivator)
+					++pos;
+
+				if (pos == position)
+		        {
+		        	_profile = profile;
+		        	break;
+		        }
+			}
+			
+			return _profile;
+		}
+	}
+	
 	public RemoteViews getViewAt(int position) {
 		RemoteViews row=new RemoteViews(ctxt.getPackageName(), R.layout.profile_list_widget_item);
     
-		Profile profile = profileList.get(position);
+		Profile profile = getItem(position);
 
 		if (profile.getIsIconResourceID())
 		{
@@ -121,7 +157,16 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 	public void onDataSetChanged() {
 		ProfileListWidgetProvider.createProfilesDataWrapper();
 		
-		profileList = ProfileListWidgetProvider.profilesDataWrapper.getProfileList(DatabaseHandler.FILTER_TYPE_PROFILES_SHOW_IN_ACTIVATOR);
+		profileList = ProfileListWidgetProvider.profilesDataWrapper.getProfileList();
+	    Collections.sort(profileList, new ProfileComparator());
+	}
+	
+	class ProfileComparator implements Comparator<Profile> {
+
+		public int compare(Profile lhs, Profile rhs) {
+		    int res = lhs._porder - rhs._porder;
+	        return res;
+	    }
 	}
 
 }

@@ -86,15 +86,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_E_DAYS_OF_WEEK = "daysOfWeek";
 	private static final String KEY_E_USE_END_TIME = "useEndTime";
 	
-	public static final int FILTER_TYPE_PROFILES_ALL = 0;
-	public static final int FILTER_TYPE_PROFILES_SHOW_IN_ACTIVATOR = 1;
-	public static final int FILTER_TYPE_PROFILES_NO_SHOW_IN_ACTIVATOR = 2;
-
-	public static final int FILTER_TYPE_EVENTS_ALL = 0;
-	public static final int FILTER_TYPE_EVENTS_ENABLED = 1;
-	public static final int FILTER_TYPE_EVENTS_DISABLED = 2;
-	
-	
 	/**
      * Constructor takes and keeps a reference of the passed context in order to
      * access to the application assets and resources.
@@ -319,23 +310,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL("CREATE INDEX IDX_PORDER ON " + TABLE_PROFILES + " (" + KEY_PORDER + ")");
 		}
 
-		if (oldVersion < 24)
-		{
-			// pridame nove stlpce
-			db.execSQL("ALTER TABLE " + TABLE_PROFILES + " ADD COLUMN " + KEY_DEVICE_AUTOSYNC + " INTEGER");
-			
-			// updatneme zaznamy
-			db.beginTransaction();
-			try {
-				db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_DEVICE_AUTOSYNC + "=0");
-				db.setTransactionSuccessful();
-		     } catch (Exception e){
-		         //Error in between database transaction 
-		     } finally {
-		    	db.endTransaction();
-	         }	
-		}
-		
 		if (oldVersion < 25)
 		{
 			final String CREATE_EVENTS_TABLE = "CREATE TABLE " + TABLE_EVENTS + "("
@@ -563,26 +537,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 	
 	// Getting All Profiles
-	public List<Profile> getAllProfiles(int filterType) {
+	public List<Profile> getAllProfiles() {
 		List<Profile> profileList = new ArrayList<Profile>();
-		
-		String whereString = "";
-		String orderByString = "";
-		switch (filterType)
-		{
-		case FILTER_TYPE_PROFILES_ALL:
-			whereString = "";
-			orderByString = "ORDER BY " + KEY_NAME;
-			break;
-		case FILTER_TYPE_PROFILES_SHOW_IN_ACTIVATOR:
-			whereString = "WHERE " + KEY_SHOW_IN_ACTIVATOR + "=1";
-			orderByString = "ORDER BY " + KEY_PORDER;
-			break;
-		case FILTER_TYPE_PROFILES_NO_SHOW_IN_ACTIVATOR:
-			whereString = "WHERE " + KEY_SHOW_IN_ACTIVATOR + "=0";
-			orderByString = "ORDER BY " + KEY_NAME;
-			break;
-		}
 		
 		// Select All Query
 		final String selectQuery = "SELECT " + KEY_ID + "," +
@@ -617,9 +573,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						         		 KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME + "," +
 						         		 KEY_DEVICE_AUTOSYNC + "," +
 						         		 KEY_SHOW_IN_ACTIVATOR +
-		                     " FROM " + TABLE_PROFILES + 
-						     " " + whereString +
-		                     " " + orderByString;
+		                     " FROM " + TABLE_PROFILES;
 
 		//SQLiteDatabase db = this.getReadableDatabase();
 		SQLiteDatabase db = getMyWritableDatabase();
@@ -965,27 +919,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		return profile;
 		
 	}
-	
-	public Profile getFirstProfile(int filterType)
+/*	
+	public Profile getFirstProfile()
 	{
-		String whereString = "";
-		String orderByString = "";
-		switch (filterType)
-		{
-		case FILTER_TYPE_PROFILES_ALL:
-			whereString = "";
-			orderByString = "ORDER BY " + KEY_NAME;
-			break;
-		case FILTER_TYPE_PROFILES_SHOW_IN_ACTIVATOR:
-			whereString = "WHERE " + KEY_SHOW_IN_ACTIVATOR + "=1";
-			orderByString = "ORDER BY " + KEY_PORDER;
-			break;
-		case FILTER_TYPE_PROFILES_NO_SHOW_IN_ACTIVATOR:
-			whereString = "WHERE " + KEY_SHOW_IN_ACTIVATOR + "=0";
-			orderByString = "ORDER BY " + KEY_NAME;
-			break;
-		}
-		
 		final String selectQuery = "SELECT " + KEY_ID + "," +
 						                 KEY_NAME + "," +
 						                 KEY_ICON + "," +
@@ -1018,9 +954,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						        		 KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME + "," +
 						        		 KEY_DEVICE_AUTOSYNC + "," +
 						        		 KEY_SHOW_IN_ACTIVATOR +
-						    " FROM " + TABLE_PROFILES + 
-						    " " + whereString +
-						    " " + orderByString;
+						    " FROM " + TABLE_PROFILES;
 
 		//SQLiteDatabase db = this.getReadableDatabase();
 		SQLiteDatabase db = getMyWritableDatabase();
@@ -1073,7 +1007,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		return profile;
 		
 	}
-	
+*/
+/*
 	public int getProfilePosition(Profile profile)
 	{
 		final String selectQuery = "SELECT " + KEY_ID +
@@ -1103,7 +1038,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		return -1;
 		
 	}
-	
+*/	
 	public void setPOrder(List<Profile> list)
 	{
 		//SQLiteDatabase db = this.getWritableDatabase();
@@ -1329,28 +1264,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 	
 	// Getting All Events
-	public List<Event> getAllEvents(int filterType) {
+	public List<Event> getAllEvents() {
 		List<Event> eventList = new ArrayList<Event>();
 		
         //Log.e("DatabaseHandler.getAllEvents","filterType="+filterType);
-		
-		String whereString = "";
-		String orderByString = "";
-		switch (filterType)
-		{
-		case FILTER_TYPE_EVENTS_ALL:
-			whereString = "";
-			orderByString = "ORDER BY " + KEY_E_NAME;
-			break;
-		case FILTER_TYPE_EVENTS_ENABLED:
-			whereString = "WHERE " + KEY_E_ENABLED + "=1";
-			orderByString = "ORDER BY " + KEY_E_NAME;
-			break;
-		case FILTER_TYPE_EVENTS_DISABLED:
-			whereString = "WHERE " + KEY_E_ENABLED + "=0";
-			orderByString = "ORDER BY " + KEY_E_NAME;
-			break;
-		}
 		
 		// Select All Query
 		final String selectQuery = "SELECT " + KEY_E_ID + "," +
@@ -1358,9 +1275,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				                         KEY_E_TYPE + "," +
 				                         KEY_E_FK_PROFILE + "," +
 				                         KEY_E_ENABLED +
-		                     " FROM " + TABLE_EVENTS +
-				             " " + whereString +
-		                     " " + orderByString;
+		                     " FROM " + TABLE_EVENTS;
 
 		//SQLiteDatabase db = this.getReadableDatabase();
 		SQLiteDatabase db = getMyWritableDatabase();
@@ -1467,35 +1382,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 		return r;	
 	}
-	
-	public Event getFirstEvent(int filterType)
+/*	
+	public Event getFirstEvent()
 	{
-		String whereString = "";
-		String orderByString = "";
-		switch (filterType)
-		{
-		case FILTER_TYPE_EVENTS_ALL:
-			whereString = "";
-			orderByString = "ORDER BY " + KEY_E_NAME;
-			break;
-		case FILTER_TYPE_EVENTS_ENABLED:
-			whereString = "WHERE " + KEY_E_ENABLED + "=1";
-			orderByString = "ORDER BY " + KEY_E_NAME;
-			break;
-		case FILTER_TYPE_EVENTS_DISABLED:
-			whereString = "WHERE " + KEY_E_ENABLED + "=0";
-			orderByString = "ORDER BY " + KEY_E_NAME;
-			break;
-		}
-		
 		final String selectQuery = "SELECT " + KEY_E_ID + "," +
 						                 KEY_E_NAME + "," +
 						                 KEY_E_TYPE + "," +
 						                 KEY_E_FK_PROFILE + "," +
 						                 KEY_E_ENABLED +
-						    " FROM " + TABLE_EVENTS +
-						    " " + whereString +
-						    " " + orderByString;
+						    " FROM " + TABLE_EVENTS;
 						    
 
 		//SQLiteDatabase db = this.getReadableDatabase();
@@ -1522,7 +1417,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		return event;
 		
 	}
-	
+*/	
+/*
 	public int getEventPosition(Event event)
 	{
 		String selectQuery = "SELECT " + KEY_E_ID +
@@ -1552,7 +1448,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		return -1;
 		
 	}
-	
+*/	
 	public void getEventPreferences(Event event) {
 		//SQLiteDatabase db = this.getReadableDatabase();
 		SQLiteDatabase db = getMyWritableDatabase();

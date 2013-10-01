@@ -1,13 +1,14 @@
 package sk.henrichg.phoneprofiles;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+
 import com.actionbarsherlock.app.SherlockActivity;
 
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import com.actionbarsherlock.view.Menu;
@@ -143,7 +144,8 @@ public class ActivateProfileActivity extends SherlockActivity {
 			
 			@Override
 			protected Void doInBackground(Void... params) {
-				profileList = profilesDataWrapper.getProfileList(DatabaseHandler.FILTER_TYPE_PROFILES_SHOW_IN_ACTIVATOR);
+				profileList = profilesDataWrapper.getProfileList();
+			    Collections.sort(profileList, new ProfileComparator());
 				
 				return null;
 			}
@@ -153,9 +155,12 @@ public class ActivateProfileActivity extends SherlockActivity {
 			{
 				super.onPostExecute(result);
 
-				if (profileList.size() == 0)
+				if (profileListAdapter == null)
+					profileListAdapter = new ActivateProfileListAdapter(getBaseContext(), profileList);
+					
+				if (profileListAdapter.getCount() == 0)
 				{
-					// nie je ziaden profile, staretnene Editor
+					// nie je ziaden profile, startneme Editor
 					
 					Intent intent = new Intent(getBaseContext(), EditorProfilesActivity.class);
 					intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_ACTIVATOR);
@@ -169,7 +174,6 @@ public class ActivateProfileActivity extends SherlockActivity {
 				
 				if (listView != null)
 				{
-					profileListAdapter = new ActivateProfileListAdapter(getBaseContext(), profileList);
 					listView.setAdapter(profileListAdapter);
 					
 					doOnStart();
@@ -220,8 +224,9 @@ public class ActivateProfileActivity extends SherlockActivity {
 				//Log.d("ActivateProfilesActivity.onItemClick", "xxxx");
 
 				if (!GlobalData.applicationLongClickActivation)
-					//activateProfileWithAlert(position);
-					activateProfile(position, GlobalData.STARTUP_SOURCE_ACTIVATOR);
+				{
+					activateProfile((Profile)profileListAdapter.getItem(position), GlobalData.STARTUP_SOURCE_ACTIVATOR);
+				}
 
 			}
 			
@@ -235,7 +240,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 				
 				if (GlobalData.applicationLongClickActivation)
 					//activateProfileWithAlert(position);
-					activateProfile(position, GlobalData.STARTUP_SOURCE_ACTIVATOR);
+					activateProfile((Profile)profileListAdapter.getItem(position), GlobalData.STARTUP_SOURCE_ACTIVATOR);
 
 				return false;
 			}
@@ -330,10 +335,9 @@ public class ActivateProfileActivity extends SherlockActivity {
 		if (profileList != null)
 		{
 			if (profileListAdapter == null)
-			{
 				profileListAdapter = new ActivateProfileListAdapter(getBaseContext(), profileList);
-				listView.setAdapter(profileListAdapter);
-			}
+
+			listView.setAdapter(profileListAdapter);
 		
 			doOnStart();
 		}
@@ -492,13 +496,12 @@ public class ActivateProfileActivity extends SherlockActivity {
 		startActivityForResult(intent, GlobalData.REQUEST_CODE_ACTIVATE_PROFILE);
 	}
 	
-	private void activateProfile(int position, int startupSource)
-	{
-		//Log.d("ActivateProfileActivity.activateProfile","size="+profileList.size());
-		//Log.d("ActivateProfileActivity.activateProfile","position="+position);
-		Profile profile = profileList.get(position);
-		//Log.d("ActivateProfileActivity.activateProfile","profile_id="+profile._id);
-		activateProfile(profile, startupSource);
-	} 
+	class ProfileComparator implements Comparator<Profile> {
+
+		public int compare(Profile lhs, Profile rhs) {
+		    int res = lhs._porder - rhs._porder;
+	        return res;
+	    }
+	}
 	
 }

@@ -7,42 +7,63 @@
     android:layout_height="match_parent" > 
        
 
-	<LinearLayout
-	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
-	    android:baselineAligned="false"
-	    android:orientation="horizontal"
-	    tools:context=".EditorProfileListActivity" >
+    <RelativeLayout 
+        android:id="@+id/editor_list_filter_status_line"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+	    android:background="?attr/filterStatusBarBackground" >
 	    
-	    <!--
-	    This layout is a two-pane layout for the Profiles
-	    master/detail flow. See res/values-large/refs.xml and
-	    res/values-sw600dp/refs.xml for an example of layout aliases
-	    that replace the single-pane version of the layout with
-	    this two-pane version.
-	
-	    For more on layout aliases, see:
-	    http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
-	    -->
-	
-	    <FrameLayout
-	        android:id="@+id/editor_list_container"
-	        android:layout_width="0dp"
-	        android:layout_height="match_parent"
-	        android:layout_weight="2" />
-	    
-	    <FrameLayout
-	        android:id="@+id/editor_detail_container"
-	        android:layout_width="0dp"
-	        android:layout_height="match_parent"
-	        android:layout_marginTop="10dp"
-	        android:layout_marginBottom="10dp"
-	        android:layout_marginLeft="10dp"
-	        android:layout_marginRight="10dp"
-	        android:layout_weight="2" />
-	    
-	
-	</LinearLayout>
+	 	<TextView
+	        android:id="@+id/editor_list_filter_title"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="2dp"
+	        android:layout_marginLeft="11dp"
+	        android:layout_marginBottom="2dp"
+	        android:layout_alignParentTop="true"
+	        android:ellipsize="end"
+	        android:singleLine="true"
+	        android:textAppearance="?attr/textAppearanceSmall" />    
+
+		<LinearLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+	        android:layout_below="@id/editor_list_filter_title"
+		    android:baselineAligned="false"
+		    android:orientation="horizontal"
+		    tools:context=".EditorProfileListActivity" >
+		    
+		    <!--
+		    This layout is a two-pane layout for the Profiles
+		    master/detail flow. See res/values-large/refs.xml and
+		    res/values-sw600dp/refs.xml for an example of layout aliases
+		    that replace the single-pane version of the layout with
+		    this two-pane version.
+		
+		    For more on layout aliases, see:
+		    http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
+		    -->
+		
+		    <FrameLayout
+		        android:id="@+id/editor_list_container"
+		        android:layout_width="0dp"
+		        android:layout_height="match_parent"
+		        android:layout_weight="2" />
+		    
+		    <FrameLayout
+		        android:id="@+id/editor_detail_container"
+		        android:layout_width="0dp"
+		        android:layout_height="match_parent"
+		        android:layout_marginTop="10dp"
+		        android:layout_marginBottom="10dp"
+		        android:layout_marginLeft="10dp"
+		        android:layout_marginRight="10dp"
+		        android:layout_weight="2" />
+		    
+		
+		</LinearLayout>
+	 		 	
+    </RelativeLayout>
 
 	<ListView
 	    android:id="@+id/editor_list_drawer"

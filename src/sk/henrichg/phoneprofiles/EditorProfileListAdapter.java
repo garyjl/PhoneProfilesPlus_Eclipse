@@ -27,21 +27,68 @@ public class EditorProfileListAdapter extends BaseAdapter
 	{
 		fragment = f;
 		profilesDataWrapper = pdw;
-		profileList = profilesDataWrapper.getProfileList(fragment.getFilterType());
+		profileList = profilesDataWrapper.getProfileList();
 		this.filterType = filterType;
 	}   
 	
 	public int getCount()
 	{
-		return profileList.size();
+		if (filterType == EditorProfileListFragment.FILTER_TYPE_ALL)
+			return profileList.size();
+		
+		int count = 0;
+		for (Profile profile : profileList)
+		{
+	        switch (filterType)
+	        {
+				case EditorProfileListFragment.FILTER_TYPE_SHOW_IN_ACTIVATOR:
+					if (profile._showInActivator)
+						++count;
+					break;
+				case EditorProfileListFragment.FILTER_TYPE_NO_SHOW_IN_ACTIVATOR:
+					if (!profile._showInActivator)
+						++count;
+					break;
+	        }
+		}
+		return count;
 	}
 
 	public Object getItem(int position)
 	{
-		if (profileList.size() == 0)
+		if (getCount() == 0)
 			return null;
 		else
-			return profileList.get(position);
+		{
+			
+			if (filterType == EditorProfileListFragment.FILTER_TYPE_ALL)
+				return profileList.get(position);
+			
+			Profile _profile = null;
+			
+			int pos = -1;
+			for (Profile profile : profileList)
+			{
+				switch (filterType)
+		        {
+					case EditorProfileListFragment.FILTER_TYPE_SHOW_IN_ACTIVATOR:
+						if (profile._showInActivator)
+							++pos;
+						break;
+					case EditorProfileListFragment.FILTER_TYPE_NO_SHOW_IN_ACTIVATOR:
+						if (!profile._showInActivator)
+							++pos;
+						break;
+		        }
+		        if (pos == position)
+		        {
+		        	_profile = profile;
+		        	break;
+		        }
+			}
+			
+			return _profile;
+		}
 	}
 
 	public long getItemId(int position)
@@ -59,6 +106,36 @@ public class EditorProfileListAdapter extends BaseAdapter
 		return -1;
 	}
 	
+	public int getItemPosition(Profile profile)
+	{
+		if (profile == null)
+			return -1;
+		
+		if (filterType == EditorProfileListFragment.FILTER_TYPE_ALL)
+			return profileList.indexOf(profile);
+		
+		int pos = -1;
+		
+		for (int i = 0; i < profileList.size(); i++)
+		{
+			switch (filterType)
+	        {
+				case EditorProfileListFragment.FILTER_TYPE_SHOW_IN_ACTIVATOR:
+					if (profile._showInActivator)
+						++pos;
+					break;
+				case EditorProfileListFragment.FILTER_TYPE_NO_SHOW_IN_ACTIVATOR:
+					if (!profile._showInActivator)
+						++pos;
+					break;
+	        }
+			
+			if (profileList.get(i)._id == profile._id)
+				return pos;
+		}
+		return -1;
+	}
+	
 	public void setList(List<Profile> pl)
 	{
 		profileList = pl;
@@ -72,11 +149,6 @@ public class EditorProfileListAdapter extends BaseAdapter
 			notifyDataSetChanged();
 	}
 
-/*	public void updateItem(Profile profile)
-	{
-		notifyDataSetChanged();
-	}
-*/	
 	public void deleteItemNoNotify(Profile profile)
 	{
 		profilesDataWrapper.deleteProfile(profile);
@@ -101,28 +173,14 @@ public class EditorProfileListAdapter extends BaseAdapter
 	
 	public void changeItemOrder(int from, int to)
 	{
-		Profile profile = profileList.get(from);
-		profileList.remove(from);
-		profileList.add(to, profile);
+		// convert positions from adapter into profileList
+		int plFrom = profileList.indexOf(getItem(from));
+		int plTo = profileList.indexOf(getItem(to));
+		
+		Profile profile = profileList.get(plFrom);
+		profileList.remove(plFrom);
+		profileList.add(plTo, profile);
 		notifyDataSetChanged();
-	}
-	
-	class ProfileComparator implements Comparator<Profile> {
-
-		public int compare(Profile lhs, Profile rhs) {
-
-		    int res =  (lhs._name).compareToIgnoreCase(rhs._name);
-	        return res;
-	    }
-
-	}
-	
-	public void sortAlphabetically(boolean refresh)
-	{
-	    Collections.sort(profileList, new ProfileComparator());
-	    
-	    if (refresh)
-	    	notifyDataSetChanged();		
 	}
 	
 	public Profile getActivatedProfile()
@@ -177,7 +235,7 @@ public class EditorProfileListAdapter extends BaseAdapter
         if (convertView == null)
         {
     	    LayoutInflater inflater = LayoutInflater.from(fragment.getSherlockActivity());
-    	    if (filterType == DatabaseHandler.FILTER_TYPE_PROFILES_SHOW_IN_ACTIVATOR)
+    	    if (filterType == EditorProfileListFragment.FILTER_TYPE_SHOW_IN_ACTIVATOR)
     	    {
 	      	    if (GlobalData.applicationEditorPrefIndicator)
 	      		    vi = inflater.inflate(R.layout.editor_profile_list_item, parent, false);
@@ -207,8 +265,29 @@ public class EditorProfileListAdapter extends BaseAdapter
         {
       	    holder = (ViewHolder)vi.getTag();
         }
-		
-        Profile profile = profileList.get(position);
+        
+        final Profile profile = (Profile)getItem(position);
+
+        /*
+        switch (filterType)
+        {
+			case DatabaseHandler.FILTER_TYPE_PROFILES_ALL:
+				vi.setVisibility(View.VISIBLE);
+				break;
+			case DatabaseHandler.FILTER_TYPE_PROFILES_SHOW_IN_ACTIVATOR:
+				if (!profile._showInActivator)
+					vi.setVisibility(View.GONE);
+				else
+					vi.setVisibility(View.VISIBLE);
+				break;
+			case DatabaseHandler.FILTER_TYPE_PROFILES_NO_SHOW_IN_ACTIVATOR:
+				if (profile._showInActivator)
+					vi.setVisibility(View.GONE);
+				else
+					vi.setVisibility(View.VISIBLE);
+				break;
+        }
+        */
 
         if (profile._checked && (!GlobalData.applicationEditorHeader))
         {
@@ -265,15 +344,13 @@ public class EditorProfileListAdapter extends BaseAdapter
 			holder.profileIndicator.setImageBitmap(profile._preferencesIndicator);
 		}
 		
-		final int _position = position;
-		
 		holder.profileItemActivate.setTag(R.id.profile_list_item_activate);
 		holder.profileItemActivate.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				editIconClicked = true;
 				//Log.d("EditorProfileListAdapter.onClick", "activate");
 				((EditorProfileListFragment)fragment).finishProfilePreferencesActionMode();
-				((EditorProfileListFragment)fragment).activateProfile(_position, true);
+				((EditorProfileListFragment)fragment).activateProfile(profile, true);
 			}
 		}); 
 
@@ -283,7 +360,7 @@ public class EditorProfileListAdapter extends BaseAdapter
 				editIconClicked = true;
 				//Log.d("EditorProfileListAdapter.onClick", "duplicate");
 				((EditorProfileListFragment)fragment).finishProfilePreferencesActionMode();
-				((EditorProfileListFragment)fragment).duplicateProfile(_position);
+				((EditorProfileListFragment)fragment).duplicateProfile(profile);
 			}
 		}); 
 
@@ -293,7 +370,7 @@ public class EditorProfileListAdapter extends BaseAdapter
 				editIconClicked = true;
 				//Log.d("EditorProfileListAdapter.onClick", "delete");
 				((EditorProfileListFragment)fragment).finishProfilePreferencesActionMode();
-				((EditorProfileListFragment)fragment).deleteProfile(_position);
+				((EditorProfileListFragment)fragment).deleteProfile(profile);
 			}
 		}); 
 		

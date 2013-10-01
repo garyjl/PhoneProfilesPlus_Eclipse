@@ -48,5 +48,6 @@
     <attr name="actionProfileButtonTextStyle" format="reference" />
     <attr name="navigationDrawerBackground" format="reference" />
     <attr name="navigationDrawerText" format="reference"/>
+    <attr name="filterStatusBarBackground" format="reference" />
     
 </resources>

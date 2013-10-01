@@ -75,8 +75,8 @@ public class PhoneProfilesService extends Service {
 		// initialization
   	    context = getApplicationContext();
   	    profilesDataWrapper = new ProfilesDataWrapper(context, false, false, 0);
-  	    profilesDataWrapper.getProfileList(DatabaseHandler.FILTER_TYPE_PROFILES_ALL);
-  	    profilesDataWrapper.getEventList(DatabaseHandler.FILTER_TYPE_PROFILES_ALL);
+  	    profilesDataWrapper.getProfileList();
+  	    profilesDataWrapper.getEventList();
   	    
   	    GlobalData.loadPreferences(context);
   	    

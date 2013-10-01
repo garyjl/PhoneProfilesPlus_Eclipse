@@ -1,6 +1,10 @@
 package sk.henrichg.phoneprofiles;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+
+import sk.henrichg.phoneprofiles.EditorProfileListFragment.AlphabeticallyComparator;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
@@ -30,7 +34,11 @@ public class EditorEventListFragment extends SherlockFragment {
 
 	public static final String FILTER_TYPE_ARGUMENT = "filter_type";
 
-	private int filterType = DatabaseHandler.FILTER_TYPE_EVENTS_ALL;  
+	public static final int FILTER_TYPE_ALL = 0;
+	public static final int FILTER_TYPE_ENABLED = 1;
+	public static final int FILTER_TYPE_DISABLED = 2;
+	
+	private int filterType = FILTER_TYPE_ALL;  
 	
 	/**
 	 * The fragment's current callback object, which is notified of list item
@@ -49,7 +57,7 @@ public class EditorEventListFragment extends SherlockFragment {
 		/**
 		 * Callback for when an item has been selected.
 		 */
-		public void onStartEventPreferences(int position, int filterType, boolean afterDelete);
+		public void onStartEventPreferences(Event event, int filterType, boolean afterDelete);
 	}
 
 	/**
@@ -57,7 +65,7 @@ public class EditorEventListFragment extends SherlockFragment {
 	 * nothing. Used only when this fragment is not attached to an activity.
 	 */
 	private static OnStartEventPreferences sDummyOnStartEventPreferencesCallback = new OnStartEventPreferences() {
-		public void onStartEventPreferences(int position, int filterType, boolean afterDelete) {
+		public void onStartEventPreferences(Event event, int filterType, boolean afterDelete) {
 		}
 	};
 	
@@ -126,15 +134,15 @@ public class EditorEventListFragment extends SherlockFragment {
 		super.onCreate(savedInstanceState);
 		
         filterType = getArguments() != null ? 
-        		getArguments().getInt(FILTER_TYPE_ARGUMENT, DatabaseHandler.FILTER_TYPE_EVENTS_ALL) : 
-        		DatabaseHandler.FILTER_TYPE_EVENTS_ALL;
+        		getArguments().getInt(FILTER_TYPE_ARGUMENT, EditorEventListFragment.FILTER_TYPE_ALL) : 
+        			EditorEventListFragment.FILTER_TYPE_ALL;
         //Log.e("EditorEventListFragment.onCreate","filterType="+filterType);
 		
 		databaseHandler = EditorProfilesActivity.profilesDataWrapper.getDatabaseHandler();
 		
 		getSherlockActivity().getIntent();
 		
-		final SherlockFragment fragment = this;
+		final EditorEventListFragment fragment = this;
 		
 		new AsyncTask<Void, Integer, Void>() {
 			
@@ -147,7 +155,8 @@ public class EditorEventListFragment extends SherlockFragment {
 			
 			@Override
 			protected Void doInBackground(Void... params) {
-				eventList = EditorProfilesActivity.profilesDataWrapper.getEventList(filterType);
+				eventList = EditorProfilesActivity.profilesDataWrapper.getEventList();
+				sortAlphabetically();
 				
 				return null;
 			}
@@ -159,7 +168,7 @@ public class EditorEventListFragment extends SherlockFragment {
 
 				if (listView != null)
 				{
-					eventListAdapter = new EditorEventListAdapter(fragment, eventList);
+					eventListAdapter = new EditorEventListAdapter(fragment, EditorProfilesActivity.profilesDataWrapper, filterType);
 					listView.setAdapter(eventListAdapter);
 				}
 				
@@ -199,7 +208,7 @@ public class EditorEventListFragment extends SherlockFragment {
 
 				//Log.d("EditorEventListFragment.onItemClick", "xxxx");
 
-				startEventPreferencesActivity(position);
+				startEventPreferencesActivity((Event)eventListAdapter.getItem(position));
 				
 			}
 			
@@ -209,7 +218,7 @@ public class EditorEventListFragment extends SherlockFragment {
 		{
 			if (eventListAdapter == null)
 			{
-				eventListAdapter = new EditorEventListAdapter(this, eventList);
+				eventListAdapter = new EditorEventListAdapter(this, EditorProfilesActivity.profilesDataWrapper, filterType);
 				listView.setAdapter(eventListAdapter);
 			}
 		}
@@ -262,7 +271,7 @@ public class EditorEventListFragment extends SherlockFragment {
 		case R.id.menu_new_event:
 			//Log.e("EditorEventListFragment.onOptionsItemSelected", "menu_new_event");
 
-			startEventPreferencesActivity(-1);
+			startEventPreferencesActivity(null);
 			
 			return true;
 		case R.id.menu_delete_all_events:
@@ -276,33 +285,33 @@ public class EditorEventListFragment extends SherlockFragment {
 		}
 	}
 
-	private void startEventPreferencesActivity(int position)
+	private void startEventPreferencesActivity(Event event)
 	{
 
-		Event event;
+		Event _event = event;
 		
-		if (position != -1)
+		if (_event != null)
 		{
 			// editacia udalosti
-			event = eventList.get(position);
-			listView.setSelection(position);
-			listView.setItemChecked(position, true);
+			int profilePos = eventListAdapter.getItemPosition(_event);
+			listView.setSelection(profilePos);
+			listView.setItemChecked(profilePos, true);
 		}
 		else
 		{
 			// pridanie novej udalost
-			event = new Event(getResources().getString(R.string.event_name_default), 
+			_event = new Event(getResources().getString(R.string.event_name_default), 
 								  Event.ETYPE_TIME, 
 								  0,
 					         	  false
 					         );
 			
 			// add event into db and set id
-			databaseHandler.addEvent(event); 
+			databaseHandler.addEvent(_event); 
 			// add event into listview
-			eventListAdapter.addItem(event, false);
+			eventListAdapter.addItem(_event, false);
 			
-			updateListView(event);
+			updateListView(_event);
 			
 			onEventCountChangedCallback.onEventCountChanged();
 
@@ -312,13 +321,11 @@ public class EditorEventListFragment extends SherlockFragment {
 		
 		// Notify the active callbacks interface (the activity, if the
 		// fragment is attached to one) one must start profile preferences
-		onStartEventPreferencesCallback.onStartEventPreferences(eventListAdapter.getItemId(event), filterType, false);
+		onStartEventPreferencesCallback.onStartEventPreferences(_event, filterType, false);
 	}
 
-	public void duplicateEvent(int position)
+	public void duplicateEvent(Event origEvent)
 	{
-		Event origEvent = eventList.get(position);
-
 		Event newEvent = new Event(
 				   origEvent._name+"_d", 
 				   origEvent._type, 
@@ -337,14 +344,14 @@ public class EditorEventListFragment extends SherlockFragment {
 		
 		//updateListView();
 
-		startEventPreferencesActivity(eventList.size()-1);
+		startEventPreferencesActivity(newEvent);
 		
 		
 	}
 
-	public void deleteEvent(int position)
+	public void deleteEvent(Event event)
 	{
-		final Event event = eventList.get(position);
+		final Event _event = event;
 
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getSherlockActivity());
 		dialogBuilder.setTitle(getResources().getString(R.string.event_string_0) + ": " + event._name);
@@ -353,13 +360,13 @@ public class EditorEventListFragment extends SherlockFragment {
 		dialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 			
 			public void onClick(DialogInterface dialog, int which) {
-				eventListAdapter.deleteItem(event);
-				databaseHandler.deleteEvent(event);
+				eventListAdapter.deleteItemNoNotify(_event);
+				databaseHandler.deleteEvent(_event);
+				eventListAdapter.notifyDataSetChanged();
 				onEventCountChangedCallback.onEventCountChanged();
 				//updateListView();
 				
-				Event event = EditorProfilesActivity.profilesDataWrapper.getFirstEvent(filterType);
-				onStartEventPreferencesCallback.onStartEventPreferences(eventListAdapter.getItemId(event), filterType, true);
+				onStartEventPreferencesCallback.onStartEventPreferences(null, filterType, true);
 				
 			}
 		});
@@ -381,8 +388,7 @@ public class EditorEventListFragment extends SherlockFragment {
 				onEventCountChangedCallback.onEventCountChanged();
 				//updateListView();
 				
-				Event event = EditorProfilesActivity.profilesDataWrapper.getFirstEvent(filterType);
-				onStartEventPreferencesCallback.onStartEventPreferences(eventListAdapter.getItemId(event), filterType, true);
+				onStartEventPreferencesCallback.onStartEventPreferences(null, filterType, true);
 				
 			}
 		});
@@ -400,7 +406,8 @@ public class EditorEventListFragment extends SherlockFragment {
 		eventListAdapter.notifyDataSetChanged();
 
 		// sort list
-		eventListAdapter.sortAlphabetically(false);
+		sortAlphabetically();
+		
 		// set event visible in list
 		if (event == null)
 		{	
@@ -414,5 +421,20 @@ public class EditorEventListFragment extends SherlockFragment {
 	{
 		return filterType;
 	}
+	
+	class AlphabeticallyComparator implements Comparator<Event> {
+
+		public int compare(Event lhs, Event rhs) {
+
+		    int res =  (lhs._name).compareToIgnoreCase(rhs._name);
+	        return res;
+	    }
+	}
+	
+	public void sortAlphabetically()
+	{
+	    Collections.sort(eventList, new AlphabeticallyComparator());
+	}
+	
 
 }

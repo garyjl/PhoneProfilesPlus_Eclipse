@@ -1,5 +1,7 @@
 package sk.henrichg.phoneprofiles;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import android.content.Context;
@@ -27,12 +29,38 @@ public class ActivateProfileListAdapter extends BaseAdapter
 	
 	public int getCount()
 	{
-		return profileList.size();
+		int count = 0;
+		for (Profile profile : profileList)
+		{
+			if (profile._showInActivator)
+				++count;
+		}
+		return count;
 	}
 
 	public Object getItem(int position)
 	{
-		return profileList.get(position);
+		if (getCount() == 0)
+			return null;
+		else
+		{
+			Profile _profile = null;
+			
+			int pos = -1;
+			for (Profile profile : profileList)
+			{
+				if (profile._showInActivator)
+					++pos;
+
+				if (pos == position)
+		        {
+		        	_profile = profile;
+		        	break;
+		        }
+			}
+			
+			return _profile;
+		}
 	}
 
 	public long getItemId(int position)
@@ -40,6 +68,7 @@ public class ActivateProfileListAdapter extends BaseAdapter
 		return position;
 	}
 
+	
 	public int getItemId(Profile profile)
 	{
 		for (int i = 0; i < profileList.size(); i++)
@@ -48,49 +77,6 @@ public class ActivateProfileListAdapter extends BaseAdapter
 				return i;
 		}
 		return -1;
-	}
-	
-	public void setList(List<Profile> pl)
-	{
-		profileList = pl;
-		notifyDataSetChanged();
-	}
-	
-	public void addItem(Profile profile)
-	{
-		int maxPOrder = 0;
-		int pOrder;
-		for (Profile p : profileList)
-		{
-			pOrder = p._porder;
-			if (pOrder > maxPOrder) maxPOrder = pOrder;
-		}
-		profile._porder = maxPOrder+1;
-		profileList.add(profile);
-		notifyDataSetChanged();
-	}
-
-	public void updateItem(Profile profile)
-	{
-		notifyDataSetChanged();
-	}
-	
-	public void deleteItem(Profile profile)
-	{
-		profileList.remove(profile);
-		notifyDataSetChanged();
-	}
-	
-	public void changeItemOrder(int from, int to)
-	{
-		Profile profile = profileList.get(from);
-		profileList.remove(from);
-		profileList.add(to, profile);
-		for (int i = 0; i < profileList.size(); i++)
-		{
-			profileList.get(i)._porder = i+1;
-		}
-		notifyDataSetChanged();
 	}
 	
 	public Profile getActivatedProfile()
@@ -113,7 +99,8 @@ public class ActivateProfileListAdapter extends BaseAdapter
 			p._checked = false;
 		}
 		
-		// teraz musime najst profile v profileList 
+		// teraz musime najst profil v profileList
+		// lebo profil nemusi byt v liste
 		int position = getItemId(profile);
 		if (position != -1)
 		{
@@ -160,7 +147,7 @@ public class ActivateProfileListAdapter extends BaseAdapter
       	holder = (ViewHolder)vi.getTag();
       }
 
-      Profile profile = profileList.get(position);
+      Profile profile = (Profile)getItem(position);
 
       if (profile._checked && (!GlobalData.applicationActivatorHeader))
       {

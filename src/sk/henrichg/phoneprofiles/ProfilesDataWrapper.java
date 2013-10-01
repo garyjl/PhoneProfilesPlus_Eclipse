@@ -10,8 +10,6 @@ public class ProfilesDataWrapper {
 	private boolean forGUI = false;
 	private boolean monochrome = false;
 	private int monochromeValue = 0xFF;
-	private int profilesFilterType = DatabaseHandler.FILTER_TYPE_PROFILES_ALL;
-	private int eventsFilterType = DatabaseHandler.FILTER_TYPE_EVENTS_ALL;
 	
 
 	private DatabaseHandler databaseHandler = null;
@@ -50,16 +48,14 @@ public class ProfilesDataWrapper {
 		return activateProfileHelper;
 	}
 	
-	public List<Profile> getProfileList(int profilesFilterType)
+	public List<Profile> getProfileList()
 	{
-		if ((profileList == null) || (this.profilesFilterType != profilesFilterType))
+		if (profileList == null)
 		{
-			this.profilesFilterType = profilesFilterType;
-			
 			if (profileList != null)
 				profileList.clear();
 			
-			profileList = getDatabaseHandler().getAllProfiles(profilesFilterType);
+			profileList = getDatabaseHandler().getAllProfiles();
 		
 			if (forGUI)
 			{
@@ -115,12 +111,12 @@ public class ProfilesDataWrapper {
 			return getActivatedProfileFromDB();
 		}
 	}
-	
-	public Profile getFirstProfile(int filterType)
+/*	
+	public Profile getFirstProfile()
 	{
 		if (profileList == null)
 		{
-			Profile profile = getDatabaseHandler().getFirstProfile(filterType);
+			Profile profile = getDatabaseHandler().getFirstProfile();
 			if (forGUI && (profile != null))
 			{
 				profile.generateIconBitmap(context, monochrome, monochromeValue);
@@ -139,7 +135,8 @@ public class ProfilesDataWrapper {
 			return profile;
 		}
 	}
-	
+*/	
+/*	
 	public int getProfileItemPosition(Profile profile)
 	{
 		if (profile == null)
@@ -157,7 +154,7 @@ public class ProfilesDataWrapper {
 			return -1;
 		}
 	}
-	
+*/	
 	public void activateProfile(Profile profile)
 	{
 		if ((profileList == null) || (profile == null))
@@ -168,7 +165,9 @@ public class ProfilesDataWrapper {
 			p._checked = false;
 		}
 		
-		// teraz musime najst profile v profileList 
+		profile._checked = true;
+		
+	/*	// teraz musime najst profile v profileList 
 		int position = getProfileItemPosition(profile);
 		if (position != -1)
 		{
@@ -176,7 +175,7 @@ public class ProfilesDataWrapper {
 			Profile _profile = profileList.get(position);
 			if (_profile != null)
 				_profile._checked = true;
-		}
+		} */
 	}
 	
 	private Profile getProfileByIdFromDB(long id)
@@ -214,7 +213,7 @@ public class ProfilesDataWrapper {
 	public void reloadProfilesData()
 	{
 		invalidateProfileList();
-		getProfileList(profilesFilterType);
+		getProfileList();
 	}
 	
 	public void deleteProfile(Profile profile)
@@ -224,7 +223,7 @@ public class ProfilesDataWrapper {
 		
 		profileList.remove(profile);
 		if (eventList == null)
-			eventList = getEventList(eventsFilterType);
+			eventList = getEventList();
 		// unlink profile from events
 		for (Event event : eventList)
 		{
@@ -237,7 +236,7 @@ public class ProfilesDataWrapper {
 	{
 		profileList.clear();
 		if (eventList == null)
-			eventList = getEventList(eventsFilterType);
+			eventList = getEventList();
 		// unlink profiles from events
 		for (Event event : eventList)
 		{
@@ -247,16 +246,14 @@ public class ProfilesDataWrapper {
 	
 //---------------------------------------------------
 
-	public List<Event> getEventList(int eventsFilterType)
+	public List<Event> getEventList()
 	{
-		if ((eventList == null) || (this.eventsFilterType != eventsFilterType))
+		if (eventList == null)
 		{
-			this.eventsFilterType = eventsFilterType;
-
 			if (eventList != null)
 				eventList.clear();
 			
-			eventList = getDatabaseHandler().getAllEvents(eventsFilterType);
+			eventList = getDatabaseHandler().getAllEvents();
 		}
 
 		return eventList;
@@ -269,11 +266,12 @@ public class ProfilesDataWrapper {
 		eventList = null;
 	}
 	
+/*	
 	public Event getFirstEvent(int filterType)
 	{
 		if (eventList == null)
 		{
-			Event event = getDatabaseHandler().getFirstEvent(filterType);
+			Event event = getDatabaseHandler().getFirstEvent();
 			return event;
 		}
 		else
@@ -287,7 +285,8 @@ public class ProfilesDataWrapper {
 			return event;
 		}
 	}
-	
+*/	
+/*
 	public int getEventItemPosition(Event event)
 	{
 		if (event == null)
@@ -305,7 +304,7 @@ public class ProfilesDataWrapper {
 			return -1;
 		}
 	}
-	
+*/	
 	public Event getEventById(long id)
 	{
 		if (eventList == null)
@@ -331,7 +330,7 @@ public class ProfilesDataWrapper {
 	public void reloadEventsData()
 	{
 		invalidateEventList();
-		getEventList(eventsFilterType);
+		getEventList();
 	}
 	
 }

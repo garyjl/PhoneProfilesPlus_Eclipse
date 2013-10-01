@@ -21,10 +21,9 @@ public class GlobalData extends Application {
 	static String PACKAGE_NAME;
 
 	// musi byt tu, pouziva t ActivateProfileHelper
-	static final String EXTRA_PROFILE_POSITION = "profile_position";
 	static final String EXTRA_PROFILE_ID = "profile_id";
+	static final String EXTRA_EVENT_ID = "event_id";
 	static final String EXTRA_START_APP_SOURCE = "start_app_source";
-	static final String EXTRA_EVENT_POSITION = "event_position";
 	static final String EXTRA_FILTER_TYPE = "filter_type";
 
 	// musi byt tu, pouziva to ActivateProfileHelper

@@ -5,13 +5,34 @@
     android:id="@+id/editor_list_drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent" > 
-       
-	<FrameLayout 
-	    android:id="@+id/editor_list_container"
-	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
-	    tools:context=".EditorProfileListActivity" />
+      
+    <RelativeLayout 
+        android:id="@+id/editor_list_filter_status_line"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+	    android:background="?attr/filterStatusBarBackground" >
+	    
+	 	<TextView
+	        android:id="@+id/editor_list_filter_title"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="2dp"
+	        android:layout_marginLeft="11dp"
+	        android:layout_marginBottom="2dp"
+	        android:layout_alignParentTop="true"
+	        android:ellipsize="end"
+	        android:singleLine="true"
+	        android:textAppearance="?attr/textAppearanceSmall" />    
 
+		<FrameLayout 
+		    android:id="@+id/editor_list_container"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+	        android:layout_below="@id/editor_list_filter_title"
+		    tools:context=".EditorProfileListActivity"  />
+	 		 	
+    </RelativeLayout>
+    
 	<ListView
 	    android:id="@+id/editor_list_drawer"
 	    android:layout_width="240dp"

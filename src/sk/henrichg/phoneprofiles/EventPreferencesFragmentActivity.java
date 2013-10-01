@@ -34,12 +34,12 @@ public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setTitle(R.string.title_activity_event_preferences);
 
-        int event_position = getIntent().getIntExtra(GlobalData.EXTRA_EVENT_POSITION, -1);
-        int filter_type = getIntent().getIntExtra(GlobalData.EXTRA_FILTER_TYPE, DatabaseHandler.FILTER_TYPE_EVENTS_ALL);
+        long event_id = getIntent().getLongExtra(GlobalData.EXTRA_EVENT_ID, -1);
+        int filter_type = getIntent().getIntExtra(GlobalData.EXTRA_FILTER_TYPE, EditorEventListFragment.FILTER_TYPE_ALL);
 
 		if (savedInstanceState == null) {
 			Bundle arguments = new Bundle();
-			arguments.putInt(GlobalData.EXTRA_EVENT_POSITION, event_position);
+			arguments.putLong(GlobalData.EXTRA_EVENT_ID, event_id);
 			arguments.putInt(GlobalData.EXTRA_FILTER_TYPE, filter_type);
 			EventPreferencesFragment fragment = new EventPreferencesFragment();
 			fragment.setArguments(arguments);
@@ -86,9 +86,9 @@ public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
 			fragment.doOnActivityResult(requestCode, resultCode, data);
 	}
 
-	public void onRestartEventPreferences(int position, int filterType) {
+	public void onRestartEventPreferences(Event event, int filterType) {
 		Bundle arguments = new Bundle();
-		arguments.putInt(GlobalData.EXTRA_EVENT_POSITION, position);
+		arguments.putLong(GlobalData.EXTRA_EVENT_ID, event._id);
 		arguments.putInt(GlobalData.EXTRA_FILTER_TYPE, filterType);
 		EventPreferencesFragment fragment = new EventPreferencesFragment();
 		fragment.setArguments(arguments);

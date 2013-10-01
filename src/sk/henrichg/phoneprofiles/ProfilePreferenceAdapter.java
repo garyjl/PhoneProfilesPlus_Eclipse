@@ -24,7 +24,7 @@ public class ProfilePreferenceAdapter extends BaseAdapter {
 
 		inflater = (LayoutInflater)c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		
-		profileList = ProfilePreference.profilesDataWrapper.getProfileList(DatabaseHandler.FILTER_TYPE_PROFILES_ALL);
+		profileList = ProfilePreference.profilesDataWrapper.getProfileList();
 	}
 	
 	public int getCount() {

@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,7 +27,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 {
 	
 	private Profile profile;
-	private int profile_position;
+	private long profile_id;
 	private int filter_type;
 	private PreferenceManager prefMng;
 	private SharedPreferences preferences;
@@ -48,11 +49,11 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		/**
 		 * Callback for restart fragment.
 		 */
-		public void onRestartProfilePreferences(int position, int filterType);
+		public void onRestartProfilePreferences(Profile profile, int filterType);
 	}
 
 	private static OnRestartProfilePreferences sDummyOnRestartProfilePreferencesCallback = new OnRestartProfilePreferences() {
-		public void onRestartProfilePreferences(int position, int filterType) {
+		public void onRestartProfilePreferences(Profile profile, int filterType) {
 		}
 	};
 	
@@ -103,9 +104,9 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		preferencesActivity = getSherlockActivity();
 		
         // getting attached fragment data
-		if (getArguments().containsKey(GlobalData.EXTRA_PROFILE_POSITION))
-			profile_position = getArguments().getInt(GlobalData.EXTRA_PROFILE_POSITION);
-    	//Log.d("ProfilePreferencesFragment.onCreate", "profile_position=" + profile_position);
+		if (getArguments().containsKey(GlobalData.EXTRA_PROFILE_ID))
+			profile_id = getArguments().getLong(GlobalData.EXTRA_PROFILE_ID);
+    	//Log.e("ProfilePreferencesFragment.onCreate", "profile_id=" + profile_id);
 		if (getArguments().containsKey(GlobalData.EXTRA_FILTER_TYPE))
 			filter_type = getArguments().getInt(GlobalData.EXTRA_FILTER_TYPE);
     	//Log.d("ProfilePreferencesFragment.onCreate", "filter_type=" + filter_type);
@@ -199,7 +200,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	private void loadPreferences()
 	{
 		
-    	profile = (Profile)EditorProfilesActivity.profilesDataWrapper.getProfileList(filter_type).get(profile_position);
+    	profile = (Profile)EditorProfilesActivity.profilesDataWrapper.getProfileById(profile_id);
     	
     	if (profile != null)
     	{
@@ -242,7 +243,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	
 	private void savePreferences()
 	{
-        if (profile_position > -1) 
+        if (profile_id > 0) 
         {
         	profile._name = preferences.getString(GlobalData.PREF_PROFILE_NAME, "");
         	profile._icon = preferences.getString(GlobalData.PREF_PROFILE_ICON, "");
@@ -384,7 +385,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	
 	private void updateSharedPreference()
 	{
-        if (profile_position > -1) 
+        if (profile_id > 0) 
         {	
 
 	    	// updating activity with selected profile preferences
@@ -467,7 +468,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
             public void onDestroyActionMode(ActionMode mode) {
                actionMode = null;
                if (restart)
-            	   onRestartProfilePreferencesCallback.onRestartProfilePreferences(profile_position, filter_type);
+            	   onRestartProfilePreferencesCallback.onRestartProfilePreferences(profile, filter_type);
             }
  
             /** This is called when the action mode is created. This is called by startActionMode() */

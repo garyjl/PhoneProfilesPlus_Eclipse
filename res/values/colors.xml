@@ -4,4 +4,5 @@
     <color name="activityCardBackground_phoneprofilestheme">@android:color/white</color>
     <color name="activityCardSelected_phoneprofilestheme">#FF33b5e5</color>
     <color name="navigationDrawerTextColor_phoneprofiletheme">#ff000000</color>
+    <color name="filterStatusBarBackground_phoneprofilestheme">#FFb0b0b0</color>
 </resources>

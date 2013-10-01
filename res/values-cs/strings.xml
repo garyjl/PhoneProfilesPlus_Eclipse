@@ -198,8 +198,8 @@
     <string name="editor_list_drawer_item_profiles_show_in_activator">Zobrazeny v Aktivátore</string>
     <string name="editor_list_drawer_item_profiles_no_show_in_activator">Nezobrazeny v Aktivátore</string>
     <string name="editor_list_drawer_item_events_all">Všechny</string>
-    <string name="editor_list_drawer_item_events_enabled">Povolené</string>
-    <string name="editor_list_drawer_item_events_disabled">Zakázané</string>
+    <string name="editor_list_drawer_item_events_enabled">Zapnué</string>
+    <string name="editor_list_drawer_item_events_disabled">Vypnuté</string>
     <string name="profile_preferences_deviceAutosync">Auto. synchronizace</string>
     		
 </resources>

@@ -1,5 +1,7 @@
 package sk.henrichg.phoneprofiles;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import com.actionbarsherlock.app.SherlockActivity;
@@ -124,7 +126,8 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 			
 			@Override
 			protected Void doInBackground(Void... params) {
-				profileList = profilesDataWrapper.getProfileList(DatabaseHandler.FILTER_TYPE_PROFILES_ALL);
+				profileList = profilesDataWrapper.getProfileList();
+			    Collections.sort(profileList, new ProfileComparator());
 				
 				return null;
 			}
@@ -280,4 +283,14 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 		return combined;
 	}
 
+	class ProfileComparator implements Comparator<Profile> {
+
+		public int compare(Profile lhs, Profile rhs) {
+
+		    int res =  (lhs._name).compareToIgnoreCase(rhs._name);
+	        return res;
+	    }
+
+	}
+	
 }

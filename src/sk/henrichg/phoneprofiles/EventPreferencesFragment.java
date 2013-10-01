@@ -27,7 +27,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 {
 	
 	private Event event;
-	private int event_position;
+	private long event_id;
 	private int filter_type;
 	private PreferenceManager prefMng;
 	private SharedPreferences preferences;
@@ -48,11 +48,11 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		/**
 		 * Callback for restart fragment.
 		 */
-		public void onRestartEventPreferences(int position, int filterType);
+		public void onRestartEventPreferences(Event event, int filterType);
 	}
 
 	private static OnRestartEventPreferences sDummyOnRestartEventPreferencesCallback = new OnRestartEventPreferences() {
-		public void onRestartEventPreferences(int position, int filterType) {
+		public void onRestartEventPreferences(Event event, int filterType) {
 		}
 	};
 	
@@ -103,8 +103,8 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		preferencesActivity = getSherlockActivity();
 		
         // getting attached fragment data
-		if (getArguments().containsKey(GlobalData.EXTRA_EVENT_POSITION))
-			event_position = getArguments().getInt(GlobalData.EXTRA_EVENT_POSITION);
+		if (getArguments().containsKey(GlobalData.EXTRA_EVENT_ID))
+			event_id = getArguments().getLong(GlobalData.EXTRA_EVENT_ID);
     	//Log.e("EventPreferencesFragment.onCreate", "event_position=" + event_position);
 		if (getArguments().containsKey(GlobalData.EXTRA_FILTER_TYPE))
 			filter_type = getArguments().getInt(GlobalData.EXTRA_FILTER_TYPE);
@@ -112,7 +112,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		
         context = getSherlockActivity().getBaseContext();
 
-    	event = (Event)EditorProfilesActivity.profilesDataWrapper.getEventList(filter_type).get(event_position);
+    	event = (Event)EditorProfilesActivity.profilesDataWrapper.getEventById(event_id);
 		
 		prefMng = getPreferenceManager();
 		prefMng.setSharedPreferencesName(PREFS_NAME);
@@ -195,7 +195,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	
 	private void savePreferences()
 	{
-        if (event_position > -1) 
+        if (event_id > 0) 
         {
         	event.saveSharedPrefereces(preferences);
         	
@@ -210,7 +210,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	
 	private void updateSharedPreference()
 	{
-        if (event_position > -1) 
+        if (event_id > 0) 
         {	
 
 	    	// updating activity with selected event preferences
@@ -239,7 +239,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 			}
 			
 			event.changeEventType(iEventType);
-     	    onRestartEventPreferencesCallback.onRestartEventPreferences(event_position, filter_type);
+     	    onRestartEventPreferencesCallback.onRestartEventPreferences(event, filter_type);
 			
 		}
 
@@ -263,7 +263,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
                if (restart)
                {
             	   event.undoEventType();
-            	   onRestartEventPreferencesCallback.onRestartEventPreferences(event_position, filter_type);
+            	   onRestartEventPreferencesCallback.onRestartEventPreferences(event, filter_type);
                }   
             }
  

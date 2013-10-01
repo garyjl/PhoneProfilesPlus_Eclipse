@@ -4,9 +4,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import sk.henrichg.phoneprofiles.EditorProfileListAdapter.ProfileComparator;
-import sk.henrichg.phoneprofiles.EditorProfileListAdapter.ViewHolder;
-
 import com.actionbarsherlock.app.SherlockFragment;
 
 import android.view.LayoutInflater;
@@ -21,28 +18,79 @@ import android.widget.TextView;
 public class EditorEventListAdapter extends BaseAdapter
 {
 
-	private SherlockFragment fragment;
+	private EditorEventListFragment fragment;
+	private ProfilesDataWrapper profilesDataWrapper;
+	private int filterType;
 	public List<Event> eventList;
 	
 	public static boolean editIconClicked = false;
 	
-	public EditorEventListAdapter(SherlockFragment f, List<Event> el)
+	public EditorEventListAdapter(EditorEventListFragment f, ProfilesDataWrapper pdw, int filterType)
 	{
 		fragment = f;
-		eventList = el;
+		profilesDataWrapper = pdw;
+		eventList = profilesDataWrapper.getEventList();
+		this.filterType = filterType;
 	}   
 	
 	public int getCount()
 	{
-		return eventList.size();
+		if (filterType == EditorEventListFragment.FILTER_TYPE_ALL)
+			return eventList.size();
+		
+		int count = 0;
+		for (Event event : eventList)
+		{
+	        switch (filterType)
+	        {
+				case EditorEventListFragment.FILTER_TYPE_ENABLED:
+					if (event._enabled)
+						++count;
+					break;
+				case EditorEventListFragment.FILTER_TYPE_DISABLED:
+					if (!event._enabled)
+						++count;
+					break;
+	        }
+		}
+		return count;
 	}
 
 	public Object getItem(int position)
 	{
-		if (eventList.size() == 0)
+		if (getCount() == 0)
 			return null;
 		else
-			return eventList.get(position);
+		{
+			
+			if (filterType == EditorEventListFragment.FILTER_TYPE_ALL)
+				return eventList.get(position);
+			
+			Event _event = null;
+			
+			int pos = -1;
+			for (Event event : eventList)
+			{
+				switch (filterType)
+		        {
+					case EditorEventListFragment.FILTER_TYPE_ENABLED:
+						if (event._enabled)
+							++pos;
+						break;
+					case EditorEventListFragment.FILTER_TYPE_DISABLED:
+						if (!event._enabled)
+							++pos;
+						break;
+		        }
+		        if (pos == position)
+		        {
+		        	_event = event;
+		        	break;
+		        }
+			}
+			
+			return _event;
+		}
 	}
 
 	public long getItemId(int position)
@@ -60,6 +108,36 @@ public class EditorEventListAdapter extends BaseAdapter
 		return -1;
 	}
 	
+	public int getItemPosition(Event event)
+	{
+		if (event == null)
+			return -1;
+		
+		if (filterType == EditorEventListFragment.FILTER_TYPE_ALL)
+			return eventList.indexOf(event);
+		
+		int pos = -1;
+		
+		for (int i = 0; i < eventList.size(); i++)
+		{
+			switch (filterType)
+	        {
+				case EditorEventListFragment.FILTER_TYPE_ENABLED:
+					if (event._enabled)
+						++pos;
+					break;
+				case EditorEventListFragment.FILTER_TYPE_DISABLED:
+					if (!event._enabled)
+						++pos;
+					break;
+	        }
+			
+			if (eventList.get(i)._id == event._id)
+				return pos;
+		}
+		return -1;
+	}
+	
 	public void setList(List<Event> el)
 	{
 		eventList = el;
@@ -73,15 +151,14 @@ public class EditorEventListAdapter extends BaseAdapter
 			notifyDataSetChanged();
 	}
 
-/*	
-	public void updateItem(Event event)
-	{
-		notifyDataSetChanged();
-	}
-*/	
-	public void deleteItem(Event event)
+	public void deleteItemNoNotify(Event event)
 	{
 		eventList.remove(event);
+	}
+
+	public void deleteItem(Event event)
+	{
+		deleteItemNoNotify(event);
 		notifyDataSetChanged();
 	}
 	
@@ -89,24 +166,6 @@ public class EditorEventListAdapter extends BaseAdapter
 	{
 		eventList.clear();
 		notifyDataSetChanged();
-	}
-	
-	class EventComparator implements Comparator<Event> {
-
-		public int compare(Event lhs, Event rhs) {
-
-		    int res =  (lhs._name).compareToIgnoreCase(rhs._name);
-	        return res;
-	    }
-
-	}
-	
-	public void sortAlphabetically(boolean refresh)
-	{
-	    Collections.sort(eventList, new EventComparator());
-	    
-	    if (refresh)
-	    	notifyDataSetChanged();		
 	}
 	
 	static class ViewHolder {
@@ -153,7 +212,7 @@ public class EditorEventListAdapter extends BaseAdapter
         }
         
 		
-        Event event = eventList.get(position);
+        final Event event = (Event)getItem(position);
 
        	if (GlobalData.applicationTheme.equals("light"))
        		holder.listItemRoot.setBackgroundResource(R.drawable.card);
@@ -212,8 +271,6 @@ public class EditorEventListAdapter extends BaseAdapter
 			}
         }
         
-        final int _position = position;
-		
 		ImageView eventItemDuplicate = (ImageView)vi.findViewById(R.id.event_list_item_duplicate);
 		eventItemDuplicate.setTag(R.id.event_list_item_duplicate);
 		eventItemDuplicate.setOnClickListener(new OnClickListener() {
@@ -222,7 +279,7 @@ public class EditorEventListAdapter extends BaseAdapter
 					editIconClicked = true;
 					//Log.d("EditorProfileListAdapter.onClick", "duplicate");
 					((EditorEventListFragment)fragment).finishEventPreferencesActionMode();
-					((EditorEventListFragment)fragment).duplicateEvent(_position);
+					((EditorEventListFragment)fragment).duplicateEvent(event);
 				}
 			}); 
 
@@ -234,7 +291,7 @@ public class EditorEventListAdapter extends BaseAdapter
 					editIconClicked = true;
 					//Log.d("EditorProfileListAdapter.onClick", "delete");
 					((EditorEventListFragment)fragment).finishEventPreferencesActionMode();
-					((EditorEventListFragment)fragment).deleteEvent(_position);
+					((EditorEventListFragment)fragment).deleteEvent(event);
 				}
 			}); 
 		

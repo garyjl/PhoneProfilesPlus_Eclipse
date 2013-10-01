@@ -51,6 +51,7 @@
         <item name="actionProfileToolBackground">@drawable/abs__list_selector_holo_dark</item>
         <item name="actionProfileButtonTextStyle">@style/TextAppearance.Sherlock.Widget.ActionMode.Title</item> 
         <item name="navigationDrawerBackground">@color/navigationDrawerBackground_phoneprofilestheme_dark</item> 
+        <item name="filterStatusBarBackground">@color/filterStatusBarBackground_phoneprofilestheme_dark</item> 
         
         <item name="actionModeCloseButtonStyle">@style/NoCloseButton</item>
         

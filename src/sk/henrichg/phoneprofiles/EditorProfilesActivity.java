@@ -25,6 +25,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -64,13 +65,14 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	DrawerLayout drawerLayout;
 	ListView drawerListView;
 	ActionBarDrawerToggle drawerToggle;
+	TextView filterStatusbarTitle;
 	
 	String[] drawerItemsTitle;
 	String[] drawerItemsSubtitle;
 	EditorDrawerListAdapter drawerAdapter;
 	
-	private int profilesFilterType = DatabaseHandler.FILTER_TYPE_PROFILES_SHOW_IN_ACTIVATOR;
-	private int eventsFilterType = DatabaseHandler.FILTER_TYPE_EVENTS_ALL;
+	private int profilesFilterType = EditorProfileListFragment.FILTER_TYPE_SHOW_IN_ACTIVATOR;
+	private int eventsFilterType = EditorEventListFragment.FILTER_TYPE_ALL;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +106,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			//Profile profile = profilesDataWrapper.getFirstProfile();
 			
 			//onStartProfilePreferences(profilesDataWrapper.getProfileItemPosition(profile), false);
-			onStartProfilePreferences(-1, profilesFilterType, false);
+			onStartProfilePreferences(null, profilesFilterType, false);
 
 		}
 		
@@ -178,6 +180,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
         };
  
         drawerLayout.setDrawerListener(drawerToggle);
+        
+        filterStatusbarTitle = (TextView) findViewById(R.id.editor_list_filter_title);
         
 		//getSupportActionBar().setDisplayShowTitleEnabled(false);
 		//getSupportActionBar().setTitle(R.string.title_activity_phone_profiles);
@@ -331,70 +335,72 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
     	
         switch (position) {
         case 0:
-        	profilesFilterType = DatabaseHandler.FILTER_TYPE_PROFILES_ALL;
+        	profilesFilterType = EditorProfileListFragment.FILTER_TYPE_ALL;
     		fragment = new EditorProfileListFragment();
     	    arguments = new Bundle();
    		    arguments.putInt(EditorProfileListFragment.FILTER_TYPE_ARGUMENT, profilesFilterType);
    		    fragment.setArguments(arguments);
     		getSupportFragmentManager().beginTransaction()
     			.replace(R.id.editor_list_container, fragment).commit();
-			onStartProfilePreferences(-1, profilesFilterType, false);
+			onStartProfilePreferences(null, profilesFilterType, false);
             break;
         case 1:
-        	profilesFilterType = DatabaseHandler.FILTER_TYPE_PROFILES_SHOW_IN_ACTIVATOR;
+        	profilesFilterType = EditorProfileListFragment.FILTER_TYPE_SHOW_IN_ACTIVATOR;
     		fragment = new EditorProfileListFragment();
     	    arguments = new Bundle();
    		    arguments.putInt(EditorProfileListFragment.FILTER_TYPE_ARGUMENT, profilesFilterType);
    		    fragment.setArguments(arguments);
     		getSupportFragmentManager().beginTransaction()
     			.replace(R.id.editor_list_container, fragment).commit();
-			onStartProfilePreferences(-1, profilesFilterType, false);
+			onStartProfilePreferences(null, profilesFilterType, false);
             break;
         case 2:
-        	profilesFilterType = DatabaseHandler.FILTER_TYPE_PROFILES_NO_SHOW_IN_ACTIVATOR;
+        	profilesFilterType = EditorProfileListFragment.FILTER_TYPE_NO_SHOW_IN_ACTIVATOR;
     		fragment = new EditorProfileListFragment();
     	    arguments = new Bundle();
    		    arguments.putInt(EditorProfileListFragment.FILTER_TYPE_ARGUMENT, profilesFilterType);
    		    fragment.setArguments(arguments);
     		getSupportFragmentManager().beginTransaction()
     			.replace(R.id.editor_list_container, fragment).commit();
-			onStartProfilePreferences(-1, profilesFilterType, false);
+			onStartProfilePreferences(null, profilesFilterType, false);
             break;
         case 3:
-        	eventsFilterType = DatabaseHandler.FILTER_TYPE_EVENTS_ALL;
+        	eventsFilterType = EditorEventListFragment.FILTER_TYPE_ALL;
     		fragment = new EditorEventListFragment();
     	    arguments = new Bundle();
    		    arguments.putInt(EditorEventListFragment.FILTER_TYPE_ARGUMENT, eventsFilterType);
    		    fragment.setArguments(arguments);
     		getSupportFragmentManager().beginTransaction()
     			.replace(R.id.editor_list_container, fragment).commit();
-			onStartEventPreferences(-1, eventsFilterType, false);
+			onStartEventPreferences(null, eventsFilterType, false);
 			break;	
         case 4:
-        	eventsFilterType = DatabaseHandler.FILTER_TYPE_EVENTS_ENABLED;
+        	eventsFilterType = EditorEventListFragment.FILTER_TYPE_ENABLED;
     		fragment = new EditorEventListFragment();
     	    arguments = new Bundle();
    		    arguments.putInt(EditorEventListFragment.FILTER_TYPE_ARGUMENT, eventsFilterType);
    		    fragment.setArguments(arguments);
     		getSupportFragmentManager().beginTransaction()
     			.replace(R.id.editor_list_container, fragment).commit();
-			onStartEventPreferences(-1, eventsFilterType, false);
+			onStartEventPreferences(null, eventsFilterType, false);
 			break;	
         case 5:
-        	eventsFilterType = DatabaseHandler.FILTER_TYPE_EVENTS_DISABLED;
+        	eventsFilterType = EditorEventListFragment.FILTER_TYPE_DISABLED;
     		fragment = new EditorEventListFragment();
     	    arguments = new Bundle();
    		    arguments.putInt(EditorEventListFragment.FILTER_TYPE_ARGUMENT, eventsFilterType);
    		    fragment.setArguments(arguments);
     		getSupportFragmentManager().beginTransaction()
     			.replace(R.id.editor_list_container, fragment).commit();
-			onStartEventPreferences(-1, eventsFilterType, false);
+			onStartEventPreferences(null, eventsFilterType, false);
 			break;	
         }
         drawerListView.setItemChecked(position, true);
  
         // Get the title followed by the position
         setTitle(drawerItemsTitle[position]);
+        // set filter statusbar title
+        filterStatusbarTitle.setText(drawerItemsSubtitle[position]);
         // Close drawer
         drawerLayout.closeDrawer(drawerListView);
     }	
@@ -587,16 +593,16 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	     getSupportActionBar().setTitle(title);
 	 }	
 
-	public void onStartProfilePreferences(int position, int filterType, boolean afterDelete) {
+	public void onStartProfilePreferences(Profile profile, int filterType, boolean afterDelete) {
 		if (mTwoPane) {
 			// In two-pane mode, show the detail view in this activity by
 			// adding or replacing the detail fragment using a
 			// fragment transaction.
 
-			if (position >= 0)
+			if (profile != null)
 			{
 				Bundle arguments = new Bundle();
-				arguments.putInt(GlobalData.EXTRA_PROFILE_POSITION, position);
+				arguments.putLong(GlobalData.EXTRA_PROFILE_ID, profile._id);
 				arguments.putInt(GlobalData.EXTRA_FILTER_TYPE, filterType);
 				ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 				fragment.setArguments(arguments);
@@ -617,17 +623,17 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		} else {
 			// In single-pane mode, simply start the profile preferences activity
 			// for the profile position.
-			if (position >= 0 && (!afterDelete))
+			if ((profile != null) && (!afterDelete))
 			{
 				Intent intent = new Intent(getBaseContext(), ProfilePreferencesFragmentActivity.class);
-				intent.putExtra(GlobalData.EXTRA_PROFILE_POSITION, position);
+				intent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
 				intent.putExtra(GlobalData.EXTRA_FILTER_TYPE, filterType);
 				startActivity(intent);
 			}
 		}
 	}
 
-	public void onRestartProfilePreferences(int position, int filterType) {
+	public void onRestartProfilePreferences(Profile profile, int filterType) {
 		if (mTwoPane) {
 			// In two-pane mode, show the detail view in this activity by
 			// adding or replacing the detail fragment using a
@@ -635,7 +641,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 
 			// restart profile preferences fragmentu
 			Bundle arguments = new Bundle();
-			arguments.putInt(GlobalData.EXTRA_PROFILE_POSITION, position);
+			arguments.putLong(GlobalData.EXTRA_PROFILE_ID, profile._id);
 			arguments.putInt(GlobalData.EXTRA_FILTER_TYPE, filterType);
 			ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 			fragment.setArguments(arguments);
@@ -701,16 +707,16 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		}
 	}
 
-	public void onStartEventPreferences(int position, int filterType, boolean afterDelete) {
+	public void onStartEventPreferences(Event event, int filterType, boolean afterDelete) {
 		if (mTwoPane) {
 			// In two-pane mode, show the detail view in this activity by
 			// adding or replacing the detail fragment using a
 			// fragment transaction.
 
-			if (position >= 0)
+			if (event != null)
 			{
 				Bundle arguments = new Bundle();
-				arguments.putInt(GlobalData.EXTRA_EVENT_POSITION, position);
+				arguments.putLong(GlobalData.EXTRA_EVENT_ID, event._id);
 				arguments.putInt(GlobalData.EXTRA_FILTER_TYPE, filterType);
 				EventPreferencesFragment fragment = new EventPreferencesFragment();
 				fragment.setArguments(arguments);
@@ -731,10 +737,10 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		} else {
 			// In single-pane mode, simply start the profile preferences activity
 			// for the profile position.
-			if (position >= 0 && (!afterDelete))
+			if ((event != null) && (!afterDelete))
 			{
 				Intent intent = new Intent(getBaseContext(), EventPreferencesFragmentActivity.class);
-				intent.putExtra(GlobalData.EXTRA_EVENT_POSITION, position);
+				intent.putExtra(GlobalData.EXTRA_EVENT_ID, event._id);
 				intent.putExtra(GlobalData.EXTRA_FILTER_TYPE, filterType);
 				startActivity(intent);
 			}
@@ -754,7 +760,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		}
 	}
 
-	public void onRestartEventPreferences(int position, int filterType) {
+	public void onRestartEventPreferences(Event event, int filterType) {
 		if (mTwoPane) {
 			// In two-pane mode, show the detail view in this activity by
 			// adding or replacing the detail fragment using a
@@ -762,7 +768,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 
 			// restart event preferences fragmentu
 			Bundle arguments = new Bundle();
-			arguments.putInt(GlobalData.EXTRA_EVENT_POSITION, position);
+			arguments.putLong(GlobalData.EXTRA_EVENT_ID, event._id);
 			arguments.putInt(GlobalData.EXTRA_FILTER_TYPE, filterType);
 			EventPreferencesFragment fragment = new EventPreferencesFragment();
 			fragment.setArguments(arguments);
