@@ -80,11 +80,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_E_NAME = "name";
 	private static final String KEY_E_TYPE = "type";
 	private static final String KEY_E_FK_PROFILE = "fkProfile";
-	//private static final String KEY_E_FK_PARAMS = "fkParams";  // nepouzivat
-	//private static final String KEY_E_FK_PARAMS_EDIT = "fkParamsEdit"; // nepouzivat
 	private static final String KEY_E_ENABLED = "enabled";
-	//private static final String KEY_E_START_DAY_OF_WEEK = "startDayOfWeek"; // nepouzivat
-	//private static final String KEY_E_END_DAY_OF_WEEK = "endDayOfWeek";  // nepouzivat
 	private static final String KEY_E_START_TIME = "startTime";
 	private static final String KEY_E_END_TIME = "endTime";
 	private static final String KEY_E_DAYS_OF_WEEK = "daysOfWeek";
@@ -402,6 +398,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 		if (oldVersion < 31)
 		{
+			// pridame nove stlpce
+			db.execSQL("ALTER TABLE " + TABLE_PROFILES + " ADD COLUMN " + KEY_DEVICE_AUTOSYNC + " INTEGER");
+			
+			// updatneme zaznamy
+			db.beginTransaction();
+			try {
+				db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_DEVICE_AUTOSYNC + "=0");
+				db.setTransactionSuccessful();
+		     } catch (Exception e){
+		         //Error in between database transaction 
+		     } finally {
+		    	db.endTransaction();
+	         }	
+			
 			db.execSQL("CREATE INDEX IDX_P_NAME ON " + TABLE_PROFILES + " (" + KEY_NAME + ")");
 			db.execSQL("CREATE INDEX IDX_E_NAME ON " + TABLE_EVENTS + " (" + KEY_E_NAME + ")");
 		}
@@ -1708,8 +1718,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					//SQLiteDatabase db = this.getWritableDatabase();
 					SQLiteDatabase db = getMyWritableDatabase();
 
-					Cursor cursor = null;
-					String[] columnNames;
+					Cursor cursorExportedDB = null;
+					String[] columnNamesExportedDB;
+					Cursor cursorImportDB = null;
+					String[] columnNamesImportDB;
 					
 					ContentValues values = new ContentValues();
 					
@@ -1718,16 +1730,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						
 						db.execSQL("DELETE FROM " + TABLE_PROFILES);
 
-						// cusor na profily exportedDB
-						cursor = exportedDBObj.rawQuery("SELECT * FROM "+TABLE_PROFILES, null);
-						columnNames = cursor.getColumnNames();
+						// cursor for profiles exportedDB
+						cursorExportedDB = exportedDBObj.rawQuery("SELECT * FROM "+TABLE_PROFILES, null);
+						columnNamesExportedDB = cursorExportedDB.getColumnNames();
+
+						// cursor for profiles of destination db  
+						cursorImportDB = db.rawQuery("SELECT * FROM "+TABLE_PROFILES, null);
 						
-						if (cursor.moveToFirst()) {
+						if (cursorExportedDB.moveToFirst()) {
 							do {
 									values.clear();
-									for (int i = 0; i < columnNames.length; i++)
+									for (int i = 0; i < columnNamesExportedDB.length; i++)
 									{
-										values.put(columnNames[i], cursor.getString(i));
+										// put only when columnNamesExportedDB[i] exists in cursorImportDB
+										if (cursorImportDB.getColumnIndex(columnNamesExportedDB[i]) != -1)
+											values.put(columnNamesExportedDB[i], cursorExportedDB.getString(i));
 										//Log.d("DatabaseHandler.importDB", "cn="+columnNames[i]+" val="+cursor.getString(i));
 									}
 									
@@ -1757,40 +1774,52 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 									{
 										values.put(KEY_SHOW_IN_ACTIVATOR, 1);
 									}
+									if (exportedDBObj.getVersion() < 31)
+									{
+										values.put(KEY_DEVICE_AUTOSYNC, 0);
+									}
 									
 									// Inserting Row do db z SQLiteOpenHelper
 									profileId = db.insert(TABLE_PROFILES, null, values);
 									// save profile ids
-									exportedDBEventProfileIds.add(cursor.getLong(cursor.getColumnIndex(KEY_ID)));
+									exportedDBEventProfileIds.add(cursorExportedDB.getLong(cursorExportedDB.getColumnIndex(KEY_ID)));
 									importDBEventProfileIds.add(profileId);
 									
-							} while (cursor.moveToNext());
+							} while (cursorExportedDB.moveToNext());
 						}
-						cursor.close();
+						cursorExportedDB.close();
+						cursorImportDB.close();
 
 						if (exportedDBObj.getVersion() >= DATABASE_VERSION_EVENTS)
 						{
 							db.execSQL("DELETE FROM " + TABLE_EVENTS);
 						
-							// cusor na profily exportedDB
-							cursor = exportedDBObj.rawQuery("SELECT * FROM "+TABLE_EVENTS, null);
-							columnNames = cursor.getColumnNames();
+							// cusor for events exportedDB
+							cursorExportedDB = exportedDBObj.rawQuery("SELECT * FROM "+TABLE_EVENTS, null);
+							columnNamesExportedDB = cursorExportedDB.getColumnNames();
 							
-							if (cursor.moveToFirst()) {
+							// cursor for profiles of destination db  
+							cursorImportDB = db.rawQuery("SELECT * FROM "+TABLE_EVENTS, null);
+							
+							if (cursorExportedDB.moveToFirst()) {
 								do {
 										values.clear();
-										for (int i = 0; i < columnNames.length; i++)
+										for (int i = 0; i < columnNamesExportedDB.length; i++)
 										{
-											if (columnNames[i].equals(KEY_E_FK_PROFILE))
+											// put only when columnNamesExportedDB[i] exists in cursorImportDB
+											if (cursorImportDB.getColumnIndex(columnNamesExportedDB[i]) != -1)
 											{
-												// importnuty profil ma nove id
-												// ale mame mapovacie polia, z ktorych vieme
-												// ktore povodne id za zmenilo na ktore nove
-												int profileIdx = exportedDBEventProfileIds.indexOf(cursor.getLong(i));
-												values.put(columnNames[i], importDBEventProfileIds.get(profileIdx));
+												if (columnNamesExportedDB[i].equals(KEY_E_FK_PROFILE))
+												{
+													// importnuty profil ma nove id
+													// ale mame mapovacie polia, z ktorych vieme
+													// ktore povodne id za zmenilo na ktore nove
+													int profileIdx = exportedDBEventProfileIds.indexOf(cursorExportedDB.getLong(i));
+													values.put(columnNamesExportedDB[i], importDBEventProfileIds.get(profileIdx));
+												}
+												else
+													values.put(columnNamesExportedDB[i], cursorExportedDB.getString(i));
 											}
-											else
-												values.put(columnNames[i], cursor.getString(i));
 											//Log.d("DatabaseHandler.importDB", "cn="+columnNames[i]+" val="+cursor.getString(i));
 										}
 										
@@ -1803,9 +1832,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 										// Inserting Row do db z SQLiteOpenHelper
 										db.insert(TABLE_EVENTS, null, values);
 										
-								} while (cursor.moveToNext());
+								} while (cursorExportedDB.moveToNext());
 							}
-							cursor.close();
+							cursorExportedDB.close();
+							cursorImportDB.close();
 						}
 						
 						db.setTransactionSuccessful();
@@ -1814,8 +1844,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					}
 					finally {
 						db.endTransaction();
-						if ((cursor != null) && (!cursor.isClosed()))
-							cursor.close();
+						if ((cursorExportedDB != null) && (!cursorExportedDB.isClosed()))
+							cursorExportedDB.close();
+						if ((cursorImportDB != null) && (!cursorImportDB.isClosed()))
+							cursorImportDB.close();
 						//db.close();
 					}
 					
