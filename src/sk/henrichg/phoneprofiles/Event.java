@@ -14,15 +14,18 @@ public class Event {
 	public String _name;
 	public int _type;
 	public long _fkProfile;
-	public boolean _enabled;
+	private boolean _enabled;
+	private int _status;
 
 	public EventPreferences _eventPreferences;
 	public int _typeOld;
 	public EventPreferences _eventPreferencesOld;
 	
-	public boolean _running;
-
 	public static final int ETYPE_TIME = 1;
+	
+	public static final int ESTATUS_STOP = 0;
+	public static final int ESTATUS_PAUSE = 1;
+	public static final int ESTATUS_RUNNING = 2;
 	
     static final String PREF_EVENT_ENABLED = "eventEnabled";
     static final String PREF_EVENT_NAME = "eventName";
@@ -47,11 +50,9 @@ public class Event {
 		this._name = name;
         this._type = type;
         this._fkProfile = fkProfile;
-        this._enabled = enabled;
+        setEnabled(enabled);
         
         createEventPreferences();
-        
-        _running = false;
 	}
 	
 	// constructor
@@ -63,11 +64,34 @@ public class Event {
 		this._name = name;
 	    this._type = type;
 	    this._fkProfile = fkProfile;
-	    this._enabled = enabled;
+        setEnabled(enabled);
 	    
 	    createEventPreferences();
-	    
-	    _running = false;
+	}
+	
+	public boolean getEnabled()
+	{
+		return this._enabled;
+	}
+	
+	public void setEnabled(boolean enabled)
+	{
+		this._enabled = enabled;
+		if (enabled)
+			this._status = ESTATUS_PAUSE;
+		else
+			this._status = ESTATUS_STOP;
+	}
+	
+	public int getStatus()
+	{
+		return this._status;
+	}
+	
+	public void setStatus(int status)
+	{
+		this._status = status;
+		this._enabled = (this._status != ESTATUS_STOP);
 	}
 	
 	public void createEventPreferences()
@@ -76,9 +100,14 @@ public class Event {
         switch (this._type)
         {
         case ETYPE_TIME:
-        	_eventPreferences = new EventPreferencesTime(this, false, false, false, false, false, false, false, 0, 0, false);
+        	this._eventPreferences = new EventPreferencesTime(this, false, false, false, false, false, false, false, 0, 0, false);
         	break;
         }
+	}
+	
+	public void copyEventPreferences(Event fromEvent)
+	{
+		this._eventPreferences.copyPreferences(fromEvent);
 	}
 	
 	public void changeEventType(int type)
@@ -194,20 +223,21 @@ public class Event {
 		// f. vrati profil, ktory service aktivuje
 		// ak vrati null, service profil neaktivuje
 
+		
 		profileStack.add(activeProfile);
 		Profile profile = profilesDataWrapper.getProfileById(_fkProfile);
 		
-		_running = true;
+		setStatus(ESTATUS_RUNNING);
 		
 		return profile;
 	}
 	
-	public Profile stopEvent(ProfilesDataWrapper profilesDataWrapper, 
+	public Profile pauseEvent(ProfilesDataWrapper profilesDataWrapper, 
 							List<Profile> profileStack)
 	{
-		// zastavenie eventu ma sposobit aktivovanie profilu z profileStack
+		// pozastavenie eventu ma sposobit aktivovanie profilu z profileStack
 		// vyberieme posledny zo stackProfile
-		// ak to nie je mnou aktivovany profil, tak ho aktivujeme 
+		// ak to nie je tymto eventom aktivovany profil, tak ho aktivujeme 
 		// posledny profil zo stackProfile vyhodime
 		// malo by to vyriesit vnorene aj prekrizene eventy
 		// f. vrati profil, ktory service aktivuje
@@ -219,15 +249,37 @@ public class Event {
 			profile = profileStack.get(profileStack.size()-1);
 			if (profile == profilesDataWrapper.getProfileById(_fkProfile))
 			{
-				// aktivacia profile
+				// neaktivovat profile, lebo ten zo stack je aktivovany tymto eventom
 				profile = null;
 			}
 		}
 
-		_running = false;
+		setStatus(ESTATUS_PAUSE);
 		
 		return profile;
 	}
+	
+	public Profile stopEvent(ProfilesDataWrapper profilesDataWrapper, 
+							List<Profile> profileStack)
+	{
+		// stopnutie eventu ma sposobit jeho disablovanie
+		// ak event zrovna bezi, najprv ho zapauzujeme
+		// f. vrati profil, ktory service aktivuje
+		// ak vrati null, service profil neaktivuje
+		
+		Profile profile = null;
+		
+		if (this._status == ESTATUS_RUNNING)
+		{
+			// event zrovna bezi, zapauzujeme ho
+			profile = pauseEvent(profilesDataWrapper, profileStack);
+		}
+		
+		setStatus(ESTATUS_STOP);
+		
+		return profile;
+	}
+	
 	
 	public String getPreferecesDescription(Context context)
 	{

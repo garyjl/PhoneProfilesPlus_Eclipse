@@ -44,11 +44,11 @@ public class EditorEventListAdapter extends BaseAdapter
 	        switch (filterType)
 	        {
 				case EditorEventListFragment.FILTER_TYPE_ENABLED:
-					if (event._enabled)
+					if (event.getEnabled())
 						++count;
 					break;
 				case EditorEventListFragment.FILTER_TYPE_DISABLED:
-					if (!event._enabled)
+					if (!event.getEnabled())
 						++count;
 					break;
 	        }
@@ -74,11 +74,11 @@ public class EditorEventListAdapter extends BaseAdapter
 				switch (filterType)
 		        {
 					case EditorEventListFragment.FILTER_TYPE_ENABLED:
-						if (event._enabled)
+						if (event.getEnabled())
 							++pos;
 						break;
 					case EditorEventListFragment.FILTER_TYPE_DISABLED:
-						if (!event._enabled)
+						if (!event.getEnabled())
 							++pos;
 						break;
 		        }
@@ -123,11 +123,11 @@ public class EditorEventListAdapter extends BaseAdapter
 			switch (filterType)
 	        {
 				case EditorEventListFragment.FILTER_TYPE_ENABLED:
-					if (event._enabled)
+					if (event.getEnabled())
 						++pos;
 					break;
 				case EditorEventListFragment.FILTER_TYPE_DISABLED:
-					if (!event._enabled)
+					if (!event.getEnabled())
 						++pos;
 					break;
 	        }
@@ -220,7 +220,7 @@ public class EditorEventListAdapter extends BaseAdapter
        	if (GlobalData.applicationTheme.equals("dark"))
        		holder.listItemRoot.setBackgroundResource(R.drawable.card_dark);
         
-       	if (event._enabled)
+       	if (event.getEnabled())
        		holder.eventEnabled.setImageResource(R.drawable.ic_profile_activated);
        	else
        		holder.eventEnabled.setImageResource(R.drawable.ic_profile_deactivated);

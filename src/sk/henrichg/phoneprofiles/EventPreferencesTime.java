@@ -59,6 +59,22 @@ public class EventPreferencesTime extends EventPreferences {
 	}
 	
 	@Override
+	public void copyPreferences(Event fromEvent)
+	{
+		this._sunday = ((EventPreferencesTime)fromEvent._eventPreferences)._sunday;
+		this._monday = ((EventPreferencesTime)fromEvent._eventPreferences)._monday;
+		this._tuesday = ((EventPreferencesTime)fromEvent._eventPreferences)._tuesday;
+		this._wendesday = ((EventPreferencesTime)fromEvent._eventPreferences)._wendesday;
+		this._thursday = ((EventPreferencesTime)fromEvent._eventPreferences)._thursday;
+		this._friday = ((EventPreferencesTime)fromEvent._eventPreferences)._friday;
+		this._saturday = ((EventPreferencesTime)fromEvent._eventPreferences)._saturday;
+		this._startTime = ((EventPreferencesTime)fromEvent._eventPreferences)._startTime;
+		this._endTime = ((EventPreferencesTime)fromEvent._eventPreferences)._endTime;
+		this._useEndTime = ((EventPreferencesTime)fromEvent._eventPreferences)._useEndTime;
+	}
+
+	
+	@Override
 	public void loadSharedPrefereces(SharedPreferences preferences)
 	{
     	Editor editor = preferences.edit();

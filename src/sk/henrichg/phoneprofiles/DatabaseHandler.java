@@ -25,7 +25,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static SQLiteDatabase writableDb;	
     
 	// Database Version
-	private static final int DATABASE_VERSION = 31;
+	private static final int DATABASE_VERSION = 32;
 	// starting version when added Events table
 	private static final int DATABASE_VERSION_EVENTS = 25;
 
@@ -81,6 +81,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_E_TYPE = "type";
 	private static final String KEY_E_FK_PROFILE = "fkProfile";
 	private static final String KEY_E_ENABLED = "enabled";
+	private static final String KEY_E_STATUS = "status";
 	private static final String KEY_E_START_TIME = "startTime";
 	private static final String KEY_E_END_TIME = "endTime";
 	private static final String KEY_E_DAYS_OF_WEEK = "daysOfWeek";
@@ -195,7 +196,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_E_START_TIME + " INTEGER,"
 				+ KEY_E_END_TIME + " INTEGER,"
 				+ KEY_E_DAYS_OF_WEEK + " TEXT,"
-				+ KEY_E_USE_END_TIME + " INTEGER"
+				+ KEY_E_USE_END_TIME + " INTEGER,"
+				+ KEY_E_STATUS + " INTEGER"
 				+ ")";
 		db.execSQL(CREATE_EVENTS_TABLE);
 
@@ -376,18 +378,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL("ALTER TABLE " + TABLE_PROFILES + " ADD COLUMN " + KEY_DEVICE_AUTOSYNC + " INTEGER");
 			
 			// updatneme zaznamy
-			db.beginTransaction();
-			try {
-				db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_DEVICE_AUTOSYNC + "=0");
-				db.setTransactionSuccessful();
-		     } catch (Exception e){
-		         //Error in between database transaction 
-		     } finally {
-		    	db.endTransaction();
-	         }	
+			db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_DEVICE_AUTOSYNC + "=0");
 			
 			db.execSQL("CREATE INDEX IDX_P_NAME ON " + TABLE_PROFILES + " (" + KEY_NAME + ")");
 			db.execSQL("CREATE INDEX IDX_E_NAME ON " + TABLE_EVENTS + " (" + KEY_E_NAME + ")");
+		}
+		
+		if (oldVersion < 32)
+		{
+			// pridame nove stlpce
+			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_STATUS + " INTEGER");
+			
+			// updatneme zaznamy
+			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_STATUS + "=0");
 		}
 		
 	}
@@ -1203,7 +1206,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_E_NAME, event._name); // Event Name
 		values.put(KEY_E_TYPE, event._type); // Event type
 		values.put(KEY_E_FK_PROFILE, event._fkProfile); // profile
-		values.put(KEY_E_ENABLED, (event._enabled) ? 1 : 0); // event enabled
+		values.put(KEY_E_ENABLED, (event.getEnabled()) ? 1 : 0); // event enabled
+		values.put(KEY_E_STATUS, event.getStatus()); // event status
 		
 		db.beginTransaction();
 		
@@ -1233,7 +1237,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 												KEY_E_NAME, 
 												KEY_E_TYPE, 
 												KEY_E_FK_PROFILE, 
-												KEY_E_ENABLED
+												KEY_E_ENABLED,
+												KEY_E_STATUS
 												}, 
 				                 KEY_ID + "=?",
 				                 new String[] { String.valueOf(event_id) }, null, null, null, null);
@@ -1251,6 +1256,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				                      Long.parseLong(cursor.getString(3)),
 				                      (Integer.parseInt(cursor.getString(4)) == 1) ? true : false
 				                      );
+			event.setStatus(Integer.parseInt(cursor.getString(5)));
 		}
 
 		cursor.close();
@@ -1274,7 +1280,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				                         KEY_E_NAME + "," +
 				                         KEY_E_TYPE + "," +
 				                         KEY_E_FK_PROFILE + "," +
-				                         KEY_E_ENABLED +
+				                         KEY_E_ENABLED + "," +
+				                         KEY_E_STATUS +
 		                     " FROM " + TABLE_EVENTS;
 
 		//SQLiteDatabase db = this.getReadableDatabase();
@@ -1291,7 +1298,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				event._type = Integer.parseInt(cursor.getString(2));
 				//Log.e("DatabaseHandler.getAllEvents","type="+event._type);
 				event._fkProfile = Long.parseLong(cursor.getString(3));
-				event._enabled = (Integer.parseInt(cursor.getString(4)) == 1) ? true : false;
+				event.setEnabled((Integer.parseInt(cursor.getString(4)) == 1) ? true : false);
+				event.setStatus(Integer.parseInt(cursor.getString(5)));
 				event.createEventPreferences();
 				getEventPreferences(event, db);
 				// Adding contact to list
@@ -1315,7 +1323,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_E_NAME, event._name);
 		values.put(KEY_E_TYPE, event._type);
 		values.put(KEY_E_FK_PROFILE, event._fkProfile);
-		values.put(KEY_E_ENABLED, (event._enabled) ? 1 : 0);
+		values.put(KEY_E_ENABLED, (event.getEnabled()) ? 1 : 0);
+		values.put(KEY_E_STATUS, event.getStatus());
 
 		int r = 0;
 		
@@ -1389,7 +1398,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						                 KEY_E_NAME + "," +
 						                 KEY_E_TYPE + "," +
 						                 KEY_E_FK_PROFILE + "," +
-						                 KEY_E_ENABLED +
+						                 KEY_E_ENABLED + "," +
+						                 KEY_E_STATUS +
 						    " FROM " + TABLE_EVENTS;
 						    
 
@@ -1407,7 +1417,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			event._name = cursor.getString(1);
 			event._type = Integer.parseInt(cursor.getString(2));
 			event._fkProfile = Long.parseLong(cursor.getString(3));
-			event._enabled = (Integer.parseInt(cursor.getString(4)) == 1) ? true : false;
+			event.setEnabled((Integer.parseInt(cursor.getString(4)) == 1) ? true : false);
+			event.setStatus(Integer.parseInt(cursor.getString(5)));
 		}
 		
 		cursor.close();
@@ -1723,6 +1734,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 										if (exportedDBObj.getVersion() < 30)
 										{
 											values.put(KEY_E_USE_END_TIME, 0);
+										}
+										if (exportedDBObj.getVersion() < 32)
+										{
+											values.put(KEY_E_STATUS, 0);
 										}
 
 										// Inserting Row do db z SQLiteOpenHelper

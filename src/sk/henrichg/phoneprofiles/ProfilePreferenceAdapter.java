@@ -1,6 +1,10 @@
 package sk.henrichg.phoneprofiles;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+
+import sk.henrichg.phoneprofiles.EditorProfileListFragment.AlphabeticallyComparator;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -25,6 +29,8 @@ public class ProfilePreferenceAdapter extends BaseAdapter {
 		inflater = (LayoutInflater)c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		
 		profileList = ProfilePreference.profilesDataWrapper.getProfileList();
+	    Collections.sort(profileList, new AlphabeticallyComparator());
+
 	}
 	
 	public int getCount() {
@@ -96,4 +102,13 @@ public class ProfilePreferenceAdapter extends BaseAdapter {
 		return vi;
 	}
 
+	class AlphabeticallyComparator implements Comparator<Profile> {
+
+		public int compare(Profile lhs, Profile rhs) {
+
+		    int res =  (lhs._name).compareToIgnoreCase(rhs._name);
+	        return res;
+	    }
+	}
+	
 }

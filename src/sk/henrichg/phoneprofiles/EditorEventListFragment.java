@@ -330,8 +330,10 @@ public class EditorEventListFragment extends SherlockFragment {
 				   origEvent._name+"_d", 
 				   origEvent._type, 
 				   origEvent._fkProfile, 
-				   origEvent._enabled
+				   origEvent.getEnabled()
 					);
+		newEvent.setStatus(origEvent.getStatus());
+		newEvent.copyEventPreferences(origEvent);
 
 		// add event into db and set id and order
 		databaseHandler.addEvent(newEvent); 

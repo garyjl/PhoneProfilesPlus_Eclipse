@@ -18,6 +18,11 @@ public class EventPreferences {
 	{
 		_event = event;
 	}
+	
+	public void copyPreferences(Event fromEvent)
+	{
+		
+	}
 
 	public void loadSharedPrefereces(SharedPreferences preferences)
 	{
