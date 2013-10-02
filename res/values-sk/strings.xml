@@ -201,7 +201,7 @@
     <string name="editor_drawer_list_item_events_paused">Pozastavené</string>
     <string name="editor_drawer_list_item_events_stopped">Stopnuté</string>
     <string name="profile_preferences_deviceAutosync">Auto. synchronizácia</string>
-    <string name="editor_drawer_order_label">Usporiadať podľa:</string>
+    <string name="editor_drawer_order_label">Usporiadať udalosti podľa:</string>
     <string name="editor_drawer_order_event_name">Názov udalosti</string>
     <string name="editor_drawer_order_profile_name">Názov profilu</string>
     <string name="editor_drawer_order_event_type_event_name">Typ udulosti a názov udalosti</string>

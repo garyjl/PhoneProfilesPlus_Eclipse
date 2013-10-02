@@ -50,6 +50,7 @@
         <item name="actionProfileButtonTextStyle">@style/TextAppearance.Sherlock.Widget.ActionMode.Title</item>
         <item name="navigationDrawerBackground">@drawable/abs__ab_solid_light_holo</item>
         <item name="filterStatusBarBackground">@color/filterStatusBarBackground_phoneprofilestheme</item> 
+        <item name="editorDrawerSpinner">@style/editorDrawerSpinnerStyle</item> 
         
         <item name="actionModeCloseButtonStyle">@style/NoCloseButton</item>
         

@@ -24,4 +24,9 @@
         <item name="android:visibility">gone</item>
     </style>
 
+	<style name="editorDrawerSpinnerStyle" parent="@android:TextAppearance.Widget.TextView.SpinnerItem">
+    	<item name="android:textColor">?attr/actionMenuTextColor</item>
+  		<item name="android:textSize">17sp</item>
+    </style>
+    
 </resources>

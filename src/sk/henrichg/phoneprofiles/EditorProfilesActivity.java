@@ -24,9 +24,11 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.app.Activity;
@@ -69,6 +71,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	ListView drawerListView;
 	ActionBarDrawerToggle drawerToggle;
 	TextView filterStatusbarTitle;
+	TextView orderLabel;
+	Spinner orderSpinner;
 	
 	String[] drawerItemsTitle;
 	String[] drawerItemsSubtitle;
@@ -188,6 +192,19 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
         drawerLayout.setDrawerListener(drawerToggle);
         
         filterStatusbarTitle = (TextView) findViewById(R.id.editor_filter_title);
+       
+        orderLabel = (TextView) findViewById(R.id.editor_drawer_order_title);
+        
+        orderSpinner = (Spinner) findViewById(R.id.editor_drawer_order);
+        ArrayAdapter<CharSequence> orderSpinneAadapter = ArrayAdapter.createFromResource(
+        							getSupportActionBar().getThemedContext(), 
+        							R.array.drawerOrderEvents, 
+        							R.layout.editor_drawer_spinner);
+        if (android.os.Build.VERSION.SDK_INT >= 11)
+        	orderSpinneAadapter.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
+        else
+        	orderSpinneAadapter.setDropDownViewResource(R.layout.editor_drawer_spinner_dropdown);
+        orderSpinner.setAdapter(orderSpinneAadapter);
         
 		//getSupportActionBar().setDisplayShowTitleEnabled(false);
 		//getSupportActionBar().setTitle(R.string.title_activity_phone_profiles);
@@ -417,6 +434,17 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
         setTitle(drawerItemsTitle[position]);
         // set filter statusbar title
         filterStatusbarTitle.setText(drawerItemsSubtitle[position]);
+        // show/hide order
+        if (position < 2)
+        {
+        	orderLabel.setVisibility(View.GONE);
+        	orderSpinner.setVisibility(View.GONE);
+        }
+        else
+        {
+        	orderLabel.setVisibility(View.VISIBLE);
+        	orderSpinner.setVisibility(View.VISIBLE);
+        }
         // Close drawer
         drawerLayout.closeDrawer(drawerRoot);
     }	

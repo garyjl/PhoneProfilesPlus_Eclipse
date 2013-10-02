@@ -201,7 +201,7 @@
     <string name="editor_drawer_list_item_events_paused">Paused</string>
     <string name="editor_drawer_list_item_events_stopped">Stopped</string>
     <string name="profile_preferences_deviceAutosync">Auto. synchronization</string>
-    <string name="editor_drawer_order_label">Order by:</string>
+    <string name="editor_drawer_order_label">Order events by:</string>
     <string name="editor_drawer_order_event_name">Event name</string>
     <string name="editor_drawer_order_profile_name">Profile name</string>
     <string name="editor_drawer_order_event_type_event_name">Event type and event name</string>
