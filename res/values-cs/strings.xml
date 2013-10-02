@@ -190,16 +190,22 @@
 	<string name="array_pref_event_thursday">Čtvrtek</string>
 	<string name="array_pref_event_friday">Pátek</string>
 	<string name="array_pref_event_saturday">Sobota</string>
-    <string name="editor_list_drawer_open">Otevři navigační panel</string>
-    <string name="editor_list_drawer_close">Zavři navigační panel</string>	
-    <string name="editor_list_drawer_title_profiles">Profily</string>
-    <string name="editor_list_drawer_title_events">Události</string>
-    <string name="editor_list_drawer_item_profiles_all">Všechny</string>
-    <string name="editor_list_drawer_item_profiles_show_in_activator">Zobrazeny v Aktivátore</string>
-    <string name="editor_list_drawer_item_profiles_no_show_in_activator">Nezobrazeny v Aktivátore</string>
-    <string name="editor_list_drawer_item_events_all">Všechny</string>
-    <string name="editor_list_drawer_item_events_enabled">Zapnué</string>
-    <string name="editor_list_drawer_item_events_disabled">Vypnuté</string>
+    <string name="editor_drawer_open">Otevři navigační panel</string>
+    <string name="editor_drawer_close">Zavři navigační panel</string>	
+    <string name="editor_drawer_title_profiles">Profily</string>
+    <string name="editor_drawer_title_events">Události</string>
+    <string name="editor_drawer_list_item_profiles_all">Všechny</string>
+    <string name="editor_drawer_list_item_profiles_show_in_activator">Zobrazeny v Aktivátore</string>
+    <string name="editor_drawer_list_item_profiles_no_show_in_activator">Nezobrazeny v Aktivátore</string>
+    <string name="editor_drawer_list_item_events_all">Všechny</string>
+    <string name="editor_drawer_list_item_events_running">Bežící</string>
+    <string name="editor_drawer_list_item_events_paused">Pozastavený</string>
+    <string name="editor_drawer_list_item_events_stopped">Stopnutý</string>
     <string name="profile_preferences_deviceAutosync">Auto. synchronizace</string>
+    <string name="editor_drawer_order_label">Uspořádat podle:</string>
+    <string name="editor_drawer_order_event_name">Název události</string>
+    <string name="editor_drawer_order_profile_name">Název profilu</string>
+    <string name="editor_drawer_order_event_type_event_name">Typ události a název události</string>
+    <string name="editor_drawer_order_event_type_profile_name">Typ události a název profilu</string>
     		
 </resources>

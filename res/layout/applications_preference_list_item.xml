@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/applications_pref_dlg_item_icon"
+        android:layout_toRightOf="@+id/applications_pref_dlg_item_icon"
         android:paddingLeft="3dp"
         android:text="@string/empty_string"
         android:textAppearance="?android:attr/textAppearanceMedium" />

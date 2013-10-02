@@ -35,8 +35,9 @@ public class EditorEventListFragment extends SherlockFragment {
 	public static final String FILTER_TYPE_ARGUMENT = "filter_type";
 
 	public static final int FILTER_TYPE_ALL = 0;
-	public static final int FILTER_TYPE_ENABLED = 1;
-	public static final int FILTER_TYPE_DISABLED = 2;
+	public static final int FILTER_TYPE_RUNNING = 1;
+	public static final int FILTER_TYPE_PAUSED = 2;
+	public static final int FILTER_TYPE_STOPPED = 3;
 	
 	private int filterType = FILTER_TYPE_ALL;  
 	

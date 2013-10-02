@@ -147,7 +147,7 @@ public class Event {
     	this._name = preferences.getString(PREF_EVENT_NAME, "");
 		this._type = Integer.parseInt(preferences.getString(PREF_EVENT_TYPE, "0"));
 		this._fkProfile = Long.parseLong(preferences.getString(PREF_EVENT_PROFILE, "0"));
-		this._enabled = preferences.getBoolean(PREF_EVENT_ENABLED, false);
+		this.setEnabled(preferences.getBoolean(PREF_EVENT_ENABLED, false));
 		this._eventPreferences.saveSharedPrefereces(preferences);
 		
 		this._typeOld = 0;

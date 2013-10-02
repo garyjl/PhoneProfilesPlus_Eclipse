@@ -134,5 +134,11 @@
 	<item>@string/array_pref_value_5</item>
 	<item>@string/array_pref_value_6</item>
 </string-array>
+<string-array name="drawerOrderEvents">
+    <item>@string/editor_drawer_order_event_name</item>
+    <item>@string/editor_drawer_order_profile_name</item>
+    <item>@string/editor_drawer_order_event_type_event_name</item>
+    <item>@string/editor_drawer_order_event_type_profile_name</item>
+</string-array>
 
 </resources>

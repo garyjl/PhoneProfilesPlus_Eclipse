@@ -21,7 +21,7 @@
         android:src="@drawable/ic_event_time" />
     
     <ImageView
-        android:id="@+id/event_list_item_enabled"
+        android:id="@+id/event_list_item_status"
         android:layout_width="27dp"
         android:layout_height="27dp"
         android:layout_alignTop="@+id/event_list_item_event_icon"
@@ -29,7 +29,7 @@
         android:adjustViewBounds="true"
         android:contentDescription="@string/empty_string"
         android:scaleType="fitStart"
-        android:src="@drawable/ic_profile_activated"
+        android:src="@drawable/ic_event_status_stop"
         android:paddingLeft="10dp"
         android:paddingTop="2dp" />
     
@@ -37,8 +37,8 @@
         android:id="@+id/event_list_item_event_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/event_list_item_enabled"
-        android:layout_toRightOf="@+id/event_list_item_enabled"
+        android:layout_alignTop="@+id/event_list_item_status"
+        android:layout_toRightOf="@+id/event_list_item_status"
         android:paddingLeft="3dp"
         android:text="@string/event_name_default"
         android:textSize="15sp" />
@@ -80,7 +80,7 @@
         android:id="@+id/event_list_item_profile_pref_indicator"
         android:layout_width="200dp"
         android:layout_height="15dp"
-        android:layout_below="@id/event_list_item_profile_name"
+        android:layout_below="@+id/event_list_item_profile_name"
         android:layout_toRightOf="@+id/event_list_item_profile_icon"
         android:adjustViewBounds="true"
         android:contentDescription="@string/empty_string"

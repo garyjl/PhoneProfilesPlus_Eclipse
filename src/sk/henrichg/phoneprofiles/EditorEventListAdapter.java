@@ -1,10 +1,6 @@
 package sk.henrichg.phoneprofiles;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-
-import com.actionbarsherlock.app.SherlockFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,12 +39,16 @@ public class EditorEventListAdapter extends BaseAdapter
 		{
 	        switch (filterType)
 	        {
-				case EditorEventListFragment.FILTER_TYPE_ENABLED:
-					if (event.getEnabled())
+				case EditorEventListFragment.FILTER_TYPE_RUNNING:
+					if (event.getStatus() == Event.ESTATUS_RUNNING)
 						++count;
 					break;
-				case EditorEventListFragment.FILTER_TYPE_DISABLED:
-					if (!event.getEnabled())
+				case EditorEventListFragment.FILTER_TYPE_PAUSED:
+					if (event.getStatus() == Event.ESTATUS_PAUSE)
+						++count;
+					break;
+				case EditorEventListFragment.FILTER_TYPE_STOPPED:
+					if (event.getStatus() == Event.ESTATUS_STOP)
 						++count;
 					break;
 	        }
@@ -73,12 +73,16 @@ public class EditorEventListAdapter extends BaseAdapter
 			{
 				switch (filterType)
 		        {
-					case EditorEventListFragment.FILTER_TYPE_ENABLED:
-						if (event.getEnabled())
+					case EditorEventListFragment.FILTER_TYPE_RUNNING:
+						if (event.getStatus() == Event.ESTATUS_RUNNING)
 							++pos;
 						break;
-					case EditorEventListFragment.FILTER_TYPE_DISABLED:
-						if (!event.getEnabled())
+					case EditorEventListFragment.FILTER_TYPE_PAUSED:
+						if (event.getStatus() == Event.ESTATUS_PAUSE)
+							++pos;
+						break;
+					case EditorEventListFragment.FILTER_TYPE_STOPPED:
+						if (event.getStatus() == Event.ESTATUS_STOP)
 							++pos;
 						break;
 		        }
@@ -122,12 +126,16 @@ public class EditorEventListAdapter extends BaseAdapter
 		{
 			switch (filterType)
 	        {
-				case EditorEventListFragment.FILTER_TYPE_ENABLED:
-					if (event.getEnabled())
+				case EditorEventListFragment.FILTER_TYPE_RUNNING:
+					if (event.getStatus() == Event.ESTATUS_RUNNING)
 						++pos;
 					break;
-				case EditorEventListFragment.FILTER_TYPE_DISABLED:
-					if (!event.getEnabled())
+				case EditorEventListFragment.FILTER_TYPE_PAUSED:
+					if (event.getStatus() == Event.ESTATUS_PAUSE)
+						++pos;
+					break;
+				case EditorEventListFragment.FILTER_TYPE_STOPPED:
+					if (event.getStatus() == Event.ESTATUS_STOP)
 						++pos;
 					break;
 	        }
@@ -176,7 +184,7 @@ public class EditorEventListAdapter extends BaseAdapter
 		  TextView profileName;
 		  TextView eventPreferencesDescription;
 		  ImageView profileIndicator;
-		  ImageView eventEnabled;
+		  ImageView eventStatus;
 		  int position;
 		}
 	
@@ -198,7 +206,7 @@ public class EditorEventListAdapter extends BaseAdapter
             holder.eventIcon = (ImageView)vi.findViewById(R.id.event_list_item_event_icon);
             holder.profileName = (TextView)vi.findViewById(R.id.event_list_item_profile_name);
             holder.profileIcon = (ImageView)vi.findViewById(R.id.event_list_item_profile_icon);
-            holder.eventEnabled = (ImageView)vi.findViewById(R.id.event_list_item_enabled);
+            holder.eventStatus = (ImageView)vi.findViewById(R.id.event_list_item_status);
   		    if (GlobalData.applicationEditorPrefIndicator)
   		    {
   		    	holder.eventPreferencesDescription  = (TextView)vi.findViewById(R.id.event_list_item_preferences_description);
@@ -220,10 +228,20 @@ public class EditorEventListAdapter extends BaseAdapter
        	if (GlobalData.applicationTheme.equals("dark"))
        		holder.listItemRoot.setBackgroundResource(R.drawable.card_dark);
         
-       	if (event.getEnabled())
-       		holder.eventEnabled.setImageResource(R.drawable.ic_profile_activated);
-       	else
-       		holder.eventEnabled.setImageResource(R.drawable.ic_profile_deactivated);
+       	int statusRes = Event.ESTATUS_STOP; 
+       	switch (event.getStatus())
+       	{
+       		case Event.ESTATUS_RUNNING:
+       			statusRes = R.drawable.ic_event_status_running;
+       			break;
+       		case Event.ESTATUS_PAUSE:
+       			statusRes = R.drawable.ic_event_status_pause;
+       			break;
+       		case Event.ESTATUS_STOP:
+       			statusRes = R.drawable.ic_event_status_stop;
+       			break;
+       	}
+   		holder.eventStatus.setImageResource(statusRes);
        	
         holder.eventName.setText(event._name);
         if (event._eventPreferences != null)

@@ -24,7 +24,9 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.app.Activity;
@@ -63,6 +65,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	private boolean mTwoPane;
 	
 	DrawerLayout drawerLayout;
+	RelativeLayout drawerRoot;
 	ListView drawerListView;
 	ActionBarDrawerToggle drawerToggle;
 	TextView filterStatusbarTitle;
@@ -111,7 +114,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		}
 		
 		drawerLayout = (DrawerLayout) findViewById(R.id.editor_list_drawer_layout);
-		drawerListView = (ListView) findViewById(R.id.editor_list_drawer);
+		drawerRoot = (RelativeLayout) findViewById(R.id.editor_drawer_root);
+		drawerListView = (ListView) findViewById(R.id.editor_drawer_list);
 		
 		int drawerShadowId;
         if (GlobalData.applicationTheme.equals("dark"))
@@ -122,22 +126,24 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 
 		// actionbar titles
 		drawerItemsTitle = new String[] { 
-				getResources().getString(R.string.editor_list_drawer_title_profiles), 
-				getResources().getString(R.string.editor_list_drawer_title_profiles),
-				getResources().getString(R.string.editor_list_drawer_title_profiles),
-				getResources().getString(R.string.editor_list_drawer_title_events),
-				getResources().getString(R.string.editor_list_drawer_title_events),
-				getResources().getString(R.string.editor_list_drawer_title_events)
+				getResources().getString(R.string.editor_drawer_title_profiles), 
+				getResources().getString(R.string.editor_drawer_title_profiles),
+				getResources().getString(R.string.editor_drawer_title_profiles),
+				getResources().getString(R.string.editor_drawer_title_events),
+				getResources().getString(R.string.editor_drawer_title_events),
+				getResources().getString(R.string.editor_drawer_title_events),
+				getResources().getString(R.string.editor_drawer_title_events)
               };
 		
 		// drawer item titles
 		drawerItemsSubtitle = new String[] { 
-				getResources().getString(R.string.editor_list_drawer_item_profiles_all), 
-				getResources().getString(R.string.editor_list_drawer_item_profiles_show_in_activator),
-				getResources().getString(R.string.editor_list_drawer_item_profiles_no_show_in_activator),
-				getResources().getString(R.string.editor_list_drawer_item_events_all),
-				getResources().getString(R.string.editor_list_drawer_item_events_enabled),
-				getResources().getString(R.string.editor_list_drawer_item_events_disabled)
+				getResources().getString(R.string.editor_drawer_list_item_profiles_all), 
+				getResources().getString(R.string.editor_drawer_list_item_profiles_show_in_activator),
+				getResources().getString(R.string.editor_drawer_list_item_profiles_no_show_in_activator),
+				getResources().getString(R.string.editor_drawer_list_item_events_all),
+				getResources().getString(R.string.editor_drawer_list_item_events_running),
+				getResources().getString(R.string.editor_drawer_list_item_events_paused),
+				getResources().getString(R.string.editor_drawer_list_item_events_stopped)
               };
 		
         // Pass string arrays to EditorDrawerListAdapter
@@ -164,8 +170,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
         
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
 								                drawerIconId, 
-								                R.string.editor_list_drawer_open,
-								                R.string.editor_list_drawer_close) 
+								                R.string.editor_drawer_open,
+								                R.string.editor_drawer_close) 
         {
  
             public void onDrawerClosed(View view) {
@@ -181,7 +187,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
  
         drawerLayout.setDrawerListener(drawerToggle);
         
-        filterStatusbarTitle = (TextView) findViewById(R.id.editor_list_filter_title);
+        filterStatusbarTitle = (TextView) findViewById(R.id.editor_filter_title);
         
 		//getSupportActionBar().setDisplayShowTitleEnabled(false);
 		//getSupportActionBar().setTitle(R.string.title_activity_phone_profiles);
@@ -274,10 +280,10 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			
 		switch (item.getItemId()) {
 		case android.R.id.home:
-            if (drawerLayout.isDrawerOpen(drawerListView)) {
-                drawerLayout.closeDrawer(drawerListView);
+            if (drawerLayout.isDrawerOpen(drawerRoot)) {
+                drawerLayout.closeDrawer(drawerRoot);
             } else {
-                drawerLayout.openDrawer(drawerListView);
+                drawerLayout.openDrawer(drawerRoot);
             }	
 			return super.onOptionsItemSelected(item);
 		case R.id.menu_settings:
@@ -375,7 +381,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			onStartEventPreferences(null, eventsFilterType, false);
 			break;	
         case 4:
-        	eventsFilterType = EditorEventListFragment.FILTER_TYPE_ENABLED;
+        	eventsFilterType = EditorEventListFragment.FILTER_TYPE_RUNNING;
     		fragment = new EditorEventListFragment();
     	    arguments = new Bundle();
    		    arguments.putInt(EditorEventListFragment.FILTER_TYPE_ARGUMENT, eventsFilterType);
@@ -385,7 +391,17 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			onStartEventPreferences(null, eventsFilterType, false);
 			break;	
         case 5:
-        	eventsFilterType = EditorEventListFragment.FILTER_TYPE_DISABLED;
+        	eventsFilterType = EditorEventListFragment.FILTER_TYPE_PAUSED;
+    		fragment = new EditorEventListFragment();
+    	    arguments = new Bundle();
+   		    arguments.putInt(EditorEventListFragment.FILTER_TYPE_ARGUMENT, eventsFilterType);
+   		    fragment.setArguments(arguments);
+    		getSupportFragmentManager().beginTransaction()
+    			.replace(R.id.editor_list_container, fragment).commit();
+			onStartEventPreferences(null, eventsFilterType, false);
+			break;	
+        case 6:
+        	eventsFilterType = EditorEventListFragment.FILTER_TYPE_STOPPED;
     		fragment = new EditorEventListFragment();
     	    arguments = new Bundle();
    		    arguments.putInt(EditorEventListFragment.FILTER_TYPE_ARGUMENT, eventsFilterType);
@@ -402,7 +418,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
         // set filter statusbar title
         filterStatusbarTitle.setText(drawerItemsSubtitle[position]);
         // Close drawer
-        drawerLayout.closeDrawer(drawerListView);
+        drawerLayout.closeDrawer(drawerRoot);
     }	
 	
 	@Override
