@@ -50,7 +50,6 @@
         android:layout_below="@+id/event_list_item_event_name"
         android:layout_toRightOf="@+id/event_list_item_event_icon" 
         android:paddingLeft="10dp"
-        android:text="description"
         android:textSize="11sp" />
 
     <ImageView

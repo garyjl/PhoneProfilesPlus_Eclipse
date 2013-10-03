@@ -76,6 +76,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	
 	String[] drawerItemsTitle;
 	String[] drawerItemsSubtitle;
+	Integer[] drawerItemsIcon;
 	EditorDrawerListAdapter drawerAdapter;
 	
 	private int profilesFilterType = EditorProfileListFragment.FILTER_TYPE_SHOW_IN_ACTIVATOR;
@@ -151,9 +152,20 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 				getResources().getString(R.string.editor_drawer_list_item_events_stopped)
               };
 		
+		drawerItemsIcon = new Integer[] {
+				R.drawable.ic_events_drawer_profile_filter_0,
+				R.drawable.ic_events_drawer_profile_filter_1,
+				R.drawable.ic_events_drawer_profile_filter_2,
+				R.drawable.ic_events_drawer_event_filter_0,
+				R.drawable.ic_events_drawer_event_filter_1,
+				R.drawable.ic_events_drawer_event_filter_2,
+				R.drawable.ic_events_drawer_event_filter_3,
+			  };
+		
+		
         // Pass string arrays to EditorDrawerListAdapter
 		// use sherlock action bar themed context
-        drawerAdapter = new EditorDrawerListAdapter(drawerListView, getSupportActionBar().getThemedContext(), drawerItemsTitle, drawerItemsSubtitle);
+        drawerAdapter = new EditorDrawerListAdapter(drawerListView, getSupportActionBar().getThemedContext(), drawerItemsTitle, drawerItemsSubtitle, drawerItemsIcon);
         
         // Set the MenuListAdapter to the ListView
         drawerListView.setAdapter(drawerAdapter);
