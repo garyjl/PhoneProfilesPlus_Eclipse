@@ -1391,6 +1391,33 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 		return r;	
 	}
+	
+	public void unlinkEventsFromProfile(Profile profile)
+	{
+		SQLiteDatabase db = getMyWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put(KEY_E_FK_PROFILE, 0);
+
+		// updating row
+		db.update(TABLE_EVENTS, values, KEY_E_FK_PROFILE + " = ?",
+				new String[] { String.valueOf(profile._id) });
+		
+        //db.close();
+	}
+	
+	public void unlinkAllEvents()
+	{
+		SQLiteDatabase db = getMyWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put(KEY_E_FK_PROFILE, 0);
+
+		// updating row
+		db.update(TABLE_EVENTS, values, null, null);
+		
+        //db.close();
+	}
 /*	
 	public Event getFirstEvent()
 	{

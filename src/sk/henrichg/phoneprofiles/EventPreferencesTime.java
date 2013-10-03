@@ -72,7 +72,25 @@ public class EventPreferencesTime extends EventPreferences {
 		this._endTime = ((EventPreferencesTime)fromEvent._eventPreferences)._endTime;
 		this._useEndTime = ((EventPreferencesTime)fromEvent._eventPreferences)._useEndTime;
 	}
+	
+	@Override
+	public boolean isRunable()
+	{
+		
+		boolean runable = super.isRunable();
 
+		boolean dayOfWeek = false;
+		dayOfWeek = dayOfWeek || this._sunday;
+		dayOfWeek = dayOfWeek || this._monday;
+		dayOfWeek = dayOfWeek || this._tuesday;
+		dayOfWeek = dayOfWeek || this._wendesday;
+		dayOfWeek = dayOfWeek || this._thursday;
+		dayOfWeek = dayOfWeek || this._friday;
+		dayOfWeek = dayOfWeek || this._saturday;
+		runable = runable && dayOfWeek;
+		
+		return runable;
+	}
 	
 	@Override
 	public void loadSharedPrefereces(SharedPreferences preferences)

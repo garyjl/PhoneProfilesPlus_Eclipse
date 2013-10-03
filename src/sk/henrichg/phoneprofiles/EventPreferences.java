@@ -23,6 +23,11 @@ public class EventPreferences {
 	{
 		
 	}
+	
+	public boolean isRunable()
+	{
+		return true;
+	}
 
 	public void loadSharedPrefereces(SharedPreferences preferences)
 	{

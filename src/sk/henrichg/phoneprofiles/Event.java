@@ -91,6 +91,7 @@ public class Event {
 	public void setStatus(int status)
 	{
 		this._status = status;
+		
 		this._enabled = (this._status != ESTATUS_STOP);
 	}
 	
@@ -131,6 +132,13 @@ public class Event {
 		this._eventPreferencesOld = null;
 	}
 	
+	public boolean isRunable()
+	{
+		return  (this._fkProfile != 0) &&
+				(this._eventPreferences != null) &&
+				(this._eventPreferences.isRunable());
+	}
+	
 	public void loadSharedPrefereces(SharedPreferences preferences)
 	{
     	Editor editor = preferences.edit();
@@ -149,6 +157,9 @@ public class Event {
 		this._fkProfile = Long.parseLong(preferences.getString(PREF_EVENT_PROFILE, "0"));
 		this.setEnabled(preferences.getBoolean(PREF_EVENT_ENABLED, false));
 		this._eventPreferences.saveSharedPrefereces(preferences);
+		
+		if (!this.isRunable())
+			setStatus(ESTATUS_STOP);
 		
 		this._typeOld = 0;
 		this._eventPreferencesOld = null;
