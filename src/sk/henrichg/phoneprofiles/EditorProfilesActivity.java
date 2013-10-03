@@ -153,12 +153,12 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
               };
 		
 		drawerItemsIcon = new Integer[] {
+				R.drawable.ic_events_drawer_profile_filter_2,
 				R.drawable.ic_events_drawer_profile_filter_0,
 				R.drawable.ic_events_drawer_profile_filter_1,
-				R.drawable.ic_events_drawer_profile_filter_2,
+				R.drawable.ic_events_drawer_event_filter_2,
 				R.drawable.ic_events_drawer_event_filter_0,
 				R.drawable.ic_events_drawer_event_filter_1,
-				R.drawable.ic_events_drawer_event_filter_2,
 				R.drawable.ic_events_drawer_event_filter_3,
 			  };
 		
