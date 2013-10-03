@@ -23,7 +23,7 @@ public class ApplicationsCache {
 	private class SortList implements Comparator<PackInfo> {
 
 		public int compare(PackInfo lhs, PackInfo rhs) {
-			return lhs.appLabel.compareToIgnoreCase(rhs.appLabel);
+			return GUIData.collator.compare(lhs.appLabel, rhs.appLabel);
 		}
 		
 	}

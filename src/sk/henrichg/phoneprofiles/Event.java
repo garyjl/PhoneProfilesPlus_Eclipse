@@ -14,8 +14,7 @@ public class Event {
 	public String _name;
 	public int _type;
 	public long _fkProfile;
-	private boolean _enabled;
-	private int _status;
+	public int _status;
 
 	public EventPreferences _eventPreferences;
 	public int _typeOld;
@@ -44,13 +43,13 @@ public class Event {
 		         String name,
 		         int type,
 		         long fkProfile,
-		         boolean enabled)
+		         int status)
 	{
 		this._id = id;
 		this._name = name;
         this._type = type;
         this._fkProfile = fkProfile;
-        setEnabled(enabled);
+        this._status = status;
         
         createEventPreferences();
 	}
@@ -59,40 +58,14 @@ public class Event {
 	public Event(String name,
 	         	 int type,
 	         	 long fkProfile,
-	         	 boolean enabled)
+	         	 int status)
 	{
 		this._name = name;
 	    this._type = type;
 	    this._fkProfile = fkProfile;
-        setEnabled(enabled);
+        this._status = status;
 	    
 	    createEventPreferences();
-	}
-	
-	public boolean getEnabled()
-	{
-		return this._enabled;
-	}
-	
-	public void setEnabled(boolean enabled)
-	{
-		this._enabled = enabled;
-		if (enabled)
-			this._status = ESTATUS_PAUSE;
-		else
-			this._status = ESTATUS_STOP;
-	}
-	
-	public int getStatus()
-	{
-		return this._status;
-	}
-	
-	public void setStatus(int status)
-	{
-		this._status = status;
-		
-		this._enabled = (this._status != ESTATUS_STOP);
 	}
 	
 	public void createEventPreferences()
@@ -145,7 +118,7 @@ public class Event {
         editor.putString(PREF_EVENT_NAME, this._name);
         editor.putString(PREF_EVENT_TYPE, Integer.toString(this._type));
         editor.putString(PREF_EVENT_PROFILE, Long.toString(this._fkProfile));
-        editor.putBoolean(PREF_EVENT_ENABLED, this._enabled);
+        editor.putBoolean(PREF_EVENT_ENABLED, this._status == ESTATUS_PAUSE);
         this._eventPreferences.loadSharedPrefereces(preferences);
 		editor.commit();
 	}
@@ -155,11 +128,11 @@ public class Event {
     	this._name = preferences.getString(PREF_EVENT_NAME, "");
 		this._type = Integer.parseInt(preferences.getString(PREF_EVENT_TYPE, "0"));
 		this._fkProfile = Long.parseLong(preferences.getString(PREF_EVENT_PROFILE, "0"));
-		this.setEnabled(preferences.getBoolean(PREF_EVENT_ENABLED, false));
+		this._status = (preferences.getBoolean(PREF_EVENT_ENABLED, false)) ? ESTATUS_PAUSE : ESTATUS_STOP;
 		this._eventPreferences.saveSharedPrefereces(preferences);
 		
 		if (!this.isRunable())
-			setStatus(ESTATUS_STOP);
+			this._status = ESTATUS_STOP;
 		
 		this._typeOld = 0;
 		this._eventPreferencesOld = null;
@@ -238,7 +211,7 @@ public class Event {
 		profileStack.add(activeProfile);
 		Profile profile = profilesDataWrapper.getProfileById(_fkProfile);
 		
-		setStatus(ESTATUS_RUNNING);
+		this._status = ESTATUS_RUNNING;
 		
 		return profile;
 	}
@@ -265,7 +238,7 @@ public class Event {
 			}
 		}
 
-		setStatus(ESTATUS_PAUSE);
+		this._status = ESTATUS_PAUSE;
 		
 		return profile;
 	}
@@ -286,7 +259,7 @@ public class Event {
 			profile = pauseEvent(profilesDataWrapper, profileStack);
 		}
 		
-		setStatus(ESTATUS_STOP);
+		this._status = ESTATUS_STOP;
 		
 		return profile;
 	}

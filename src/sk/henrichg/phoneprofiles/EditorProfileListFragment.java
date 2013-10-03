@@ -749,11 +749,11 @@ public class EditorProfileListFragment extends SherlockFragment {
 		return filterType;
 	}
 
-	class AlphabeticallyComparator implements Comparator<Profile> {
+	private class AlphabeticallyComparator implements Comparator<Profile> {
 
 		public int compare(Profile lhs, Profile rhs) {
 
-		    int res =  (lhs._name).compareToIgnoreCase(rhs._name);
+		    int res = GUIData.collator.compare(lhs._name, rhs._name);
 	        return res;
 	    }
 	}
@@ -763,7 +763,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 	    Collections.sort(profileList, new AlphabeticallyComparator());
 	}
 
-	class ByPOrderComparator implements Comparator<Profile> {
+	private class ByPOrderComparator implements Comparator<Profile> {
 
 		public int compare(Profile lhs, Profile rhs) {
 

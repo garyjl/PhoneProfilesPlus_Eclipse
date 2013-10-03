@@ -4,8 +4,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import sk.henrichg.phoneprofiles.EditorProfileListFragment.AlphabeticallyComparator;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -102,11 +100,11 @@ public class ProfilePreferenceAdapter extends BaseAdapter {
 		return vi;
 	}
 
-	class AlphabeticallyComparator implements Comparator<Profile> {
+	private class AlphabeticallyComparator implements Comparator<Profile> {
 
 		public int compare(Profile lhs, Profile rhs) {
 
-		    int res =  (lhs._name).compareToIgnoreCase(rhs._name);
+		    int res = GUIData.collator.compare(lhs._name, rhs._name);
 	        return res;
 	    }
 	}

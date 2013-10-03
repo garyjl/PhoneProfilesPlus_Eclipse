@@ -4,8 +4,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import sk.henrichg.phoneprofiles.ActivateProfileActivity.ProfileComparator;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -161,7 +159,7 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 	    Collections.sort(profileList, new ProfileComparator());
 	}
 	
-	class ProfileComparator implements Comparator<Profile> {
+	private class ProfileComparator implements Comparator<Profile> {
 
 		public int compare(Profile lhs, Profile rhs) {
 		    int res = lhs._porder - rhs._porder;

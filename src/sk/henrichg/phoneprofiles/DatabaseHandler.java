@@ -80,7 +80,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_E_NAME = "name";
 	private static final String KEY_E_TYPE = "type";
 	private static final String KEY_E_FK_PROFILE = "fkProfile";
-	private static final String KEY_E_ENABLED = "enabled";
 	private static final String KEY_E_STATUS = "status";
 	private static final String KEY_E_START_TIME = "startTime";
 	private static final String KEY_E_END_TIME = "endTime";
@@ -192,7 +191,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_E_NAME + " TEXT,"
 				+ KEY_E_TYPE + " INTEGER,"
 				+ KEY_E_FK_PROFILE + " INTEGER,"
-				+ KEY_E_ENABLED + " INTEGER,"
 				+ KEY_E_START_TIME + " INTEGER,"
 				+ KEY_E_END_TIME + " INTEGER,"
 				+ KEY_E_DAYS_OF_WEEK + " TEXT,"
@@ -330,15 +328,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			
 			// updatneme zaznamy
 			db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_SHOW_IN_ACTIVATOR + "=1");
-		}
-
-		if (oldVersion < 27)
-		{
-			// pridame nove stlpce
-			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_ENABLED + " INTEGER");
-			
-			// updatneme zaznamy
-			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_ENABLED + "=1");
 		}
 
 		if (oldVersion < 28)
@@ -1206,8 +1195,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_E_NAME, event._name); // Event Name
 		values.put(KEY_E_TYPE, event._type); // Event type
 		values.put(KEY_E_FK_PROFILE, event._fkProfile); // profile
-		values.put(KEY_E_ENABLED, (event.getEnabled()) ? 1 : 0); // event enabled
-		values.put(KEY_E_STATUS, event.getStatus()); // event status
+		values.put(KEY_E_STATUS, event._status); // event status
 		
 		db.beginTransaction();
 		
@@ -1237,7 +1225,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 												KEY_E_NAME, 
 												KEY_E_TYPE, 
 												KEY_E_FK_PROFILE, 
-												KEY_E_ENABLED,
 												KEY_E_STATUS
 												}, 
 				                 KEY_ID + "=?",
@@ -1254,9 +1241,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				                      cursor.getString(1), 
 				                      Integer.parseInt(cursor.getString(2)),
 				                      Long.parseLong(cursor.getString(3)),
-				                      (Integer.parseInt(cursor.getString(4)) == 1) ? true : false
+				                      Integer.parseInt(cursor.getString(4))
 				                      );
-			event.setStatus(Integer.parseInt(cursor.getString(5)));
 		}
 
 		cursor.close();
@@ -1280,7 +1266,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				                         KEY_E_NAME + "," +
 				                         KEY_E_TYPE + "," +
 				                         KEY_E_FK_PROFILE + "," +
-				                         KEY_E_ENABLED + "," +
 				                         KEY_E_STATUS +
 		                     " FROM " + TABLE_EVENTS;
 
@@ -1298,8 +1283,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				event._type = Integer.parseInt(cursor.getString(2));
 				//Log.e("DatabaseHandler.getAllEvents","type="+event._type);
 				event._fkProfile = Long.parseLong(cursor.getString(3));
-				event.setEnabled((Integer.parseInt(cursor.getString(4)) == 1) ? true : false);
-				event.setStatus(Integer.parseInt(cursor.getString(5)));
+				event._status = Integer.parseInt(cursor.getString(4));
 				event.createEventPreferences();
 				getEventPreferences(event, db);
 				// Adding contact to list
@@ -1323,8 +1307,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_E_NAME, event._name);
 		values.put(KEY_E_TYPE, event._type);
 		values.put(KEY_E_FK_PROFILE, event._fkProfile);
-		values.put(KEY_E_ENABLED, (event.getEnabled()) ? 1 : 0);
-		values.put(KEY_E_STATUS, event.getStatus());
+		values.put(KEY_E_STATUS, event._status);
 
 		int r = 0;
 		

@@ -24,8 +24,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -80,6 +80,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	
 	private int profilesFilterType = EditorProfileListFragment.FILTER_TYPE_SHOW_IN_ACTIVATOR;
 	private int eventsFilterType = EditorEventListFragment.FILTER_TYPE_ALL;
+	private int eventsOrderType = EditorEventListFragment.ORDER_TYPE_EVENT_NAME;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -205,6 +206,16 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
         else
         	orderSpinneAadapter.setDropDownViewResource(R.layout.editor_drawer_spinner_dropdown);
         orderSpinner.setAdapter(orderSpinneAadapter);
+        orderSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				changeEventOrder(position);
+			}
+
+			public void onNothingSelected(AdapterView<?> parent) {
+			}
+		});
+        
         
 		//getSupportActionBar().setDisplayShowTitleEnabled(false);
 		//getSupportActionBar().setTitle(R.string.title_activity_phone_profiles);
@@ -392,40 +403,44 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
     		fragment = new EditorEventListFragment();
     	    arguments = new Bundle();
    		    arguments.putInt(EditorEventListFragment.FILTER_TYPE_ARGUMENT, eventsFilterType);
+   		    arguments.putInt(EditorEventListFragment.ORDER_TYPE_ARGUMENT, eventsOrderType);
    		    fragment.setArguments(arguments);
     		getSupportFragmentManager().beginTransaction()
     			.replace(R.id.editor_list_container, fragment).commit();
-			onStartEventPreferences(null, eventsFilterType, false);
+			onStartEventPreferences(null, eventsFilterType, eventsOrderType, false);
 			break;	
         case 4:
         	eventsFilterType = EditorEventListFragment.FILTER_TYPE_RUNNING;
     		fragment = new EditorEventListFragment();
     	    arguments = new Bundle();
    		    arguments.putInt(EditorEventListFragment.FILTER_TYPE_ARGUMENT, eventsFilterType);
+   		    arguments.putInt(EditorEventListFragment.ORDER_TYPE_ARGUMENT, eventsOrderType);
    		    fragment.setArguments(arguments);
     		getSupportFragmentManager().beginTransaction()
     			.replace(R.id.editor_list_container, fragment).commit();
-			onStartEventPreferences(null, eventsFilterType, false);
+			onStartEventPreferences(null, eventsFilterType, eventsOrderType, false);
 			break;	
         case 5:
         	eventsFilterType = EditorEventListFragment.FILTER_TYPE_PAUSED;
     		fragment = new EditorEventListFragment();
     	    arguments = new Bundle();
    		    arguments.putInt(EditorEventListFragment.FILTER_TYPE_ARGUMENT, eventsFilterType);
+   		    arguments.putInt(EditorEventListFragment.ORDER_TYPE_ARGUMENT, eventsOrderType);
    		    fragment.setArguments(arguments);
     		getSupportFragmentManager().beginTransaction()
     			.replace(R.id.editor_list_container, fragment).commit();
-			onStartEventPreferences(null, eventsFilterType, false);
+			onStartEventPreferences(null, eventsFilterType, eventsOrderType, false);
 			break;	
         case 6:
         	eventsFilterType = EditorEventListFragment.FILTER_TYPE_STOPPED;
     		fragment = new EditorEventListFragment();
     	    arguments = new Bundle();
    		    arguments.putInt(EditorEventListFragment.FILTER_TYPE_ARGUMENT, eventsFilterType);
+   		    arguments.putInt(EditorEventListFragment.FILTER_TYPE_ARGUMENT, eventsFilterType);
    		    fragment.setArguments(arguments);
     		getSupportFragmentManager().beginTransaction()
     			.replace(R.id.editor_list_container, fragment).commit();
-			onStartEventPreferences(null, eventsFilterType, false);
+			onStartEventPreferences(null, eventsFilterType, eventsOrderType, false);
 			break;	
         }
         drawerListView.setItemChecked(position, true);
@@ -447,7 +462,27 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
         }
         // Close drawer
         drawerLayout.closeDrawer(drawerRoot);
-    }	
+    }
+    
+    private void changeEventOrder(int position)
+    {
+		Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
+		if ((fragment != null) && (fragment instanceof EditorEventListFragment))
+		{
+			eventsOrderType = EditorEventListFragment.ORDER_TYPE_EVENT_NAME;
+			switch (position)
+			{
+				case 0: eventsOrderType = EditorEventListFragment.ORDER_TYPE_EVENT_NAME; break;
+				case 1: eventsOrderType = EditorEventListFragment.ORDER_TYPE_PROFILE_NAME; break;
+				case 2: eventsOrderType = EditorEventListFragment.ORDER_TYPE_EVENT_TYPE_EVENT_NAME; break;
+				case 3: eventsOrderType = EditorEventListFragment.ORDER_TYPE_EVENT_TYPE_PROFILE_NAME; break;
+			}
+			((EditorEventListFragment)fragment).changeListOrder(eventsOrderType);
+	        // Close drawer
+	        drawerLayout.closeDrawer(drawerRoot);
+		}
+    	
+    }
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -647,7 +682,6 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			{
 				Bundle arguments = new Bundle();
 				arguments.putLong(GlobalData.EXTRA_PROFILE_ID, profile._id);
-				arguments.putInt(GlobalData.EXTRA_FILTER_TYPE, filterType);
 				ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 				fragment.setArguments(arguments);
 				getSupportFragmentManager().beginTransaction()
@@ -661,7 +695,6 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 					getSupportFragmentManager().beginTransaction()
 						.remove(fragment).commit();
 				}
-				
 			}
 
 		} else {
@@ -671,13 +704,12 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			{
 				Intent intent = new Intent(getBaseContext(), ProfilePreferencesFragmentActivity.class);
 				intent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
-				intent.putExtra(GlobalData.EXTRA_FILTER_TYPE, filterType);
 				startActivity(intent);
 			}
 		}
 	}
 
-	public void onRestartProfilePreferences(Profile profile, int filterType) {
+	public void onRestartProfilePreferences(Profile profile) {
 		if (mTwoPane) {
 			// In two-pane mode, show the detail view in this activity by
 			// adding or replacing the detail fragment using a
@@ -686,7 +718,6 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			// restart profile preferences fragmentu
 			Bundle arguments = new Bundle();
 			arguments.putLong(GlobalData.EXTRA_PROFILE_ID, profile._id);
-			arguments.putInt(GlobalData.EXTRA_FILTER_TYPE, filterType);
 			ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
@@ -751,7 +782,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		}
 	}
 
-	public void onStartEventPreferences(Event event, int filterType, boolean afterDelete) {
+	public void onStartEventPreferences(Event event, int filterType, int orderType, boolean afterDelete) {
 		if (mTwoPane) {
 			// In two-pane mode, show the detail view in this activity by
 			// adding or replacing the detail fragment using a
@@ -761,7 +792,6 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			{
 				Bundle arguments = new Bundle();
 				arguments.putLong(GlobalData.EXTRA_EVENT_ID, event._id);
-				arguments.putInt(GlobalData.EXTRA_FILTER_TYPE, filterType);
 				EventPreferencesFragment fragment = new EventPreferencesFragment();
 				fragment.setArguments(arguments);
 				getSupportFragmentManager().beginTransaction()
@@ -785,7 +815,6 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			{
 				Intent intent = new Intent(getBaseContext(), EventPreferencesFragmentActivity.class);
 				intent.putExtra(GlobalData.EXTRA_EVENT_ID, event._id);
-				intent.putExtra(GlobalData.EXTRA_FILTER_TYPE, filterType);
 				startActivity(intent);
 			}
 		}
@@ -804,7 +833,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		}
 	}
 
-	public void onRestartEventPreferences(Event event, int filterType) {
+	public void onRestartEventPreferences(Event event) {
 		if (mTwoPane) {
 			// In two-pane mode, show the detail view in this activity by
 			// adding or replacing the detail fragment using a
@@ -813,7 +842,6 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			// restart event preferences fragmentu
 			Bundle arguments = new Bundle();
 			arguments.putLong(GlobalData.EXTRA_EVENT_ID, event._id);
-			arguments.putInt(GlobalData.EXTRA_FILTER_TYPE, filterType);
 			EventPreferencesFragment fragment = new EventPreferencesFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()

@@ -283,11 +283,11 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 		return combined;
 	}
 
-	class ProfileComparator implements Comparator<Profile> {
+	private class ProfileComparator implements Comparator<Profile> {
 
 		public int compare(Profile lhs, Profile rhs) {
 
-		    int res =  (lhs._name).compareToIgnoreCase(rhs._name);
+		    int res = GUIData.collator.compare(lhs._name, rhs._name);
 	        return res;
 	    }
 

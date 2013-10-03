@@ -1,5 +1,6 @@
 package sk.henrichg.phoneprofiles;
 
+import java.text.Collator;
 import java.util.Locale;
 
 import android.app.Activity;
@@ -10,6 +11,8 @@ import android.content.res.Resources;
 public class GUIData {
 
 	public static boolean applicationStarted = false;
+	
+	public static Collator collator = null;
 	
 	static final String PROFILE_ICON_DEFAULT = "ic_profile_default";
 
@@ -36,7 +39,28 @@ public class GUIData {
 		appConfig.locale = appLocale;
 		context.getResources().updateConfiguration(appConfig, context.getResources().getDisplayMetrics());
 		
+		// collator for application locale sorting
+		collator = getCollator();
+		
 		//languageChanged = restart;
+	}
+	
+	public static Collator getCollator()
+	{
+		// get application Locale
+		String lang = GlobalData.applicationLanguage;
+		Locale appLocale;
+		if (!lang.equals("system"))
+		{
+			appLocale = new Locale(lang);
+		}
+		else
+		{
+			appLocale = Resources.getSystem().getConfiguration().locale;
+		}
+
+		// get collator for application locale
+		return Collator.getInstance(appLocale);
 	}
 	
 	public static void setTheme(Activity activity, boolean forPopup)

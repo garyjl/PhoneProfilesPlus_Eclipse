@@ -1,10 +1,10 @@
 package sk.henrichg.phoneprofiles;
 
+import java.text.Collator;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import sk.henrichg.phoneprofiles.EditorProfileListFragment.AlphabeticallyComparator;
+import java.util.Locale;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.res.Resources;
+
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -28,18 +30,26 @@ import android.widget.ListView;
 public class EditorEventListFragment extends SherlockFragment {
 
 	private List<Event> eventList;
+	private List<Profile> profileList;
 	private EditorEventListAdapter eventListAdapter;
 	private ListView listView;
 	private DatabaseHandler databaseHandler;
-
+	
 	public static final String FILTER_TYPE_ARGUMENT = "filter_type";
+	public static final String ORDER_TYPE_ARGUMENT = "order_type";
 
 	public static final int FILTER_TYPE_ALL = 0;
 	public static final int FILTER_TYPE_RUNNING = 1;
 	public static final int FILTER_TYPE_PAUSED = 2;
 	public static final int FILTER_TYPE_STOPPED = 3;
 	
-	private int filterType = FILTER_TYPE_ALL;  
+	public static final int ORDER_TYPE_EVENT_NAME = 0;
+	public static final int ORDER_TYPE_PROFILE_NAME = 1;
+	public static final int ORDER_TYPE_EVENT_TYPE_EVENT_NAME = 2;
+	public static final int ORDER_TYPE_EVENT_TYPE_PROFILE_NAME = 3;
+	
+	private int filterType = FILTER_TYPE_ALL; 
+	private int orderType = ORDER_TYPE_EVENT_NAME;
 	
 	/**
 	 * The fragment's current callback object, which is notified of list item
@@ -47,7 +57,7 @@ public class EditorEventListFragment extends SherlockFragment {
 	 */
 	private OnStartEventPreferences onStartEventPreferencesCallback = sDummyOnStartEventPreferencesCallback;
 	private OnFinishEventPreferencesActionMode onFinishEventPreferencesActionModeCallback = sDummyOnFinishEventPreferencesActionModeCallback;
-	private OnEventCountChanged onEventCountChangedCallback = sDummyOnEventCountChangedCallback; 
+	private OnEventCountChanged onEventCountChangedCallback = sDummyOnEventCountChangedCallback;
 	
 	/**
 	 * A callback interface that all activities containing this fragment must
@@ -58,7 +68,7 @@ public class EditorEventListFragment extends SherlockFragment {
 		/**
 		 * Callback for when an item has been selected.
 		 */
-		public void onStartEventPreferences(Event event, int filterType, boolean afterDelete);
+		public void onStartEventPreferences(Event event, int filterType, int orderType, boolean afterDelete);
 	}
 
 	/**
@@ -66,7 +76,7 @@ public class EditorEventListFragment extends SherlockFragment {
 	 * nothing. Used only when this fragment is not attached to an activity.
 	 */
 	private static OnStartEventPreferences sDummyOnStartEventPreferencesCallback = new OnStartEventPreferences() {
-		public void onStartEventPreferences(Event event, int filterType, boolean afterDelete) {
+		public void onStartEventPreferences(Event event, int filterType, int orderType, boolean afterDelete) {
 		}
 	};
 	
@@ -87,10 +97,6 @@ public class EditorEventListFragment extends SherlockFragment {
 		public void onEventCountChanged() {
 		}
 	};
-
-	public interface OnEventOrderChanged {
-		public void onEventOrderChanged();
-	}
 
 	public EditorEventListFragment() {
 	}
@@ -137,7 +143,11 @@ public class EditorEventListFragment extends SherlockFragment {
         filterType = getArguments() != null ? 
         		getArguments().getInt(FILTER_TYPE_ARGUMENT, EditorEventListFragment.FILTER_TYPE_ALL) : 
         			EditorEventListFragment.FILTER_TYPE_ALL;
+        orderType = getArguments() != null ? 
+             	getArguments().getInt(ORDER_TYPE_ARGUMENT, EditorEventListFragment.ORDER_TYPE_EVENT_NAME) : 
+                	EditorEventListFragment.ORDER_TYPE_EVENT_NAME;
         //Log.e("EditorEventListFragment.onCreate","filterType="+filterType);
+        //Log.e("EditorEventListFragment.onCreate","orderType="+orderType);
 		
 		databaseHandler = EditorProfilesActivity.profilesDataWrapper.getDatabaseHandler();
 		
@@ -157,7 +167,8 @@ public class EditorEventListFragment extends SherlockFragment {
 			@Override
 			protected Void doInBackground(Void... params) {
 				eventList = EditorProfilesActivity.profilesDataWrapper.getEventList();
-				sortAlphabetically();
+				sortList(orderType);
+				profileList = EditorProfilesActivity.profilesDataWrapper.getProfileList();
 				
 				return null;
 			}
@@ -304,7 +315,7 @@ public class EditorEventListFragment extends SherlockFragment {
 			_event = new Event(getResources().getString(R.string.event_name_default), 
 								  Event.ETYPE_TIME, 
 								  0,
-					         	  false
+					         	  Event.ESTATUS_STOP
 					         );
 			
 			// add event into db and set id
@@ -322,7 +333,7 @@ public class EditorEventListFragment extends SherlockFragment {
 		
 		// Notify the active callbacks interface (the activity, if the
 		// fragment is attached to one) one must start profile preferences
-		onStartEventPreferencesCallback.onStartEventPreferences(_event, filterType, false);
+		onStartEventPreferencesCallback.onStartEventPreferences(_event, filterType, orderType, false);
 	}
 
 	public void duplicateEvent(Event origEvent)
@@ -331,9 +342,8 @@ public class EditorEventListFragment extends SherlockFragment {
 				   origEvent._name+"_d", 
 				   origEvent._type, 
 				   origEvent._fkProfile, 
-				   origEvent.getEnabled()
+				   origEvent._status
 					);
-		newEvent.setStatus(origEvent.getStatus());
 		newEvent.copyEventPreferences(origEvent);
 
 		// add event into db and set id and order
@@ -369,7 +379,7 @@ public class EditorEventListFragment extends SherlockFragment {
 				onEventCountChangedCallback.onEventCountChanged();
 				//updateListView();
 				
-				onStartEventPreferencesCallback.onStartEventPreferences(null, filterType, true);
+				onStartEventPreferencesCallback.onStartEventPreferences(null, filterType, orderType, true);
 				
 			}
 		});
@@ -391,7 +401,7 @@ public class EditorEventListFragment extends SherlockFragment {
 				onEventCountChangedCallback.onEventCountChanged();
 				//updateListView();
 				
-				onStartEventPreferencesCallback.onStartEventPreferences(null, filterType, true);
+				onStartEventPreferencesCallback.onStartEventPreferences(null, filterType, orderType, true);
 				
 			}
 		});
@@ -409,7 +419,7 @@ public class EditorEventListFragment extends SherlockFragment {
 		eventListAdapter.notifyDataSetChanged();
 
 		// sort list
-		sortAlphabetically();
+		sortList(orderType);
 		
 		// set event visible in list
 		if (event == null)
@@ -425,19 +435,94 @@ public class EditorEventListFragment extends SherlockFragment {
 		return filterType;
 	}
 	
-	class AlphabeticallyComparator implements Comparator<Event> {
+	public void changeListOrder(int orderType)
+	{
+		Log.e("EditorEventListFragment.changeListOrder","orderType="+orderType);
+		this.orderType = orderType;
+		if (eventListAdapter != null)
+		{
+			sortList(orderType);
+			eventListAdapter.notifyDataSetChanged();
+		}
+	}
+	
+	private void sortList(int orderType)
+	{
+		switch (orderType)
+		{
+			case ORDER_TYPE_EVENT_NAME: 
+				Collections.sort(eventList, new EventNameComparator());
+				break;
+			case ORDER_TYPE_PROFILE_NAME:
+			    Collections.sort(eventList, new ProfileNameComparator());
+			    break;
+			case ORDER_TYPE_EVENT_TYPE_EVENT_NAME:
+				Collections.sort(eventList, new EventTypeEventNameComparator());
+				break;
+			case ORDER_TYPE_EVENT_TYPE_PROFILE_NAME:
+				Collections.sort(eventList, new EventTypeProfileNameComparator());
+				break;
+		}
+	}
+	
+	private class EventNameComparator implements Comparator<Event> {
 
 		public int compare(Event lhs, Event rhs) {
 
-		    int res =  (lhs._name).compareToIgnoreCase(rhs._name);
+		    int res = GUIData.collator.compare(lhs._name, rhs._name); 
 	        return res;
 	    }
 	}
 	
-	public void sortAlphabetically()
-	{
-	    Collections.sort(eventList, new AlphabeticallyComparator());
+	private class ProfileNameComparator implements Comparator<Event> {
+
+		public int compare(Event lhs, Event rhs) {
+
+			Profile profileLhs = EditorProfilesActivity.profilesDataWrapper.getProfileById(lhs._fkProfile);
+			Profile profileRhs = EditorProfilesActivity.profilesDataWrapper.getProfileById(rhs._fkProfile);
+			
+			String nameLhs = "";
+			if (profileLhs != null) nameLhs = profileLhs._name;
+			String nameRhs = "";
+			if (profileRhs != null) nameRhs = profileRhs._name;
+			
+		    int res = GUIData.collator.compare(nameLhs, nameRhs);
+		    
+	        return res;
+	    }
 	}
 	
+	private class EventTypeEventNameComparator implements Comparator<Event> {
 
+		public int compare(Event lhs, Event rhs) {
+			
+		    int res = lhs._type - rhs._type;
+		    if (res == 0)
+		    	res = GUIData.collator.compare(lhs._name, rhs._name);
+	        return res;
+	    }
+	}
+	
+	private class EventTypeProfileNameComparator implements Comparator<Event> {
+
+		public int compare(Event lhs, Event rhs) {
+
+		    int res = lhs._type - rhs._type;
+		    if (res == 0)
+		    {
+				Profile profileLhs = EditorProfilesActivity.profilesDataWrapper.getProfileById(lhs._fkProfile);
+				Profile profileRhs = EditorProfilesActivity.profilesDataWrapper.getProfileById(rhs._fkProfile);
+				
+				String nameLhs = "";
+				if (profileLhs != null) nameLhs = profileLhs._name;
+				String nameRhs = "";
+				if (profileRhs != null) nameRhs = profileRhs._name;
+				
+			    res = GUIData.collator.compare(nameLhs, nameRhs);
+		    }
+
+		    return res;
+	    }
+	}
+	
 }

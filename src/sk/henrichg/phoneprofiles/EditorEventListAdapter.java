@@ -40,15 +40,15 @@ public class EditorEventListAdapter extends BaseAdapter
 	        switch (filterType)
 	        {
 				case EditorEventListFragment.FILTER_TYPE_RUNNING:
-					if (event.getStatus() == Event.ESTATUS_RUNNING)
+					if (event._status == Event.ESTATUS_RUNNING)
 						++count;
 					break;
 				case EditorEventListFragment.FILTER_TYPE_PAUSED:
-					if (event.getStatus() == Event.ESTATUS_PAUSE)
+					if (event._status == Event.ESTATUS_PAUSE)
 						++count;
 					break;
 				case EditorEventListFragment.FILTER_TYPE_STOPPED:
-					if (event.getStatus() == Event.ESTATUS_STOP)
+					if (event._status == Event.ESTATUS_STOP)
 						++count;
 					break;
 	        }
@@ -74,15 +74,15 @@ public class EditorEventListAdapter extends BaseAdapter
 				switch (filterType)
 		        {
 					case EditorEventListFragment.FILTER_TYPE_RUNNING:
-						if (event.getStatus() == Event.ESTATUS_RUNNING)
+						if (event._status == Event.ESTATUS_RUNNING)
 							++pos;
 						break;
 					case EditorEventListFragment.FILTER_TYPE_PAUSED:
-						if (event.getStatus() == Event.ESTATUS_PAUSE)
+						if (event._status == Event.ESTATUS_PAUSE)
 							++pos;
 						break;
 					case EditorEventListFragment.FILTER_TYPE_STOPPED:
-						if (event.getStatus() == Event.ESTATUS_STOP)
+						if (event._status == Event.ESTATUS_STOP)
 							++pos;
 						break;
 		        }
@@ -127,15 +127,15 @@ public class EditorEventListAdapter extends BaseAdapter
 			switch (filterType)
 	        {
 				case EditorEventListFragment.FILTER_TYPE_RUNNING:
-					if (event.getStatus() == Event.ESTATUS_RUNNING)
+					if (event._status == Event.ESTATUS_RUNNING)
 						++pos;
 					break;
 				case EditorEventListFragment.FILTER_TYPE_PAUSED:
-					if (event.getStatus() == Event.ESTATUS_PAUSE)
+					if (event._status == Event.ESTATUS_PAUSE)
 						++pos;
 					break;
 				case EditorEventListFragment.FILTER_TYPE_STOPPED:
-					if (event.getStatus() == Event.ESTATUS_STOP)
+					if (event._status == Event.ESTATUS_STOP)
 						++pos;
 					break;
 	        }
@@ -229,7 +229,7 @@ public class EditorEventListAdapter extends BaseAdapter
        		holder.listItemRoot.setBackgroundResource(R.drawable.card_dark);
         
        	int statusRes = Event.ESTATUS_STOP; 
-       	switch (event.getStatus())
+       	switch (event._status)
        	{
        		case Event.ESTATUS_RUNNING:
        			statusRes = R.drawable.ic_event_status_running;

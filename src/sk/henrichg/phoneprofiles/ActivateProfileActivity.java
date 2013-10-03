@@ -496,7 +496,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 		startActivityForResult(intent, GlobalData.REQUEST_CODE_ACTIVATE_PROFILE);
 	}
 	
-	class ProfileComparator implements Comparator<Profile> {
+	private class ProfileComparator implements Comparator<Profile> {
 
 		public int compare(Profile lhs, Profile rhs) {
 		    int res = lhs._porder - rhs._porder;

@@ -229,7 +229,7 @@ public class ProfilesDataWrapper {
 		{
 			if (event._fkProfile == profile._id) 
 				event._fkProfile = 0;
-			event.setStatus(Event.ESTATUS_STOP);
+			event._status = Event.ESTATUS_STOP;
 		}
 	}
 	
@@ -242,7 +242,7 @@ public class ProfilesDataWrapper {
 		for (Event event : eventList)
 		{
 			event._fkProfile = 0;
-			event.setStatus(Event.ESTATUS_STOP);
+			event._status = Event.ESTATUS_STOP;
 		}
 	}
 	

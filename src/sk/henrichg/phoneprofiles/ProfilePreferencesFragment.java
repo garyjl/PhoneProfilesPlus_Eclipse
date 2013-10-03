@@ -28,7 +28,6 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	
 	private Profile profile;
 	private long profile_id;
-	private int filter_type;
 	private PreferenceManager prefMng;
 	private SharedPreferences preferences;
 	private Context context;
@@ -49,11 +48,11 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		/**
 		 * Callback for restart fragment.
 		 */
-		public void onRestartProfilePreferences(Profile profile, int filterType);
+		public void onRestartProfilePreferences(Profile profile);
 	}
 
 	private static OnRestartProfilePreferences sDummyOnRestartProfilePreferencesCallback = new OnRestartProfilePreferences() {
-		public void onRestartProfilePreferences(Profile profile, int filterType) {
+		public void onRestartProfilePreferences(Profile profile) {
 		}
 	};
 	
@@ -107,9 +106,6 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		if (getArguments().containsKey(GlobalData.EXTRA_PROFILE_ID))
 			profile_id = getArguments().getLong(GlobalData.EXTRA_PROFILE_ID);
     	//Log.e("ProfilePreferencesFragment.onCreate", "profile_id=" + profile_id);
-		if (getArguments().containsKey(GlobalData.EXTRA_FILTER_TYPE))
-			filter_type = getArguments().getInt(GlobalData.EXTRA_FILTER_TYPE);
-    	//Log.d("ProfilePreferencesFragment.onCreate", "filter_type=" + filter_type);
 		
         context = getSherlockActivity().getBaseContext();
         
@@ -468,7 +464,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
             public void onDestroyActionMode(ActionMode mode) {
                actionMode = null;
                if (restart)
-            	   onRestartProfilePreferencesCallback.onRestartProfilePreferences(profile, filter_type);
+            	   onRestartProfilePreferencesCallback.onRestartProfilePreferences(profile);
             }
  
             /** This is called when the action mode is created. This is called by startActionMode() */

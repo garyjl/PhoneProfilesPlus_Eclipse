@@ -9,15 +9,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.database.Cursor;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,7 +21,6 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	
 	private Event event;
 	private long event_id;
-	private int filter_type;
 	private PreferenceManager prefMng;
 	private SharedPreferences preferences;
 	private Context context;
@@ -48,11 +40,11 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		/**
 		 * Callback for restart fragment.
 		 */
-		public void onRestartEventPreferences(Event event, int filterType);
+		public void onRestartEventPreferences(Event event);
 	}
 
 	private static OnRestartEventPreferences sDummyOnRestartEventPreferencesCallback = new OnRestartEventPreferences() {
-		public void onRestartEventPreferences(Event event, int filterType) {
+		public void onRestartEventPreferences(Event event) {
 		}
 	};
 	
@@ -106,9 +98,6 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		if (getArguments().containsKey(GlobalData.EXTRA_EVENT_ID))
 			event_id = getArguments().getLong(GlobalData.EXTRA_EVENT_ID);
     	//Log.e("EventPreferencesFragment.onCreate", "event_position=" + event_position);
-		if (getArguments().containsKey(GlobalData.EXTRA_FILTER_TYPE))
-			filter_type = getArguments().getInt(GlobalData.EXTRA_FILTER_TYPE);
-    	//Log.e("EventPreferencesFragment.onCreate", "filter_type=" + filter_type);
 		
         context = getSherlockActivity().getBaseContext();
 
@@ -239,7 +228,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 			}
 			
 			event.changeEventType(iEventType);
-     	    onRestartEventPreferencesCallback.onRestartEventPreferences(event, filter_type);
+     	    onRestartEventPreferencesCallback.onRestartEventPreferences(event);
 			
 		}
 
@@ -263,7 +252,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
                if (restart)
                {
             	   event.undoEventType();
-            	   onRestartEventPreferencesCallback.onRestartEventPreferences(event, filter_type);
+            	   onRestartEventPreferencesCallback.onRestartEventPreferences(event);
                }   
             }
  

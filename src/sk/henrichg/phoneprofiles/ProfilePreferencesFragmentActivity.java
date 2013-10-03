@@ -36,14 +36,12 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 		getSupportActionBar().setTitle(R.string.title_activity_profile_preferences);
 
         long profile_id = getIntent().getLongExtra(GlobalData.EXTRA_PROFILE_ID, -1);
-        int filter_type = getIntent().getIntExtra(GlobalData.EXTRA_FILTER_TYPE, EditorProfileListFragment.FILTER_TYPE_ALL);
 
         //Log.e("ProfilePreferencesFragmentActivity.onCreate","profile_id="+profile_id);
         
 		if (savedInstanceState == null) {
 			Bundle arguments = new Bundle();
 			arguments.putLong(GlobalData.EXTRA_PROFILE_ID, profile_id);
-			arguments.putInt(GlobalData.EXTRA_FILTER_TYPE, filter_type);
 			ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
@@ -89,10 +87,9 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 			fragment.doOnActivityResult(requestCode, resultCode, data);
 	}
 
-	public void onRestartProfilePreferences(Profile profile, int filterType) {
+	public void onRestartProfilePreferences(Profile profile) {
 		Bundle arguments = new Bundle();
 		arguments.putLong(GlobalData.EXTRA_PROFILE_ID, profile._id);
-		arguments.putInt(GlobalData.EXTRA_FILTER_TYPE, filterType);
 		ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 		fragment.setArguments(arguments);
 		getSupportFragmentManager().beginTransaction()
