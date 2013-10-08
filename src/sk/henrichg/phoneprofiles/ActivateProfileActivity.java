@@ -319,7 +319,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 	
 	private void endOnStart()
 	{
-		Log.e("ActivateProfileActivity.endOnStart","xxx");
+		//Log.e("ActivateProfileActivity.endOnStart","xxx");
 		// reset, aby sa to dalej chovalo ako normalne spustenie z lauchera
 		startupSource = 0;
 
@@ -458,7 +458,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 	{
 		if (requestCode == GlobalData.REQUEST_CODE_ACTIVATE_PROFILE)
 		{
-			Log.e("ActivateProfileActivity.onActivityResult","xxx");
+			//Log.e("ActivateProfileActivity.onActivityResult","xxx");
 
 			if(resultCode == RESULT_OK)
 			{      

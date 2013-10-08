@@ -44,7 +44,7 @@ public class PhoneProfilesService extends Service {
     	@Override
         public void handleMessage(Message msg) {
     		
-    		Log.e("PhoneProfilesService.IncommingHandler.handleMessage",msg.what+"");
+    		//Log.e("PhoneProfilesService.IncommingHandler.handleMessage",msg.what+"");
     		
     		PhoneProfilesService service = serviceWakeReference.get();
     		

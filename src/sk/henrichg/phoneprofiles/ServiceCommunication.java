@@ -94,7 +94,7 @@ public class ServiceCommunication {
 
 	    if (phoneProfilesService != null)
     	{
-	    	Log.e("ServiceCommunication.sendMessageIntoServiceLong","data="+data);
+	    	//Log.e("ServiceCommunication.sendMessageIntoServiceLong","data="+data);
 	    	try {
                 Bundle b = new Bundle();
                 b.putLong(GlobalData.EXTRA_PROFILE_ID, data);
