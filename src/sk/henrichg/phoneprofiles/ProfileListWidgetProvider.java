@@ -21,6 +21,8 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 
 	public static ProfilesDataWrapper profilesDataWrapper;
 	
+	public static final String INTENT_REFRESH_LISTWIDGET = "sk.henrichg.phoneprofiles.REFRESH_LISTWIDGET";
+	
 	private boolean isLargeLayout;
 	private boolean isKeyguard;
 	
@@ -257,12 +259,12 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 
 		Log.e("ProfileListWidgetProvider.onReceive","xxx");
 		
-		String action = intent.getAction();
-		if ((action != null) &&
-		    (action.equalsIgnoreCase("android.appwidget.action.APPWIDGET_UPDATE")))
-		{
+	//	String action = intent.getAction();
+	//	if ((action != null) &&
+	//	    (action.equalsIgnoreCase("android.appwidget.action.APPWIDGET_UPDATE")))
+	//	{
 			updateWidget(context);
-		}
+	//	}
 	}
 	
 	private void setLayoutParams(Context context, AppWidgetManager appWidgetManager,
@@ -331,7 +333,7 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 	    	profilesDataWrapper = null;
 	    }
 	    
-    	onUpdate(context, appWidgetManager, appWidgetIds);
+	    onUpdate(context, appWidgetManager, appWidgetIds);
 	    if (isLargeLayout)
 	    	appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_profile_list);
 	}	

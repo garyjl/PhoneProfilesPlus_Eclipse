@@ -654,7 +654,7 @@ public class ActivateProfileHelper {
 		
 		// list widget
 		Intent intent2 = new Intent(context, ProfileListWidgetProvider.class);
-		intent2.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+		intent2.setAction(ProfileListWidgetProvider.INTENT_REFRESH_LISTWIDGET);
 		int ids2[] = AppWidgetManager.getInstance(activity.getApplication()).getAppWidgetIds(new ComponentName(activity.getApplication(), ProfileListWidgetProvider.class));
 		intent2.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids2);
 		context.sendBroadcast(intent2);
