@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -73,6 +74,9 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 	}
 	
 	public RemoteViews getViewAt(int position) {
+		Log.e("ProfileListWidgetFactory.getViewAt","xxx");
+		
+		
 		RemoteViews row=new RemoteViews(ctxt.getPackageName(), R.layout.profile_list_widget_item);
     
 		Profile profile = getItem(position);
@@ -153,6 +157,9 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 	}
 
 	public void onDataSetChanged() {
+		Log.e("ProfileListWidgetFactory.onDataSetChanged","xxx");
+
+		
 		ProfileListWidgetProvider.createProfilesDataWrapper();
 		
 		profileList = ProfileListWidgetProvider.profilesDataWrapper.getProfileList();

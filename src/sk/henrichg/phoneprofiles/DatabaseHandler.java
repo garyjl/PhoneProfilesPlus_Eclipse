@@ -1628,8 +1628,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				SQLiteDatabase exportedDBObj = SQLiteDatabase.openDatabase(exportedDB.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY);
 				//Log.d("DatabaseHandler.importDB", "databaseVersion="+exportedDBObj.getVersion());
 				//if (exportedDBObj.getVersion() == DATABASE_VERSION)
-				if (exportedDBObj.getVersion() <= DATABASE_VERSION)
-				{	
+			//	if (exportedDBObj.getVersion() <= DATABASE_VERSION)
+			//	{	
 					
 					// db z SQLiteOpenHelper
 					//SQLiteDatabase db = this.getWritableDatabase();
@@ -1638,8 +1638,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					Cursor cursorExportedDB = null;
 					String[] columnNamesExportedDB;
 					Cursor cursorImportDB = null;
-					String[] columnNamesImportDB;
-					
 					ContentValues values = new ContentValues();
 					
 					try {
@@ -1781,11 +1779,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					// Access the copied database so SQLiteHelper will cache it and mark
 					// it as created
 					//getWritableDatabase().close();
-				}
-				else
-				{
-					Log.w("DatabaseHandler.importDB", "wrong exported db version");
-				}
+			//	}
+			//	else
+			//	{
+			//		Log.w("DatabaseHandler.importDB", "wrong exported db version");
+			//	}
 			}
 		} catch (Exception e) {
 			Log.e("DatabaseHandler.importDB", e.toString());

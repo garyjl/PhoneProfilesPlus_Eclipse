@@ -227,13 +227,13 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 	@Override
 	public void onUpdate(Context ctxt, AppWidgetManager appWidgetManager, int[] appWidgetIds)
 	{
-		//Log.e("ProfileListWidgetProvider.onUpdate","xxx");
+		Log.e("ProfileListWidgetProvider.onUpdate","xxx");
 		
 		GlobalData.loadPreferences(GlobalData.context);
 
 		createProfilesDataWrapper();
 
-		ProfileListWidgetProvider.profilesDataWrapper.reloadProfilesData();
+		//ProfileListWidgetProvider.profilesDataWrapper.reloadProfilesData();
 		
 		for (int i=0; i<appWidgetIds.length; i++)
 		{
@@ -255,7 +255,7 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 	public void onReceive(Context context, Intent intent) {
 		super.onReceive(context, intent);
 
-		//Log.e("ProfileListWidgetProvider.onReceive","xxx");
+		Log.e("ProfileListWidgetProvider.onReceive","xxx");
 		
 		String action = intent.getAction();
 		if ((action != null) &&

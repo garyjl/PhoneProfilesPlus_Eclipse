@@ -279,6 +279,7 @@ public class EditorProfileListFragment extends SherlockFragment {
             public void drop(int from, int to) {
             	profileListAdapter.changeItemOrder(from, to); // swap profiles
             	databaseHandler.setPOrder(profileList);  // set profiles _porder and write it into db
+				activateProfileHelper.updateWidget();
         		onProfileOrderChangedCallback.onProfileOrderChanged();
         		//Log.d("EditorProfileListFragment.drop", "xxxx");
             }
@@ -314,6 +315,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 			profile = EditorProfilesActivity.profilesDataWrapper.getActivatedProfile();
 			updateHeader(profile);
 			
+			/*
 			if (startupSource == 0)
 			{
 				// aktivita nebola spustena z notifikacie, ani z widgetu
@@ -321,6 +323,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 				activateProfileHelper.showNotification(profile);
 				activateProfileHelper.updateWidget();
 			}
+			*/
 
 			// update checked profile in listview
 			profile = null;
