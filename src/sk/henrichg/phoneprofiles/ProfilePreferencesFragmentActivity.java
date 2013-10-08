@@ -18,6 +18,7 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 	                                                       OnRestartProfilePreferences,
 	                                                       OnRedrawProfileListFragment
 {
+	private long profile_id = 0;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,7 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setTitle(R.string.title_activity_profile_preferences);
 
-        long profile_id = getIntent().getLongExtra(GlobalData.EXTRA_PROFILE_ID, -1);
+        profile_id = getIntent().getLongExtra(GlobalData.EXTRA_PROFILE_ID, -1);
 
         //Log.e("ProfilePreferencesFragmentActivity.onCreate","profile_id="+profile_id);
         
@@ -56,6 +57,19 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 	protected void onDestroy()
 	{
 		super.onDestroy();
+	}
+	
+	@Override
+	public void finish() {
+		
+		//Log.e("ProfilePreferencesFragmentActivity.finish","xxx");
+
+		// for startActivityForResult
+		Intent returnIntent = new Intent();
+		returnIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile_id);
+		setResult(RESULT_OK,returnIntent);
+
+	    super.finish();
 	}
 
 	@Override
@@ -97,11 +111,7 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 	}
 
 	public void onRedrawProfileListFragment(Profile profile) {
-		// all redraws are in EditorProfilesActivity.onStart()
-
-		// send message into service
-        //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
-		EditorProfilesActivity.serviceCommunication.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
+		// all redraws are in EditorProfilesActivity.onActivityResult()
 	}
 	
 	public void onPreferenceAttached(PreferenceScreen root, int xmlId) {

@@ -154,7 +154,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
     	//Log.d("ProfilePreferencesFragment.onPause", "xxxx");
 		
 	}
-	
+
 	@Override
 	public void onDestroy()
 	{

@@ -37,8 +37,6 @@ public class EditorProfileListFragment extends SherlockFragment {
 	private DragSortListView listView;
 	private TextView activeProfileName;
 	private ImageView activeProfileIcon;
-	private int startupSource = 0;
-	private Intent intent;
 	private DatabaseHandler databaseHandler;
 	
 	public static final String FILTER_TYPE_ARGUMENT = "filter_type";
@@ -157,6 +155,11 @@ public class EditorProfileListFragment extends SherlockFragment {
 
 		super.onCreate(savedInstanceState);
 		
+		// ak sa ma refreshnut aktivita, nebudeme robit nic, co je v onStart
+		if (PhoneProfilesPreferencesActivity.getInvalidateEditor(false))
+			return;
+		
+		
         filterType = getArguments() != null ? 
         		getArguments().getInt(FILTER_TYPE_ARGUMENT, EditorProfileListFragment.FILTER_TYPE_ALL) : 
         			EditorProfileListFragment.FILTER_TYPE_ALL;
@@ -164,9 +167,6 @@ public class EditorProfileListFragment extends SherlockFragment {
 		//Log.e("EditorProfileListFragment.onCreate","xxx");
 		
 		databaseHandler = EditorProfilesActivity.profilesDataWrapper.getDatabaseHandler(); 
-		
-		intent = getSherlockActivity().getIntent();
-		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
 		
 		activateProfileHelper = EditorProfilesActivity.profilesDataWrapper.getActivateProfileHelper();
 		activateProfileHelper.initialize(getSherlockActivity(), getActivity().getBaseContext());
@@ -204,9 +204,6 @@ public class EditorProfileListFragment extends SherlockFragment {
 					profileListAdapter = new EditorProfileListAdapter(fragment, EditorProfilesActivity.profilesDataWrapper, filterType);
 					listView.setAdapter(profileListAdapter);
 				}
-
-				doOnStart();
-				
 			}
 			
 		}.execute();
@@ -294,52 +291,14 @@ public class EditorProfileListFragment extends SherlockFragment {
 			}
 		}
 
+		Profile profile;
+		
+		// pre profil, ktory je prave aktivny, treba aktualizovat aktivitu
+		profile = EditorProfilesActivity.profilesDataWrapper.getActivatedProfile();
+		updateHeader(profile);
+		
 		//Log.d("EditorProfileListFragment.onActivityCreated", "xxx");
         
-	}
-	
-	private void doOnStart()
-	{
-	
-		//Log.e("EditorProfileListFragment.doOnStart","xxx");
-		
-		// ak sa ma refreshnut aktivita, nebudeme robit nic, co je v onStart
-		if (PhoneProfilesPreferencesActivity.getInvalidateEditor(false))
-			return;
-		
-		if (profileListAdapter != null)
-		{
-			Profile profile;
-			
-			// pre profil, ktory je prave aktivny, treba aktualizovat aktivitu
-			profile = EditorProfilesActivity.profilesDataWrapper.getActivatedProfile();
-			updateHeader(profile);
-			
-			/*
-			if (startupSource == 0)
-			{
-				// aktivita nebola spustena z notifikacie, ani z widgetu
-				// pre profil, ktory je prave aktivny, treba aktualizovat notifikaciu a widgety 
-				activateProfileHelper.showNotification(profile);
-				activateProfileHelper.updateWidget();
-			}
-			*/
-
-			// update checked profile in listview
-			profile = null;
-			for (int i = 0; i < profileListAdapter.getCount(); i++)
-			{
-				if (listView.isItemChecked(i))
-				{
-					profile = (Profile)profileListAdapter.getItem(i);
-					break;
-				}
-			}
-			updateListView(profile);
-		}
-
-		// reset, aby sa to dalej chovalo ako normalne spustenie z lauchera
-		startupSource = 0;
 	}
 	
 	@Override
@@ -347,8 +306,6 @@ public class EditorProfileListFragment extends SherlockFragment {
 	{
 		super.onStart();
 
-		doOnStart();
-		
 		//Log.d("EditorProfileListFragment.onStart", "xxxx");
 		
 	}
@@ -436,6 +393,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 			
 			updateListView(_profile);
 
+			activateProfileHelper.updateWidget();
 			onProfileCountChangedCallback.onProfileCountChanged();
 
         	// generate bitmaps
@@ -493,6 +451,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		
 		updateListView(newProfile);
 		
+		activateProfileHelper.updateWidget();
 		onProfileCountChangedCallback.onProfileCountChanged();
 		
     	// generate bitmaps

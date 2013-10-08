@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceScreen;
+import android.util.Log;
  
 public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
 												implements OnPreferenceAttachedListener,
@@ -18,6 +19,8 @@ public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
 	                                                       OnRedrawEventListFragment
 {
 	
+	private long event_id = 0; 
+			
 	@Override
     public void onCreate(Bundle savedInstanceState) {
 		
@@ -34,7 +37,7 @@ public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setTitle(R.string.title_activity_event_preferences);
 
-        long event_id = getIntent().getLongExtra(GlobalData.EXTRA_EVENT_ID, -1);
+        event_id = getIntent().getLongExtra(GlobalData.EXTRA_EVENT_ID, -1);
 
 		if (savedInstanceState == null) {
 			Bundle arguments = new Bundle();
@@ -55,6 +58,19 @@ public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
 		super.onDestroy();
 	}
 
+	@Override
+	public void finish() {
+		
+		//Log.e("EventPreferencesFragmentActivity.finish","xxx");
+
+		// for startActivityForResult
+		Intent returnIntent = new Intent();
+		returnIntent.putExtra(GlobalData.EXTRA_EVENT_ID, event_id);
+		setResult(RESULT_OK,returnIntent);
+
+	    super.finish();
+	}
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		

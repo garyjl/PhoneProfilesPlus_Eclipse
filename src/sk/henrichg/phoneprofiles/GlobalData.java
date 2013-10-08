@@ -38,6 +38,10 @@ public class GlobalData extends Application {
 
 	// request code for startActivityForResult with intent BackgroundActivateProfileActivity
 	static final int REQUEST_CODE_ACTIVATE_PROFILE = 6220;
+	// request code for startActivityForResult with intent ProfilePreferencesFragmentActivity
+	static final int REQUEST_CODE_PROFILE_PREFERENCES = 6221;
+	// request code for startActivityForResult with intent EventPreferencesFragmentActivity
+	static final int REQUEST_CODE_EVENT_PREFERENCES = 6222;
 	
 	// musi byt tu, pouziva to ActivateProfileHelper
 	static final int NOTIFICATION_ID = 700420;

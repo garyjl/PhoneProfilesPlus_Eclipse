@@ -506,6 +506,20 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 				fragment.doOnActivityResult(requestCode, resultCode, data);
 		}
 		else
+		if (requestCode == GlobalData.REQUEST_CODE_PROFILE_PREFERENCES)
+		{
+			// redraw list fragment after finish ProfilePreferencesFragmentActivity
+			long profile_id = data.getLongExtra(GlobalData.EXTRA_PROFILE_ID, 0);
+			onRedrawProfileListFragment(profilesDataWrapper.getProfileById(profile_id));
+		}
+		else
+		if (requestCode == GlobalData.REQUEST_CODE_EVENT_PREFERENCES)
+		{
+			// redraw list fragment after finish EventPreferencesFragmentActivity
+			long event_id = data.getLongExtra(GlobalData.EXTRA_EVENT_ID, 0);
+			onRedrawEventListFragment(profilesDataWrapper.getEventById(event_id));
+		}
+		else
 		{
 			ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
 			if (fragment != null)
@@ -717,7 +731,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			{
 				Intent intent = new Intent(getBaseContext(), ProfilePreferencesFragmentActivity.class);
 				intent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
-				startActivity(intent);
+				startActivityForResult(intent, GlobalData.REQUEST_CODE_PROFILE_PREFERENCES);
 			}
 		}
 	}
@@ -827,7 +841,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			{
 				Intent intent = new Intent(getBaseContext(), EventPreferencesFragmentActivity.class);
 				intent.putExtra(GlobalData.EXTRA_EVENT_ID, event._id);
-				startActivity(intent);
+				startActivityForResult(intent, GlobalData.REQUEST_CODE_EVENT_PREFERENCES);
 			}
 		}
 	}

@@ -1,11 +1,8 @@
 package sk.henrichg.phoneprofiles;
 
-import java.text.Collator;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
-
 import com.actionbarsherlock.app.SherlockFragment;
 
 import android.os.AsyncTask;
@@ -13,8 +10,6 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.res.Resources;
-
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -30,7 +25,6 @@ import android.widget.ListView;
 public class EditorEventListFragment extends SherlockFragment {
 
 	private List<Event> eventList;
-	private List<Profile> profileList;
 	private EditorEventListAdapter eventListAdapter;
 	private ListView listView;
 	private DatabaseHandler databaseHandler;
@@ -140,6 +134,10 @@ public class EditorEventListFragment extends SherlockFragment {
 
 		super.onCreate(savedInstanceState);
 		
+		// ak sa ma refreshnut aktivita, nebudeme robit nic, co je v onStart
+		if (PhoneProfilesPreferencesActivity.getInvalidateEditor(false))
+			return;
+		
         filterType = getArguments() != null ? 
         		getArguments().getInt(FILTER_TYPE_ARGUMENT, EditorEventListFragment.FILTER_TYPE_ALL) : 
         			EditorEventListFragment.FILTER_TYPE_ALL;
@@ -168,7 +166,7 @@ public class EditorEventListFragment extends SherlockFragment {
 			protected Void doInBackground(Void... params) {
 				eventList = EditorProfilesActivity.profilesDataWrapper.getEventList();
 				sortList(orderType);
-				profileList = EditorProfilesActivity.profilesDataWrapper.getProfileList();
+				EditorProfilesActivity.profilesDataWrapper.getProfileList();
 				
 				return null;
 			}
@@ -183,9 +181,6 @@ public class EditorEventListFragment extends SherlockFragment {
 					eventListAdapter = new EditorEventListAdapter(fragment, EditorProfilesActivity.profilesDataWrapper, filterType);
 					listView.setAdapter(eventListAdapter);
 				}
-				
-				doOnStart();
-				
 			}
 			
 		}.execute();
@@ -240,32 +235,11 @@ public class EditorEventListFragment extends SherlockFragment {
         
 	}
 	
-	private void doOnStart()
-	{
-		// ak sa ma refreshnut aktivita, nebudeme robit nic, co je v onStart
-		if (PhoneProfilesPreferencesActivity.getInvalidateEditor(false))
-			return;
-		
-		if (eventListAdapter != null)
-		{
-			// update checked event in listview
-			Event event = null;
-			for (int i = 0; i < eventListAdapter.eventList.size(); i++)
-			{
-				if (listView.isItemChecked(i))
-					event = eventListAdapter.eventList.get(i);
-			}
-			updateListView(event);
-		}
-	}
-	
 	@Override
 	public void onStart()
 	{
 		super.onStart();
 
-		doOnStart();
-		
 		//Log.d("EditorEventListFragment.onStart", "xxxx");
 		
 	}
@@ -416,11 +390,11 @@ public class EditorEventListFragment extends SherlockFragment {
 	
 	public void updateListView(Event event)
 	{
-		eventListAdapter.notifyDataSetChanged();
-
 		// sort list
 		sortList(orderType);
-		
+
+		eventListAdapter.notifyDataSetChanged();
+
 		// set event visible in list
 		if (event == null)
 		{	
