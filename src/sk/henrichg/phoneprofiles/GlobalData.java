@@ -24,6 +24,7 @@ public class GlobalData extends Application {
 	static final String EXTRA_PROFILE_ID = "profile_id";
 	static final String EXTRA_EVENT_ID = "event_id";
 	static final String EXTRA_START_APP_SOURCE = "start_app_source";
+	static final String EXTRA_RESET_EDITOR = "reset_editor";
 
 	// musi byt tu, pouziva to ActivateProfileHelper
 	static final int STARTUP_SOURCE_NOTIFICATION = 1;
@@ -42,6 +43,8 @@ public class GlobalData extends Application {
 	static final int REQUEST_CODE_PROFILE_PREFERENCES = 6221;
 	// request code for startActivityForResult with intent EventPreferencesFragmentActivity
 	static final int REQUEST_CODE_EVENT_PREFERENCES = 6222;
+	// request code for startActivityForResult with intent PhoneProfilesActivity
+	static final int REQUEST_CODE_APPLICATION_PREFERENCES = 6229;
 	
 	// musi byt tu, pouziva to ActivateProfileHelper
 	static final int NOTIFICATION_ID = 700420;

@@ -25,7 +25,7 @@ public class PhoneProfilesPreferencesActivity extends
 	private String activeLanguage;
 	private String activeTheme;
 
-	private static boolean invalidateEditor = false; 
+	private boolean invalidateEditor = false; 
 	
 	@Override public void onCreate(Bundle savedInstanceState) {
 
@@ -129,6 +129,24 @@ public class PhoneProfilesPreferencesActivity extends
 	protected void onPause()
 	{
 		super.onPause();
+	}
+
+	@Override
+	protected void onStop()
+	{
+		super.onStop();
+	}
+	
+	@Override
+	protected void onDestroy()
+	{
+    	preferences.unregisterOnSharedPreferenceChangeListener(prefListener);
+		super.onDestroy();
+	}
+	
+	@Override
+	public void finish() {
+		
 		GlobalData.loadPreferences(GlobalData.context);
 		
 		//Log.d("PhoneProfilesPreferencesActivity.onPause", "xxx");
@@ -158,19 +176,13 @@ public class PhoneProfilesPreferencesActivity extends
        		//Log.d("PhoneProfilesPreferencesActivity.onPause","invalidate");
    			invalidateEditor = true;
    		}
-	}
+		
+		// for startActivityForResult
+		Intent returnIntent = new Intent();
+		returnIntent.putExtra(GlobalData.EXTRA_RESET_EDITOR, invalidateEditor);
+		setResult(RESULT_OK,returnIntent);
 
-	@Override
-	protected void onStop()
-	{
-		super.onStop();
-	}
-	
-	@Override
-	protected void onDestroy()
-	{
-    	preferences.unregisterOnSharedPreferenceChangeListener(prefListener);
-		super.onDestroy();
+	    super.finish();
 	}
 	
 	/*
@@ -217,11 +229,5 @@ public class PhoneProfilesPreferencesActivity extends
 		}
 	}
 */	
-	static public boolean getInvalidateEditor(boolean reset)
-	{
-		boolean r = invalidateEditor;
-		if (reset) invalidateEditor = false;
-		return r;
-	}
-	
+
 }

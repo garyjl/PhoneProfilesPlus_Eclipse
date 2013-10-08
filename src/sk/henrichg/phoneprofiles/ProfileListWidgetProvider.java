@@ -313,6 +313,10 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
     {
 		//Log.e("ProfileListWidgetProvider.onAppWidgetOptionsChanged","xxx");
 
+		GlobalData.loadPreferences(GlobalData.context);
+
+		createProfilesDataWrapper();
+    	
         setLayoutParams(context, appWidgetManager, appWidgetId, newOptions);
         RemoteViews layout;
         layout = buildLayout(context, appWidgetManager, appWidgetId, isLargeLayout);

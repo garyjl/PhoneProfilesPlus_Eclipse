@@ -282,18 +282,6 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	{
 		super.onStart();
 
-		if (PhoneProfilesPreferencesActivity.getInvalidateEditor(true))
-		{
-			//Log.d("EditorProfilesActivity.onStart", "invalidate");
-
-			// refresh activity
-			Intent refresh = new Intent(getBaseContext(), EditorProfilesActivity.class);
-			startActivity(refresh);
-			finish();
-			
-			return;
-		}
-		
 		//Log.d("EditorProfilesActivity.onStart", "xxxx");
 		
 	}
@@ -331,7 +319,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			
 			intent = new Intent(getBaseContext(), PhoneProfilesPreferencesActivity.class);
 
-			startActivity(intent);
+			startActivityForResult(intent, GlobalData.REQUEST_CODE_APPLICATION_PREFERENCES);
 
 			return true;
 		case R.id.menu_export:
@@ -518,6 +506,22 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			// redraw list fragment after finish EventPreferencesFragmentActivity
 			long event_id = data.getLongExtra(GlobalData.EXTRA_EVENT_ID, 0);
 			onRedrawEventListFragment(profilesDataWrapper.getEventById(event_id));
+		}
+		else
+		if (requestCode == GlobalData.REQUEST_CODE_APPLICATION_PREFERENCES)
+		{
+			boolean restart = data.getBooleanExtra(GlobalData.EXTRA_RESET_EDITOR, false); 
+
+			profilesDataWrapper.getActivateProfileHelper().showNotification(profilesDataWrapper.getActivatedProfile());
+			profilesDataWrapper.getActivateProfileHelper().updateWidget();
+			
+			if (restart)
+			{
+				// refresh activity for special changes
+				Intent refresh = new Intent(getBaseContext(), EditorProfilesActivity.class);
+				startActivity(refresh);
+				finish();
+			}
 		}
 		else
 		{
@@ -783,9 +787,10 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	}
 	
 	public void onProfileOrderChanged() {
+		// no needed for service
 		// send message into service
         //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
-		serviceCommunication.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
+		//serviceCommunication.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
 	}
 
 	public void onProfileCountChanged() {

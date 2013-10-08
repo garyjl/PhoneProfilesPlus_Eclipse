@@ -155,11 +155,6 @@ public class EditorProfileListFragment extends SherlockFragment {
 
 		super.onCreate(savedInstanceState);
 		
-		// ak sa ma refreshnut aktivita, nebudeme robit nic, co je v onStart
-		if (PhoneProfilesPreferencesActivity.getInvalidateEditor(false))
-			return;
-		
-		
         filterType = getArguments() != null ? 
         		getArguments().getInt(FILTER_TYPE_ARGUMENT, EditorProfileListFragment.FILTER_TYPE_ALL) : 
         			EditorProfileListFragment.FILTER_TYPE_ALL;
