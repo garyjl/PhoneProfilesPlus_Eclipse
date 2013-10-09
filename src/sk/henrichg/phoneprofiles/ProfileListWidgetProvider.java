@@ -8,6 +8,8 @@ import android.appwidget.AppWidgetProviderInfo;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -192,7 +194,7 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 			widget.setOnClickPendingIntent(R.id.widget_profile_list_header, pendingIntent);
 
 			widget.setRemoteAdapter(appWidgetId, R.id.widget_profile_list, svcIntent);
-
+			
 			//TODO
 			// The empty view is displayed when the collection has no items. 
 	        // It should be in the same layout used to instantiate the RemoteViews
@@ -229,6 +231,18 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 		}
 	}
 	
+	private void doOnUpdate(Context ctxt, AppWidgetManager appWidgetManager, int appWidgetId)
+	{
+		Bundle myOptions;
+		if (android.os.Build.VERSION.SDK_INT >= 16)
+			myOptions = appWidgetManager.getAppWidgetOptions (appWidgetId);
+		else
+			myOptions = null;
+        setLayoutParams(ctxt, appWidgetManager, appWidgetId, myOptions);
+    	RemoteViews widget = buildLayout(ctxt, appWidgetManager, appWidgetId, isLargeLayout);			
+    	appWidgetManager.updateAppWidget(appWidgetId, widget);
+	}
+	
 	@Override
 	public void onUpdate(Context ctxt, AppWidgetManager appWidgetManager, int[] appWidgetIds)
 	{
@@ -238,14 +252,7 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 
 		for (int i=0; i<appWidgetIds.length; i++)
 		{
-			Bundle myOptions;
-			if (android.os.Build.VERSION.SDK_INT >= 16)
-				myOptions = appWidgetManager.getAppWidgetOptions (appWidgetIds[i]);
-			else
-				myOptions = null;
-	        setLayoutParams(ctxt, appWidgetManager, appWidgetIds[i], myOptions);
-        	RemoteViews widget = buildLayout(ctxt, appWidgetManager, appWidgetIds[i], isLargeLayout);			
-        	appWidgetManager.updateAppWidget(appWidgetIds[i], widget);
+			doOnUpdate(ctxt, appWidgetManager, appWidgetIds[i]);
 		}
 			    
 		super.onUpdate(ctxt, appWidgetManager, appWidgetIds);
@@ -257,7 +264,10 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 
 		String action = intent.getAction();
 		
-		//Log.e("ProfileListWidgetProvider.onReceive","action="+action);
+		Log.e("ProfileListWidgetProvider.onReceive","action="+action);
+
+		int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
+				AppWidgetManager.INVALID_APPWIDGET_ID);
 		
 		createProfilesDataWrapper();
 
@@ -266,28 +276,28 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 		{
 			int spanX = intent.getIntExtra("spanX", 1);
 			int spanY = intent.getIntExtra("spanY", 1);
-			//Log.e("ProfileListWidgetProvider.onReceive","spanX="+spanX);
-			//Log.e("ProfileListWidgetProvider.onReceive","spanY="+spanY);
-			int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-													AppWidgetManager.INVALID_APPWIDGET_ID);
+			Log.e("ProfileListWidgetProvider.onReceive","spanX="+spanX);
+			Log.e("ProfileListWidgetProvider.onReceive","spanY="+spanY);
 			//Log.e("ProfileListWidgetProvider.onReceive","appWidgetId="+appWidgetId);
 
-			
 			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-			
-	        setLayoutParamsMotorola(spanX, spanY);
+	        setLayoutParamsMotorola(context, spanX, spanY, appWidgetId);
 	       	RemoteViews layout;
 	       	layout = buildLayout(context, appWidgetManager, appWidgetId, isLargeLayout);
 	       	appWidgetManager.updateAppWidget(appWidgetId, layout);
-			
 		}
 		else
-			updateWidget(context);
+		if ((action != null) &&
+		    (action.equalsIgnoreCase(INTENT_REFRESH_LISTWIDGET)))
+			updateWidgets(context);
 	}
 	
 	private void setLayoutParams(Context context, AppWidgetManager appWidgetManager,
             int appWidgetId, Bundle newOptions)
 	{
+		String preferenceKey = "isLargeLayout_"+appWidgetId;
+		SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+
 		int minHeight;
 		if (newOptions != null)
 		{
@@ -301,10 +311,13 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 	        minHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
 	        //int maxHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
 
-			//Log.e("ProfileListWidgetProvider.setLayoutParams","minHeight="+minHeight);
-			
 			if (minHeight == 0)
-				return;
+			{
+				minHeight = appWidgetManager.getAppWidgetInfo(appWidgetId).minHeight;
+			}
+
+			Log.e("ProfileListWidgetProvider.setLayoutParams","minHeight="+minHeight);
+			
 		}
 		else
 		{
@@ -312,8 +325,8 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 			minHeight = appWidgetManager.getAppWidgetInfo(appWidgetId).minHeight;
 			//Log.e("ProfileListWidgetProvider.setLayoutParams"," null minHeight="+minHeight);
 
-			if (minHeight == 0)
-				return;
+			//if (minHeight == 0)
+			//	return;
 		}
 
         if (isKeyguard)
@@ -332,9 +345,19 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 	            isLargeLayout = true;
 	        }
     	}
+        
+		if (preferences.contains(preferenceKey))
+			isLargeLayout = preferences.getBoolean(preferenceKey, true);
+		else
+		{
+			Editor editor = preferences.edit();
+			editor.putBoolean(preferenceKey, isLargeLayout);
+			editor.commit();
+		}
+        
 	}
 
-	private void setLayoutParamsMotorola(int spanX, int spanY)
+	private void setLayoutParamsMotorola(Context context, int spanX, int spanY, int appWidgetId)
 	{
 		isKeyguard = false;
         if (spanY == 1) {
@@ -342,6 +365,13 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
         } else {
             isLargeLayout = true;
         }
+        
+		String preferenceKey = "isLargeLayout_"+appWidgetId;
+		SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+
+		Editor editor = preferences.edit();
+		editor.putBoolean(preferenceKey, isLargeLayout);
+		editor.commit();
 	}
 	
     @Override
@@ -351,20 +381,35 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 		//Log.e("ProfileListWidgetProvider.onAppWidgetOptionsChanged","xxx");
 
 		createProfilesDataWrapper();
-    	
-        setLayoutParams(context, appWidgetManager, appWidgetId, newOptions);
-       	RemoteViews layout;
-       	layout = buildLayout(context, appWidgetManager, appWidgetId, isLargeLayout);
-       	appWidgetManager.updateAppWidget(appWidgetId, layout);
+		
+		String preferenceKey = "isLargeLayout_"+appWidgetId;
+		SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+		
+		// remove preference, will by reseted in setLayoutParams
+		Editor editor = preferences.edit();
+		editor.remove(preferenceKey);
+		editor.commit();
+		
+		
+		updateWidget(context, appWidgetId);
     }	
 
-	private void updateWidget(Context context) {
+	private void updateWidget(Context context, int appWidgetId) {
+		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+
+	    doOnUpdate(context, appWidgetManager, appWidgetId);
+	    if (isLargeLayout)
+	    	appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_profile_list);
+	}	
+	
+	private void updateWidgets(Context context) {
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 	    int appWidgetIds[] = appWidgetManager.getAppWidgetIds(new ComponentName(context, ProfileListWidgetProvider.class));
 
-	    onUpdate(context, appWidgetManager, appWidgetIds);
-	    if (isLargeLayout)
-	    	appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_profile_list);
+		for (int i=0; i<appWidgetIds.length; i++)
+		{
+			updateWidget(context, appWidgetIds[i]);
+		}
 	}	
 	
 }
