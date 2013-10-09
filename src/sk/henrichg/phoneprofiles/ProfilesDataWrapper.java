@@ -23,12 +23,21 @@ public class ProfilesDataWrapper {
 						int monoVal)
 	{
 		context = c;
-		forGUI = fgui;
-		monochrome = mono;
-		monochromeValue = monoVal; 
+		
+		setParameters(fgui, mono, monoVal); 
 		
 		databaseHandler = getDatabaseHandler();
 		activateProfileHelper = getActivateProfileHelper();
+	}
+	
+	public void setParameters( 
+			boolean fgui, 
+			boolean mono, 
+			int monoVal)
+	{
+		forGUI = fgui;
+		monochrome = mono;
+		monochromeValue = monoVal; 
 	}
 	
 	public DatabaseHandler getDatabaseHandler()

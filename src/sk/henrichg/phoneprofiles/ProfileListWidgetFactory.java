@@ -21,6 +21,8 @@ import android.widget.RemoteViewsService;
 @SuppressLint("NewApi")
 public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
 
+	private ProfilesDataWrapper profilesDataWrapper;
+
 	private Context ctxt=null;
 	//private int appWidgetId;
 	private List<Profile> profileList;
@@ -31,8 +33,32 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
                                        AppWidgetManager.INVALID_APPWIDGET_ID);*/
 	}
   
+	public void createProfilesDataWrapper()
+	{
+		GlobalData.loadPreferences(GlobalData.context);
+		
+		int monochromeValue = 0xFF;
+		if (GlobalData.applicationWidgetListIconLightness.equals("0")) monochromeValue = 0x00;
+		if (GlobalData.applicationWidgetListIconLightness.equals("25")) monochromeValue = 0x40;
+		if (GlobalData.applicationWidgetListIconLightness.equals("50")) monochromeValue = 0x80;
+		if (GlobalData.applicationWidgetListIconLightness.equals("75")) monochromeValue = 0xC0;
+		if (GlobalData.applicationWidgetListIconLightness.equals("100")) monochromeValue = 0xFF;
+
+		if (profilesDataWrapper == null)
+		{
+			profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true,  
+														GlobalData.applicationWidgetListIconColor.equals("1"), 
+														monochromeValue);
+		}
+		else
+		{
+			profilesDataWrapper.setParameters(true, GlobalData.applicationWidgetListIconColor.equals("1"), 
+														monochromeValue);
+		}
+	}
+	
 	public void onCreate() {
-		Log.e("ProfileListWidgetFactory.onCreate","xxx");
+		//Log.e("ProfileListWidgetFactory.onCreate","xxx");
 	}
   
 	public void onDestroy() {
@@ -76,7 +102,7 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 	}
 	
 	public RemoteViews getViewAt(int position) {
-		Log.e("ProfileListWidgetFactory.getViewAt","xxx");
+		//Log.e("ProfileListWidgetFactory.getViewAt","xxx");
 		
 		
 		RemoteViews row=new RemoteViews(ctxt.getPackageName(), R.layout.profile_list_widget_item);
@@ -165,12 +191,14 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 	}
 
 	public void onDataSetChanged() {
-		Log.e("ProfileListWidgetFactory.onDataSetChanged","xxx");
+		//Log.e("ProfileListWidgetFactory.onDataSetChanged","xxx");
 
-		ProfileListWidgetProvider.createProfilesDataWrapper(true);
+		createProfilesDataWrapper();
 		
-		ProfileListWidgetProvider.profilesDataWrapper.invalidateProfileList();
-		profileList = ProfileListWidgetProvider.profilesDataWrapper.getProfileList();
+		profilesDataWrapper.invalidateProfileList();
+		profileList = profilesDataWrapper.getProfileList();
+		//Log.e("ProfileListWidgetFactory.onDataSetChanged",""+profileList);
+		
 	    Collections.sort(profileList, new ProfileComparator());
 	}
 	
