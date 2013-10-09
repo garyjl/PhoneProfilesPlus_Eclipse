@@ -125,6 +125,8 @@
     <string name="import_profiles_alert_title">Import profilů</string>
     <string name="import_profiles_alert_message">Jste si jisti</string>
     <string name="import_profiles_alert_error">Chyba při importu profilů</string>
+    <string name="export_profiles_alert_title">Export profilů</string>
+    <string name="export_profiles_alert_message">Jste si jisti</string>
     <string name="export_profiles_alert_error">Chyba při exportu profilů</string>
     <string name="profile_preferences_deviceMobileData">Mobilní data</string>
     <string name="profile_preferences_deviceMobileDataPrefs">Nastavení mobilních dat</string>

@@ -87,22 +87,43 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 		// header
 		if (GlobalData.applicationWidgetListHeader || (!largeLayout))
 		{
-			Profile profile = profilesDataWrapper.getActivatedProfile();
+			int monochromeValue = 0xFF;
+			if (GlobalData.applicationWidgetListIconLightness.equals("0")) monochromeValue = 0x00;
+			if (GlobalData.applicationWidgetListIconLightness.equals("25")) monochromeValue = 0x40;
+			if (GlobalData.applicationWidgetListIconLightness.equals("50")) monochromeValue = 0x80;
+			if (GlobalData.applicationWidgetListIconLightness.equals("75")) monochromeValue = 0xC0;
+			if (GlobalData.applicationWidgetListIconLightness.equals("100")) monochromeValue = 0xFF;
+			
+			Profile profile = profilesDataWrapper.getDatabaseHandler().getActivatedProfile();
 
 			boolean isIconResourceID;
 			String iconIdentifier;
 			String profileName;
 			if (profile != null)
 			{
+				profile.generateIconBitmap(GlobalData.context, 
+						GlobalData.applicationWidgetListIconColor.equals("1"), 
+						monochromeValue);
+				profile.generatePreferencesIndicator(GlobalData.context, 
+						GlobalData.applicationWidgetListIconColor.equals("1"), 
+						monochromeValue);
 				isIconResourceID = profile.getIsIconResourceID();
 				iconIdentifier = profile.getIconIdentifier();
 				profileName = profile._name;
 			}
 			else
 			{
-				isIconResourceID = true;
-				iconIdentifier = GUIData.PROFILE_ICON_DEFAULT;
-				profileName = ctxt.getResources().getString(R.string.profiles_header_profile_name_no_activated);
+				// create empty profile and set icon resource
+				profile = new Profile();
+				profile._name = ctxt.getResources().getString(R.string.profiles_header_profile_name_no_activated);
+				profile._icon = GUIData.PROFILE_ICON_DEFAULT+"|1";
+
+				profile.generateIconBitmap(GlobalData.context, 
+						GlobalData.applicationWidgetListIconColor.equals("1"), 
+						monochromeValue);
+				isIconResourceID = profile.getIsIconResourceID();
+				iconIdentifier = profile.getIconIdentifier();
+				profileName = profile._name;
 			}
 	        if (isIconResourceID)
 	        {
@@ -134,9 +155,10 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 			widget.setTextViewText(R.id.widget_profile_list_header_profile_name, profileName);
 			if (GlobalData.applicationWidgetListPrefIndicator)
 			{
-				if (profile == null)
-					widget.setImageViewResource(R.id.widget_profile_list_header_profile_pref_indicator, R.drawable.ic_empty);
-				else
+				//// for no activated profile are set name as R.string.profiles_header_profile_name_no_activated
+				//if (profile._name.equals(ctxt.getResources().getString(R.string.profiles_header_profile_name_no_activated)))
+				//	widget.setImageViewResource(R.id.widget_profile_list_header_profile_pref_indicator, R.drawable.ic_empty);
+				//else
 	        		widget.setImageViewBitmap(R.id.widget_profile_list_header_profile_pref_indicator, profile._preferencesIndicator);
 			}
 			if (largeLayout)
@@ -154,13 +176,6 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 			}
 	        if (GlobalData.applicationWidgetListIconColor.equals("1"))
 	        {
-				int monochromeValue = 0xFF;
-				if (GlobalData.applicationWidgetListIconLightness.equals("0")) monochromeValue = 0x00;
-				if (GlobalData.applicationWidgetListIconLightness.equals("25")) monochromeValue = 0x40;
-				if (GlobalData.applicationWidgetListIconLightness.equals("50")) monochromeValue = 0x80;
-				if (GlobalData.applicationWidgetListIconLightness.equals("75")) monochromeValue = 0xC0;
-				if (GlobalData.applicationWidgetListIconLightness.equals("100")) monochromeValue = 0xFF;
-	        	
 	        	Bitmap bitmap = BitmapFactory.decodeResource(ctxt.getResources(), R.drawable.ic_profile_activated);
 	        	bitmap = BitmapManipulator.monochromeBitmap(bitmap, monochromeValue, ctxt);
 				widget.setImageViewBitmap(R.id.widget_profile_list_header_profile_activated, bitmap);
@@ -184,6 +199,12 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 			//}
 
 			widget.setRemoteAdapter(appWidgetId, R.id.widget_profile_list, svcIntent);
+
+			//TODO
+			// The empty view is displayed when the collection has no items. 
+	        // It should be in the same layout used to instantiate the RemoteViews
+	        // object above.
+	        //widget.setEmptyView(R.id.widget_profile_list, R.id.widget_profile_list_empty_view);
 			
 			Intent clickIntent=new Intent(ctxt, BackgroundActivateProfileActivity.class);
 			clickIntent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_WIDGET);
@@ -209,10 +230,13 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 		return widget;
 	}
 	
-	public static void createProfilesDataWrapper()
+	public static void createProfilesDataWrapper(boolean reset)
 	{
-		if (profilesDataWrapper == null)
+		if ((profilesDataWrapper == null) || reset)
 		{
+			if (profilesDataWrapper != null)
+				profilesDataWrapper.invalidateProfileList();
+			
 			int monochromeValue = 0xFF;
 			if (GlobalData.applicationWidgetListIconLightness.equals("0")) monochromeValue = 0x00;
 			if (GlobalData.applicationWidgetListIconLightness.equals("25")) monochromeValue = 0x40;
@@ -229,11 +253,11 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 	@Override
 	public void onUpdate(Context ctxt, AppWidgetManager appWidgetManager, int[] appWidgetIds)
 	{
-		//Log.e("ProfileListWidgetProvider.onUpdate","xxx");
+		Log.e("ProfileListWidgetProvider.onUpdate","xxx");
 		
 		GlobalData.loadPreferences(GlobalData.context);
 
-		createProfilesDataWrapper();
+		createProfilesDataWrapper(false);
 
 		//ProfileListWidgetProvider.profilesDataWrapper.reloadProfilesData();
 		
@@ -257,7 +281,9 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 	public void onReceive(Context context, Intent intent) {
 		super.onReceive(context, intent);
 
-		//Log.e("ProfileListWidgetProvider.onReceive","xxx");
+		String action = intent.getAction();
+		
+		Log.e("ProfileListWidgetProvider.onReceive","action="+action);
 		
 	//	String action = intent.getAction();
 	//	if ((action != null) &&
@@ -311,31 +337,29 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager,
             int appWidgetId, Bundle newOptions) 
     {
-		//Log.e("ProfileListWidgetProvider.onAppWidgetOptionsChanged","xxx");
+		Log.e("ProfileListWidgetProvider.onAppWidgetOptionsChanged","xxx");
 
-		GlobalData.loadPreferences(GlobalData.context);
+		//GlobalData.loadPreferences(GlobalData.context);
 
-		createProfilesDataWrapper();
+		//createProfilesDataWrapper();
     	
         setLayoutParams(context, appWidgetManager, appWidgetId, newOptions);
         RemoteViews layout;
         layout = buildLayout(context, appWidgetManager, appWidgetId, isLargeLayout);
         appWidgetManager.updateAppWidget(appWidgetId, layout);
-        if (isLargeLayout)
-        {
-	    	appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_profile_list);
-        }
     }	
 
 	private void updateWidget(Context context) {
 		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 	    int appWidgetIds[] = appWidgetManager.getAppWidgetIds(new ComponentName(context, ProfileListWidgetProvider.class));
 
+	    /*
 	    if (profilesDataWrapper != null)
 	    {
 	    	profilesDataWrapper.invalidateProfileList();
 	    	profilesDataWrapper = null;
 	    }
+	    */
 	    
 	    onUpdate(context, appWidgetManager, appWidgetIds);
 	    if (isLargeLayout)

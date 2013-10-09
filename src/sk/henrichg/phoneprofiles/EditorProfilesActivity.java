@@ -637,42 +637,72 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 
 	private void exportData()
 	{
-		new AsyncTask<Void, Integer, Integer>() {
-			
-			@Override
-			protected void onPreExecute()
-			{
-				super.onPreExecute();
-			}
-			
-			@Override
-			protected Integer doInBackground(Void... params) {
-				return profilesDataWrapper.getDatabaseHandler().exportDB();
-			}
-			
-			@Override
-			protected void onPostExecute(Integer result)
-			{
-				super.onPostExecute(result);
-				
-				if (result == 1)
-				{
+		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+		dialogBuilder.setTitle(getResources().getString(R.string.export_profiles_alert_title));
+		dialogBuilder.setMessage(getResources().getString(R.string.export_profiles_alert_message) + "?");
+		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
 
-					// toast notification
-					Toast msg = Toast.makeText(getBaseContext(), 
-							getResources().getString(R.string.toast_export_ok), 
-							Toast.LENGTH_LONG);
-					msg.show();
-				
-				}
-				else
-				{
-					importExportErrorDialog(2);
-				}
-			}
-			
-		}.execute();
+		final Activity activity = this;
 		
+		dialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+			
+			public void onClick(DialogInterface dialog, int which) {
+				
+				class ExportAsyncTask extends AsyncTask<Void, Integer, Integer> 
+				{
+					private ProgressDialog dialog;
+					
+					ExportAsyncTask()
+					{
+				         this.dialog = new ProgressDialog(activity);
+					}
+					
+					@Override
+					protected void onPreExecute()
+					{
+						super.onPreExecute();
+						
+					     this.dialog.setMessage(getResources().getString(R.string.export_profiles_alert_title));
+					     this.dialog.show();						
+					}
+					
+					@Override
+					protected Integer doInBackground(Void... params) {
+						return profilesDataWrapper.getDatabaseHandler().exportDB();
+					}
+					
+					@Override
+					protected void onPostExecute(Integer result)
+					{
+						super.onPostExecute(result);
+						
+					    if (dialog.isShowing())
+				            dialog.dismiss();
+						
+						if (result == 1)
+						{
+
+							// toast notification
+							Toast msg = Toast.makeText(getBaseContext(), 
+									getResources().getString(R.string.toast_export_ok), 
+									Toast.LENGTH_LONG);
+							msg.show();
+						
+						}
+						else
+						{
+							importExportErrorDialog(2);
+						}
+					}
+					
+				}
+				
+				new ExportAsyncTask().execute();
+				
+			}
+		});
+		dialogBuilder.setNegativeButton(android.R.string.no, null);
+		dialogBuilder.show();
 	}
 	
 	

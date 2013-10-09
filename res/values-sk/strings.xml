@@ -122,9 +122,11 @@
     <string name="toast_export_ok">Profily sú exportnuté</string>
     <string name="toast_import_ok">Profily sú importnuté</string>
     <string name="import_profiles_alert_title">Import profilov</string>
-    <string name="import_profiles_alert_message">Ste si istý</string>
+    <string name="import_profiles_alert_message">Ste si istí</string>
     <string name="import_profiles_alert_error">Chyba pri importe profilov</string>
-    <string name="export_profiles_alert_error">Chyba pii exporte profilov</string>
+    <string name="export_profiles_alert_title">Export profilov</string>
+    <string name="export_profiles_alert_message">Sste si istí</string>
+    <string name="export_profiles_alert_error">Chyba pri exporte profilov</string>
     <string name="profile_preferences_deviceMobileData">Mobilné dáta</string>
     <string name="profile_preferences_deviceMobileDataPrefs">Nastavenia mobilných dát</string>
     <string name="phone_profiles_pref_notificationStatusBarStyle_color">Farebné</string>
@@ -133,9 +135,9 @@
     <string name="profile_preferences_deviceRunApplicationPackageName">Aplikácia</string>
     <string name="profile_preferences_deviceRunApplicationChange">Spustiť aplikáciu</string>
     <string name="alert_title_delete_all_profiles">Vymazať všetky profily</string>
-    <string name="alert_message_delete_all_profiles">Ste si istý</string>
+    <string name="alert_message_delete_all_profiles">Ste si istí</string>
     <string name="alert_title_delete_all_events">Vymazať všetky udalosti</string>
-    <string name="alert_message_delete_all_events">Ste si istý</string>
+    <string name="alert_message_delete_all_events">Ste si istí</string>
     <string name="phone_profiles_pref_applicationTheme">Téma aplikácie</string>
     <string name="phone_profiles_pref_applicationTheme_light">Svetlá téma</string>
     <string name="phone_profiles_pref_applicationTheme_dark">Tmavá téma</string>

@@ -30,7 +30,7 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 	}
   
 	public void onCreate() {
-		// no-op
+		Log.e("ProfileListWidgetFactory.onCreate","xxx");
 	}
   
 	public void onDestroy() {
@@ -74,7 +74,7 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 	}
 	
 	public RemoteViews getViewAt(int position) {
-		//Log.e("ProfileListWidgetFactory.getViewAt","xxx");
+		Log.e("ProfileListWidgetFactory.getViewAt","xxx");
 		
 		
 		RemoteViews row=new RemoteViews(ctxt.getPackageName(), R.layout.profile_list_widget_item);
@@ -157,11 +157,11 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 	}
 
 	public void onDataSetChanged() {
-		//Log.e("ProfileListWidgetFactory.onDataSetChanged","xxx");
+		Log.e("ProfileListWidgetFactory.onDataSetChanged","xxx");
 
+		ProfileListWidgetProvider.createProfilesDataWrapper(true);
 		
-		ProfileListWidgetProvider.createProfilesDataWrapper();
-		
+		ProfileListWidgetProvider.profilesDataWrapper.invalidateProfileList();
 		profileList = ProfileListWidgetProvider.profilesDataWrapper.getProfileList();
 	    Collections.sort(profileList, new ProfileComparator());
 	}
