@@ -264,7 +264,7 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 
 		String action = intent.getAction();
 		
-		Log.e("ProfileListWidgetProvider.onReceive","action="+action);
+		//Log.e("ProfileListWidgetProvider.onReceive","action="+action);
 
 		int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
 				AppWidgetManager.INVALID_APPWIDGET_ID);
@@ -276,8 +276,8 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 		{
 			int spanX = intent.getIntExtra("spanX", 1);
 			int spanY = intent.getIntExtra("spanY", 1);
-			Log.e("ProfileListWidgetProvider.onReceive","spanX="+spanX);
-			Log.e("ProfileListWidgetProvider.onReceive","spanY="+spanY);
+			//Log.e("ProfileListWidgetProvider.onReceive","spanX="+spanX);
+			//Log.e("ProfileListWidgetProvider.onReceive","spanY="+spanY);
 			//Log.e("ProfileListWidgetProvider.onReceive","appWidgetId="+appWidgetId);
 
 			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
@@ -316,7 +316,7 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 				minHeight = appWidgetManager.getAppWidgetInfo(appWidgetId).minHeight;
 			}
 
-			Log.e("ProfileListWidgetProvider.setLayoutParams","minHeight="+minHeight);
+			//Log.e("ProfileListWidgetProvider.setLayoutParams","minHeight="+minHeight);
 			
 		}
 		else

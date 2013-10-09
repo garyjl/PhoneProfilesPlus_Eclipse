@@ -407,7 +407,7 @@ public class EditorEventListFragment extends SherlockFragment {
 	
 	public void changeListOrder(int orderType)
 	{
-		Log.e("EditorEventListFragment.changeListOrder","orderType="+orderType);
+		//Log.e("EditorEventListFragment.changeListOrder","orderType="+orderType);
 		this.orderType = orderType;
 		if (eventListAdapter != null)
 		{
