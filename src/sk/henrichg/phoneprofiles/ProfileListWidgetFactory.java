@@ -11,6 +11,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.util.TypedValue;
 import android.widget.RemoteViews;
@@ -90,7 +92,13 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 		{
     		row.setImageViewBitmap(R.id.widget_profile_list_item_profile_icon, profile._iconBitmap);
 		}
-		row.setTextViewText(R.id.widget_profile_list_item_profile_name, profile._name);
+		if ((!GlobalData.applicationWidgetListHeader) && (profile._checked))
+			row.setTextViewText(R.id.widget_profile_list_item_profile_name, 
+					// hm, interesting, how to set bold style for RemoteView text ;-)
+					new SpannableStringBuilder(Html.fromHtml("<b>"+profile._name+"</b>"))
+					);
+		else
+			row.setTextViewText(R.id.widget_profile_list_item_profile_name, profile._name);
 		int red = 0xFF;
 		int green = 0xFF;
 		int blue = 0xFF;
