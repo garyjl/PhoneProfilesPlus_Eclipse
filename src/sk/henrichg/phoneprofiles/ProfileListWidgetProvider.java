@@ -195,11 +195,10 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 
 			widget.setRemoteAdapter(appWidgetId, R.id.widget_profile_list, svcIntent);
 			
-			//TODO
 			// The empty view is displayed when the collection has no items. 
 	        // It should be in the same layout used to instantiate the RemoteViews
 	        // object above.
-	        //widget.setEmptyView(R.id.widget_profile_list, R.id.widget_profile_list_empty_view);
+	        widget.setEmptyView(R.id.widget_profile_list, R.id.widget_profiles_list_empty);
 			
 			Intent clickIntent=new Intent(ctxt, BackgroundActivateProfileActivity.class);
 			clickIntent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_WIDGET);

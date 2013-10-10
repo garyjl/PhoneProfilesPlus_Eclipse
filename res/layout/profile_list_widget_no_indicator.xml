@@ -76,6 +76,14 @@
 	        android:padding="10dip"
         	android:divider="@android:color/transparent" >
 	    </ListView>
+	    
+	    <TextView
+		    android:id="@+id/widget_profiles_list_empty"
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent"
+		    android:text="@string/profile_list_empty"
+		    android:gravity="center"
+		    android:textSize="15sp" />
 	
 	</LinearLayout>
 </RelativeLayout>
