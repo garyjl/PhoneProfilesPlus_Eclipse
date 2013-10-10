@@ -28,6 +28,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class EditorProfileListFragment extends SherlockFragment {
 
@@ -169,6 +170,8 @@ public class EditorProfileListFragment extends SherlockFragment {
 		final EditorProfileListFragment fragment = this;
 		
 		new AsyncTask<Void, Integer, Void>() {
+
+			boolean defaultProfilesGenerated = false;
 			
 			@Override
 			protected void onPreExecute()
@@ -181,8 +184,11 @@ public class EditorProfileListFragment extends SherlockFragment {
 			protected Void doInBackground(Void... params) {
 				profileList = EditorProfilesActivity.profilesDataWrapper.getProfileList();
 				if (profileList.size() == 0)
+				{
 					// no profiles in DB, generate default profiles
 					profileList = EditorProfilesActivity.profilesDataWrapper.getDefaultProfileList();
+					defaultProfilesGenerated = true;
+				}
 				// sort list
 				if (filterType != EditorProfileListFragment.FILTER_TYPE_SHOW_IN_ACTIVATOR)
 				   sortAlphabetically();
@@ -201,6 +207,13 @@ public class EditorProfileListFragment extends SherlockFragment {
 				{
 					profileListAdapter = new EditorProfileListAdapter(fragment, EditorProfilesActivity.profilesDataWrapper, filterType);
 					listView.setAdapter(profileListAdapter);
+				}
+				if (defaultProfilesGenerated)
+				{
+					Toast msg = Toast.makeText(fragment.getSherlockActivity(), 
+							getResources().getString(R.string.toast_default_profiles_generated), 
+							Toast.LENGTH_LONG);
+					msg.show();
 				}
 			}
 			

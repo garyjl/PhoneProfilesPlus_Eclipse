@@ -209,6 +209,7 @@
     <string name="editor_drawer_order_profile_name">Název profilu</string>
     <string name="editor_drawer_order_event_type_event_name">Typ události a název události</string>
     <string name="editor_drawer_order_event_type_profile_name">Typ události a název profilu</string>
+    <string name="toast_default_profiles_generated">Přednastavené profily vygenerované</string>
     <string name="default_profile_name_home">Doma</string>
     <string name="default_profile_name_outdoor">Vonku</string>
     <string name="default_profile_name_work">Práce</string>
