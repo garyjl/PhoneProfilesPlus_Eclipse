@@ -180,6 +180,9 @@ public class EditorProfileListFragment extends SherlockFragment {
 			@Override
 			protected Void doInBackground(Void... params) {
 				profileList = EditorProfilesActivity.profilesDataWrapper.getProfileList();
+				if (profileList.size() == 0)
+					// no profiles in DB, generate default profiles
+					profileList = EditorProfilesActivity.profilesDataWrapper.getDefaultProfileList();
 				// sort list
 				if (filterType != EditorProfileListFragment.FILTER_TYPE_SHOW_IN_ACTIVATOR)
 				   sortAlphabetically();
@@ -346,39 +349,9 @@ public class EditorProfileListFragment extends SherlockFragment {
 		else
 		{
 			// pridanie noveho profilu
-			_profile = new Profile(
-								  getResources().getString(R.string.profile_name_default), 
-								  GUIData.PROFILE_ICON_DEFAULT + "|1", 
-								  false, 
-								  0,
-								  0,
-					         	  "-1|1",
-					         	  "-1|1",
-					         	  "-1|1",
-					         	  "-1|1",
-					         	  "-1|1",
-					         	  "-1|1",
-					         	  false,
-					         	  Settings.System.DEFAULT_RINGTONE_URI.toString(),
-					         	  false,
-					         	  Settings.System.DEFAULT_NOTIFICATION_URI.toString(),
-					         	  false,
-					         	  Settings.System.DEFAULT_ALARM_ALERT_URI.toString(),
-					         	  0,
-					         	  0,
-					         	  0,
-					         	  0,
-					         	  "-1|1|1",
-					         	  false,
-								  "-|0",
-								  0,
-								  false,
-								  0,
-								  false,
-								  "-",
-								  0,
-								  true
-					);
+			_profile = EditorProfilesActivity.profilesDataWrapper.getNoinitializedProfile(
+							getResources().getString(R.string.profile_name_default), 
+							GUIData.PROFILE_ICON_DEFAULT, 0); 
 
 			// add profile into db and set id and order
 			databaseHandler.addProfile(_profile);

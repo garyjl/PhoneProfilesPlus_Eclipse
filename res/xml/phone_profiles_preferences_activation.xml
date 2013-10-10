@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 	<CheckBoxPreference 
-	    android:key="applicationLongClickActivation"
-	    android:title="@string/phone_profiles_pref_applicationLongClickActivation"
-	    android:defaultValue="false" />
-	<CheckBoxPreference 
-	    android:key="applicationClose"
-	    android:title="@string/phone_profiles_pref_applicationClose"
-	    android:defaultValue="true" />
- 		<CheckBoxPreference 
 	    android:key="applicationAlert"
 	    android:title="@string/phone_profiles_pref_applicationAlert"
 	    android:defaultValue="true" />
