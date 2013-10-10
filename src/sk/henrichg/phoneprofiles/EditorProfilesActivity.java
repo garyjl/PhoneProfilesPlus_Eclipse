@@ -22,6 +22,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -79,6 +80,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	Integer[] drawerItemsIcon;
 	EditorDrawerListAdapter drawerAdapter;
 	
+	private int drawerSelectedItem = -1;
 	private int profilesFilterType = EditorProfileListFragment.FILTER_TYPE_SHOW_IN_ACTIVATOR;
 	private int eventsFilterType = EditorEventListFragment.FILTER_TYPE_ALL;
 	private int eventsOrderType = EditorEventListFragment.ORDER_TYPE_EVENT_NAME;
@@ -269,7 +271,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 
 		// select first drawer item
         if (savedInstanceState == null) {
-            selectItem(1); // show profile filter FILTER_TYPE_PROFILES_SHOW_IN_ACTIVATOR 
+            selectDrawerItem(1); // show profile filter FILTER_TYPE_PROFILES_SHOW_IN_ACTIVATOR 
         }
         
 		//Log.d("EditorProfilesActivity.onCreate", "xxxx");
@@ -357,16 +359,19 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 
         public void onItemClick(AdapterView<?> parent, View view, int position,
                 long id) {
-            selectItem(position);
+            selectDrawerItem(position);
         }
     }
  
-    private void selectItem(int position) {
+    private void selectDrawerItem(int position) {
  
         // Locate Position
+
+    	drawerSelectedItem = position;
+    	
     	Fragment fragment;
 	    Bundle arguments;
-    	
+	    
         switch (position) {
         case 0:
         	profilesFilterType = EditorProfileListFragment.FILTER_TYPE_ALL;
@@ -450,7 +455,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
         // set filter statusbar title
         filterStatusbarTitle.setText(drawerItemsSubtitle[position]);
         // show/hide order
-        if (position < 2)
+        if (position < 3)
         {
         	orderLabel.setVisibility(View.GONE);
         	orderSpinner.setVisibility(View.GONE);
@@ -726,6 +731,21 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		startActivity(intent);
 		finish();
 	}
+	
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+	    super.onRestoreInstanceState(savedInstanceState);
+	    // Read values from the "savedInstanceState"-object and put them in your textview
+	    drawerSelectedItem = savedInstanceState.getInt("editor_drawer_selected_item", -1);
+	    selectDrawerItem(drawerSelectedItem);
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+	    // Save the values you need from your textview into "outState"-object
+	    outState.putInt("editor_drawer_selected_item", drawerSelectedItem);
+	    super.onSaveInstanceState(outState);
+	}	
 	
 	 @Override
 	 public void setTitle(CharSequence title) {

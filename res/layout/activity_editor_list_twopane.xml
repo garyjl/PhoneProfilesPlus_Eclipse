@@ -71,39 +71,47 @@
 	    android:id="@+id/editor_drawer_root"
         android:layout_width="240dp"
         android:layout_height="match_parent" 
-	    android:layout_gravity="start" >
+	    android:layout_gravity="start"
+	    android:background="?attr/navigationDrawerBackground"  >
 		
+		<LinearLayout 
+	        android:id="@+id/editor_drawer_order_root"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+        	android:layout_alignParentBottom="true"
+        	android:orientation="vertical" >
+
+		    <TextView
+		        android:id="@+id/editor_drawer_order_title"
+		        android:textColor="?attr/actionMenuTextColor"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:paddingLeft="10dp"
+		        android:ellipsize="end"
+		        android:singleLine="true"
+		        android:textSize="17sp"
+		        android:text="@string/editor_drawer_order_label" />
+		    
+			<Spinner
+	        	android:id="@+id/editor_drawer_order"
+	        	android:layout_width="match_parent"
+	        	android:layout_height="wrap_content"
+	        	style="?attr/actionDropDownStyle"
+	        	android:entries="@array/drawerOrderEvents" />
+		
+		</LinearLayout>
+
 		<ListView
 		    android:id="@+id/editor_drawer_list"
 		    android:layout_width="match_parent"
-		    android:layout_height="match_parent"
+		    android:layout_height="wrap_content"
+		    android:layout_above="@+id/editor_drawer_order_root"
         	android:layout_alignParentTop="true"
-		    android:background="?attr/navigationDrawerBackground"
 		    android:choiceMode="singleChoice"
 		    android:divider="@android:color/transparent"
 		    android:dividerHeight="0dp" />
-
-	    <TextView
-	        android:id="@+id/editor_drawer_order_title"
-	        android:textColor="?attr/actionMenuTextColor"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_above="@+id/editor_drawer_order"
-	        android:paddingLeft="10dp"
-	        android:ellipsize="end"
-	        android:singleLine="true"
-	        android:textSize="17sp"
-	        android:text="@string/editor_drawer_order_label" />
-	    
-		<Spinner
-        	android:id="@+id/editor_drawer_order"
-        	android:layout_width="match_parent"
-        	android:layout_height="wrap_content"
-        	android:layout_alignParentBottom="true"
-        	style="?attr/actionDropDownStyle"
-        	android:entries="@array/drawerOrderEvents" />
-
+				
 	</RelativeLayout>
-		
+    		
 </android.support.v4.widget.DrawerLayout>    
 		
