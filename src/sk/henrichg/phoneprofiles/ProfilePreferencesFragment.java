@@ -44,6 +44,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	private OnRestartProfilePreferences onRestartProfilePreferencesCallback = sDummyOnRestartProfilePreferencesCallback;
 	private OnRedrawProfileListFragment onRedrawProfileListFragmentCallback = sDummyOnRedrawProfileListFragmentCallback;
 
+	// invokes when restart of profile preferences fragment needed (undo preference changes)
 	public interface OnRestartProfilePreferences {
 		/**
 		 * Callback for restart fragment.
@@ -56,6 +57,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		}
 	};
 	
+	// invokes when profile list fragment redraw needed (preference changes accepted)
 	public interface OnRedrawProfileListFragment {
 		/**
 		 * Callback for redraw profile list fragment.

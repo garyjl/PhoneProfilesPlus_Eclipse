@@ -236,6 +236,7 @@ public class Event {
 				// neaktivovat profile, lebo ten zo stack je aktivovany tymto eventom
 				profile = null;
 			}
+			profileStack.remove(profileStack.size()-1);
 		}
 
 		this._status = ESTATUS_PAUSE;
@@ -263,8 +264,7 @@ public class Event {
 		
 		return profile;
 	}
-	
-	
+
 	public String getPreferecesDescription(Context context)
 	{
 		String description;

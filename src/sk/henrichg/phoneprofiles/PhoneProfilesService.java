@@ -1,8 +1,8 @@
 package sk.henrichg.phoneprofiles;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 
-import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +10,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
-import android.util.Log;
 
 public class PhoneProfilesService extends Service {
 	
@@ -18,17 +17,24 @@ public class PhoneProfilesService extends Service {
 	
 	private Context context = null;
 	
-	// TOTO JE PROBLEM!!!
-	// KED PRESUNIE OS SERVICE DO NOVEHO PROCESU, STATIC KOMPONENTY
-	// NEFUNGUJU
-	//public static ProfilesDataWrapper profilesDataWrapper = null;
 	private ProfilesDataWrapper profilesDataWrapper = null;
+	// stack of stored profiles, where are activated after event is paused/stopped
+	private List<Profile> profileStack;
 
 	// messages from GUI
-	public static final int MSG_RELOAD_DATA = 1;
-	public static final int MSG_ACTIVATE_PROFILE = 2;
-	public static final int MSG_ACTIVATE_PROFILE_INTERACTIVE = 3;
+	//public static final int MSG_RELOAD_DATA = 1;
+	//public static final int MSG_ACTIVATE_PROFILE = 2;
+	//public static final int MSG_ACTIVATE_PROFILE_INTERACTIVE = 3;
 	public static final int MSG_PROFILE_ACTIVATED = 4;
+	public static final int MSG_PROFILE_ADDED = 5;
+	public static final int MSG_PROFILE_UPDATED = 6;
+	public static final int MSG_PROFILE_DELETED = 7;
+	public static final int MSG_ALL_PROFILES_DELETED = 8;
+	public static final int MSG_EVENT_ADDED = 9;
+	public static final int MSG_EVENT_UPDATED = 10;
+	public static final int MSG_EVENT_DELETED = 11;
+	public static final int MSG_ALL_EVENTS_DELETED = 12;
+	public static final int MSG_DATA_IMPORTED = 13;
 	
 	// Target we publish for clients to send messages to IncomingHandler.
 	final Messenger messenger = new Messenger(new IncomingHandler(this));   	    
@@ -49,7 +55,7 @@ public class PhoneProfilesService extends Service {
     		PhoneProfilesService service = serviceWakeReference.get();
     		
             switch (msg.what) {
-            case MSG_RELOAD_DATA:
+        /*    case MSG_RELOAD_DATA:
                 service.reloadData();
                 break;
             case MSG_ACTIVATE_PROFILE:
@@ -57,10 +63,40 @@ public class PhoneProfilesService extends Service {
             	break;
             case MSG_ACTIVATE_PROFILE_INTERACTIVE:
             	service.activateProfile(msg.getData().getLong(GlobalData.EXTRA_PROFILE_ID), true);
-            	break;
+            	break;   */
             case MSG_PROFILE_ACTIVATED:
-            	service.setActivatedProfile(msg.getData().getLong(GlobalData.EXTRA_PROFILE_ID));
+            	service.setActivatedProfile(msg.getData().getLong(GlobalData.EXTRA_PROFILE_ID),
+            								msg.getData().getInt(GlobalData.EXTRA_START_APP_SOURCE)
+            			                    );
             	break;
+            case MSG_PROFILE_ADDED:
+            	service.profileAdded(msg.getData().getLong(GlobalData.EXTRA_PROFILE_ID));
+            	break;
+            case MSG_PROFILE_UPDATED:
+            	service.profileUpdated(msg.getData().getLong(GlobalData.EXTRA_PROFILE_ID));
+            	break;
+            case MSG_PROFILE_DELETED:
+            	service.profileDeleted(msg.getData().getLong(GlobalData.EXTRA_PROFILE_ID));
+            	break;
+            case MSG_ALL_PROFILES_DELETED:
+            	service.allProfilesDeleted();
+            	break;
+            case MSG_EVENT_ADDED:
+            	service.eventAdded(msg.getData().getLong(GlobalData.EXTRA_EVENT_ID));
+            	break;
+            case MSG_EVENT_UPDATED:
+            	service.eventUpdated(msg.getData().getLong(GlobalData.EXTRA_EVENT_ID));
+            	break;
+            case MSG_EVENT_DELETED:
+            	service.eventDeleted(msg.getData().getLong(GlobalData.EXTRA_EVENT_ID));
+            	break;
+            case MSG_ALL_EVENTS_DELETED:
+            	service.allEventsDeleted();
+            	break;
+            case MSG_DATA_IMPORTED:
+            	service.reloadData();
+            	break;
+
             default:
                 super.handleMessage(msg);
             }
@@ -122,6 +158,7 @@ public class PhoneProfilesService extends Service {
 	{
 		//Log.d("PhoneProfilesService.reloadData","xxx");
 		profilesDataWrapper.reloadProfilesData();
+		profilesDataWrapper.reloadEventsData();
 	}
 	
 	private void activateProfile(long profile_id, boolean interactive)
@@ -140,10 +177,81 @@ public class PhoneProfilesService extends Service {
     	profilesDataWrapper.activateProfile(profile);
 	}
 	
-	private void setActivatedProfile(long profile_id)
+	private void setActivatedProfile(long profile_id, int startupSource)
 	{
 		//Log.e("PhoneProfilesService.setActivatedProfile",profile_id+"");
 		Profile profile = profilesDataWrapper.getProfileById(profile_id); 
     	profilesDataWrapper.activateProfile(profile);
-	}  
+    	pauseAllEvents();
+	} 
+	
+	// pauses all events without activating profiles from profileStack
+	// for manual activation from gui
+	private void pauseAllEvents()
+	{
+		for (Event event : profilesDataWrapper.getEventList())
+		{
+			if (event._status == Event.ESTATUS_RUNNING)
+				event.pauseEvent(profilesDataWrapper, profileStack);
+		}
+	}
+	
+	private void profileAdded(long profile_id)
+	{
+		Profile profile = profilesDataWrapper.getDatabaseHandler().getProfile(profile_id);
+		// profile order not relevant for service
+		if (profile != null)
+			profilesDataWrapper.getProfileList().add(profile);
+	}
+	
+	private void profileUpdated(long profile_id)
+	{
+		Profile profileInDB = profilesDataWrapper.getDatabaseHandler().getProfile(profile_id);
+		Profile profileInList = profilesDataWrapper.getProfileById(profile_id);
+		int location = profilesDataWrapper.getProfileList().indexOf(profileInList);
+		if (location != -1)
+			profilesDataWrapper.getProfileList().set(location, profileInDB);
+	}
+	
+	private void profileDeleted(long profile_id)
+	{
+		Profile profileInList = profilesDataWrapper.getProfileById(profile_id);
+		profilesDataWrapper.deleteProfile(profileInList);
+	}
+	
+	private void allProfilesDeleted()
+	{
+		profilesDataWrapper.deleteAllProfiles();
+	}
+	
+	private void eventAdded(long event_id)
+	{
+		Event event = profilesDataWrapper.getDatabaseHandler().getEvent(event_id);
+		// event order not relevant for service
+		if (event != null)
+			profilesDataWrapper.getEventList().add(event);
+	}
+	
+	private void eventUpdated(long event_id)
+	{
+		Event eventInDB = profilesDataWrapper.getDatabaseHandler().getEvent(event_id);
+		Event eventInList = profilesDataWrapper.getEventById(event_id);
+		int location = profilesDataWrapper.getEventList().indexOf(eventInList);
+		if (location != -1)
+			profilesDataWrapper.getEventList().set(location, eventInDB);
+	}
+	
+	private void eventDeleted(long event_id)
+	{
+		Event eventInList = profilesDataWrapper.getEventById(event_id);
+		int location = profilesDataWrapper.getEventList().indexOf(eventInList);
+		if (location != -1)
+			profilesDataWrapper.getEventList().remove(location);
+	}
+	
+	private void allEventsDeleted()
+	{
+		profilesDataWrapper.getEventList().clear();
+	}
+	
 }

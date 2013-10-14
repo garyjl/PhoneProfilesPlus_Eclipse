@@ -1,7 +1,6 @@
 package sk.henrichg.phoneprofiles;
 
 import android.os.Bundle;
-import android.view.ContextThemeWrapper;
 import android.widget.Toast;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -203,7 +202,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 		activateProfileHelper.showNotification(profile);
 		activateProfileHelper.updateWidget();
 		
-		serviceCommunication.sendMessageIntoServiceLong(PhoneProfilesService.MSG_PROFILE_ACTIVATED, profile_id);
+		serviceCommunication.sendMessageIntoServiceProfileActivated(profile_id, startupSource);
 
 		if (GlobalData.notificationsToast)
 		{	

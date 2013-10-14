@@ -36,6 +36,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	private OnRestartEventPreferences onRestartEventPreferencesCallback = sDummyOnRestartEventPreferencesCallback;
 	private OnRedrawEventListFragment onRedrawEventListFragmentCallback = sDummyOnRedrawEventListFragmentCallback;
 
+	// invokes when restart of event preferences fragment needed (undo preference changes)
 	public interface OnRestartEventPreferences {
 		/**
 		 * Callback for restart fragment.
@@ -48,6 +49,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		}
 	};
 	
+	// invokes when event list fragment redraw needed (preference changes accepted)
 	public interface OnRedrawEventListFragment {
 		/**
 		 * Callback for redraw event list fragment.

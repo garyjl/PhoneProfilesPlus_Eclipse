@@ -3,6 +3,7 @@ package sk.henrichg.phoneprofiles;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
 import com.actionbarsherlock.app.SherlockFragment;
 
 import android.os.AsyncTask;
@@ -14,7 +15,6 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,22 +46,21 @@ public class EditorEventListFragment extends SherlockFragment {
 	private int orderType = ORDER_TYPE_EVENT_NAME;
 	
 	/**
-	 * The fragment's current callback object, which is notified of list item
-	 * clicks.
+	 * The fragment's current callback objects
 	 */
 	private OnStartEventPreferences onStartEventPreferencesCallback = sDummyOnStartEventPreferencesCallback;
 	private OnFinishEventPreferencesActionMode onFinishEventPreferencesActionModeCallback = sDummyOnFinishEventPreferencesActionModeCallback;
-	private OnEventCountChanged onEventCountChangedCallback = sDummyOnEventCountChangedCallback;
+	//private OnEventCountChanged onEventCountChangedCallback = sDummyOnEventCountChangedCallback;
+	private OnEventAdded onEventAddedCallback = sDummyOnEventAddedCallback; 
+	private OnEventDeleted onEventDeletedCallback = sDummyOnEventDeletedCallback; 
+	private OnAllEventsDeleted onAllEventsDeletedCallback = sDummyOnAllEventsDeletedCallback; 
 	
 	/**
 	 * A callback interface that all activities containing this fragment must
-	 * implement. This mechanism allows activities to be notified of item
-	 * selections.
+	 * implement. This mechanism allows activities to be notified.
 	 */
+	// invoked when start profile preference fragment/activity needed 
 	public interface OnStartEventPreferences {
-		/**
-		 * Callback for when an item has been selected.
-		 */
 		public void onStartEventPreferences(Event event, int filterType, int orderType, boolean afterDelete);
 	}
 
@@ -74,6 +73,7 @@ public class EditorEventListFragment extends SherlockFragment {
 		}
 	};
 	
+	// invoked when action mode finish needed (from event list adapter) 
 	public interface OnFinishEventPreferencesActionMode {
 		public void onFinishEventPreferencesActionMode();
 	}
@@ -83,6 +83,7 @@ public class EditorEventListFragment extends SherlockFragment {
 		}
 	};
 
+	/*
 	public interface OnEventCountChanged {
 		public void onEventCountChanged();
 	}
@@ -91,7 +92,38 @@ public class EditorEventListFragment extends SherlockFragment {
 		public void onEventCountChanged() {
 		}
 	};
+	*/
 
+	// invoked, when event added
+	public interface OnEventAdded {
+		public void onEventAdded(Event event);
+	}
+
+	private static OnEventAdded sDummyOnEventAddedCallback = new OnEventAdded() {
+		public void onEventAdded(Event event) {
+		}
+	};
+
+	// invoked, when event deleted
+	public interface OnEventDeleted {
+		public void onEventDeleted(Event event);
+	}
+
+	private static OnEventDeleted sDummyOnEventDeletedCallback = new OnEventDeleted() {
+		public void onEventDeleted(Event event) {
+		}
+	};
+
+	// invoked, when all events deleted
+	public interface OnAllEventsDeleted {
+		public void onAllEventsDeleted();
+	}
+
+	private static OnAllEventsDeleted sDummyOnAllEventsDeletedCallback = new OnAllEventsDeleted() {
+		public void onAllEventsDeleted() {
+		}
+	};
+	
 	public EditorEventListFragment() {
 	}
 	
@@ -106,11 +138,31 @@ public class EditorEventListFragment extends SherlockFragment {
 		}
 		onStartEventPreferencesCallback = (OnStartEventPreferences) activity;
 
+		/*
 		if (!(activity instanceof OnEventCountChanged)) {
 			throw new IllegalStateException(
 					"Activity must implement fragment's callbacks.");
 		}
 		onEventCountChangedCallback = (OnEventCountChanged) activity;
+		*/
+		
+		if (!(activity instanceof OnEventAdded)) {
+			throw new IllegalStateException(
+					"Activity must implement fragment's callbacks.");
+		}
+		onEventAddedCallback = (OnEventAdded) activity;
+
+		if (!(activity instanceof OnEventDeleted)) {
+			throw new IllegalStateException(
+					"Activity must implement fragment's callbacks.");
+		}
+		onEventDeletedCallback = (OnEventDeleted) activity;
+
+		if (!(activity instanceof OnAllEventsDeleted)) {
+			throw new IllegalStateException(
+					"Activity must implement fragment's callbacks.");
+		}
+		onAllEventsDeletedCallback = (OnAllEventsDeleted) activity;
 		
 		
 		if (activity instanceof OnFinishEventPreferencesActionMode)
@@ -125,7 +177,10 @@ public class EditorEventListFragment extends SherlockFragment {
 		// Reset the active callbacks interface to the dummy implementation.
 		onStartEventPreferencesCallback = sDummyOnStartEventPreferencesCallback;
 		onFinishEventPreferencesActionModeCallback = sDummyOnFinishEventPreferencesActionModeCallback;
-		onEventCountChangedCallback = sDummyOnEventCountChangedCallback;
+		//onEventCountChangedCallback = sDummyOnEventCountChangedCallback;
+		onEventAddedCallback = sDummyOnEventAddedCallback;
+		onEventDeletedCallback = sDummyOnEventDeletedCallback;
+		onAllEventsDeletedCallback = sDummyOnAllEventsDeletedCallback;
 	}
 	
 
@@ -295,7 +350,7 @@ public class EditorEventListFragment extends SherlockFragment {
 			
 			updateListView(_event);
 			
-			onEventCountChangedCallback.onEventCountChanged();
+			onEventAddedCallback.onEventAdded(_event);
 
 		}
 
@@ -323,7 +378,7 @@ public class EditorEventListFragment extends SherlockFragment {
 		
 		updateListView(newEvent);
 
-		onEventCountChangedCallback.onEventCountChanged();
+		onEventAddedCallback.onEventAdded(newEvent);
 		
 		//updateListView();
 
@@ -346,7 +401,7 @@ public class EditorEventListFragment extends SherlockFragment {
 				eventListAdapter.deleteItemNoNotify(_event);
 				databaseHandler.deleteEvent(_event);
 				eventListAdapter.notifyDataSetChanged();
-				onEventCountChangedCallback.onEventCountChanged();
+				onEventDeletedCallback.onEventDeleted(_event);
 				//updateListView();
 				
 				onStartEventPreferencesCallback.onStartEventPreferences(null, filterType, orderType, true);
@@ -368,7 +423,7 @@ public class EditorEventListFragment extends SherlockFragment {
 			public void onClick(DialogInterface dialog, int which) {
 				databaseHandler.deleteAllEvents();
 				eventListAdapter.clear();
-				onEventCountChangedCallback.onEventCountChanged();
+				onAllEventsDeletedCallback.onAllEventsDeleted();
 				//updateListView();
 				
 				onStartEventPreferencesCallback.onStartEventPreferences(null, filterType, orderType, true);

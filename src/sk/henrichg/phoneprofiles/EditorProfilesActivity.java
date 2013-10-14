@@ -1,10 +1,14 @@
 package sk.henrichg.phoneprofiles;
 
-import sk.henrichg.phoneprofiles.EditorEventListFragment.OnEventCountChanged;
+import sk.henrichg.phoneprofiles.EditorEventListFragment.OnAllEventsDeleted;
+import sk.henrichg.phoneprofiles.EditorEventListFragment.OnEventAdded;
+import sk.henrichg.phoneprofiles.EditorEventListFragment.OnEventDeleted;
 import sk.henrichg.phoneprofiles.EditorEventListFragment.OnFinishEventPreferencesActionMode;
 import sk.henrichg.phoneprofiles.EditorEventListFragment.OnStartEventPreferences;
+import sk.henrichg.phoneprofiles.EditorProfileListFragment.OnAllProfilesDeleted;
 import sk.henrichg.phoneprofiles.EditorProfileListFragment.OnFinishProfilePreferencesActionMode;
-import sk.henrichg.phoneprofiles.EditorProfileListFragment.OnProfileCountChanged;
+import sk.henrichg.phoneprofiles.EditorProfileListFragment.OnProfileAdded;
+import sk.henrichg.phoneprofiles.EditorProfileListFragment.OnProfileDeleted;
 import sk.henrichg.phoneprofiles.EditorProfileListFragment.OnProfileOrderChanged;
 import sk.henrichg.phoneprofiles.EditorProfileListFragment.OnStartProfilePreferences;
 import sk.henrichg.phoneprofiles.EventPreferencesFragment.OnRedrawEventListFragment;
@@ -48,13 +52,17 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
                                                OnRestartProfilePreferences,
                                                OnRedrawProfileListFragment,
                                                OnFinishProfilePreferencesActionMode,
-                                               OnProfileCountChanged,
+                                               OnProfileAdded,
+                                               OnProfileDeleted,
+                                               OnAllProfilesDeleted,
                                                OnProfileOrderChanged,
                                                OnStartEventPreferences,
                                                OnRestartEventPreferences,
                                                OnRedrawEventListFragment,
                                                OnFinishEventPreferencesActionMode,
-                                               OnEventCountChanged
+                                               OnEventAdded,
+                                               OnEventDeleted,
+                                               OnAllEventsDeleted
 {
 
 	public static ProfilesDataWrapper profilesDataWrapper;
@@ -612,8 +620,11 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 						{
 							profilesDataWrapper.invalidateProfileList();
 							profilesDataWrapper.getActivateProfileHelper().updateWidget();
-							onProfileCountChanged();
 
+							// send message into service
+					        //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
+							serviceCommunication.sendMessageIntoService(PhoneProfilesService.MSG_DATA_IMPORTED);
+							
 							// toast notification
 							Toast msg = Toast.makeText(getBaseContext(), 
 									getResources().getString(R.string.toast_import_ok), 
@@ -822,7 +833,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			
 			// send message into service
 	        //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
-			serviceCommunication.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
+			serviceCommunication.sendMessageIntoServiceDataChange(PhoneProfilesService.MSG_PROFILE_UPDATED, profile._id);
 		}
 	}
 
@@ -839,24 +850,30 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	}
 	
 	public void onProfileOrderChanged() {
-		// no needed for service
+		// no needed send message into service
 		// send message into service
         //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
 		//serviceCommunication.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
 	}
 
-	public void onProfileCountChanged() {
+	public void onProfileAdded(Profile profile) {
 		// send message into service
         //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
-		serviceCommunication.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
-	}
-	
-	public void onEventCountChanged() {
-		// send message into service
-        //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
-		serviceCommunication.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
+		serviceCommunication.sendMessageIntoServiceDataChange(PhoneProfilesService.MSG_PROFILE_ADDED, profile._id);
 	}
 
+	public void onProfileDeleted(Profile profile) {
+		// send message into service
+        //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
+		serviceCommunication.sendMessageIntoServiceDataChange(PhoneProfilesService.MSG_PROFILE_DELETED, profile._id);
+	}
+	
+	public void onAllProfilesDeleted() {
+		// send message into service
+        //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
+		serviceCommunication.sendMessageIntoService(PhoneProfilesService.MSG_ALL_PROFILES_DELETED);
+	}
+	
 	public void onFinishEventPreferencesActionMode() {
 		if (mTwoPane) {
 			EventPreferencesFragment fragment = (EventPreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
@@ -912,7 +929,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			
 			// send message into service
 	        //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
-			serviceCommunication.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
+			serviceCommunication.sendMessageIntoServiceDataChange(PhoneProfilesService.MSG_EVENT_UPDATED, event._id);
 		}
 	}
 
@@ -931,6 +948,26 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 					.replace(R.id.editor_detail_container, fragment).commit();
 		}
 	}
+	
+	public void onEventAdded(Event event) {
+		// send message into service
+        //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
+		serviceCommunication.sendMessageIntoServiceDataChange(PhoneProfilesService.MSG_EVENT_ADDED, event._id);
+	}
+
+	public void onEventDeleted(Event event) {
+		// send message into service
+        //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
+		serviceCommunication.sendMessageIntoServiceDataChange(PhoneProfilesService.MSG_EVENT_DELETED, event._id);
+	}
+	
+	public void onAllEventsDeleted() {
+		// send message into service
+        //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
+		serviceCommunication.sendMessageIntoService(PhoneProfilesService.MSG_ALL_EVENTS_DELETED);
+	}
+	
+	
 	
 /*
 	public static void updateListView(SherlockFragmentActivity activity)

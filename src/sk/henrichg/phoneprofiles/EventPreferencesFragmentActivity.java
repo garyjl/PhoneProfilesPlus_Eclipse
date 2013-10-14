@@ -110,11 +110,7 @@ public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
 	}
 
 	public void onRedrawEventListFragment(Event event) {
-		// all redraws are in EditorProfilesActivity.onStart()
-
-		// send message into service
-        //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
-		EditorProfilesActivity.serviceCommunication.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
+		// all redraws are in EditorProfilesActivity.onActivityResult()
 	}
 	
 	public void onPreferenceAttached(PreferenceScreen root, int xmlId) {

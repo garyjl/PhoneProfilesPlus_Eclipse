@@ -8,7 +8,6 @@ import com.actionbarsherlock.app.SherlockFragment;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -19,7 +18,6 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.mobeta.android.dslv.DragSortListView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,23 +47,22 @@ public class EditorProfileListFragment extends SherlockFragment {
 	private int filterType = FILTER_TYPE_ALL;  
 	
 	/**
-	 * The fragment's current callback object, which is notified of list item
-	 * clicks.
+	 * The fragment's current callback objects
 	 */
 	private OnStartProfilePreferences onStartProfilePreferencesCallback = sDummyOnStartProfilePreferencesCallback;
 	private OnFinishProfilePreferencesActionMode onFinishProfilePreferencesActionModeCallback = sDummyOnFinishProfilePreferencesActionModeCallback;
-	private OnProfileCountChanged onProfileCountChangedCallback = sDummyOnProfileCountChangedCallback; 
-	private OnProfileOrderChanged onProfileOrderChangedCallback = sDummyOnProfileOrderChangedCallback; 
+	//private OnProfileCountChanged onProfileCountChangedCallback = sDummyOnProfileCountChangedCallback; 
+	private OnProfileAdded onProfileAddedCallback = sDummyOnProfileAddedCallback; 
+	private OnProfileDeleted onProfileDeletedCallback = sDummyOnProfileDeletedCallback; 
+	private OnAllProfilesDeleted onAllProfilesDeletedCallback = sDummyOnAllProfilesDeletedCallback; 
+	private OnProfileOrderChanged onProfileOrderChangedCallback = sDummyOnProfileOrderChangedCallback;
 	
 	/**
 	 * A callback interface that all activities containing this fragment must
-	 * implement. This mechanism allows activities to be notified of item
-	 * selections.
+	 * implement. This mechanism allows activities to be notified.
 	 */
+	// invoked when start profile preference fragment/activity needed 
 	public interface OnStartProfilePreferences {
-		/**
-		 * Callback for when an item has been selected.
-		 */
 		public void onStartProfilePreferences(Profile profile, int filterType, boolean afterDelete);
 	}
 
@@ -78,6 +75,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		}
 	};
 	
+	// invoked when action mode finish needed (from profile list adapter) 
 	public interface OnFinishProfilePreferencesActionMode {
 		public void onFinishProfilePreferencesActionMode();
 	}
@@ -87,6 +85,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		}
 	};
 
+	/*
 	public interface OnProfileCountChanged {
 		public void onProfileCountChanged();
 	}
@@ -95,7 +94,39 @@ public class EditorProfileListFragment extends SherlockFragment {
 		public void onProfileCountChanged() {
 		}
 	};
+	*/
 
+	// invoked, when profile added
+	public interface OnProfileAdded {
+		public void onProfileAdded(Profile profile);
+	}
+
+	private static OnProfileAdded sDummyOnProfileAddedCallback = new OnProfileAdded() {
+		public void onProfileAdded(Profile profile) {
+		}
+	};
+
+	// invoked, when profile deleted
+	public interface OnProfileDeleted {
+		public void onProfileDeleted(Profile profile);
+	}
+
+	private static OnProfileDeleted sDummyOnProfileDeletedCallback = new OnProfileDeleted() {
+		public void onProfileDeleted(Profile profile) {
+		}
+	};
+
+	// invoked, when all profiles deleted
+	public interface OnAllProfilesDeleted {
+		public void onAllProfilesDeleted();
+	}
+
+	private static OnAllProfilesDeleted sDummyOnAllProfilesDeletedCallback = new OnAllProfilesDeleted() {
+		public void onAllProfilesDeleted() {
+		}
+	};
+	
+	// ivoked when profile order for Activator changed
 	public interface OnProfileOrderChanged {
 		public void onProfileOrderChanged();
 	}
@@ -121,11 +152,31 @@ public class EditorProfileListFragment extends SherlockFragment {
 		}
 		onStartProfilePreferencesCallback = (OnStartProfilePreferences) activity;
 
+		/*
 		if (!(activity instanceof OnProfileCountChanged)) {
 			throw new IllegalStateException(
 					"Activity must implement fragment's callbacks.");
 		}
 		onProfileCountChangedCallback = (OnProfileCountChanged) activity;
+		*/
+
+		if (!(activity instanceof OnProfileAdded)) {
+			throw new IllegalStateException(
+					"Activity must implement fragment's callbacks.");
+		}
+		onProfileAddedCallback = (OnProfileAdded) activity;
+
+		if (!(activity instanceof OnProfileDeleted)) {
+			throw new IllegalStateException(
+					"Activity must implement fragment's callbacks.");
+		}
+		onProfileDeletedCallback = (OnProfileDeleted) activity;
+
+		if (!(activity instanceof OnAllProfilesDeleted)) {
+			throw new IllegalStateException(
+					"Activity must implement fragment's callbacks.");
+		}
+		onAllProfilesDeletedCallback = (OnAllProfilesDeleted) activity;
 		
 		if (!(activity instanceof OnProfileOrderChanged)) {
 			throw new IllegalStateException(
@@ -146,7 +197,10 @@ public class EditorProfileListFragment extends SherlockFragment {
 		// Reset the active callbacks interface to the dummy implementation.
 		onStartProfilePreferencesCallback = sDummyOnStartProfilePreferencesCallback;
 		onFinishProfilePreferencesActionModeCallback = sDummyOnFinishProfilePreferencesActionModeCallback;
-		onProfileCountChangedCallback = sDummyOnProfileCountChangedCallback;
+		//onProfileCountChangedCallback = sDummyOnProfileCountChangedCallback;
+		onProfileAddedCallback = sDummyOnProfileAddedCallback;
+		onProfileDeletedCallback = sDummyOnProfileDeletedCallback;
+		onAllProfilesDeletedCallback = sDummyOnAllProfilesDeletedCallback;
 		onProfileOrderChangedCallback = sDummyOnProfileOrderChangedCallback;
 	}
 	
@@ -376,7 +430,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 			updateListView(_profile);
 
 			activateProfileHelper.updateWidget();
-			onProfileCountChangedCallback.onProfileCountChanged();
+			onProfileAddedCallback.onProfileAdded(_profile);
 
         	// generate bitmaps
 			_profile.generateIconBitmap(getSherlockActivity().getBaseContext(), false, 0);
@@ -434,7 +488,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		updateListView(newProfile);
 		
 		activateProfileHelper.updateWidget();
-		onProfileCountChangedCallback.onProfileCountChanged();
+		onProfileAddedCallback.onProfileAdded(newProfile);
 		
     	// generate bitmaps
 		newProfile.generateIconBitmap(getSherlockActivity().getBaseContext(), false, 0);
@@ -498,7 +552,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 						if (result == 1)
 						{
 							profileListAdapter.notifyDataSetChanged();
-							onProfileCountChangedCallback.onProfileCountChanged();
+							onProfileDeletedCallback.onProfileDeleted(_profile);
 							//updateListView();
 							// v pripade, ze sa odmaze aktivovany profil, nastavime, ze nic nie je aktivovane
 							//Profile profile = databaseHandler.getActivatedProfile();
@@ -572,7 +626,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 						if (result == 1)
 						{
 							profileListAdapter.notifyDataSetChanged();
-							onProfileCountChangedCallback.onProfileCountChanged();
+							onAllProfilesDeletedCallback.onAllProfilesDeleted();
 							//updateListView();
 							// v pripade, ze sa odmaze aktivovany profil, nastavime, ze nic nie je aktivovane
 							//Profile profile = databaseHandler.getActivatedProfile();
