@@ -125,7 +125,7 @@
     <string name="import_profiles_alert_message">Ste si istí</string>
     <string name="import_profiles_alert_error">Chyba pri importe profilov</string>
     <string name="export_profiles_alert_title">Export profilov</string>
-    <string name="export_profiles_alert_message">Sste si istí</string>
+    <string name="export_profiles_alert_message">Ste si istí</string>
     <string name="export_profiles_alert_error">Chyba pri exporte profilov</string>
     <string name="profile_preferences_deviceMobileData">Mobilné dáta</string>
     <string name="profile_preferences_deviceMobileDataPrefs">Nastavenia mobilných dát</string>
@@ -214,5 +214,6 @@
     <string name="default_profile_name_work">Práca</string>
     <string name="default_profile_name_meeting">Porada</string>
     <string name="default_profile_name_sleep">Spánok</string>
+    <string name="phone_profiles_pref_applicationAutoCloseDrawer">Auto. zatváranie navig. panelu</string>
     		
 </resources>

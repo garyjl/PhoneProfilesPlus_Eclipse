@@ -214,5 +214,6 @@
     <string name="default_profile_name_work">Work</string>
     <string name="default_profile_name_meeting">Meeting</string>
     <string name="default_profile_name_sleep">Sleep</string>
+    <string name="phone_profiles_pref_applicationAutoCloseDrawer">Auto. close navig. panel</string>
     	
 </resources>

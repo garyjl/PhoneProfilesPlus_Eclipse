@@ -466,7 +466,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
         	orderSpinner.setVisibility(View.VISIBLE);
         }
         // Close drawer
-        drawerLayout.closeDrawer(drawerRoot);
+		if (GlobalData.applicationEditorAutoCloseDrawer)
+			drawerLayout.closeDrawer(drawerRoot);
     }
     
     private void changeEventOrder(int position)
@@ -484,7 +485,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			}
 			((EditorEventListFragment)fragment).changeListOrder(eventsOrderType);
 	        // Close drawer
-	        drawerLayout.closeDrawer(drawerRoot);
+			if (GlobalData.applicationEditorAutoCloseDrawer)
+				drawerLayout.closeDrawer(drawerRoot);
 		}
     	
     }

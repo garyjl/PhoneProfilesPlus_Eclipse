@@ -215,5 +215,6 @@
     <string name="default_profile_name_work">Práce</string>
     <string name="default_profile_name_meeting">Porada</string>
     <string name="default_profile_name_sleep">Spánek</string>
+    <string name="phone_profiles_pref_applicationAutoCloseDrawer">Auto. zavírání navig. panelu</string>
     		
 </resources>
