@@ -25,7 +25,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static SQLiteDatabase writableDb;	
     
 	// Database Version
-	private static final int DATABASE_VERSION = 32;
+	private static final int DATABASE_VERSION = 33;
 	// starting version when added Events table
 	private static final int DATABASE_VERSION_EVENTS = 25;
 
@@ -35,6 +35,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	// Profiles table name
 	private static final String TABLE_PROFILES = "profiles";
 	private static final String TABLE_EVENTS = "events";
+	private static final String TABLE_PROFILE_STACK = "profile_stack";
 	
 	// import/export
 	private final String EXPORT_DBPATH = "/PhoneProfiles";
@@ -85,6 +86,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_E_END_TIME = "endTime";
 	private static final String KEY_E_DAYS_OF_WEEK = "daysOfWeek";
 	private static final String KEY_E_USE_END_TIME = "useEndTime";
+	
+	private static final String KEY_PS_ID = "id";
+	private static final String KEY_PS_PORDER = "porder";
+	private static final String KEY_PS_FK_PROFILE = "fkProfile";
 	
 	/**
      * Constructor takes and keeps a reference of the passed context in order to
@@ -201,6 +206,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 		db.execSQL("CREATE INDEX IDX_FK_PROFILE ON " + TABLE_EVENTS + " (" + KEY_E_FK_PROFILE + ")");
 		db.execSQL("CREATE INDEX IDX_E_NAME ON " + TABLE_EVENTS + " (" + KEY_E_NAME + ")");
+
+		final String CREATE_PROFILE_STACK_TABLE = "CREATE TABLE " + TABLE_PROFILE_STACK + "("
+				+ KEY_PS_ID + " INTEGER PRIMARY KEY,"
+				+ KEY_PS_PORDER + " INTEGER," 
+				+ KEY_PS_FK_PROFILE + " INTEGER"
+				+ ")";
+		db.execSQL(CREATE_PROFILE_STACK_TABLE);
+
+		db.execSQL("CREATE INDEX IDX_PS_PORDER ON " + TABLE_PROFILE_STACK + " (" + KEY_PS_PORDER + ")");
 		
 	}
 
@@ -380,6 +394,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			
 			// updatneme zaznamy
 			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_STATUS + "=0");
+		}
+		
+		if (oldVersion < 33)
+		{
+			final String CREATE_PROFILE_STACK_TABLE = "CREATE TABLE " + TABLE_PROFILE_STACK + "("
+					+ KEY_PS_ID + " INTEGER PRIMARY KEY,"
+					+ KEY_PS_PORDER + " INTEGER," 
+					+ KEY_PS_FK_PROFILE + " INTEGER"
+					+ ")";
+			db.execSQL(CREATE_PROFILE_STACK_TABLE);
+			
+			db.execSQL("CREATE INDEX IDX_PS_PORDER ON " + TABLE_PROFILE_STACK + " (" + KEY_PS_PORDER + ")");
+			
 		}
 		
 	}
@@ -749,7 +776,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	
 	// Getting max(porder)
 	public int getMaxPOrder() {
-		String countQuery = "SELECT MAX(PORDER) FROM " + TABLE_PROFILES;
+		String countQuery = "SELECT MAX("+KEY_PORDER+") FROM " + TABLE_PROFILES;
 		//SQLiteDatabase db = this.getReadableDatabase();
 		SQLiteDatabase db = getMyWritableDatabase();
 
@@ -1609,6 +1636,189 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         
 		return r;
 	}
+	
+// PROFILE STACK ------------------------------------------------------------------
+	
+	// Adding new event
+	void addProfilePS(Profile profile, int porder) {
+	
+		//SQLiteDatabase db = this.getWritableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+		
+		ContentValues values = new ContentValues();
+		values.put(KEY_PS_FK_PROFILE, profile._id); // profile
+		values.put(KEY_PS_PORDER, porder); // profile order in stack
+		
+		db.beginTransaction();
+		
+		try {
+			// Inserting Row
+			/*event._id =*/ db.insert(TABLE_PROFILE_STACK, null, values);
+			
+			db.setTransactionSuccessful();
+
+		} catch (Exception e){
+			//Error in between database transaction
+		} finally {
+			db.endTransaction();
+		}	
+
+		//db.close(); // Closing database connection
+	}
+	
+	// Getting max(porder)
+	public int getMaxPOrderPS() {
+		String countQuery = "SELECT MAX("+KEY_PS_PORDER+") FROM " + TABLE_PROFILE_STACK;
+		//SQLiteDatabase db = this.getReadableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+
+		Cursor cursor = db.rawQuery(countQuery, null);
+
+		int r;
+		
+		if (cursor.getCount() == 0)
+		{
+			//Log.e("DatabaseHandler.getMaxPOrder","count=0");
+			r = 0;
+		}
+		else
+		{	
+			if (cursor.moveToFirst())
+			{
+				r = cursor.getInt(0);
+				//Log.e("DatabaseHandler.getMaxPOrder","porder="+r);
+			}
+			else
+			{
+				r = 0;
+				//Log.e("DatabaseHandler.getMaxPOrder","moveToFirst=false");
+			}
+		}
+
+		cursor.close();
+		//db.close();
+		
+		return r;
+		
+	}
+
+	// Getting last profile from profile stack
+	Profile getLastProfilePS() {
+		
+		int maxPorder = getMaxPOrderPS();
+		
+		Profile profile = null;
+		
+		//SQLiteDatabase db = this.getReadableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+
+		Cursor cursor = db.query(TABLE_PROFILE_STACK, 
+				                 new String[] { KEY_PS_ID, 
+												KEY_PS_FK_PROFILE 
+												}, 
+				                 KEY_PS_PORDER + "=?",
+				                 new String[] { String.valueOf(maxPorder) }, null, null, null, null);
+		if (cursor != null)
+			cursor.moveToFirst();
+
+		long profile_id = 0;
+		
+		if (cursor.getCount() > 0)
+		{
+			
+			profile_id = Long.parseLong(cursor.getString(1));
+			profile = getProfile(profile_id);
+			
+		}
+
+		cursor.close();
+		
+		//db.close();
+
+		// return profile
+		return profile;
+	}
+	
+	// Getting All profiles from profile stack
+	public List<Profile> getAllProfilesPS() {
+		List<Profile> profileList = new ArrayList<Profile>();
+		
+        //Log.e("DatabaseHandler.getAllEvents","filterType="+filterType);
+		
+		// Select All Query
+		final String selectQuery = "SELECT " + KEY_PS_ID + "," +
+				                         KEY_PS_FK_PROFILE + "," +
+				                         KEY_PS_PORDER +
+				                   " FROM " + TABLE_PROFILE_STACK +
+				                   " ORDER BY " + KEY_PS_PORDER;
+
+		//SQLiteDatabase db = this.getReadableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+
+		Cursor cursor = db.rawQuery(selectQuery, null);
+
+		// looping through all rows and adding to list
+		if (cursor.moveToFirst()) {
+			do {
+				long profile_id = cursor.getLong(1);
+				Profile profile = getProfile(profile_id);
+				
+				// Adding contact to list
+				profileList.add(profile);
+			} while (cursor.moveToNext());
+		}
+
+		cursor.close();
+		//db.close();
+		
+		// return evemt list
+		return profileList;
+	}
+
+	// Deleting last profile
+	public void deleteLastProfilePS() {
+		
+		int maxPorder = getMaxPOrderPS();
+		
+		//SQLiteDatabase db = this.getWritableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+		db.delete(TABLE_PROFILE_STACK, KEY_PS_PORDER + " = ?",
+				new String[] { String.valueOf(maxPorder) });
+		//db.close();
+	}
+
+	// Deleting all profiles from profile stack
+	public void deleteProfilesPS() {
+		//SQLiteDatabase db = this.getWritableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+		db.delete(TABLE_PROFILE_STACK, null,	null);
+		//db.close();
+	}
+
+	// Getting profile Count in profile stack
+	public int getProfilesCount() {
+		final String countQuery = "SELECT  count(*) FROM " + TABLE_PROFILE_STACK;
+		//SQLiteDatabase db = this.getReadableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+
+		Cursor cursor = db.rawQuery(countQuery, null);
+		
+		int r;
+		
+		if (cursor != null)
+		{
+			cursor.moveToFirst();
+			r = Integer.parseInt(cursor.getString(0));
+		}
+		else
+			r = 0;
+
+		cursor.close();
+		//db.close();
+		
+		return r;	
+	}
+	
 	
 // OTHERS -------------------------------------------------------------------------
 	

@@ -28,7 +28,7 @@ Events:
      - vybrat z konca profileStack profil - hotovo
      - zistit, ci to nie je profil, ktory event aktivuje - hotovo
        - nie je to on - aktivovat profil z profileStack - TODO
-       - je to on - neaktivovat profilezo profileStack - TODO
+       - je to on - neaktivovat profil z profileStack - hotovo
      - vyhodit profil z konca profileStack - hotovo
      - nastavit status eventu na pause - hotovo
    - stop:
@@ -63,7 +63,7 @@ Events:
    - na spustenie service sa naloaduje z db - TODO
    - kazda zmena v profileStack sa hned zapise do db - TODO
 12. start service
-   - pri spustani sa najprv testne aj, ci event je v running a uz sa nema spustit, taky sa da do
+   - pri spustani sa najprv testne, ci event je v running a uz sa nema spustit, taky sa da do
      statusu PAUSE - TODO
    - nasledne sa eventy pospustaju, ide o eventy, ktorych system event sa vytriggeruje pri
      spusteni service (napr. ak Time event zrovna sadne do casu spustenie service) - TODO
