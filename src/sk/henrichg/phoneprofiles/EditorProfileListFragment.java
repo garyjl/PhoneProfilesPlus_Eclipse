@@ -420,6 +420,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 			_profile = EditorProfilesActivity.profilesDataWrapper.getNoinitializedProfile(
 							getResources().getString(R.string.profile_name_default), 
 							GUIData.PROFILE_ICON_DEFAULT, 0); 
+			_profile._showInActivator = true;
 
 			// add profile into db and set id and order
 			databaseHandler.addProfile(_profile);

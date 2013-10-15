@@ -20,7 +20,7 @@ public class ServiceCommunication {
 	private long dataId;
 	private int activatedProfileStartupSource;
 
-	public Messenger phoneProfilesService = null;
+	private static Messenger phoneProfilesService = null;
 	
     public ServiceConnection serviceConnection = new ServiceConnection() {
 
@@ -65,7 +65,7 @@ public class ServiceCommunication {
 
         public void onServiceDisconnected(ComponentName className) {
             // This is called when the connection with the service has been unexpectedly disconnected - process crashed.
-    		//Log.d("ProfilesDataWrapper.onServiceDisconnected","xxx");
+    		Log.e("ServiceConnection.onServiceDisconnected","xxx");
         	phoneProfilesService = null;
         }
 

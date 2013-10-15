@@ -366,12 +366,6 @@ public class ActivateProfileActivity extends SherlockActivity {
 	@Override
 	protected void onDestroy()
 	{
-		serviceCommunication.phoneProfilesService = null;
-    	try {
-    		GlobalData.context.unbindService(serviceCommunication.serviceConnection);
-        } catch (Exception e) {
-        }	
-		
 	//	Debug.stopMethodTracing();
 
 		super.onDestroy();
