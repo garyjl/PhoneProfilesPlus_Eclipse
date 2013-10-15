@@ -222,6 +222,8 @@ public class Event {
 		List<Profile> profileStack = profilesDataWrapper.getProfileStack();
 		
 		profileStack.add(activeProfile);
+		profilesDataWrapper.getDatabaseHandler().addProfilePS(activeProfile, profileStack.size()-1);
+
 		Profile profile = profilesDataWrapper.getProfileById(_fkProfile);
 
 		setSystemEvent(ESTATUS_RUNNING);
@@ -253,6 +255,7 @@ public class Event {
 				profile = null;
 			}
 			profileStack.remove(profileStack.size()-1);
+			profilesDataWrapper.getDatabaseHandler().deleteLastProfilePS();
 		}
 
 		setSystemEvent(ESTATUS_PAUSE);

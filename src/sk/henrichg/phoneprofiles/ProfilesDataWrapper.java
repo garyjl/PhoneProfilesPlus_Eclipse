@@ -473,8 +473,7 @@ public class ProfilesDataWrapper {
 	{
 		if (profileStack == null)
 		{
-			//profileStack = getDatabaseHandler().getProfileStack();
-			profileStack = new ArrayList<Profile>();
+			profileStack = getDatabaseHandler().getAllProfilesPS();
 		}
 
 		return profileStack;

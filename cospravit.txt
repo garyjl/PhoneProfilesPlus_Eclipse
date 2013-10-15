@@ -60,8 +60,8 @@ Events:
    - znovunacitanie vsetkcyh dat - hotovo
    - service si eventy sam pospusta  - TODO
 11. profileStack
-   - na spustenie service sa naloaduje z db - TODO
-   - kazda zmena v profileStack sa hned zapise do db - TODO
+   - na spustenie service sa naloaduje z db - hotovo
+   - kazda zmena v profileStack sa hned zapise do db - hotovo
 12. start service
    - pri spustani sa najprv testne, ci event je v running a uz sa nema spustit, taky sa da do
      statusu PAUSE - TODO
