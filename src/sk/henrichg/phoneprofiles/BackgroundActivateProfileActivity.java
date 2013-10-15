@@ -50,6 +50,11 @@ public class BackgroundActivateProfileActivity extends Activity {
 
 		//Log.d("BackgroundActivateProfileActivity.onStart", "startupSource="+startupSource);
 		
+		Profile profile;
+		
+		// pre profil, ktory je prave aktivny, treba aktualizovat aktivitu
+		profile = profilesDataWrapper.getActivatedProfile();
+		
 		boolean actProfile = false;
 		boolean interactive = false;
 		if ((startupSource == GlobalData.STARTUP_SOURCE_SHORTCUT) ||
@@ -75,17 +80,18 @@ public class BackgroundActivateProfileActivity extends Activity {
 				// je nastavene, ze pri starte sa ma aktivita aktivovat
 				actProfile = true;
 			}
+			else
+			{
+				if (profile != null)
+				{
+					profilesDataWrapper.getDatabaseHandler().deactivateProfile();
+					//profile._checked = false;
+					profile = null;
+				}
+			}
 		}
 		//Log.d("BackgroundActivateProfileActivity.onStart", "actProfile="+String.valueOf(actProfile));
 
-		Profile profile;
-		
-		// pre profil, ktory je prave aktivny, treba aktualizovat aktivitu
-		profile = profilesDataWrapper.getActivatedProfile();
-
-		//Log.d("BackgroundActivateProfileActivity.onStart","_iconBitmap="+String.valueOf(profile._iconBitmap));
-		//Log.d("BackgroundActivateProfileActivity.onStart","_preferencesIndicator="+String.valueOf(profile._preferencesIndicator));
-		
 		if ((startupSource == GlobalData.STARTUP_SOURCE_SHORTCUT) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_WIDGET) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_ACTIVATOR) ||

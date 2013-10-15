@@ -783,7 +783,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 	}
 	
-	public void activateProfile(Profile profile)
+	public void doActivateProfile(Profile profile, boolean activate)
 	{
 		//SQLiteDatabase db = this.getWritableDatabase();
 		SQLiteDatabase db = getMyWritableDatabase();
@@ -798,13 +798,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			// updating checked = true for profile
 			//profile.setChecked(true);
 			
-			ContentValues values = new ContentValues();
-			//values.put(KEY_CHECKED, (profile.getChecked()) ? 1 : 0);
-			values.put(KEY_CHECKED, 1);
-
-			db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
-					        new String[] { String.valueOf(profile._id) });
-
+			if (activate)
+			{
+				ContentValues values = new ContentValues();
+				//values.put(KEY_CHECKED, (profile.getChecked()) ? 1 : 0);
+				values.put(KEY_CHECKED, 1);
+	
+				db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
+						        new String[] { String.valueOf(profile._id) });
+			}
 			
 			db.setTransactionSuccessful();
 	     } catch (Exception e){
@@ -814,6 +816,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
          }	
 		
          //db.close();
+	}
+	
+	public void activateProfile(Profile profile)
+	{
+		doActivateProfile(profile, true);
+	}
+
+	public void deactivateProfile()
+	{
+		doActivateProfile(null, false);
 	}
 	
 	public Profile getActivatedProfile()

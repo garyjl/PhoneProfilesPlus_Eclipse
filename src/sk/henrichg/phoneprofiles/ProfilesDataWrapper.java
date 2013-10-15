@@ -302,6 +302,17 @@ public class ProfilesDataWrapper {
 		} */
 	}
 	
+	public void deactivateProfile()
+	{
+		if (profileList == null)
+			return;
+		
+		for (Profile p : profileList)
+		{
+			p._checked = false;
+		}
+	}
+	
 	private Profile getProfileByIdFromDB(long id)
 	{
 		Profile profile = getDatabaseHandler().getProfile(id);
