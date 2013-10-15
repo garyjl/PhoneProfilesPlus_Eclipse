@@ -27,14 +27,13 @@ Events:
    - pause:
      - vybrat z konca profileStack profil - hotovo
      - zistit, ci to nie je profil, ktory event aktivuje - hotovo
-       - nie je to on - aktivovat profil zo profileStack - TODO
+       - nie je to on - aktivovat profil z profileStack - TODO
        - je to on - neaktivovat profilezo profileStack - TODO
      - vyhodit profil z konca profileStack - hotovo
      - nastavit status eventu na pause - hotovo
    - stop:
      - spravit pause eventu, ake je v statuse running - hotovo
      - nastavit status eventu na stop - hotovo     
-     - aktivovat profil zo profileStack - vid aktivacia profilu pri pause
 3. manualna aktivacia profilu (Aktivator, Editor, witget, shortcut, ...)
    - manualna aktivacia musi poslat service, co sa aktivovalo a odkial, cize to musi poslat
      BackgroundActivateProfileActivity - hotovo
@@ -42,20 +41,31 @@ Events:
      profily z profileStack - hotovo
 4. uprava eventu v Editore
    - ak upravovany event je v statuse running, musi sa pauznut, akoby prave skoncil, to zaisti
-     jeho znovuspustenie az na dalsiu iteraciu - TODO
-   - ak upravovany event uzivatel zakaze, event sa musi stopnut - TODO
+     jeho znovuspustenie az na dalsiu iteraciu - hotovo
+   - aktivovat profil z profileStack po pauznuti - TODO 
+   - ak upravovany event uzivatel zakaze, event sa musi stopnut - hotovo
 5. mazanie eventu
-   - vymazanie eventu uzivatelom musi vyvolat jeho stopnutie a az potom sa moze vymazat - TODO
+   - vymazanie eventu uzivatelom musi vyvolat jeho stopnutie a az potom sa moze vymazat - hotovo
 6. mazanie vsetkych eventov
-   - vsetky eventy sa stopnu natvrdo, nevyvolavat pause eventu - TODO
-7. uprava profilu asocionvaneho z dakym beziacim eventom
+   - vsetky eventy sa stopnu - hotovo
+7. uprava profilu asociovaneho z dakym beziacim eventom
    - tu netreba robit nic, profil je uz aktivovany, takze jeho parametre sa pouziju az pri
-     nasledujucej iteracii  - TODO
+     nasledujucej iteracii
 8. mazanie profilu asocionvaneho z dakym beziacim eventom
-   - stopnut event, nie je mozne, ab bezal v dalsej iteracii, lebo nema prideleny profil - TODO
+   - stopnut event, nie je mozne, aby bezal v dalsej iteracii, lebo nema prideleny profil - hotovo
 9. mazanie vsetkych profilov
-   - vid mazanie vsetkych eventov, cize natvrdo stopnut, nevolat pause eventov
+   - vid mazanie vsetkych eventov, cize stopnut - hotovo
 10. import dat
-   - vid mazanie vsetkych eventov, cize natvrdo stopnut, nevolat pause eventov
+   - vid mazanie vsetkych eventov, cize stopnut - hotovo
+   - znovunacitanie vsetkcyh dat - hotovo
    - service si eventy sam pospusta  - TODO
+11. profileStack
+   - na spustenie service sa naloaduje z db - TODO
+   - kazda zmena v profileStack sa hned zapise do db - TODO
+12. start service
+   - pri spustani sa najprv testne aj, ci event je v running a uz sa nema spustit, taky sa da do
+     statusu PAUSE - TODO
+   - nasledne sa eventy pospustaju, ide o eventy, ktorych system event sa vytriggeruje pri
+     spusteni service (napr. ak Time event zrovna sadne do casu spustenie service) - TODO
+     
       

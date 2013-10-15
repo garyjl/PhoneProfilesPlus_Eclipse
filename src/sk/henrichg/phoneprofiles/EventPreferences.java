@@ -41,5 +41,20 @@ public class EventPreferences {
 	{
 		return description;
 	}
+	
+	public void setSystemRunningEvent()
+	{
+		
+	}
 
+	public void setSystemPauseEvent()
+	{
+		
+	}
+	
+	public void removeAllSystemEvents()
+	{
+		
+	}
+	
 }

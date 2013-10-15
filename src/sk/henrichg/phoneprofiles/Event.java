@@ -198,73 +198,6 @@ public class Event {
 		setSummary(prefMng, PREF_EVENT_PROFILE, Long.toString(_fkProfile), context);
 	}
 	
-	public Profile startEvent(ProfilesDataWrapper profilesDataWrapper,
-							Profile activeProfile, 
-			                List<Profile> profileStack)
-	{
-		// spustenie eventu ma sposobit aktivaciu priradeneho profilu
-		// do profileStack vlozime activeProfile
-		// f. vrati profil, ktory service aktivuje
-		// ak vrati null, service profil neaktivuje
-
-		
-		profileStack.add(activeProfile);
-		Profile profile = profilesDataWrapper.getProfileById(_fkProfile);
-		
-		this._status = ESTATUS_RUNNING;
-		
-		return profile;
-	}
-	
-	public Profile pauseEvent(ProfilesDataWrapper profilesDataWrapper, 
-							List<Profile> profileStack)
-	{
-		// pozastavenie eventu ma sposobit aktivovanie profilu z profileStack
-		// vyberieme posledny zo stackProfile
-		// ak to nie je tymto eventom aktivovany profil, tak ho aktivujeme 
-		// posledny profil zo stackProfile vyhodime
-		// malo by to vyriesit vnorene aj prekrizene eventy
-		// f. vrati profil, ktory service aktivuje
-		// ak vrati null, service profil neaktivuje
-
-		Profile profile = null;
-		if (profileStack.size() > 0)
-		{
-			profile = profileStack.get(profileStack.size()-1);
-			if (profile == profilesDataWrapper.getProfileById(_fkProfile))
-			{
-				// neaktivovat profile, lebo ten zo stack je aktivovany tymto eventom
-				profile = null;
-			}
-			profileStack.remove(profileStack.size()-1);
-		}
-
-		this._status = ESTATUS_PAUSE;
-		
-		return profile;
-	}
-	
-	public Profile stopEvent(ProfilesDataWrapper profilesDataWrapper, 
-							List<Profile> profileStack)
-	{
-		// stopnutie eventu ma sposobit jeho disablovanie
-		// ak event zrovna bezi, najprv ho zapauzujeme
-		// f. vrati profil, ktory service aktivuje
-		// ak vrati null, service profil neaktivuje
-		
-		Profile profile = null;
-		
-		if (this._status == ESTATUS_RUNNING)
-		{
-			// event zrovna bezi, zapauzujeme ho
-			profile = pauseEvent(profilesDataWrapper, profileStack);
-		}
-		
-		this._status = ESTATUS_STOP;
-		
-		return profile;
-	}
-
 	public String getPreferecesDescription(Context context)
 	{
 		String description;
@@ -277,5 +210,100 @@ public class Event {
 		return description;
 	}
 	
+	
+	public Profile startEvent(ProfilesDataWrapper profilesDataWrapper,
+							Profile activeProfile)
+	{
+		// spustenie eventu ma sposobit aktivaciu priradeneho profilu
+		// do profileStack vlozime activeProfile
+		// f. vrati profil, ktory service aktivuje
+		// ak vrati null, service profil neaktivuje
+
+		List<Profile> profileStack = profilesDataWrapper.getProfileStack();
+		
+		profileStack.add(activeProfile);
+		Profile profile = profilesDataWrapper.getProfileById(_fkProfile);
+
+		setSystemEvent(ESTATUS_RUNNING);
+		
+		this._status = ESTATUS_RUNNING;
+		
+		return profile;
+	}
+	
+	public Profile pauseEvent(ProfilesDataWrapper profilesDataWrapper)
+	{
+		// pozastavenie eventu ma sposobit aktivovanie profilu z profileStack
+		// vyberieme posledny zo stackProfile
+		// ak to nie je tymto eventom aktivovany profil, tak ho aktivujeme 
+		// posledny profil zo stackProfile vyhodime
+		// malo by to vyriesit vnorene aj prekrizene eventy
+		// f. vrati profil, ktory service aktivuje
+		// ak vrati null, service profil neaktivuje
+
+		List<Profile> profileStack = profilesDataWrapper.getProfileStack();
+		
+		Profile profile = null;
+		if (profilesDataWrapper.getProfileStack().size() > 0)
+		{
+			profile = profileStack.get(profileStack.size()-1);
+			if (profile == profilesDataWrapper.getProfileById(_fkProfile))
+			{
+				// neaktivovat profile, lebo ten zo stack je aktivovany tymto eventom
+				profile = null;
+			}
+			profileStack.remove(profileStack.size()-1);
+		}
+
+		setSystemEvent(ESTATUS_PAUSE);
+		
+		this._status = ESTATUS_PAUSE;
+		
+		return profile;
+	}
+	
+	public void stopEvent(ProfilesDataWrapper profilesDataWrapper)
+	{
+		// stopnutie eventu ma sposobit jeho disablovanie
+		// ak event zrovna bezi, najprv ho zapauzujeme
+		// ziadna aktivacia profilu v tomto pripade nebude vykonana
+		
+		if (this._status == ESTATUS_RUNNING)
+		{
+			// event zrovna bezi, zapauzujeme ho
+			pauseEvent(profilesDataWrapper);
+		}
+		
+		setSystemEvent(ESTATUS_STOP);
+		
+		this._status = ESTATUS_STOP;
+		
+		return;
+	}
+	
+	public void setSystemEvent(int forStatus)
+	{
+		if (forStatus == ESTATUS_RUNNING)
+		{
+			// event started
+			// setup system event for next pause status
+			_eventPreferences.setSystemPauseEvent();
+		}
+		else
+		if (forStatus == ESTATUS_PAUSE)
+		{
+			// event paused
+			// setup system event for next running status
+			_eventPreferences.setSystemRunningEvent();
+		}
+		else
+		if (forStatus == ESTATUS_STOP)
+		{
+			// event stopped
+			// remove all system events
+			_eventPreferences.removeAllSystemEvents();
+		}
+	}
+
 }
 

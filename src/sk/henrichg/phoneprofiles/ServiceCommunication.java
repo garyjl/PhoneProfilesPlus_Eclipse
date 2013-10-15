@@ -32,34 +32,34 @@ public class ServiceCommunication {
 
             switch (msgForBind) {
         /*    case PhoneProfilesService.MSG_RELOAD_DATA:
-        		sendMessageIntoService(msgForBind);
+        		_sendMessageIntoService();
                 break;
             case PhoneProfilesService.MSG_ACTIVATE_PROFILE:
             case PhoneProfilesService.MSG_ACTIVATE_PROFILE_INTERACTIVE: */
             case PhoneProfilesService.MSG_PROFILE_ACTIVATED:
-            	sendMessageIntoServiceProfileActivated(dataId, activatedProfileStartupSource);
+            	_sendMessageIntoServiceProfileActivated();
             	break;
             case PhoneProfilesService.MSG_PROFILE_ADDED:
             case PhoneProfilesService.MSG_PROFILE_UPDATED:
             case PhoneProfilesService.MSG_PROFILE_DELETED:
-            	sendMessageIntoServiceDataChange(msgForBind, dataId);
+            	_sendMessageIntoServiceDataChange();
             	break;
             case PhoneProfilesService.MSG_ALL_PROFILES_DELETED:
-        		sendMessageIntoService(msgForBind);
+        		_sendMessageIntoService();
             	break;
             case PhoneProfilesService.MSG_EVENT_ADDED:
             case PhoneProfilesService.MSG_EVENT_UPDATED:
             case PhoneProfilesService.MSG_EVENT_DELETED:
-            	sendMessageIntoServiceDataChange(msgForBind, dataId);
+            	_sendMessageIntoServiceDataChange();
             	break;
             case PhoneProfilesService.MSG_ALL_EVENTS_DELETED:
-        		sendMessageIntoService(msgForBind);
+        		_sendMessageIntoService();
             	break;
             case PhoneProfilesService.MSG_DATA_IMPORTED:
-        		sendMessageIntoService(msgForBind);
+        		_sendMessageIntoService();
             	break;
             default:
-        		sendMessageIntoService(msgForBind);
+        		_sendMessageIntoService();
             }
         }
 
@@ -88,81 +88,89 @@ public class ServiceCommunication {
             }
         }
     }
+	
+    private void _sendMessageIntoService()
+	{
+    	try {
+            Message msg = Message.obtain(null, msgForBind);
+            msg.replyTo = mMessenger;
+            phoneProfilesService.send(msg);
+        } catch (RemoteException e) {
+            // In this case the service has crashed before we could even do anything with it
+        }
+	}
+
+    private void _sendMessageIntoServiceProfileActivated()
+    {
+    	//Log.e("ServiceCommunication.sendMessageIntoServiceLong","data="+data);
+    	try {
+            Bundle b = new Bundle();
+            b.putLong(GlobalData.EXTRA_PROFILE_ID, dataId);
+            b.putInt(GlobalData.EXTRA_START_APP_SOURCE, activatedProfileStartupSource);
+            Message msg = Message.obtain(null, msgForBind);
+            msg.setData(b);	            
+            phoneProfilesService.send(msg);
+        } catch (RemoteException e) {
+            // In this case the service has crashed before we could even do anything with it
+        }
+    }
+
+    private void _sendMessageIntoServiceDataChange()
+    {
+    	try {
+            Bundle b = new Bundle();
+            switch (msgForBind)
+            {
+            	case PhoneProfilesService.MSG_PROFILE_ADDED:
+            	case PhoneProfilesService.MSG_PROFILE_UPDATED:
+            	case PhoneProfilesService.MSG_PROFILE_DELETED:
+                    b.putLong(GlobalData.EXTRA_PROFILE_ID, this.dataId);
+                    break;
+            	case PhoneProfilesService.MSG_EVENT_ADDED:
+            	case PhoneProfilesService.MSG_EVENT_UPDATED:
+            	case PhoneProfilesService.MSG_EVENT_DELETED:
+                    b.putLong(GlobalData.EXTRA_EVENT_ID, this.dataId);
+                    break;
+            }
+            Message msg = Message.obtain(null, msgForBind);
+            msg.setData(b);	            
+            phoneProfilesService.send(msg);
+        } catch (RemoteException e) {
+            // In this case the service has crashed before we could even do anything with it
+        }
+    }
     
     public void sendMessageIntoService(int message)
 	{
    		msgForBind = message;
-        context.bindService(new Intent(context, PhoneProfilesService.class), serviceConnection, Context.BIND_AUTO_CREATE);
-
-	    if (phoneProfilesService != null)
-    	{
-	
-	    	try {
-	            Message msg = Message.obtain(null, msgForBind);
-	            msg.replyTo = mMessenger;
-	            phoneProfilesService.send(msg);
-	        } catch (RemoteException e) {
-	            // In this case the service has crashed before we could even do anything with it
-	        }
-    	}
+   		
+    	if (phoneProfilesService == null)
+    		context.bindService(new Intent(context, PhoneProfilesService.class), serviceConnection, Context.BIND_AUTO_CREATE);
+    	else 
+    		_sendMessageIntoService();
 	}
-	
+
     public void sendMessageIntoServiceProfileActivated(long profileId, int startupSource)
     {
    		msgForBind = PhoneProfilesService.MSG_PROFILE_ACTIVATED;
    		dataId = profileId;
    		activatedProfileStartupSource = startupSource; 
-        context.bindService(new Intent(context, PhoneProfilesService.class), serviceConnection, Context.BIND_AUTO_CREATE);
-
-	    if (phoneProfilesService != null)
-    	{
-	    	//Log.e("ServiceCommunication.sendMessageIntoServiceLong","data="+data);
-	    	try {
-                Bundle b = new Bundle();
-                b.putLong(GlobalData.EXTRA_PROFILE_ID, dataId);
-                b.putInt(GlobalData.EXTRA_START_APP_SOURCE, activatedProfileStartupSource);
-	            Message msg = Message.obtain(null, msgForBind);
-                msg.setData(b);	            
-	            phoneProfilesService.send(msg);
-	        } catch (RemoteException e) {
-	            // In this case the service has crashed before we could even do anything with it
-	        }
-    	}
+   		
+    	if (phoneProfilesService == null)
+    		context.bindService(new Intent(context, PhoneProfilesService.class), serviceConnection, Context.BIND_AUTO_CREATE);
+    	else
+    		_sendMessageIntoServiceProfileActivated();
     }
 
     public void sendMessageIntoServiceDataChange(int message, long dataId)
     {
    		msgForBind = message;
    		this.dataId = dataId;
-        context.bindService(new Intent(context, PhoneProfilesService.class), serviceConnection, Context.BIND_AUTO_CREATE);
-
-		Log.e("ServiceConnection.sendMessageIntoServiceDataChange","msgForBind="+msgForBind);
-        
-                
-	    if (phoneProfilesService != null)
-    	{
-	    	try {
-                Bundle b = new Bundle();
-                switch (msgForBind)
-                {
-                	case PhoneProfilesService.MSG_PROFILE_ADDED:
-                	case PhoneProfilesService.MSG_PROFILE_UPDATED:
-                	case PhoneProfilesService.MSG_PROFILE_DELETED:
-                        b.putLong(GlobalData.EXTRA_PROFILE_ID, this.dataId);
-                        break;
-                	case PhoneProfilesService.MSG_EVENT_ADDED:
-                	case PhoneProfilesService.MSG_EVENT_UPDATED:
-                	case PhoneProfilesService.MSG_EVENT_DELETED:
-                        b.putLong(GlobalData.EXTRA_EVENT_ID, this.dataId);
-                        break;
-                }
-	            Message msg = Message.obtain(null, msgForBind);
-                msg.setData(b);	            
-	            phoneProfilesService.send(msg);
-	        } catch (RemoteException e) {
-	            // In this case the service has crashed before we could even do anything with it
-	        }
-    	}
+   		
+    	if (phoneProfilesService == null)
+    		context.bindService(new Intent(context, PhoneProfilesService.class), serviceConnection, Context.BIND_AUTO_CREATE);
+    	else
+    		_sendMessageIntoServiceDataChange();
     }
     
 }

@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
+import android.util.Log;
 
 public class PhoneProfilesService extends Service {
 	
@@ -18,8 +19,6 @@ public class PhoneProfilesService extends Service {
 	private Context context = null;
 	
 	private ProfilesDataWrapper profilesDataWrapper = null;
-	// stack of stored profiles, where are activated after event is paused/stopped
-	private List<Profile> profileStack;
 
 	// messages from GUI
 	//public static final int MSG_RELOAD_DATA = 1;
@@ -50,7 +49,7 @@ public class PhoneProfilesService extends Service {
     	@Override
         public void handleMessage(Message msg) {
     		
-    		//Log.e("PhoneProfilesService.IncommingHandler.handleMessage",msg.what+"");
+    		Log.e("PhoneProfilesService.IncommingHandler.handleMessage",msg.what+"");
     		
     		PhoneProfilesService service = serviceWakeReference.get();
     		
@@ -94,7 +93,7 @@ public class PhoneProfilesService extends Service {
             	service.allEventsDeleted();
             	break;
             case MSG_DATA_IMPORTED:
-            	service.reloadData();
+            	service.dataImported();
             	break;
 
             default:
@@ -111,8 +110,7 @@ public class PhoneProfilesService extends Service {
 		// initialization
   	    context = getApplicationContext();
   	    profilesDataWrapper = new ProfilesDataWrapper(context, false, false, 0);
-  	    profilesDataWrapper.getProfileList();
-  	    profilesDataWrapper.getEventList();
+  	    reloadData();
   	    
   	    GlobalData.loadPreferences(context);
   	    
@@ -159,6 +157,8 @@ public class PhoneProfilesService extends Service {
 		//Log.d("PhoneProfilesService.reloadData","xxx");
 		profilesDataWrapper.reloadProfilesData();
 		profilesDataWrapper.reloadEventsData();
+		profilesDataWrapper.reloadProfileStack();
+		//TODO - tu spravit testy a spustenie eventov
 	}
 	
 	private void activateProfile(long profile_id, boolean interactive)
@@ -192,7 +192,7 @@ public class PhoneProfilesService extends Service {
 		for (Event event : profilesDataWrapper.getEventList())
 		{
 			if (event._status == Event.ESTATUS_RUNNING)
-				event.pauseEvent(profilesDataWrapper, profileStack);
+				event.pauseEvent(profilesDataWrapper);
 		}
 	}
 	
@@ -226,10 +226,30 @@ public class PhoneProfilesService extends Service {
 	
 	private void eventAdded(long event_id)
 	{
-		Event event = profilesDataWrapper.getDatabaseHandler().getEvent(event_id);
+		Event eventInDB = profilesDataWrapper.getDatabaseHandler().getEvent(event_id);
+		Event eventInList = profilesDataWrapper.getEventById(event_id);
 		// event order not relevant for service
-		if (event != null)
-			profilesDataWrapper.getEventList().add(event);
+		if (eventInDB != null)
+		{
+			int location = profilesDataWrapper.getEventList().indexOf(eventInList);
+			if (location != -1)
+			{
+				// event exists in list, do update
+				eventUpdated(event_id);
+			}
+			else
+			{
+				profilesDataWrapper.getEventList().add(eventInDB);
+				if (eventInDB._status == Event.ESTATUS_STOP)
+					// from gui is set status into stop
+					eventInDB.stopEvent(profilesDataWrapper);
+				else
+				{
+					Profile profile = eventInDB.pauseEvent(profilesDataWrapper);
+					//TODO - aktivuj vrateny profil
+				}
+			}
+		}
 	}
 	
 	private void eventUpdated(long event_id)
@@ -238,7 +258,25 @@ public class PhoneProfilesService extends Service {
 		Event eventInList = profilesDataWrapper.getEventById(event_id);
 		int location = profilesDataWrapper.getEventList().indexOf(eventInList);
 		if (location != -1)
+		{
+			// stop old event
+			eventInList.stopEvent(profilesDataWrapper);
 			profilesDataWrapper.getEventList().set(location, eventInDB);
+			// set status for new event
+			if (eventInDB._status == Event.ESTATUS_STOP)
+				// from gui is set status into stop
+				eventInDB.stopEvent(profilesDataWrapper);
+			else
+			{
+				Profile profile = eventInDB.pauseEvent(profilesDataWrapper);
+				//TODO - aktivuj vrateny profil
+			}
+		}
+		else
+		{
+			// event not exists in list do add
+			eventAdded(event_id);
+		}
 	}
 	
 	private void eventDeleted(long event_id)
@@ -246,12 +284,25 @@ public class PhoneProfilesService extends Service {
 		Event eventInList = profilesDataWrapper.getEventById(event_id);
 		int location = profilesDataWrapper.getEventList().indexOf(eventInList);
 		if (location != -1)
+		{
+			eventInList.stopEvent(profilesDataWrapper);
 			profilesDataWrapper.getEventList().remove(location);
+		}
 	}
 	
 	private void allEventsDeleted()
 	{
-		profilesDataWrapper.getEventList().clear();
+		while (profilesDataWrapper.getEventList().size() > 0)
+		{
+			eventDeleted(profilesDataWrapper.getEventList().get(0)._id);
+		}
 	}
 	
+	private void dataImported()
+	{
+		// delete all events with stopping events
+		allEventsDeleted();
+		// reload all datas
+		reloadData();
+	}
 }

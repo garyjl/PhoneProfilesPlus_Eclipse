@@ -1,5 +1,6 @@
 package sk.henrichg.phoneprofiles;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -18,6 +19,8 @@ public class ProfilesDataWrapper {
 	private ActivateProfileHelper activateProfileHelper = null;
 	private List<Profile> profileList = null;
 	private List<Event> eventList = null;
+	// stack of stored profiles, where are activated after event is paused/stopped
+	private List<Profile> profileStack = null;
 	
 	ProfilesDataWrapper(Context c, 
 						boolean fgui, 
@@ -63,9 +66,6 @@ public class ProfilesDataWrapper {
 	{
 		if (profileList == null)
 		{
-			if (profileList != null)
-				profileList.clear();
-			
 			profileList = getDatabaseHandler().getAllProfiles();
 		
 			if (forGUI)
@@ -353,7 +353,7 @@ public class ProfilesDataWrapper {
 		{
 			if (event._fkProfile == profile._id) 
 				event._fkProfile = 0;
-			event._status = Event.ESTATUS_STOP;
+			event.stopEvent(this);
 		}
 	}
 	
@@ -366,7 +366,7 @@ public class ProfilesDataWrapper {
 		for (Event event : eventList)
 		{
 			event._fkProfile = 0;
-			event._status = Event.ESTATUS_STOP;
+			event.stopEvent(this);
 		}
 	}
 	
@@ -376,9 +376,6 @@ public class ProfilesDataWrapper {
 	{
 		if (eventList == null)
 		{
-			if (eventList != null)
-				eventList.clear();
-			
 			eventList = getDatabaseHandler().getAllEvents();
 		}
 
@@ -458,5 +455,32 @@ public class ProfilesDataWrapper {
 		invalidateEventList();
 		getEventList();
 	}
+	
+//---------------------------------------------------
+	
+	public List<Profile> getProfileStack()
+	{
+		if (profileStack == null)
+		{
+			//profileStack = getDatabaseHandler().getProfileStack();
+			profileStack = new ArrayList<Profile>();
+		}
+
+		return profileStack;
+	}
+	
+	public void invalidateProfileStack()
+	{
+		if (profileStack != null)
+			profileStack.clear();
+		profileStack = null;
+	}
+	
+	public void reloadProfileStack()
+	{
+		invalidateProfileStack();
+		getProfileStack();
+	}
+	
 	
 }
