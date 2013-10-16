@@ -223,8 +223,7 @@ public class Event {
 		profilesDataWrapper.getDatabaseHandler().addEventTimeline(eventTimeline);
 		eventTimelineList.add(eventTimeline);
 		
-		Profile profile = profilesDataWrapper.getProfileById(_fkProfile);
-		//TODO activate profile
+		profilesDataWrapper.activateProfileFromEvent(this._fkProfile);
 
 		setSystemEvent(ESTATUS_RUNNING);
 		
@@ -278,8 +277,7 @@ public class Event {
 				if ((eventTimeline._fkProfileReturn != profilesDataWrapper.getActivatedProfile()._id)
 					&& (activateReturnProfile))
 				{
-					//TODO - aktivuj profil eventTimeline._fkProfileReturn
-					Event event = profilesDataWrapper.getEventById(eventTimeline._fkEvent);
+					profilesDataWrapper.activateProfileFromEvent(eventTimeline._fkProfileReturn);
 				}
 			}
 			else

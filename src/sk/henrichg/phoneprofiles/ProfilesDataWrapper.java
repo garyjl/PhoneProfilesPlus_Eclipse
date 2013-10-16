@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.provider.Settings;
 
@@ -301,6 +302,17 @@ public class ProfilesDataWrapper {
 				_profile._checked = true;
 		} */
 	}
+	
+	public void activateProfileFromEvent(long profile_id)
+	{
+		//Log.d("PhoneProfilesService.activateProfile",profile_id+"");
+		Intent intent = new Intent(context, BackgroundActivateProfileActivity.class);
+	    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    	intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_SERVICE);
+		intent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile_id);
+	    context.startActivity(intent);		
+	}
+	
 	
 	public void deactivateProfile()
 	{

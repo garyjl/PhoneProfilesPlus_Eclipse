@@ -1,35 +1,14 @@
 Events:
 1. gui - hotove
-2. doriesit start/pause/stop eventu
-   -- malo by to fungovat takto:
-      - pre jednorazove eventy (maju len zaciatok) 
-        - aktivovat - status running
-        - hned pauznut - status pause 
-      - pre rozsahove eventy (maju aj koniec)
-        - aktivovat na zaciatok eventu - status running
-        - pauznut na konci eventu - status pause
-        - aktivovat po pause pred evenetom aktivny profil - cize si to musi pamatat, ktory 
-          profil bol aktivny pred aktivaciou eventu priradeneho profilu
-        - z dovodu, ze sa rozsahove eventy mozu prekryvat, bude pamatanie profilov, ktore
-          sa po ukonceni eventu maju aktivovat, zaistene tzv. profileStack.
-       - profileStack bude fungovat takto:
-         - na start eventu, prave aktivny profil sa vlozi na koniec profileStack 
-         - na pause/stop eventu, sa vyberie z konca profileStack profil a ten sa aktivuje 
-           a profil sa vyhodi zo profileStack
-         - toto riesi eventy ktore su v sebe vnorene, neprekrizuju sa
-         - prekrizene eventy, teda, ze zacne jeden, potom druhy, potom prvy skonci a potom druhy
-           skonci vyriesit tak, ze ak je na konci profileStack profil, ktory aktivuje pauzovany
-           event, ignorovat profil zo profileStack (neaktivovat ho), len ho z neho vyhodit
+2. eventy
+   - budeme si pamatat poradie spustania eventov a ktore profily vtedy boli zrovna aktivovane
    - spustenie eventu:
-     - vlozit prave aktivovany profil do profileStack - hotovo
+     - zapamatat si venet a aktivny profil - hotovo
      - nastavit status eventu na running - hotovo
-     - aktivovat profil priradeny eventu - TODO
+     - aktivovat profil priradeny eventu - hotovo
    - pause:
-     - vybrat z konca profileStack profil - hotovo
-     - zistit, ci to nie je profil, ktory event aktivuje - hotovo
-       - nie je to on - aktivovat profil z profileStack - TODO
-       - je to on - neaktivovat profil z profileStack - hotovo
-     - vyhodit profil z konca profileStack - hotovo
+     - zahodit pamatany event a aktivovany profil - hotovo
+     - aktivovat pri starte aktivovany profil - hotovo
      - nastavit status eventu na pause - hotovo
    - stop:
      - spravit pause eventu, ake je v statuse running - hotovo
@@ -42,7 +21,7 @@ Events:
 4. uprava eventu v Editore
    - ak upravovany event je v statuse running, musi sa pauznut, akoby prave skoncil, to zaisti
      jeho znovuspustenie az na dalsiu iteraciu - hotovo
-   - aktivovat profil z profileStack po pauznuti - TODO 
+   - neaktivovat pri starte aktivoany profil - hotovo 
    - ak upravovany event uzivatel zakaze, event sa musi stopnut - hotovo
 5. mazanie eventu
    - vymazanie eventu uzivatelom musi vyvolat jeho stopnutie a az potom sa moze vymazat - hotovo
@@ -59,16 +38,13 @@ Events:
    - vid mazanie vsetkych eventov, cize stopnut - hotovo
    - znovunacitanie vsetkcyh dat - hotovo
    - service si eventy sam pospusta  - TODO
-11. profileStack - VYHODIT, NAHRADIT TIMELINE EVENTOV
-   - na spustenie service sa naloaduje z db - hotovo
-   - kazda zmena v profileStack sa hned zapise do db - hotovo
 12. start service
    - pri spustani sa najprv testne, ci event je v running a uz sa nema spustit, taky sa da do
      statusu PAUSE - TODO
    - nasledne sa eventy pospustaju, ide o eventy, ktorych system event sa vytriggeruje pri
      spusteni service (napr. ak Time event zrovna sadne do casu spustenie service) - TODO
 
-
+13. Callflow eventov:
 
 -- vnorene
 P1a |               -> timeline:
@@ -146,7 +122,7 @@ aktivovany profil.
 
 Dalej bahcha na to, ze event nemusi byt v timeline, v takom pripade na pause/stop nerobime vobec nic
 
-
+14. kedy aktivovat _fkProfileReturn:
 Na pause a stop system event sa spravi to iste, co na pause, ale su pripady, kedy sa nema (de)aktivovat
 _fkProfilePause event. Su to tieto pripady:
 - manualna aktivacia profilu - eventy sa vsetky pauzuju, ale nic z timeline sa neaktivuje

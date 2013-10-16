@@ -21,9 +21,6 @@ public class PhoneProfilesService extends Service {
 	private ProfilesDataWrapper profilesDataWrapper = null;
 
 	// messages from GUI
-	//public static final int MSG_RELOAD_DATA = 1;
-	//public static final int MSG_ACTIVATE_PROFILE = 2;
-	//public static final int MSG_ACTIVATE_PROFILE_INTERACTIVE = 3;
 	public static final int MSG_PROFILE_ACTIVATED = 4;
 	public static final int MSG_PROFILE_ADDED = 5;
 	public static final int MSG_PROFILE_UPDATED = 6;
@@ -54,15 +51,6 @@ public class PhoneProfilesService extends Service {
     		PhoneProfilesService service = serviceWakeReference.get();
     		
             switch (msg.what) {
-        /*    case MSG_RELOAD_DATA:
-                service.reloadData();
-                break;
-            case MSG_ACTIVATE_PROFILE:
-            	service.activateProfile(msg.getData().getLong(GlobalData.EXTRA_PROFILE_ID), false);
-            	break;
-            case MSG_ACTIVATE_PROFILE_INTERACTIVE:
-            	service.activateProfile(msg.getData().getLong(GlobalData.EXTRA_PROFILE_ID), true);
-            	break;   */
             case MSG_PROFILE_ACTIVATED:
             	service.setActivatedProfile(msg.getData().getLong(GlobalData.EXTRA_PROFILE_ID),
             								msg.getData().getInt(GlobalData.EXTRA_START_APP_SOURCE)
@@ -111,6 +99,7 @@ public class PhoneProfilesService extends Service {
   	    context = getApplicationContext();
   	    profilesDataWrapper = new ProfilesDataWrapper(context, false, false, 0);
   	    reloadData();
+		//TODO - tu spravit testy a spustenie eventov
   	    
   	    GlobalData.loadPreferences(context);
   	    
@@ -158,23 +147,6 @@ public class PhoneProfilesService extends Service {
 		profilesDataWrapper.reloadProfilesData();
 		profilesDataWrapper.reloadEventsData();
 		profilesDataWrapper.reloadEventTimelineList();
-		//TODO - tu spravit testy a spustenie eventov
-	}
-	
-	private void activateProfile(long profile_id, boolean interactive)
-	{
-		//Log.d("PhoneProfilesService.activateProfile",profile_id+"");
-		Intent intent = new Intent(this, BackgroundActivateProfileActivity.class);
-	    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-	    if (interactive)
-			intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_SERVICE_INTERACTIVE);
-	    else
-	    	intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_SERVICE);
-		intent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile_id);
-	    startActivity(intent);		
-
-	    Profile profile = profilesDataWrapper.getProfileById(profile_id); 
-    	profilesDataWrapper.activateProfile(profile);
 	}
 	
 	private void setActivatedProfile(long profile_id, int startupSource)
@@ -302,5 +274,6 @@ public class PhoneProfilesService extends Service {
 		allEventsDeleted();
 		// reload all datas
 		reloadData();
+		//TODO - tu spravit testy a spustenie eventov
 	}
 }
