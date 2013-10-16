@@ -25,7 +25,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static SQLiteDatabase writableDb;	
     
 	// Database Version
-	private static final int DATABASE_VERSION = 33;
+	private static final int DATABASE_VERSION = 34;
 	// starting version when added Events table
 	private static final int DATABASE_VERSION_EVENTS = 25;
 
@@ -35,7 +35,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	// Profiles table name
 	private static final String TABLE_PROFILES = "profiles";
 	private static final String TABLE_EVENTS = "events";
-	private static final String TABLE_PROFILE_STACK = "profile_stack";
+	private static final String TABLE_EVENT_TIMELINE = "event_timeline";
 	
 	// import/export
 	private final String EXPORT_DBPATH = "/PhoneProfiles";
@@ -87,9 +87,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_E_DAYS_OF_WEEK = "daysOfWeek";
 	private static final String KEY_E_USE_END_TIME = "useEndTime";
 	
-	private static final String KEY_PS_ID = "id";
-	private static final String KEY_PS_PORDER = "porder";
-	private static final String KEY_PS_FK_PROFILE = "fkProfile";
+	private static final String KEY_ET_ID = "id";
+	private static final String KEY_ET_EORDER = "eorder";
+	private static final String KEY_ET_FK_EVENT = "fkEvent";
+	private static final String KEY_ET_FK_PROFILE_RETURN = "fkProfileReturn";
 	
 	/**
      * Constructor takes and keeps a reference of the passed context in order to
@@ -207,14 +208,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.execSQL("CREATE INDEX IDX_FK_PROFILE ON " + TABLE_EVENTS + " (" + KEY_E_FK_PROFILE + ")");
 		db.execSQL("CREATE INDEX IDX_E_NAME ON " + TABLE_EVENTS + " (" + KEY_E_NAME + ")");
 
-		final String CREATE_PROFILE_STACK_TABLE = "CREATE TABLE " + TABLE_PROFILE_STACK + "("
-				+ KEY_PS_ID + " INTEGER PRIMARY KEY,"
-				+ KEY_PS_PORDER + " INTEGER," 
-				+ KEY_PS_FK_PROFILE + " INTEGER"
+		final String CREATE_EVENTTIME_TABLE = "CREATE TABLE " + TABLE_EVENT_TIMELINE + "("
+				+ KEY_ET_ID + " INTEGER PRIMARY KEY,"
+				+ KEY_ET_EORDER + " INTEGER," 
+				+ KEY_ET_FK_EVENT + " INTEGER"
+				+ KEY_ET_FK_PROFILE_RETURN + " INTEGER"
 				+ ")";
-		db.execSQL(CREATE_PROFILE_STACK_TABLE);
+		db.execSQL(CREATE_EVENTTIME_TABLE);
 
-		db.execSQL("CREATE INDEX IDX_PS_PORDER ON " + TABLE_PROFILE_STACK + " (" + KEY_PS_PORDER + ")");
+		db.execSQL("CREATE INDEX IDX_ET_PORDER ON " + TABLE_EVENT_TIMELINE + " (" + KEY_ET_EORDER + ")");
 		
 	}
 
@@ -396,17 +398,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_STATUS + "=0");
 		}
 		
-		if (oldVersion < 33)
+		if (oldVersion < 34)
 		{
-			final String CREATE_PROFILE_STACK_TABLE = "CREATE TABLE " + TABLE_PROFILE_STACK + "("
-					+ KEY_PS_ID + " INTEGER PRIMARY KEY,"
-					+ KEY_PS_PORDER + " INTEGER," 
-					+ KEY_PS_FK_PROFILE + " INTEGER"
+			final String CREATE_EVENTTIME_TABLE = "CREATE TABLE " + TABLE_EVENT_TIMELINE + "("
+					+ KEY_ET_ID + " INTEGER PRIMARY KEY,"
+					+ KEY_ET_EORDER + " INTEGER," 
+					+ KEY_ET_FK_EVENT + " INTEGER,"
+					+ KEY_ET_FK_PROFILE_RETURN + " INTEGER"
 					+ ")";
-			db.execSQL(CREATE_PROFILE_STACK_TABLE);
+			db.execSQL(CREATE_EVENTTIME_TABLE);
 			
-			db.execSQL("CREATE INDEX IDX_PS_PORDER ON " + TABLE_PROFILE_STACK + " (" + KEY_PS_PORDER + ")");
-			
+			db.execSQL("CREATE INDEX IDX_ET_PORDER ON " + TABLE_EVENT_TIMELINE + " (" + KEY_ET_EORDER + ")");
 		}
 		
 	}
@@ -1637,23 +1639,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		return r;
 	}
 	
-// PROFILE STACK ------------------------------------------------------------------
+// EVENT TIMELINE ------------------------------------------------------------------
 	
 	// Adding new event
-	void addProfilePS(Profile profile, int porder) {
-	
+	void addEventTimeline(EventTimeline eventTimeline) {
+		
 		//SQLiteDatabase db = this.getWritableDatabase();
 		SQLiteDatabase db = getMyWritableDatabase();
 		
 		ContentValues values = new ContentValues();
-		values.put(KEY_PS_FK_PROFILE, profile._id); // profile
-		values.put(KEY_PS_PORDER, porder); // profile order in stack
+		values.put(KEY_ET_FK_EVENT, eventTimeline._fkEvent); // Event id
+		values.put(KEY_ET_FK_PROFILE_RETURN, eventTimeline._fkProfileReturn); // Profile id returned on pause/stop event
+		values.put(KEY_ET_EORDER, getMaxEOrderET()+1); // event running order 
 		
 		db.beginTransaction();
 		
 		try {
 			// Inserting Row
-			/*event._id =*/ db.insert(TABLE_PROFILE_STACK, null, values);
+			eventTimeline._id = db.insert(TABLE_EVENT_TIMELINE, null, values);
 			
 			db.setTransactionSuccessful();
 
@@ -1666,9 +1669,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		//db.close(); // Closing database connection
 	}
 	
-	// Getting max(porder)
-	public int getMaxPOrderPS() {
-		String countQuery = "SELECT MAX("+KEY_PS_PORDER+") FROM " + TABLE_PROFILE_STACK;
+	// Getting max(eorder)
+	public int getMaxEOrderET() {
+		String countQuery = "SELECT MAX("+KEY_ET_EORDER+") FROM " + TABLE_EVENT_TIMELINE;
 		//SQLiteDatabase db = this.getReadableDatabase();
 		SQLiteDatabase db = getMyWritableDatabase();
 
@@ -1702,55 +1705,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 	}
 
-	// Getting last profile from profile stack
-	Profile getLastProfilePS() {
-		
-		int maxPorder = getMaxPOrderPS();
-		
-		Profile profile = null;
-		
-		//SQLiteDatabase db = this.getReadableDatabase();
-		SQLiteDatabase db = getMyWritableDatabase();
-
-		Cursor cursor = db.query(TABLE_PROFILE_STACK, 
-				                 new String[] { KEY_PS_ID, 
-												KEY_PS_FK_PROFILE 
-												}, 
-				                 KEY_PS_PORDER + "=?",
-				                 new String[] { String.valueOf(maxPorder) }, null, null, null, null);
-		if (cursor != null)
-			cursor.moveToFirst();
-
-		long profile_id = 0;
-		
-		if (cursor.getCount() > 0)
-		{
-			
-			profile_id = Long.parseLong(cursor.getString(1));
-			profile = getProfile(profile_id);
-			
-		}
-
-		cursor.close();
-		
-		//db.close();
-
-		// return profile
-		return profile;
-	}
-	
-	// Getting All profiles from profile stack
-	public List<Profile> getAllProfilesPS() {
-		List<Profile> profileList = new ArrayList<Profile>();
+	// Getting all event timeline 
+	public List<EventTimeline> getAllEventTimelines() {
+		List<EventTimeline> eventTimelineList = new ArrayList<EventTimeline>();
 		
         //Log.e("DatabaseHandler.getAllEvents","filterType="+filterType);
 		
 		// Select All Query
-		final String selectQuery = "SELECT " + KEY_PS_ID + "," +
-				                         KEY_PS_FK_PROFILE + "," +
-				                         KEY_PS_PORDER +
-				                   " FROM " + TABLE_PROFILE_STACK +
-				                   " ORDER BY " + KEY_PS_PORDER;
+		final String selectQuery = "SELECT " + KEY_ET_ID + "," +
+					                           KEY_ET_FK_EVENT + "," +
+					                           KEY_ET_FK_PROFILE_RETURN + "," +
+					                           KEY_ET_EORDER +
+				                   " FROM " + TABLE_EVENT_TIMELINE +
+				                   " ORDER BY " + KEY_ET_EORDER;
 
 		//SQLiteDatabase db = this.getReadableDatabase();
 		SQLiteDatabase db = getMyWritableDatabase();
@@ -1760,44 +1727,46 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		// looping through all rows and adding to list
 		if (cursor.moveToFirst()) {
 			do {
-				long profile_id = cursor.getLong(1);
-				Profile profile = getProfile(profile_id);
+				EventTimeline eventTimeline = new EventTimeline();
 				
-				// Adding contact to list
-				profileList.add(profile);
+				eventTimeline._id = Long.parseLong(cursor.getString(0));
+				eventTimeline._fkEvent = Long.parseLong(cursor.getString(1));
+				eventTimeline._fkProfileReturn = Long.parseLong(cursor.getString(2));
+				eventTimeline._eorder = Integer.parseInt(cursor.getString(3));
+				
+				// Adding event timeline to list
+				eventTimelineList.add(eventTimeline);
 			} while (cursor.moveToNext());
 		}
 
 		cursor.close();
 		//db.close();
 		
-		// return evemt list
-		return profileList;
+		// return event timeline list
+		return eventTimelineList;
 	}
 
-	// Deleting last profile
-	public void deleteLastProfilePS() {
-		
-		int maxPorder = getMaxPOrderPS();
+	// Deleting event timeline
+	public void deleteEventTimeline(EventTimeline eventTimeline) {
 		
 		//SQLiteDatabase db = this.getWritableDatabase();
 		SQLiteDatabase db = getMyWritableDatabase();
-		db.delete(TABLE_PROFILE_STACK, KEY_PS_PORDER + " = ?",
-				new String[] { String.valueOf(maxPorder) });
+		db.delete(TABLE_EVENT_TIMELINE, KEY_ET_ID + " = ?",
+				new String[] { String.valueOf(eventTimeline._id) });
 		//db.close();
 	}
 
-	// Deleting all profiles from profile stack
-	public void deleteProfilesPS() {
+	// Deleting all events from timeline
+	public void deleteAllEventTimelines() {
 		//SQLiteDatabase db = this.getWritableDatabase();
 		SQLiteDatabase db = getMyWritableDatabase();
-		db.delete(TABLE_PROFILE_STACK, null,	null);
+		db.delete(TABLE_EVENT_TIMELINE, null,	null);
 		//db.close();
 	}
 
-	// Getting profile Count in profile stack
-	public int getProfilesCount() {
-		final String countQuery = "SELECT  count(*) FROM " + TABLE_PROFILE_STACK;
+	// Getting Count in timelines
+	public int getEventTimelineCount() {
+		final String countQuery = "SELECT  count(*) FROM " + TABLE_EVENT_TIMELINE;
 		//SQLiteDatabase db = this.getReadableDatabase();
 		SQLiteDatabase db = getMyWritableDatabase();
 
@@ -1817,6 +1786,39 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		//db.close();
 		
 		return r;	
+	}
+	
+	public void updateProfileReturnET(List<EventTimeline> eventTimelineList)
+	{
+		//SQLiteDatabase db = this.getWritableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+
+		ContentValues values = new ContentValues();
+
+		db.beginTransaction();
+		
+		try {
+			
+			for (EventTimeline eventTimeline : eventTimelineList)
+			{
+				values.put(KEY_ET_FK_PROFILE_RETURN, eventTimeline._fkProfileReturn);
+
+				// updating row
+				db.update(TABLE_EVENT_TIMELINE, values, KEY_ID + " = ?",
+					new String[] { String.valueOf(eventTimeline._id) });
+			}
+		
+			db.setTransactionSuccessful();
+
+		} catch (Exception e){
+			//Error in between database transaction
+			Log.e("DatabaseHandler.updateProfileReturnET", e.toString());
+		} finally {
+			db.endTransaction();
+		}	
+		
+        //db.close();
+        
 	}
 	
 	

@@ -19,8 +19,8 @@ public class ProfilesDataWrapper {
 	private ActivateProfileHelper activateProfileHelper = null;
 	private List<Profile> profileList = null;
 	private List<Event> eventList = null;
-	// stack of stored profiles, where are activated after event is paused/stopped
-	private List<Profile> profileStack = null;
+	// timeline of runnig events
+	private List<EventTimeline> eventTimelineList = null;
 	
 	ProfilesDataWrapper(Context c, 
 						boolean fgui, 
@@ -364,7 +364,7 @@ public class ProfilesDataWrapper {
 		{
 			if (event._fkProfile == profile._id) 
 				event._fkProfile = 0;
-			event.stopEvent(this);
+			event.stopEvent(this, false);
 		}
 	}
 	
@@ -377,7 +377,7 @@ public class ProfilesDataWrapper {
 		for (Event event : eventList)
 		{
 			event._fkProfile = 0;
-			event.stopEvent(this);
+			event.stopEvent(this, false);
 		}
 	}
 	
@@ -469,27 +469,27 @@ public class ProfilesDataWrapper {
 	
 //---------------------------------------------------
 	
-	public List<Profile> getProfileStack()
+	public List<EventTimeline> getEventTimelineList()
 	{
-		if (profileStack == null)
+		if (eventTimelineList == null)
 		{
-			profileStack = getDatabaseHandler().getAllProfilesPS();
+			eventTimelineList = getDatabaseHandler().getAllEventTimelines();
 		}
 
-		return profileStack;
+		return eventTimelineList;
 	}
 	
-	public void invalidateProfileStack()
+	public void invalidateEventTimelineList()
 	{
-		if (profileStack != null)
-			profileStack.clear();
-		profileStack = null;
+		if (eventTimelineList != null)
+			eventTimelineList.clear();
+		eventTimelineList = null;
 	}
 	
-	public void reloadProfileStack()
+	public void reloadEventTimelineList()
 	{
-		invalidateProfileStack();
-		getProfileStack();
+		invalidateEventTimelineList();
+		getEventTimelineList();
 	}
 	
 	

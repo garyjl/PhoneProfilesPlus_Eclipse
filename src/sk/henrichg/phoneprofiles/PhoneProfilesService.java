@@ -157,7 +157,7 @@ public class PhoneProfilesService extends Service {
 		//Log.d("PhoneProfilesService.reloadData","xxx");
 		profilesDataWrapper.reloadProfilesData();
 		profilesDataWrapper.reloadEventsData();
-		profilesDataWrapper.reloadProfileStack();
+		profilesDataWrapper.reloadEventTimelineList();
 		//TODO - tu spravit testy a spustenie eventov
 	}
 	
@@ -185,14 +185,14 @@ public class PhoneProfilesService extends Service {
     	pauseAllEvents();
 	} 
 	
-	// pauses all events without activating profiles from profileStack
+	// pauses all events without activating profiles from Timeline
 	// for manual activation from gui
 	private void pauseAllEvents()
 	{
 		for (Event event : profilesDataWrapper.getEventList())
 		{
 			if (event._status == Event.ESTATUS_RUNNING)
-				event.pauseEvent(profilesDataWrapper);
+				event.pauseEvent(profilesDataWrapper, false);
 		}
 	}
 	
@@ -242,11 +242,10 @@ public class PhoneProfilesService extends Service {
 				profilesDataWrapper.getEventList().add(eventInDB);
 				if (eventInDB._status == Event.ESTATUS_STOP)
 					// from gui is set status into stop
-					eventInDB.stopEvent(profilesDataWrapper);
+					eventInDB.stopEvent(profilesDataWrapper, false);
 				else
 				{
-					Profile profile = eventInDB.pauseEvent(profilesDataWrapper);
-					//TODO - aktivuj vrateny profil
+					eventInDB.pauseEvent(profilesDataWrapper, false);
 				}
 			}
 		}
@@ -260,16 +259,15 @@ public class PhoneProfilesService extends Service {
 		if (location != -1)
 		{
 			// stop old event
-			eventInList.stopEvent(profilesDataWrapper);
+			eventInList.stopEvent(profilesDataWrapper, false);
 			profilesDataWrapper.getEventList().set(location, eventInDB);
 			// set status for new event
 			if (eventInDB._status == Event.ESTATUS_STOP)
 				// from gui is set status into stop
-				eventInDB.stopEvent(profilesDataWrapper);
+				eventInDB.stopEvent(profilesDataWrapper, false);
 			else
 			{
-				Profile profile = eventInDB.pauseEvent(profilesDataWrapper);
-				//TODO - aktivuj vrateny profil
+				eventInDB.pauseEvent(profilesDataWrapper, false);
 			}
 		}
 		else
@@ -285,7 +283,7 @@ public class PhoneProfilesService extends Service {
 		int location = profilesDataWrapper.getEventList().indexOf(eventInList);
 		if (location != -1)
 		{
-			eventInList.stopEvent(profilesDataWrapper);
+			eventInList.stopEvent(profilesDataWrapper, false);
 			profilesDataWrapper.getEventList().remove(location);
 		}
 	}

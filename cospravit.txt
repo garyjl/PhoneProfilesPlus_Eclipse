@@ -59,7 +59,7 @@ Events:
    - vid mazanie vsetkych eventov, cize stopnut - hotovo
    - znovunacitanie vsetkcyh dat - hotovo
    - service si eventy sam pospusta  - TODO
-11. profileStack
+11. profileStack - VYHODIT, NAHRADIT TIMELINE EVENTOV
    - na spustenie service sa naloaduje z db - hotovo
    - kazda zmena v profileStack sa hned zapise do db - hotovo
 12. start service
@@ -67,5 +67,90 @@ Events:
      statusu PAUSE - TODO
    - nasledne sa eventy pospustaju, ide o eventy, ktorych system event sa vytriggeruje pri
      spusteni service (napr. ak Time event zrovna sadne do casu spustenie service) - TODO
-     
-      
+
+
+
+-- vnorene
+P1a |               -> timeline:
+P1a | E1s, P2s, P1e -> timeline: E1
+P2a | E2s, P3s, P2e -> timeline: E1, E2
+P3a | E3s, P4s, P3e -> timeline: E1, E2, E3
+P4a |               -> timeline: E1, E2, E3
+P4a |*E3e, P4s, P3e -> timeline: E1, E2, E3 - ak som na konci, vyhodim sa
+P4a |*              -> timeline: E1, E2     - a potom ak PXa nie je moj PXe, aktivujem moj PXe
+P3a |               -> timeline: E1, E2
+P3a |*E2e, P3s, P2e -> timeline: E1         - ak som na konci, vyhodim sa
+P3a |*              -> timeline: E1         - a potom ak PXa nie je moj PXe, aktivujem moj PXe
+P2a |               -> timeline: E1
+P2a |*E1s, P2s, P1e -> timeline: E1         - ak som na konci, vyhodim sa
+P2a |               -> timeline:            - a potom ak PXa nie je moj PXe, aktivujem moj PXe
+P1a |               -> timeline:
+
+-- prekrizene
+P1a |               -> timeline:
+P1a | E1s, P2s, P1e -> timeline: E1
+P2a | E2s, P3s, P2e -> timeline: E1, E2
+P3a | E3s, P4s, P3e -> timeline: E1, E2, E3
+P4a |               -> timeline: E1, E2, E3
+P4a |*E1e, P2s, P1e -> timeline: E1, E2, E3 - ak nie som na konci, vyhodim sa
+P4a |*              -> timeline: E2, E3     - bol som na zaciatku, poposuvam profili u zostanych
+P4a |*E2s, P3s, P1e -> timeline: E2, E3     - eventoch, pricom prvy dostane moj PXe, ostane 
+P4a |*E3s, P4s, P2e -> timeline: E2, E3     - postupne PXe eventu nad nim
+P4a |               -> timeline: E2, E3     
+P4a |*E2e, P3s, P1e -> timeline: E2, E3     - ak nie som na konci, vyhodim sa
+P4a |*              -> timeline: E3         - bol som na zaciatku, poposuvam profili u zostanych
+P4a |*E3s, P4s, P1e -> timeline: E3         - eventoch pricom prvy dostane moj PXe, ostane ...
+P4a |               -> timeline: E3     
+P4a |*E3e, P4s, P1e -> timeline: E3         - ak som na konci, vyhodim sa
+P4a |*              -> timeline:            - a potom ak PXa nie je moj PXe, aktivujem moj PXe
+P1a |               -> timeline: 
+
+-- prekrizene 2
+P1a |               -> timeline:
+P1a | E1s, P2s, P1e -> timeline: E1
+P2a | E2s, P3s, P2e -> timeline: E1, E2
+P3a | E3s, P4s, P3e -> timeline: E1, E2, E3
+P4a |               -> timeline: E1, E2, E3
+P4a |*E2s, P3s, P2e -> timeline: E1, E2, E3 - ak nie som na konci, vyhodim sa
+P4a |*              -> timeline: E1, E3     - nebol som na zaciatku, neposuvam PXe
+P4a |*E1s, P2s, P1e -> timeline: E1, E3
+P4a |*E3s, P4s, P3e -> timeline: E1, E3
+P4a |               -> timeline: E2, E3     
+P4a |*E1e, P2s, P1e -> timeline: E1, E3     - ak nie som na konci, vyhodim sa
+P4a |*              -> timeline: E3         - bol som na zaciatku, poposuvam profili u zostanych
+P4a |*E3s, P4s, P1e -> timeline: E3         - eventoch pricom prvy dostane moj PXe, ostane ...
+P4a |               -> timeline: E3     
+P4a |*E3e, P4s, P1e -> timeline: E3         - ak som na konci, vyhodim sa
+P4a |*              -> timeline:            - a potom ak PXa nie je moj PXe, aktivujem moj PXe
+P1a |               -> timeline: 
+
+Posvanie PXe profilov pri prekrizeni robit odkonca hore, pre aktualny event zobrat profil 
+predchadzajuceho eventu, pre prvy event zobrat profil z odmazaneho eventu.
+
+Cize su 3 situacie, ked pride pauzovaci system event:
+1. event je zaciatku timeline:
+   a) vyhodim event z timeline
+   b) poposuvam PXe profily v eventoch od spodu smerom hore po timeline, prvy event v timeline
+      dostene PXe z vyhodeneho eventu
+2. event je v strede timeline:
+   a) vyhodim event z timeline
+3. event je na konci timeline
+   a) vyhodim event z timeline
+   b) aktivujem PXe vyhodeneho eventu, ak aktualne aktivovany event nie je rovny PXe vyhodeneho
+      eventu 
+PXs -> profil, ktory event aktivuje na start system event - field _fkProfile
+PXe -> profil, ktory bol aktualne aktivovany pred staet system eventu - field _fkProfileReturn
+
+Bacha na to, ze _fkProfileReturn moze byt null, co znamena, ze sa ma odaktivovat aktualne
+aktivovany profil.
+
+Dalej bahcha na to, ze event nemusi byt v timeline, v takom pripade na pause/stop nerobime vobec nic
+
+
+Na pause a stop system event sa spravi to iste, co na pause, ale su pripady, kedy sa nema (de)aktivovat
+_fkProfilePause event. Su to tieto pripady:
+- manualna aktivacia profilu - eventy sa vsetky pauzuju, ale nic z timeline sa neaktivuje
+- mazanie vsetkych eventov - vsetky sa stopnu, ale ziaden z timeline sa neaktivuje
+- mazanie vsetkych profilov - vsetky eventy sa stopnu, ale ziaden z timeline sa neaktivuje
+- import dat - vsetky eventy sa stopnu, ale ziaden z timeline sa neaktivuje, manualne sa aktivuje
+  ten, co ma v importnutej db _checked = true

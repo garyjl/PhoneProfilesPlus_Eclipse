@@ -211,72 +211,98 @@ public class Event {
 	}
 	
 	
-	public Profile startEvent(ProfilesDataWrapper profilesDataWrapper,
-							Profile activeProfile)
+	public void startEvent(ProfilesDataWrapper profilesDataWrapper)
 	{
-		// spustenie eventu ma sposobit aktivaciu priradeneho profilu
-		// do profileStack vlozime activeProfile
-		// f. vrati profil, ktory service aktivuje
-		// ak vrati null, service profil neaktivuje
-
-		List<Profile> profileStack = profilesDataWrapper.getProfileStack();
+		List<EventTimeline> eventTimelineList = profilesDataWrapper.getEventTimelineList();
 		
-		profileStack.add(activeProfile);
-		profilesDataWrapper.getDatabaseHandler().addProfilePS(activeProfile, profileStack.size()-1);
-
+		EventTimeline eventTimeline = new EventTimeline();
+		eventTimeline._fkEvent = this._id;
+		eventTimeline._eorder = 0;
+		eventTimeline._fkProfileReturn = profilesDataWrapper.getActivatedProfile()._id;
+		
+		profilesDataWrapper.getDatabaseHandler().addEventTimeline(eventTimeline);
+		eventTimelineList.add(eventTimeline);
+		
 		Profile profile = profilesDataWrapper.getProfileById(_fkProfile);
+		//TODO activate profile
 
 		setSystemEvent(ESTATUS_RUNNING);
 		
 		this._status = ESTATUS_RUNNING;
 		
-		return profile;
+		return;
 	}
 	
-	public Profile pauseEvent(ProfilesDataWrapper profilesDataWrapper)
+	public void pauseEvent(ProfilesDataWrapper profilesDataWrapper, boolean activateReturnProfile)
 	{
-		// pozastavenie eventu ma sposobit aktivovanie profilu z profileStack
-		// vyberieme posledny zo stackProfile
-		// ak to nie je tymto eventom aktivovany profil, tak ho aktivujeme 
-		// posledny profil zo stackProfile vyhodime
-		// malo by to vyriesit vnorene aj prekrizene eventy
-		// f. vrati profil, ktory service aktivuje
-		// ak vrati null, service profil neaktivuje
+		List<EventTimeline> eventTimelineList = profilesDataWrapper.getEventTimelineList();
 
-		List<Profile> profileStack = profilesDataWrapper.getProfileStack();
-		
-		Profile profile = null;
-		if (profilesDataWrapper.getProfileStack().size() > 0)
+		// test whenever event exists in timeline
+		boolean exists = false;
+		int eventPosition = 0;
+		for (EventTimeline eventTimeline : eventTimelineList)
 		{
-			profile = profileStack.get(profileStack.size()-1);
-			if (profile == profilesDataWrapper.getProfileById(_fkProfile))
+			if (eventTimeline._fkEvent == this._id)
 			{
-				// neaktivovat profile, lebo ten zo stack je aktivovany tymto eventom
-				profile = null;
+				exists = true;
+				break;
 			}
-			profileStack.remove(profileStack.size()-1);
-			profilesDataWrapper.getDatabaseHandler().deleteLastProfilePS();
+			
+			eventPosition++;
+		}
+		
+		if (exists)
+		{
+			EventTimeline eventTimeline = eventTimelineList.get(eventPosition);
+			
+			// remove event from timeline
+			eventTimelineList.remove(eventTimeline);
+			profilesDataWrapper.getDatabaseHandler().deleteEventTimeline(eventTimeline);
+	
+			
+			if (eventPosition == 0)
+			{
+				// move _fkProfileReturn up
+				for (int i = eventTimelineList.size()-1; i > 0; i--)
+				{
+					eventTimelineList.get(i)._fkProfileReturn = 
+							eventTimelineList.get(i-1)._fkProfileReturn;
+				}
+				eventTimelineList.get(0)._fkProfileReturn = eventTimeline._fkProfileReturn;
+				profilesDataWrapper.getDatabaseHandler().updateProfileReturnET(eventTimelineList);
+			}
+			else
+			if (eventPosition == eventTimelineList.size() - 1)
+			{
+				// activate profile only when profile not already activated 
+				if ((eventTimeline._fkProfileReturn != profilesDataWrapper.getActivatedProfile()._id)
+					&& (activateReturnProfile))
+				{
+					//TODO - aktivuj profil eventTimeline._fkProfileReturn
+					Event event = profilesDataWrapper.getEventById(eventTimeline._fkEvent);
+				}
+			}
+			else
+			{
+				// do nothing
+			}
 		}
 
 		setSystemEvent(ESTATUS_PAUSE);
 		
 		this._status = ESTATUS_PAUSE;
 		
-		return profile;
+		return;
 	}
 	
-	public void stopEvent(ProfilesDataWrapper profilesDataWrapper)
+	public void stopEvent(ProfilesDataWrapper profilesDataWrapper, boolean activateReturnProfile)
 	{
-		// stopnutie eventu ma sposobit jeho disablovanie
-		// ak event zrovna bezi, najprv ho zapauzujeme
-		// ziadna aktivacia profilu v tomto pripade nebude vykonana
-		
 		if (this._status == ESTATUS_RUNNING)
 		{
 			// event zrovna bezi, zapauzujeme ho
-			pauseEvent(profilesDataWrapper);
+			pauseEvent(profilesDataWrapper, activateReturnProfile);
 		}
-		
+	
 		setSystemEvent(ESTATUS_STOP);
 		
 		this._status = ESTATUS_STOP;
