@@ -188,12 +188,12 @@ public class PhoneProfilesService extends Service {
 	private void profileDeleted(long profile_id)
 	{
 		Profile profileInList = profilesDataWrapper.getProfileById(profile_id);
-		profilesDataWrapper.deleteProfile(profileInList);
+		profilesDataWrapper.deleteProfileFromService(profileInList);
 	}
 	
 	private void allProfilesDeleted()
 	{
-		profilesDataWrapper.deleteAllProfiles();
+		profilesDataWrapper.deleteAllProfilesFromService();
 	}
 	
 	private void eventAdded(long event_id)

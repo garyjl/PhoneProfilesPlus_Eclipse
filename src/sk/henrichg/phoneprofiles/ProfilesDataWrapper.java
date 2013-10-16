@@ -376,11 +376,39 @@ public class ProfilesDataWrapper {
 		{
 			if (event._fkProfile == profile._id) 
 				event._fkProfile = 0;
-			event.stopEvent(this, false);
 		}
 	}
 	
 	public void deleteAllProfiles()
+	{
+		profileList.clear();
+		if (eventList == null)
+			eventList = getEventList();
+		// unlink profiles from events
+		for (Event event : eventList)
+		{
+			event._fkProfile = 0;
+		}
+	}
+
+	public void deleteProfileFromService(Profile profile)
+	{
+		if (profile == null)
+			return;
+		
+		profileList.remove(profile);
+		if (eventList == null)
+			eventList = getEventList();
+		// unlink profile from events
+		for (Event event : eventList)
+		{
+			if (event._fkProfile == profile._id) 
+				event._fkProfile = 0;
+			event.stopEvent(this, false);
+		}
+	}
+	
+	public void deleteAllProfilesFromService()
 	{
 		profileList.clear();
 		if (eventList == null)
