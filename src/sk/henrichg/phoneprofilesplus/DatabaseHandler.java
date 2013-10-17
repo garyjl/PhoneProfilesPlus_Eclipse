@@ -36,12 +36,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String TABLE_PROFILES = "profiles";
 	private static final String TABLE_EVENTS = "events";
 	private static final String TABLE_EVENT_TIMELINE = "event_timeline";
-	
-	// import/export
-	private final String EXPORT_DBPATH = "/PhoneProfiles";
-	private final String EXPORT_FILENAME = DATABASE_NAME + ".backup";
-	private final String DB_FILEPATH = "/data/" + GlobalData.PACKAGE_NAME + "/databases";
 
+	// import/export
+	private final String EXPORT_DBFILENAME = DATABASE_NAME + ".backup";
 	
 	// Profiles Table Columns names
 	private static final String KEY_ID = "id";
@@ -1844,7 +1841,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			//File data = Environment.getDataDirectory();
 			
 			//File dataDB = new File(data, DB_FILEPATH + "/" + DATABASE_NAME);
-			File exportedDB = new File(sd, EXPORT_DBPATH + "/" + EXPORT_FILENAME);
+			File exportedDB = new File(sd, GUIData.EXPORT_PATH + "/" + EXPORT_DBFILENAME);
 			
 			if (exportedDB.exists())
 			{
@@ -2026,8 +2023,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			File sd = Environment.getExternalStorageDirectory();
 			File data = Environment.getDataDirectory();
 			
-			File dataDB = new File(data, DB_FILEPATH + "/" + DATABASE_NAME);
-			File exportedDB = new File(sd, EXPORT_DBPATH + "/" + EXPORT_FILENAME);
+			File dataDB = new File(data, GUIData.DB_FILEPATH + "/" + DATABASE_NAME);
+			File exportedDB = new File(sd, GUIData.EXPORT_PATH + "/" + EXPORT_DBFILENAME);
 			
 			//Log.d("DatabaseHandler.exportDB", "dataDB="+dataDB.getAbsolutePath());
 			//Log.d("DatabaseHandler.exportDB", "exportedDB="+exportedDB.getAbsolutePath());
@@ -2037,7 +2034,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				// close db
 				close();
 				
-				File exportDir = new File(sd, EXPORT_DBPATH);
+				File exportDir = new File(sd, GUIData.EXPORT_PATH);
 				if (!(exportDir.exists() && exportDir.isDirectory()))
 				{
 					exportDir.mkdirs();

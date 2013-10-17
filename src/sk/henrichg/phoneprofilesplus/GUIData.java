@@ -16,6 +16,11 @@ public class GUIData {
 	
 	static final String PROFILE_ICON_DEFAULT = "ic_profile_default";
 
+	// import/export
+	public static final String DB_FILEPATH = "/data/" + GlobalData.PACKAGE_NAME + "/databases";
+	public static final String EXPORT_PATH = "/PhoneProfilesPlus";
+	public static final String EXPORT_APP_PREF_FILENAME = "ApplicationPreferences.backup";
+
 	public static void setLanguage(Context context)//, boolean restart)
 	{
 		// jazyk na aky zmenit

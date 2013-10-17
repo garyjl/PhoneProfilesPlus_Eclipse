@@ -1,5 +1,15 @@
 package sk.henrichg.phoneprofilesplus;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import sk.henrichg.phoneprofilesplus.EditorEventListFragment.OnAllEventsDeleted;
 import sk.henrichg.phoneprofilesplus.EditorEventListFragment.OnEventAdded;
 import sk.henrichg.phoneprofilesplus.EditorEventListFragment.OnEventDeleted;
@@ -21,6 +31,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceScreen;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
@@ -41,6 +52,8 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -561,6 +574,50 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		dialogBuilder.show();
 	}
 	
+	@SuppressWarnings({ "unchecked" })
+	private boolean importApplicationPreferences(File src) {
+	    boolean res = false;
+	    ObjectInputStream input = null;
+	    try {
+	        input = new ObjectInputStream(new FileInputStream(src));
+	            Editor prefEdit = getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, MODE_PRIVATE).edit();
+	            prefEdit.clear();
+	            Map<String, ?> entries = (Map<String, ?>) input.readObject();
+	            for (Entry<String, ?> entry : entries.entrySet()) {
+	                Object v = entry.getValue();
+	                String key = entry.getKey();
+
+	                if (v instanceof Boolean)
+	                    prefEdit.putBoolean(key, ((Boolean) v).booleanValue());
+	                else if (v instanceof Float)
+	                    prefEdit.putFloat(key, ((Float) v).floatValue());
+	                else if (v instanceof Integer)
+	                    prefEdit.putInt(key, ((Integer) v).intValue());
+	                else if (v instanceof Long)
+	                    prefEdit.putLong(key, ((Long) v).longValue());
+	                else if (v instanceof String)
+	                    prefEdit.putString(key, ((String) v));
+	            }
+	            prefEdit.commit();
+	        res = true;         
+	    } catch (FileNotFoundException e) {
+	        e.printStackTrace();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    } catch (ClassNotFoundException e) {
+	        e.printStackTrace();
+	    }finally {
+	        try {
+	            if (input != null) {
+	                input.close();
+	            }
+	        } catch (IOException ex) {
+	            ex.printStackTrace();
+	        }
+	    }
+	    return res;
+	}	
+	
 	private void importData()
 	{
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
@@ -653,6 +710,33 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		dialogBuilder.show();
 	}
 
+	private boolean exportApplicationPreferences(File dst) {
+	    boolean res = false;
+	    ObjectOutputStream output = null;
+	    try {
+	        output = new ObjectOutputStream(new FileOutputStream(dst));
+	        SharedPreferences pref = 
+	                            getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, MODE_PRIVATE);
+	        output.writeObject(pref.getAll());
+
+	        res = true;
+	    } catch (FileNotFoundException e) {
+	        e.printStackTrace();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }finally {
+	        try {
+	            if (output != null) {
+	                output.flush();
+	                output.close();
+	            }
+	        } catch (IOException ex) {
+	            ex.printStackTrace();
+	        }
+	    }
+	    return res;
+	}
+
 	private void exportData()
 	{
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
@@ -686,7 +770,16 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 					
 					@Override
 					protected Integer doInBackground(Void... params) {
-						return profilesDataWrapper.getDatabaseHandler().exportDB();
+						
+						int ret = profilesDataWrapper.getDatabaseHandler().exportDB();
+						if (ret == 1)
+						{
+							File sd = Environment.getExternalStorageDirectory();
+							File exportFile = new File(sd, GUIData.EXPORT_PATH + "/" + GUIData.EXPORT_APP_PREF_FILENAME);
+							exportApplicationPreferences(exportFile);
+						}
+
+						return ret;
 					}
 					
 					@Override
@@ -722,7 +815,6 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		dialogBuilder.setNegativeButton(android.R.string.no, null);
 		dialogBuilder.show();
 	}
-	
 	
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
