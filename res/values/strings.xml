@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">PhoneProfiles</string>
+    <string name="app_name">PhoneProfilesPlus</string>
     <string name="menu_edit_profiles">Edit profiles</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_phone_profiles">Phone Profiles</string>
+    <string name="title_activity_phone_profiles">Phone Profiles Plus</string>
     <string name="title_activity_profile_preferences">Profile preferences</string>
     <string name="title_activity_event_preferences">Event preferences</string>
     <string name="menu_new_profile">New profile</string>
@@ -30,7 +30,7 @@
     <string name="preference_profile_no_change">No change</string>
     <string name="preference_profile_autobrightness">Automatic</string>
     <string name="active_profile_notification_label">Active profile</string>
-    <string name="title_activity_phone_profiles_preferences">Phone Profiles Settings</string>
+    <string name="title_activity_phone_profiles_preferences">Application Settings</string>
     <string name="menu_exit">Exit</string>
     <string name="profile_item_help_text">Longpress for edit</string>
     <string name="activate_profile_alert_message">Activate profile</string>

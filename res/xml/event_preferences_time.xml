@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-                  xmlns:henrichg="http://schemas.android.com/apk/res/sk.henrichg.phoneprofiles" >
+                  xmlns:henrichg="http://schemas.android.com/apk/res/sk.henrichg.phoneprofilesplus" >
     <PreferenceCategory
         android:summary="@string/event_preferences_category_eventidentification"
         android:title="@string/event_preferences_category_eventidentification" >
@@ -12,11 +12,11 @@
             android:key="eventName"
             android:summary="@string/event_preferences_eventName"
             android:title="@string/event_preferences_eventName" /> 
-        <sk.henrichg.phoneprofiles.EventTypePreference
+        <sk.henrichg.phoneprofilesplus.EventTypePreference
             android:defaultValue="1"
             android:key="eventType"
             android:title="@string/event_preferences_eventType" />
-        <sk.henrichg.phoneprofiles.ProfilePreference
+        <sk.henrichg.phoneprofilesplus.ProfilePreference
             android:defaultValue="0"
             android:key="eventProfile"
             android:title="@string/event_preferences_eventProfile" />
@@ -24,13 +24,13 @@
     <PreferenceCategory
         android:summary="@string/event_preferences_category_eventParameters"
         android:title="@string/event_preferences_category_eventParameters" >
-        <sk.henrichg.phoneprofiles.DaysOfWeekPreference
+        <sk.henrichg.phoneprofilesplus.DaysOfWeekPreference
             android:defaultValue="#ALL#"
             android:key="eventTimeDays"
             android:title="@string/event_preferences_time_timeDays"
             android:entries="@array/daysOfWeekArray"
             android:entryValues="@array/daysOfWeekValues"/>
-        <sk.henrichg.phoneprofiles.TimePreference
+        <sk.henrichg.phoneprofilesplus.TimePreference
             android:key="eventTimeStartTime"
             android:defaultValue="0"
             android:title="@string/event_preferences_time_startTime" />
@@ -38,7 +38,7 @@
 		    android:key="eventTimeUseEndTime"
 		    android:title="@string/event_preferences_time_useEndTime"
 		    android:defaultValue="false" />
-        <sk.henrichg.phoneprofiles.TimePreference
+        <sk.henrichg.phoneprofilesplus.TimePreference
             android:key="eventTimeEndTime"
             android:defaultValue="0"
             android:title="@string/event_preferences_time_endTime"

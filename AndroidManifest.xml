@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="sk.henrichg.phoneprofiles"
+    package="sk.henrichg.phoneprofilesplus"
     android:versionCode="50"
     android:versionName="4.0 alpha" >
 
@@ -50,7 +50,7 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.Phoneprofilestheme"
         android:configChanges="locale|layoutDirection"
-        android:name="sk.henrichg.phoneprofiles.GlobalData" >
+        android:name="sk.henrichg.phoneprofilesplus.GlobalData" >
         <activity
             android:name=".ActivateProfileActivity"
             android:label="@string/title_activity_phone_profiles"
@@ -95,7 +95,7 @@
         <activity
             android:name=".BackgroundActivateProfileActivity"
             android:label="@string/empty_string" 
-            android:taskAffinity="sk.henrichg.phoneprofiles"
+            android:taskAffinity="sk.henrichg.phoneprofilesplus"
             android:excludeFromRecents="true"
             android:theme="@style/EmptyActivity" >
             <intent-filter>
@@ -180,7 +180,7 @@
 	    <receiver android:name=".DashClockBroadcastReceiver"
 	        android:enabled="true" >
 	        <intent-filter>
-	         	<action android:name="sk.henrichg.phoneprofiles.REFRESH_DASHCLOCK" />
+	         	<action android:name="sk.henrichg.phoneprofilesplus.REFRESH_DASHCLOCK" />
                 <category android:name="android.intent.category.DEFAULT" />
    	      	</intent-filter>
 	   	</receiver>        

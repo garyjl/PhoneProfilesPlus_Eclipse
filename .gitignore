@@ -21,3 +21,4 @@ local.properties
 balast/
 /android-support-v4.jar
 /phoneprofiles.trace
+/phoneprofilesplus.trace

@@ -1,7 +1,7 @@
-PhoneProfiles
-=============
+PhoneProfilesPlus
+=================
 
-Android application - manualy change device settings like ringer mode, sounds, Wifi, Bluetooth, launcher wallpaper, ...
+Android application - manualy and event triggered change of device settings like ringer mode, sounds, Wifi, Bluetooth, launcher wallpaper, ...
 
 Required
 --------

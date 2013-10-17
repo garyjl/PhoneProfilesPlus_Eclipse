@@ -9,35 +9,35 @@
 	*/
     -->
     <header
-        unified:fragment="sk.henrichg.phoneprofiles.PhoneProfilesPreferencesActivity$ActivatorPreferencesFragment"
+        unified:fragment="sk.henrichg.phoneprofilesplus.PhoneProfilesPreferencesActivity$ActivatorPreferencesFragment"
         unified:title="@string/phone_profiles_pref_category_activator"
         unified:preferenceRes="@xml/phone_profiles_preferences_activator" />
     <header
-        unified:fragment="sk.henrichg.phoneprofiles.PhoneProfilesPreferencesActivity$ActivationPreferencesFragment"
+        unified:fragment="sk.henrichg.phoneprofilesplus.PhoneProfilesPreferencesActivity$ActivationPreferencesFragment"
         unified:title="@string/phone_profiles_pref_category_activation"
         unified:preferenceRes="@xml/phone_profiles_preferences_activation" />
     <header
-        unified:fragment="sk.henrichg.phoneprofiles.PhoneProfilesPreferencesActivity$EditorPreferencesFragment"
+        unified:fragment="sk.henrichg.phoneprofilesplus.PhoneProfilesPreferencesActivity$EditorPreferencesFragment"
         unified:title="@string/phone_profiles_pref_category_editor"
         unified:preferenceRes="@xml/phone_profiles_preferences_editor" />
     <header
-        unified:fragment="sk.henrichg.phoneprofiles.PhoneProfilesPreferencesActivity$GUIPreferencesFragment"
+        unified:fragment="sk.henrichg.phoneprofilesplus.PhoneProfilesPreferencesActivity$GUIPreferencesFragment"
         unified:title="@string/phone_profiles_pref_category_gui"
         unified:preferenceRes="@xml/phone_profiles_preferences_gui" />
     <header
-        unified:fragment="sk.henrichg.phoneprofiles.PhoneProfilesPreferencesActivity$NotificationsPreferencesFragment"
+        unified:fragment="sk.henrichg.phoneprofilesplus.PhoneProfilesPreferencesActivity$NotificationsPreferencesFragment"
         unified:title="@string/phone_profiles_pref_category_notifications"
         unified:preferenceRes="@xml/phone_profiles_preferences_notifications" />
     <header
-        unified:fragment="sk.henrichg.phoneprofiles.PhoneProfilesPreferencesActivity$StartPreferencesFragment"
+        unified:fragment="sk.henrichg.phoneprofilesplus.PhoneProfilesPreferencesActivity$StartPreferencesFragment"
         unified:title="@string/phone_profiles_pref_category_start"
         unified:preferenceRes="@xml/phone_profiles_preferences_start" />
     <header
-        unified:fragment="sk.henrichg.phoneprofiles.PhoneProfilesPreferencesActivity$WidgetListPreferencesFragment"
+        unified:fragment="sk.henrichg.phoneprofilesplus.PhoneProfilesPreferencesActivity$WidgetListPreferencesFragment"
         unified:title="@string/phone_profiles_pref_category_widget_list"
         unified:preferenceRes="@xml/phone_profiles_preferences_widget_list" />
     <header
-        unified:fragment="sk.henrichg.phoneprofiles.PhoneProfilesPreferencesActivity$WidgetIconShortcutPreferencesFragment"
+        unified:fragment="sk.henrichg.phoneprofilesplus.PhoneProfilesPreferencesActivity$WidgetIconShortcutPreferencesFragment"
         unified:title="@string/phone_profiles_pref_category_widget_icon_shortcut"
         unified:preferenceRes="@xml/phone_profiles_preferences_widget_icon_shortcut" />
     
