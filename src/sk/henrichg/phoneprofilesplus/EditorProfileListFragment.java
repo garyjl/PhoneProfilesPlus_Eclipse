@@ -221,6 +221,38 @@ public class EditorProfileListFragment extends SherlockFragment {
 		activateProfileHelper = EditorProfilesActivity.profilesDataWrapper.getActivateProfileHelper();
 		activateProfileHelper.initialize(getSherlockActivity(), getActivity().getBaseContext());
 		
+		setHasOptionsMenu(true);
+
+		//Log.d("EditorProfileListFragment.onCreate", "xxxx");
+		
+	}
+	
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View rootView;
+		
+		if (GlobalData.applicationEditorPrefIndicator && GlobalData.applicationEditorHeader)
+			rootView = inflater.inflate(R.layout.editor_profile_list, container, false); 
+		else
+		if (GlobalData.applicationEditorHeader)
+			rootView = inflater.inflate(R.layout.editor_profile_list_no_indicator, container, false); 
+		else
+			rootView = inflater.inflate(R.layout.editor_profile_list_no_header, container, false); 
+
+		return rootView;
+	}
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState)
+	{
+		super.onActivityCreated(savedInstanceState);
+		
+		// az tu mame layout, tak mozeme ziskat view-y
+		activeProfileName = (TextView)getSherlockActivity().findViewById(R.id.activated_profile_name);
+		activeProfileIcon = (ImageView)getSherlockActivity().findViewById(R.id.activated_profile_icon);
+		listView = (DragSortListView)getSherlockActivity().findViewById(R.id.editor_profiles_list);
+		listView.setEmptyView(getSherlockActivity().findViewById(R.id.editor_profiles_list_empty));
+
 		final EditorProfileListFragment fragment = this;
 		
 		new AsyncTask<Void, Integer, Void>() {
@@ -257,11 +289,9 @@ public class EditorProfileListFragment extends SherlockFragment {
 			{
 				super.onPostExecute(result);
 
-				if (listView != null)
-				{
-					profileListAdapter = new EditorProfileListAdapter(fragment, EditorProfilesActivity.profilesDataWrapper, filterType);
-					listView.setAdapter(profileListAdapter);
-				}
+				profileListAdapter = new EditorProfileListAdapter(fragment, EditorProfilesActivity.profilesDataWrapper, filterType);
+				listView.setAdapter(profileListAdapter);
+
 				if (defaultProfilesGenerated)
 				{
 					activateProfileHelper.updateWidget();
@@ -273,40 +303,6 @@ public class EditorProfileListFragment extends SherlockFragment {
 			}
 			
 		}.execute();
-		
-		setHasOptionsMenu(true);
-
-		//Log.d("EditorProfileListFragment.onCreate", "xxxx");
-		
-	}
-	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View rootView;
-		
-		if (GlobalData.applicationEditorPrefIndicator && GlobalData.applicationEditorHeader)
-			rootView = inflater.inflate(R.layout.editor_profile_list, container, false); 
-		else
-		if (GlobalData.applicationEditorHeader)
-			rootView = inflater.inflate(R.layout.editor_profile_list_no_indicator, container, false); 
-		else
-			rootView = inflater.inflate(R.layout.editor_profile_list_no_header, container, false); 
-
-		return rootView;
-	}
-	
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState)
-	{
-		super.onActivityCreated(savedInstanceState);
-		
-		// az tu mame layout, tak mozeme ziskat view-y
-		activeProfileName = (TextView)getSherlockActivity().findViewById(R.id.activated_profile_name);
-		activeProfileIcon = (ImageView)getSherlockActivity().findViewById(R.id.activated_profile_icon);
-		listView = (DragSortListView)getSherlockActivity().findViewById(R.id.editor_profiles_list);
-		listView.setEmptyView(getSherlockActivity().findViewById(R.id.editor_profiles_list_empty));
-
-		listView.setAdapter(profileListAdapter);
 		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -348,15 +344,6 @@ public class EditorProfileListFragment extends SherlockFragment {
             }
         });
         
-		if (profileList != null)
-		{
-			if (profileListAdapter == null)
-			{
-				profileListAdapter = new EditorProfileListAdapter(this, EditorProfilesActivity.profilesDataWrapper, filterType);
-				listView.setAdapter(profileListAdapter);
-			}
-		}
-
 		Profile profile;
 		
 		// pre profil, ktory je prave aktivny, treba aktualizovat aktivitu

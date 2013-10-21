@@ -601,7 +601,9 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	            prefEdit.commit();
 	        res = true;         
 	    } catch (FileNotFoundException e) {
-	        e.printStackTrace();
+	    	// no error, this is OK
+	        //e.printStackTrace();
+	    	res = true;
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    } catch (ClassNotFoundException e) {
@@ -660,6 +662,13 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 						{
 							// check for hardware capability and update data
 							ret = profilesDataWrapper.getDatabaseHandler().updateForHardware(GlobalData.context);
+						}
+						if (ret == 1)
+						{
+							File sd = Environment.getExternalStorageDirectory();
+							File exportFile = new File(sd, GUIData.EXPORT_PATH + "/" + GUIData.EXPORT_APP_PREF_FILENAME);
+							if (!importApplicationPreferences(exportFile))
+								ret = 0;
 						}
 						
 						return ret;
@@ -721,7 +730,9 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 
 	        res = true;
 	    } catch (FileNotFoundException e) {
-	        e.printStackTrace();
+	    	// this is OK
+	        //e.printStackTrace();
+	    	res = true;
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }finally {
@@ -776,7 +787,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 						{
 							File sd = Environment.getExternalStorageDirectory();
 							File exportFile = new File(sd, GUIData.EXPORT_PATH + "/" + GUIData.EXPORT_APP_PREF_FILENAME);
-							exportApplicationPreferences(exportFile);
+							if (!exportApplicationPreferences(exportFile))
+								ret = 0;
 						}
 
 						return ret;
