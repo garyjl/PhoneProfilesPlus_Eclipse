@@ -579,7 +579,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	    boolean res = false;
 	    ObjectInputStream input = null;
 	    try {
-	        input = new ObjectInputStream(new FileInputStream(src));
+	        	input = new ObjectInputStream(new FileInputStream(src));
 	            Editor prefEdit = getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, MODE_PRIVATE).edit();
 	            prefEdit.clear();
 	            Map<String, ?> entries = (Map<String, ?>) input.readObject();

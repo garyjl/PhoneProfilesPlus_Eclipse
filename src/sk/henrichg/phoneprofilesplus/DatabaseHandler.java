@@ -1835,7 +1835,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		// database to internal storage
 		//close();
 
-		try {
+		//try {
 			
 			File sd = Environment.getExternalStorageDirectory();
 			//File data = Environment.getDataDirectory();
@@ -1951,7 +1951,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 													// ale mame mapovacie polia, z ktorych vieme
 													// ktore povodne id za zmenilo na ktore nove
 													int profileIdx = exportedDBEventProfileIds.indexOf(cursorExportedDB.getLong(i));
-													values.put(columnNamesExportedDB[i], importDBEventProfileIds.get(profileIdx));
+													if (profileIdx != -1)
+														values.put(columnNamesExportedDB[i], importDBEventProfileIds.get(profileIdx));
+													else
+														values.put(columnNamesExportedDB[i], 0);
 												}
 												else
 													values.put(columnNamesExportedDB[i], cursorExportedDB.getString(i));
@@ -2006,9 +2009,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			//		Log.w("DatabaseHandler.importDB", "wrong exported db version");
 			//	}
 			}
-		} catch (Exception e) {
+	/*	} catch (Exception e) {
 			Log.e("DatabaseHandler.importDB", e.toString());
-		}
+		} */
 		
 		return ret;
 	}
