@@ -202,40 +202,6 @@ public class EditorEventListFragment extends SherlockFragment {
 		
 		getSherlockActivity().getIntent();
 		
-		final EditorEventListFragment fragment = this;
-		
-		new AsyncTask<Void, Integer, Void>() {
-			
-			@Override
-			protected void onPreExecute()
-			{
-				super.onPreExecute();
-				//updateHeader(null);
-			}
-			
-			@Override
-			protected Void doInBackground(Void... params) {
-				eventList = EditorProfilesActivity.profilesDataWrapper.getEventList();
-				sortList(orderType);
-				EditorProfilesActivity.profilesDataWrapper.getProfileList();
-				
-				return null;
-			}
-			
-			@Override
-			protected void onPostExecute(Void result)
-			{
-				super.onPostExecute(result);
-
-				if (listView != null)
-				{
-					eventListAdapter = new EditorEventListAdapter(fragment, EditorProfilesActivity.profilesDataWrapper, filterType);
-					listView.setAdapter(eventListAdapter);
-				}
-			}
-			
-		}.execute();
-		
 		setHasOptionsMenu(true);
 
 		//Log.d("EditorEventListFragment.onCreate", "xxxx");
@@ -260,6 +226,39 @@ public class EditorEventListFragment extends SherlockFragment {
 		listView = (ListView)getSherlockActivity().findViewById(R.id.editor_events_list);
 		listView.setEmptyView(getSherlockActivity().findViewById(R.id.editor_events_list_empty));
 		
+		final EditorEventListFragment fragment = this;
+		
+		new AsyncTask<Void, Integer, Void>() {
+			
+			@Override
+			protected void onPreExecute()
+			{
+				super.onPreExecute();
+				//updateHeader(null);
+			}
+			
+			@Override
+			protected Void doInBackground(Void... params) {
+				
+				eventList = EditorProfilesActivity.profilesDataWrapper.getEventList();
+				sortList(orderType);
+				
+				EditorProfilesActivity.profilesDataWrapper.getProfileList();
+				
+				return null;
+			}
+			
+			@Override
+			protected void onPostExecute(Void result)
+			{
+				super.onPostExecute(result);
+
+				eventListAdapter = new EditorEventListAdapter(fragment, EditorProfilesActivity.profilesDataWrapper, filterType);
+				listView.setAdapter(eventListAdapter);
+			}
+			
+		}.execute();
+		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -271,16 +270,6 @@ public class EditorEventListFragment extends SherlockFragment {
 			}
 			
 		}); 
-		
-		if (eventList != null)
-		{
-			if (eventListAdapter == null)
-			{
-				eventListAdapter = new EditorEventListAdapter(this, EditorProfilesActivity.profilesDataWrapper, filterType);
-				listView.setAdapter(eventListAdapter);
-			}
-		}
-		
 		
 		//Log.d("EditorEventListFragment.onActivityCreated", "xxx");
         
