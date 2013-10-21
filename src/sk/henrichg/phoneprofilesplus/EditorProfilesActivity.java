@@ -684,6 +684,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 						
 						if (result == 1)
 						{
+							GlobalData.loadPreferences(getApplicationContext());
+
 							profilesDataWrapper.invalidateProfileList();
 							profilesDataWrapper.getActivateProfileHelper().updateWidget();
 
