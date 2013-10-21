@@ -25,9 +25,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static SQLiteDatabase writableDb;	
     
 	// Database Version
-	private static final int DATABASE_VERSION = 34;
-	// starting version when added Events table
-	private static final int DATABASE_VERSION_EVENTS = 25;
+	private static final int DATABASE_VERSION = 1000;
 
 	// Database Name
 	private static final String DATABASE_NAME = "phoneProfilesManager";
@@ -1926,60 +1924,57 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						cursorExportedDB.close();
 						cursorImportDB.close();
 
-						if (exportedDBObj.getVersion() >= DATABASE_VERSION_EVENTS)
-						{
-							db.execSQL("DELETE FROM " + TABLE_EVENTS);
+						db.execSQL("DELETE FROM " + TABLE_EVENTS);
+					
+						// cusor for events exportedDB
+						cursorExportedDB = exportedDBObj.rawQuery("SELECT * FROM "+TABLE_EVENTS, null);
+						columnNamesExportedDB = cursorExportedDB.getColumnNames();
 						
-							// cusor for events exportedDB
-							cursorExportedDB = exportedDBObj.rawQuery("SELECT * FROM "+TABLE_EVENTS, null);
-							columnNamesExportedDB = cursorExportedDB.getColumnNames();
-							
-							// cursor for profiles of destination db  
-							cursorImportDB = db.rawQuery("SELECT * FROM "+TABLE_EVENTS, null);
-							
-							if (cursorExportedDB.moveToFirst()) {
-								do {
-										values.clear();
-										for (int i = 0; i < columnNamesExportedDB.length; i++)
+						// cursor for profiles of destination db  
+						cursorImportDB = db.rawQuery("SELECT * FROM "+TABLE_EVENTS, null);
+						
+						if (cursorExportedDB.moveToFirst()) {
+							do {
+									values.clear();
+									for (int i = 0; i < columnNamesExportedDB.length; i++)
+									{
+										// put only when columnNamesExportedDB[i] exists in cursorImportDB
+										if (cursorImportDB.getColumnIndex(columnNamesExportedDB[i]) != -1)
 										{
-											// put only when columnNamesExportedDB[i] exists in cursorImportDB
-											if (cursorImportDB.getColumnIndex(columnNamesExportedDB[i]) != -1)
+											if (columnNamesExportedDB[i].equals(KEY_E_FK_PROFILE))
 											{
-												if (columnNamesExportedDB[i].equals(KEY_E_FK_PROFILE))
-												{
-													// importnuty profil ma nove id
-													// ale mame mapovacie polia, z ktorych vieme
-													// ktore povodne id za zmenilo na ktore nove
-													int profileIdx = exportedDBEventProfileIds.indexOf(cursorExportedDB.getLong(i));
-													if (profileIdx != -1)
-														values.put(columnNamesExportedDB[i], importDBEventProfileIds.get(profileIdx));
-													else
-														values.put(columnNamesExportedDB[i], 0);
-												}
+												// importnuty profil ma nove id
+												// ale mame mapovacie polia, z ktorych vieme
+												// ktore povodne id za zmenilo na ktore nove
+												int profileIdx = exportedDBEventProfileIds.indexOf(cursorExportedDB.getLong(i));
+												if (profileIdx != -1)
+													values.put(columnNamesExportedDB[i], importDBEventProfileIds.get(profileIdx));
 												else
-													values.put(columnNamesExportedDB[i], cursorExportedDB.getString(i));
+													values.put(columnNamesExportedDB[i], 0);
 											}
-											//Log.d("DatabaseHandler.importDB", "cn="+columnNames[i]+" val="+cursor.getString(i));
+											else
+												values.put(columnNamesExportedDB[i], cursorExportedDB.getString(i));
 										}
-										
-										// for non existent fields set default value
-										if (exportedDBObj.getVersion() < 30)
-										{
-											values.put(KEY_E_USE_END_TIME, 0);
-										}
-										if (exportedDBObj.getVersion() < 32)
-										{
-											values.put(KEY_E_STATUS, 0);
-										}
+										//Log.d("DatabaseHandler.importDB", "cn="+columnNames[i]+" val="+cursor.getString(i));
+									}
+									
+									// for non existent fields set default value
+									if (exportedDBObj.getVersion() < 30)
+									{
+										values.put(KEY_E_USE_END_TIME, 0);
+									}
+									if (exportedDBObj.getVersion() < 32)
+									{
+										values.put(KEY_E_STATUS, 0);
+									}
 
-										// Inserting Row do db z SQLiteOpenHelper
-										db.insert(TABLE_EVENTS, null, values);
-										
-								} while (cursorExportedDB.moveToNext());
-							}
-							cursorExportedDB.close();
-							cursorImportDB.close();
+									// Inserting Row do db z SQLiteOpenHelper
+									db.insert(TABLE_EVENTS, null, values);
+									
+							} while (cursorExportedDB.moveToNext());
 						}
+						cursorExportedDB.close();
+						cursorImportDB.close();
 						
 						db.setTransactionSuccessful();
 						
