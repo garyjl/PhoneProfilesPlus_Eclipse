@@ -15,7 +15,6 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
@@ -31,7 +30,6 @@ import android.widget.TextView;
 public class ActivateProfileActivity extends SherlockActivity {
 
 	private ProfilesDataWrapper profilesDataWrapper;
-	private ServiceCommunication serviceCommunication;
 	private ActivateProfileHelper activateProfileHelper;
 	private List<Profile> profileList;
 	private ActivateProfileListAdapter profileListAdapter;
@@ -62,7 +60,6 @@ public class ActivateProfileActivity extends SherlockActivity {
 		GUIData.setLanguage(getBaseContext());
 		
 		profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, false, 0);
-		serviceCommunication = new ServiceCommunication(GlobalData.context);
 
 	// set window dimensions ----------------------------------------------------------
 		

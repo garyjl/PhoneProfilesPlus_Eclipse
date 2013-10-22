@@ -13,8 +13,6 @@ import android.graphics.ColorMatrixColorFilter;
 import android.graphics.LightingColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Bitmap.Config;
-import android.graphics.drawable.Drawable;
 
 public class BitmapManipulator {
 	

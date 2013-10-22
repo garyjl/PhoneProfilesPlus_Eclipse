@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceScreen;
-import android.util.Log;
  
 public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
 												implements OnPreferenceAttachedListener,
