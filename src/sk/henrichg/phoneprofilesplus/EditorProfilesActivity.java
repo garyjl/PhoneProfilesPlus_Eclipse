@@ -37,6 +37,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -555,8 +556,12 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		else
 		if (requestCode == GlobalData.REQUEST_CODE_REMOTE_EXPORT)
 		{
+			Log.e("EditorProfilesActivity.onActivityResult","resultCode="+resultCode);
+
 			if (resultCode == RESULT_OK)
-				doImportData();
+			{
+				doImportData(GUIData.REMOTE_EXPORT_PATH);
+			}	
 		}
 		else
 		{
@@ -631,9 +636,10 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	    return res;
 	}	
 	
-	private void doImportData()
+	private void doImportData(String applicationDataPath)
 	{
 		final Activity activity = this;
+		final String _applicationDataPath = applicationDataPath;
 		
 		class ImportAsyncTask extends AsyncTask<Void, Integer, Integer> 
 		{
@@ -658,7 +664,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			
 			@Override
 			protected Integer doInBackground(Void... params) {
-				int ret = profilesDataWrapper.getDatabaseHandler().importDB();
+				int ret = profilesDataWrapper.getDatabaseHandler().importDB(_applicationDataPath);
 				
 				if (ret == 1)
 				{
@@ -668,7 +674,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 				if (ret == 1)
 				{
 					File sd = Environment.getExternalStorageDirectory();
-					File exportFile = new File(sd, GUIData.EXPORT_PATH + "/" + GUIData.EXPORT_APP_PREF_FILENAME);
+					File exportFile = new File(sd, _applicationDataPath + "/" + GUIData.EXPORT_APP_PREF_FILENAME);
 					if (!importApplicationPreferences(exportFile))
 						ret = 0;
 				}
@@ -727,7 +733,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 
 		dialogBuilder2.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
-				doImportData();
+				doImportData(GUIData.EXPORT_PATH);
 			}
 		});
 		dialogBuilder2.setNegativeButton(R.string.alert_button_no, null);
@@ -752,7 +758,6 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 				public void onClick(DialogInterface dialog, int which) {
 					// start RemoteExportDataActivity
 					Intent intent = new Intent("phoneprofiles.intent.action.EXPORTDATA");
-				    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				    startActivityForResult(intent, GlobalData.REQUEST_CODE_REMOTE_EXPORT);		
 				}
 			});
