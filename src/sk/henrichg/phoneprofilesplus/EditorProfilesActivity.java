@@ -49,10 +49,12 @@ import android.widget.Toast;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -551,6 +553,12 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			}
 		}
 		else
+		if (requestCode == GlobalData.REQUEST_CODE_REMOTE_EXPORT)
+		{
+			if (resultCode == RESULT_OK)
+				doImportData();
+		}
+		else
 		{
 			ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
 			if (fragment != null)
@@ -561,13 +569,17 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	private void importExportErrorDialog(int importExport)
 	{
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-		dialogBuilder.setTitle(getResources().getString(R.string.import_profiles_alert_title));
-		String resMessage;
+		String resString;
 		if (importExport == 1)
-			resMessage = getResources().getString(R.string.import_profiles_alert_error);
+			resString = getResources().getString(R.string.import_profiles_alert_title);
 		else
-			resMessage = getResources().getString(R.string.export_profiles_alert_error);
-		dialogBuilder.setMessage(resMessage + "!");
+			resString = getResources().getString(R.string.export_profiles_alert_title);
+		dialogBuilder.setTitle(resString);
+		if (importExport == 1)
+			resString = getResources().getString(R.string.import_profiles_alert_error);
+		else
+			resString = getResources().getString(R.string.export_profiles_alert_error);
+		dialogBuilder.setMessage(resString + "!");
 		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
 		dialogBuilder.setPositiveButton(android.R.string.ok, null);
 		dialogBuilder.show();
@@ -619,107 +631,142 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	    return res;
 	}	
 	
-	private void importData()
+	private void doImportData()
 	{
-		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-		dialogBuilder.setTitle(getResources().getString(R.string.import_profiles_alert_title));
-		dialogBuilder.setMessage(getResources().getString(R.string.import_profiles_alert_message) + "?");
-		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
-
 		final Activity activity = this;
 		
-		dialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+		class ImportAsyncTask extends AsyncTask<Void, Integer, Integer> 
+		{
+			private ProgressDialog dialog;
 			
-			public void onClick(DialogInterface dialog, int which) {
+			ImportAsyncTask()
+			{
+		         this.dialog = new ProgressDialog(activity);
+			}
+			
+			@Override
+			protected void onPreExecute()
+			{
+				super.onPreExecute();
 				
-				class ImportAsyncTask extends AsyncTask<Void, Integer, Integer> 
+			     this.dialog.setMessage(getResources().getString(R.string.import_profiles_alert_title));
+			     this.dialog.show();						
+				
+				// check root, this set GlobalData.rooted for doInBackgroud()
+				GlobalData.isRooted();
+			}
+			
+			@Override
+			protected Integer doInBackground(Void... params) {
+				int ret = profilesDataWrapper.getDatabaseHandler().importDB();
+				
+				if (ret == 1)
 				{
-					private ProgressDialog dialog;
-					
-					ImportAsyncTask()
-					{
-				         this.dialog = new ProgressDialog(activity);
-					}
-					
-					@Override
-					protected void onPreExecute()
-					{
-						super.onPreExecute();
-						
-					     this.dialog.setMessage(getResources().getString(R.string.import_profiles_alert_title));
-					     this.dialog.show();						
-						
-						// check root, this set GlobalData.rooted for doInBackgroud()
-						GlobalData.isRooted();
-					}
-					
-					@Override
-					protected Integer doInBackground(Void... params) {
-						int ret = profilesDataWrapper.getDatabaseHandler().importDB();
-						
-						if (ret == 1)
-						{
-							// check for hardware capability and update data
-							ret = profilesDataWrapper.getDatabaseHandler().updateForHardware(GlobalData.context);
-						}
-						if (ret == 1)
-						{
-							File sd = Environment.getExternalStorageDirectory();
-							File exportFile = new File(sd, GUIData.EXPORT_PATH + "/" + GUIData.EXPORT_APP_PREF_FILENAME);
-							if (!importApplicationPreferences(exportFile))
-								ret = 0;
-						}
-						
-						return ret;
-					}
-					
-					@Override
-					protected void onPostExecute(Integer result)
-					{
-						super.onPostExecute(result);
-						
-					    if (dialog.isShowing())
-				            dialog.dismiss();
-						
-						if (result == 1)
-						{
-							GlobalData.loadPreferences(getApplicationContext());
-
-							profilesDataWrapper.invalidateProfileList();
-							profilesDataWrapper.getActivateProfileHelper().updateWidget();
-
-							// send message into service
-					        //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
-							serviceCommunication.sendMessageIntoService(PhoneProfilesService.MSG_DATA_IMPORTED);
-							
-							// toast notification
-							Toast msg = Toast.makeText(getBaseContext(), 
-									getResources().getString(R.string.toast_import_ok), 
-									Toast.LENGTH_LONG);
-							msg.show();
-
-							// refresh activity
-							Intent refresh = new Intent(getBaseContext(), EditorProfilesActivity.class);
-							startActivity(refresh);
-							finish();
-						
-						}
-						else
-						{
-							importExportErrorDialog(1);
-						}
-					}
-					
+					// check for hardware capability and update data
+					ret = profilesDataWrapper.getDatabaseHandler().updateForHardware(GlobalData.context);
+				}
+				if (ret == 1)
+				{
+					File sd = Environment.getExternalStorageDirectory();
+					File exportFile = new File(sd, GUIData.EXPORT_PATH + "/" + GUIData.EXPORT_APP_PREF_FILENAME);
+					if (!importApplicationPreferences(exportFile))
+						ret = 0;
 				}
 				
-				new ImportAsyncTask().execute();
+				return ret;
+			}
+			
+			@Override
+			protected void onPostExecute(Integer result)
+			{
+				super.onPostExecute(result);
 				
+			    if (dialog.isShowing())
+		            dialog.dismiss();
+				
+				if (result == 1)
+				{
+					GlobalData.loadPreferences(getApplicationContext());
+
+					profilesDataWrapper.invalidateProfileList();
+					profilesDataWrapper.getActivateProfileHelper().updateWidget();
+
+					// send message into service
+			        //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
+					serviceCommunication.sendMessageIntoService(PhoneProfilesService.MSG_DATA_IMPORTED);
+					
+					// toast notification
+					Toast msg = Toast.makeText(getBaseContext(), 
+							getResources().getString(R.string.toast_import_ok), 
+							Toast.LENGTH_LONG);
+					msg.show();
+
+					// refresh activity
+					Intent refresh = new Intent(getBaseContext(), EditorProfilesActivity.class);
+					startActivity(refresh);
+					finish();
+				
+				}
+				else
+				{
+					importExportErrorDialog(1);
+				}
+			}
+			
+		}
+		
+		new ImportAsyncTask().execute();
+	}
+	
+	private void importDataWithAlert()
+	{
+		AlertDialog.Builder dialogBuilder2 = new AlertDialog.Builder(this);
+		dialogBuilder2.setTitle(getResources().getString(R.string.import_profiles_alert_title));
+		dialogBuilder2.setMessage(getResources().getString(R.string.import_profiles_alert_message) + "?");
+		//dialogBuilder2.setIcon(android.R.drawable.ic_dialog_alert);
+
+		dialogBuilder2.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				doImportData();
 			}
 		});
-		dialogBuilder.setNegativeButton(android.R.string.no, null);
-		dialogBuilder.show();
+		dialogBuilder2.setNegativeButton(R.string.alert_button_no, null);
+		dialogBuilder2.show();
 	}
 
+	private void importData()
+	{
+		// test whether the PhoneProfile is installed
+		PackageManager packageManager = getBaseContext().getPackageManager();
+		Intent phoneProfiles = packageManager.getLaunchIntentForPackage("sk.henrichg.phoneprofiles");
+		if (phoneProfiles != null)
+		{
+			// PhoneProfiles is istalled
+
+			AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+			dialogBuilder.setTitle(getResources().getString(R.string.import_profiles_from_phoneprofiles_alert_title));
+			dialogBuilder.setMessage(getResources().getString(R.string.import_profiles_from_phoneprofiles_alert_message) + "?");
+			//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
+			
+			dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					// start RemoteExportDataActivity
+					Intent intent = new Intent("phoneprofiles.intent.action.EXPORTDATA");
+				    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				    startActivityForResult(intent, GlobalData.REQUEST_CODE_REMOTE_EXPORT);		
+				}
+			});
+			dialogBuilder.setNegativeButton(R.string.alert_button_no, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					importDataWithAlert();
+				}
+			});
+			dialogBuilder.show();
+		}
+		else
+			importDataWithAlert();
+	}
+	
 	private boolean exportApplicationPreferences(File dst) {
 	    boolean res = false;
 	    ObjectOutputStream output = null;
@@ -758,7 +805,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 
 		final Activity activity = this;
 		
-		dialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+		dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
 			
 			public void onClick(DialogInterface dialog, int which) {
 				
@@ -825,7 +872,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 				
 			}
 		});
-		dialogBuilder.setNegativeButton(android.R.string.no, null);
+		dialogBuilder.setNegativeButton(R.string.alert_button_no, null);
 		dialogBuilder.show();
 	}
 	

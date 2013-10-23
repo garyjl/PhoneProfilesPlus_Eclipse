@@ -45,6 +45,8 @@ public class GlobalData extends Application {
 	static final int REQUEST_CODE_EVENT_PREFERENCES = 6222;
 	// request code for startActivityForResult with intent PhoneProfilesActivity
 	static final int REQUEST_CODE_APPLICATION_PREFERENCES = 6229;
+	// request code for startActivityForResult with intent "phoneprofiles.intent.action.EXPORTDATA"
+	static final int REQUEST_CODE_REMOTE_EXPORT = 6250;
 	
 	// musi byt tu, pouziva to ActivateProfileHelper
 	static final int NOTIFICATION_ID = 700420;

@@ -150,7 +150,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 			dialogBuilder.setTitle(getResources().getString(R.string.profile_string_0) + ": " + profile._name);
 			dialogBuilder.setMessage(getResources().getString(R.string.activate_profile_alert_message) + "?");
 			//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
-			dialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+			dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
 				
 				public void onClick(DialogInterface dialog, int which) {
 					activateProfile(_profile, _interactive);
@@ -163,7 +163,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 					activity.finish();
 				}
 			});
-			dialogBuilder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+			dialogBuilder.setNegativeButton(R.string.alert_button_no, new DialogInterface.OnClickListener() {
 				
 				public void onClick(DialogInterface dialog, int which) {
 

@@ -476,18 +476,6 @@ public class ActivateProfileHelper {
 			}
 		}
 		
-		if (profile._deviceRunApplicationChange)
-		{
-			Intent intent;
-			PackageManager packageManager = context.getPackageManager();
-			intent = packageManager.getLaunchIntentForPackage(profile._deviceRunApplicationPackageName);
-			if (intent != null)
-			{
-				intent.addCategory(Intent.CATEGORY_LAUNCHER);
-				activity.startActivity(intent);
-			}
-		}
-		
 		if (interactive)
 		{
 			// preferences, ktore vyzaduju interakciu uzivatela
@@ -512,6 +500,19 @@ public class ActivateProfileHelper {
 			    	}
 				}
 			}
+
+			if (profile._deviceRunApplicationChange)
+			{
+				Intent intent;
+				PackageManager packageManager = context.getPackageManager();
+				intent = packageManager.getLaunchIntentForPackage(profile._deviceRunApplicationPackageName);
+				if (intent != null)
+				{
+					intent.addCategory(Intent.CATEGORY_LAUNCHER);
+					activity.startActivity(intent);
+				}
+			}
+			
 		}
 		
 	}

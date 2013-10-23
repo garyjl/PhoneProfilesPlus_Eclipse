@@ -497,7 +497,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		final Profile _profile = profile;
 		final Activity activity = getActivity();
 		
-		dialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+		dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
 			
 			public void onClick(DialogInterface dialog, int which) {
 				
@@ -558,7 +558,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 				new DeleteAsyncTask().execute();
 			}
 		});
-		dialogBuilder.setNegativeButton(android.R.string.no, null);
+		dialogBuilder.setNegativeButton(R.string.alert_button_no, null);
 		dialogBuilder.show();
 	}
 
@@ -571,7 +571,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		
 		final Activity activity = getActivity();
 		
-		dialogBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+		dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
 			
 			public void onClick(DialogInterface dialog, int which) {
 				
@@ -633,7 +633,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 				
 			}
 		});
-		dialogBuilder.setNegativeButton(android.R.string.no, null);
+		dialogBuilder.setNegativeButton(R.string.alert_button_no, null);
 		dialogBuilder.show();
 	}
 	
