@@ -124,6 +124,35 @@ public class ActivateProfileHelper {
 		if (profile._soundAlarmChange)
 			Settings.System.putString(context.getContentResolver(), Settings.System.ALARM_ALERT, profile._soundAlarm);
 
+		// nahodenie airplane modu
+		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE, context))
+		{
+			boolean _isAirplaneMode = isAirplaneMode(context.getApplicationContext());
+			boolean _setAirplaneMode = false;
+			switch (profile._deviceAirplaneMode) {
+				case 1:
+					if (!_isAirplaneMode)
+					{
+						_isAirplaneMode = true;
+						_setAirplaneMode = true;
+					}
+					break;
+				case 2:
+					if (_isAirplaneMode)
+					{
+						_isAirplaneMode = false;
+						_setAirplaneMode = true;
+					}
+					break;
+				case 3:
+					_isAirplaneMode = !_isAirplaneMode;
+					_setAirplaneMode = true;
+					break;
+			}
+			if (_setAirplaneMode)
+				setAirplaneMode(context.getApplicationContext(), _isAirplaneMode);
+		}
+		
 		// nahodenie mobilnych dat
 		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA, context))
 		{
@@ -242,35 +271,6 @@ public class ActivateProfileHelper {
 			}
 		}
 		
-		// nahodenie airplane modu
-		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE, context))
-		{
-			boolean _isAirplaneMode = isAirplaneMode(context.getApplicationContext());
-			boolean _setAirplaneMode = false;
-			switch (profile._deviceAirplaneMode) {
-				case 1:
-					if (!_isAirplaneMode)
-					{
-						_isAirplaneMode = true;
-						_setAirplaneMode = true;
-					}
-					break;
-				case 2:
-					if (_isAirplaneMode)
-					{
-						_isAirplaneMode = false;
-						_setAirplaneMode = true;
-					}
-					break;
-				case 3:
-					_isAirplaneMode = !_isAirplaneMode;
-					_setAirplaneMode = true;
-					break;
-			}
-			if (_setAirplaneMode)
-				setAirplaneMode(context.getApplicationContext(), _isAirplaneMode);
-		}
-
 		// nahodenie auto-sync
 		boolean _isAutosync = ContentResolver.getMasterSyncAutomatically();
 		boolean _setAutosync = false;
