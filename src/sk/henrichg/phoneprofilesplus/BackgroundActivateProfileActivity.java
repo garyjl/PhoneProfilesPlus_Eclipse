@@ -24,10 +24,10 @@ public class BackgroundActivateProfileActivity extends Activity {
 
 		//Log.d("BackgroundActivateProfileActivity.onCreate","xxx");
 		
-		GlobalData.loadPreferences(getApplicationContext());
+		GlobalData.loadPreferences(getBaseContext());
 		
-		dataWrapper = new DataWrapper(getApplicationContext(), true, false, 0);
-		serviceCommunication = new ServiceCommunication(getApplicationContext());
+		dataWrapper = new DataWrapper(getBaseContext(), true, false, 0);
+		serviceCommunication = new ServiceCommunication(getBaseContext());
 		
 		intent = getIntent();
 		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
@@ -36,7 +36,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 
 		
 		activateProfileHelper = dataWrapper.getActivateProfileHelper();
-		activateProfileHelper.initialize(this, getApplicationContext());
+		activateProfileHelper.initialize(this, getBaseContext());
 
 		// initialize global profile list
 		databaseHandler = dataWrapper.getDatabaseHandler();

@@ -49,7 +49,7 @@ public class DataWrapper {
 	{
 		if (databaseHandler == null)
 			// parameter must by application context
-			databaseHandler = DatabaseHandler.getInstance(context.getApplicationContext());
+			databaseHandler = DatabaseHandler.getInstance(context);
 			
 		return databaseHandler;
 	}

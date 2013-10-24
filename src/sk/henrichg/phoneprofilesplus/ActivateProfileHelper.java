@@ -127,7 +127,7 @@ public class ActivateProfileHelper {
 		// nahodenie airplane modu
 		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE, context))
 		{
-			boolean _isAirplaneMode = isAirplaneMode(context.getApplicationContext());
+			boolean _isAirplaneMode = isAirplaneMode(context);
 			boolean _setAirplaneMode = false;
 			switch (profile._deviceAirplaneMode) {
 				case 1:
@@ -150,13 +150,13 @@ public class ActivateProfileHelper {
 					break;
 			}
 			if (_setAirplaneMode)
-				setAirplaneMode(context.getApplicationContext(), _isAirplaneMode);
+				setAirplaneMode(context, _isAirplaneMode);
 		}
 		
 		// nahodenie mobilnych dat
 		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA, context))
 		{
-			boolean _isMobileData = isMobileData(context.getApplicationContext());
+			boolean _isMobileData = isMobileData(context);
 			boolean _setMobileData = false;
 			switch (profile._deviceMobileData) {
 				case 1:
@@ -179,7 +179,7 @@ public class ActivateProfileHelper {
 					break;
 			}
 			if (_setMobileData)
-				setMobileData(context.getApplicationContext(), _isMobileData);
+				setMobileData(context, _isMobileData);
 		}
 
 		// nahodenie WiFi

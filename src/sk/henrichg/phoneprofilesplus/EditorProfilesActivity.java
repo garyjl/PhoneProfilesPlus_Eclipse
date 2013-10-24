@@ -367,7 +367,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			dataWrapper.getActivateProfileHelper().showNotification(null);
 			
 			// zrusenie service
-			GlobalData.stopService(getApplicationContext());
+			GlobalData.stopService(getBaseContext());
 			
 			finish();
 
@@ -702,7 +702,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 				
 				if (result == 1)
 				{
-					GlobalData.loadPreferences(getApplicationContext());
+					GlobalData.loadPreferences(getBaseContext());
 
 					dataWrapper.invalidateProfileList();
 					dataWrapper.getActivateProfileHelper().updateWidget();

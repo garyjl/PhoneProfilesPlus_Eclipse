@@ -53,7 +53,7 @@ public class PhoneProfilesPreferencesActivity extends
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setTitle(R.string.title_activity_phone_profiles_preferences);
 		
-        preferences = getApplicationContext().getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, MODE_PRIVATE);
+        preferences = getBaseContext().getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, MODE_PRIVATE);
         activeLanguage = preferences.getString(GlobalData.PREF_APPLICATION_LANGUAGE, "system");
         activeTheme = preferences.getString(GlobalData.PREF_APPLICATION_THEME, "light");
         showEditorPrefIndicator = preferences.getBoolean(GlobalData.PREF_APPLICATION_EDITOR_PREF_INDICATOR, true);

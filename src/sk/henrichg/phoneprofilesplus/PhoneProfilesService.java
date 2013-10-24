@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
+import android.util.Log;
 
 public class PhoneProfilesService extends Service {
 	
@@ -43,7 +44,7 @@ public class PhoneProfilesService extends Service {
     	@Override
         public void handleMessage(Message msg) {
     		
-    		//Log.e("PhoneProfilesService.IncommingHandler.handleMessage",msg.what+"");
+    		Log.e("PhoneProfilesService.IncommingHandler.handleMessage",msg.what+"");
     		
     		PhoneProfilesService service = serviceWakeReference.get();
     		
@@ -93,7 +94,7 @@ public class PhoneProfilesService extends Service {
 		//Log.d("PhoneProfilesService.onCreate", "xxx");
 		
 		// initialization
-  	    context = getApplicationContext();
+  	    context = getBaseContext();
   	    dataWrapper = new DataWrapper(context, false, false, 0);
   	    reloadData();
 		//TODO - tu spravit testy a spustenie eventov

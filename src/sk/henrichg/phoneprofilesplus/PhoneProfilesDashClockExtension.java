@@ -8,7 +8,6 @@ import com.google.android.apps.dashclock.api.ExtensionData;
 public class PhoneProfilesDashClockExtension extends DashClockExtension {
 
 	private DataWrapper dataWrapper;
-	private Context context;
 	private static PhoneProfilesDashClockExtension instance;
 	
 	public PhoneProfilesDashClockExtension()
@@ -25,10 +24,8 @@ public class PhoneProfilesDashClockExtension extends DashClockExtension {
     protected void onInitialize(boolean isReconnect) {
 		super.onInitialize(isReconnect);
 
-		context = getApplicationContext();
-		
 		if (dataWrapper == null)
-			dataWrapper = new DataWrapper(context, true, false, 0);
+			dataWrapper = new DataWrapper(this, true, false, 0);
 	
 		setUpdateWhenScreenOn(true);
 	}
@@ -66,13 +63,13 @@ public class PhoneProfilesDashClockExtension extends DashClockExtension {
 		{
 			isIconResourceID = true;
 			iconIdentifier = GUIData.PROFILE_ICON_DEFAULT;
-			profileName = context.getResources().getString(R.string.profiles_header_profile_name_no_activated);
+			profileName = getResources().getString(R.string.profiles_header_profile_name_no_activated);
 		}
 		int iconResource;
 		if (isIconResourceID)
-			iconResource = context.getResources().getIdentifier(iconIdentifier, "drawable", context.getPackageName());
+			iconResource = getResources().getIdentifier(iconIdentifier, "drawable", getPackageName());
 		else
-			iconResource = context.getResources().getIdentifier(GUIData.PROFILE_ICON_DEFAULT, "drawable", context.getPackageName());
+			iconResource = getResources().getIdentifier(GUIData.PROFILE_ICON_DEFAULT, "drawable", getPackageName());
 	
 		// profile preferences indicator
 		String indicator1 = "";
@@ -153,7 +150,7 @@ public class PhoneProfilesDashClockExtension extends DashClockExtension {
 		/////////////////////////////////////////////////////////////
 		
 		// intent
-		Intent intent = new Intent(context, ActivateProfileActivity.class);
+		Intent intent = new Intent(this, ActivateProfileActivity.class);
 		intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_WIDGET);
 		
 	    // Publish the extension data update.
