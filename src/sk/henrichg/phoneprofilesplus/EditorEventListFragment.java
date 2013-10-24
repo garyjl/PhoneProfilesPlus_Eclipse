@@ -198,7 +198,7 @@ public class EditorEventListFragment extends SherlockFragment {
         //Log.e("EditorEventListFragment.onCreate","filterType="+filterType);
         //Log.e("EditorEventListFragment.onCreate","orderType="+orderType);
 		
-		databaseHandler = EditorProfilesActivity.profilesDataWrapper.getDatabaseHandler();
+		databaseHandler = EditorProfilesActivity.dataWrapper.getDatabaseHandler();
 		
 		getSherlockActivity().getIntent();
 		
@@ -240,10 +240,10 @@ public class EditorEventListFragment extends SherlockFragment {
 			@Override
 			protected Void doInBackground(Void... params) {
 				
-				eventList = EditorProfilesActivity.profilesDataWrapper.getEventList();
+				eventList = EditorProfilesActivity.dataWrapper.getEventList();
 				sortList(orderType);
 				
-				EditorProfilesActivity.profilesDataWrapper.getProfileList();
+				EditorProfilesActivity.dataWrapper.getProfileList();
 				
 				return null;
 			}
@@ -253,7 +253,7 @@ public class EditorEventListFragment extends SherlockFragment {
 			{
 				super.onPostExecute(result);
 
-				eventListAdapter = new EditorEventListAdapter(fragment, EditorProfilesActivity.profilesDataWrapper, filterType);
+				eventListAdapter = new EditorEventListAdapter(fragment, EditorProfilesActivity.dataWrapper, filterType);
 				listView.setAdapter(eventListAdapter);
 			}
 			
@@ -492,8 +492,8 @@ public class EditorEventListFragment extends SherlockFragment {
 
 		public int compare(Event lhs, Event rhs) {
 
-			Profile profileLhs = EditorProfilesActivity.profilesDataWrapper.getProfileById(lhs._fkProfile);
-			Profile profileRhs = EditorProfilesActivity.profilesDataWrapper.getProfileById(rhs._fkProfile);
+			Profile profileLhs = EditorProfilesActivity.dataWrapper.getProfileById(lhs._fkProfile);
+			Profile profileRhs = EditorProfilesActivity.dataWrapper.getProfileById(rhs._fkProfile);
 			
 			String nameLhs = "";
 			if (profileLhs != null) nameLhs = profileLhs._name;
@@ -524,8 +524,8 @@ public class EditorEventListFragment extends SherlockFragment {
 		    int res = lhs._type - rhs._type;
 		    if (res == 0)
 		    {
-				Profile profileLhs = EditorProfilesActivity.profilesDataWrapper.getProfileById(lhs._fkProfile);
-				Profile profileRhs = EditorProfilesActivity.profilesDataWrapper.getProfileById(rhs._fkProfile);
+				Profile profileLhs = EditorProfilesActivity.dataWrapper.getProfileById(lhs._fkProfile);
+				Profile profileRhs = EditorProfilesActivity.dataWrapper.getProfileById(rhs._fkProfile);
 				
 				String nameLhs = "";
 				if (profileLhs != null) nameLhs = profileLhs._name;

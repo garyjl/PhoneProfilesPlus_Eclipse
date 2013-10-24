@@ -197,7 +197,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	private void loadPreferences()
 	{
 		
-    	profile = (Profile)EditorProfilesActivity.profilesDataWrapper.getProfileById(profile_id);
+    	profile = (Profile)EditorProfilesActivity.dataWrapper.getProfileById(profile_id);
     	
     	if (profile != null)
     	{
@@ -287,7 +287,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 
         	//Log.d("ProfilePreferencesFragment.onPause", "profile activated="+profile.getChecked());
         	
-			EditorProfilesActivity.profilesDataWrapper.getDatabaseHandler().updateProfile(profile);
+			EditorProfilesActivity.dataWrapper.getDatabaseHandler().updateProfile(profile);
         	
         	//Log.d("ProfilePreferencesFragment.onPause", "updateProfile");
 

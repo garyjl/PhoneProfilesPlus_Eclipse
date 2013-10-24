@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.provider.Settings;
 
-public class ProfilesDataWrapper {
+public class DataWrapper {
 
 	private Context context = null;
 	private boolean forGUI = false;
@@ -22,7 +22,7 @@ public class ProfilesDataWrapper {
 	// timeline of runnig events
 	private List<EventTimeline> eventTimelineList = null;
 	
-	ProfilesDataWrapper(Context c, 
+	DataWrapper(Context c, 
 						boolean fgui, 
 						boolean mono, 
 						int monoVal)

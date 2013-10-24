@@ -29,7 +29,7 @@ import android.widget.TextView;
 
 public class ActivateProfileActivity extends SherlockActivity {
 
-	private ProfilesDataWrapper profilesDataWrapper;
+	private DataWrapper dataWrapper;
 	private ActivateProfileHelper activateProfileHelper;
 	private List<Profile> profileList;
 	private ActivateProfileListAdapter profileListAdapter;
@@ -59,7 +59,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 		GUIData.setTheme(this, true);
 		GUIData.setLanguage(getBaseContext());
 		
-		profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, false, 0);
+		dataWrapper = new DataWrapper(GlobalData.context, true, false, 0);
 
 	// set window dimensions ----------------------------------------------------------
 		
@@ -116,7 +116,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 			popupHeight = popupHeight + 64f * scale;
 		
 		// add list items height
-		int profileCount = profilesDataWrapper.getDatabaseHandler().getProfilesCount(true);
+		int profileCount = dataWrapper.getDatabaseHandler().getProfilesCount(true);
 		popupHeight = popupHeight + (50f * scale * profileCount); // item
 		popupHeight = popupHeight + (5f * scale * (profileCount-1)); // divider
 
@@ -141,7 +141,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 			
 			@Override
 			protected Void doInBackground(Void... params) {
-				profileList = profilesDataWrapper.getProfileList();
+				profileList = dataWrapper.getProfileList();
 			    Collections.sort(profileList, new ProfileComparator());
 				
 				return null;
@@ -183,7 +183,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 		intent = getIntent();
 		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
 		
-		activateProfileHelper = profilesDataWrapper.getActivateProfileHelper();
+		activateProfileHelper = dataWrapper.getActivateProfileHelper();
 		activateProfileHelper.initialize(this, getBaseContext());
 		
 		//Debug.startMethodTracing("phoneprofiles");
@@ -288,7 +288,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 		}
 		//Log.d("ActivateProfilesActivity.onStart", "actProfile="+String.valueOf(actProfile));
 
-		Profile profile = profilesDataWrapper.getActivatedProfile();
+		Profile profile = dataWrapper.getActivatedProfile();
 
 		if (actProfile && (profile != null))
 		{
@@ -454,7 +454,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 			if(resultCode == RESULT_OK)
 			{      
 		    	long profile_id = data.getLongExtra(GlobalData.EXTRA_PROFILE_ID, -1);
-		    	Profile profile = profilesDataWrapper.getProfileById(profile_id);
+		    	Profile profile = dataWrapper.getProfileById(profile_id);
 		    	 
 		    	profileListAdapter.activateProfile(profile);
 				updateHeader(profile);

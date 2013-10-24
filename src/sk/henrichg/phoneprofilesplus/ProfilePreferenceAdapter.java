@@ -26,7 +26,7 @@ public class ProfilePreferenceAdapter extends BaseAdapter {
 
 		inflater = (LayoutInflater)c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		
-		profileList = ProfilePreference.profilesDataWrapper.getProfileList();
+		profileList = ProfilePreference.dataWrapper.getProfileList();
 	    Collections.sort(profileList, new AlphabeticallyComparator());
 
 	}

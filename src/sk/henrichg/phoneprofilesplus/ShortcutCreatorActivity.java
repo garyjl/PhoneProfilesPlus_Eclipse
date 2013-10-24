@@ -26,7 +26,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class ShortcutCreatorActivity extends SherlockActivity {
 
-	private ProfilesDataWrapper profilesDataWrapper;
+	private DataWrapper dataWrapper;
 	private List<Profile> profileList;
 	private ShortcutProfileListAdapter profileListAdapter;
 	private ListView listView;
@@ -45,7 +45,7 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 		GUIData.setTheme(this, true);
 		GUIData.setLanguage(getBaseContext());
 
-		profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, false, 0);
+		dataWrapper = new DataWrapper(GlobalData.context, true, false, 0);
 
 	// set window dimensions ----------------------------------------------------------
 		
@@ -102,7 +102,7 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 			popupHeight = popupHeight + 64f * scale;
 		
 		// add list items height
-		int profileCount = profilesDataWrapper.getDatabaseHandler().getProfilesCount(false);
+		int profileCount = dataWrapper.getDatabaseHandler().getProfilesCount(false);
 		popupHeight = popupHeight + (50f * scale * profileCount); // item
 		popupHeight = popupHeight + (5f * scale * (profileCount-1)); // divider
 
@@ -126,7 +126,7 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 			
 			@Override
 			protected Void doInBackground(Void... params) {
-				profileList = profilesDataWrapper.getProfileList();
+				profileList = dataWrapper.getProfileList();
 			    Collections.sort(profileList, new ProfileComparator());
 				
 				return null;

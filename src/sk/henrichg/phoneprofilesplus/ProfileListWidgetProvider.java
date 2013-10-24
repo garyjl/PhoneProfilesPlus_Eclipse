@@ -20,7 +20,7 @@ import android.widget.RemoteViews;
 @SuppressLint("NewApi")
 public class ProfileListWidgetProvider extends AppWidgetProvider {
 
-	private ProfilesDataWrapper profilesDataWrapper;
+	private DataWrapper dataWrapper;
 	
 	public static final String INTENT_REFRESH_LISTWIDGET = "sk.henrichg.phoneprofilesplus.REFRESH_LISTWIDGET";
 	
@@ -95,7 +95,7 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 			if (GlobalData.applicationWidgetListIconLightness.equals("75")) monochromeValue = 0xC0;
 			if (GlobalData.applicationWidgetListIconLightness.equals("100")) monochromeValue = 0xFF;
 			
-			Profile profile = profilesDataWrapper.getDatabaseHandler().getActivatedProfile();
+			Profile profile = dataWrapper.getDatabaseHandler().getActivatedProfile();
 
 			boolean isIconResourceID;
 			String iconIdentifier;
@@ -223,9 +223,9 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 	public void createProfilesDataWrapper()
 	{
 		GlobalData.loadPreferences(GlobalData.context);
-		if (profilesDataWrapper == null)
+		if (dataWrapper == null)
 		{
-			profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, false, false, 0); 
+			dataWrapper = new DataWrapper(GlobalData.context, false, false, 0); 
 		}
 	}
 	

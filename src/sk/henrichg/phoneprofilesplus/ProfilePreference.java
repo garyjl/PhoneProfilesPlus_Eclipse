@@ -17,7 +17,7 @@ public class ProfilePreference extends Preference {
 
 	private Context prefContext;
 	
-	public static ProfilesDataWrapper profilesDataWrapper;
+	public static DataWrapper dataWrapper;
 	
 	
 	public ProfilePreference(Context context, AttributeSet attrs)
@@ -38,7 +38,7 @@ public class ProfilePreference extends Preference {
 		prefContext = context;
 		preferenceTitle = getTitle();
 		
-		profilesDataWrapper = new ProfilesDataWrapper(context, true, false, 0);
+		dataWrapper = new DataWrapper(context, true, false, 0);
 		
 		//Log.d("ApplicationsPreference", "title="+preferenceTitle);
 		//Log.d("ApplicationsPreference", "imageSource="+imageSource);
@@ -63,7 +63,7 @@ public class ProfilePreference extends Preference {
 
 	    if (profileIcon != null)
 	    {
-		    Profile profile = profilesDataWrapper.getProfileById(Long.parseLong(profileId));
+		    Profile profile = dataWrapper.getProfileById(Long.parseLong(profileId));
 		    if (profile != null)
 		    {
 			    if (profile.getIsIconResourceID())
@@ -180,7 +180,7 @@ public class ProfilePreference extends Preference {
 		profileId = newValue;
 
 		// set summary
-	    Profile profile = profilesDataWrapper.getProfileById(Long.parseLong(profileId));
+	    Profile profile = dataWrapper.getProfileById(Long.parseLong(profileId));
 	    if (profile != null)
 	    {
 	    	setSummary(profile._name);

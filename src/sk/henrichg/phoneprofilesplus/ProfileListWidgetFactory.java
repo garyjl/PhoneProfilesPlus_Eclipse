@@ -18,7 +18,7 @@ import android.widget.RemoteViewsService;
 @SuppressLint("NewApi")
 public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
 
-	private ProfilesDataWrapper profilesDataWrapper;
+	private DataWrapper dataWrapper;
 
 	private Context ctxt=null;
 	//private int appWidgetId;
@@ -41,15 +41,15 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 		if (GlobalData.applicationWidgetListIconLightness.equals("75")) monochromeValue = 0xC0;
 		if (GlobalData.applicationWidgetListIconLightness.equals("100")) monochromeValue = 0xFF;
 
-		if (profilesDataWrapper == null)
+		if (dataWrapper == null)
 		{
-			profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true,  
+			dataWrapper = new DataWrapper(GlobalData.context, true,  
 														GlobalData.applicationWidgetListIconColor.equals("1"), 
 														monochromeValue);
 		}
 		else
 		{
-			profilesDataWrapper.setParameters(true, GlobalData.applicationWidgetListIconColor.equals("1"), 
+			dataWrapper.setParameters(true, GlobalData.applicationWidgetListIconColor.equals("1"), 
 														monochromeValue);
 		}
 	}
@@ -192,8 +192,8 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 
 		createProfilesDataWrapper();
 		
-		profilesDataWrapper.invalidateProfileList();
-		profileList = profilesDataWrapper.getProfileList();
+		dataWrapper.invalidateProfileList();
+		profileList = dataWrapper.getProfileList();
 		//Log.e("ProfileListWidgetFactory.onDataSetChanged",""+profileList);
 		
 	    Collections.sort(profileList, new ProfileComparator());

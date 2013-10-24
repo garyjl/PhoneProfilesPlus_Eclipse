@@ -7,7 +7,7 @@ import com.google.android.apps.dashclock.api.ExtensionData;
 
 public class PhoneProfilesDashClockExtension extends DashClockExtension {
 
-	private ProfilesDataWrapper profilesDataWrapper;
+	private DataWrapper dataWrapper;
 	private Context context;
 	private static PhoneProfilesDashClockExtension instance;
 	
@@ -27,8 +27,8 @@ public class PhoneProfilesDashClockExtension extends DashClockExtension {
 
 		context = getApplicationContext();
 		
-		if (profilesDataWrapper == null)
-			profilesDataWrapper = new ProfilesDataWrapper(context, true, false, 0);
+		if (dataWrapper == null)
+			dataWrapper = new DataWrapper(context, true, false, 0);
 	
 		setUpdateWhenScreenOn(true);
 	}
@@ -51,7 +51,7 @@ public class PhoneProfilesDashClockExtension extends DashClockExtension {
 	@Override
 	protected void onUpdateData(int reason) {
 		
-		Profile profile = profilesDataWrapper.getActivatedProfile();
+		Profile profile = dataWrapper.getActivatedProfile();
 		
 		boolean isIconResourceID;
 		String iconIdentifier;

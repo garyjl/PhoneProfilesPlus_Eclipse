@@ -216,9 +216,9 @@ public class EditorProfileListFragment extends SherlockFragment {
 
 		//Log.e("EditorProfileListFragment.onCreate","xxx");
 		
-		databaseHandler = EditorProfilesActivity.profilesDataWrapper.getDatabaseHandler(); 
+		databaseHandler = EditorProfilesActivity.dataWrapper.getDatabaseHandler(); 
 		
-		activateProfileHelper = EditorProfilesActivity.profilesDataWrapper.getActivateProfileHelper();
+		activateProfileHelper = EditorProfilesActivity.dataWrapper.getActivateProfileHelper();
 		activateProfileHelper.initialize(getSherlockActivity(), getActivity().getBaseContext());
 		
 		setHasOptionsMenu(true);
@@ -268,11 +268,11 @@ public class EditorProfileListFragment extends SherlockFragment {
 			
 			@Override
 			protected Void doInBackground(Void... params) {
-				profileList = EditorProfilesActivity.profilesDataWrapper.getProfileList();
+				profileList = EditorProfilesActivity.dataWrapper.getProfileList();
 				if (profileList.size() == 0)
 				{
 					// no profiles in DB, generate default profiles
-					profileList = EditorProfilesActivity.profilesDataWrapper.getDefaultProfileList();
+					profileList = EditorProfilesActivity.dataWrapper.getDefaultProfileList();
 					defaultProfilesGenerated = true;
 				}
 				// sort list
@@ -289,7 +289,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 			{
 				super.onPostExecute(result);
 
-				profileListAdapter = new EditorProfileListAdapter(fragment, EditorProfilesActivity.profilesDataWrapper, filterType);
+				profileListAdapter = new EditorProfileListAdapter(fragment, EditorProfilesActivity.dataWrapper, filterType);
 				listView.setAdapter(profileListAdapter);
 
 				if (defaultProfilesGenerated)
@@ -347,7 +347,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		Profile profile;
 		
 		// pre profil, ktory je prave aktivny, treba aktualizovat aktivitu
-		profile = EditorProfilesActivity.profilesDataWrapper.getActivatedProfile();
+		profile = EditorProfilesActivity.dataWrapper.getActivatedProfile();
 		updateHeader(profile);
 		
 		//Log.d("EditorProfileListFragment.onActivityCreated", "xxx");
@@ -404,7 +404,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		else
 		{
 			// pridanie noveho profilu
-			_profile = EditorProfilesActivity.profilesDataWrapper.getNoinitializedProfile(
+			_profile = EditorProfilesActivity.dataWrapper.getNoinitializedProfile(
 							getResources().getString(R.string.profile_name_default), 
 							GUIData.PROFILE_ICON_DEFAULT, 0); 
 			_profile._showInActivator = true;
@@ -686,7 +686,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 			if(resultCode == Activity.RESULT_OK)
 			{      
 		    	long profile_id = data.getLongExtra(GlobalData.EXTRA_PROFILE_ID, -1);
-		    	Profile profile = EditorProfilesActivity.profilesDataWrapper.getProfileById(profile_id);
+		    	Profile profile = EditorProfilesActivity.dataWrapper.getProfileById(profile_id);
 		    	 
 		    	profileListAdapter.activateProfile(profile);
 				updateHeader(profile);

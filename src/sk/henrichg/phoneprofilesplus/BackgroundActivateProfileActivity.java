@@ -9,7 +9,7 @@ import android.content.Intent;
 
 public class BackgroundActivateProfileActivity extends Activity {
 
-	private ProfilesDataWrapper profilesDataWrapper;
+	private DataWrapper dataWrapper;
 	private ServiceCommunication serviceCommunication;
 	private DatabaseHandler databaseHandler;
 	private ActivateProfileHelper activateProfileHelper;
@@ -26,7 +26,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 		
 		GlobalData.loadPreferences(getApplicationContext());
 		
-		profilesDataWrapper = new ProfilesDataWrapper(getApplicationContext(), true, false, 0);
+		dataWrapper = new DataWrapper(getApplicationContext(), true, false, 0);
 		serviceCommunication = new ServiceCommunication(getApplicationContext());
 		
 		intent = getIntent();
@@ -35,11 +35,11 @@ public class BackgroundActivateProfileActivity extends Activity {
 		//Log.d("BackgroundActivateProfileActivity.onStart", "profile_id="+profile_id);
 
 		
-		activateProfileHelper = profilesDataWrapper.getActivateProfileHelper();
+		activateProfileHelper = dataWrapper.getActivateProfileHelper();
 		activateProfileHelper.initialize(this, getApplicationContext());
 
 		// initialize global profile list
-		databaseHandler = profilesDataWrapper.getDatabaseHandler();
+		databaseHandler = dataWrapper.getDatabaseHandler();
 		
 	}
 
@@ -53,7 +53,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 		Profile profile;
 		
 		// pre profil, ktory je prave aktivny, treba aktualizovat aktivitu
-		profile = profilesDataWrapper.getActivatedProfile();
+		profile = dataWrapper.getActivatedProfile();
 		
 		boolean actProfile = false;
 		boolean interactive = false;
@@ -84,7 +84,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 			{
 				if (profile != null)
 				{
-					profilesDataWrapper.getDatabaseHandler().deactivateProfile();
+					dataWrapper.getDatabaseHandler().deactivateProfile();
 					//profile._checked = false;
 					profile = null;
 				}
@@ -103,7 +103,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 			if (profile_id == 0)
 				profile = null;
 			else
-				profile = profilesDataWrapper.getProfileById(profile_id);
+				profile = dataWrapper.getProfileById(profile_id);
 
 			//Log.d("BackgroundActivateProfileActivity.onStart","_iconBitmap="+String.valueOf(profile._iconBitmap));
 			//Log.d("BackgroundActivateProfileActivity.onStart","_preferencesIndicator="+String.valueOf(profile._preferencesIndicator));
@@ -202,7 +202,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 	private void activateProfile(Profile profile, boolean interactive)
 	{
 		databaseHandler.activateProfile(profile);
-		profilesDataWrapper.activateProfile(profile);
+		dataWrapper.activateProfile(profile);
 
 		activateProfileHelper.execute(profile, interactive);
 		activateProfileHelper.showNotification(profile);

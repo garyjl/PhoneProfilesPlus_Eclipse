@@ -15,7 +15,7 @@ public class PhoneProfilesService extends Service {
 	
 	private Context context = null;
 	
-	private ProfilesDataWrapper profilesDataWrapper = null;
+	private DataWrapper dataWrapper = null;
 
 	// messages from GUI
 	public static final int MSG_PROFILE_ACTIVATED = 4;
@@ -94,7 +94,7 @@ public class PhoneProfilesService extends Service {
 		
 		// initialization
   	    context = getApplicationContext();
-  	    profilesDataWrapper = new ProfilesDataWrapper(context, false, false, 0);
+  	    dataWrapper = new DataWrapper(context, false, false, 0);
   	    reloadData();
 		//TODO - tu spravit testy a spustenie eventov
   	    
@@ -141,16 +141,16 @@ public class PhoneProfilesService extends Service {
 	private void reloadData()
 	{
 		//Log.d("PhoneProfilesService.reloadData","xxx");
-		profilesDataWrapper.reloadProfilesData();
-		profilesDataWrapper.reloadEventsData();
-		profilesDataWrapper.reloadEventTimelineList();
+		dataWrapper.reloadProfilesData();
+		dataWrapper.reloadEventsData();
+		dataWrapper.reloadEventTimelineList();
 	}
 	
 	private void setActivatedProfile(long profile_id, int startupSource)
 	{
 		//Log.e("PhoneProfilesService.setActivatedProfile",profile_id+"");
-		Profile profile = profilesDataWrapper.getProfileById(profile_id); 
-    	profilesDataWrapper.activateProfile(profile);
+		Profile profile = dataWrapper.getProfileById(profile_id); 
+    	dataWrapper.activateProfile(profile);
     	pauseAllEvents();
 	} 
 	
@@ -158,49 +158,49 @@ public class PhoneProfilesService extends Service {
 	// for manual activation from gui
 	private void pauseAllEvents()
 	{
-		for (Event event : profilesDataWrapper.getEventList())
+		for (Event event : dataWrapper.getEventList())
 		{
 			if (event._status == Event.ESTATUS_RUNNING)
-				event.pauseEvent(profilesDataWrapper, false);
+				event.pauseEvent(dataWrapper, false);
 		}
 	}
 	
 	private void profileAdded(long profile_id)
 	{
-		Profile profile = profilesDataWrapper.getDatabaseHandler().getProfile(profile_id);
+		Profile profile = dataWrapper.getDatabaseHandler().getProfile(profile_id);
 		// profile order not relevant for service
 		if (profile != null)
-			profilesDataWrapper.getProfileList().add(profile);
+			dataWrapper.getProfileList().add(profile);
 	}
 	
 	private void profileUpdated(long profile_id)
 	{
-		Profile profileInDB = profilesDataWrapper.getDatabaseHandler().getProfile(profile_id);
-		Profile profileInList = profilesDataWrapper.getProfileById(profile_id);
-		int location = profilesDataWrapper.getProfileList().indexOf(profileInList);
+		Profile profileInDB = dataWrapper.getDatabaseHandler().getProfile(profile_id);
+		Profile profileInList = dataWrapper.getProfileById(profile_id);
+		int location = dataWrapper.getProfileList().indexOf(profileInList);
 		if (location != -1)
-			profilesDataWrapper.getProfileList().set(location, profileInDB);
+			dataWrapper.getProfileList().set(location, profileInDB);
 	}
 	
 	private void profileDeleted(long profile_id)
 	{
-		Profile profileInList = profilesDataWrapper.getProfileById(profile_id);
-		profilesDataWrapper.deleteProfileFromService(profileInList);
+		Profile profileInList = dataWrapper.getProfileById(profile_id);
+		dataWrapper.deleteProfileFromService(profileInList);
 	}
 	
 	private void allProfilesDeleted()
 	{
-		profilesDataWrapper.deleteAllProfilesFromService();
+		dataWrapper.deleteAllProfilesFromService();
 	}
 	
 	private void eventAdded(long event_id)
 	{
-		Event eventInDB = profilesDataWrapper.getDatabaseHandler().getEvent(event_id);
-		Event eventInList = profilesDataWrapper.getEventById(event_id);
+		Event eventInDB = dataWrapper.getDatabaseHandler().getEvent(event_id);
+		Event eventInList = dataWrapper.getEventById(event_id);
 		// event order not relevant for service
 		if (eventInDB != null)
 		{
-			int location = profilesDataWrapper.getEventList().indexOf(eventInList);
+			int location = dataWrapper.getEventList().indexOf(eventInList);
 			if (location != -1)
 			{
 				// event exists in list, do update
@@ -208,13 +208,13 @@ public class PhoneProfilesService extends Service {
 			}
 			else
 			{
-				profilesDataWrapper.getEventList().add(eventInDB);
+				dataWrapper.getEventList().add(eventInDB);
 				if (eventInDB._status == Event.ESTATUS_STOP)
 					// from gui is set status into stop
-					eventInDB.stopEvent(profilesDataWrapper, false);
+					eventInDB.stopEvent(dataWrapper, false);
 				else
 				{
-					eventInDB.pauseEvent(profilesDataWrapper, false);
+					eventInDB.pauseEvent(dataWrapper, false);
 				}
 			}
 		}
@@ -222,21 +222,21 @@ public class PhoneProfilesService extends Service {
 	
 	private void eventUpdated(long event_id)
 	{
-		Event eventInDB = profilesDataWrapper.getDatabaseHandler().getEvent(event_id);
-		Event eventInList = profilesDataWrapper.getEventById(event_id);
-		int location = profilesDataWrapper.getEventList().indexOf(eventInList);
+		Event eventInDB = dataWrapper.getDatabaseHandler().getEvent(event_id);
+		Event eventInList = dataWrapper.getEventById(event_id);
+		int location = dataWrapper.getEventList().indexOf(eventInList);
 		if (location != -1)
 		{
 			// stop old event
-			eventInList.stopEvent(profilesDataWrapper, false);
-			profilesDataWrapper.getEventList().set(location, eventInDB);
+			eventInList.stopEvent(dataWrapper, false);
+			dataWrapper.getEventList().set(location, eventInDB);
 			// set status for new event
 			if (eventInDB._status == Event.ESTATUS_STOP)
 				// from gui is set status into stop
-				eventInDB.stopEvent(profilesDataWrapper, false);
+				eventInDB.stopEvent(dataWrapper, false);
 			else
 			{
-				eventInDB.pauseEvent(profilesDataWrapper, false);
+				eventInDB.pauseEvent(dataWrapper, false);
 			}
 		}
 		else
@@ -248,20 +248,20 @@ public class PhoneProfilesService extends Service {
 	
 	private void eventDeleted(long event_id)
 	{
-		Event eventInList = profilesDataWrapper.getEventById(event_id);
-		int location = profilesDataWrapper.getEventList().indexOf(eventInList);
+		Event eventInList = dataWrapper.getEventById(event_id);
+		int location = dataWrapper.getEventList().indexOf(eventInList);
 		if (location != -1)
 		{
-			eventInList.stopEvent(profilesDataWrapper, false);
-			profilesDataWrapper.getEventList().remove(location);
+			eventInList.stopEvent(dataWrapper, false);
+			dataWrapper.getEventList().remove(location);
 		}
 	}
 	
 	private void allEventsDeleted()
 	{
-		while (profilesDataWrapper.getEventList().size() > 0)
+		while (dataWrapper.getEventList().size() > 0)
 		{
-			eventDeleted(profilesDataWrapper.getEventList().get(0)._id);
+			eventDeleted(dataWrapper.getEventList().get(0)._id);
 		}
 	}
 	

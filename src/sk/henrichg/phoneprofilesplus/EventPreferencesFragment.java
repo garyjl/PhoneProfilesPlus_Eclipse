@@ -103,7 +103,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		
         context = getSherlockActivity().getBaseContext();
 
-    	event = (Event)EditorProfilesActivity.profilesDataWrapper.getEventById(event_id);
+    	event = (Event)EditorProfilesActivity.dataWrapper.getEventById(event_id);
 		
 		prefMng = getPreferenceManager();
 		prefMng.setSharedPreferencesName(PREFS_NAME);
@@ -190,7 +190,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
         {
         	event.saveSharedPrefereces(preferences);
         	
-			EditorProfilesActivity.profilesDataWrapper.getDatabaseHandler().updateEvent(event);
+			EditorProfilesActivity.dataWrapper.getDatabaseHandler().updateEvent(event);
         	
         	//Log.d("EventPreferencesFragment.onPause", "updateEvent");
 

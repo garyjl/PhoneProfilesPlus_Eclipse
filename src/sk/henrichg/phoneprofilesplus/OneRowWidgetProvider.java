@@ -13,7 +13,7 @@ import android.widget.RemoteViews;
 
 public class OneRowWidgetProvider extends AppWidgetProvider {
 	
-	private ProfilesDataWrapper profilesDataWrapper;
+	private DataWrapper dataWrapper;
 	
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
@@ -28,11 +28,11 @@ public class OneRowWidgetProvider extends AppWidgetProvider {
 		if (GlobalData.applicationWidgetListIconLightness.equals("75")) monochromeValue = 0xC0;
 		if (GlobalData.applicationWidgetListIconLightness.equals("100")) monochromeValue = 0xFF;
 
-		profilesDataWrapper = new ProfilesDataWrapper(GlobalData.context, true, 
+		dataWrapper = new DataWrapper(GlobalData.context, true, 
 														GlobalData.applicationWidgetListIconColor.equals("1"), 
 														monochromeValue);
 		
-		Profile profile = profilesDataWrapper.getActivatedProfile();
+		Profile profile = dataWrapper.getActivatedProfile();
 
 		// ziskanie vsetkych wigetov tejtor triedy na plochach lauchera
 		ComponentName thisWidget = new ComponentName(context, OneRowWidgetProvider.class);

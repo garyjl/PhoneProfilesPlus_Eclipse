@@ -15,17 +15,17 @@ public class EditorEventListAdapter extends BaseAdapter
 {
 
 	private EditorEventListFragment fragment;
-	private ProfilesDataWrapper profilesDataWrapper;
+	private DataWrapper dataWrapper;
 	private int filterType;
 	public List<Event> eventList;
 	
 	public static boolean editIconClicked = false;
 	
-	public EditorEventListAdapter(EditorEventListFragment f, ProfilesDataWrapper pdw, int filterType)
+	public EditorEventListAdapter(EditorEventListFragment f, DataWrapper pdw, int filterType)
 	{
 		fragment = f;
-		profilesDataWrapper = pdw;
-		eventList = profilesDataWrapper.getEventList();
+		dataWrapper = pdw;
+		eventList = dataWrapper.getEventList();
 		this.filterType = filterType;
 	}   
 	
@@ -252,7 +252,7 @@ public class EditorEventListAdapter extends BaseAdapter
 	    if (GlobalData.applicationEditorPrefIndicator)
 	    	holder.eventPreferencesDescription.setText(event.getPreferecesDescription(vi.getContext()));
 
-        Profile profile =  EditorProfilesActivity.profilesDataWrapper.getProfileById(event._fkProfile);
+        Profile profile =  EditorProfilesActivity.dataWrapper.getProfileById(event._fkProfile);
         if (profile != null)
         {
         	holder.profileName.setText(profile._name);

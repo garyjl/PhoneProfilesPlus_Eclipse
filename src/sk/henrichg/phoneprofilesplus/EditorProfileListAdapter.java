@@ -15,17 +15,17 @@ public class EditorProfileListAdapter extends BaseAdapter
 {
 
 	private EditorProfileListFragment fragment;
-	private ProfilesDataWrapper profilesDataWrapper;
+	private DataWrapper dataWrapper;
 	private int filterType;
 	public List<Profile> profileList;
 	public static boolean editIconClicked = false;
 	
 	
-	public EditorProfileListAdapter(EditorProfileListFragment f, ProfilesDataWrapper pdw, int filterType)
+	public EditorProfileListAdapter(EditorProfileListFragment f, DataWrapper pdw, int filterType)
 	{
 		fragment = f;
-		profilesDataWrapper = pdw;
-		profileList = profilesDataWrapper.getProfileList();
+		dataWrapper = pdw;
+		profileList = dataWrapper.getProfileList();
 		this.filterType = filterType;
 	}   
 	
@@ -149,7 +149,7 @@ public class EditorProfileListAdapter extends BaseAdapter
 
 	public void deleteItemNoNotify(Profile profile)
 	{
-		profilesDataWrapper.deleteProfile(profile);
+		dataWrapper.deleteProfile(profile);
 	}
 
 	public void deleteItem(Profile profile)
@@ -160,7 +160,7 @@ public class EditorProfileListAdapter extends BaseAdapter
 
 	public void clearNoNotify()
 	{
-		profilesDataWrapper.deleteAllProfiles();
+		dataWrapper.deleteAllProfiles();
 	}
 	
 	public void clear()

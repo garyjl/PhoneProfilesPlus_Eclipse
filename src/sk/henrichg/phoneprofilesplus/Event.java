@@ -170,7 +170,7 @@ public class Event {
 			} catch (Exception e) {
 				lProfileId = 0;
 			}
-		    Profile profile = EditorProfilesActivity.profilesDataWrapper.getProfileById(lProfileId);
+		    Profile profile = EditorProfilesActivity.dataWrapper.getProfileById(lProfileId);
 		    if (profile != null)
 		    {
     	        prefMng.findPreference(key).setSummary(profile._name);
@@ -210,19 +210,19 @@ public class Event {
 	}
 	
 	
-	public void startEvent(ProfilesDataWrapper profilesDataWrapper)
+	public void startEvent(DataWrapper dataWrapper)
 	{
-		List<EventTimeline> eventTimelineList = profilesDataWrapper.getEventTimelineList();
+		List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
 		
 		EventTimeline eventTimeline = new EventTimeline();
 		eventTimeline._fkEvent = this._id;
 		eventTimeline._eorder = 0;
-		eventTimeline._fkProfileReturn = profilesDataWrapper.getActivatedProfile()._id;
+		eventTimeline._fkProfileReturn = dataWrapper.getActivatedProfile()._id;
 		
-		profilesDataWrapper.getDatabaseHandler().addEventTimeline(eventTimeline);
+		dataWrapper.getDatabaseHandler().addEventTimeline(eventTimeline);
 		eventTimelineList.add(eventTimeline);
 		
-		profilesDataWrapper.activateProfileFromEvent(this._fkProfile);
+		dataWrapper.activateProfileFromEvent(this._fkProfile);
 
 		setSystemEvent(ESTATUS_RUNNING);
 		
@@ -231,9 +231,9 @@ public class Event {
 		return;
 	}
 	
-	public void pauseEvent(ProfilesDataWrapper profilesDataWrapper, boolean activateReturnProfile)
+	public void pauseEvent(DataWrapper dataWrapper, boolean activateReturnProfile)
 	{
-		List<EventTimeline> eventTimelineList = profilesDataWrapper.getEventTimelineList();
+		List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
 
 		// test whenever event exists in timeline
 		boolean exists = false;
@@ -255,7 +255,7 @@ public class Event {
 			
 			// remove event from timeline
 			eventTimelineList.remove(eventTimeline);
-			profilesDataWrapper.getDatabaseHandler().deleteEventTimeline(eventTimeline);
+			dataWrapper.getDatabaseHandler().deleteEventTimeline(eventTimeline);
 	
 			
 			if (eventPosition == 0)
@@ -267,16 +267,16 @@ public class Event {
 							eventTimelineList.get(i-1)._fkProfileReturn;
 				}
 				eventTimelineList.get(0)._fkProfileReturn = eventTimeline._fkProfileReturn;
-				profilesDataWrapper.getDatabaseHandler().updateProfileReturnET(eventTimelineList);
+				dataWrapper.getDatabaseHandler().updateProfileReturnET(eventTimelineList);
 			}
 			else
 			if (eventPosition == eventTimelineList.size() - 1)
 			{
 				// activate profile only when profile not already activated 
-				if ((eventTimeline._fkProfileReturn != profilesDataWrapper.getActivatedProfile()._id)
+				if ((eventTimeline._fkProfileReturn != dataWrapper.getActivatedProfile()._id)
 					&& (activateReturnProfile))
 				{
-					profilesDataWrapper.activateProfileFromEvent(eventTimeline._fkProfileReturn);
+					dataWrapper.activateProfileFromEvent(eventTimeline._fkProfileReturn);
 				}
 			}
 			else
@@ -292,12 +292,12 @@ public class Event {
 		return;
 	}
 	
-	public void stopEvent(ProfilesDataWrapper profilesDataWrapper, boolean activateReturnProfile)
+	public void stopEvent(DataWrapper dataWrapper, boolean activateReturnProfile)
 	{
 		if (this._status == ESTATUS_RUNNING)
 		{
 			// event zrovna bezi, zapauzujeme ho
-			pauseEvent(profilesDataWrapper, activateReturnProfile);
+			pauseEvent(dataWrapper, activateReturnProfile);
 		}
 	
 		setSystemEvent(ESTATUS_STOP);
