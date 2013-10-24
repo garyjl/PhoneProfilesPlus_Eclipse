@@ -103,7 +103,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	Integer[] drawerItemsIcon;
 	EditorDrawerListAdapter drawerAdapter;
 	
-	private int drawerSelectedItem = -1;
+	private int drawerSelectedItem = 1;
+	private int orderSelectedItem = 0;
 	private int profilesFilterType = EditorProfileListFragment.FILTER_TYPE_SHOW_IN_ACTIVATOR;
 	private int eventsFilterType = EditorEventListFragment.FILTER_TYPE_ALL;
 	private int eventsOrderType = EditorEventListFragment.ORDER_TYPE_EVENT_NAME;
@@ -475,8 +476,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
  
         // Get the title followed by the position
         setTitle(drawerItemsTitle[position]);
-        // set filter statusbar title
-        filterStatusbarTitle.setText(drawerItemsSubtitle[position]);
+        
         // show/hide order
         if (position < 3)
         {
@@ -488,6 +488,11 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
         	orderLabel.setVisibility(View.VISIBLE);
         	orderSpinner.setVisibility(View.VISIBLE);
         }
+
+        // set filter statusbar title
+        setStatusBarTitle();
+        
+        
         // Close drawer
 		if (GlobalData.applicationEditorAutoCloseDrawer)
 			drawerLayout.closeDrawer(drawerRoot);
@@ -495,6 +500,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
     
     private void changeEventOrder(int position)
     {
+    	orderSelectedItem = position;
+    	
 		Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
 		if ((fragment != null) && (fragment instanceof EditorEventListFragment))
 		{
@@ -507,6 +514,9 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 				case 3: eventsOrderType = EditorEventListFragment.ORDER_TYPE_EVENT_TYPE_PROFILE_NAME; break;
 			}
 			((EditorEventListFragment)fragment).changeListOrder(eventsOrderType);
+			
+			setStatusBarTitle();
+			
 	        // Close drawer
 			if (GlobalData.applicationEditorAutoCloseDrawer)
 				drawerLayout.closeDrawer(drawerRoot);
@@ -724,16 +734,33 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		new ImportAsyncTask().execute();
 	}
 	
-	private void importDataWithAlert()
+	private void importDataAlert(boolean remoteExport)
 	{
+		final boolean _remoteExport = remoteExport;
 		AlertDialog.Builder dialogBuilder2 = new AlertDialog.Builder(this);
-		dialogBuilder2.setTitle(getResources().getString(R.string.import_profiles_alert_title));
-		dialogBuilder2.setMessage(getResources().getString(R.string.import_profiles_alert_message) + "?");
-		//dialogBuilder2.setIcon(android.R.drawable.ic_dialog_alert);
+		if (remoteExport)
+		{
+			dialogBuilder2.setTitle(getResources().getString(R.string.import_profiles_from_phoneprofiles_alert_title2));
+			dialogBuilder2.setMessage(getResources().getString(R.string.import_profiles_alert_message) + "?");
+			//dialogBuilder2.setIcon(android.R.drawable.ic_dialog_alert);
+		}
+		else
+		{
+			dialogBuilder2.setTitle(getResources().getString(R.string.import_profiles_alert_title));
+			dialogBuilder2.setMessage(getResources().getString(R.string.import_profiles_alert_message) + "?");
+			//dialogBuilder2.setIcon(android.R.drawable.ic_dialog_alert);
+		}
 
 		dialogBuilder2.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
-				doImportData(GUIData.EXPORT_PATH);
+				if (_remoteExport)
+				{
+					// start RemoteExportDataActivity
+					Intent intent = new Intent("phoneprofiles.intent.action.EXPORTDATA");
+				    startActivityForResult(intent, GlobalData.REQUEST_CODE_REMOTE_EXPORT);		
+				}
+				else
+					doImportData(GUIData.EXPORT_PATH);
 			}
 		});
 		dialogBuilder2.setNegativeButton(R.string.alert_button_no, null);
@@ -756,20 +783,18 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			
 			dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
-					// start RemoteExportDataActivity
-					Intent intent = new Intent("phoneprofiles.intent.action.EXPORTDATA");
-				    startActivityForResult(intent, GlobalData.REQUEST_CODE_REMOTE_EXPORT);		
+					importDataAlert(true);
 				}
 			});
 			dialogBuilder.setNegativeButton(R.string.alert_button_no, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
-					importDataWithAlert();
+					importDataAlert(false);
 				}
 			});
 			dialogBuilder.show();
 		}
 		else
-			importDataWithAlert();
+			importDataAlert(false);
 	}
 	
 	private boolean exportApplicationPreferences(File dst) {
@@ -908,12 +933,15 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	    // Read values from the "savedInstanceState"-object and put them in your textview
 	    drawerSelectedItem = savedInstanceState.getInt("editor_drawer_selected_item", -1);
 	    selectDrawerItem(drawerSelectedItem);
+	    orderSelectedItem = savedInstanceState.getInt("editor_order_selected_item", -1);
+	    changeEventOrder(orderSelectedItem);
 	}
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 	    // Save the values you need from your textview into "outState"-object
 	    outState.putInt("editor_drawer_selected_item", drawerSelectedItem);
+	    outState.putInt("editor_order_selected_item", orderSelectedItem);
 	    super.onSaveInstanceState(outState);
 	}	
 	
@@ -922,6 +950,24 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	     //mTitle = title;
 	     getSupportActionBar().setTitle(title);
 	 }	
+	 
+	 private void setStatusBarTitle()
+	 {
+        // set filter statusbar title
+		String text = "";
+        if (drawerSelectedItem < 3)
+        {
+        	text = drawerItemsSubtitle[drawerSelectedItem];
+        }
+        else
+        {
+        	String[] orderItems = getResources().getStringArray(R.array.drawerOrderEvents);
+        	text = drawerItemsSubtitle[drawerSelectedItem] + 
+        			"; " +
+        			orderItems[orderSelectedItem];
+        }
+        filterStatusbarTitle.setText(text);
+	 }
 
 	public void onStartProfilePreferences(Profile profile, int filterType, boolean afterDelete) {
 		if (mTwoPane) {

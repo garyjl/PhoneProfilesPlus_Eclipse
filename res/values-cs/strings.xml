@@ -217,6 +217,7 @@
     <string name="default_profile_name_sleep">Spánek</string>
     <string name="phone_profiles_pref_applicationAutoCloseDrawer">Auto. zavírání navig. panelu</string>
     <string name="import_profiles_from_phoneprofiles_alert_title">Import apl. dat</string>
+    <string name="import_profiles_from_phoneprofiles_alert_title2">Importovat z PhoneProfiles</string>
     <string name="import_profiles_from_phoneprofiles_alert_message">Importovat z PhoneProfiles</string>
     <string name="alert_button_yes">Ano</string>
     <string name="alert_button_no">Ne</string>
