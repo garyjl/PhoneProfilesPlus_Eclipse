@@ -15,6 +15,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
