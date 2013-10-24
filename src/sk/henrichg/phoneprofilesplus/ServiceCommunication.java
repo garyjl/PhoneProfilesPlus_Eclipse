@@ -78,14 +78,11 @@ public class ServiceCommunication {
 	
 	public void release()
 	{
-    	if (phoneProfilesService != null)
-    	{
-    		try{
-        		context.unbindService(serviceConnection);
-    		} catch (IllegalArgumentException e){
-    		    //System.out.println("Unbinding didn't work. little surprise");
-    		}
-    	}
+		try{
+    		context.unbindService(serviceConnection);
+		} catch (IllegalArgumentException e){
+		    //System.out.println("Unbinding didn't work. little surprise");
+		}
 		context = null;
 	}
     
