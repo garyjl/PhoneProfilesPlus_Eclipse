@@ -20,19 +20,19 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 
 	private DataWrapper dataWrapper;
 
-	private Context ctxt=null;
+	private Context context = null;
 	//private int appWidgetId;
 	private List<Profile> profileList;
 
 	public ProfileListWidgetFactory(Context ctxt, Intent intent) {
-		this.ctxt=ctxt;
+		context = ctxt;
 		/*appWidgetId=intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                                        AppWidgetManager.INVALID_APPWIDGET_ID);*/
 	}
   
 	public void createProfilesDataWrapper()
 	{
-		GlobalData.loadPreferences(GlobalData.context);
+		GlobalData.loadPreferences(context);
 		
 		int monochromeValue = 0xFF;
 		if (GlobalData.applicationWidgetListIconLightness.equals("0")) monochromeValue = 0x00;
@@ -43,7 +43,7 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 
 		if (dataWrapper == null)
 		{
-			dataWrapper = new DataWrapper(GlobalData.context, true,  
+			dataWrapper = new DataWrapper(context, true,  
 														GlobalData.applicationWidgetListIconColor.equals("1"), 
 														monochromeValue);
 		}
@@ -102,14 +102,14 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 		//Log.e("ProfileListWidgetFactory.getViewAt","xxx");
 		
 		
-		RemoteViews row=new RemoteViews(ctxt.getPackageName(), R.layout.profile_list_widget_item);
+		RemoteViews row=new RemoteViews(context.getPackageName(), R.layout.profile_list_widget_item);
     
 		Profile profile = getItem(position);
 
 		if (profile.getIsIconResourceID())
 		{
 			row.setImageViewResource(R.id.widget_profile_list_item_profile_icon, 
-					ctxt.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", ctxt.getPackageName()));
+					context.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", context.getPackageName()));
 		}
 		else
 		{

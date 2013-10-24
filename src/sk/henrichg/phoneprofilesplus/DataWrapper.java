@@ -32,7 +32,7 @@ public class DataWrapper {
 		setParameters(fgui, mono, monoVal); 
 		
 		databaseHandler = getDatabaseHandler();
-		activateProfileHelper = getActivateProfileHelper();
+		//activateProfileHelper = getActivateProfileHelper();
 	}
 	
 	public void setParameters( 

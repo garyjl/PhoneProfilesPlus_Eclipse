@@ -28,9 +28,9 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 	private boolean isKeyguard;
 	
 	@SuppressWarnings("deprecation")
-    private RemoteViews buildLayout(Context ctxt, AppWidgetManager appWidgetManager, int appWidgetId, boolean largeLayout)
+    private RemoteViews buildLayout(Context context, AppWidgetManager appWidgetManager, int appWidgetId, boolean largeLayout)
 	{
-		Intent svcIntent=new Intent(ctxt, ProfileListWidgetService.class);
+		Intent svcIntent=new Intent(context, ProfileListWidgetService.class);
 		      
 		svcIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 		svcIntent.setData(Uri.parse(svcIntent.toUri(Intent.URI_INTENT_SCHEME)));
@@ -42,28 +42,28 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 			if (GlobalData.applicationWidgetListHeader)
 			{
 				if (GlobalData.applicationWidgetListPrefIndicator)
-					widget=new RemoteViews(ctxt.getPackageName(), R.layout.profile_list_widget);
+					widget=new RemoteViews(context.getPackageName(), R.layout.profile_list_widget);
 				else
-					widget=new RemoteViews(ctxt.getPackageName(), R.layout.profile_list_widget_no_indicator);
+					widget=new RemoteViews(context.getPackageName(), R.layout.profile_list_widget_no_indicator);
 			}
 			else
-				widget=new RemoteViews(ctxt.getPackageName(), R.layout.profile_list_widget_no_header);
+				widget=new RemoteViews(context.getPackageName(), R.layout.profile_list_widget_no_header);
 		}
 		else
 		{
 			if (isKeyguard)
 			{
 				if (GlobalData.applicationWidgetListPrefIndicator)
-					widget=new RemoteViews(ctxt.getPackageName(), R.layout.profile_list_widget_small_keyguard);
+					widget=new RemoteViews(context.getPackageName(), R.layout.profile_list_widget_small_keyguard);
 				else
-					widget=new RemoteViews(ctxt.getPackageName(), R.layout.profile_list_widget_small_no_indicator_keyguard);
+					widget=new RemoteViews(context.getPackageName(), R.layout.profile_list_widget_small_no_indicator_keyguard);
 			}
 			else
 			{
 				if (GlobalData.applicationWidgetListPrefIndicator)
-					widget=new RemoteViews(ctxt.getPackageName(), R.layout.profile_list_widget_small);
+					widget=new RemoteViews(context.getPackageName(), R.layout.profile_list_widget_small);
 				else
-					widget=new RemoteViews(ctxt.getPackageName(), R.layout.profile_list_widget_small_no_indicator);
+					widget=new RemoteViews(context.getPackageName(), R.layout.profile_list_widget_small_no_indicator);
 			}
 		}
 
@@ -102,10 +102,10 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 			String profileName;
 			if (profile != null)
 			{
-				profile.generateIconBitmap(GlobalData.context, 
+				profile.generateIconBitmap(context, 
 						GlobalData.applicationWidgetListIconColor.equals("1"), 
 						monochromeValue);
-				profile.generatePreferencesIndicator(GlobalData.context, 
+				profile.generatePreferencesIndicator(context, 
 						GlobalData.applicationWidgetListIconColor.equals("1"), 
 						monochromeValue);
 				isIconResourceID = profile.getIsIconResourceID();
@@ -116,10 +116,10 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 			{
 				// create empty profile and set icon resource
 				profile = new Profile();
-				profile._name = ctxt.getResources().getString(R.string.profiles_header_profile_name_no_activated);
+				profile._name = context.getResources().getString(R.string.profiles_header_profile_name_no_activated);
 				profile._icon = GUIData.PROFILE_ICON_DEFAULT+"|1";
 
-				profile.generateIconBitmap(GlobalData.context, 
+				profile.generateIconBitmap(context, 
 						GlobalData.applicationWidgetListIconColor.equals("1"), 
 						monochromeValue);
 				isIconResourceID = profile.getIsIconResourceID();
@@ -128,7 +128,7 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 			}
 	        if (isIconResourceID)
 	        {
-	        	int iconResource = ctxt.getResources().getIdentifier(iconIdentifier, "drawable", ctxt.getPackageName());
+	        	int iconResource = context.getResources().getIdentifier(iconIdentifier, "drawable", context.getPackageName());
 	        	
 	        	widget.setImageViewResource(R.id.widget_profile_list_header_profile_icon, iconResource);
 	        }
@@ -173,8 +173,8 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 			}
 	        if (GlobalData.applicationWidgetListIconColor.equals("1"))
 	        {
-	        	Bitmap bitmap = BitmapFactory.decodeResource(ctxt.getResources(), R.drawable.ic_profile_activated);
-	        	bitmap = BitmapManipulator.monochromeBitmap(bitmap, monochromeValue, ctxt);
+	        	Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_profile_activated);
+	        	bitmap = BitmapManipulator.monochromeBitmap(bitmap, monochromeValue, context);
 				widget.setImageViewBitmap(R.id.widget_profile_list_header_profile_activated, bitmap);
 	        }
 	        else
@@ -187,8 +187,8 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 		// clicks
 		if (largeLayout)
 		{
-			Intent intent = new Intent(ctxt, EditorProfilesActivity.class);
-			PendingIntent pendingIntent = PendingIntent.getActivity(ctxt, 1, intent, 
+			Intent intent = new Intent(context, EditorProfilesActivity.class);
+			PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, 
                     									PendingIntent.FLAG_UPDATE_CURRENT);
 			widget.setOnClickPendingIntent(R.id.widget_profile_list_header, pendingIntent);
 
@@ -199,9 +199,9 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 	        // object above.
 	        widget.setEmptyView(R.id.widget_profile_list, R.id.widget_profiles_list_empty);
 			
-			Intent clickIntent=new Intent(ctxt, BackgroundActivateProfileActivity.class);
+			Intent clickIntent=new Intent(context, BackgroundActivateProfileActivity.class);
 			clickIntent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_WIDGET);
-			PendingIntent clickPI=PendingIntent.getActivity(ctxt, 0,
+			PendingIntent clickPI=PendingIntent.getActivity(context, 0,
 			                                            clickIntent,
 			                                            PendingIntent.FLAG_UPDATE_CURRENT);
 			      
@@ -210,9 +210,9 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 		}
 		else
 		{
-			Intent intent = new Intent(ctxt, ActivateProfileActivity.class);
+			Intent intent = new Intent(context, ActivateProfileActivity.class);
 			intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_WIDGET);
-			PendingIntent pendingIntent = PendingIntent.getActivity(ctxt, 1, intent,  
+			PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent,  
 														PendingIntent.FLAG_UPDATE_CURRENT);
 			widget.setOnClickPendingIntent(R.id.widget_profile_list_header, pendingIntent);
 		}
@@ -220,12 +220,12 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 		return widget;
 	}
 	
-	public void createProfilesDataWrapper()
+	public void createProfilesDataWrapper(Context context)
 	{
-		GlobalData.loadPreferences(GlobalData.context);
+		GlobalData.loadPreferences(context);
 		if (dataWrapper == null)
 		{
-			dataWrapper = new DataWrapper(GlobalData.context, false, false, 0); 
+			dataWrapper = new DataWrapper(context, false, false, 0); 
 		}
 	}
 	
@@ -242,18 +242,18 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 	}
 	
 	@Override
-	public void onUpdate(Context ctxt, AppWidgetManager appWidgetManager, int[] appWidgetIds)
+	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
 	{
 		//Log.e("ProfileListWidgetProvider.onUpdate","xxx");
 		
-		createProfilesDataWrapper();
+		createProfilesDataWrapper(context);
 
 		for (int i=0; i<appWidgetIds.length; i++)
 		{
-			doOnUpdate(ctxt, appWidgetManager, appWidgetIds[i]);
+			doOnUpdate(context, appWidgetManager, appWidgetIds[i]);
 		}
 			    
-		super.onUpdate(ctxt, appWidgetManager, appWidgetIds);
+		super.onUpdate(context, appWidgetManager, appWidgetIds);
 	}
 
 	@Override
@@ -267,7 +267,7 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 		int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
 				AppWidgetManager.INVALID_APPWIDGET_ID);
 		
-		createProfilesDataWrapper();
+		createProfilesDataWrapper(context);
 
 		if ((action != null) &&
 		    (action.equalsIgnoreCase("com.motorola.blur.home.ACTION_SET_WIDGET_SIZE")))
@@ -378,7 +378,7 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
     {
 		//Log.e("ProfileListWidgetProvider.onAppWidgetOptionsChanged","xxx");
 
-		createProfilesDataWrapper();
+		createProfilesDataWrapper(context);
 		
 		String preferenceKey = "isLargeLayout_"+appWidgetId;
 		SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);

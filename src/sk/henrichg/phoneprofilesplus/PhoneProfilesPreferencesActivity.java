@@ -147,14 +147,14 @@ public class PhoneProfilesPreferencesActivity extends
 	@Override
 	public void finish() {
 		
-		GlobalData.loadPreferences(GlobalData.context);
+		GlobalData.loadPreferences(getBaseContext());
 		
 		//Log.d("PhoneProfilesPreferencesActivity.onPause", "xxx");
 		
 		if (activeLanguage != GlobalData.applicationLanguage)
 		{
     		//Log.d("PhoneProfilesPreferencesActivity.onPause","language changed");
-			GUIData.setLanguage(GlobalData.context);
+			GUIData.setLanguage(getBaseContext());
 			invalidateEditor = true;
 		}
 		else

@@ -117,9 +117,9 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 
 		super.onCreate(savedInstanceState);
 		
-		dataWrapper = new DataWrapper(GlobalData.context, true, false, 0);
+		dataWrapper = new DataWrapper(getBaseContext(), true, false, 0);
 		
-		serviceCommunication = new ServiceCommunication(GlobalData.context);
+		serviceCommunication = new ServiceCommunication(getBaseContext());
 		
 		applicationsCache = new ApplicationsCache();
 		
@@ -679,7 +679,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 				if (ret == 1)
 				{
 					// check for hardware capability and update data
-					ret = dataWrapper.getDatabaseHandler().updateForHardware(GlobalData.context);
+					ret = dataWrapper.getDatabaseHandler().updateForHardware(getBaseContext());
 				}
 				if (ret == 1)
 				{

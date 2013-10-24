@@ -19,7 +19,7 @@ public class OneRowWidgetProvider extends AppWidgetProvider {
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
 	{
 		
-		GlobalData.loadPreferences(GlobalData.context);
+		GlobalData.loadPreferences(context);
 
 		int monochromeValue = 0xFF;
 		if (GlobalData.applicationWidgetListIconLightness.equals("0")) monochromeValue = 0x00;
@@ -28,7 +28,7 @@ public class OneRowWidgetProvider extends AppWidgetProvider {
 		if (GlobalData.applicationWidgetListIconLightness.equals("75")) monochromeValue = 0xC0;
 		if (GlobalData.applicationWidgetListIconLightness.equals("100")) monochromeValue = 0xFF;
 
-		dataWrapper = new DataWrapper(GlobalData.context, true, 
+		dataWrapper = new DataWrapper(context, true, 
 														GlobalData.applicationWidgetListIconColor.equals("1"), 
 														monochromeValue);
 		

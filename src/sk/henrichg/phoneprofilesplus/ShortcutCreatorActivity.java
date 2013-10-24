@@ -45,7 +45,7 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 		GUIData.setTheme(this, true);
 		GUIData.setLanguage(getBaseContext());
 
-		dataWrapper = new DataWrapper(GlobalData.context, true, false, 0);
+		dataWrapper = new DataWrapper(getBaseContext(), true, false, 0);
 
 	// set window dimensions ----------------------------------------------------------
 		

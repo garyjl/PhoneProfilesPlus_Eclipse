@@ -16,8 +16,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 
 public class GlobalData extends Application {
 
-	public static Context context;
-	
 	static String PACKAGE_NAME;
 
 	// musi byt tu, pouziva t ActivateProfileHelper
@@ -140,12 +138,10 @@ public class GlobalData extends Application {
 		
 		super.onCreate();
 		
-		context = getApplicationContext();
-		
-		PACKAGE_NAME = context.getPackageName();
+		PACKAGE_NAME = this.getPackageName();
 		
 		// initialization
-		loadPreferences(getApplicationContext());
+		loadPreferences(this);
 
 		//Log.d("GlobalData.onCreate", "memory usage (after create activateProfileHelper)=" + Debug.getNativeHeapAllocatedSize());
 		
@@ -155,7 +151,7 @@ public class GlobalData extends Application {
 	
 	public void onTerminate ()
 	{
-		DatabaseHandler.getInstance(context).closeConnecion();
+		DatabaseHandler.getInstance(this).closeConnecion();
 	}
 	
 	//--------------------------------------------------------------

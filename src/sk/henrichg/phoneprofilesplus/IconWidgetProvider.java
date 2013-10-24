@@ -16,7 +16,7 @@ public class IconWidgetProvider extends AppWidgetProvider {
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
 	{
 		
-		GlobalData.loadPreferences(GlobalData.context);
+		GlobalData.loadPreferences(context);
 		
 		int monochromeValue = 0xFF;
 		if (GlobalData.applicationWidgetIconLightness.equals("0")) monochromeValue = 0x00;
@@ -25,7 +25,7 @@ public class IconWidgetProvider extends AppWidgetProvider {
 		if (GlobalData.applicationWidgetIconLightness.equals("75")) monochromeValue = 0xC0;
 		if (GlobalData.applicationWidgetIconLightness.equals("100")) monochromeValue = 0xFF;
 
-		dataWrapper = new DataWrapper(GlobalData.context, true,  
+		dataWrapper = new DataWrapper(context, true,  
 												GlobalData.applicationWidgetIconColor.equals("1"), 
 												monochromeValue);
 		
