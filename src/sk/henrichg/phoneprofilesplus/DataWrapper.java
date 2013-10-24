@@ -198,7 +198,14 @@ public class DataWrapper {
 	public void invalidateProfileList()
 	{
 		if (profileList != null)
+		{
+			for (Profile profile : profileList)
+			{
+				profile.releaseIconBitmap();
+				profile.releasePreferencesIndicator();
+			}
 			profileList.clear();
+		}
 		profileList = null;
 	}
 	
@@ -531,5 +538,15 @@ public class DataWrapper {
 		getEventTimelineList();
 	}
 	
+	public void invalidateDataWrapper()
+	{
+		invalidateProfileList();
+		invalidateEventList();
+		invalidateEventTimelineList();
+		databaseHandler = null;
+		if (activateProfileHelper != null)
+			activateProfileHelper.deinitialize();
+		activateProfileHelper = null;
+	}
 	
 }

@@ -186,6 +186,18 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 	}
 	
 	@Override
+	protected void onDestroy()
+	{
+	//	Debug.stopMethodTracing();
+		super.onDestroy();
+
+		profileList = null;
+		dataWrapper.invalidateDataWrapper();
+		dataWrapper = null;
+	}
+	
+	
+	@Override
 	public void onConfigurationChanged(Configuration newConfig)
 	{
 		getBaseContext().getResources().updateConfiguration(newConfig, getBaseContext().getResources().getDisplayMetrics());

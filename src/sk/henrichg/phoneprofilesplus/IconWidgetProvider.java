@@ -84,6 +84,9 @@ public class IconWidgetProvider extends AppWidgetProvider {
 			// aktualizacia widgetu
 			appWidgetManager.updateAppWidget(widgetId, remoteViews);
 		}
+
+		dataWrapper.invalidateDataWrapper();
+		dataWrapper = null;
 		
 	}
 }

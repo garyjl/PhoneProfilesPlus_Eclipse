@@ -152,6 +152,9 @@ public class OneRowWidgetProvider extends AppWidgetProvider {
 			// aktualizacia widgetu
 			appWidgetManager.updateAppWidget(widgetId, remoteViews);
 		}
+	
+		dataWrapper.invalidateDataWrapper();
+		dataWrapper = null;
 		
 	}
 	

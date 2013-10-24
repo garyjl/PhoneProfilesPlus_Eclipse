@@ -115,6 +115,11 @@ public class PhoneProfilesService extends Service {
 	public void onDestroy()
 	{
 		//Log.d("PhoneProfilesService.onDestroy", "xxx");
+
+		if (dataWrapper != null)
+			dataWrapper.invalidateDataWrapper();
+		dataWrapper = null;
+	
 	}
 	
 	@Override

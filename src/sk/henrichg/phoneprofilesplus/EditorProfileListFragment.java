@@ -364,6 +364,15 @@ public class EditorProfileListFragment extends SherlockFragment {
 	}
 	
 	@Override
+	public void onDestroy()
+	{
+		super.onDestroy();
+		activateProfileHelper = null;
+		profileList = null;
+		databaseHandler = null;
+	}
+	
+	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		inflater.inflate(R.menu.fragment_editor_profile_list, menu);

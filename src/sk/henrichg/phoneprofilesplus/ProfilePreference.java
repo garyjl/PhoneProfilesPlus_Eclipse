@@ -163,6 +163,14 @@ public class ProfilePreference extends Preference {
 		notifyChanged();
 	}
 	
+	@Override
+	protected void onPrepareForRemoval()
+	{
+		super.onPrepareForRemoval();
+		dataWrapper.invalidateDataWrapper();
+		dataWrapper = null;
+	}
+	
 	public String getProfileId()
 	{
 		return profileId;

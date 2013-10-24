@@ -254,6 +254,11 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 		}
 			    
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
+		
+		if (dataWrapper != null)
+			dataWrapper.invalidateDataWrapper();
+		dataWrapper = null;
+		
 	}
 
 	@Override
@@ -288,6 +293,11 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 		if ((action != null) &&
 		    (action.equalsIgnoreCase(INTENT_REFRESH_LISTWIDGET)))
 			updateWidgets(context);
+		
+		if (dataWrapper != null)
+			dataWrapper.invalidateDataWrapper();
+		dataWrapper = null;
+		
 	}
 	
 	private void setLayoutParams(Context context, AppWidgetManager appWidgetManager,
@@ -390,6 +400,11 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 		
 		
 		updateWidget(context, appWidgetId);
+		
+		if (dataWrapper != null)
+			dataWrapper.invalidateDataWrapper();
+		dataWrapper = null;
+		
     }	
 
 	private void updateWidget(Context context, int appWidgetId) {

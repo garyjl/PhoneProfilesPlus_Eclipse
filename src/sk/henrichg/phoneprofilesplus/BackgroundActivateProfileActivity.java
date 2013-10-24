@@ -132,6 +132,21 @@ public class BackgroundActivateProfileActivity extends Activity {
 		
 	}
 	
+	@Override
+	protected void onDestroy()
+	{
+		super.onDestroy();
+		
+		serviceCommunication.release();
+		serviceCommunication = null;
+
+		activateProfileHelper = null;
+		databaseHandler = null;
+		dataWrapper.invalidateDataWrapper();
+		dataWrapper = null;
+	}
+	
+	
 	private void activateProfileWithAlert(Profile profile, boolean interactive)
 	{
 		if ((GlobalData.applicationActivateWithAlert && interactive) ||

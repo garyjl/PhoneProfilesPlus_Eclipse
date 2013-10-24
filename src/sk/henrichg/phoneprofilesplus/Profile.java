@@ -416,8 +416,7 @@ public class Profile {
 	{
         if (!getIsIconResourceID())
         {
-        	if (_iconBitmap != null)
-        		_iconBitmap.recycle();
+        	releaseIconBitmap();
         	
         	Resources resources = context.getResources();
     		int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
@@ -442,14 +441,31 @@ public class Profile {
 	
 	public void generatePreferencesIndicator(Context context, boolean monochrome, int monochromeValue)
 	{
-    	if (_preferencesIndicator != null)
-    		_preferencesIndicator.recycle();
+    	releasePreferencesIndicator();
 
     	_preferencesIndicator = ProfilePreferencesIndicator.paint(this, context);
 
     	if (monochrome)
     		_preferencesIndicator = BitmapManipulator.monochromeBitmap(_preferencesIndicator, monochromeValue, context);
 
+	}
+	
+	public void releaseIconBitmap()
+	{
+    	if (_iconBitmap != null)
+    	{
+    		_iconBitmap.recycle();
+    		_iconBitmap = null;
+    	}
+	}
+	
+	public void releasePreferencesIndicator()
+	{
+    	if (_preferencesIndicator != null)
+    	{
+    		_preferencesIndicator.recycle();
+    		_preferencesIndicator = null;
+    	}
 	}
 	
 }

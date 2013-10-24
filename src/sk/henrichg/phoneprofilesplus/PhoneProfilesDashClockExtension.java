@@ -29,6 +29,15 @@ public class PhoneProfilesDashClockExtension extends DashClockExtension {
 	
 		setUpdateWhenScreenOn(true);
 	}
+	
+	@Override
+	public void onDestroy()
+	{
+		if (dataWrapper != null) 
+			dataWrapper.invalidateDataWrapper();
+		dataWrapper = null;
+	}
+	
 
 	private int maxLength;
 	private String addIntoIndicator(String indicator, String preference)

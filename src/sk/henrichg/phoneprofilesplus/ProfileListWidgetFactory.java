@@ -59,7 +59,9 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 	}
   
 	public void onDestroy() {
-		// no-op
+		if (dataWrapper != null)
+			dataWrapper.invalidateDataWrapper();
+		dataWrapper = null;
 	}
 
 	public int getCount() {

@@ -75,6 +75,19 @@ public class ServiceCommunication {
 	{
 		context = c;
 	}
+	
+	public void release()
+	{
+    	if (phoneProfilesService != null)
+    	{
+    		try{
+        		context.unbindService(serviceConnection);
+    		} catch (IllegalArgumentException e){
+    		    //System.out.println("Unbinding didn't work. little surprise");
+    		}
+    	}
+		context = null;
+	}
     
     final Messenger mMessenger = new Messenger(new IncomingHandler());
 	

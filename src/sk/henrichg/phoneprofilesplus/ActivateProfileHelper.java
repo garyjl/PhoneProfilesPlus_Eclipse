@@ -57,6 +57,13 @@ public class ActivateProfileHelper {
 		notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
 	}
 	
+	public void deinitialize()
+	{
+		activity = null;
+		context = null;
+		notificationManager = null;
+	}
+	
 	@SuppressWarnings("deprecation")
 	public void execute(Profile profile, boolean interactive)
 	{

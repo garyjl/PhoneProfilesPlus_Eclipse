@@ -364,8 +364,11 @@ public class ActivateProfileActivity extends SherlockActivity {
 	protected void onDestroy()
 	{
 	//	Debug.stopMethodTracing();
-
 		super.onDestroy();
+		profileList = null;
+		activateProfileHelper = null;
+		dataWrapper.invalidateDataWrapper();
+		dataWrapper = null;
 	}
 
 	@Override

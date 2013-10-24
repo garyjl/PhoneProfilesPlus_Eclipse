@@ -315,8 +315,15 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	@Override
 	protected void onDestroy()
 	{
-		applicationsCache.clearCache();
 		super.onDestroy();
+
+		serviceCommunication.release();
+		serviceCommunication = null;
+		
+		applicationsCache.clearCache();
+		applicationsCache = null;
+		dataWrapper.invalidateDataWrapper();
+		dataWrapper = null;
 	}
 	
 	@Override
