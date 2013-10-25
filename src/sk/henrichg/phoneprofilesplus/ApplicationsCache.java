@@ -104,6 +104,7 @@ public class ApplicationsCache {
 	public void clearCache()
 	{
 		applicationsList.clear();
+		applicationsList = null;
 		cached = false;
 	}
 	

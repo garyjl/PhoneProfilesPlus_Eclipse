@@ -315,8 +315,6 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	@Override
 	protected void onDestroy()
 	{
-		super.onDestroy();
-
 		serviceCommunication.release();
 		serviceCommunication = null;
 		
@@ -324,6 +322,11 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		applicationsCache = null;
 		dataWrapper.invalidateDataWrapper();
 		dataWrapper = null;
+
+		super.onDestroy();
+
+		Log.e("EditorProfilesActivity.onDestroy","xxx");
+	
 	}
 	
 	@Override

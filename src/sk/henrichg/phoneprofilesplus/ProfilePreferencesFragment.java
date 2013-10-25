@@ -159,7 +159,8 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	@Override
 	public void onDestroy()
 	{
-        preferences.unregisterOnSharedPreferenceChangeListener(this);        
+        preferences.unregisterOnSharedPreferenceChangeListener(this);
+        profile = null;
 		super.onDestroy();
 	}
 

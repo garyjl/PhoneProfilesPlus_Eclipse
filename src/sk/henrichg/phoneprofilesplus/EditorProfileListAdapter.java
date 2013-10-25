@@ -29,6 +29,13 @@ public class EditorProfileListAdapter extends BaseAdapter
 		this.filterType = filterType;
 	}   
 	
+	public void release()
+	{
+		fragment = null;
+		profileList = null;
+		dataWrapper = null;
+	}
+	
 	public int getCount()
 	{
 		if (filterType == EditorProfileListFragment.FILTER_TYPE_ALL)

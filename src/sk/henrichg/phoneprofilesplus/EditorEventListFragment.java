@@ -15,6 +15,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -287,9 +288,15 @@ public class EditorEventListFragment extends SherlockFragment {
 	@Override
 	public void onDestroy()
 	{
-		super.onDestroy();
+		listView.setAdapter(null);
+		eventListAdapter.release();
 		eventList = null;
 		databaseHandler = null;
+		
+		super.onDestroy();
+
+		Log.e("EditorEventListFragment.onDestroy","xxx");
+		
 	}
 	
 	@Override

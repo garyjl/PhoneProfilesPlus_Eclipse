@@ -18,6 +18,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.mobeta.android.dslv.DragSortListView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -366,10 +367,15 @@ public class EditorProfileListFragment extends SherlockFragment {
 	@Override
 	public void onDestroy()
 	{
-		super.onDestroy();
+		listView.setAdapter(null);
+		profileListAdapter.release();
 		activateProfileHelper = null;
 		profileList = null;
 		databaseHandler = null;
+		
+		super.onDestroy();
+		
+		Log.e("EditorProfileListFragment.onDestroy","xxx");
 	}
 	
 	@Override

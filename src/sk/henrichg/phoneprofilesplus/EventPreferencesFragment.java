@@ -159,7 +159,8 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	@Override
 	public void onDestroy()
 	{
-        preferences.unregisterOnSharedPreferenceChangeListener(this);        
+        preferences.unregisterOnSharedPreferenceChangeListener(this);
+        event = null;
 		super.onDestroy();
 	}
 

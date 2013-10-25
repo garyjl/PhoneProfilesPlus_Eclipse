@@ -29,6 +29,13 @@ public class EditorEventListAdapter extends BaseAdapter
 		this.filterType = filterType;
 	}   
 	
+	public void release()
+	{
+		fragment = null;
+		eventList = null;
+		dataWrapper = null;
+	}
+	
 	public int getCount()
 	{
 		if (filterType == EditorEventListFragment.FILTER_TYPE_ALL)
