@@ -734,7 +734,8 @@ public class EditorProfileListFragment extends SherlockFragment {
 		else
 			sortByPOrder();
 
-		profileListAdapter.notifyDataSetChanged();
+		if (profileListAdapter != null)
+			profileListAdapter.notifyDataSetChanged();
 		
 		// set profile visible in list
 		if (profile == null)

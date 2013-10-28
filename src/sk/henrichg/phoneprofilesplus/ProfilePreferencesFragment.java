@@ -27,13 +27,14 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	
 	private Profile profile;
 	private long profile_id;
+	private boolean first_start_activity;
 	private PreferenceManager prefMng;
 	private SharedPreferences preferences;
 	private Context context;
 	private ActionMode actionMode;
 	private Callback actionModeCallback;
 	
-	private boolean restart; 
+	private int actionModeButtonClicked = 0;
 	
 	private static ImageViewPreference changedImageViewPreference;
 	private static Activity preferencesActivity = null;
@@ -103,19 +104,28 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 
 		preferencesActivity = getSherlockActivity();
 		
-        // getting attached fragment data
-		if (getArguments().containsKey(GlobalData.EXTRA_PROFILE_ID))
-			profile_id = getArguments().getLong(GlobalData.EXTRA_PROFILE_ID);
-    	//Log.e("ProfilePreferencesFragment.onCreate", "profile_id=" + profile_id);
-		
-        context = getSherlockActivity().getBaseContext();
-        
-        loadPreferences();
-        
 		prefMng = getPreferenceManager();
 		prefMng.setSharedPreferencesName(PREFS_NAME);
 		prefMng.setSharedPreferencesMode(Activity.MODE_PRIVATE);
 		
+        // getting attached fragment data
+		if (getArguments().containsKey(GlobalData.EXTRA_PROFILE_ID))
+			profile_id = getArguments().getLong(GlobalData.EXTRA_PROFILE_ID);
+    	//Log.e("ProfilePreferencesFragment.onCreate", "profile_id=" + profile_id);
+    	profile = (Profile)EditorProfilesActivity.dataWrapper.getProfileById(profile_id);
+
+		if (getArguments().containsKey(GlobalData.EXTRA_FIRST_START_ACTIVITY))
+		{
+			first_start_activity = getArguments().getBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY);
+	        getArguments().remove(GlobalData.EXTRA_FIRST_START_ACTIVITY);
+		}
+		else
+			first_start_activity = false;
+        if (first_start_activity)
+        	loadPreferences();
+    	
+        context = getSherlockActivity().getBaseContext();
+        
 		addPreferencesFromResource(R.xml.profile_preferences);
 
         preferences = prefMng.getSharedPreferences();
@@ -124,6 +134,9 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
         
         createActionMode();
         
+        if ((savedInstanceState != null) && 
+            (savedInstanceState.getBoolean("action_mode_showed", false)))
+            showActionMode();
 
     	//Log.d("ProfilePreferencesFragment.onCreate", "xxxx");
     }
@@ -146,11 +159,11 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	{
 		super.onPause();
 
-		if (actionMode != null)
+	/*	if (actionMode != null)
 		{
 			restart = false; // nerestartovat fragment
 			actionMode.finish();
-		}
+		} */
 		
     	//Log.d("ProfilePreferencesFragment.onPause", "xxxx");
 		
@@ -195,11 +208,14 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		doOnActivityResult(requestCode, resultCode, data);
 	}
 	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+        outState.putBoolean("action_mode_showed", (actionMode != null));
+	}	
+	
 	private void loadPreferences()
 	{
-		
-    	profile = (Profile)EditorProfilesActivity.dataWrapper.getProfileById(profile_id);
-    	
     	if (profile != null)
     	{
 	    	SharedPreferences preferences = getSherlockActivity().getSharedPreferences(ProfilePreferencesFragment.PREFS_NAME, Activity.MODE_PRIVATE);
@@ -416,41 +432,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	    		key.equals(GlobalData.PREF_PROFILE_SHOW_IN_ACTIVATOR) 
 	    		))
 	    		setSummary(key, sharedPreferences.getString(key, ""));
-    	
-        if (actionMode == null)
-        {
-        	
-        	restart = true;
-        	
-        	LayoutInflater inflater = LayoutInflater.from(getSherlockActivity());
-        	View actionView = inflater.inflate(R.layout.profile_preferences_action_mode, null);
-
-            actionMode = getSherlockActivity().startActionMode(actionModeCallback);
-            actionMode.setCustomView(actionView); 
-            
-            actionMode.getCustomView().findViewById(R.id.profile_preferences_action_menu_cancel).setOnClickListener(new OnClickListener() {
-				public void onClick(View v) {
-					
-					//Log.d("actionMode.onClick", "cancel");
-					
-					actionMode.finish();
-					
-				}
-           	});
-
-            actionMode.getCustomView().findViewById(R.id.profile_preferences_action_menu_save).setOnClickListener(new OnClickListener() {
-				public void onClick(View v) {
-					
-					//Log.d("actionMode.onClick", "save");
-			
-					savePreferences();
-					
-					restart = false; // nerestartovat fragment
-					actionMode.finish();
-					
-				}
-           	});
-        }
+    	showActionMode();
 	}
 	
 	private void createActionMode()
@@ -465,7 +447,8 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
             /** Called when user exits action mode */
             public void onDestroyActionMode(ActionMode mode) {
                actionMode = null;
-               if (restart)
+               if (actionModeButtonClicked == 1)
+            	   // cancel button clicked
             	   onRestartProfilePreferencesCallback.onRestartProfilePreferences(profile);
             }
  
@@ -496,11 +479,55 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
         };		
 	}
 	
+	private void showActionMode()
+	{
+        if (actionMode == null)
+        {
+        	
+        	actionModeButtonClicked = 0;
+        	
+        	LayoutInflater inflater = LayoutInflater.from(getSherlockActivity());
+        	View actionView = inflater.inflate(R.layout.profile_preferences_action_mode, null);
+
+            actionMode = getSherlockActivity().startActionMode(actionModeCallback);
+            actionMode.setCustomView(actionView); 
+            
+            actionMode.getCustomView().findViewById(R.id.profile_preferences_action_menu_cancel).setOnClickListener(new OnClickListener() {
+				public void onClick(View v) {
+					
+					//Log.d("actionMode.onClick", "cancel");
+					
+					actionModeButtonClicked = 1;
+					actionMode.finish();
+					
+				}
+           	});
+
+            actionMode.getCustomView().findViewById(R.id.profile_preferences_action_menu_save).setOnClickListener(new OnClickListener() {
+				public void onClick(View v) {
+					
+					//Log.d("actionMode.onClick", "save");
+			
+					savePreferences();
+					
+					actionModeButtonClicked = 2;
+					actionMode.finish();
+					
+				}
+           	});
+        }
+	}
+	
+	public boolean isActionModeActive()
+	{
+		return (actionMode != null);
+	}
+	
 	public void finishActionMode()
 	{
 		if (actionMode != null)
 		{	
-			restart = true;
+			actionModeButtonClicked = 1; // simulate cancel button clicked
 			actionMode.finish();
 		}
 	}

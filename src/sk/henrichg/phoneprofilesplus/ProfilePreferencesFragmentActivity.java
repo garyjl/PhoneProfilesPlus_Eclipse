@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceScreen;
+import android.view.KeyEvent;
  
 public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 												implements OnPreferenceAttachedListener,
@@ -36,12 +37,15 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 		getSupportActionBar().setTitle(R.string.title_activity_profile_preferences);
 
         profile_id = getIntent().getLongExtra(GlobalData.EXTRA_PROFILE_ID, -1);
+        boolean first_start_activity = getIntent().getBooleanExtra(GlobalData.EXTRA_FIRST_START_ACTIVITY, false);
+        getIntent().removeExtra(GlobalData.EXTRA_FIRST_START_ACTIVITY);
 
         //Log.e("ProfilePreferencesFragmentActivity.onCreate","profile_id="+profile_id);
         
 		if (savedInstanceState == null) {
 			Bundle arguments = new Bundle();
 			arguments.putLong(GlobalData.EXTRA_PROFILE_ID, profile_id);
+			arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, first_start_activity);
 			ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
@@ -100,9 +104,26 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 			fragment.doOnActivityResult(requestCode, resultCode, data);
 	}
 
+	@Override
+	public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
+            // handle your back button code here
+        	ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.activity_profile_preferences_container);
+    		if ((fragment != null) && (fragment.isActionModeActive()))
+    		{
+    			fragment.finishActionMode();
+	            return true; // consumes the back key event - ActionMode is not finished
+    		}
+    		else
+    		    return super.dispatchKeyEvent(event);
+        }
+	    return super.dispatchKeyEvent(event);
+	}
+	
 	public void onRestartProfilePreferences(Profile profile) {
 		Bundle arguments = new Bundle();
 		arguments.putLong(GlobalData.EXTRA_PROFILE_ID, profile._id);
+		arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
 		ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 		fragment.setArguments(arguments);
 		getSupportFragmentManager().beginTransaction()

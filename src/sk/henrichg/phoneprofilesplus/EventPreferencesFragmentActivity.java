@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceScreen;
+import android.view.KeyEvent;
  
 public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
 												implements OnPreferenceAttachedListener,
@@ -37,10 +38,13 @@ public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
 		getSupportActionBar().setTitle(R.string.title_activity_event_preferences);
 
         event_id = getIntent().getLongExtra(GlobalData.EXTRA_EVENT_ID, -1);
+        boolean first_start_activity = getIntent().getBooleanExtra(GlobalData.EXTRA_FIRST_START_ACTIVITY, false);
+        getIntent().removeExtra(GlobalData.EXTRA_FIRST_START_ACTIVITY);
 
 		if (savedInstanceState == null) {
 			Bundle arguments = new Bundle();
 			arguments.putLong(GlobalData.EXTRA_EVENT_ID, event_id);
+			arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, first_start_activity);
 			EventPreferencesFragment fragment = new EventPreferencesFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
@@ -97,6 +101,22 @@ public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
 		EventPreferencesFragment fragment = (EventPreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.activity_event_preferences_container);
 		if (fragment != null)
 			fragment.doOnActivityResult(requestCode, resultCode, data);
+	}
+	
+	@Override
+	public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
+            // handle your back button code here
+        	EventPreferencesFragment fragment = (EventPreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.activity_event_preferences_container);
+    		if ((fragment != null) && (fragment.isActionModeActive()))
+    		{
+    			fragment.finishActionMode();
+	            return true; // consumes the back key event - ActionMode is not finished
+    		}
+    		else
+    		    return super.dispatchKeyEvent(event);
+        }
+	    return super.dispatchKeyEvent(event);
 	}
 
 	public void onRestartEventPreferences(Event event) {

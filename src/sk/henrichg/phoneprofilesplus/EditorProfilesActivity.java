@@ -38,6 +38,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -108,6 +109,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	private int profilesFilterType = EditorProfileListFragment.FILTER_TYPE_SHOW_IN_ACTIVATOR;
 	private int eventsFilterType = EditorEventListFragment.FILTER_TYPE_ALL;
 	private int eventsOrderType = EditorEventListFragment.ORDER_TYPE_EVENT_NAME;
+	
+	private static final int COUNT_DRAWER_PROFILE_ITEMS = 3; 
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -585,12 +588,52 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		}
 		else
 		{
-			ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
-			if (fragment != null)
-				fragment.doOnActivityResult(requestCode, resultCode, data);
+			if (drawerSelectedItem < COUNT_DRAWER_PROFILE_ITEMS)
+			{
+				ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
+				if (fragment != null)
+					fragment.doOnActivityResult(requestCode, resultCode, data);
+			}
+			else
+			{
+				EventPreferencesFragment fragment = (EventPreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
+				if (fragment != null)
+					fragment.doOnActivityResult(requestCode, resultCode, data);
+			}
 		}
 	}
 
+	@Override
+	public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
+	        // handle your back button code here
+    		if (drawerSelectedItem < COUNT_DRAWER_PROFILE_ITEMS)
+    		{
+	    		ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
+	    		if ((fragment != null) && (fragment.isActionModeActive()))
+	    		{
+    	        	fragment.finishActionMode();
+    		        return true; // consumes the back key event - ActionMode is not finished
+	    		}
+	    		else
+	    		    return super.dispatchKeyEvent(event);
+    		}
+    		else
+    		{
+	    		EventPreferencesFragment fragment = (EventPreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
+	    		if ((fragment != null) && (fragment.isActionModeActive()))
+	    		{
+    	        	fragment.finishActionMode();
+	    			return true; // consumes the back key event - ActionMode is not finished
+	    		}
+	    		else
+	    		    return super.dispatchKeyEvent(event);
+    		}
+        }
+
+	    return super.dispatchKeyEvent(event);
+	}
+	
 	private void importExportErrorDialog(int importExport)
 	{
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
@@ -965,7 +1008,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	 {
         // set filter statusbar title
 		String text = "";
-        if (drawerSelectedItem < 3)
+        if (drawerSelectedItem < COUNT_DRAWER_PROFILE_ITEMS)
         {
         	text = drawerItemsSubtitle[drawerSelectedItem];
         }
@@ -989,6 +1032,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			{
 				Bundle arguments = new Bundle();
 				arguments.putLong(GlobalData.EXTRA_PROFILE_ID, profile._id);
+				arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
 				ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 				fragment.setArguments(arguments);
 				getSupportFragmentManager().beginTransaction()
@@ -1011,6 +1055,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			{
 				Intent intent = new Intent(getBaseContext(), ProfilePreferencesFragmentActivity.class);
 				intent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
+				intent.putExtra(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
 				startActivityForResult(intent, GlobalData.REQUEST_CODE_PROFILE_PREFERENCES);
 			}
 		}
@@ -1025,6 +1070,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			// restart profile preferences fragmentu
 			Bundle arguments = new Bundle();
 			arguments.putLong(GlobalData.EXTRA_PROFILE_ID, profile._id);
+			arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
 			ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
@@ -1105,6 +1151,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			{
 				Bundle arguments = new Bundle();
 				arguments.putLong(GlobalData.EXTRA_EVENT_ID, event._id);
+				arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
 				EventPreferencesFragment fragment = new EventPreferencesFragment();
 				fragment.setArguments(arguments);
 				getSupportFragmentManager().beginTransaction()
@@ -1128,6 +1175,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			{
 				Intent intent = new Intent(getBaseContext(), EventPreferencesFragmentActivity.class);
 				intent.putExtra(GlobalData.EXTRA_EVENT_ID, event._id);
+				intent.putExtra(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
 				startActivityForResult(intent, GlobalData.REQUEST_CODE_EVENT_PREFERENCES);
 			}
 		}
@@ -1155,6 +1203,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			// restart event preferences fragmentu
 			Bundle arguments = new Bundle();
 			arguments.putLong(GlobalData.EXTRA_EVENT_ID, event._id);
+			arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
 			EventPreferencesFragment fragment = new EventPreferencesFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()

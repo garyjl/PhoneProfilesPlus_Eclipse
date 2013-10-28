@@ -21,13 +21,14 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	
 	private Event event;
 	private long event_id;
+	private boolean first_start_activity;
 	private PreferenceManager prefMng;
 	private SharedPreferences preferences;
 	private Context context;
 	private ActionMode actionMode;
 	private Callback actionModeCallback;
 	
-	private boolean restart; 
+	private int actionModeButtonClicked = 0;
 	
 	private static Activity preferencesActivity = null;
 		
@@ -95,21 +96,28 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		super.onCreate(savedInstanceState);
 
 		preferencesActivity = getSherlockActivity();
+
+		prefMng = getPreferenceManager();
+		prefMng.setSharedPreferencesName(PREFS_NAME);
+		prefMng.setSharedPreferencesMode(Activity.MODE_PRIVATE);
 		
         // getting attached fragment data
 		if (getArguments().containsKey(GlobalData.EXTRA_EVENT_ID))
 			event_id = getArguments().getLong(GlobalData.EXTRA_EVENT_ID);
     	//Log.e("EventPreferencesFragment.onCreate", "event_position=" + event_position);
-		
-        context = getSherlockActivity().getBaseContext();
-
     	event = (Event)EditorProfilesActivity.dataWrapper.getEventById(event_id);
-		
-		prefMng = getPreferenceManager();
-		prefMng.setSharedPreferencesName(PREFS_NAME);
-		prefMng.setSharedPreferencesMode(Activity.MODE_PRIVATE);
 
-        loadPreferences();
+		if (getArguments().containsKey(GlobalData.EXTRA_FIRST_START_ACTIVITY))
+		{
+			first_start_activity = getArguments().getBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY);
+	        getArguments().remove(GlobalData.EXTRA_FIRST_START_ACTIVITY);
+		}
+		else
+			first_start_activity = false;
+        if (first_start_activity)
+        	loadPreferences();
+   	
+        context = getSherlockActivity().getBaseContext();
 		
     	// get preference resource id from EventPreference
 		addPreferencesFromResource(event._eventPreferences._preferencesResourceID);
@@ -120,6 +128,9 @@ public class EventPreferencesFragment extends PreferenceListFragment
         
         createActionMode();
         
+        if ((savedInstanceState != null) && 
+            (savedInstanceState.getBoolean("action_mode_showed", false)))
+            showActionMode();
 
     	//Log.d("EventPreferencesFragment.onCreate", "xxxx");
     }
@@ -146,11 +157,13 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	{
 		super.onPause();
 
+		/*
 		if (actionMode != null)
 		{
 			restart = false; // nerestartovat fragment
 			actionMode.finish();
 		}
+		*/
 		
     	//Log.d("EventPreferencesFragment.onPause", "xxxx");
 		
@@ -174,6 +187,12 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	{
 		doOnActivityResult(requestCode, resultCode, data);
 	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+        outState.putBoolean("action_mode_showed", (actionMode != null));
+	}	
 	
 	private void loadPreferences()
 	{
@@ -252,7 +271,8 @@ public class EventPreferencesFragment extends PreferenceListFragment
             /** Called when user exits action mode */
             public void onDestroyActionMode(ActionMode mode) {
                actionMode = null;
-               if (restart)
+               if (actionModeButtonClicked == 1)
+            	   // cancel button clicked
                {
             	   event.undoEventType();
             	   onRestartEventPreferencesCallback.onRestartEventPreferences(event);
@@ -286,12 +306,12 @@ public class EventPreferencesFragment extends PreferenceListFragment
         };		
 	}
 	
-	public void showActionMode()
+	private void showActionMode()
 	{
         if (actionMode == null)
         {
         	
-        	restart = true;
+        	actionModeButtonClicked = 0;
         	
         	LayoutInflater inflater = LayoutInflater.from(getSherlockActivity());
         	View actionView = inflater.inflate(R.layout.event_preferences_action_mode, null);
@@ -304,6 +324,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 					
 					//Log.d("actionMode.onClick", "cancel");
 					
+					actionModeButtonClicked = 1;
 					actionMode.finish();
 					
 				}
@@ -316,7 +337,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 
 					savePreferences();
 					
-					restart = false; // nerestartovat fragment
+					actionModeButtonClicked = 2;
 					actionMode.finish();
 					
 				}
@@ -325,11 +346,16 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		
 	}
 	
+	public boolean isActionModeActive()
+	{
+		return (actionMode != null);
+	}
+	
 	public void finishActionMode()
 	{
 		if (actionMode != null)
 		{	
-			restart = true;
+			actionModeButtonClicked = 1; // simulate cancel button clicked
 			actionMode.finish();
 		}
 	}

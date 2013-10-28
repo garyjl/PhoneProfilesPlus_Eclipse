@@ -448,7 +448,8 @@ public class EditorEventListFragment extends SherlockFragment {
 		// sort list
 		sortList(orderType);
 
-		eventListAdapter.notifyDataSetChanged();
+		if (eventListAdapter != null)
+			eventListAdapter.notifyDataSetChanged();
 
 		// set event visible in list
 		if (event == null)
