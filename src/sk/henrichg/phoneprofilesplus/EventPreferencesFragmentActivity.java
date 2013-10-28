@@ -110,7 +110,8 @@ public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
         	EventPreferencesFragment fragment = (EventPreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.activity_event_preferences_container);
     		if ((fragment != null) && (fragment.isActionModeActive()))
     		{
-    			fragment.finishActionMode();
+    			//fragment.finishActionMode();
+       			finish(); // finish activity
 	            return true; // consumes the back key event - ActionMode is not finished
     		}
     		else

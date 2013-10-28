@@ -244,15 +244,27 @@ public class EditorProfileListFragment extends SherlockFragment {
 	}
 	
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState)
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		doOnViewCreated(view, savedInstanceState);
+		super.onViewCreated(view, savedInstanceState);
+	}
+	
+	//@Override
+	//public void onActivityCreated(Bundle savedInstanceState)
+	public void doOnViewCreated(View view, Bundle savedInstanceState)
 	{
-		super.onActivityCreated(savedInstanceState);
+		//super.onActivityCreated(savedInstanceState);
 		
 		// az tu mame layout, tak mozeme ziskat view-y
-		activeProfileName = (TextView)getSherlockActivity().findViewById(R.id.activated_profile_name);
+	/*	activeProfileName = (TextView)getSherlockActivity().findViewById(R.id.activated_profile_name);
 		activeProfileIcon = (ImageView)getSherlockActivity().findViewById(R.id.activated_profile_icon);
 		listView = (DragSortListView)getSherlockActivity().findViewById(R.id.editor_profiles_list);
 		listView.setEmptyView(getSherlockActivity().findViewById(R.id.editor_profiles_list_empty));
+	*/
+		activeProfileName = (TextView)view.findViewById(R.id.activated_profile_name);
+		activeProfileIcon = (ImageView)view.findViewById(R.id.activated_profile_icon);
+		listView = (DragSortListView)view.findViewById(R.id.editor_profiles_list);
+		listView.setEmptyView(view.findViewById(R.id.editor_profiles_list_empty));
 
 		final EditorProfileListFragment fragment = this;
 		
@@ -367,8 +379,10 @@ public class EditorProfileListFragment extends SherlockFragment {
 	@Override
 	public void onDestroy()
 	{
-		listView.setAdapter(null);
-		profileListAdapter.release();
+		if (listView != null)
+			listView.setAdapter(null);
+		if (profileListAdapter != null)
+			profileListAdapter.release();
 		activateProfileHelper = null;
 		profileList = null;
 		databaseHandler = null;
@@ -728,11 +742,14 @@ public class EditorProfileListFragment extends SherlockFragment {
 	
 	public void updateListView(Profile profile)
 	{
-		// sort list
-		if (filterType != EditorProfileListFragment.FILTER_TYPE_SHOW_IN_ACTIVATOR)
-			sortAlphabetically();
-		else
-			sortByPOrder();
+		if (profileList != null)
+		{
+			// sort list
+			if (filterType != EditorProfileListFragment.FILTER_TYPE_SHOW_IN_ACTIVATOR)
+				sortAlphabetically();
+			else
+				sortByPOrder();
+		}
 
 		if (profileListAdapter != null)
 			profileListAdapter.notifyDataSetChanged();

@@ -118,9 +118,9 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		GUIData.setTheme(this, false);
 		GUIData.setLanguage(getBaseContext());
 
-		super.onCreate(savedInstanceState);
-		
 		dataWrapper = new DataWrapper(getBaseContext(), true, false, 0);
+		
+		super.onCreate(savedInstanceState);
 		
 		serviceCommunication = new ServiceCommunication(getBaseContext());
 		

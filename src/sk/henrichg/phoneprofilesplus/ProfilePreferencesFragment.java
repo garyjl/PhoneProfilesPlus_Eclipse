@@ -498,7 +498,8 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 					//Log.d("actionMode.onClick", "cancel");
 					
 					actionModeButtonClicked = 1;
-					actionMode.finish();
+					//actionMode.finish();
+					getSherlockActivity().finish(); // finish activity;
 					
 				}
            	});
@@ -511,7 +512,8 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 					savePreferences();
 					
 					actionModeButtonClicked = 2;
-					actionMode.finish();
+					//actionMode.finish();
+					getSherlockActivity().finish(); // finish activity;
 					
 				}
            	});

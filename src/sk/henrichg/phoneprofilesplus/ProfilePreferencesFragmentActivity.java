@@ -87,6 +87,7 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 		}
 	}
 	
+	/*
 	@Override
 	public void onConfigurationChanged(Configuration newConfig)
 	{
@@ -95,6 +96,7 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 		startActivity(intent);
 		finish();
 	}
+	*/
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -111,7 +113,8 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
         	ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.activity_profile_preferences_container);
     		if ((fragment != null) && (fragment.isActionModeActive()))
     		{
-    			fragment.finishActionMode();
+    			//fragment.finishActionMode();
+       			finish(); // finish activity
 	            return true; // consumes the back key event - ActionMode is not finished
     		}
     		else

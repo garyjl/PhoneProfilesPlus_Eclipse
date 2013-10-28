@@ -219,9 +219,16 @@ public class EditorEventListFragment extends SherlockFragment {
 	}
 	
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState)
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		doOnViewCreated(view, savedInstanceState);
+		super.onViewCreated(view, savedInstanceState);
+	}
+	
+	//@Override
+	//public void onActivityCreated(Bundle savedInstanceState)
+	public void doOnViewCreated(View view, Bundle savedInstanceState)
 	{
-		super.onActivityCreated(savedInstanceState);
+		//super.onActivityCreated(savedInstanceState);
 		
 		// az tu mame layout, tak mozeme ziskat view-y
 		listView = (ListView)getSherlockActivity().findViewById(R.id.editor_events_list);
@@ -288,8 +295,10 @@ public class EditorEventListFragment extends SherlockFragment {
 	@Override
 	public void onDestroy()
 	{
-		listView.setAdapter(null);
-		eventListAdapter.release();
+		if (listView != null)
+			listView.setAdapter(null);
+		if (eventListAdapter != null)
+			eventListAdapter.release();
 		eventList = null;
 		databaseHandler = null;
 		
@@ -445,8 +454,11 @@ public class EditorEventListFragment extends SherlockFragment {
 	
 	public void updateListView(Event event)
 	{
-		// sort list
-		sortList(orderType);
+		if (eventList != null)
+		{
+			// sort list
+			sortList(orderType);
+		}
 
 		if (eventListAdapter != null)
 			eventListAdapter.notifyDataSetChanged();
