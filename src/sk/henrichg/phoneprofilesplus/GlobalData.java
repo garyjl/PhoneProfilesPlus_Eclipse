@@ -24,6 +24,8 @@ public class GlobalData extends Application {
 	static final String EXTRA_START_APP_SOURCE = "start_app_source";
 	static final String EXTRA_RESET_EDITOR = "reset_editor";
 	static final String EXTRA_FIRST_START_ACTIVITY = "restart_activity";
+	static final String EXTRA_NEW_PROFILE = "new_profile";
+	static final String EXTRA_NEW_EVENT = "new_event";
 
 	// musi byt tu, pouziva to ActivateProfileHelper
 	static final int STARTUP_SOURCE_NOTIFICATION = 1;

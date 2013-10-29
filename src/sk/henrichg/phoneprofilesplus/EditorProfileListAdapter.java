@@ -375,7 +375,7 @@ public class EditorProfileListAdapter extends BaseAdapter
 				editIconClicked = true;
 				//Log.d("EditorProfileListAdapter.onClick", "delete");
 				((EditorProfileListFragment)fragment).finishProfilePreferencesActionMode();
-				((EditorProfileListFragment)fragment).deleteProfile(profile);
+				((EditorProfileListFragment)fragment).deleteProfileWithAlert(profile);
 			}
 		}); 
 		

@@ -30,6 +30,10 @@ public class EditorEventListFragment extends SherlockFragment {
 	private ListView listView;
 	private DatabaseHandler databaseHandler;
 	
+	public static final int EDIT_MODE_INSERT = 1;
+	public static final int EDIT_MODE_EDIT = 2;
+	public static final int EDIT_MODE_DELETE = 3;
+	
 	public static final String FILTER_TYPE_ARGUMENT = "filter_type";
 	public static final String ORDER_TYPE_ARGUMENT = "order_type";
 
@@ -62,7 +66,7 @@ public class EditorEventListFragment extends SherlockFragment {
 	 */
 	// invoked when start profile preference fragment/activity needed 
 	public interface OnStartEventPreferences {
-		public void onStartEventPreferences(Event event, int filterType, int orderType, boolean afterDelete);
+		public void onStartEventPreferences(Event event, int editMode, int filterType, int orderType);
 	}
 
 	/**
@@ -70,7 +74,7 @@ public class EditorEventListFragment extends SherlockFragment {
 	 * nothing. Used only when this fragment is not attached to an activity.
 	 */
 	private static OnStartEventPreferences sDummyOnStartEventPreferencesCallback = new OnStartEventPreferences() {
-		public void onStartEventPreferences(Event event, int filterType, int orderType, boolean afterDelete) {
+		public void onStartEventPreferences(Event event, int editMode, int filterType, int orderType) {
 		}
 	};
 	
@@ -339,6 +343,7 @@ public class EditorEventListFragment extends SherlockFragment {
 	{
 
 		Event _event = event;
+		int editMode;
 		
 		if (_event != null)
 		{
@@ -346,6 +351,7 @@ public class EditorEventListFragment extends SherlockFragment {
 			int profilePos = eventListAdapter.getItemPosition(_event);
 			listView.setSelection(profilePos);
 			listView.setItemChecked(profilePos, true);
+			editMode = EDIT_MODE_EDIT;
 		}
 		else
 		{
@@ -364,6 +370,8 @@ public class EditorEventListFragment extends SherlockFragment {
 			updateListView(_event);
 			
 			onEventAddedCallback.onEventAdded(_event);
+			
+			editMode = EDIT_MODE_INSERT;
 
 		}
 
@@ -371,7 +379,7 @@ public class EditorEventListFragment extends SherlockFragment {
 		
 		// Notify the active callbacks interface (the activity, if the
 		// fragment is attached to one) one must start profile preferences
-		onStartEventPreferencesCallback.onStartEventPreferences(_event, filterType, orderType, false);
+		onStartEventPreferencesCallback.onStartEventPreferences(_event, editMode, filterType, orderType);
 	}
 
 	public void duplicateEvent(Event origEvent)
@@ -402,6 +410,17 @@ public class EditorEventListFragment extends SherlockFragment {
 
 	public void deleteEvent(Event event)
 	{
+		eventListAdapter.deleteItemNoNotify(event);
+		databaseHandler.deleteEvent(event);
+		eventListAdapter.notifyDataSetChanged();
+		onEventDeletedCallback.onEventDeleted(event);
+		//updateListView();
+		
+		onStartEventPreferencesCallback.onStartEventPreferences(null, EDIT_MODE_DELETE, filterType, orderType);
+	}
+	
+	public void deleteEventWithAlert(Event event)
+	{
 		final Event _event = event;
 
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getSherlockActivity());
@@ -411,14 +430,7 @@ public class EditorEventListFragment extends SherlockFragment {
 		dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
 			
 			public void onClick(DialogInterface dialog, int which) {
-				eventListAdapter.deleteItemNoNotify(_event);
-				databaseHandler.deleteEvent(_event);
-				eventListAdapter.notifyDataSetChanged();
-				onEventDeletedCallback.onEventDeleted(_event);
-				//updateListView();
-				
-				onStartEventPreferencesCallback.onStartEventPreferences(null, filterType, orderType, true);
-				
+				deleteEvent(_event);
 			}
 		});
 		dialogBuilder.setNegativeButton(R.string.alert_button_no, null);
@@ -439,7 +451,7 @@ public class EditorEventListFragment extends SherlockFragment {
 				onAllEventsDeletedCallback.onAllEventsDeleted();
 				//updateListView();
 				
-				onStartEventPreferencesCallback.onStartEventPreferences(null, filterType, orderType, true);
+				onStartEventPreferencesCallback.onStartEventPreferences(null, EDIT_MODE_DELETE, filterType, orderType);
 				
 			}
 		});
@@ -447,6 +459,7 @@ public class EditorEventListFragment extends SherlockFragment {
 		dialogBuilder.show();
 	}
 	
+	// called from event list adapter
 	public void finishEventPreferencesActionMode()
 	{
 		onFinishEventPreferencesActionModeCallback.onFinishEventPreferencesActionMode();

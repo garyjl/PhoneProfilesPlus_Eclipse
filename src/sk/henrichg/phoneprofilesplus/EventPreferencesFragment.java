@@ -1,5 +1,7 @@
 package sk.henrichg.phoneprofilesplus;
  
+import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnDeleteNewNonEditedProfile;
+
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.ActionMode.Callback;
 import com.actionbarsherlock.view.Menu;
@@ -22,20 +24,26 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	private Event event;
 	private long event_id;
 	private boolean first_start_activity;
+	private boolean new_event;
 	private PreferenceManager prefMng;
 	private SharedPreferences preferences;
 	private Context context;
 	private ActionMode actionMode;
 	private Callback actionModeCallback;
 	
-	private int actionModeButtonClicked = 0;
+	private int actionModeButtonClicked = BUTTON_UNDEFINED;
 	
 	private static Activity preferencesActivity = null;
 		
 	static final String PREFS_NAME = "event_preferences";
 	
+	static final int BUTTON_UNDEFINED = 0;
+	static final int BUTTON_CANCEL = 1;
+	static final int BUTTON_SAVE = 2;
+	
 	private OnRestartEventPreferences onRestartEventPreferencesCallback = sDummyOnRestartEventPreferencesCallback;
 	private OnRedrawEventListFragment onRedrawEventListFragmentCallback = sDummyOnRedrawEventListFragmentCallback;
+	private OnDeleteNewNonEditedEvent onDeleteNewNonEditedEventCallback = sDummyOnDeleteNewNonEditedEventCallback; 
 
 	// invokes when restart of event preferences fragment needed (undo preference changes)
 	public interface OnRestartEventPreferences {
@@ -62,6 +70,19 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		public void onRedrawEventListFragment(Event event) {
 		}
 	};
+
+	// invokes when new non edited event will by deleted
+	public interface OnDeleteNewNonEditedEvent {
+		/**
+		 * Callback for delete event
+		 */
+		public void onDeleteNewNonEditedEvent(Event event);
+	}
+
+	private static OnDeleteNewNonEditedEvent sDummyOnDeleteNewNonEditedEventCallback = new OnDeleteNewNonEditedEvent() {
+		public void onDeleteNewNonEditedEvent(Event event) {
+		}
+	};
 	
 	@Override
 	public void onAttach(Activity activity) {
@@ -79,6 +100,12 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		}
 		onRedrawEventListFragmentCallback = (OnRedrawEventListFragment) activity;
 		
+		if (!(activity instanceof OnDeleteNewNonEditedEvent)) {
+			throw new IllegalStateException(
+					"Activity must implement fragment's callbacks.");
+		}
+		onDeleteNewNonEditedEventCallback = (OnDeleteNewNonEditedEvent) activity;
+		
 	}
 
 	@Override
@@ -88,6 +115,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		// Reset the active callbacks interface to the dummy implementation.
 		onRestartEventPreferencesCallback = sDummyOnRestartEventPreferencesCallback;
 		onRedrawEventListFragmentCallback = sDummyOnRedrawEventListFragmentCallback;
+		onDeleteNewNonEditedEventCallback = sDummyOnDeleteNewNonEditedEventCallback;
 	}
 	
 	@Override
@@ -106,7 +134,6 @@ public class EventPreferencesFragment extends PreferenceListFragment
 			event_id = getArguments().getLong(GlobalData.EXTRA_EVENT_ID);
     	//Log.e("EventPreferencesFragment.onCreate", "event_position=" + event_position);
     	event = (Event)EditorProfilesActivity.dataWrapper.getEventById(event_id);
-
 		if (getArguments().containsKey(GlobalData.EXTRA_FIRST_START_ACTIVITY))
 		{
 			first_start_activity = getArguments().getBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY);
@@ -116,6 +143,8 @@ public class EventPreferencesFragment extends PreferenceListFragment
 			first_start_activity = false;
         if (first_start_activity)
         	loadPreferences();
+		if (getArguments().containsKey(GlobalData.EXTRA_NEW_EVENT))
+			new_event = getArguments().getBoolean(GlobalData.EXTRA_NEW_EVENT);
    	
         context = getSherlockActivity().getBaseContext();
 		
@@ -271,7 +300,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
             /** Called when user exits action mode */
             public void onDestroyActionMode(ActionMode mode) {
                actionMode = null;
-               if (actionModeButtonClicked == 1)
+               if (actionModeButtonClicked == BUTTON_CANCEL)
             	   // cancel button clicked
                {
             	   event.undoEventType();
@@ -311,7 +340,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
         if (actionMode == null)
         {
         	
-        	actionModeButtonClicked = 0;
+        	actionModeButtonClicked = BUTTON_UNDEFINED;
         	
         	LayoutInflater inflater = LayoutInflater.from(getSherlockActivity());
         	View actionView = inflater.inflate(R.layout.event_preferences_action_mode, null);
@@ -324,9 +353,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 					
 					//Log.d("actionMode.onClick", "cancel");
 					
-					actionModeButtonClicked = 1;
-					//actionMode.finish();
-					getSherlockActivity().finish(); // finish activity;
+					finishActionMode(BUTTON_CANCEL);
 					
 				}
            	});
@@ -338,9 +365,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 
 					savePreferences();
 					
-					actionModeButtonClicked = 2;
-					//actionMode.finish();
-					getSherlockActivity().finish(); // finish activity;
+					finishActionMode(BUTTON_SAVE);
 					
 				}
            	});
@@ -353,11 +378,24 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		return (actionMode != null);
 	}
 	
-	public void finishActionMode()
+	public void finishActionMode(int button)
 	{
+		// test, where new profile is edited
+		// when not edited, delete it from database and adapter
+		if (new_event && (button != BUTTON_SAVE))
+			onDeleteNewNonEditedEventCallback.onDeleteNewNonEditedEvent(event);
+		if (button == BUTTON_SAVE)
+			new_event = false;
+		
+		if (!EditorProfilesActivity.mTwoPane)
+		{
+			actionModeButtonClicked = BUTTON_UNDEFINED;
+			getSherlockActivity().finish(); // finish activity;
+		}
+		else
 		if (actionMode != null)
 		{	
-			actionModeButtonClicked = 1; // simulate cancel button clicked
+			actionModeButtonClicked = button;
 			actionMode.finish();
 		}
 	}

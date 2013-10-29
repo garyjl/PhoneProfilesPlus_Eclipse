@@ -316,7 +316,7 @@ public class EditorEventListAdapter extends BaseAdapter
 					editIconClicked = true;
 					//Log.d("EditorProfileListAdapter.onClick", "delete");
 					((EditorEventListFragment)fragment).finishEventPreferencesActionMode();
-					((EditorEventListFragment)fragment).deleteEvent(event);
+					((EditorEventListFragment)fragment).deleteEventWithAlert(event);
 				}
 			}); 
 		

@@ -39,6 +39,10 @@ public class EditorProfileListFragment extends SherlockFragment {
 	private ImageView activeProfileIcon;
 	private DatabaseHandler databaseHandler;
 	
+	public static final int EDIT_MODE_INSERT = 1;
+	public static final int EDIT_MODE_EDIT = 2;
+	public static final int EDIT_MODE_DELETE = 3;
+	
 	public static final String FILTER_TYPE_ARGUMENT = "filter_type";
 	
 	public static final int FILTER_TYPE_ALL = 0;
@@ -64,7 +68,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 	 */
 	// invoked when start profile preference fragment/activity needed 
 	public interface OnStartProfilePreferences {
-		public void onStartProfilePreferences(Profile profile, int filterType, boolean afterDelete);
+		public void onStartProfilePreferences(Profile profile, int editMode, int filterType);
 	}
 
 	/**
@@ -72,7 +76,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 	 * nothing. Used only when this fragment is not attached to an activity.
 	 */
 	private static OnStartProfilePreferences sDummyOnStartProfilePreferencesCallback = new OnStartProfilePreferences() {
-		public void onStartProfilePreferences(Profile profile, int filterType, boolean afterDelete) {
+		public void onStartProfilePreferences(Profile profile, int editMode, int filterType) {
 		}
 	};
 	
@@ -422,6 +426,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 	private void startProfilePreferencesActivity(Profile profile)
 	{
 		Profile _profile = profile;
+		int editMode;
 		
 		if (_profile != null)
 		{
@@ -429,6 +434,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 			int profilePos = profileListAdapter.getItemPosition(_profile);
 			listView.setSelection(profilePos);
 			listView.setItemChecked(profilePos, true);
+			editMode = EDIT_MODE_EDIT;
 		}
 		else
 		{
@@ -453,13 +459,14 @@ public class EditorProfileListFragment extends SherlockFragment {
 			_profile.generateIconBitmap(getSherlockActivity().getBaseContext(), false, 0);
 			_profile.generatePreferencesIndicator(getSherlockActivity().getBaseContext(), false, 0);
 			
+			editMode = EDIT_MODE_INSERT;
 		}
 
 		//Log.d("EditorProfileListFragment.startProfilePreferencesActivity", profile.getID()+"");
 		
 		// Notify the active callbacks interface (the activity, if the
 		// fragment is attached to one) one must start profile preferences
-		onStartProfilePreferencesCallback.onStartProfilePreferences(_profile, filterType, false);
+		onStartProfilePreferencesCallback.onStartProfilePreferences(_profile, editMode, filterType);
 	}
 
 	public void duplicateProfile(Profile origProfile)
@@ -515,8 +522,70 @@ public class EditorProfileListFragment extends SherlockFragment {
 		
 		
 	}
-
+	
 	public void deleteProfile(Profile profile)
+	{
+		final Profile _profile = profile;
+		final Activity activity = getActivity();
+		
+		class DeleteAsyncTask extends AsyncTask<Void, Integer, Integer> 
+		{
+			private ProgressDialog dialog;
+			
+			DeleteAsyncTask()
+			{
+		         this.dialog = new ProgressDialog(activity);
+			}
+			
+			@Override
+			protected void onPreExecute()
+			{
+				super.onPreExecute();
+				
+			     this.dialog.setMessage(getResources().getString(R.string.delete_profile_progress_title) + "...");
+			     this.dialog.show();						
+			}
+			
+			@Override
+			protected Integer doInBackground(Void... params) {
+				
+				profileListAdapter.deleteItemNoNotify(_profile);
+				databaseHandler.unlinkEventsFromProfile(_profile);
+				databaseHandler.deleteProfile(_profile);
+				
+				return 1;
+			}
+			
+			@Override
+			protected void onPostExecute(Integer result)
+			{
+				super.onPostExecute(result);
+				
+			    if (dialog.isShowing())
+		            dialog.dismiss();
+				
+				if (result == 1)
+				{
+					profileListAdapter.notifyDataSetChanged();
+					onProfileDeletedCallback.onProfileDeleted(_profile);
+					//updateListView();
+					// v pripade, ze sa odmaze aktivovany profil, nastavime, ze nic nie je aktivovane
+					//Profile profile = databaseHandler.getActivatedProfile();
+					Profile profile = profileListAdapter.getActivatedProfile();
+					updateHeader(profile);
+					activateProfileHelper.showNotification(profile);
+					activateProfileHelper.updateWidget();
+					
+					onStartProfilePreferencesCallback.onStartProfilePreferences(null, EDIT_MODE_DELETE, filterType);
+				}
+			}
+			
+		}
+		
+		new DeleteAsyncTask().execute();
+	}
+
+	public void deleteProfileWithAlert(Profile profile)
 	{
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getSherlockActivity());
 		dialogBuilder.setTitle(getResources().getString(R.string.profile_string_0) + ": " + profile._name);
@@ -524,67 +593,11 @@ public class EditorProfileListFragment extends SherlockFragment {
 		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
 		
 		final Profile _profile = profile;
-		final Activity activity = getActivity();
 		
 		dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
 			
 			public void onClick(DialogInterface dialog, int which) {
-				
-				class DeleteAsyncTask extends AsyncTask<Void, Integer, Integer> 
-				{
-					private ProgressDialog dialog;
-					
-					DeleteAsyncTask()
-					{
-				         this.dialog = new ProgressDialog(activity);
-					}
-					
-					@Override
-					protected void onPreExecute()
-					{
-						super.onPreExecute();
-						
-					     this.dialog.setMessage(getResources().getString(R.string.delete_profile_progress_title) + "...");
-					     this.dialog.show();						
-					}
-					
-					@Override
-					protected Integer doInBackground(Void... params) {
-						
-						profileListAdapter.deleteItemNoNotify(_profile);
-						databaseHandler.unlinkEventsFromProfile(_profile);
-						databaseHandler.deleteProfile(_profile);
-						
-						return 1;
-					}
-					
-					@Override
-					protected void onPostExecute(Integer result)
-					{
-						super.onPostExecute(result);
-						
-					    if (dialog.isShowing())
-				            dialog.dismiss();
-						
-						if (result == 1)
-						{
-							profileListAdapter.notifyDataSetChanged();
-							onProfileDeletedCallback.onProfileDeleted(_profile);
-							//updateListView();
-							// v pripade, ze sa odmaze aktivovany profil, nastavime, ze nic nie je aktivovane
-							//Profile profile = databaseHandler.getActivatedProfile();
-							Profile profile = profileListAdapter.getActivatedProfile();
-							updateHeader(profile);
-							activateProfileHelper.showNotification(profile);
-							activateProfileHelper.updateWidget();
-							
-							onStartProfilePreferencesCallback.onStartProfilePreferences(null, filterType, true);
-						}
-					}
-					
-				}
-				
-				new DeleteAsyncTask().execute();
+				deleteProfile(_profile);
 			}
 		});
 		dialogBuilder.setNegativeButton(R.string.alert_button_no, null);
@@ -652,7 +665,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 							activateProfileHelper.showNotification(null);
 							activateProfileHelper.updateWidget();
 							
-							onStartProfilePreferencesCallback.onStartProfilePreferences(null, filterType, true);
+							onStartProfilePreferencesCallback.onStartProfilePreferences(null, EDIT_MODE_DELETE, filterType);
 						}
 					}
 					
@@ -698,13 +711,15 @@ public class EditorProfileListFragment extends SherlockFragment {
 		if (GlobalData.applicationEditorPrefIndicator)
 		{
 			//Log.e("EditorProfileListFragment.updateHeader","indicator");
-
 			ImageView profilePrefIndicatorImageView = (ImageView)getSherlockActivity().findViewById(R.id.activated_profile_pref_indicator);
-			//profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, getSherlockActivity().getBaseContext()));
-			if (profile == null)
-				profilePrefIndicatorImageView.setImageResource(R.drawable.ic_empty);
-			else
-				profilePrefIndicatorImageView.setImageBitmap(profile._preferencesIndicator);
+			if (profilePrefIndicatorImageView != null)
+			{
+				//profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, getSherlockActivity().getBaseContext()));
+				if (profile == null)
+					profilePrefIndicatorImageView.setImageResource(R.drawable.ic_empty);
+				else
+					profilePrefIndicatorImageView.setImageBitmap(profile._preferencesIndicator);
+			}
 		}
 	}
 
@@ -735,6 +750,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		getActivity().startActivityForResult(intent, GlobalData.REQUEST_CODE_ACTIVATE_PROFILE);
 	}
 
+	// called from profile list adapter
 	public void finishProfilePreferencesActionMode()
 	{
 		onFinishProfilePreferencesActionModeCallback.onFinishProfilePreferencesActionMode();

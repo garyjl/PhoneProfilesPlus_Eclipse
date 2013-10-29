@@ -28,21 +28,27 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	private Profile profile;
 	private long profile_id;
 	private boolean first_start_activity;
+	private boolean new_profile;
 	private PreferenceManager prefMng;
 	private SharedPreferences preferences;
 	private Context context;
 	private ActionMode actionMode;
 	private Callback actionModeCallback;
 	
-	private int actionModeButtonClicked = 0;
+	private int actionModeButtonClicked = BUTTON_UNDEFINED;
 	
 	private static ImageViewPreference changedImageViewPreference;
 	private static Activity preferencesActivity = null;
 		
 	static final String PREFS_NAME = "profile_preferences";
 	
+	static final int BUTTON_UNDEFINED = 0;
+	static final int BUTTON_CANCEL = 1;
+	static final int BUTTON_SAVE = 2;
+	
 	private OnRestartProfilePreferences onRestartProfilePreferencesCallback = sDummyOnRestartProfilePreferencesCallback;
 	private OnRedrawProfileListFragment onRedrawProfileListFragmentCallback = sDummyOnRedrawProfileListFragmentCallback;
+	private OnDeleteNewNonEditedProfile onDeleteNewNonEditedProfileCallback = sDummyOnDeleteNewNonEditedProfileCallback; 
 
 	// invokes when restart of profile preferences fragment needed (undo preference changes)
 	public interface OnRestartProfilePreferences {
@@ -70,6 +76,19 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		}
 	};
 	
+	// invokes when new non edited profile will by deleted
+	public interface OnDeleteNewNonEditedProfile {
+		/**
+		 * Callback for delete profile.
+		 */
+		public void onDeleteNewNonEditedProfile(Profile profile);
+	}
+
+	private static OnDeleteNewNonEditedProfile sDummyOnDeleteNewNonEditedProfileCallback = new OnDeleteNewNonEditedProfile() {
+		public void onDeleteNewNonEditedProfile(Profile profile) {
+		}
+	};
+	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -86,6 +105,12 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		}
 		onRedrawProfileListFragmentCallback = (OnRedrawProfileListFragment) activity;
 		
+		if (!(activity instanceof OnDeleteNewNonEditedProfile)) {
+			throw new IllegalStateException(
+					"Activity must implement fragment's callbacks.");
+		}
+		onDeleteNewNonEditedProfileCallback = (OnDeleteNewNonEditedProfile) activity;
+		
 	}
 
 	@Override
@@ -95,6 +120,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		// Reset the active callbacks interface to the dummy implementation.
 		onRestartProfilePreferencesCallback = sDummyOnRestartProfilePreferencesCallback;
 		onRedrawProfileListFragmentCallback = sDummyOnRedrawProfileListFragmentCallback;
+		onDeleteNewNonEditedProfileCallback = sDummyOnDeleteNewNonEditedProfileCallback;
 	}
 	
 	@Override
@@ -113,7 +139,6 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 			profile_id = getArguments().getLong(GlobalData.EXTRA_PROFILE_ID);
     	//Log.e("ProfilePreferencesFragment.onCreate", "profile_id=" + profile_id);
     	profile = (Profile)EditorProfilesActivity.dataWrapper.getProfileById(profile_id);
-
 		if (getArguments().containsKey(GlobalData.EXTRA_FIRST_START_ACTIVITY))
 		{
 			first_start_activity = getArguments().getBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY);
@@ -123,6 +148,8 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 			first_start_activity = false;
         if (first_start_activity)
         	loadPreferences();
+		if (getArguments().containsKey(GlobalData.EXTRA_NEW_PROFILE))
+			new_profile = getArguments().getBoolean(GlobalData.EXTRA_NEW_PROFILE);
     	
         context = getSherlockActivity().getBaseContext();
         
@@ -447,8 +474,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
             /** Called when user exits action mode */
             public void onDestroyActionMode(ActionMode mode) {
                actionMode = null;
-               if (actionModeButtonClicked == 1)
-            	   // cancel button clicked
+               if (actionModeButtonClicked == BUTTON_CANCEL)
             	   onRestartProfilePreferencesCallback.onRestartProfilePreferences(profile);
             }
  
@@ -484,7 +510,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
         if (actionMode == null)
         {
         	
-        	actionModeButtonClicked = 0;
+        	actionModeButtonClicked = BUTTON_UNDEFINED;
         	
         	LayoutInflater inflater = LayoutInflater.from(getSherlockActivity());
         	View actionView = inflater.inflate(R.layout.profile_preferences_action_mode, null);
@@ -497,9 +523,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 					
 					//Log.d("actionMode.onClick", "cancel");
 					
-					actionModeButtonClicked = 1;
-					//actionMode.finish();
-					getSherlockActivity().finish(); // finish activity;
+					finishActionMode(BUTTON_CANCEL);
 					
 				}
            	});
@@ -511,9 +535,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 			
 					savePreferences();
 					
-					actionModeButtonClicked = 2;
-					//actionMode.finish();
-					getSherlockActivity().finish(); // finish activity;
+					finishActionMode(BUTTON_SAVE);
 					
 				}
            	});
@@ -525,11 +547,24 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		return (actionMode != null);
 	}
 	
-	public void finishActionMode()
+	public void finishActionMode(int button)
 	{
+		// test, where new profile is edited
+		// when not edited, delete it from database and adapter
+		if (new_profile && (button != BUTTON_SAVE))
+			onDeleteNewNonEditedProfileCallback.onDeleteNewNonEditedProfile(profile);
+		if (button == BUTTON_SAVE)
+			new_profile = false;
+		
+		if (!EditorProfilesActivity.mTwoPane)
+		{
+			actionModeButtonClicked = BUTTON_UNDEFINED;
+			getSherlockActivity().finish(); // finish activity;
+		}
+		else
 		if (actionMode != null)
 		{	
-			actionModeButtonClicked = 1; // simulate cancel button clicked
+			actionModeButtonClicked = button;
 			actionMode.finish();
 		}
 	}
