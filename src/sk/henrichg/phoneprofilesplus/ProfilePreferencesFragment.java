@@ -29,6 +29,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	private long profile_id;
 	private boolean first_start_activity;
 	private boolean new_profile;
+	public boolean profileNonEdited = true;
 	private PreferenceManager prefMng;
 	private SharedPreferences preferences;
 	private Context context;
@@ -507,6 +508,8 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	
 	private void showActionMode()
 	{
+		profileNonEdited = false;
+		
         if (actionMode == null)
         {
         	

@@ -9,7 +9,6 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceScreen;
 import android.view.KeyEvent;
@@ -79,7 +78,13 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 		if (deleteNewNoneditedProfile)
 			setResult(RESULT_CANCELED,returnIntent);
 		else
-			setResult(RESULT_OK,returnIntent);
+		{
+			ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.activity_profile_preferences_container);
+			if ((fragment != null) && (fragment.profileNonEdited))
+				setResult(RESULT_CANCELED,returnIntent);
+			else
+				setResult(RESULT_OK,returnIntent);
+		}
 
 	    super.finish();
 	}

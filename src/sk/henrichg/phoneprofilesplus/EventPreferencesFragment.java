@@ -1,7 +1,5 @@
 package sk.henrichg.phoneprofilesplus;
  
-import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnDeleteNewNonEditedProfile;
-
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.ActionMode.Callback;
 import com.actionbarsherlock.view.Menu;
@@ -25,6 +23,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	private long event_id;
 	private boolean first_start_activity;
 	private boolean new_event;
+	public boolean eventNonEdited = true;
 	private PreferenceManager prefMng;
 	private SharedPreferences preferences;
 	private Context context;
@@ -337,6 +336,8 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	
 	private void showActionMode()
 	{
+		eventNonEdited = false;
+		
         if (actionMode == null)
         {
         	

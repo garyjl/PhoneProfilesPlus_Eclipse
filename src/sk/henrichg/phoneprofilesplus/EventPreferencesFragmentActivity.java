@@ -78,7 +78,13 @@ public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
 		if (deleteNewNoneditedEvent)
 			setResult(RESULT_CANCELED,returnIntent);
 		else
-			setResult(RESULT_OK,returnIntent);
+		{
+			EventPreferencesFragment fragment = (EventPreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.activity_event_preferences_container);
+			if ((fragment != null) && (fragment.eventNonEdited))
+				setResult(RESULT_CANCELED,returnIntent);
+			else
+				setResult(RESULT_OK,returnIntent);
+		}
 
 	    super.finish();
 	}
