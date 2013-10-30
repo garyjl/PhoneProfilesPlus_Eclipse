@@ -18,10 +18,9 @@
     
 	    <ImageView
 	        android:id="@+id/event_list_item_delete"
-	        android:layout_width="25dp"
-	        android:layout_height="25dp"
-	        android:layout_marginRight="10dp"
-	        android:layout_marginLeft="10dp"
+	        android:layout_width="45dp"
+	        android:layout_height="45dp"
+	        android:padding="10dp"
 	        android:scaleType="center"
 	        android:clickable="true"
 	        android:background="?attr/actionProfileToolBackground"
@@ -30,10 +29,9 @@
 	
 	    <ImageView
 	        android:id="@+id/event_list_item_duplicate"
-	        android:layout_width="25dp"
-	        android:layout_height="25dp"
-	        android:layout_marginRight="10dp"
-	        android:layout_marginLeft="10dp"
+	        android:layout_width="45dp"
+	        android:layout_height="45dp"
+	        android:padding="10dp"
 	        android:scaleType="center"
 	        android:clickable="true"
 	        android:background="?attr/actionProfileToolBackground"
