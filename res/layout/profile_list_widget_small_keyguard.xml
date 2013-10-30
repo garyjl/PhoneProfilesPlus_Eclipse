@@ -44,7 +44,8 @@
 		        android:paddingLeft="10dp"
 		        android:text="@string/profile_name_default"
 		        android:textColor="#33b5e5"
-		        android:textSize="17sp" />
+		        android:textSize="17sp"
+		        android:singleLine="true" />
 		            
 		    <ImageView
 		        android:id="@+id/widget_profile_list_header_profile_activated"

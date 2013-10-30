@@ -51,7 +51,8 @@
         android:layout_below="@+id/event_list_item_event_name"
         android:layout_toRightOf="@+id/event_list_item_event_icon" 
         android:paddingLeft="10dp"
-        android:textSize="11sp" />
+        android:textSize="11sp"
+        android:singleLine="true" />
 
     <ImageView
         android:id="@+id/event_list_item_profile_icon"
@@ -74,7 +75,8 @@
         android:layout_toRightOf="@+id/event_list_item_profile_icon"
         android:paddingLeft="10dp"
         android:text="@string/event_preferences_profile_not_set"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        android:singleLine="true" />
     
     <ImageView
         android:id="@+id/event_list_item_profile_pref_indicator"

@@ -28,7 +28,8 @@
         android:paddingLeft="10dp"
         android:text="@string/profile_name_default"
         android:textSize="15sp"
-        android:textColor="#ffffffff" />
+        android:textColor="#ffffffff"
+        android:singleLine="true" />
     
     <ImageView
         android:id="@+id/widget_profile_list_profile_pref_indicator"

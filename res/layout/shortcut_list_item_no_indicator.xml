@@ -28,7 +28,8 @@
         android:layout_toRightOf="@+id/shortcut_list_item_profile_icon"
         android:paddingLeft="10dp"
         android:text="@string/profile_name_default"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        android:singleLine="true" />
     
 </RelativeLayout>
 

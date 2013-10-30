@@ -30,7 +30,8 @@
         android:layout_toRightOf="@+id/act_prof_list_item_profile_icon"
         android:paddingLeft="10dp"
         android:text="@string/profile_name_default"
-        android:textSize="19sp" />
+        android:textSize="19sp"
+        android:singleLine="true" />
     
 </RelativeLayout>
 
