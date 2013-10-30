@@ -55,8 +55,6 @@ public class ActivateProfileActivity extends SherlockActivity {
 		
 		doOnStartCalled = false;
 		
-		GlobalData.startService(getBaseContext());
-
 		GUIData.setTheme(this, true);
 		GUIData.setLanguage(getBaseContext());
 		

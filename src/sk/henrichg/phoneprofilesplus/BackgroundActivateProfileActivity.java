@@ -11,7 +11,6 @@ import android.content.Intent;
 public class BackgroundActivateProfileActivity extends Activity {
 
 	private DataWrapper dataWrapper;
-	private ServiceCommunication serviceCommunication;
 	private DatabaseHandler databaseHandler;
 	private ActivateProfileHelper activateProfileHelper;
 	
@@ -28,7 +27,6 @@ public class BackgroundActivateProfileActivity extends Activity {
 		GlobalData.loadPreferences(getBaseContext());
 		
 		dataWrapper = new DataWrapper(getBaseContext(), true, false, 0);
-		serviceCommunication = new ServiceCommunication(getBaseContext());
 		
 		intent = getIntent();
 		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
@@ -138,9 +136,6 @@ public class BackgroundActivateProfileActivity extends Activity {
 	{
 		super.onDestroy();
 		
-		serviceCommunication.release();
-		serviceCommunication = null;
-
 		activateProfileHelper = null;
 		databaseHandler = null;
 		dataWrapper.invalidateDataWrapper();
@@ -224,8 +219,6 @@ public class BackgroundActivateProfileActivity extends Activity {
 		activateProfileHelper.showNotification(profile);
 		activateProfileHelper.updateWidget();
 		
-		serviceCommunication.sendMessageIntoServiceProfileActivated(profile_id, startupSource);
-
 		if (GlobalData.notificationsToast)
 		{	
 			// toast notification
