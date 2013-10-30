@@ -44,13 +44,13 @@ public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
         event_id = getIntent().getLongExtra(GlobalData.EXTRA_EVENT_ID, -1);
         boolean first_start_activity = getIntent().getBooleanExtra(GlobalData.EXTRA_FIRST_START_ACTIVITY, false);
         getIntent().removeExtra(GlobalData.EXTRA_FIRST_START_ACTIVITY);
-        boolean new_event = getIntent().getBooleanExtra(GlobalData.EXTRA_NEW_EVENT, false);
+        newEvent = getIntent().getBooleanExtra(GlobalData.EXTRA_NEW_EVENT, false);
 
 		if (savedInstanceState == null) {
 			Bundle arguments = new Bundle();
 			arguments.putLong(GlobalData.EXTRA_EVENT_ID, event_id);
 			arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, first_start_activity);
-			arguments.putBoolean(GlobalData.EXTRA_NEW_EVENT, new_event);
+			arguments.putBoolean(GlobalData.EXTRA_NEW_EVENT, newEvent);
 			EventPreferencesFragment fragment = new EventPreferencesFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
@@ -80,7 +80,7 @@ public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
 		else
 		{
 			EventPreferencesFragment fragment = (EventPreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.activity_event_preferences_container);
-			if ((fragment != null) && (fragment.eventNonEdited))
+			if ((fragment != null) && fragment.eventNonEdited && newEvent)
 				setResult(RESULT_CANCELED,returnIntent);
 			else
 				setResult(RESULT_OK,returnIntent);

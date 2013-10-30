@@ -203,7 +203,8 @@ public class EditorEventListFragment extends SherlockFragment {
         //Log.e("EditorEventListFragment.onCreate","filterType="+filterType);
         //Log.e("EditorEventListFragment.onCreate","orderType="+orderType);
 		
-		databaseHandler = EditorProfilesActivity.dataWrapper.getDatabaseHandler();
+        if (EditorProfilesActivity.dataWrapper != null)
+        	databaseHandler = EditorProfilesActivity.dataWrapper.getDatabaseHandler();
 		
 		getSherlockActivity().getIntent();
 		

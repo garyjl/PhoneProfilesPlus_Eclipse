@@ -559,7 +559,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		{
 			// redraw list fragment after finish ProfilePreferencesFragmentActivity
 			long profile_id = data.getLongExtra(GlobalData.EXTRA_PROFILE_ID, 0);
-			
+
 			if (resultCode == RESULT_CANCELED)
 				// delete new non edited profile
 				onDeleteNewNonEditedProfile(dataWrapper.getProfileById(profile_id));

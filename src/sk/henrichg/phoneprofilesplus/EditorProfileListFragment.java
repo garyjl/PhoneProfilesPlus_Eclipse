@@ -220,11 +220,14 @@ public class EditorProfileListFragment extends SherlockFragment {
         			EditorProfileListFragment.FILTER_TYPE_ALL;
 
 		//Log.e("EditorProfileListFragment.onCreate","xxx");
+	
+        if (EditorProfilesActivity.dataWrapper != null)
+        {
+        	databaseHandler = EditorProfilesActivity.dataWrapper.getDatabaseHandler(); 
 		
-		databaseHandler = EditorProfilesActivity.dataWrapper.getDatabaseHandler(); 
-		
-		activateProfileHelper = EditorProfilesActivity.dataWrapper.getActivateProfileHelper();
-		activateProfileHelper.initialize(getSherlockActivity(), getActivity().getBaseContext());
+        	activateProfileHelper = EditorProfilesActivity.dataWrapper.getActivateProfileHelper();
+        	activateProfileHelper.initialize(getSherlockActivity(), getActivity().getBaseContext());
+        }
 		
 		setHasOptionsMenu(true);
 

@@ -11,6 +11,7 @@ import com.actionbarsherlock.view.MenuItem;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceScreen;
+import android.util.Log;
 import android.view.KeyEvent;
  
 public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
@@ -42,7 +43,7 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
         profile_id = getIntent().getLongExtra(GlobalData.EXTRA_PROFILE_ID, -1);
         boolean first_start_activity = getIntent().getBooleanExtra(GlobalData.EXTRA_FIRST_START_ACTIVITY, false);
         getIntent().removeExtra(GlobalData.EXTRA_FIRST_START_ACTIVITY);
-        boolean new_profile = getIntent().getBooleanExtra(GlobalData.EXTRA_NEW_PROFILE, false);
+        newProfile = getIntent().getBooleanExtra(GlobalData.EXTRA_NEW_PROFILE, false);
 
         //Log.e("ProfilePreferencesFragmentActivity.onCreate","profile_id="+profile_id);
         
@@ -50,7 +51,7 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 			Bundle arguments = new Bundle();
 			arguments.putLong(GlobalData.EXTRA_PROFILE_ID, profile_id);
 			arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, first_start_activity);
-			arguments.putBoolean(GlobalData.EXTRA_NEW_PROFILE, new_profile);
+			arguments.putBoolean(GlobalData.EXTRA_NEW_PROFILE, newProfile);
 			ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
@@ -80,7 +81,13 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 		else
 		{
 			ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.activity_profile_preferences_container);
-			if ((fragment != null) && (fragment.profileNonEdited))
+
+			Log.e("ProfilePreferencesFragmentActivity.finish","fragment="+fragment);
+			if (fragment != null)
+				Log.e("ProfilePreferencesFragmentActivity.finish","fragment.profileNonEdited="+fragment.profileNonEdited);
+			Log.e("ProfilePreferencesFragmentActivity.finish","newProfile="+newProfile);
+			
+			if ((fragment != null) && fragment.profileNonEdited && newProfile)
 				setResult(RESULT_CANCELED,returnIntent);
 			else
 				setResult(RESULT_OK,returnIntent);
