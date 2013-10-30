@@ -201,9 +201,7 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 	public void onConfigurationChanged(Configuration newConfig)
 	{
 		getBaseContext().getResources().updateConfiguration(newConfig, getBaseContext().getResources().getDisplayMetrics());
-		Intent intent = getIntent();
-		startActivity(intent);
-		finish();
+		GUIData.reloadActivity(this);
 	}
 	
 	private void createShortcut(int position)

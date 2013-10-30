@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 
@@ -97,6 +98,20 @@ public class GUIData {
 			else
 				activity.setTheme(R.style.Theme_Phoneprofilestheme_dlight);
 		}
+	}
+	
+	public static void reloadActivity(Activity activity)
+	{
+		if (android.os.Build.VERSION.SDK_INT < 11)
+		{
+		    Intent intent = activity.getIntent();
+		    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+		    activity.finish();
+		    activity.startActivity(intent);
+		    activity.overridePendingTransition(0, 0);
+		}
+		else
+			activity.recreate();
 	}
 	
 }

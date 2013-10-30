@@ -221,17 +221,13 @@ public class EditorProfileListFragment extends SherlockFragment {
 
 		//Log.e("EditorProfileListFragment.onCreate","xxx");
 	
-        if (EditorProfilesActivity.dataWrapper != null)
-        {
-        	databaseHandler = EditorProfilesActivity.dataWrapper.getDatabaseHandler(); 
-		
-        	activateProfileHelper = EditorProfilesActivity.dataWrapper.getActivateProfileHelper();
-        	activateProfileHelper.initialize(getSherlockActivity(), getActivity().getBaseContext());
-        }
+    	databaseHandler = EditorProfilesActivity.dataWrapper.getDatabaseHandler(); 
+	
+    	activateProfileHelper = EditorProfilesActivity.dataWrapper.getActivateProfileHelper();
 		
 		setHasOptionsMenu(true);
 
-		//Log.d("EditorProfileListFragment.onCreate", "xxxx");
+		Log.e("EditorProfileListFragment.onCreate", "xxxx");
 		
 	}
 	
@@ -247,12 +243,17 @@ public class EditorProfileListFragment extends SherlockFragment {
 		else
 			rootView = inflater.inflate(R.layout.editor_profile_list_no_header, container, false); 
 
+		Log.e("EditorProfileListFragment.onCreateView", "xxxx");
+		
 		return rootView;
 	}
 	
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		doOnViewCreated(view, savedInstanceState);
+
+		Log.e("EditorProfileListFragment.onViewCreated", "xxxx");
+
 		super.onViewCreated(view, savedInstanceState);
 	}
 	

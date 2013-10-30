@@ -92,9 +92,7 @@ public class PhoneProfilesPreferencesActivity extends
 	public void onConfigurationChanged(Configuration newConfig)
 	{
 		getBaseContext().getResources().updateConfiguration(newConfig, getBaseContext().getResources().getDisplayMetrics());
-		Intent intent = getIntent();
-		startActivity(intent);
-		finish();
+		GUIData.reloadActivity(this);
 	}
 	
 	@Override

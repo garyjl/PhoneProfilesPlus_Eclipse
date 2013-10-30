@@ -113,9 +113,7 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 	public void onConfigurationChanged(Configuration newConfig)
 	{
 		getBaseContext().getResources().updateConfiguration(newConfig, getBaseContext().getResources().getDisplayMetrics());
-		Intent intent = getIntent();
-		startActivity(intent);
-		finish();
+		GUIData.reloadActivity(this);
 	}
 	*/
 	

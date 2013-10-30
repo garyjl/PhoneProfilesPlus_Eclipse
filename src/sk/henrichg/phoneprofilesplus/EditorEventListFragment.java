@@ -203,14 +203,13 @@ public class EditorEventListFragment extends SherlockFragment {
         //Log.e("EditorEventListFragment.onCreate","filterType="+filterType);
         //Log.e("EditorEventListFragment.onCreate","orderType="+orderType);
 		
-        if (EditorProfilesActivity.dataWrapper != null)
-        	databaseHandler = EditorProfilesActivity.dataWrapper.getDatabaseHandler();
+       	databaseHandler = EditorProfilesActivity.dataWrapper.getDatabaseHandler();
 		
 		getSherlockActivity().getIntent();
 		
 		setHasOptionsMenu(true);
 
-		//Log.d("EditorEventListFragment.onCreate", "xxxx");
+		Log.e("EditorEventListFragment.onCreate", "xxxx");
 		
 	}
 	
@@ -220,12 +219,15 @@ public class EditorEventListFragment extends SherlockFragment {
 		
 		rootView = inflater.inflate(R.layout.editor_event_list, container, false); 
 
+		Log.e("EditorEventListFragment.onCreateView", "xxxx");
+		
 		return rootView;
 	}
 	
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		doOnViewCreated(view, savedInstanceState);
+		Log.e("EditorEventListFragment.onViewCreated", "xxxx");
 		super.onViewCreated(view, savedInstanceState);
 	}
 	
@@ -240,7 +242,7 @@ public class EditorEventListFragment extends SherlockFragment {
 		listView.setEmptyView(getSherlockActivity().findViewById(R.id.editor_events_list_empty));
 		
 		final EditorEventListFragment fragment = this;
-		
+
 		new AsyncTask<Void, Integer, Void>() {
 			
 			@Override

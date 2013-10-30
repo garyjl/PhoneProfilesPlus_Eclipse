@@ -162,7 +162,6 @@ public class ActivateProfileActivity extends SherlockActivity {
 					
 					Intent intent = new Intent(getBaseContext(), EditorProfilesActivity.class);
 					intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_ACTIVATOR);
-
 					startActivity(intent);
 					
 					finish();
@@ -388,7 +387,6 @@ public class ActivateProfileActivity extends SherlockActivity {
 			
 			Intent intent = new Intent(getBaseContext(), EditorProfilesActivity.class);
 			intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_ACTIVATOR);
-
 			startActivity(intent);
 			
 			finish();
@@ -404,9 +402,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 	{
 		getBaseContext().getResources().updateConfiguration(newConfig, getBaseContext().getResources().getDisplayMetrics());
 		//setContentView(R.layout.activity_phone_profiles);
-		Intent intent = getIntent();
-		startActivity(intent);
-		finish();
+		GUIData.reloadActivity(this);
 	}
 
 	private void updateHeader(Profile profile)

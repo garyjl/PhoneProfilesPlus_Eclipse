@@ -124,13 +124,12 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		GUIData.setLanguage(getBaseContext());
 
 		dataWrapper = new DataWrapper(getBaseContext(), true, false, 0);
-		
-		super.onCreate(savedInstanceState);
-		
+		dataWrapper.getActivateProfileHelper().initialize(this, getBaseContext());
 		serviceCommunication = new ServiceCommunication(getBaseContext());
-		
 		applicationsCache = new ApplicationsCache();
 		
+		super.onCreate(savedInstanceState);
+
 		setContentView(R.layout.activity_editor_list_onepane);
 		
 	/*	// add profile list into list container
@@ -306,7 +305,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
             selectDrawerItem(1); // show profile filter FILTER_TYPE_PROFILES_SHOW_IN_ACTIVATOR 
         }
         
-		//Log.d("EditorProfilesActivity.onCreate", "xxxx");
+		Log.e("EditorProfilesActivity.onCreate", "xxxx");
 		
 		
 	}
@@ -591,9 +590,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			if (restart)
 			{
 				// refresh activity for special changes
-				Intent refresh = new Intent(getBaseContext(), EditorProfilesActivity.class);
-				startActivity(refresh);
-				finish();
+				GUIData.reloadActivity(this);
 			}
 		}
 		else
@@ -796,9 +793,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 					msg.show();
 
 					// refresh activity
-					Intent refresh = new Intent(getBaseContext(), EditorProfilesActivity.class);
-					startActivity(refresh);
-					finish();
+					GUIData.reloadActivity(activity);
 				
 				}
 				else
@@ -1000,15 +995,12 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
         drawerToggle.onConfigurationChanged(newConfig); */
 		
 		getBaseContext().getResources().updateConfiguration(newConfig, getBaseContext().getResources().getDisplayMetrics());
-		Intent intent = getIntent();
-		startActivity(intent);
-		finish();
+		GUIData.reloadActivity(this);
 	}
-	
+
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 	    super.onRestoreInstanceState(savedInstanceState);
-	    // Read values from the "savedInstanceState"-object and put them in your textview
 	    drawerSelectedItem = savedInstanceState.getInt("editor_drawer_selected_item", -1);
 	    selectDrawerItem(drawerSelectedItem);
 	    orderSelectedItem = savedInstanceState.getInt("editor_order_selected_item", -1);
