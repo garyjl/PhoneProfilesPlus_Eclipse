@@ -531,6 +531,10 @@ public class EditorProfileListFragment extends SherlockFragment {
 	{
 		final Profile _profile = profile;
 		final Activity activity = getActivity();
+
+		if (EditorProfilesActivity.dataWrapper.getProfileById(profile._id) == null)
+			// profile not exists
+			return;
 		
 		class DeleteAsyncTask extends AsyncTask<Void, Integer, Integer> 
 		{
@@ -570,17 +574,20 @@ public class EditorProfileListFragment extends SherlockFragment {
 				
 				if (result == 1)
 				{
-					profileListAdapter.notifyDataSetChanged();
-					onProfileDeletedCallback.onProfileDeleted(_profile);
-					//updateListView();
-					// v pripade, ze sa odmaze aktivovany profil, nastavime, ze nic nie je aktivovane
-					//Profile profile = databaseHandler.getActivatedProfile();
-					Profile profile = profileListAdapter.getActivatedProfile();
-					updateHeader(profile);
-					activateProfileHelper.showNotification(profile);
-					activateProfileHelper.updateWidget();
-					
-					onStartProfilePreferencesCallback.onStartProfilePreferences(null, EDIT_MODE_DELETE, filterType);
+					if (!profileListAdapter.released)
+					{
+						profileListAdapter.notifyDataSetChanged();
+						onProfileDeletedCallback.onProfileDeleted(_profile);
+						//updateListView();
+						// v pripade, ze sa odmaze aktivovany profil, nastavime, ze nic nie je aktivovane
+						//Profile profile = databaseHandler.getActivatedProfile();
+						Profile profile = profileListAdapter.getActivatedProfile();
+						updateHeader(profile);
+						activateProfileHelper.showNotification(profile);
+						activateProfileHelper.updateWidget();
+						
+						onStartProfilePreferencesCallback.onStartProfilePreferences(null, EDIT_MODE_DELETE, filterType);
+					}
 				}
 			}
 			

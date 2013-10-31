@@ -1283,7 +1283,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 		cursor.close();
 		
-		getEventPreferences(event, db);
+		if (event != null)
+			getEventPreferences(event, db);
 		
 		//db.close();
 

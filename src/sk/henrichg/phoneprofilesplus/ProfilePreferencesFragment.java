@@ -46,6 +46,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	static final int BUTTON_UNDEFINED = 0;
 	static final int BUTTON_CANCEL = 1;
 	static final int BUTTON_SAVE = 2;
+	static final int BUTTON_CANCEL_NO_REFRESH = 3; 
 	
 	private OnRestartProfilePreferences onRestartProfilePreferencesCallback = sDummyOnRestartProfilePreferencesCallback;
 	private OnRedrawProfileListFragment onRedrawProfileListFragmentCallback = sDummyOnRedrawProfileListFragmentCallback;
@@ -162,9 +163,11 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
         
         createActionMode();
         
-        if ((savedInstanceState != null) && 
-            (savedInstanceState.getBoolean("action_mode_showed", false)))
+        if ((savedInstanceState != null) && savedInstanceState.getBoolean("action_mode_showed", false))
             showActionMode();
+        else
+        if (new_profile && first_start_activity)
+        	showActionMode();
 
     	//Log.d("ProfilePreferencesFragment.onCreate", "xxxx");
     }
@@ -552,11 +555,16 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	
 	public void finishActionMode(int button)
 	{
+		int _button = button;
+		
 		// test, where new profile is edited
 		// when not edited, delete it from database and adapter
-		if (new_profile && (button != BUTTON_SAVE))
+		if (new_profile && (_button != BUTTON_SAVE))
+		{
 			onDeleteNewNonEditedProfileCallback.onDeleteNewNonEditedProfile(profile);
-		if (button == BUTTON_SAVE)
+			_button = BUTTON_UNDEFINED;
+		}
+		if (_button == BUTTON_SAVE)
 			new_profile = false;
 		
 		if (!EditorProfilesActivity.mTwoPane)
@@ -567,7 +575,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		else
 		if (actionMode != null)
 		{	
-			actionModeButtonClicked = button;
+			actionModeButtonClicked = _button;
 			actionMode.finish();
 		}
 	}

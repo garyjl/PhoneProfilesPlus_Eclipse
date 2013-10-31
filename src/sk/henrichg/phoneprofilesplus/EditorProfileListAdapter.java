@@ -19,6 +19,7 @@ public class EditorProfileListAdapter extends BaseAdapter
 	private int filterType;
 	public List<Profile> profileList;
 	public static boolean editIconClicked = false;
+	public boolean released = false;
 	
 	
 	public EditorProfileListAdapter(EditorProfileListFragment f, DataWrapper pdw, int filterType)
@@ -31,6 +32,8 @@ public class EditorProfileListAdapter extends BaseAdapter
 	
 	public void release()
 	{
+		released = true;
+		
 		fragment = null;
 		profileList = null;
 		dataWrapper = null;
@@ -38,6 +41,9 @@ public class EditorProfileListAdapter extends BaseAdapter
 	
 	public int getCount()
 	{
+		if (profileList == null)
+			return 0;
+			
 		if (filterType == EditorProfileListFragment.FILTER_TYPE_ALL)
 			return profileList.size();
 		
@@ -103,6 +109,9 @@ public class EditorProfileListAdapter extends BaseAdapter
 
 	public int getItemId(Profile profile)
 	{
+		if (profileList == null)
+			return -1;
+	
 		for (int i = 0; i < profileList.size(); i++)
 		{
 			if (profileList.get(i)._id == profile._id)
@@ -114,6 +123,9 @@ public class EditorProfileListAdapter extends BaseAdapter
 	public int getItemPosition(Profile profile)
 	{
 		if (profile == null)
+			return -1;
+		
+		if (profileList == null)
 			return -1;
 		
 		if (filterType == EditorProfileListFragment.FILTER_TYPE_ALL)
@@ -149,6 +161,9 @@ public class EditorProfileListAdapter extends BaseAdapter
 	
 	public void addItem(Profile profile, boolean refresh)
 	{
+		if (profileList == null)
+			return;
+		
 		profileList.add(profile);
 		if (refresh)
 			notifyDataSetChanged();
@@ -178,6 +193,9 @@ public class EditorProfileListAdapter extends BaseAdapter
 	
 	public void changeItemOrder(int from, int to)
 	{
+		if (profileList == null)
+			return;
+	
 		// convert positions from adapter into profileList
 		int plFrom = profileList.indexOf(getItem(from));
 		int plTo = profileList.indexOf(getItem(to));
@@ -190,6 +208,9 @@ public class EditorProfileListAdapter extends BaseAdapter
 	
 	public Profile getActivatedProfile()
 	{
+		if (profileList == null)
+			return null;
+
 		for (Profile p : profileList)
 		{
 			if (p._checked)
@@ -203,6 +224,9 @@ public class EditorProfileListAdapter extends BaseAdapter
 	
 	public void activateProfile(Profile profile)
 	{
+		if (profileList == null)
+			return;
+
 		for (Profile p : profileList)
 		{
 			p._checked = false;

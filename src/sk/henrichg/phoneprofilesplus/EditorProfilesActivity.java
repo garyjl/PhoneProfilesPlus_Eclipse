@@ -29,6 +29,7 @@ import sk.henrichg.phoneprofilesplus.PreferenceListFragment.OnPreferenceAttached
 import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnRedrawProfileListFragment;
 import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnRestartProfilePreferences;
 
+import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import android.os.AsyncTask;
@@ -400,8 +401,6 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
  
     private void selectDrawerItem(int position) {
  
-        // Locate Position
-
     	drawerSelectedItem = position;
     	
     	Fragment fragment;
@@ -1035,6 +1034,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			// adding or replacing the detail fragment using a
 			// fragment transaction.
 
+			onFinishProfilePreferencesActionMode();
+			
 			if (profile != null)
 			{
 				Bundle arguments = new Bundle();
@@ -1105,9 +1106,14 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 
 	public void onFinishProfilePreferencesActionMode() {
 		if (mTwoPane) {
-			ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
+			Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
 			if (fragment != null)
-				fragment.finishActionMode(ProfilePreferencesFragment.BUTTON_CANCEL);
+			{
+				if (fragment instanceof ProfilePreferencesFragment)
+					((ProfilePreferencesFragment)fragment).finishActionMode(EventPreferencesFragment.BUTTON_CANCEL);
+				else
+					((EventPreferencesFragment)fragment).finishActionMode(EventPreferencesFragment.BUTTON_CANCEL);
+			}
 		}
 	}
 	
@@ -1133,9 +1139,14 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	
 	public void onFinishEventPreferencesActionMode() {
 		if (mTwoPane) {
-			EventPreferencesFragment fragment = (EventPreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
+			Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
 			if (fragment != null)
-				fragment.finishActionMode(EventPreferencesFragment.BUTTON_CANCEL);
+			{
+				if (fragment instanceof ProfilePreferencesFragment)
+					((ProfilePreferencesFragment)fragment).finishActionMode(EventPreferencesFragment.BUTTON_CANCEL);
+				else
+					((EventPreferencesFragment)fragment).finishActionMode(EventPreferencesFragment.BUTTON_CANCEL);
+			}
 		}
 	}
 
@@ -1148,6 +1159,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			// adding or replacing the detail fragment using a
 			// fragment transaction.
 
+			onFinishEventPreferencesActionMode();
+			
 			if (event != null)
 			{
 				Bundle arguments = new Bundle();

@@ -18,6 +18,7 @@ public class EditorEventListAdapter extends BaseAdapter
 	private DataWrapper dataWrapper;
 	private int filterType;
 	public List<Event> eventList;
+	public boolean released = false;
 	
 	public static boolean editIconClicked = false;
 	
@@ -31,6 +32,8 @@ public class EditorEventListAdapter extends BaseAdapter
 	
 	public void release()
 	{
+		released = true;
+		
 		fragment = null;
 		eventList = null;
 		dataWrapper = null;
@@ -38,6 +41,9 @@ public class EditorEventListAdapter extends BaseAdapter
 	
 	public int getCount()
 	{
+		if (eventList == null)
+			return 0;
+
 		if (filterType == EditorEventListFragment.FILTER_TYPE_ALL)
 			return eventList.size();
 		
@@ -111,6 +117,9 @@ public class EditorEventListAdapter extends BaseAdapter
 
 	public int getItemId(Event event)
 	{
+		if (eventList == null)
+			return -1;
+
 		for (int i = 0; i < eventList.size(); i++)
 		{
 			if (eventList.get(i)._id == event._id)
@@ -121,6 +130,9 @@ public class EditorEventListAdapter extends BaseAdapter
 	
 	public int getItemPosition(Event event)
 	{
+		if (eventList == null)
+			return -1;
+
 		if (event == null)
 			return -1;
 		
@@ -161,6 +173,9 @@ public class EditorEventListAdapter extends BaseAdapter
 	
 	public void addItem(Event event, boolean refresh)
 	{
+		if (eventList == null)
+			return;
+		
 		eventList.add(event);
 		if (refresh)
 			notifyDataSetChanged();
@@ -168,6 +183,9 @@ public class EditorEventListAdapter extends BaseAdapter
 
 	public void deleteItemNoNotify(Event event)
 	{
+		if (eventList == null)
+			return;
+
 		eventList.remove(event);
 	}
 
@@ -179,6 +197,9 @@ public class EditorEventListAdapter extends BaseAdapter
 	
 	public void clear()
 	{
+		if (eventList == null)
+			return;
+
 		eventList.clear();
 		notifyDataSetChanged();
 	}

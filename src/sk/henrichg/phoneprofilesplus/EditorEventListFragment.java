@@ -413,13 +413,21 @@ public class EditorEventListFragment extends SherlockFragment {
 
 	public void deleteEvent(Event event)
 	{
+		if (EditorProfilesActivity.dataWrapper.getEventById(event._id) == null)
+			// event not exists
+			return;
+		
 		eventListAdapter.deleteItemNoNotify(event);
 		databaseHandler.deleteEvent(event);
-		eventListAdapter.notifyDataSetChanged();
-		onEventDeletedCallback.onEventDeleted(event);
-		//updateListView();
 		
-		onStartEventPreferencesCallback.onStartEventPreferences(null, EDIT_MODE_DELETE, filterType, orderType);
+		if (!eventListAdapter.released)
+		{
+			eventListAdapter.notifyDataSetChanged();
+			onEventDeletedCallback.onEventDeleted(event);
+			//updateListView();
+		
+			onStartEventPreferencesCallback.onStartEventPreferences(null, EDIT_MODE_DELETE, filterType, orderType);
+		}
 	}
 	
 	public void deleteEventWithAlert(Event event)

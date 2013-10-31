@@ -39,6 +39,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	static final int BUTTON_UNDEFINED = 0;
 	static final int BUTTON_CANCEL = 1;
 	static final int BUTTON_SAVE = 2;
+	static final int BUTTON_CANCEL_NO_REFRESH = 3; 
 	
 	private OnRestartEventPreferences onRestartEventPreferencesCallback = sDummyOnRestartEventPreferencesCallback;
 	private OnRedrawEventListFragment onRedrawEventListFragmentCallback = sDummyOnRedrawEventListFragmentCallback;
@@ -156,9 +157,11 @@ public class EventPreferencesFragment extends PreferenceListFragment
         
         createActionMode();
         
-        if ((savedInstanceState != null) && 
-            (savedInstanceState.getBoolean("action_mode_showed", false)))
+        if ((savedInstanceState != null) && savedInstanceState.getBoolean("action_mode_showed", false))
             showActionMode();
+        else
+        if (new_event && first_start_activity)
+        	showActionMode();
 
     	//Log.d("EventPreferencesFragment.onCreate", "xxxx");
     }
@@ -298,13 +301,19 @@ public class EventPreferencesFragment extends PreferenceListFragment
  
             /** Called when user exits action mode */
             public void onDestroyActionMode(ActionMode mode) {
-               actionMode = null;
-               if (actionModeButtonClicked == BUTTON_CANCEL)
-            	   // cancel button clicked
-               {
-            	   event.undoEventType();
-            	   onRestartEventPreferencesCallback.onRestartEventPreferences(event);
-               }   
+                 actionMode = null;
+                 if (actionModeButtonClicked == BUTTON_CANCEL)
+            	     // cancel button clicked
+                 {
+            	     event.undoEventType();
+            	     onRestartEventPreferencesCallback.onRestartEventPreferences(event);
+                 } 
+                 if (actionModeButtonClicked == BUTTON_CANCEL_NO_REFRESH)
+                	 // for destroy fragment
+                 {
+            	     event.undoEventType();
+                 }
+            	   
             }
  
             /** This is called when the action mode is created. This is called by startActionMode() */
@@ -381,11 +390,16 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	
 	public void finishActionMode(int button)
 	{
+		int _button = button;
+		
 		// test, where new profile is edited
 		// when not edited, delete it from database and adapter
 		if (new_event && (button != BUTTON_SAVE))
+		{
 			onDeleteNewNonEditedEventCallback.onDeleteNewNonEditedEvent(event);
-		if (button == BUTTON_SAVE)
+			_button = BUTTON_UNDEFINED;
+		}
+		if (_button == BUTTON_SAVE)
 			new_event = false;
 		
 		if (!EditorProfilesActivity.mTwoPane)
@@ -396,7 +410,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		else
 		if (actionMode != null)
 		{	
-			actionModeButtonClicked = button;
+			actionModeButtonClicked = _button;
 			actionMode.finish();
 		}
 	}
