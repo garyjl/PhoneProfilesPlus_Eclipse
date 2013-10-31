@@ -550,8 +550,11 @@ public class EditorProfileListFragment extends SherlockFragment {
 			{
 				super.onPreExecute();
 				
-			     this.dialog.setMessage(getResources().getString(R.string.delete_profile_progress_title) + "...");
-			     this.dialog.show();						
+				try {
+			        this.dialog.setMessage(getResources().getString(R.string.delete_profile_progress_title) + "...");
+			        this.dialog.show();						
+				} catch (Exception e) {
+				}
 			}
 			
 			@Override
@@ -569,8 +572,11 @@ public class EditorProfileListFragment extends SherlockFragment {
 			{
 				super.onPostExecute(result);
 				
-			    if (dialog.isShowing())
-		            dialog.dismiss();
+				try {
+				    if (dialog.isShowing())
+			            dialog.dismiss();
+			 	} catch (Exception e) {
+			 	}
 				
 				if (result == 1)
 				{
