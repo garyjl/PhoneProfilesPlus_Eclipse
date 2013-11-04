@@ -1,6 +1,5 @@
 package sk.henrichg.phoneprofilesplus;
  
-import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnDeleteNewNonEditedProfile;
 import sk.henrichg.phoneprofilesplus.PreferenceListFragment.OnPreferenceAttachedListener;
 import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnRedrawProfileListFragment;
 import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnRestartProfilePreferences;
@@ -17,12 +16,10 @@ import android.view.KeyEvent;
 public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 												implements OnPreferenceAttachedListener,
 	                                                       OnRestartProfilePreferences,
-	                                                       OnRedrawProfileListFragment,
-	                                                       OnDeleteNewNonEditedProfile
+	                                                       OnRedrawProfileListFragment
 {
 	private long profile_id = 0;
 	boolean newProfile = false;
-	boolean deleteNewNoneditedProfile = false;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,22 +73,7 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 		// for startActivityForResult
 		Intent returnIntent = new Intent();
 		returnIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile_id);
-		if (deleteNewNoneditedProfile)
-			setResult(RESULT_CANCELED,returnIntent);
-		else
-		{
-			ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.activity_profile_preferences_container);
-
-			Log.e("ProfilePreferencesFragmentActivity.finish","fragment="+fragment);
-			if (fragment != null)
-				Log.e("ProfilePreferencesFragmentActivity.finish","fragment.profileNonEdited="+fragment.profileNonEdited);
-			Log.e("ProfilePreferencesFragmentActivity.finish","newProfile="+newProfile);
-			
-			if ((fragment != null) && fragment.profileNonEdited && newProfile)
-				setResult(RESULT_CANCELED,returnIntent);
-			else
-				setResult(RESULT_OK,returnIntent);
-		}
+		setResult(RESULT_OK,returnIntent);
 
 	    super.finish();
 	}
@@ -154,11 +136,6 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 
 	public void onRedrawProfileListFragment(Profile profile) {
 		// all redraws are in EditorProfilesActivity.onActivityResult()
-	}
-	
-	public void onDeleteNewNonEditedProfile(Profile profile) {
-		// delete are in EditorProfilesActivity.onActivityResult()
-		deleteNewNoneditedProfile = true;
 	}
 	
 	public void onPreferenceAttached(PreferenceScreen root, int xmlId) {

@@ -50,7 +50,6 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	
 	private OnRestartProfilePreferences onRestartProfilePreferencesCallback = sDummyOnRestartProfilePreferencesCallback;
 	private OnRedrawProfileListFragment onRedrawProfileListFragmentCallback = sDummyOnRedrawProfileListFragmentCallback;
-	private OnDeleteNewNonEditedProfile onDeleteNewNonEditedProfileCallback = sDummyOnDeleteNewNonEditedProfileCallback; 
 
 	// invokes when restart of profile preferences fragment needed (undo preference changes)
 	public interface OnRestartProfilePreferences {
@@ -78,19 +77,6 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		}
 	};
 	
-	// invokes when new non edited profile will by deleted
-	public interface OnDeleteNewNonEditedProfile {
-		/**
-		 * Callback for delete profile.
-		 */
-		public void onDeleteNewNonEditedProfile(Profile profile);
-	}
-
-	private static OnDeleteNewNonEditedProfile sDummyOnDeleteNewNonEditedProfileCallback = new OnDeleteNewNonEditedProfile() {
-		public void onDeleteNewNonEditedProfile(Profile profile) {
-		}
-	};
-	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -107,12 +93,6 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		}
 		onRedrawProfileListFragmentCallback = (OnRedrawProfileListFragment) activity;
 		
-		if (!(activity instanceof OnDeleteNewNonEditedProfile)) {
-			throw new IllegalStateException(
-					"Activity must implement fragment's callbacks.");
-		}
-		onDeleteNewNonEditedProfileCallback = (OnDeleteNewNonEditedProfile) activity;
-		
 	}
 
 	@Override
@@ -122,7 +102,6 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		// Reset the active callbacks interface to the dummy implementation.
 		onRestartProfilePreferencesCallback = sDummyOnRestartProfilePreferencesCallback;
 		onRedrawProfileListFragmentCallback = sDummyOnRedrawProfileListFragmentCallback;
-		onDeleteNewNonEditedProfileCallback = sDummyOnDeleteNewNonEditedProfileCallback;
 	}
 	
 	@Override
@@ -557,13 +536,6 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	{
 		int _button = button;
 		
-		// test, where new profile is edited
-		// when not edited, delete it from database and adapter
-		if (new_profile && (_button != BUTTON_SAVE))
-		{
-			onDeleteNewNonEditedProfileCallback.onDeleteNewNonEditedProfile(profile);
-			_button = BUTTON_UNDEFINED;
-		}
 		if (_button == BUTTON_SAVE)
 			new_profile = false;
 		

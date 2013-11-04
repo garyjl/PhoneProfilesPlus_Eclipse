@@ -43,7 +43,6 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	
 	private OnRestartEventPreferences onRestartEventPreferencesCallback = sDummyOnRestartEventPreferencesCallback;
 	private OnRedrawEventListFragment onRedrawEventListFragmentCallback = sDummyOnRedrawEventListFragmentCallback;
-	private OnDeleteNewNonEditedEvent onDeleteNewNonEditedEventCallback = sDummyOnDeleteNewNonEditedEventCallback; 
 
 	// invokes when restart of event preferences fragment needed (undo preference changes)
 	public interface OnRestartEventPreferences {
@@ -71,19 +70,6 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		}
 	};
 
-	// invokes when new non edited event will by deleted
-	public interface OnDeleteNewNonEditedEvent {
-		/**
-		 * Callback for delete event
-		 */
-		public void onDeleteNewNonEditedEvent(Event event);
-	}
-
-	private static OnDeleteNewNonEditedEvent sDummyOnDeleteNewNonEditedEventCallback = new OnDeleteNewNonEditedEvent() {
-		public void onDeleteNewNonEditedEvent(Event event) {
-		}
-	};
-	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -100,12 +86,6 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		}
 		onRedrawEventListFragmentCallback = (OnRedrawEventListFragment) activity;
 		
-		if (!(activity instanceof OnDeleteNewNonEditedEvent)) {
-			throw new IllegalStateException(
-					"Activity must implement fragment's callbacks.");
-		}
-		onDeleteNewNonEditedEventCallback = (OnDeleteNewNonEditedEvent) activity;
-		
 	}
 
 	@Override
@@ -115,7 +95,6 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		// Reset the active callbacks interface to the dummy implementation.
 		onRestartEventPreferencesCallback = sDummyOnRestartEventPreferencesCallback;
 		onRedrawEventListFragmentCallback = sDummyOnRedrawEventListFragmentCallback;
-		onDeleteNewNonEditedEventCallback = sDummyOnDeleteNewNonEditedEventCallback;
 	}
 	
 	@Override
@@ -392,13 +371,6 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	{
 		int _button = button;
 		
-		// test, where new profile is edited
-		// when not edited, delete it from database and adapter
-		if (new_event && (button != BUTTON_SAVE))
-		{
-			onDeleteNewNonEditedEventCallback.onDeleteNewNonEditedEvent(event);
-			_button = BUTTON_UNDEFINED;
-		}
 		if (_button == BUTTON_SAVE)
 			new_event = false;
 		

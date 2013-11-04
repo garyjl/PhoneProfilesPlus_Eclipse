@@ -10,8 +10,6 @@ import java.io.ObjectOutputStream;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import sk.henrichg.phoneprofilesplus.EventPreferencesFragment.OnDeleteNewNonEditedEvent;
-import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnDeleteNewNonEditedProfile;
 import sk.henrichg.phoneprofilesplus.EditorEventListFragment.OnFinishEventPreferencesActionMode;
 import sk.henrichg.phoneprofilesplus.EditorEventListFragment.OnStartEventPreferences;
 import sk.henrichg.phoneprofilesplus.EditorProfileListFragment.OnFinishProfilePreferencesActionMode;
@@ -66,9 +64,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
                                                OnStartEventPreferences,
                                                OnRestartEventPreferences,
                                                OnRedrawEventListFragment,
-                                               OnFinishEventPreferencesActionMode,
-                                               OnDeleteNewNonEditedProfile,
-                                               OnDeleteNewNonEditedEvent
+                                               OnFinishEventPreferencesActionMode
 {
 
 	public static DataWrapper dataWrapper;
@@ -535,12 +531,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			// redraw list fragment after finish ProfilePreferencesFragmentActivity
 			long profile_id = data.getLongExtra(GlobalData.EXTRA_PROFILE_ID, 0);
 
-			if (resultCode == RESULT_CANCELED)
-				// delete new non edited profile
-				onDeleteNewNonEditedProfile(dataWrapper.getProfileById(profile_id));
-			else
-				// redraw list fragment , notifications, widgets after finish ProfilePreferencesFragmentActivity
-				onRedrawProfileListFragment(dataWrapper.getProfileById(profile_id));
+			// redraw list fragment , notifications, widgets after finish ProfilePreferencesFragmentActivity
+			onRedrawProfileListFragment(dataWrapper.getProfileById(profile_id));
 		}
 		else
 		if (requestCode == GlobalData.REQUEST_CODE_EVENT_PREFERENCES)
@@ -548,12 +540,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			// redraw list fragment after finish EventPreferencesFragmentActivity
 			long event_id = data.getLongExtra(GlobalData.EXTRA_EVENT_ID, 0);
 
-			if (resultCode == RESULT_CANCELED)
-				// delete new non edited profile
-				onDeleteNewNonEditedEvent(dataWrapper.getEventById(event_id));
-			else
-				// redraw list fragment , notifications, widgets after finish ProfilePreferencesFragmentActivity
-				onRedrawEventListFragment(dataWrapper.getEventById(event_id));
+			// redraw list fragment , notifications, widgets after finish ProfilePreferencesFragmentActivity
+			onRedrawEventListFragment(dataWrapper.getEventById(event_id));
 		}
 		else
 		if (requestCode == GlobalData.REQUEST_CODE_APPLICATION_PREFERENCES)
@@ -1192,18 +1180,6 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			getSupportFragmentManager().beginTransaction()
 					.replace(R.id.editor_detail_container, fragment).commit();
 		}
-	}
-	
-	public void onDeleteNewNonEditedProfile(Profile profile) {
-		EditorProfileListFragment fragment = (EditorProfileListFragment)getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
-		if (fragment != null)
-			fragment.deleteProfile(profile);
-	}
-	
-	public void onDeleteNewNonEditedEvent(Event event) {
-		EditorEventListFragment fragment = (EditorEventListFragment)getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
-		if (fragment != null)
-			fragment.deleteEvent(event);
 	}
 	
 /*

@@ -1,6 +1,5 @@
 package sk.henrichg.phoneprofilesplus;
  
-import sk.henrichg.phoneprofilesplus.EventPreferencesFragment.OnDeleteNewNonEditedEvent;
 import sk.henrichg.phoneprofilesplus.PreferenceListFragment.OnPreferenceAttachedListener;
 import sk.henrichg.phoneprofilesplus.EventPreferencesFragment.OnRedrawEventListFragment;
 import sk.henrichg.phoneprofilesplus.EventPreferencesFragment.OnRestartEventPreferences;
@@ -17,13 +16,11 @@ import android.view.KeyEvent;
 public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
 												implements OnPreferenceAttachedListener,
 	                                                       OnRestartEventPreferences,
-	                                                       OnRedrawEventListFragment,
-	                                                       OnDeleteNewNonEditedEvent
+	                                                       OnRedrawEventListFragment
 {
 	
 	private long event_id = 0; 
 	boolean newEvent = false;
-	boolean deleteNewNoneditedEvent = false;
 			
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,16 +72,7 @@ public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
 		// for startActivityForResult
 		Intent returnIntent = new Intent();
 		returnIntent.putExtra(GlobalData.EXTRA_EVENT_ID, event_id);
-		if (deleteNewNoneditedEvent)
-			setResult(RESULT_CANCELED,returnIntent);
-		else
-		{
-			EventPreferencesFragment fragment = (EventPreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.activity_event_preferences_container);
-			if ((fragment != null) && fragment.eventNonEdited && newEvent)
-				setResult(RESULT_CANCELED,returnIntent);
-			else
-				setResult(RESULT_OK,returnIntent);
-		}
+		setResult(RESULT_OK,returnIntent);
 
 	    super.finish();
 	}
@@ -145,11 +133,6 @@ public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
 
 	public void onRedrawEventListFragment(Event event) {
 		// all redraws are in EditorProfilesActivity.onActivityResult()
-	}
-	
-	public void onDeleteNewNonEditedEvent(Event event) {
-		// delete are in EditorProfilesActivity.onActivityResult()
-		deleteNewNoneditedEvent = true;
 	}
 	
 	public void onPreferenceAttached(PreferenceScreen root, int xmlId) {
