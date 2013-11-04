@@ -12,16 +12,9 @@ import java.util.Map.Entry;
 
 import sk.henrichg.phoneprofilesplus.EventPreferencesFragment.OnDeleteNewNonEditedEvent;
 import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnDeleteNewNonEditedProfile;
-import sk.henrichg.phoneprofilesplus.EditorEventListFragment.OnAllEventsDeleted;
-import sk.henrichg.phoneprofilesplus.EditorEventListFragment.OnEventAdded;
-import sk.henrichg.phoneprofilesplus.EditorEventListFragment.OnEventDeleted;
 import sk.henrichg.phoneprofilesplus.EditorEventListFragment.OnFinishEventPreferencesActionMode;
 import sk.henrichg.phoneprofilesplus.EditorEventListFragment.OnStartEventPreferences;
-import sk.henrichg.phoneprofilesplus.EditorProfileListFragment.OnAllProfilesDeleted;
 import sk.henrichg.phoneprofilesplus.EditorProfileListFragment.OnFinishProfilePreferencesActionMode;
-import sk.henrichg.phoneprofilesplus.EditorProfileListFragment.OnProfileAdded;
-import sk.henrichg.phoneprofilesplus.EditorProfileListFragment.OnProfileDeleted;
-import sk.henrichg.phoneprofilesplus.EditorProfileListFragment.OnProfileOrderChanged;
 import sk.henrichg.phoneprofilesplus.EditorProfileListFragment.OnStartProfilePreferences;
 import sk.henrichg.phoneprofilesplus.EventPreferencesFragment.OnRedrawEventListFragment;
 import sk.henrichg.phoneprofilesplus.EventPreferencesFragment.OnRestartEventPreferences;
@@ -70,17 +63,10 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
                                                OnRestartProfilePreferences,
                                                OnRedrawProfileListFragment,
                                                OnFinishProfilePreferencesActionMode,
-                                               OnProfileAdded,
-                                               OnProfileDeleted,
-                                               OnAllProfilesDeleted,
-                                               OnProfileOrderChanged,
                                                OnStartEventPreferences,
                                                OnRestartEventPreferences,
                                                OnRedrawEventListFragment,
                                                OnFinishEventPreferencesActionMode,
-                                               OnEventAdded,
-                                               OnEventDeleted,
-                                               OnAllEventsDeleted,
                                                OnDeleteNewNonEditedProfile,
                                                OnDeleteNewNonEditedEvent
 {
@@ -1121,22 +1107,6 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		return;
 	}
 	
-	public void onProfileOrderChanged() {
-		// no needed send message into service
-		// send message into service
-        //bindService(new Intent(this, PhoneProfilesService.class), GUIData.profilesDataWrapper.serviceConnection, Context.BIND_AUTO_CREATE);
-		//serviceCommunication.sendMessageIntoService(PhoneProfilesService.MSG_RELOAD_DATA);
-	}
-
-	public void onProfileAdded(Profile profile) {
-	}
-
-	public void onProfileDeleted(Profile profile) {
-	}
-	
-	public void onAllProfilesDeleted() {
-	}
-	
 	public void onFinishEventPreferencesActionMode() {
 		if (mTwoPane) {
 			Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
@@ -1222,15 +1192,6 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			getSupportFragmentManager().beginTransaction()
 					.replace(R.id.editor_detail_container, fragment).commit();
 		}
-	}
-	
-	public void onEventAdded(Event event) {
-	}
-
-	public void onEventDeleted(Event event) {
-	}
-	
-	public void onAllEventsDeleted() {
 	}
 	
 	public void onDeleteNewNonEditedProfile(Profile profile) {

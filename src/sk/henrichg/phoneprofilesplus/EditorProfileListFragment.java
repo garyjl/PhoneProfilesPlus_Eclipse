@@ -56,11 +56,6 @@ public class EditorProfileListFragment extends SherlockFragment {
 	 */
 	private OnStartProfilePreferences onStartProfilePreferencesCallback = sDummyOnStartProfilePreferencesCallback;
 	private OnFinishProfilePreferencesActionMode onFinishProfilePreferencesActionModeCallback = sDummyOnFinishProfilePreferencesActionModeCallback;
-	//private OnProfileCountChanged onProfileCountChangedCallback = sDummyOnProfileCountChangedCallback; 
-	private OnProfileAdded onProfileAddedCallback = sDummyOnProfileAddedCallback; 
-	private OnProfileDeleted onProfileDeletedCallback = sDummyOnProfileDeletedCallback; 
-	private OnAllProfilesDeleted onAllProfilesDeletedCallback = sDummyOnAllProfilesDeletedCallback; 
-	private OnProfileOrderChanged onProfileOrderChangedCallback = sDummyOnProfileOrderChangedCallback;
 	
 	/**
 	 * A callback interface that all activities containing this fragment must
@@ -90,57 +85,6 @@ public class EditorProfileListFragment extends SherlockFragment {
 		}
 	};
 
-	/*
-	public interface OnProfileCountChanged {
-		public void onProfileCountChanged();
-	}
-
-	private static OnProfileCountChanged sDummyOnProfileCountChangedCallback = new OnProfileCountChanged() {
-		public void onProfileCountChanged() {
-		}
-	};
-	*/
-
-	// invoked, when profile added
-	public interface OnProfileAdded {
-		public void onProfileAdded(Profile profile);
-	}
-
-	private static OnProfileAdded sDummyOnProfileAddedCallback = new OnProfileAdded() {
-		public void onProfileAdded(Profile profile) {
-		}
-	};
-
-	// invoked, when profile deleted
-	public interface OnProfileDeleted {
-		public void onProfileDeleted(Profile profile);
-	}
-
-	private static OnProfileDeleted sDummyOnProfileDeletedCallback = new OnProfileDeleted() {
-		public void onProfileDeleted(Profile profile) {
-		}
-	};
-
-	// invoked, when all profiles deleted
-	public interface OnAllProfilesDeleted {
-		public void onAllProfilesDeleted();
-	}
-
-	private static OnAllProfilesDeleted sDummyOnAllProfilesDeletedCallback = new OnAllProfilesDeleted() {
-		public void onAllProfilesDeleted() {
-		}
-	};
-	
-	// ivoked when profile order for Activator changed
-	public interface OnProfileOrderChanged {
-		public void onProfileOrderChanged();
-	}
-
-	private static OnProfileOrderChanged sDummyOnProfileOrderChangedCallback = new OnProfileOrderChanged() {
-		public void onProfileOrderChanged() {
-		}
-	};
-	
 	public EditorProfileListFragment() {
 	}
 
@@ -156,39 +100,6 @@ public class EditorProfileListFragment extends SherlockFragment {
 					"Activity must implement fragment's callbacks.");
 		}
 		onStartProfilePreferencesCallback = (OnStartProfilePreferences) activity;
-
-		/*
-		if (!(activity instanceof OnProfileCountChanged)) {
-			throw new IllegalStateException(
-					"Activity must implement fragment's callbacks.");
-		}
-		onProfileCountChangedCallback = (OnProfileCountChanged) activity;
-		*/
-
-		if (!(activity instanceof OnProfileAdded)) {
-			throw new IllegalStateException(
-					"Activity must implement fragment's callbacks.");
-		}
-		onProfileAddedCallback = (OnProfileAdded) activity;
-
-		if (!(activity instanceof OnProfileDeleted)) {
-			throw new IllegalStateException(
-					"Activity must implement fragment's callbacks.");
-		}
-		onProfileDeletedCallback = (OnProfileDeleted) activity;
-
-		if (!(activity instanceof OnAllProfilesDeleted)) {
-			throw new IllegalStateException(
-					"Activity must implement fragment's callbacks.");
-		}
-		onAllProfilesDeletedCallback = (OnAllProfilesDeleted) activity;
-		
-		if (!(activity instanceof OnProfileOrderChanged)) {
-			throw new IllegalStateException(
-					"Activity must implement fragment's callbacks.");
-		}
-		onProfileOrderChangedCallback = (OnProfileOrderChanged) activity;
-		
 		
 		if (activity instanceof OnFinishProfilePreferencesActionMode)
 			onFinishProfilePreferencesActionModeCallback = (OnFinishProfilePreferencesActionMode) activity;
@@ -202,11 +113,6 @@ public class EditorProfileListFragment extends SherlockFragment {
 		// Reset the active callbacks interface to the dummy implementation.
 		onStartProfilePreferencesCallback = sDummyOnStartProfilePreferencesCallback;
 		onFinishProfilePreferencesActionModeCallback = sDummyOnFinishProfilePreferencesActionModeCallback;
-		//onProfileCountChangedCallback = sDummyOnProfileCountChangedCallback;
-		onProfileAddedCallback = sDummyOnProfileAddedCallback;
-		onProfileDeletedCallback = sDummyOnProfileDeletedCallback;
-		onAllProfilesDeletedCallback = sDummyOnAllProfilesDeletedCallback;
-		onProfileOrderChangedCallback = sDummyOnProfileOrderChangedCallback;
 	}
 	
 
@@ -360,7 +266,6 @@ public class EditorProfileListFragment extends SherlockFragment {
             	profileListAdapter.changeItemOrder(from, to); // swap profiles
             	databaseHandler.setPOrder(profileList);  // set profiles _porder and write it into db
 				activateProfileHelper.updateWidget();
-        		onProfileOrderChangedCallback.onProfileOrderChanged();
         		//Log.d("EditorProfileListFragment.drop", "xxxx");
             }
         });
@@ -457,7 +362,6 @@ public class EditorProfileListFragment extends SherlockFragment {
 			updateListView(_profile);
 
 			activateProfileHelper.updateWidget();
-			onProfileAddedCallback.onProfileAdded(_profile);
 
         	// generate bitmaps
 			_profile.generateIconBitmap(getSherlockActivity().getBaseContext(), false, 0);
@@ -516,7 +420,6 @@ public class EditorProfileListFragment extends SherlockFragment {
 		updateListView(newProfile);
 		
 		activateProfileHelper.updateWidget();
-		onProfileAddedCallback.onProfileAdded(newProfile);
 		
     	// generate bitmaps
 		newProfile.generateIconBitmap(getSherlockActivity().getBaseContext(), false, 0);
@@ -583,7 +486,6 @@ public class EditorProfileListFragment extends SherlockFragment {
 					if (!profileListAdapter.released)
 					{
 						profileListAdapter.notifyDataSetChanged();
-						onProfileDeletedCallback.onProfileDeleted(_profile);
 						//updateListView();
 						// v pripade, ze sa odmaze aktivovany profil, nastavime, ze nic nie je aktivovane
 						//Profile profile = databaseHandler.getActivatedProfile();
@@ -673,7 +575,6 @@ public class EditorProfileListFragment extends SherlockFragment {
 						if (result == 1)
 						{
 							profileListAdapter.notifyDataSetChanged();
-							onAllProfilesDeletedCallback.onAllProfilesDeleted();
 							//updateListView();
 							// v pripade, ze sa odmaze aktivovany profil, nastavime, ze nic nie je aktivovane
 							//Profile profile = databaseHandler.getActivatedProfile();
