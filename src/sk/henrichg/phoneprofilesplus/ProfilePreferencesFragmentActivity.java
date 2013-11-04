@@ -70,9 +70,14 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 		
 		//Log.e("ProfilePreferencesFragmentActivity.finish","xxx");
 
+		ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.activity_profile_preferences_container);
+		if (fragment != null)
+			profile_id = fragment.profile_id;
+		
 		// for startActivityForResult
 		Intent returnIntent = new Intent();
 		returnIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile_id);
+		returnIntent.putExtra(GlobalData.EXTRA_NEW_PROFILE, newProfile);
 		setResult(RESULT_OK,returnIntent);
 
 	    super.finish();
@@ -134,7 +139,7 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 				.replace(R.id.activity_profile_preferences_container, fragment).commit();
 	}
 
-	public void onRedrawProfileListFragment(Profile profile) {
+	public void onRedrawProfileListFragment(Profile profile, boolean newProfile) {
 		// all redraws are in EditorProfilesActivity.onActivityResult()
 	}
 	

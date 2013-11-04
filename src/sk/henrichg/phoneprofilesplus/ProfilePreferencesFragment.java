@@ -26,7 +26,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 {
 	
 	private Profile profile;
-	private long profile_id;
+	public long profile_id;
 	private boolean first_start_activity;
 	private boolean new_profile;
 	public boolean profileNonEdited = true;
@@ -69,11 +69,11 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		/**
 		 * Callback for redraw profile list fragment.
 		 */
-		public void onRedrawProfileListFragment(Profile profile);
+		public void onRedrawProfileListFragment(Profile profile, boolean newProfile);
 	}
 
 	private static OnRedrawProfileListFragment sDummyOnRedrawProfileListFragmentCallback = new OnRedrawProfileListFragment() {
-		public void onRedrawProfileListFragment(Profile profile) {
+		public void onRedrawProfileListFragment(Profile profile, boolean newProfile) {
 		}
 	};
 	
@@ -116,10 +116,20 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		prefMng.setSharedPreferencesMode(Activity.MODE_PRIVATE);
 		
         // getting attached fragment data
+		if (getArguments().containsKey(GlobalData.EXTRA_NEW_PROFILE))
+			new_profile = getArguments().getBoolean(GlobalData.EXTRA_NEW_PROFILE);
 		if (getArguments().containsKey(GlobalData.EXTRA_PROFILE_ID))
 			profile_id = getArguments().getLong(GlobalData.EXTRA_PROFILE_ID);
     	//Log.e("ProfilePreferencesFragment.onCreate", "profile_id=" + profile_id);
-    	profile = (Profile)EditorProfilesActivity.dataWrapper.getProfileById(profile_id);
+		if (new_profile)
+		{
+			profile = EditorProfilesActivity.dataWrapper.getNoinitializedProfile(
+					getResources().getString(R.string.profile_name_default), 
+					GUIData.PROFILE_ICON_DEFAULT, 0); 
+			profile._showInActivator = true;
+		}
+		else
+			profile = (Profile)EditorProfilesActivity.dataWrapper.getProfileById(profile_id);
 		if (getArguments().containsKey(GlobalData.EXTRA_FIRST_START_ACTIVITY))
 		{
 			first_start_activity = getArguments().getBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY);
@@ -129,8 +139,6 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 			first_start_activity = false;
         if (first_start_activity)
         	loadPreferences();
-		if (getArguments().containsKey(GlobalData.EXTRA_NEW_PROFILE))
-			new_profile = getArguments().getBoolean(GlobalData.EXTRA_NEW_PROFILE);
     	
         context = getSherlockActivity().getBaseContext();
         
@@ -267,60 +275,69 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	
 	private void savePreferences()
 	{
+    	profile._name = preferences.getString(GlobalData.PREF_PROFILE_NAME, "");
+    	profile._icon = preferences.getString(GlobalData.PREF_PROFILE_ICON, "");
+    	profile._volumeRingerMode = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE, ""));
+    	profile._volumeRingtone = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_RINGTONE, "");
+    	profile._volumeNotification = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_NOTIFICATION, "");
+    	profile._volumeMedia = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_MEDIA, "");
+    	profile._volumeAlarm = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_ALARM, "");
+    	profile._volumeSystem = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_SYSTEM, "");
+    	profile._volumeVoice = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_VOICE, "");
+    	profile._soundRingtoneChange = preferences.getBoolean(GlobalData.PREF_PROFILE_SOUND_RINGTONE_CHANGE, false);
+    	profile._soundRingtone = preferences.getString(GlobalData.PREF_PROFILE_SOUND_RINGTONE, "");
+    	profile._soundNotificationChange = preferences.getBoolean(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION_CHANGE, false);
+    	profile._soundNotification = preferences.getString(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION, "");
+    	profile._soundAlarmChange = preferences.getBoolean(GlobalData.PREF_PROFILE_SOUND_ALARM_CHANGE, false);
+    	profile._soundAlarm = preferences.getString(GlobalData.PREF_PROFILE_SOUND_ALARM, "");
+    	profile._deviceAirplaneMode = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE, ""));
+    	profile._deviceWiFi = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_WIFI, ""));
+    	profile._deviceBluetooth = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_BLUETOOTH, ""));
+    	profile._deviceScreenTimeout = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_SCREEN_TIMEOUT, ""));
+    	profile._deviceBrightness = preferences.getString(GlobalData.PREF_PROFILE_DEVICE_BRIGHTNESS, "");
+    	profile._deviceWallpaperChange = preferences.getBoolean(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER_CHANGE, false);
+    	if (profile._deviceWallpaperChange)
+    		profile._deviceWallpaper = preferences.getString(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER, "");
+    	else
+    		profile._deviceWallpaper = "-|0";
+    	profile._deviceMobileData = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA, ""));
+    	profile._deviceMobileDataPrefs = preferences.getBoolean(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS, false);
+    	profile._deviceGPS = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_GPS, ""));
+    	profile._deviceRunApplicationChange = preferences.getBoolean(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE, false);
+    	if (profile._deviceRunApplicationChange)
+    		profile._deviceRunApplicationPackageName = preferences.getString(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME, "-");
+    	else
+    		profile._deviceRunApplicationPackageName = "-";
+    	profile._deviceAutosync = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_AUTOSYNC, ""));
+    	profile._showInActivator = preferences.getBoolean(GlobalData.PREF_PROFILE_SHOW_IN_ACTIVATOR, true);
+
+    	//Log.d("ProfilePreferencesFragment.onPause", "profile activated="+profile.getChecked());
+    	
+    	// update bitmaps
+		profile.generateIconBitmap(context, false, 0);
+		profile.generatePreferencesIndicator(context, false, 0);
+
+    	//Log.d("ProfilePreferencesFragment.onPause", "profile activated="+profile.getChecked());
+		
+		if (new_profile)
+		{
+			// add profile into DB
+			EditorProfilesActivity.dataWrapper.getDatabaseHandler().addProfile(profile);
+			profile_id = profile._id;
+
+        	//Log.d("ProfilePreferencesFragment.onPause", "addProfile");
+			
+		}
+		else
         if (profile_id > 0) 
         {
-        	profile._name = preferences.getString(GlobalData.PREF_PROFILE_NAME, "");
-        	profile._icon = preferences.getString(GlobalData.PREF_PROFILE_ICON, "");
-        	profile._volumeRingerMode = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE, ""));
-        	profile._volumeRingtone = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_RINGTONE, "");
-        	profile._volumeNotification = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_NOTIFICATION, "");
-        	profile._volumeMedia = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_MEDIA, "");
-        	profile._volumeAlarm = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_ALARM, "");
-        	profile._volumeSystem = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_SYSTEM, "");
-        	profile._volumeVoice = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_VOICE, "");
-        	profile._soundRingtoneChange = preferences.getBoolean(GlobalData.PREF_PROFILE_SOUND_RINGTONE_CHANGE, false);
-        	profile._soundRingtone = preferences.getString(GlobalData.PREF_PROFILE_SOUND_RINGTONE, "");
-        	profile._soundNotificationChange = preferences.getBoolean(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION_CHANGE, false);
-        	profile._soundNotification = preferences.getString(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION, "");
-        	profile._soundAlarmChange = preferences.getBoolean(GlobalData.PREF_PROFILE_SOUND_ALARM_CHANGE, false);
-        	profile._soundAlarm = preferences.getString(GlobalData.PREF_PROFILE_SOUND_ALARM, "");
-        	profile._deviceAirplaneMode = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE, ""));
-        	profile._deviceWiFi = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_WIFI, ""));
-        	profile._deviceBluetooth = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_BLUETOOTH, ""));
-        	profile._deviceScreenTimeout = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_SCREEN_TIMEOUT, ""));
-        	profile._deviceBrightness = preferences.getString(GlobalData.PREF_PROFILE_DEVICE_BRIGHTNESS, "");
-        	profile._deviceWallpaperChange = preferences.getBoolean(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER_CHANGE, false);
-        	if (profile._deviceWallpaperChange)
-        		profile._deviceWallpaper = preferences.getString(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER, "");
-        	else
-        		profile._deviceWallpaper = "-|0";
-        	profile._deviceMobileData = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA, ""));
-        	profile._deviceMobileDataPrefs = preferences.getBoolean(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS, false);
-        	profile._deviceGPS = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_GPS, ""));
-        	profile._deviceRunApplicationChange = preferences.getBoolean(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE, false);
-        	if (profile._deviceRunApplicationChange)
-        		profile._deviceRunApplicationPackageName = preferences.getString(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME, "-");
-        	else
-        		profile._deviceRunApplicationPackageName = "-";
-        	profile._deviceAutosync = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_AUTOSYNC, ""));
-        	profile._showInActivator = preferences.getBoolean(GlobalData.PREF_PROFILE_SHOW_IN_ACTIVATOR, true);
-
-        	//Log.d("ProfilePreferencesFragment.onPause", "profile activated="+profile.getChecked());
-        	
-        	// update bitmaps
-			profile.generateIconBitmap(context, false, 0);
-			profile.generatePreferencesIndicator(context, false, 0);
-        	
-
-        	//Log.d("ProfilePreferencesFragment.onPause", "profile activated="+profile.getChecked());
-        	
 			EditorProfilesActivity.dataWrapper.getDatabaseHandler().updateProfile(profile);
         	
         	//Log.d("ProfilePreferencesFragment.onPause", "updateProfile");
 
         }
 
-        onRedrawProfileListFragmentCallback.onRedrawProfileListFragment(profile);
+        onRedrawProfileListFragmentCallback.onRedrawProfileListFragment(profile, new_profile);
 	}
 	
 	private void setSummary(String key, Object value)

@@ -348,6 +348,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		else
 		{
 			// pridanie noveho profilu
+			/*
 			_profile = EditorProfilesActivity.dataWrapper.getNoinitializedProfile(
 							getResources().getString(R.string.profile_name_default), 
 							GUIData.PROFILE_ICON_DEFAULT, 0); 
@@ -366,6 +367,7 @@ public class EditorProfileListFragment extends SherlockFragment {
         	// generate bitmaps
 			_profile.generateIconBitmap(getSherlockActivity().getBaseContext(), false, 0);
 			_profile.generatePreferencesIndicator(getSherlockActivity().getBaseContext(), false, 0);
+			*/
 			
 			editMode = EDIT_MODE_INSERT;
 		}
@@ -417,7 +419,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		// add profile into listview
 		profileListAdapter.addItem(newProfile, false);
 		
-		updateListView(newProfile);
+		updateListView(newProfile, false);
 		
 		activateProfileHelper.updateWidget();
 		
@@ -486,7 +488,6 @@ public class EditorProfileListFragment extends SherlockFragment {
 					if (!profileListAdapter.released)
 					{
 						profileListAdapter.notifyDataSetChanged();
-						//updateListView();
 						// v pripade, ze sa odmaze aktivovany profil, nastavime, ze nic nie je aktivovane
 						//Profile profile = databaseHandler.getActivatedProfile();
 						Profile profile = profileListAdapter.getActivatedProfile();
@@ -575,7 +576,6 @@ public class EditorProfileListFragment extends SherlockFragment {
 						if (result == 1)
 						{
 							profileListAdapter.notifyDataSetChanged();
-							//updateListView();
 							// v pripade, ze sa odmaze aktivovany profil, nastavime, ze nic nie je aktivovane
 							//Profile profile = databaseHandler.getActivatedProfile();
 							//Profile profile = profileListAdapter.getActivatedProfile();
@@ -674,8 +674,15 @@ public class EditorProfileListFragment extends SherlockFragment {
 		onFinishProfilePreferencesActionModeCallback.onFinishProfilePreferencesActionMode();
 	}
 	
-	public void updateListView(Profile profile)
+	public void updateListView(Profile profile, boolean newProfile)
 	{
+		if (profileListAdapter != null)
+		{
+			if ((newProfile) && (profile != null))
+				// add profile into listview
+				profileListAdapter.addItem(profile, false);
+		}
+		
 		if (profileList != null)
 		{
 			// sort list
@@ -686,14 +693,16 @@ public class EditorProfileListFragment extends SherlockFragment {
 		}
 
 		if (profileListAdapter != null)
+		{
 			profileListAdapter.notifyDataSetChanged();
-		
-		// set profile visible in list
-		if (profile == null)
-		{	
-			int profilePos = profileListAdapter.getItemPosition(profile);
-			listView.setSelection(profilePos);
-			listView.setItemChecked(profilePos, true);
+
+			// set profile visible in list
+			if (profile != null)
+			{	
+				int profilePos = profileListAdapter.getItemPosition(profile);
+				listView.setSelection(profilePos);
+				listView.setItemChecked(profilePos, true);
+			}
 		}
 	}
 	

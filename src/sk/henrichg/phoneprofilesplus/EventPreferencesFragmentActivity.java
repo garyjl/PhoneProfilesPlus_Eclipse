@@ -69,9 +69,14 @@ public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
 		
 		//Log.e("EventPreferencesFragmentActivity.finish","xxx");
 
+		EventPreferencesFragment fragment = (EventPreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.activity_event_preferences_container);
+		if (fragment != null)
+			event_id = fragment.event_id;
+		
 		// for startActivityForResult
 		Intent returnIntent = new Intent();
 		returnIntent.putExtra(GlobalData.EXTRA_EVENT_ID, event_id);
+		returnIntent.putExtra(GlobalData.EXTRA_NEW_EVENT, newEvent);
 		setResult(RESULT_OK,returnIntent);
 
 	    super.finish();
@@ -131,7 +136,7 @@ public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
 				.replace(R.id.activity_event_preferences_container, fragment).commit();
 	}
 
-	public void onRedrawEventListFragment(Event event) {
+	public void onRedrawEventListFragment(Event event, boolean newEvent) {
 		// all redraws are in EditorProfilesActivity.onActivityResult()
 	}
 	

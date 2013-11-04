@@ -283,6 +283,7 @@ public class EditorEventListFragment extends SherlockFragment {
 		else
 		{
 			// pridanie novej udalost
+			/*
 			_event = new Event(getResources().getString(R.string.event_name_default), 
 								  Event.ETYPE_TIME, 
 								  0,
@@ -295,6 +296,7 @@ public class EditorEventListFragment extends SherlockFragment {
 			eventListAdapter.addItem(_event, false);
 			
 			updateListView(_event);
+			*/
 			
 			editMode = EDIT_MODE_INSERT;
 
@@ -322,9 +324,7 @@ public class EditorEventListFragment extends SherlockFragment {
 		// add event into listview
 		eventListAdapter.addItem(newEvent, false);
 		
-		updateListView(newEvent);
-
-		//updateListView();
+		updateListView(newEvent, false);
 
 		startEventPreferencesActivity(newEvent);
 		
@@ -343,7 +343,6 @@ public class EditorEventListFragment extends SherlockFragment {
 		if (!eventListAdapter.released)
 		{
 			eventListAdapter.notifyDataSetChanged();
-			//updateListView();
 		
 			onStartEventPreferencesCallback.onStartEventPreferences(null, EDIT_MODE_DELETE, filterType, orderType);
 		}
@@ -378,7 +377,6 @@ public class EditorEventListFragment extends SherlockFragment {
 			public void onClick(DialogInterface dialog, int which) {
 				databaseHandler.deleteAllEvents();
 				eventListAdapter.clear();
-				//updateListView();
 				
 				onStartEventPreferencesCallback.onStartEventPreferences(null, EDIT_MODE_DELETE, filterType, orderType);
 				
@@ -394,8 +392,15 @@ public class EditorEventListFragment extends SherlockFragment {
 		onFinishEventPreferencesActionModeCallback.onFinishEventPreferencesActionMode();
 	}
 	
-	public void updateListView(Event event)
+	public void updateListView(Event event, boolean newEvent)
 	{
+		if (eventListAdapter != null)
+		{
+			if ((newEvent) && (event != null))
+				// add event into listview
+				eventListAdapter.addItem(event, false);
+		}
+
 		if (eventList != null)
 		{
 			// sort list
@@ -403,14 +408,16 @@ public class EditorEventListFragment extends SherlockFragment {
 		}
 
 		if (eventListAdapter != null)
+		{
 			eventListAdapter.notifyDataSetChanged();
 
-		// set event visible in list
-		if (event == null)
-		{	
-			int eventPos = eventList.indexOf(event);
-			listView.setSelection(eventPos);
-			listView.setItemChecked(eventPos, true);
+			// set event visible in list
+			if (event != null)
+			{	
+				int eventPos = eventListAdapter.getItemPosition(event);
+				listView.setSelection(eventPos);
+				listView.setItemChecked(eventPos, true);
+			}
 		}
 	}
 

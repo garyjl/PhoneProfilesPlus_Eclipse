@@ -530,18 +530,32 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		{
 			// redraw list fragment after finish ProfilePreferencesFragmentActivity
 			long profile_id = data.getLongExtra(GlobalData.EXTRA_PROFILE_ID, 0);
+			boolean newProfile = data.getBooleanExtra(GlobalData.EXTRA_NEW_PROFILE, false);
+			
+			Profile profile;
+			if (newProfile)
+				profile = dataWrapper.getDatabaseHandler().getProfile(profile_id);
+			else
+				profile = dataWrapper.getProfileById(profile_id);	
 
 			// redraw list fragment , notifications, widgets after finish ProfilePreferencesFragmentActivity
-			onRedrawProfileListFragment(dataWrapper.getProfileById(profile_id));
+			onRedrawProfileListFragment(profile, newProfile);
 		}
 		else
 		if (requestCode == GlobalData.REQUEST_CODE_EVENT_PREFERENCES)
 		{
 			// redraw list fragment after finish EventPreferencesFragmentActivity
 			long event_id = data.getLongExtra(GlobalData.EXTRA_EVENT_ID, 0);
+			boolean newEvent = data.getBooleanExtra(GlobalData.EXTRA_NEW_EVENT, false);
+			
+			Event event;
+			if (newEvent)
+				event = dataWrapper.getDatabaseHandler().getEvent(event_id);
+			else
+				event = dataWrapper.getEventById(event_id);	
 
 			// redraw list fragment , notifications, widgets after finish ProfilePreferencesFragmentActivity
-			onRedrawEventListFragment(dataWrapper.getEventById(event_id));
+			onRedrawEventListFragment(event, newEvent);
 		}
 		else
 		if (requestCode == GlobalData.REQUEST_CODE_APPLICATION_PREFERENCES)
@@ -1010,10 +1024,13 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 
 			onFinishProfilePreferencesActionMode();
 			
-			if (profile != null)
+			if ((profile != null) || (editMode == EditorProfileListFragment.EDIT_MODE_INSERT))
 			{
 				Bundle arguments = new Bundle();
-				arguments.putLong(GlobalData.EXTRA_PROFILE_ID, profile._id);
+				if (profile == null)
+					arguments.putLong(GlobalData.EXTRA_PROFILE_ID, 0);
+				else
+					arguments.putLong(GlobalData.EXTRA_PROFILE_ID, profile._id);
 				arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
 				arguments.putBoolean(GlobalData.EXTRA_NEW_PROFILE, (editMode == EditorProfileListFragment.EDIT_MODE_INSERT));
 				ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
@@ -1034,10 +1051,14 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		} else {
 			// In single-pane mode, simply start the profile preferences activity
 			// for the profile position.
-			if ((profile != null) && (editMode != EditorProfileListFragment.EDIT_MODE_DELETE))
+			if (((profile != null) || (editMode == EditorProfileListFragment.EDIT_MODE_INSERT))
+					&& (editMode != EditorProfileListFragment.EDIT_MODE_DELETE))
 			{
 				Intent intent = new Intent(getBaseContext(), ProfilePreferencesFragmentActivity.class);
-				intent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
+				if (profile == null)
+					intent.putExtra(GlobalData.EXTRA_PROFILE_ID, 0);
+				else
+					intent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
 				intent.putExtra(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
 				intent.putExtra(GlobalData.EXTRA_NEW_PROFILE, (editMode == EditorProfileListFragment.EDIT_MODE_INSERT));
 				startActivityForResult(intent, GlobalData.REQUEST_CODE_PROFILE_PREFERENCES);
@@ -1063,12 +1084,12 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		}
 	}
 
-	public void onRedrawProfileListFragment(Profile profile) {
+	public void onRedrawProfileListFragment(Profile profile, boolean newProfile) {
 		// redraw headeru list fragmentu, notifikacie a widgetov
 		EditorProfileListFragment fragment = (EditorProfileListFragment)getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
 		if (fragment != null)
 		{
-			fragment.updateListView(profile);
+			fragment.updateListView(profile, newProfile);
 
 			Profile activeProfile = dataWrapper.getActivatedProfile();
 			fragment.updateHeader(activeProfile);
@@ -1119,10 +1140,13 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 
 			onFinishEventPreferencesActionMode();
 			
-			if (event != null)
+			if ((event != null) || (editMode == EditorEventListFragment.EDIT_MODE_INSERT))
 			{
 				Bundle arguments = new Bundle();
-				arguments.putLong(GlobalData.EXTRA_EVENT_ID, event._id);
+				if (event == null)
+					arguments.putLong(GlobalData.EXTRA_EVENT_ID, 0);
+				else
+					arguments.putLong(GlobalData.EXTRA_EVENT_ID, event._id);
 				arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
 				arguments.putBoolean(GlobalData.EXTRA_NEW_EVENT, (editMode == EditorProfileListFragment.EDIT_MODE_INSERT));
 				EventPreferencesFragment fragment = new EventPreferencesFragment();
@@ -1143,11 +1167,15 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 
 		} else {
 			// In single-pane mode, simply start the profile preferences activity
-			// for the profile position.
-			if ((event != null) && (editMode != EditorEventListFragment.EDIT_MODE_DELETE))
+			// for the event id.
+			if (((event != null) || (editMode == EditorEventListFragment.EDIT_MODE_INSERT))
+					&& (editMode != EditorEventListFragment.EDIT_MODE_DELETE))
 			{
 				Intent intent = new Intent(getBaseContext(), EventPreferencesFragmentActivity.class);
-				intent.putExtra(GlobalData.EXTRA_EVENT_ID, event._id);
+				if (event == null)
+					intent.putExtra(GlobalData.EXTRA_EVENT_ID, 0);
+				else
+					intent.putExtra(GlobalData.EXTRA_EVENT_ID, event._id);
 				intent.putExtra(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
 				intent.putExtra(GlobalData.EXTRA_NEW_EVENT, (editMode == EditorProfileListFragment.EDIT_MODE_INSERT));
 				startActivityForResult(intent, GlobalData.REQUEST_CODE_EVENT_PREFERENCES);
@@ -1155,12 +1183,12 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		}
 	}
 
-	public void onRedrawEventListFragment(Event event) {
+	public void onRedrawEventListFragment(Event event, boolean newEvent) {
 		// redraw headeru list fragmentu, notifikacie a widgetov
 		EditorEventListFragment fragment = (EditorEventListFragment)getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
 		if (fragment != null)
 		{
-			fragment.updateListView(event);
+			fragment.updateListView(event, newEvent);
 		}
 	}
 
@@ -1182,17 +1210,6 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		}
 	}
 	
-/*
-	public static void updateListView(SherlockFragmentActivity activity)
-	{
-		EditorProfileListFragment fragment = (EditorProfileListFragment)activity.getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
-		if (fragment != null)
-		{
-			//Log.d("EditorProfileActivity.updateListView","");
-			fragment.updateListView();
-		}
-	}
-*/	
 	public static ApplicationsCache getApplicationsCache()
 	{
 		return applicationsCache;

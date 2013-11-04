@@ -20,7 +20,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 {
 	
 	private Event event;
-	private long event_id;
+	public long event_id;
 	private boolean first_start_activity;
 	private boolean new_event;
 	public boolean eventNonEdited = true;
@@ -62,11 +62,11 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		/**
 		 * Callback for redraw event list fragment.
 		 */
-		public void onRedrawEventListFragment(Event event);
+		public void onRedrawEventListFragment(Event event, boolean newEvent);
 	}
 
 	private static OnRedrawEventListFragment sDummyOnRedrawEventListFragmentCallback = new OnRedrawEventListFragment() {
-		public void onRedrawEventListFragment(Event event) {
+		public void onRedrawEventListFragment(Event event, boolean newEvent) {
 		}
 	};
 
@@ -109,10 +109,21 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		prefMng.setSharedPreferencesMode(Activity.MODE_PRIVATE);
 		
         // getting attached fragment data
+		if (getArguments().containsKey(GlobalData.EXTRA_NEW_EVENT))
+			new_event = getArguments().getBoolean(GlobalData.EXTRA_NEW_EVENT);
 		if (getArguments().containsKey(GlobalData.EXTRA_EVENT_ID))
 			event_id = getArguments().getLong(GlobalData.EXTRA_EVENT_ID);
     	//Log.e("EventPreferencesFragment.onCreate", "event_position=" + event_position);
-    	event = (Event)EditorProfilesActivity.dataWrapper.getEventById(event_id);
+		if (new_event)
+		{
+			event = new Event(getResources().getString(R.string.event_name_default), 
+					  Event.ETYPE_TIME, 
+					  0,
+		         	  Event.ESTATUS_STOP
+		         );
+		}
+		else
+			event = (Event)EditorProfilesActivity.dataWrapper.getEventById(event_id);
 		if (getArguments().containsKey(GlobalData.EXTRA_FIRST_START_ACTIVITY))
 		{
 			first_start_activity = getArguments().getBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY);
@@ -122,8 +133,6 @@ public class EventPreferencesFragment extends PreferenceListFragment
 			first_start_activity = false;
         if (first_start_activity)
         	loadPreferences();
-		if (getArguments().containsKey(GlobalData.EXTRA_NEW_EVENT))
-			new_event = getArguments().getBoolean(GlobalData.EXTRA_NEW_EVENT);
    	
         context = getSherlockActivity().getBaseContext();
 		
@@ -216,17 +225,28 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	
 	private void savePreferences()
 	{
-        if (event_id > 0) 
+    	event.saveSharedPrefereces(preferences);
+
+		if (new_event)
+		{
+			// add event into DB
+			EditorProfilesActivity.dataWrapper.getDatabaseHandler().addEvent(event);
+			event_id = event._id;
+
+        	//Log.d("ProfilePreferencesFragment.savePreferences", "addEvent");
+			
+		}
+		else
+    	if (event_id > 0) 
         {
-        	event.saveSharedPrefereces(preferences);
-        	
+        	// udate event in DB
 			EditorProfilesActivity.dataWrapper.getDatabaseHandler().updateEvent(event);
         	
-        	//Log.d("EventPreferencesFragment.onPause", "updateEvent");
+        	//Log.d("EventPreferencesFragment.savePreferences", "updateEvent");
 
         }
 
-        onRedrawEventListFragmentCallback.onRedrawEventListFragment(event);
+        onRedrawEventListFragmentCallback.onRedrawEventListFragment(event, new_event);
 	}
 	
 	private void updateSharedPreference()
