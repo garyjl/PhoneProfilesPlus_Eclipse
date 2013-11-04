@@ -28,7 +28,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	private Profile profile;
 	public long profile_id;
 	private boolean first_start_activity;
-	private boolean new_profile;
+	private int new_profile_mode;
 	public boolean profileNonEdited = true;
 	private PreferenceManager prefMng;
 	private SharedPreferences preferences;
@@ -69,11 +69,11 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		/**
 		 * Callback for redraw profile list fragment.
 		 */
-		public void onRedrawProfileListFragment(Profile profile, boolean newProfile);
+		public void onRedrawProfileListFragment(Profile profile, int newProfileMode);
 	}
 
 	private static OnRedrawProfileListFragment sDummyOnRedrawProfileListFragmentCallback = new OnRedrawProfileListFragment() {
-		public void onRedrawProfileListFragment(Profile profile, boolean newProfile) {
+		public void onRedrawProfileListFragment(Profile profile, int newProfileMode) {
 		}
 	};
 	
@@ -116,17 +116,58 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		prefMng.setSharedPreferencesMode(Activity.MODE_PRIVATE);
 		
         // getting attached fragment data
-		if (getArguments().containsKey(GlobalData.EXTRA_NEW_PROFILE))
-			new_profile = getArguments().getBoolean(GlobalData.EXTRA_NEW_PROFILE);
+		if (getArguments().containsKey(GlobalData.EXTRA_NEW_PROFILE_MODE))
+			new_profile_mode = getArguments().getInt(GlobalData.EXTRA_NEW_PROFILE_MODE);
 		if (getArguments().containsKey(GlobalData.EXTRA_PROFILE_ID))
 			profile_id = getArguments().getLong(GlobalData.EXTRA_PROFILE_ID);
     	//Log.e("ProfilePreferencesFragment.onCreate", "profile_id=" + profile_id);
-		if (new_profile)
+		if (new_profile_mode == EditorProfileListFragment.EDIT_MODE_INSERT)
 		{
+			// create new profile
 			profile = EditorProfilesActivity.dataWrapper.getNoinitializedProfile(
-					getResources().getString(R.string.profile_name_default), 
-					GUIData.PROFILE_ICON_DEFAULT, 0); 
+						getResources().getString(R.string.profile_name_default), 
+						GUIData.PROFILE_ICON_DEFAULT, 0); 
 			profile._showInActivator = true;
+			profile_id = 0;
+		}
+		else
+		if (new_profile_mode == EditorProfileListFragment.EDIT_MODE_DUPLICATE)
+		{
+			// duplicate profile
+			Profile origProfile = (Profile)EditorProfilesActivity.dataWrapper.getProfileById(profile_id);
+			profile = new Profile(
+						   origProfile._name+"_d", 
+						   origProfile._icon, 
+						   false, 
+						   origProfile._porder,
+						   origProfile._volumeRingerMode,
+						   origProfile._volumeRingtone,
+						   origProfile._volumeNotification,
+						   origProfile._volumeMedia,
+						   origProfile._volumeAlarm,
+						   origProfile._volumeSystem,
+						   origProfile._volumeVoice,
+						   origProfile._soundRingtoneChange,
+						   origProfile._soundRingtone,
+						   origProfile._soundNotificationChange,
+						   origProfile._soundNotification,
+						   origProfile._soundAlarmChange,
+						   origProfile._soundAlarm,
+						   origProfile._deviceAirplaneMode,
+						   origProfile._deviceWiFi,
+						   origProfile._deviceBluetooth,
+						   origProfile._deviceScreenTimeout,
+						   origProfile._deviceBrightness,
+						   origProfile._deviceWallpaperChange,
+						   origProfile._deviceWallpaper,
+						   origProfile._deviceMobileData,
+						   origProfile._deviceMobileDataPrefs,
+						   origProfile._deviceGPS,
+						   origProfile._deviceRunApplicationChange,
+						   origProfile._deviceRunApplicationPackageName,
+						   origProfile._deviceAutosync,
+						   origProfile._showInActivator);
+			profile_id = 0;
 		}
 		else
 			profile = (Profile)EditorProfilesActivity.dataWrapper.getProfileById(profile_id);
@@ -153,7 +194,9 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
         if ((savedInstanceState != null) && savedInstanceState.getBoolean("action_mode_showed", false))
             showActionMode();
         else
-        if (new_profile && first_start_activity)
+        if (((new_profile_mode == EditorProfileListFragment.EDIT_MODE_INSERT) ||
+             (new_profile_mode == EditorProfileListFragment.EDIT_MODE_DUPLICATE))
+           	&& first_start_activity)
         	showActionMode();
 
     	//Log.d("ProfilePreferencesFragment.onCreate", "xxxx");
@@ -319,7 +362,8 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 
     	//Log.d("ProfilePreferencesFragment.onPause", "profile activated="+profile.getChecked());
 		
-		if (new_profile)
+		if ((new_profile_mode == EditorProfileListFragment.EDIT_MODE_INSERT) ||
+		    (new_profile_mode == EditorProfileListFragment.EDIT_MODE_DUPLICATE))
 		{
 			// add profile into DB
 			EditorProfilesActivity.dataWrapper.getDatabaseHandler().addProfile(profile);
@@ -337,7 +381,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 
         }
 
-        onRedrawProfileListFragmentCallback.onRedrawProfileListFragment(profile, new_profile);
+        onRedrawProfileListFragmentCallback.onRedrawProfileListFragment(profile, new_profile_mode);
 	}
 	
 	private void setSummary(String key, Object value)
@@ -554,7 +598,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		int _button = button;
 		
 		if (_button == BUTTON_SAVE)
-			new_profile = false;
+			new_profile_mode = EditorProfileListFragment.EDIT_MODE_UNDEFINED;
 		
 		if (!EditorProfilesActivity.mTwoPane)
 		{

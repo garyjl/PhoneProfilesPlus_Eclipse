@@ -20,7 +20,7 @@ public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
 {
 	
 	private long event_id = 0; 
-	boolean newEvent = false;
+	int newEventMode = EditorEventListFragment.EDIT_MODE_UNDEFINED;
 			
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,16 +38,16 @@ public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setTitle(R.string.title_activity_event_preferences);
 
-        event_id = getIntent().getLongExtra(GlobalData.EXTRA_EVENT_ID, -1);
+        event_id = getIntent().getLongExtra(GlobalData.EXTRA_EVENT_ID, 0);
         boolean first_start_activity = getIntent().getBooleanExtra(GlobalData.EXTRA_FIRST_START_ACTIVITY, false);
         getIntent().removeExtra(GlobalData.EXTRA_FIRST_START_ACTIVITY);
-        newEvent = getIntent().getBooleanExtra(GlobalData.EXTRA_NEW_EVENT, false);
+        newEventMode = getIntent().getIntExtra(GlobalData.EXTRA_NEW_EVENT_MODE, EditorEventListFragment.EDIT_MODE_UNDEFINED);
 
 		if (savedInstanceState == null) {
 			Bundle arguments = new Bundle();
 			arguments.putLong(GlobalData.EXTRA_EVENT_ID, event_id);
 			arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, first_start_activity);
-			arguments.putBoolean(GlobalData.EXTRA_NEW_EVENT, newEvent);
+			arguments.putInt(GlobalData.EXTRA_NEW_EVENT_MODE, newEventMode);
 			EventPreferencesFragment fragment = new EventPreferencesFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
@@ -76,7 +76,7 @@ public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
 		// for startActivityForResult
 		Intent returnIntent = new Intent();
 		returnIntent.putExtra(GlobalData.EXTRA_EVENT_ID, event_id);
-		returnIntent.putExtra(GlobalData.EXTRA_NEW_EVENT, newEvent);
+		returnIntent.putExtra(GlobalData.EXTRA_NEW_EVENT_MODE, newEventMode);
 		setResult(RESULT_OK,returnIntent);
 
 	    super.finish();
@@ -129,14 +129,14 @@ public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
 		Bundle arguments = new Bundle();
 		arguments.putLong(GlobalData.EXTRA_EVENT_ID, event._id);
 		arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
-		arguments.putBoolean(GlobalData.EXTRA_NEW_EVENT, newEvent);
+		arguments.putInt(GlobalData.EXTRA_NEW_EVENT_MODE, newEventMode);
 		EventPreferencesFragment fragment = new EventPreferencesFragment();
 		fragment.setArguments(arguments);
 		getSupportFragmentManager().beginTransaction()
 				.replace(R.id.activity_event_preferences_container, fragment).commit();
 	}
 
-	public void onRedrawEventListFragment(Event event, boolean newEvent) {
+	public void onRedrawEventListFragment(Event event, int newEventMode) {
 		// all redraws are in EditorProfilesActivity.onActivityResult()
 	}
 	

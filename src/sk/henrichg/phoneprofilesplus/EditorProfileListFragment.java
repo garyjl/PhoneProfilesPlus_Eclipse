@@ -39,9 +39,11 @@ public class EditorProfileListFragment extends SherlockFragment {
 	private ImageView activeProfileIcon;
 	private DatabaseHandler databaseHandler;
 	
+	public static final int EDIT_MODE_UNDEFINED = 0;
 	public static final int EDIT_MODE_INSERT = 1;
-	public static final int EDIT_MODE_EDIT = 2;
-	public static final int EDIT_MODE_DELETE = 3;
+	public static final int EDIT_MODE_DUPLICATE = 2;
+	public static final int EDIT_MODE_EDIT = 3;
+	public static final int EDIT_MODE_DELETE = 4;
 	
 	public static final String FILTER_TYPE_ARGUMENT = "filter_type";
 	
@@ -348,27 +350,6 @@ public class EditorProfileListFragment extends SherlockFragment {
 		else
 		{
 			// pridanie noveho profilu
-			/*
-			_profile = EditorProfilesActivity.dataWrapper.getNoinitializedProfile(
-							getResources().getString(R.string.profile_name_default), 
-							GUIData.PROFILE_ICON_DEFAULT, 0); 
-			_profile._showInActivator = true;
-
-			// add profile into db and set id and order
-			databaseHandler.addProfile(_profile);
-			//Log.e("EditorProfileListFragment.startProfilePreferencesActivity","porder="+_profile._porder);
-			// add profile into listview
-			profileListAdapter.addItem(_profile, false);
-			
-			updateListView(_profile);
-
-			activateProfileHelper.updateWidget();
-
-        	// generate bitmaps
-			_profile.generateIconBitmap(getSherlockActivity().getBaseContext(), false, 0);
-			_profile.generatePreferencesIndicator(getSherlockActivity().getBaseContext(), false, 0);
-			*/
-			
 			editMode = EDIT_MODE_INSERT;
 		}
 
@@ -381,6 +362,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 
 	public void duplicateProfile(Profile origProfile)
 	{
+		/*
 		Profile newProfile = new Profile(
 				   origProfile._name+"_d", 
 				   origProfile._icon, 
@@ -428,7 +410,16 @@ public class EditorProfileListFragment extends SherlockFragment {
 		newProfile.generatePreferencesIndicator(getSherlockActivity().getBaseContext(), false, 0);
 		
 		startProfilePreferencesActivity(newProfile);
+		*/
 		
+		int editMode;
+
+		// zduplikovanie profilu
+		editMode = EDIT_MODE_DUPLICATE;
+
+		// Notify the active callbacks interface (the activity, if the
+		// fragment is attached to one) one must start profile preferences
+		onStartProfilePreferencesCallback.onStartProfilePreferences(origProfile, editMode, filterType);
 		
 	}
 	

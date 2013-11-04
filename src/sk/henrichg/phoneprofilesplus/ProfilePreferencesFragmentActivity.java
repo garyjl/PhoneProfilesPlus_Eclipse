@@ -19,7 +19,7 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 	                                                       OnRedrawProfileListFragment
 {
 	private long profile_id = 0;
-	boolean newProfile = false;
+	int newProfileMode = EditorProfileListFragment.EDIT_MODE_UNDEFINED;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,10 +37,10 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setTitle(R.string.title_activity_profile_preferences);
 
-        profile_id = getIntent().getLongExtra(GlobalData.EXTRA_PROFILE_ID, -1);
+        profile_id = getIntent().getLongExtra(GlobalData.EXTRA_PROFILE_ID, 0);
         boolean first_start_activity = getIntent().getBooleanExtra(GlobalData.EXTRA_FIRST_START_ACTIVITY, false);
         getIntent().removeExtra(GlobalData.EXTRA_FIRST_START_ACTIVITY);
-        newProfile = getIntent().getBooleanExtra(GlobalData.EXTRA_NEW_PROFILE, false);
+        newProfileMode = getIntent().getIntExtra(GlobalData.EXTRA_NEW_PROFILE_MODE, EditorProfileListFragment.EDIT_MODE_UNDEFINED);
 
         //Log.e("ProfilePreferencesFragmentActivity.onCreate","profile_id="+profile_id);
         
@@ -48,7 +48,7 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 			Bundle arguments = new Bundle();
 			arguments.putLong(GlobalData.EXTRA_PROFILE_ID, profile_id);
 			arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, first_start_activity);
-			arguments.putBoolean(GlobalData.EXTRA_NEW_PROFILE, newProfile);
+			arguments.putInt(GlobalData.EXTRA_NEW_PROFILE_MODE, newProfileMode);
 			ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
@@ -77,7 +77,7 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 		// for startActivityForResult
 		Intent returnIntent = new Intent();
 		returnIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile_id);
-		returnIntent.putExtra(GlobalData.EXTRA_NEW_PROFILE, newProfile);
+		returnIntent.putExtra(GlobalData.EXTRA_NEW_PROFILE_MODE, newProfileMode);
 		setResult(RESULT_OK,returnIntent);
 
 	    super.finish();
@@ -132,14 +132,14 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 		Bundle arguments = new Bundle();
 		arguments.putLong(GlobalData.EXTRA_PROFILE_ID, profile._id);
 		arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
-		arguments.putBoolean(GlobalData.EXTRA_NEW_PROFILE, newProfile);
+		arguments.putInt(GlobalData.EXTRA_NEW_PROFILE_MODE, newProfileMode);
 		ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 		fragment.setArguments(arguments);
 		getSupportFragmentManager().beginTransaction()
 				.replace(R.id.activity_profile_preferences_container, fragment).commit();
 	}
 
-	public void onRedrawProfileListFragment(Profile profile, boolean newProfile) {
+	public void onRedrawProfileListFragment(Profile profile, int newProfileMode) {
 		// all redraws are in EditorProfilesActivity.onActivityResult()
 	}
 	

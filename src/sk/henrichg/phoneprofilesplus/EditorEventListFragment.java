@@ -30,9 +30,11 @@ public class EditorEventListFragment extends SherlockFragment {
 	private ListView listView;
 	private DatabaseHandler databaseHandler;
 	
+	public static final int EDIT_MODE_UNDEFINED = 0;
 	public static final int EDIT_MODE_INSERT = 1;
-	public static final int EDIT_MODE_EDIT = 2;
-	public static final int EDIT_MODE_DELETE = 3;
+	public static final int EDIT_MODE_DUPLICATE = 2;
+	public static final int EDIT_MODE_EDIT = 3;
+	public static final int EDIT_MODE_DELETE = 4;
 	
 	public static final String FILTER_TYPE_ARGUMENT = "filter_type";
 	public static final String ORDER_TYPE_ARGUMENT = "order_type";
@@ -311,6 +313,7 @@ public class EditorEventListFragment extends SherlockFragment {
 
 	public void duplicateEvent(Event origEvent)
 	{
+		/*
 		Event newEvent = new Event(
 				   origEvent._name+"_d", 
 				   origEvent._type, 
@@ -327,6 +330,16 @@ public class EditorEventListFragment extends SherlockFragment {
 		updateListView(newEvent, false);
 
 		startEventPreferencesActivity(newEvent);
+		*/
+		
+		int editMode;
+
+		// zduplikovanie profilu
+		editMode = EDIT_MODE_DUPLICATE;
+
+		// Notify the active callbacks interface (the activity, if the
+		// fragment is attached to one) one must start profile preferences
+		onStartEventPreferencesCallback.onStartEventPreferences(origEvent, editMode, filterType, orderType);
 		
 		
 	}

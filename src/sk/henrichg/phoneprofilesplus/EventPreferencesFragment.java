@@ -22,7 +22,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	private Event event;
 	public long event_id;
 	private boolean first_start_activity;
-	private boolean new_event;
+	private int new_event_mode;
 	public boolean eventNonEdited = true;
 	private PreferenceManager prefMng;
 	private SharedPreferences preferences;
@@ -62,11 +62,11 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		/**
 		 * Callback for redraw event list fragment.
 		 */
-		public void onRedrawEventListFragment(Event event, boolean newEvent);
+		public void onRedrawEventListFragment(Event event, int newEventMode);
 	}
 
 	private static OnRedrawEventListFragment sDummyOnRedrawEventListFragmentCallback = new OnRedrawEventListFragment() {
-		public void onRedrawEventListFragment(Event event, boolean newEvent) {
+		public void onRedrawEventListFragment(Event event, int newEventMode) {
 		}
 	};
 
@@ -109,18 +109,34 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		prefMng.setSharedPreferencesMode(Activity.MODE_PRIVATE);
 		
         // getting attached fragment data
-		if (getArguments().containsKey(GlobalData.EXTRA_NEW_EVENT))
-			new_event = getArguments().getBoolean(GlobalData.EXTRA_NEW_EVENT);
+		if (getArguments().containsKey(GlobalData.EXTRA_NEW_EVENT_MODE))
+			new_event_mode = getArguments().getInt(GlobalData.EXTRA_NEW_EVENT_MODE);
 		if (getArguments().containsKey(GlobalData.EXTRA_EVENT_ID))
 			event_id = getArguments().getLong(GlobalData.EXTRA_EVENT_ID);
     	//Log.e("EventPreferencesFragment.onCreate", "event_position=" + event_position);
-		if (new_event)
+		if (new_event_mode == EditorEventListFragment.EDIT_MODE_INSERT)
 		{
+			// create new event
 			event = new Event(getResources().getString(R.string.event_name_default), 
-					  Event.ETYPE_TIME, 
-					  0,
-		         	  Event.ESTATUS_STOP
+						Event.ETYPE_TIME, 
+						0,
+						Event.ESTATUS_STOP
 		         );
+			event_id = 0;
+		}
+		else
+		if (new_event_mode == EditorEventListFragment.EDIT_MODE_DUPLICATE)
+		{
+			// duplicate event
+			Event origEvent = (Event)EditorProfilesActivity.dataWrapper.getEventById(event_id);
+			event = new Event(
+						   origEvent._name+"_d", 
+						   origEvent._type, 
+						   origEvent._fkProfile, 
+						   origEvent._status
+							);
+			event.copyEventPreferences(origEvent);
+			event_id = 0;
 		}
 		else
 			event = (Event)EditorProfilesActivity.dataWrapper.getEventById(event_id);
@@ -148,7 +164,9 @@ public class EventPreferencesFragment extends PreferenceListFragment
         if ((savedInstanceState != null) && savedInstanceState.getBoolean("action_mode_showed", false))
             showActionMode();
         else
-        if (new_event && first_start_activity)
+        if (((new_event_mode == EditorEventListFragment.EDIT_MODE_INSERT) ||
+             (new_event_mode == EditorEventListFragment.EDIT_MODE_DUPLICATE))
+           	&& first_start_activity)
         	showActionMode();
 
     	//Log.d("EventPreferencesFragment.onCreate", "xxxx");
@@ -227,7 +245,8 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	{
     	event.saveSharedPrefereces(preferences);
 
-		if (new_event)
+		if ((new_event_mode == EditorEventListFragment.EDIT_MODE_INSERT) ||
+		    (new_event_mode == EditorEventListFragment.EDIT_MODE_DUPLICATE))
 		{
 			// add event into DB
 			EditorProfilesActivity.dataWrapper.getDatabaseHandler().addEvent(event);
@@ -246,7 +265,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 
         }
 
-        onRedrawEventListFragmentCallback.onRedrawEventListFragment(event, new_event);
+        onRedrawEventListFragmentCallback.onRedrawEventListFragment(event, new_event_mode);
 	}
 	
 	private void updateSharedPreference()
@@ -392,7 +411,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		int _button = button;
 		
 		if (_button == BUTTON_SAVE)
-			new_event = false;
+			new_event_mode = EditorEventListFragment.EDIT_MODE_UNDEFINED;
 		
 		if (!EditorProfilesActivity.mTwoPane)
 		{
