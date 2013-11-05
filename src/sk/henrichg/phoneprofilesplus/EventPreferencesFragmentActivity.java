@@ -49,6 +49,7 @@ public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
 			arguments.putLong(GlobalData.EXTRA_EVENT_ID, event_id);
 			//arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, first_start_activity);
 			arguments.putInt(GlobalData.EXTRA_NEW_EVENT_MODE, newEventMode);
+			arguments.putBoolean(GlobalData.EXTRA_PREFERENCES_ACTIVITY, true);
 			EventPreferencesFragment fragment = new EventPreferencesFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
@@ -134,6 +135,7 @@ public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
 			arguments.putLong(GlobalData.EXTRA_EVENT_ID, event._id);
 			//arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
 			arguments.putInt(GlobalData.EXTRA_NEW_EVENT_MODE, newEventMode);
+			arguments.putBoolean(GlobalData.EXTRA_PREFERENCES_ACTIVITY, true);
 			EventPreferencesFragment fragment = new EventPreferencesFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()

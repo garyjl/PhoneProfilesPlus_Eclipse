@@ -1055,6 +1055,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 					arguments.putLong(GlobalData.EXTRA_PROFILE_ID, profile._id);
 				//arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
 				arguments.putInt(GlobalData.EXTRA_NEW_PROFILE_MODE, editMode);
+				arguments.putBoolean(GlobalData.EXTRA_PREFERENCES_ACTIVITY, false);
 				ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 				fragment.setArguments(arguments);
 				getSupportFragmentManager().beginTransaction()
@@ -1100,6 +1101,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 				arguments.putLong(GlobalData.EXTRA_PROFILE_ID, profile._id);
 				//arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
 				arguments.putInt(GlobalData.EXTRA_NEW_PROFILE_MODE, editModeProfile);
+				arguments.putBoolean(GlobalData.EXTRA_PREFERENCES_ACTIVITY, false);
 				ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 				fragment.setArguments(arguments);
 				getSupportFragmentManager().beginTransaction()
@@ -1186,6 +1188,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 					arguments.putLong(GlobalData.EXTRA_EVENT_ID, event._id);
 				//arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
 				arguments.putInt(GlobalData.EXTRA_NEW_EVENT_MODE, editMode);
+				arguments.putBoolean(GlobalData.EXTRA_PREFERENCES_ACTIVITY, false);
 				EventPreferencesFragment fragment = new EventPreferencesFragment();
 				fragment.setArguments(arguments);
 				getSupportFragmentManager().beginTransaction()
@@ -1242,6 +1245,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 				arguments.putLong(GlobalData.EXTRA_EVENT_ID, event._id);
 				//arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
 				arguments.putInt(GlobalData.EXTRA_NEW_EVENT_MODE, editModeEvent);
+				arguments.putBoolean(GlobalData.EXTRA_PREFERENCES_ACTIVITY, false);
 				EventPreferencesFragment fragment = new EventPreferencesFragment();
 				fragment.setArguments(arguments);
 				getSupportFragmentManager().beginTransaction()

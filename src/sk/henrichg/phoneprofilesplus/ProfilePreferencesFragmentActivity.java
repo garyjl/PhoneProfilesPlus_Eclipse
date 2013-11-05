@@ -49,6 +49,7 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 			arguments.putLong(GlobalData.EXTRA_PROFILE_ID, profile_id);
 			//arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, first_start_activity);
 			arguments.putInt(GlobalData.EXTRA_NEW_PROFILE_MODE, newProfileMode);
+			arguments.putBoolean(GlobalData.EXTRA_PREFERENCES_ACTIVITY, true);
 			ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
@@ -136,6 +137,7 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 			arguments.putLong(GlobalData.EXTRA_PROFILE_ID, profile._id);
 			//arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
 			arguments.putInt(GlobalData.EXTRA_NEW_PROFILE_MODE, newProfileMode);
+			arguments.putBoolean(GlobalData.EXTRA_PREFERENCES_ACTIVITY, true);
 			ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()

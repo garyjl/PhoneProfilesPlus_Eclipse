@@ -34,7 +34,9 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	
 	private static Activity preferencesActivity = null;
 		
-	static final String PREFS_NAME = "event_preferences";
+	static final String PREFS_NAME_ACTIVITY = "event_preferences_activity";
+	static final String PREFS_NAME_FRAGMENT = "event_preferences_fragment";
+	private String PREFS_NAME;
 	
 	static final int BUTTON_UNDEFINED = 0;
 	static final int BUTTON_CANCEL = 1;
@@ -237,7 +239,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	{
     	if (event != null)
     	{
-	    	SharedPreferences preferences = getSherlockActivity().getSharedPreferences(EventPreferencesFragment.PREFS_NAME, Activity.MODE_PRIVATE);
+	    	SharedPreferences preferences = getSherlockActivity().getSharedPreferences(PREFS_NAME, Activity.MODE_PRIVATE);
 	    	event.loadSharedPrefereces(preferences);
     	}
 		

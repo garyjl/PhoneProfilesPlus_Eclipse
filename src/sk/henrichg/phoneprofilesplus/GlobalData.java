@@ -26,6 +26,7 @@ public class GlobalData extends Application {
 	//static final String EXTRA_FIRST_START_ACTIVITY = "restart_activity";
 	static final String EXTRA_NEW_PROFILE_MODE = "new_profile_mode";
 	static final String EXTRA_NEW_EVENT_MODE = "new_event_mode";
+	static final String EXTRA_PREFERENCES_ACTIVITY = "preferences_activity";
 
 	// musi byt tu, pouziva to ActivateProfileHelper
 	static final int STARTUP_SOURCE_NOTIFICATION = 1;

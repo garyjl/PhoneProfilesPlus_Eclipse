@@ -41,7 +41,9 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	private static ImageViewPreference changedImageViewPreference;
 	private static Activity preferencesActivity = null;
 		
-	static final String PREFS_NAME = "profile_preferences";
+	static final String PREFS_NAME_ACTIVITY = "profile_preferences_activity";
+	static final String PREFS_NAME_FRAGMENT = "profile_preferences_fragment";
+	private String PREFS_NAME;
 	
 	static final int BUTTON_UNDEFINED = 0;
 	static final int BUTTON_CANCEL = 1;
@@ -281,7 +283,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	{
     	if (profile != null)
     	{
-	    	SharedPreferences preferences = getSherlockActivity().getSharedPreferences(ProfilePreferencesFragment.PREFS_NAME, Activity.MODE_PRIVATE);
+	    	SharedPreferences preferences = getSherlockActivity().getSharedPreferences(PREFS_NAME, Activity.MODE_PRIVATE);
 	
 	    	Editor editor = preferences.edit();
 	        editor.putString(GlobalData.PREF_PROFILE_NAME, profile._name);
