@@ -126,10 +126,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			// activity should be in two-pane mode.
 			mTwoPane = true;
 
-			//Profile profile = profilesDataWrapper.getFirstProfile();
-			
-			//onStartProfilePreferences(profilesDataWrapper.getProfileItemPosition(profile), false);
-			onStartProfilePreferences(null, EditorProfileListFragment.EDIT_MODE_EDIT, profilesFilterType);
+			if (savedInstanceState == null)
+				onStartProfilePreferences(null, EditorProfileListFragment.EDIT_MODE_EDIT, profilesFilterType);
 
 		}
 		
@@ -283,7 +281,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 
 		// select first drawer item
         if (savedInstanceState == null) {
-            selectDrawerItem(1); // show profile filter FILTER_TYPE_PROFILES_SHOW_IN_ACTIVATOR 
+            selectDrawerItem(1, true); // show profile filter FILTER_TYPE_PROFILES_SHOW_IN_ACTIVATOR 
         }
         
 		Log.e("EditorProfilesActivity.onCreate", "xxxx");
@@ -377,11 +375,11 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 
         public void onItemClick(AdapterView<?> parent, View view, int position,
                 long id) {
-            selectDrawerItem(position);
+            selectDrawerItem(position, true);
         }
     }
  
-    private void selectDrawerItem(int position) {
+    private void selectDrawerItem(int position, boolean removePreferences) {
  
     	drawerSelectedItem = position;
     	
@@ -397,7 +395,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
    		    fragment.setArguments(arguments);
     		getSupportFragmentManager().beginTransaction()
     			.replace(R.id.editor_list_container, fragment).commit();
-			onStartProfilePreferences(null, EditorProfileListFragment.EDIT_MODE_EDIT, profilesFilterType);
+    		if (removePreferences)
+    			onStartProfilePreferences(null, EditorProfileListFragment.EDIT_MODE_EDIT, profilesFilterType);
             break;
         case 1:
         	profilesFilterType = EditorProfileListFragment.FILTER_TYPE_SHOW_IN_ACTIVATOR;
@@ -407,7 +406,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
    		    fragment.setArguments(arguments);
     		getSupportFragmentManager().beginTransaction()
     			.replace(R.id.editor_list_container, fragment).commit();
-			onStartProfilePreferences(null, EditorProfileListFragment.EDIT_MODE_EDIT, profilesFilterType);
+    		if (removePreferences)
+    			onStartProfilePreferences(null, EditorProfileListFragment.EDIT_MODE_EDIT, profilesFilterType);
             break;
         case 2:
         	profilesFilterType = EditorProfileListFragment.FILTER_TYPE_NO_SHOW_IN_ACTIVATOR;
@@ -417,7 +417,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
    		    fragment.setArguments(arguments);
     		getSupportFragmentManager().beginTransaction()
     			.replace(R.id.editor_list_container, fragment).commit();
-			onStartProfilePreferences(null, EditorProfileListFragment.EDIT_MODE_EDIT, profilesFilterType);
+    		if (removePreferences)
+    			onStartProfilePreferences(null, EditorProfileListFragment.EDIT_MODE_EDIT, profilesFilterType);
             break;
         case 3:
         	eventsFilterType = EditorEventListFragment.FILTER_TYPE_ALL;
@@ -428,7 +429,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
    		    fragment.setArguments(arguments);
     		getSupportFragmentManager().beginTransaction()
     			.replace(R.id.editor_list_container, fragment).commit();
-			onStartEventPreferences(null, EditorEventListFragment.EDIT_MODE_EDIT, eventsFilterType, eventsOrderType);
+    		if (removePreferences)
+    			onStartEventPreferences(null, EditorEventListFragment.EDIT_MODE_EDIT, eventsFilterType, eventsOrderType);
 			break;	
         case 4:
         	eventsFilterType = EditorEventListFragment.FILTER_TYPE_RUNNING;
@@ -439,7 +441,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
    		    fragment.setArguments(arguments);
     		getSupportFragmentManager().beginTransaction()
     			.replace(R.id.editor_list_container, fragment).commit();
-			onStartEventPreferences(null, EditorEventListFragment.EDIT_MODE_EDIT, eventsFilterType, eventsOrderType);
+    		if (removePreferences)
+    			onStartEventPreferences(null, EditorEventListFragment.EDIT_MODE_EDIT, eventsFilterType, eventsOrderType);
 			break;	
         case 5:
         	eventsFilterType = EditorEventListFragment.FILTER_TYPE_PAUSED;
@@ -450,7 +453,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
    		    fragment.setArguments(arguments);
     		getSupportFragmentManager().beginTransaction()
     			.replace(R.id.editor_list_container, fragment).commit();
-			onStartEventPreferences(null, EditorEventListFragment.EDIT_MODE_EDIT, eventsFilterType, eventsOrderType);
+    		if (removePreferences)
+    			onStartEventPreferences(null, EditorEventListFragment.EDIT_MODE_EDIT, eventsFilterType, eventsOrderType);
 			break;	
         case 6:
         	eventsFilterType = EditorEventListFragment.FILTER_TYPE_STOPPED;
@@ -461,7 +465,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
    		    fragment.setArguments(arguments);
     		getSupportFragmentManager().beginTransaction()
     			.replace(R.id.editor_list_container, fragment).commit();
-			onStartEventPreferences(null, EditorEventListFragment.EDIT_MODE_EDIT, eventsFilterType, eventsOrderType);
+    		if (removePreferences)
+    			onStartEventPreferences(null, EditorEventListFragment.EDIT_MODE_EDIT, eventsFilterType, eventsOrderType);
 			break;	
         }
         drawerListView.setItemChecked(position, true);
@@ -989,7 +994,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 	    super.onRestoreInstanceState(savedInstanceState);
 	    drawerSelectedItem = savedInstanceState.getInt("editor_drawer_selected_item", -1);
-	    selectDrawerItem(drawerSelectedItem);
+	    selectDrawerItem(drawerSelectedItem, false);
 	    orderSelectedItem = savedInstanceState.getInt("editor_order_selected_item", -1);
 	    changeEventOrder(orderSelectedItem);
 	}
