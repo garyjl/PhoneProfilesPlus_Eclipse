@@ -130,3 +130,45 @@ _fkProfilePause event. Su to tieto pripady:
 - mazanie vsetkych profilov - vsetky eventy sa stopnu, ale ziaden z timeline sa neaktivuje
 - import dat - vsetky eventy sa stopnu, ale ziaden z timeline sa neaktivuje, manualne sa aktivuje
   ten, co ma v importnutej db _checked = true
+
+  
+-------------------------------------------
+
+Rotacia, ak mam iny layout editora nastojato/na lezato:
+1. ked nerotujem, vsetko funguje ok
+2. na lezato - zmenim ikonu - zobrazi sa actionmode
+             - otocim layout - mam jednopanelovy, actionmode zostava
+             - dam save - ikona sa nezmeni
+             - otocim na lezato - ikona sa zmeni
+3. na lezato - zmenim ikonu - zobrazi sa actionmode
+             - otocim layout - mam jednopanelovy, actionmode zostava
+             - kliknem na iny profil - otvori sa preferences aktivita
+             - zavriem preferences - zostava actionmode
+             - dam save - ikona sa nezmeni
+             - otocim na lezato - prepisalo to profil kliknuty prvotne na lezato udajmi z profilu
+                                - editovaneho na stojato !!!!!!!!!
+             - toto nastalo preto, lebo boli zmenene shared preferences a save zobral
+               tie zmeny z preferences aktivity
+             - riesenie: rozne shared preferences pre kazdu orientaciu???
+3. na stojato - zmenim ikonu - zobrazi sa actionmode
+             - otocim layout - zostava preferences aktivita aj actionmode
+             - dam save - ikona sa zmeni - ziadne preferences na lezato nie je otvorene (prve spustrenie editora)
+4. na stojato - zmenim ikonu - zobrazi sa actionmode
+             - otocim layout - zostava preferences aktivita aj actionmode
+             - dam save - ikona sa zmeni - preferences na lezato sa tiez zmeni
+5. na stojato - mam na lezato iny profil 
+             - zmenim ikonu - zobrazi sa actionmode
+             - otocim layout - zostava preferences aktivita aj actionmode
+             - dam save - ikona sa zmeni - preferences na lezato sa tiez zmeni
+
+Ako by to mohlo fungovat:
+1. na kazdy layout ine shared preferences
+2. ak nezmenim orientaciu vsetko bude fungovat
+3. ak zmenim orientaciu a nie je actionmode, vsetko bude fungovat ok
+4. ak zmenim orientaciu a je actionmode - zrusit actionmode (reset)? 
+             
+             
+
+             
+  
+  

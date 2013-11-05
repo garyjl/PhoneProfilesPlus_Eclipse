@@ -76,7 +76,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
 	 * device.
 	 */
-	public static boolean mTwoPane = false;
+	public static boolean mTwoPane;
 	
 	DrawerLayout drawerLayout;
 	RelativeLayout drawerRoot;
@@ -130,6 +130,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 				onStartProfilePreferences(null, EditorProfileListFragment.EDIT_MODE_EDIT, profilesFilterType);
 
 		}
+		else
+			mTwoPane = false;
 		
 		drawerLayout = (DrawerLayout) findViewById(R.id.editor_list_drawer_layout);
 		drawerRoot = (RelativeLayout) findViewById(R.id.editor_drawer_root);
@@ -1051,7 +1053,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 					arguments.putLong(GlobalData.EXTRA_PROFILE_ID, 0);
 				else
 					arguments.putLong(GlobalData.EXTRA_PROFILE_ID, profile._id);
-				arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
+				//arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
 				arguments.putInt(GlobalData.EXTRA_NEW_PROFILE_MODE, editMode);
 				ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 				fragment.setArguments(arguments);
@@ -1081,7 +1083,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 					intent.putExtra(GlobalData.EXTRA_PROFILE_ID, 0);
 				else
 					intent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
-				intent.putExtra(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
+				//intent.putExtra(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
 				intent.putExtra(GlobalData.EXTRA_NEW_PROFILE_MODE, editMode);
 				startActivityForResult(intent, GlobalData.REQUEST_CODE_PROFILE_PREFERENCES);
 			}
@@ -1096,7 +1098,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 				// restart profile preferences fragmentu
 				Bundle arguments = new Bundle();
 				arguments.putLong(GlobalData.EXTRA_PROFILE_ID, profile._id);
-				arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
+				//arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
 				arguments.putInt(GlobalData.EXTRA_NEW_PROFILE_MODE, editModeProfile);
 				ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 				fragment.setArguments(arguments);
@@ -1182,7 +1184,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 					arguments.putLong(GlobalData.EXTRA_EVENT_ID, 0);
 				else
 					arguments.putLong(GlobalData.EXTRA_EVENT_ID, event._id);
-				arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
+				//arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
 				arguments.putInt(GlobalData.EXTRA_NEW_EVENT_MODE, editMode);
 				EventPreferencesFragment fragment = new EventPreferencesFragment();
 				fragment.setArguments(arguments);
@@ -1212,7 +1214,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 					intent.putExtra(GlobalData.EXTRA_EVENT_ID, 0);
 				else
 					intent.putExtra(GlobalData.EXTRA_EVENT_ID, event._id);
-				intent.putExtra(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
+				//intent.putExtra(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
 				intent.putExtra(GlobalData.EXTRA_NEW_EVENT_MODE, editMode);
 				startActivityForResult(intent, GlobalData.REQUEST_CODE_EVENT_PREFERENCES);
 			}
@@ -1238,7 +1240,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 				// restart event preferences fragmentu
 				Bundle arguments = new Bundle();
 				arguments.putLong(GlobalData.EXTRA_EVENT_ID, event._id);
-				arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
+				//arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
 				arguments.putInt(GlobalData.EXTRA_NEW_EVENT_MODE, editModeEvent);
 				EventPreferencesFragment fragment = new EventPreferencesFragment();
 				fragment.setArguments(arguments);

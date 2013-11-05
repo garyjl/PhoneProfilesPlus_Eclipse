@@ -21,7 +21,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	
 	private Event event;
 	public long event_id;
-	private boolean first_start_activity;
+	//private boolean first_start_activity;
 	private int new_event_mode;
 	public boolean eventNonEdited = true;
 	private PreferenceManager prefMng;
@@ -139,6 +139,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		}
 		else
 			event = (Event)EditorProfilesActivity.dataWrapper.getEventById(event_id);
+		/*
 		if (getArguments().containsKey(GlobalData.EXTRA_FIRST_START_ACTIVITY))
 		{
 			first_start_activity = getArguments().getBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY);
@@ -147,6 +148,8 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		else
 			first_start_activity = false;
         if (first_start_activity)
+        */
+		if (savedInstanceState == null)
         	loadPreferences();
    	
         context = getSherlockActivity().getBaseContext();
@@ -158,14 +161,14 @@ public class EventPreferencesFragment extends PreferenceListFragment
         
         preferences.registerOnSharedPreferenceChangeListener(this);  
         
-        createActionMode();
+        createActionModeCallback();
         
         if ((savedInstanceState != null) && savedInstanceState.getBoolean("action_mode_showed", false))
             showActionMode();
         else
         if (((new_event_mode == EditorEventListFragment.EDIT_MODE_INSERT) ||
              (new_event_mode == EditorEventListFragment.EDIT_MODE_DUPLICATE))
-           	&& first_start_activity)
+           	&& (savedInstanceState == null))
         	showActionMode();
 
     	//Log.d("EventPreferencesFragment.onCreate", "xxxx");
@@ -304,10 +307,14 @@ public class EventPreferencesFragment extends PreferenceListFragment
 
 		event.setSummary(prefMng, key, sharedPreferences, context);
 		
-		showActionMode();
+    	Activity activity = getSherlockActivity();
+    	boolean canShow = (EditorProfilesActivity.mTwoPane) && (activity instanceof EditorProfilesActivity);
+    	canShow = canShow || ((!EditorProfilesActivity.mTwoPane) && (activity instanceof EventPreferencesFragmentActivity));
+    	if (canShow)
+    		showActionMode();
 	}
 	
-	private void createActionMode()
+	private void createActionModeCallback()
 	{
 		actionModeCallback = new ActionMode.Callback() {
 			 
@@ -406,7 +413,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		if (_button == BUTTON_SAVE)
 			new_event_mode = EditorEventListFragment.EDIT_MODE_UNDEFINED;
 		
-		if (!EditorProfilesActivity.mTwoPane)
+		if (getSherlockActivity() instanceof EventPreferencesFragmentActivity)
 		{
 			actionModeButtonClicked = BUTTON_UNDEFINED;
 			getSherlockActivity().finish(); // finish activity;

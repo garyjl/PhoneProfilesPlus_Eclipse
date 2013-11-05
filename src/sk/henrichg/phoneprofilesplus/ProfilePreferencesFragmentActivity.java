@@ -38,8 +38,8 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 		getSupportActionBar().setTitle(R.string.title_activity_profile_preferences);
 
         profile_id = getIntent().getLongExtra(GlobalData.EXTRA_PROFILE_ID, 0);
-        boolean first_start_activity = getIntent().getBooleanExtra(GlobalData.EXTRA_FIRST_START_ACTIVITY, false);
-        getIntent().removeExtra(GlobalData.EXTRA_FIRST_START_ACTIVITY);
+        //boolean first_start_activity = getIntent().getBooleanExtra(GlobalData.EXTRA_FIRST_START_ACTIVITY, false);
+        //getIntent().removeExtra(GlobalData.EXTRA_FIRST_START_ACTIVITY);
         newProfileMode = getIntent().getIntExtra(GlobalData.EXTRA_NEW_PROFILE_MODE, EditorProfileListFragment.EDIT_MODE_UNDEFINED);
 
         //Log.e("ProfilePreferencesFragmentActivity.onCreate","profile_id="+profile_id);
@@ -47,7 +47,7 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 		if (savedInstanceState == null) {
 			Bundle arguments = new Bundle();
 			arguments.putLong(GlobalData.EXTRA_PROFILE_ID, profile_id);
-			arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, first_start_activity);
+			//arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, first_start_activity);
 			arguments.putInt(GlobalData.EXTRA_NEW_PROFILE_MODE, newProfileMode);
 			ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 			fragment.setArguments(arguments);
@@ -134,7 +134,7 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 		{
 			Bundle arguments = new Bundle();
 			arguments.putLong(GlobalData.EXTRA_PROFILE_ID, profile._id);
-			arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
+			//arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
 			arguments.putInt(GlobalData.EXTRA_NEW_PROFILE_MODE, newProfileMode);
 			ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 			fragment.setArguments(arguments);
