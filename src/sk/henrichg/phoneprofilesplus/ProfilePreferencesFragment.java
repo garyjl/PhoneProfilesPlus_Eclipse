@@ -46,7 +46,6 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	static final int BUTTON_UNDEFINED = 0;
 	static final int BUTTON_CANCEL = 1;
 	static final int BUTTON_SAVE = 2;
-	static final int BUTTON_CANCEL_NO_REFRESH = 3; 
 	
 	private OnRestartProfilePreferences onRestartProfilePreferencesCallback = sDummyOnRestartProfilePreferencesCallback;
 	private OnRedrawProfileListFragment onRedrawProfileListFragmentCallback = sDummyOnRedrawProfileListFragmentCallback;
@@ -56,11 +55,11 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		/**
 		 * Callback for restart fragment.
 		 */
-		public void onRestartProfilePreferences(Profile profile);
+		public void onRestartProfilePreferences(Profile profile, int newProfileMode);
 	}
 
 	private static OnRestartProfilePreferences sDummyOnRestartProfilePreferencesCallback = new OnRestartProfilePreferences() {
-		public void onRestartProfilePreferences(Profile profile) {
+		public void onRestartProfilePreferences(Profile profile, int newProfileMode) {
 		}
 	};
 	
@@ -470,7 +469,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	
 	private void updateSharedPreference()
 	{
-        if (profile_id > 0) 
+        if (profile != null) 
         {	
 
 	    	// updating activity with selected profile preferences
@@ -519,7 +518,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
             public void onDestroyActionMode(ActionMode mode) {
                actionMode = null;
                if (actionModeButtonClicked == BUTTON_CANCEL)
-            	   onRestartProfilePreferencesCallback.onRestartProfilePreferences(profile);
+            	   onRestartProfilePreferencesCallback.onRestartProfilePreferences(profile, new_profile_mode);
             }
  
             /** This is called when the action mode is created. This is called by startActionMode() */

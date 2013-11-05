@@ -128,15 +128,28 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 	    return super.dispatchKeyEvent(event);
 	}
 	
-	public void onRestartProfilePreferences(Profile profile) {
-		Bundle arguments = new Bundle();
-		arguments.putLong(GlobalData.EXTRA_PROFILE_ID, profile._id);
-		arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
-		arguments.putInt(GlobalData.EXTRA_NEW_PROFILE_MODE, newProfileMode);
-		ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
-		fragment.setArguments(arguments);
-		getSupportFragmentManager().beginTransaction()
-				.replace(R.id.activity_profile_preferences_container, fragment).commit();
+	public void onRestartProfilePreferences(Profile profile, int newProfileMode) {
+		if ((newProfileMode != EditorProfileListFragment.EDIT_MODE_INSERT) &&
+		    (newProfileMode != EditorProfileListFragment.EDIT_MODE_DUPLICATE))
+		{
+			Bundle arguments = new Bundle();
+			arguments.putLong(GlobalData.EXTRA_PROFILE_ID, profile._id);
+			arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
+			arguments.putInt(GlobalData.EXTRA_NEW_PROFILE_MODE, newProfileMode);
+			ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
+			fragment.setArguments(arguments);
+			getSupportFragmentManager().beginTransaction()
+					.replace(R.id.activity_profile_preferences_container, fragment).commit();
+		}
+		else
+		{
+			ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.activity_profile_preferences_container);
+			if (fragment != null)
+			{
+				getSupportFragmentManager().beginTransaction()
+					.remove(fragment).commit();
+			}
+		}
 	}
 
 	public void onRedrawProfileListFragment(Profile profile, int newProfileMode) {

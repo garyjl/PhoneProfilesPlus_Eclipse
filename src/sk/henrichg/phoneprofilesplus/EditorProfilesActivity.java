@@ -1083,21 +1083,30 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		}
 	}
 
-	public void onRestartProfilePreferences(Profile profile) {
+	public void onRestartProfilePreferences(Profile profile, int newProfileMode) {
 		if (mTwoPane) {
-			// In two-pane mode, show the detail view in this activity by
-			// adding or replacing the detail fragment using a
-			// fragment transaction.
-
-			// restart profile preferences fragmentu
-			Bundle arguments = new Bundle();
-			arguments.putLong(GlobalData.EXTRA_PROFILE_ID, profile._id);
-			arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
-			arguments.putInt(GlobalData.EXTRA_NEW_PROFILE_MODE, editModeProfile);
-			ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
-			fragment.setArguments(arguments);
-			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.editor_detail_container, fragment).commit();
+			if ((newProfileMode != EditorProfileListFragment.EDIT_MODE_INSERT) &&
+			    (newProfileMode != EditorProfileListFragment.EDIT_MODE_DUPLICATE))
+			{
+				// restart profile preferences fragmentu
+				Bundle arguments = new Bundle();
+				arguments.putLong(GlobalData.EXTRA_PROFILE_ID, profile._id);
+				arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
+				arguments.putInt(GlobalData.EXTRA_NEW_PROFILE_MODE, editModeProfile);
+				ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
+				fragment.setArguments(arguments);
+				getSupportFragmentManager().beginTransaction()
+						.replace(R.id.editor_detail_container, fragment).commit();
+			}
+			else
+			{
+				ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
+				if (fragment != null)
+				{
+					getSupportFragmentManager().beginTransaction()
+						.remove(fragment).commit();
+				}
+			}
 		}
 	}
 
@@ -1183,7 +1192,6 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 					getSupportFragmentManager().beginTransaction()
 						.remove(fragment).commit();
 				}
-				
 			}
 
 		} else {
@@ -1217,21 +1225,30 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		}
 	}
 
-	public void onRestartEventPreferences(Event event) {
+	public void onRestartEventPreferences(Event event, int newEventMode) {
 		if (mTwoPane) {
-			// In two-pane mode, show the detail view in this activity by
-			// adding or replacing the detail fragment using a
-			// fragment transaction.
-
-			// restart event preferences fragmentu
-			Bundle arguments = new Bundle();
-			arguments.putLong(GlobalData.EXTRA_EVENT_ID, event._id);
-			arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
-			arguments.putInt(GlobalData.EXTRA_NEW_EVENT_MODE, editModeEvent);
-			EventPreferencesFragment fragment = new EventPreferencesFragment();
-			fragment.setArguments(arguments);
-			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.editor_detail_container, fragment).commit();
+			if ((newEventMode != EditorEventListFragment.EDIT_MODE_INSERT) &&
+			    (newEventMode != EditorEventListFragment.EDIT_MODE_DUPLICATE))
+			{
+				// restart event preferences fragmentu
+				Bundle arguments = new Bundle();
+				arguments.putLong(GlobalData.EXTRA_EVENT_ID, event._id);
+				arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
+				arguments.putInt(GlobalData.EXTRA_NEW_EVENT_MODE, editModeEvent);
+				EventPreferencesFragment fragment = new EventPreferencesFragment();
+				fragment.setArguments(arguments);
+				getSupportFragmentManager().beginTransaction()
+						.replace(R.id.editor_detail_container, fragment).commit();
+			}
+			else
+			{
+				Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
+				if (fragment != null)
+				{
+					getSupportFragmentManager().beginTransaction()
+						.remove(fragment).commit();
+				}
+			}
 		}
 	}
 	

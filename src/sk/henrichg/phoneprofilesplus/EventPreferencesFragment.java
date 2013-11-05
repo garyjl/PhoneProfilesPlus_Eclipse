@@ -39,7 +39,6 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	static final int BUTTON_UNDEFINED = 0;
 	static final int BUTTON_CANCEL = 1;
 	static final int BUTTON_SAVE = 2;
-	static final int BUTTON_CANCEL_NO_REFRESH = 3; 
 	
 	private OnRestartEventPreferences onRestartEventPreferencesCallback = sDummyOnRestartEventPreferencesCallback;
 	private OnRedrawEventListFragment onRedrawEventListFragmentCallback = sDummyOnRedrawEventListFragmentCallback;
@@ -49,11 +48,11 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		/**
 		 * Callback for restart fragment.
 		 */
-		public void onRestartEventPreferences(Event event);
+		public void onRestartEventPreferences(Event event, int newEventMode);
 	}
 
 	private static OnRestartEventPreferences sDummyOnRestartEventPreferencesCallback = new OnRestartEventPreferences() {
-		public void onRestartEventPreferences(Event event) {
+		public void onRestartEventPreferences(Event event, int newEventMode) {
 		}
 	};
 	
@@ -270,7 +269,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	
 	private void updateSharedPreference()
 	{
-        if (event_id > 0) 
+        if (event != null) 
         {	
 
 	    	// updating activity with selected event preferences
@@ -299,7 +298,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 			}
 			
 			event.changeEventType(iEventType);
-     	    onRestartEventPreferencesCallback.onRestartEventPreferences(event);
+     	    onRestartEventPreferencesCallback.onRestartEventPreferences(event, new_event_mode);
 			
 		}
 
@@ -324,14 +323,8 @@ public class EventPreferencesFragment extends PreferenceListFragment
             	     // cancel button clicked
                  {
             	     event.undoEventType();
-            	     onRestartEventPreferencesCallback.onRestartEventPreferences(event);
+            	     onRestartEventPreferencesCallback.onRestartEventPreferences(event, new_event_mode);
                  } 
-                 if (actionModeButtonClicked == BUTTON_CANCEL_NO_REFRESH)
-                	 // for destroy fragment
-                 {
-            	     event.undoEventType();
-                 }
-            	   
             }
  
             /** This is called when the action mode is created. This is called by startActionMode() */

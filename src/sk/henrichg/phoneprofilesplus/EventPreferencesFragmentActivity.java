@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceScreen;
+import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
  
 public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
@@ -125,15 +126,28 @@ public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
 	    return super.dispatchKeyEvent(event);
 	}
 
-	public void onRestartEventPreferences(Event event) {
-		Bundle arguments = new Bundle();
-		arguments.putLong(GlobalData.EXTRA_EVENT_ID, event._id);
-		arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
-		arguments.putInt(GlobalData.EXTRA_NEW_EVENT_MODE, newEventMode);
-		EventPreferencesFragment fragment = new EventPreferencesFragment();
-		fragment.setArguments(arguments);
-		getSupportFragmentManager().beginTransaction()
-				.replace(R.id.activity_event_preferences_container, fragment).commit();
+	public void onRestartEventPreferences(Event event, int newEventMode) {
+		if ((newEventMode != EditorEventListFragment.EDIT_MODE_INSERT) &&
+		    (newEventMode != EditorEventListFragment.EDIT_MODE_DUPLICATE))
+		{
+			Bundle arguments = new Bundle();
+			arguments.putLong(GlobalData.EXTRA_EVENT_ID, event._id);
+			arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
+			arguments.putInt(GlobalData.EXTRA_NEW_EVENT_MODE, newEventMode);
+			EventPreferencesFragment fragment = new EventPreferencesFragment();
+			fragment.setArguments(arguments);
+			getSupportFragmentManager().beginTransaction()
+					.replace(R.id.activity_event_preferences_container, fragment).commit();
+		}
+		else
+		{
+			Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.activity_event_preferences_container);
+			if (fragment != null)
+			{
+				getSupportFragmentManager().beginTransaction()
+					.remove(fragment).commit();
+			}
+		}
 	}
 
 	public void onRedrawEventListFragment(Event event, int newEventMode) {
