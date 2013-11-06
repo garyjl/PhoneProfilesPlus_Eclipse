@@ -189,6 +189,45 @@ public class Profile {
 		this._preferencesIndicator = null;
 	}
 	
+	public void copyProfile(Profile profile)
+	{
+		this._id = profile._id;
+		this._name = profile._name;
+		this._icon = profile._icon;
+		this._checked = profile._checked; 
+		this._porder = profile._porder;
+		this._volumeRingerMode = profile._volumeRingerMode;
+		this._volumeRingtone = profile._volumeRingtone;
+		this._volumeNotification = profile._volumeNotification;
+		this._volumeMedia = profile._volumeMedia;
+		this._volumeAlarm = profile._volumeAlarm;
+		this._volumeSystem = profile._volumeSystem;
+		this._volumeVoice = profile._volumeVoice;
+		this._soundRingtoneChange = profile._soundRingtoneChange;
+		this._soundRingtone = profile._soundRingtone;
+		this._soundNotificationChange = profile._soundNotificationChange;
+		this._soundNotification = profile._soundNotification;
+		this._soundAlarmChange = profile._soundAlarmChange;
+		this._soundAlarm = profile._soundAlarm;
+		this._deviceAirplaneMode = profile._deviceAirplaneMode;
+		this._deviceMobileData = profile._deviceMobileData;
+		this._deviceMobileDataPrefs = profile._deviceMobileDataPrefs;
+		this._deviceWiFi = profile._deviceWiFi;
+		this._deviceBluetooth = profile._deviceBluetooth;
+		this._deviceGPS = profile._deviceGPS;
+		this._deviceScreenTimeout = profile._deviceScreenTimeout;
+		this._deviceBrightness = profile._deviceBrightness;
+		this._deviceWallpaperChange = profile._deviceWallpaperChange;
+		this._deviceWallpaper = profile._deviceWallpaper;
+		this._deviceRunApplicationChange = profile._deviceRunApplicationChange;
+		this._deviceRunApplicationPackageName = profile._deviceRunApplicationPackageName;
+		this._deviceAutosync = profile._deviceAutosync;
+		this._showInActivator = profile._showInActivator;
+		
+		this._iconBitmap = profile._iconBitmap;
+		this._preferencesIndicator = profile._preferencesIndicator;
+	}
+	
 	// getting icon identifier
 	public String getIconIdentifier()
 	{

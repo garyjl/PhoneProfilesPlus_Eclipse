@@ -67,6 +67,17 @@ public class Event {
 	    createEventPreferences();
 	}
 	
+	public void copyEvent(Event event)
+	{
+		this._id = event._id;
+		this._name = event._name;
+        this._type = event._type;
+        this._fkProfile = event._fkProfile;
+        this._status = event._status;
+        
+        copyEventPreferences(event);
+	}
+	
 	public void createEventPreferences()
 	{
 		//Log.e("Event.createEventPreferences","type="+_type);

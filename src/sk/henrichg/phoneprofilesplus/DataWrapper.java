@@ -362,6 +362,16 @@ public class DataWrapper {
 			return getProfileByIdFromDB(id);
 		}
 	}
+
+	public void updateProfile(Profile profile)
+	{
+		if (profile != null)
+		{
+			Profile origProfile = getProfileById(profile._id);
+			if (origProfile != null)
+				origProfile.copyProfile(profile);
+		}
+	}
 	
 	public void reloadProfilesData()
 	{
@@ -504,6 +514,16 @@ public class DataWrapper {
 
 			// when filter is set and profile not found, get profile from db
 			return getDatabaseHandler().getEvent(id);
+		}
+	}
+	
+	public void updateEvent(Event event)
+	{
+		if (event != null)
+		{
+			Event origEvent = getEventById(event._id);
+			if (origEvent != null)
+				origEvent.copyEvent(event);
 		}
 	}
 	

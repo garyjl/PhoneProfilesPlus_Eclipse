@@ -71,6 +71,13 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	private static ApplicationsCache applicationsCache;
 	private int editModeProfile;
 	private int editModeEvent;
+
+	private static final String SP_RESET_PREFERENCES_FRAGMENT = "editor_restet_preferences_fragment";
+	private static final String SP_RESET_PREFERENCES_FRAGMENT_DATA_ID = "editor_restet_preferences_fragment_data_id";
+	private static final String SP_RESET_PREFERENCES_FRAGMENT_EDIT_MODE = "editor_restet_preferences_fragment_edit_mode";
+	private static final int RESET_PREFERENCE_FRAGMENT_RESET_PROFILE = 1;
+	private static final int RESET_PREFERENCE_FRAGMENT_RESET_EVENT = 2;
+	private static final int RESET_PREFERENCE_FRAGMENT_REMOVE = 3;
 	
 	/**
 	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -128,7 +135,58 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 
 			if (savedInstanceState == null)
 				onStartProfilePreferences(null, EditorProfileListFragment.EDIT_MODE_EDIT, profilesFilterType);
-
+			else
+			{
+				// reset preferences fragment
+		    	SharedPreferences preferences = getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Activity.MODE_PRIVATE);
+		    	int resetMode = preferences.getInt(SP_RESET_PREFERENCES_FRAGMENT, 0);
+		    	if (resetMode == RESET_PREFERENCE_FRAGMENT_RESET_PROFILE)
+		    	{
+					// restart profile preferences fragmentu
+		    		long profile_id = preferences.getLong(SP_RESET_PREFERENCES_FRAGMENT_DATA_ID, 0);
+		    		int editMode =  preferences.getInt(SP_RESET_PREFERENCES_FRAGMENT_EDIT_MODE, EditorProfileListFragment.EDIT_MODE_UNDEFINED);
+					Bundle arguments = new Bundle();
+					arguments.putLong(GlobalData.EXTRA_PROFILE_ID, profile_id);
+					//arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
+					arguments.putInt(GlobalData.EXTRA_NEW_PROFILE_MODE, editMode);
+					arguments.putBoolean(GlobalData.EXTRA_PREFERENCES_ACTIVITY, false);
+					ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
+					fragment.setArguments(arguments);
+					getSupportFragmentManager().beginTransaction()
+							.replace(R.id.editor_detail_container, fragment).commit();
+		    	}
+		    	if (resetMode == RESET_PREFERENCE_FRAGMENT_RESET_EVENT)
+		    	{
+					// restart profile preferences fragmentu
+		    		long event_id = preferences.getLong(SP_RESET_PREFERENCES_FRAGMENT_DATA_ID, 0);
+		    		int editMode =  preferences.getInt(SP_RESET_PREFERENCES_FRAGMENT_EDIT_MODE, EditorProfileListFragment.EDIT_MODE_UNDEFINED);
+					Bundle arguments = new Bundle();
+					arguments.putLong(GlobalData.EXTRA_EVENT_ID, event_id);
+					//arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
+					arguments.putInt(GlobalData.EXTRA_NEW_EVENT_MODE, editMode);
+					arguments.putBoolean(GlobalData.EXTRA_PREFERENCES_ACTIVITY, false);
+					EventPreferencesFragment fragment = new EventPreferencesFragment();
+					fragment.setArguments(arguments);
+					getSupportFragmentManager().beginTransaction()
+							.replace(R.id.editor_detail_container, fragment).commit();
+		    	}
+		    	else
+		    	if (resetMode == RESET_PREFERENCE_FRAGMENT_REMOVE)
+		    	{
+					Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
+					if (fragment != null)
+					{
+						getSupportFragmentManager().beginTransaction()
+							.remove(fragment).commit();
+					}
+		    	}
+		    	// remove preferences
+		    	Editor editor = preferences.edit();
+		    	editor.remove(SP_RESET_PREFERENCES_FRAGMENT);
+		    	editor.remove(SP_RESET_PREFERENCES_FRAGMENT_DATA_ID);
+		    	editor.remove(SP_RESET_PREFERENCES_FRAGMENT_EDIT_MODE);
+				editor.commit();
+			}
 		}
 		else
 			mTwoPane = false;
@@ -1036,14 +1094,14 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	public void onStartProfilePreferences(Profile profile, int editMode, int filterType) {
 
 		editModeProfile = editMode;
+
+		onFinishProfilePreferencesActionMode();
 		
 		if (mTwoPane) {
 			// In two-pane mode, show the detail view in this activity by
 			// adding or replacing the detail fragment using a
 			// fragment transaction.
 
-			onFinishProfilePreferencesActionMode();
-			
 			if ((profile != null) || 
 				(editMode == EditorProfileListFragment.EDIT_MODE_INSERT) ||
 				(editMode == EditorProfileListFragment.EDIT_MODE_DUPLICATE))
@@ -1109,12 +1167,37 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			}
 			else
 			{
-				ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
+				Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
 				if (fragment != null)
 				{
 					getSupportFragmentManager().beginTransaction()
 						.remove(fragment).commit();
 				}
+			}
+		}
+		else
+		{
+	    	SharedPreferences preferences = getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Activity.MODE_PRIVATE);
+			
+			if ((newProfileMode != EditorProfileListFragment.EDIT_MODE_INSERT) &&
+			    (newProfileMode != EditorProfileListFragment.EDIT_MODE_DUPLICATE))
+			{
+				//TODO save into shared preferences, preferences fragment must loadPreferences 
+		    	Editor editor = preferences.edit();
+		    	editor.putInt(SP_RESET_PREFERENCES_FRAGMENT, RESET_PREFERENCE_FRAGMENT_RESET_PROFILE);
+		    	editor.putLong(SP_RESET_PREFERENCES_FRAGMENT_DATA_ID, profile._id);
+		    	editor.putInt(SP_RESET_PREFERENCES_FRAGMENT_EDIT_MODE, editModeProfile);
+				editor.commit();
+			}
+			else
+			{
+				//TODO save into shared preferences, preference fragment must by removed from
+				//     activity ?????
+		    	Editor editor = preferences.edit();
+		    	editor.putInt(SP_RESET_PREFERENCES_FRAGMENT, RESET_PREFERENCE_FRAGMENT_REMOVE);
+		    	editor.putLong(SP_RESET_PREFERENCES_FRAGMENT_DATA_ID, profile._id);
+		    	editor.putInt(SP_RESET_PREFERENCES_FRAGMENT_EDIT_MODE, editModeProfile);
+				editor.commit();
 			}
 		}
 	}
@@ -1124,6 +1207,9 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		EditorProfileListFragment fragment = (EditorProfileListFragment)getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
 		if (fragment != null)
 		{
+			// update profile, this rewrite profile in profileList
+			dataWrapper.updateProfile(profile);
+			
 			boolean newProfile = ((newProfileMode == EditorProfileListFragment.EDIT_MODE_INSERT) ||
 		              			  (newProfileMode == EditorProfileListFragment.EDIT_MODE_DUPLICATE));
 			fragment.updateListView(profile, newProfile);
@@ -1134,10 +1220,11 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			dataWrapper.getActivateProfileHelper().updateWidget();
 			
 		}
+		onRestartProfilePreferences(profile, newProfileMode);
 	}
 
 	public void onFinishProfilePreferencesActionMode() {
-		if (mTwoPane) {
+		//if (mTwoPane) {
 			Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
 			if (fragment != null)
 			{
@@ -1146,7 +1233,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 				else
 					((EventPreferencesFragment)fragment).finishActionMode(EventPreferencesFragment.BUTTON_CANCEL);
 			}
-		}
+		//}
 	}
 	
 	public void onPreferenceAttached(PreferenceScreen root, int xmlId) {
@@ -1154,7 +1241,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	}
 	
 	public void onFinishEventPreferencesActionMode() {
-		if (mTwoPane) {
+		//if (mTwoPane) {
 			Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
 			if (fragment != null)
 			{
@@ -1163,7 +1250,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 				else
 					((EventPreferencesFragment)fragment).finishActionMode(EventPreferencesFragment.BUTTON_CANCEL);
 			}
-		}
+		//}
 	}
 
 	public void onStartEventPreferences(Event event, int editMode, int filterType, int orderType) {
@@ -1229,10 +1316,14 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		EditorEventListFragment fragment = (EditorEventListFragment)getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
 		if (fragment != null)
 		{
+			// update event, this rewrite event in eventList
+			dataWrapper.updateEvent(event);
+			
 			boolean newEvent = ((newEventMode == EditorEventListFragment.EDIT_MODE_INSERT) ||
          			            (newEventMode == EditorEventListFragment.EDIT_MODE_DUPLICATE));
 			fragment.updateListView(event, newEvent);
 		}
+		onRestartEventPreferences(event, newEventMode);
 	}
 
 	public void onRestartEventPreferences(Event event, int newEventMode) {
@@ -1259,6 +1350,31 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 					getSupportFragmentManager().beginTransaction()
 						.remove(fragment).commit();
 				}
+			}
+		}
+		else
+		{
+	    	SharedPreferences preferences = getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Activity.MODE_PRIVATE);
+			
+			if ((newEventMode != EditorEventListFragment.EDIT_MODE_INSERT) &&
+			    (newEventMode != EditorEventListFragment.EDIT_MODE_DUPLICATE))
+			{
+				//TODO save into shared preferences, preferences fragment must loadPreferences 
+		    	Editor editor = preferences.edit();
+		    	editor.putInt(SP_RESET_PREFERENCES_FRAGMENT, RESET_PREFERENCE_FRAGMENT_RESET_EVENT);
+		    	editor.putLong(SP_RESET_PREFERENCES_FRAGMENT_DATA_ID, event._id);
+		    	editor.putInt(SP_RESET_PREFERENCES_FRAGMENT_EDIT_MODE, editModeEvent);
+				editor.commit();
+			}
+			else
+			{
+				//TODO save into shared preferences, preference fragment must by removed from
+				//     activity ?????
+		    	Editor editor = preferences.edit();
+		    	editor.putInt(SP_RESET_PREFERENCES_FRAGMENT, RESET_PREFERENCE_FRAGMENT_REMOVE);
+		    	editor.putLong(SP_RESET_PREFERENCES_FRAGMENT_DATA_ID, event._id);
+		    	editor.putInt(SP_RESET_PREFERENCES_FRAGMENT_EDIT_MODE, editModeEvent);
+				editor.commit();
 			}
 		}
 	}
