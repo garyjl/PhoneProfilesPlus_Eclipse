@@ -39,6 +39,7 @@ public class Profile {
 	public String _deviceRunApplicationPackageName;
 	public int _deviceAutosync;
 	public boolean _showInActivator;
+	public int _deviceAutoRotate;
 	
 	public Bitmap _iconBitmap;
 	public Bitmap _preferencesIndicator;
@@ -81,7 +82,8 @@ public class Profile {
 			   	   boolean deviceRunApplicationChange,
 			   	   String deviceRunApplicationPackageName,
 			   	   int deviceAutosync,
-			   	   boolean showInActivator)
+			   	   boolean showInActivator,
+			   	   int deviceAutoRotate)
 	{
 		this._id = id;
 		this._name = name;
@@ -115,6 +117,7 @@ public class Profile {
 		this._deviceRunApplicationPackageName = deviceRunApplicationPackageName;
 		this._deviceAutosync = deviceAutosync;
 		this._showInActivator = showInActivator;
+		this._deviceAutoRotate = deviceAutoRotate;
 		
 		this._iconBitmap = null;
 		this._preferencesIndicator = null;
@@ -151,7 +154,8 @@ public class Profile {
 			   	   boolean deviceRunApplicationChange,
 			   	   String deviceRunApplicationPackageName,
 			   	   int deviceAutosync,
-			   	   boolean showInActivator)
+			   	   boolean showInActivator,
+			   	   int deviceAutoRotate)
 	{
 		this._name = name;
 		this._icon = icon;
@@ -184,6 +188,7 @@ public class Profile {
 		this._deviceRunApplicationPackageName = deviceRunApplicationPackageName;
 		this._deviceAutosync = deviceAutosync;
 		this._showInActivator = showInActivator;
+		this._deviceAutoRotate = deviceAutoRotate;
 		
 		this._iconBitmap = null;
 		this._preferencesIndicator = null;
@@ -223,6 +228,7 @@ public class Profile {
 		this._deviceRunApplicationPackageName = profile._deviceRunApplicationPackageName;
 		this._deviceAutosync = profile._deviceAutosync;
 		this._showInActivator = profile._showInActivator;
+		this._deviceAutoRotate = profile._deviceAutoRotate;
 		
 		this._iconBitmap = profile._iconBitmap;
 		this._preferencesIndicator = profile._preferencesIndicator;

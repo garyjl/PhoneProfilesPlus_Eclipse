@@ -159,6 +159,12 @@
 			henrichg:bAutomatic="0"
 			android:title="@string/profile_preferences_deviceBrightness"
 			android:summary="@string/brightness_pref_dialog_no_change_chb" />   
+		<ListPreference android:title="@string/profile_preferences_deviceAutoRotation"
+            android:summary="@string/array_pref_no_change"
+            android:key="deviceAutoRotation"
+            android:defaultValue="0"
+            android:entries="@array/hardwareModeArray"
+            android:entryValues="@array/hardwareModeValues" />        
 		<CheckBoxPreference 
 		    android:key="deviceRunApplicationChange"
 		    android:title="@string/profile_preferences_deviceRunApplicationChange"

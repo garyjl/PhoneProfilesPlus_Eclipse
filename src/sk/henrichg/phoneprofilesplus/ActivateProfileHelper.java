@@ -462,6 +462,33 @@ public class ActivateProfileHelper {
 			window.setAttributes(layoutParams);
 		}
 		
+		// nahodenie auto-rotate
+		boolean _isAutoRotate = 
+				(Settings.System.getInt(context.getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, 0) == 1);
+		boolean _setAutoRotate = false;
+		switch (profile._deviceAutoRotate) {
+			case 1:
+				if (!_isAutoRotate)
+				{
+					_isAutoRotate = true;
+					_setAutoRotate = true;
+				}
+				break;
+			case 2:
+				if (_isAutoRotate)
+				{
+					_isAutoRotate = false;
+					_setAutoRotate = true;
+				}
+				break;
+			case 3:
+				_isAutoRotate = !_isAutoRotate;
+				_setAutoRotate = true;
+				break;
+		}
+		if (_setAutoRotate)
+			Settings.System.putInt(context.getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, _isAutoRotate ? 1 : 0);
+		
 		// nahodenie pozadia
 		if (profile._deviceWallpaperChange)
 		{

@@ -220,5 +220,6 @@
     <string name="import_profiles_from_phoneprofiles_alert_message">Import from PhoneProfiles</string>
     <string name="alert_button_yes">Yes</string>
     <string name="alert_button_no">No</string>
+    <string name="profile_preferences_deviceAutoRotation">Auto. rotation</string>
     	
 </resources>

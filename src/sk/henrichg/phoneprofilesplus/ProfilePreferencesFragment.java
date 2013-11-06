@@ -167,7 +167,8 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 						   origProfile._deviceRunApplicationChange,
 						   origProfile._deviceRunApplicationPackageName,
 						   origProfile._deviceAutosync,
-						   origProfile._showInActivator);
+						   origProfile._showInActivator,
+						   origProfile._deviceAutoRotate);
 			profile_id = 0;
 		}
 		else
@@ -315,6 +316,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	        editor.putString(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME, profile._deviceRunApplicationPackageName);
 	        editor.putString(GlobalData.PREF_PROFILE_DEVICE_AUTOSYNC, Integer.toString(profile._deviceAutosync));
 	        editor.putBoolean(GlobalData.PREF_PROFILE_SHOW_IN_ACTIVATOR, profile._showInActivator);
+	        editor.putString(GlobalData.PREF_PROFILE_DEVICE_AUTOROTATE, Integer.toString(profile._deviceAutoRotate));
 			editor.commit();
     	}
 		
@@ -357,6 +359,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
     		profile._deviceRunApplicationPackageName = "-";
     	profile._deviceAutosync = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_AUTOSYNC, ""));
     	profile._showInActivator = preferences.getBoolean(GlobalData.PREF_PROFILE_SHOW_IN_ACTIVATOR, true);
+    	profile._deviceAutoRotate = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_AUTOROTATE, ""));
 
     	//Log.d("ProfilePreferencesFragment.onPause", "profile activated="+profile.getChecked());
     	
@@ -431,7 +434,8 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 			key.equals(GlobalData.PREF_PROFILE_DEVICE_WIFI) ||
 			key.equals(GlobalData.PREF_PROFILE_DEVICE_BLUETOOTH) ||
 			key.equals(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA) ||
-			key.equals(GlobalData.PREF_PROFILE_DEVICE_GPS))
+			key.equals(GlobalData.PREF_PROFILE_DEVICE_GPS) ||
+			key.equals(GlobalData.PREF_PROFILE_DEVICE_AUTOROTATE))
 		{
 			boolean canChange = GlobalData.hardwareCheck(key, context);
 			if (!canChange)
@@ -492,6 +496,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	        setSummary(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA, profile._deviceMobileData);
 	        setSummary(GlobalData.PREF_PROFILE_DEVICE_GPS, profile._deviceGPS);
 	        setSummary(GlobalData.PREF_PROFILE_DEVICE_AUTOSYNC, profile._deviceAutosync);
+	        setSummary(GlobalData.PREF_PROFILE_DEVICE_AUTOROTATE, profile._deviceAutoRotate);
 			
         }
 	}

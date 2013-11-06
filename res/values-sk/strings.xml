@@ -220,5 +220,6 @@
     <string name="import_profiles_from_phoneprofiles_alert_message">Importovať z PhoneProfiles</string>
     <string name="alert_button_yes">Áno</string>
     <string name="alert_button_no">Nie</string>
+    <string name="profile_preferences_deviceAutoRotation">Auto. rotácia</string>
     		
 </resources>

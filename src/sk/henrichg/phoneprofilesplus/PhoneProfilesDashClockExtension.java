@@ -149,6 +149,11 @@ public class PhoneProfilesDashClockExtension extends DashClockExtension {
 				else
 					indicator1 = addIntoIndicator(indicator1, "brt");
 			}
+			// autorotation
+			if ((profile._deviceAutoRotate == 1) || (profile._deviceAutoRotate == 3))
+				indicator1 = addIntoIndicator(indicator1, "ar1");
+			if (profile._deviceAutoRotate == 2)
+				indicator1 = addIntoIndicator(indicator1, "ar0");
 			// run application
 			if (profile._deviceRunApplicationChange)
 				indicator1 = addIntoIndicator(indicator1, "rap");
