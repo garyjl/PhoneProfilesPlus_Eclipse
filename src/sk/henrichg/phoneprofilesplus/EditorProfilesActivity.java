@@ -580,7 +580,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
 		if ((fragment != null) && (fragment instanceof EditorEventListFragment))
 		{
-			Log.e("EditorProfilesActivity.changeEventOrder","xxx");
+			//Log.e("EditorProfilesActivity.changeEventOrder","xxx");
 			eventsOrderType = EditorEventListFragment.ORDER_TYPE_EVENT_NAME;
 			switch (position)
 			{
