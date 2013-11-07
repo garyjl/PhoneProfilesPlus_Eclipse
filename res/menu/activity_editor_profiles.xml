@@ -3,7 +3,7 @@
         android:title="@string/menu_run_events"
         android:orderInCategory="200"
         android:showAsAction="never"
-	    android:icon="?attr/actionSettingsIcon" />
+	    android:icon="?attr/actionEventRunIcon" />
    	<item android:id="@+id/menu_settings"
         android:title="@string/menu_settings"
         android:orderInCategory="210"

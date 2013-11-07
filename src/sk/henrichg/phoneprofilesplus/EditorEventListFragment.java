@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import sk.henrichg.phoneprofilesplus.EventPreferencesFragment.OnRedrawEventListFragment;
+
 import com.actionbarsherlock.app.SherlockFragment;
 
 import android.os.AsyncTask;
@@ -308,6 +310,31 @@ public class EditorEventListFragment extends SherlockFragment {
 		// Notify the active callbacks interface (the activity, if the
 		// fragment is attached to one) one must start profile preferences
 		onStartEventPreferencesCallback.onStartEventPreferences(_event, editMode, filterType, orderType);
+	}
+	
+	public void runStopEvent(Event event)
+	{
+		if (event._status == Event.ESTATUS_STOP)
+		{
+			// pause event
+			event.pauseEvent(EditorProfilesActivity.dataWrapper, false); //no activate return profile
+			if (event._status == Event.ESTATUS_PAUSE)
+			{
+				// event paused redraw event list
+				updateListView(event, false);
+				//TODO - save status into db in Event.pauseEvent
+				databaseHandler.updateEvent(event);
+			}
+		}
+		else
+		{
+			// stop event
+			event.stopEvent(EditorProfilesActivity.dataWrapper, false); //no activate return profile
+			// redraw event list
+			updateListView(event, false);
+			//TODO - save status into db in Event.pauseEvent
+			databaseHandler.updateEvent(event);
+		}
 	}
 
 	public void duplicateEvent(Event origEvent)

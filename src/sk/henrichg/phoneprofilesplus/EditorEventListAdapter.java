@@ -213,6 +213,9 @@ public class EditorEventListAdapter extends BaseAdapter
 		  TextView eventPreferencesDescription;
 		  ImageView profileIndicator;
 		  ImageView eventStatus;
+		  ImageView eventItemRunStop;
+		  ImageView eventItemDuplicate;
+		  ImageView eventItemDelete;
 		  int position;
 		}
 	
@@ -235,6 +238,9 @@ public class EditorEventListAdapter extends BaseAdapter
             holder.profileName = (TextView)vi.findViewById(R.id.event_list_item_profile_name);
             holder.profileIcon = (ImageView)vi.findViewById(R.id.event_list_item_profile_icon);
             holder.eventStatus = (ImageView)vi.findViewById(R.id.event_list_item_status);
+  		    holder.eventItemRunStop = (ImageView)vi.findViewById(R.id.event_list_item_run_stop_event);
+  		    holder.eventItemDuplicate = (ImageView)vi.findViewById(R.id.event_list_item_duplicate);
+  		    holder.eventItemDelete = (ImageView)vi.findViewById(R.id.event_list_item_delete);
   		    if (GlobalData.applicationEditorPrefIndicator)
   		    {
   		    	holder.eventPreferencesDescription  = (TextView)vi.findViewById(R.id.event_list_item_preferences_description);
@@ -316,10 +322,35 @@ public class EditorEventListAdapter extends BaseAdapter
 				holder.profileIndicator.setImageResource(R.drawable.ic_empty);
 			}
         }
+
+        holder.eventItemRunStop.setTag(R.id.event_list_item_run_stop_event);
+        // change button icon by event status
+        if (event._status == Event.ESTATUS_STOP)
+        {
+           	if (GlobalData.applicationTheme.equals("dark"))
+        		holder.eventItemRunStop.setImageResource(R.drawable.ic_action_event_run_dark);
+           	else
+        		holder.eventItemRunStop.setImageResource(R.drawable.ic_action_event_run);
+        }
+        else
+        {
+           	if (GlobalData.applicationTheme.equals("dark"))
+        		holder.eventItemRunStop.setImageResource(R.drawable.ic_action_event_stop_dark);
+           	else
+        		holder.eventItemRunStop.setImageResource(R.drawable.ic_action_event_stop);
+        }
+        holder.eventItemRunStop.setOnClickListener(new OnClickListener() {
+
+				public void onClick(View v) {
+					editIconClicked = true;
+					//Log.d("EditorProfileListAdapter.onClick", "duplicate");
+					((EditorEventListFragment)fragment).finishEventPreferencesActionMode();
+					((EditorEventListFragment)fragment).runStopEvent(event);
+				}
+			}); 
         
-		ImageView eventItemDuplicate = (ImageView)vi.findViewById(R.id.event_list_item_duplicate);
-		eventItemDuplicate.setTag(R.id.event_list_item_duplicate);
-		eventItemDuplicate.setOnClickListener(new OnClickListener() {
+        holder.eventItemDuplicate.setTag(R.id.event_list_item_duplicate);
+        holder.eventItemDuplicate.setOnClickListener(new OnClickListener() {
 
 				public void onClick(View v) {
 					editIconClicked = true;
@@ -329,9 +360,8 @@ public class EditorEventListAdapter extends BaseAdapter
 				}
 			}); 
 
-		ImageView eventItemDelete = (ImageView)vi.findViewById(R.id.event_list_item_delete);
-		eventItemDelete.setTag(R.id.event_list_item_delete);
-		eventItemDelete.setOnClickListener(new OnClickListener() {
+        holder.eventItemDelete.setTag(R.id.event_list_item_delete);
+        holder.eventItemDelete.setOnClickListener(new OnClickListener() {
 
 				public void onClick(View v) {
 					editIconClicked = true;

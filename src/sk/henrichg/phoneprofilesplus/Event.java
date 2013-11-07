@@ -244,6 +244,10 @@ public class Event {
 	
 	public void pauseEvent(DataWrapper dataWrapper, boolean activateReturnProfile)
 	{
+		if (!this.isRunable())
+			// event is not runnable, no pause it
+			return;
+		
 		List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
 
 		// test whenever event exists in timeline
