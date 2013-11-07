@@ -54,7 +54,7 @@
         android:name="sk.henrichg.phoneprofilesplus.GlobalData" >
         <activity
             android:name=".ActivateProfileActivity"
-            android:label="@string/title_activity_phone_profiles"
+            android:label="@string/title_activity_activator"
             android:theme="@style/PopupTheme"
             android:configChanges="locale|layoutDirection" >
             <intent-filter>
@@ -64,7 +64,7 @@
         </activity>
         <activity
             android:name=".EditorProfilesActivity"
-            android:label="@string/title_activity_phone_profiles"
+            android:label="@string/title_activity_editor"
             android:configChanges="locale|layoutDirection" >
         </activity>
         <activity

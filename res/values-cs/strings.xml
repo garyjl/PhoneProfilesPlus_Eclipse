@@ -222,5 +222,7 @@
     <string name="alert_button_yes">Ano</string>
     <string name="alert_button_no">Ne</string>
     <string name="profile_preferences_deviceAutoRotation">Auto. rotace</string>
+    <string name="title_activity_activator">Aktivátor</string>
+    <string name="title_activity_editor">Editor</string>
     		
 </resources>

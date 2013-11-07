@@ -49,6 +49,8 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
+
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -266,8 +268,6 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
             }
  
             public void onDrawerOpened(View drawerView) {
-                // Set the title on the action when drawer open
-                //getSupportActionBar().setTitle(mDrawerTitle);
                 super.onDrawerOpened(drawerView);
             }
         };
@@ -529,8 +529,9 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
         }
         drawerListView.setItemChecked(position, true);
  
-        // Get the title followed by the position
+        // Get the title and icon followed by the position
         setTitle(drawerItemsTitle[position]);
+        setIcon(drawerItemsIcon[position]);
         
         // show/hide order
         if (position < 3)
@@ -1067,8 +1068,11 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	
 	 @Override
 	 public void setTitle(CharSequence title) {
-	     //mTitle = title;
 	     getSupportActionBar().setTitle(title);
+	 }	
+
+	 public void setIcon(int iconRes) {
+	     getSupportActionBar().setIcon(iconRes);
 	 }	
 	 
 	 private void setStatusBarTitle()
