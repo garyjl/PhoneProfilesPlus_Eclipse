@@ -223,5 +223,7 @@
     <string name="profile_preferences_deviceAutoRotation">Auto. rotácia</string>
     <string name="title_activity_activator">Aktivátor</string>
     <string name="title_activity_editor">Editor</string>
+    <string name="menu_run_events">Povol beh udalostí</string>
+    <string name="menu_stop_events">Zastav udalosti</string>
     		
 </resources>
