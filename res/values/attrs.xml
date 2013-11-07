@@ -50,5 +50,9 @@
     <attr name="navigationDrawerText" format="reference"/>
     <attr name="filterStatusBarBackground" format="reference" />
     <attr name="editorDrawerSpinner" format="reference" />
+    <attr name="actionEventRunIcon" format="reference" />
+    <attr name="actionEventStopIcon" format="reference" />
+    <attr name="actionGlobalEventRunIcon" format="reference" />
+    <attr name="actionGlobalEventStopIcon" format="reference" />
     
 </resources>

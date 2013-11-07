@@ -51,6 +51,10 @@
         <item name="navigationDrawerBackground">@drawable/abs__ab_solid_dark_holo</item> 
         <item name="filterStatusBarBackground">@color/filterStatusBarBackground_phoneprofilestheme</item> 
         <item name="editorDrawerSpinner">@style/editorDrawerSpinnerStyle</item> 
+	    <item name="actionEventRunIcon">@drawable/ic_action_event_run</item>
+	    <item name="actionEventStopIcon">@drawable/ic_action_event_stop</item>
+	    <item name="actionGlobalEventRunIcon">@drawable/ic_action_global_event_run_dark</item>
+	    <item name="actionGlobalEventStopIcon">@drawable/ic_action_global_event_stop_dark</item>
         
         <item name="actionModeCloseButtonStyle">@style/NoCloseButton</item>
         
