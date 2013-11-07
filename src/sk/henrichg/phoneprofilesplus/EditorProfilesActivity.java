@@ -30,6 +30,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -78,6 +79,9 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	private static final int RESET_PREFERENCE_FRAGMENT_RESET_PROFILE = 1;
 	private static final int RESET_PREFERENCE_FRAGMENT_RESET_EVENT = 2;
 	private static final int RESET_PREFERENCE_FRAGMENT_REMOVE = 3;
+	
+	private static final String SP_EDITOR_DRAWER_SELECTED_ITEM = "editor_drawer_selected_item";
+	private static final String SP_EDITOR_ORDER_SELECTED_ITEM = "editor_order_selected_item";
 	
 	/**
 	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -337,10 +341,13 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	    navigationAdapter.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
 	*/	
 
-		// select first drawer item
-        if (savedInstanceState == null) {
-            selectDrawerItem(1, true); // show profile filter FILTER_TYPE_PROFILES_SHOW_IN_ACTIVATOR 
-        }
+		// set drawer item and order
+    	SharedPreferences preferences = getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Activity.MODE_PRIVATE);
+    	drawerSelectedItem = preferences.getInt(SP_EDITOR_DRAWER_SELECTED_ITEM, 1);
+    	orderSelectedItem = preferences.getInt(SP_EDITOR_ORDER_SELECTED_ITEM, 0);
+    	selectDrawerItem(drawerSelectedItem, false);
+    	changeEventOrder(orderSelectedItem);
+        
         
 		//Log.e("EditorProfilesActivity.onCreate", "xxxx");
 		
@@ -440,6 +447,12 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
     private void selectDrawerItem(int position, boolean removePreferences) {
  
     	drawerSelectedItem = position;
+    	
+    	// save into shared preferences
+    	SharedPreferences preferences = getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Activity.MODE_PRIVATE);
+    	Editor editor = preferences.edit();
+    	editor.putInt(SP_EDITOR_DRAWER_SELECTED_ITEM, drawerSelectedItem);
+		editor.commit();
     	
     	Fragment fragment;
 	    Bundle arguments;
@@ -558,9 +571,16 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
     {
     	orderSelectedItem = position;
     	
+    	// save into shared preferences
+    	SharedPreferences preferences = getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Activity.MODE_PRIVATE);
+    	Editor editor = preferences.edit();
+    	editor.putInt(SP_EDITOR_ORDER_SELECTED_ITEM, orderSelectedItem);
+		editor.commit();
+    	
 		Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
 		if ((fragment != null) && (fragment instanceof EditorEventListFragment))
 		{
+			Log.e("EditorProfilesActivity.changeEventOrder","xxx");
 			eventsOrderType = EditorEventListFragment.ORDER_TYPE_EVENT_NAME;
 			switch (position)
 			{
@@ -577,6 +597,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			if (GlobalData.applicationEditorAutoCloseDrawer)
 				drawerLayout.closeDrawer(drawerRoot);
 		}
+		
+		orderSpinner.setSelection(orderSelectedItem);
     	
     }
 	
@@ -1052,17 +1074,16 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 	    super.onRestoreInstanceState(savedInstanceState);
-	    drawerSelectedItem = savedInstanceState.getInt("editor_drawer_selected_item", -1);
+	/*    drawerSelectedItem = savedInstanceState.getInt("editor_drawer_selected_item", -1);
 	    selectDrawerItem(drawerSelectedItem, false);
 	    orderSelectedItem = savedInstanceState.getInt("editor_order_selected_item", -1);
-	    changeEventOrder(orderSelectedItem);
+	    changeEventOrder(orderSelectedItem);  */
 	}
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-	    // Save the values you need from your textview into "outState"-object
-	    outState.putInt("editor_drawer_selected_item", drawerSelectedItem);
-	    outState.putInt("editor_order_selected_item", orderSelectedItem);
+	/*    outState.putInt("editor_drawer_selected_item", drawerSelectedItem);
+	    outState.putInt("editor_order_selected_item", orderSelectedItem); */
 	    super.onSaveInstanceState(outState);
 	}	
 	
@@ -1184,7 +1205,6 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			if ((newProfileMode != EditorProfileListFragment.EDIT_MODE_INSERT) &&
 			    (newProfileMode != EditorProfileListFragment.EDIT_MODE_DUPLICATE))
 			{
-				//TODO save into shared preferences, preferences fragment must loadPreferences 
 		    	Editor editor = preferences.edit();
 		    	editor.putInt(SP_RESET_PREFERENCES_FRAGMENT, RESET_PREFERENCE_FRAGMENT_RESET_PROFILE);
 		    	editor.putLong(SP_RESET_PREFERENCES_FRAGMENT_DATA_ID, profile._id);
@@ -1193,8 +1213,6 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			}
 			else
 			{
-				//TODO save into shared preferences, preference fragment must by removed from
-				//     activity ?????
 		    	Editor editor = preferences.edit();
 		    	editor.putInt(SP_RESET_PREFERENCES_FRAGMENT, RESET_PREFERENCE_FRAGMENT_REMOVE);
 		    	editor.putLong(SP_RESET_PREFERENCES_FRAGMENT_DATA_ID, profile._id);
@@ -1361,7 +1379,6 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			if ((newEventMode != EditorEventListFragment.EDIT_MODE_INSERT) &&
 			    (newEventMode != EditorEventListFragment.EDIT_MODE_DUPLICATE))
 			{
-				//TODO save into shared preferences, preferences fragment must loadPreferences 
 		    	Editor editor = preferences.edit();
 		    	editor.putInt(SP_RESET_PREFERENCES_FRAGMENT, RESET_PREFERENCE_FRAGMENT_RESET_EVENT);
 		    	editor.putLong(SP_RESET_PREFERENCES_FRAGMENT_DATA_ID, event._id);
@@ -1370,8 +1387,6 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			}
 			else
 			{
-				//TODO save into shared preferences, preference fragment must by removed from
-				//     activity ?????
 		    	Editor editor = preferences.edit();
 		    	editor.putInt(SP_RESET_PREFERENCES_FRAGMENT, RESET_PREFERENCE_FRAGMENT_REMOVE);
 		    	editor.putLong(SP_RESET_PREFERENCES_FRAGMENT_DATA_ID, event._id);
