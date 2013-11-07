@@ -1,7 +1,6 @@
 package sk.henrichg.phoneprofilesplus;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 import android.app.Activity;
 import android.app.AlertDialog;

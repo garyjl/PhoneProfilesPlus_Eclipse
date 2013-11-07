@@ -20,7 +20,6 @@ import sk.henrichg.phoneprofilesplus.PreferenceListFragment.OnPreferenceAttached
 import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnRedrawProfileListFragment;
 import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnRestartProfilePreferences;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import android.os.AsyncTask;
@@ -31,7 +30,6 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -344,7 +342,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
             selectDrawerItem(1, true); // show profile filter FILTER_TYPE_PROFILES_SHOW_IN_ACTIVATOR 
         }
         
-		Log.e("EditorProfilesActivity.onCreate", "xxxx");
+		//Log.e("EditorProfilesActivity.onCreate", "xxxx");
 		
 		
 	}
@@ -370,7 +368,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 
 		super.onDestroy();
 
-		Log.e("EditorProfilesActivity.onDestroy","xxx");
+		//Log.e("EditorProfilesActivity.onDestroy","xxx");
 	
 	}
 	
@@ -652,7 +650,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		else
 		if (requestCode == GlobalData.REQUEST_CODE_REMOTE_EXPORT)
 		{
-			Log.e("EditorProfilesActivity.onActivityResult","resultCode="+resultCode);
+			//Log.e("EditorProfilesActivity.onActivityResult","resultCode="+resultCode);
 
 			if (resultCode == RESULT_OK)
 			{

@@ -18,7 +18,6 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.mobeta.android.dslv.DragSortListView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -135,7 +134,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		
 		setHasOptionsMenu(true);
 
-		Log.e("EditorProfileListFragment.onCreate", "xxxx");
+		//Log.e("EditorProfileListFragment.onCreate", "xxxx");
 		
 	}
 	
@@ -151,7 +150,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		else
 			rootView = inflater.inflate(R.layout.editor_profile_list_no_header, container, false); 
 
-		Log.e("EditorProfileListFragment.onCreateView", "xxxx");
+		//Log.e("EditorProfileListFragment.onCreateView", "xxxx");
 		
 		return rootView;
 	}
@@ -160,7 +159,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		doOnViewCreated(view, savedInstanceState);
 
-		Log.e("EditorProfileListFragment.onViewCreated", "xxxx");
+		//Log.e("EditorProfileListFragment.onViewCreated", "xxxx");
 
 		super.onViewCreated(view, savedInstanceState);
 	}
@@ -304,7 +303,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		
 		super.onDestroy();
 		
-		Log.e("EditorProfileListFragment.onDestroy","xxx");
+		//Log.e("EditorProfileListFragment.onDestroy","xxx");
 	}
 	
 	@Override

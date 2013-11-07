@@ -15,7 +15,6 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -135,7 +134,7 @@ public class EditorEventListFragment extends SherlockFragment {
 		
 		setHasOptionsMenu(true);
 
-		Log.e("EditorEventListFragment.onCreate", "xxxx");
+		//Log.e("EditorEventListFragment.onCreate", "xxxx");
 		
 	}
 	
@@ -145,7 +144,7 @@ public class EditorEventListFragment extends SherlockFragment {
 		
 		rootView = inflater.inflate(R.layout.editor_event_list, container, false); 
 
-		Log.e("EditorEventListFragment.onCreateView", "xxxx");
+		//Log.e("EditorEventListFragment.onCreateView", "xxxx");
 		
 		return rootView;
 	}
@@ -153,7 +152,7 @@ public class EditorEventListFragment extends SherlockFragment {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		doOnViewCreated(view, savedInstanceState);
-		Log.e("EditorEventListFragment.onViewCreated", "xxxx");
+		//Log.e("EditorEventListFragment.onViewCreated", "xxxx");
 		super.onViewCreated(view, savedInstanceState);
 	}
 	
@@ -237,7 +236,7 @@ public class EditorEventListFragment extends SherlockFragment {
 		
 		super.onDestroy();
 
-		Log.e("EditorEventListFragment.onDestroy","xxx");
+		//Log.e("EditorEventListFragment.onDestroy","xxx");
 		
 	}
 	

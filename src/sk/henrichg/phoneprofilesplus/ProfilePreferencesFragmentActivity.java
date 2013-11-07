@@ -10,7 +10,6 @@ import com.actionbarsherlock.view.MenuItem;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceScreen;
-import android.util.Log;
 import android.view.KeyEvent;
  
 public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity

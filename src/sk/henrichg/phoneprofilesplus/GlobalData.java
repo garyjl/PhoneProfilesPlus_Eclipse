@@ -2,11 +2,8 @@ package sk.henrichg.phoneprofilesplus;
 
 import com.stericson.RootTools.RootTools;
 
-import android.app.ActivityManager;
-import android.app.ActivityManager.RunningServiceInfo;
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
