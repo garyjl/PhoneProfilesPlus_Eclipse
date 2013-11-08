@@ -272,7 +272,10 @@ public class EditorEventListAdapter extends BaseAdapter
        			statusRes = R.drawable.ic_event_status_pause;
        			break;
        		case Event.ESTATUS_STOP:
-       			statusRes = R.drawable.ic_event_status_stop;
+       			if (event.isRunable())
+       				statusRes = R.drawable.ic_event_status_stop;
+       			else
+       				statusRes = R.drawable.ic_event_status_stop_not_runnable;
        			break;
        	}
    		holder.eventStatus.setImageResource(statusRes);

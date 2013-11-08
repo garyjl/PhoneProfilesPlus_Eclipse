@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
@@ -29,6 +30,7 @@ public class EditorEventListFragment extends SherlockFragment {
 	private List<Event> eventList;
 	private EditorEventListAdapter eventListAdapter;
 	private ListView listView;
+	private LinearLayout eventsRunStopIndicator;
 	private DatabaseHandler databaseHandler;
 	
 	public static final int EDIT_MODE_UNDEFINED = 0;
@@ -167,6 +169,7 @@ public class EditorEventListFragment extends SherlockFragment {
 		// az tu mame layout, tak mozeme ziskat view-y
 		listView = (ListView)getSherlockActivity().findViewById(R.id.editor_events_list);
 		listView.setEmptyView(getSherlockActivity().findViewById(R.id.editor_events_list_empty));
+		eventsRunStopIndicator = (LinearLayout)getSherlockActivity().findViewById(R.id.editor_events_list_run_stop_indicator);
 		
 		final EditorEventListFragment fragment = this;
 
@@ -212,6 +215,8 @@ public class EditorEventListFragment extends SherlockFragment {
 			}
 			
 		}); 
+		
+        setEventsRunStopIndicator();
 		
 		//Log.d("EditorEventListFragment.onActivityCreated", "xxx");
         
@@ -554,5 +559,13 @@ public class EditorEventListFragment extends SherlockFragment {
 		    return res;
 	    }
 	}
+
+    public void setEventsRunStopIndicator()
+    {
+		if (GlobalData.getGlobalEventsRuning(getSherlockActivity().getBaseContext()))
+			eventsRunStopIndicator.setBackgroundColor(0xFF00FF00);
+		else
+			eventsRunStopIndicator.setBackgroundColor(0xFFFF0000);
+    }
 	
 }

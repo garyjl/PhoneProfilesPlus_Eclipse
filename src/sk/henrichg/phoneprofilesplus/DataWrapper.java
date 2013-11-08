@@ -9,7 +9,7 @@ import android.provider.Settings;
 
 public class DataWrapper {
 
-	private Context context = null;
+	public Context context = null;
 	private boolean forGUI = false;
 	private boolean monochrome = false;
 	private int monochromeValue = 0xFF;

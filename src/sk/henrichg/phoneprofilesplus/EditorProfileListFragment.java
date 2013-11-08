@@ -25,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -728,6 +729,5 @@ public class EditorProfileListFragment extends SherlockFragment {
 	{
 	    Collections.sort(profileList, new ByPOrderComparator());
 	}
-	
 
 }

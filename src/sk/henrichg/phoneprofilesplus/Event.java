@@ -223,6 +223,14 @@ public class Event {
 	
 	public void startEvent(DataWrapper dataWrapper)
 	{
+		if (GlobalData.getGlobalEventsRuning(dataWrapper.context))
+			// events are globally stopped
+			return;
+		
+		if (!this.isRunable())
+			// event is not runnable, no pause it
+			return;
+		
 		List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
 		
 		EventTimeline eventTimeline = new EventTimeline();
@@ -244,6 +252,10 @@ public class Event {
 	
 	public void pauseEvent(DataWrapper dataWrapper, boolean activateReturnProfile)
 	{
+		if (GlobalData.getGlobalEventsRuning(dataWrapper.context))
+			// events are globally stopped
+			return;
+
 		if (!this.isRunable())
 			// event is not runnable, no pause it
 			return;

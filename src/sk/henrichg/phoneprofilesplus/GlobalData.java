@@ -5,6 +5,7 @@ import com.stericson.RootTools.RootTools;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -108,6 +109,8 @@ public class GlobalData extends Application {
     public static final String PREF_APPLICATION_WIDGET_LIST_ICON_LIGHTNESS = "applicationWidgetListIconLightness";
 	public static final String PREF_APPLICATION_EDITOR_AUTO_CLOSE_DRAWER = "applicationEditorAutoCloseDrawer";
 
+	private static final String PREF_GLOBAL_EVENTS_RUN_STOP = "globalEventsRunStop";
+	
     public static boolean applicationStartOnBoot;
     public static boolean applicationActivate;
     public static boolean applicationActivateWithAlert;
@@ -187,6 +190,20 @@ public class GlobalData extends Application {
 	    applicationWidgetListIconLightness = preferences.getString(PREF_APPLICATION_WIDGET_LIST_ICON_LIGHTNESS, "100");;
 	    applicationEditorAutoCloseDrawer = preferences.getBoolean(PREF_APPLICATION_EDITOR_AUTO_CLOSE_DRAWER, true);
 		
+	}
+	
+	static public boolean getGlobalEventsRuning(Context context)
+	{
+		SharedPreferences preferences = context.getSharedPreferences(APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+		return preferences.getBoolean(PREF_GLOBAL_EVENTS_RUN_STOP, true);
+	}
+	
+	static public void setGlobalEventsRuning(Context context, boolean globalEventsRuning)
+	{
+		SharedPreferences preferences = context.getSharedPreferences(APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+		Editor editor = preferences.edit();
+		editor.putBoolean(PREF_GLOBAL_EVENTS_RUN_STOP, globalEventsRuning);
+		editor.commit();
 	}
 
 	// ----- Hardware check -------------------------------------

@@ -54,7 +54,7 @@
         android:name="sk.henrichg.phoneprofilesplus.GlobalData" >
         <activity
             android:name=".ActivateProfileActivity"
-            android:label="@string/title_activity_activator"
+            android:label="@string/title_activity_phone_profiles"
             android:theme="@style/PopupTheme"
             android:configChanges="locale|layoutDirection" >
             <intent-filter>

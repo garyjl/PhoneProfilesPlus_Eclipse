@@ -388,6 +388,22 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	}
 	
 	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+
+		// change global events run/stop menu item title 
+		MenuItem menuItem = menu.findItem(R.id.menu_run_stop_events);
+		if (menuItem != null)
+		{
+			if (GlobalData.getGlobalEventsRuning(getBaseContext()))
+				menuItem.setTitle(R.string.menu_stop_events);
+			else
+				menuItem.setTitle(R.string.menu_run_events);
+		}
+		
+		return super.onPrepareOptionsMenu(menu);
+	}	
+	
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		
 		Intent intent;
@@ -400,6 +416,15 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
                 drawerLayout.openDrawer(drawerRoot);
             }	
 			return super.onOptionsItemSelected(item);
+		case R.id.menu_run_stop_events:
+			if (GlobalData.getGlobalEventsRuning(getBaseContext()))
+				GlobalData.setGlobalEventsRuning(getBaseContext(), false);
+			else
+				GlobalData.setGlobalEventsRuning(getBaseContext(), true);
+			EditorEventListFragment fragment = (EditorEventListFragment)getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
+			if (fragment != null)
+				fragment.setEventsRunStopIndicator();
+			return true;
 		case R.id.menu_settings:
 			//Log.d("EditorProfilesActivity.onOptionsItemSelected", "menu_settings");
 			
