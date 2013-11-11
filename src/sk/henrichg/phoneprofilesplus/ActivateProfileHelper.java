@@ -34,6 +34,7 @@ import android.provider.Settings.Global;
 import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Surface;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.widget.RemoteViews;
@@ -462,32 +463,43 @@ public class ActivateProfileHelper {
 			window.setAttributes(layoutParams);
 		}
 		
-		// nahodenie auto-rotate
-		boolean _isAutoRotate = 
-				(Settings.System.getInt(context.getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, 0) == 1);
-		boolean _setAutoRotate = false;
+		// nahodenie rotate
 		switch (profile._deviceAutoRotate) {
 			case 1:
-				if (!_isAutoRotate)
-				{
-					_isAutoRotate = true;
-					_setAutoRotate = true;
-				}
+				// set autorotate on
+				Settings.System.putInt(context.getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, 1);
+				if (android.os.Build.VERSION.SDK_INT > 10)
+					Settings.System.putInt(context.getContentResolver(), Settings.System.USER_ROTATION, Surface.ROTATION_0);
 				break;
 			case 2:
-				if (_isAutoRotate)
-				{
-					_isAutoRotate = false;
-					_setAutoRotate = true;
-				}
+				// set autorotate off
+				// degree 0
+				Settings.System.putInt(context.getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, 0);
+				if (android.os.Build.VERSION.SDK_INT > 10)
+					Settings.System.putInt(context.getContentResolver(), Settings.System.USER_ROTATION, Surface.ROTATION_0);
 				break;
 			case 3:
-				_isAutoRotate = !_isAutoRotate;
-				_setAutoRotate = true;
+				// set autorotate off
+				// degree 90
+				Settings.System.putInt(context.getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, 0);
+				if (android.os.Build.VERSION.SDK_INT > 10)
+					Settings.System.putInt(context.getContentResolver(), Settings.System.USER_ROTATION, Surface.ROTATION_90);
+				break;
+			case 4:
+				// set autorotate off
+				// degree 180
+				Settings.System.putInt(context.getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, 0);
+				if (android.os.Build.VERSION.SDK_INT > 10)
+					Settings.System.putInt(context.getContentResolver(), Settings.System.USER_ROTATION, Surface.ROTATION_180);
+				break;
+			case 5:
+				// set autorotate off
+				// degree 270
+				Settings.System.putInt(context.getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, 0);
+				if (android.os.Build.VERSION.SDK_INT > 10)
+					Settings.System.putInt(context.getContentResolver(), Settings.System.USER_ROTATION, Surface.ROTATION_270);
 				break;
 		}
-		if (_setAutoRotate)
-			Settings.System.putInt(context.getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, _isAutoRotate ? 1 : 0);
 		
 		// nahodenie pozadia
 		if (profile._deviceWallpaperChange)

@@ -163,8 +163,8 @@
             android:summary="@string/array_pref_no_change"
             android:key="deviceAutoRotation"
             android:defaultValue="0"
-            android:entries="@array/hardwareModeArray"
-            android:entryValues="@array/hardwareModeValues" />        
+            android:entries="@array/dislayRotationArray"
+            android:entryValues="@array/displayRotationValues" />        
 		<CheckBoxPreference 
 		    android:key="deviceRunApplicationChange"
 		    android:title="@string/profile_preferences_deviceRunApplicationChange"

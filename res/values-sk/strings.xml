@@ -211,7 +211,7 @@
     <string name="import_profiles_from_phoneprofiles_alert_message">Importovať z PhoneProfiles</string>
     <string name="alert_button_yes">Áno</string>
     <string name="alert_button_no">Nie</string>
-    <string name="profile_preferences_deviceAutoRotation">Auto. rotácia</string>
+    <string name="profile_preferences_deviceAutoRotation">Rotácia displeja</string>
     <string name="title_activity_activator">Aktivátor</string>
     <string name="title_activity_editor">Editor</string>
     <string name="menu_run_events">Povol beh udalostí</string>
@@ -221,5 +221,10 @@
     <string name="array_pref_value_50_percent" formatted="false">50 %</string>
     <string name="array_pref_value_75_percent" formatted="false">75 %</string>
     <string name="array_pref_value_100_percent" formatted="false">100 %</string>
+    <string name="array_pref_value_0_degrees" formatted="false">0°</string>
+    <string name="array_pref_value_90_degrees" formatted="false">90°</string>
+    <string name="array_pref_value_180_degrees" formatted="false">180°</string>
+    <string name="array_pref_value_270_degrees" formatted="false">270°</string>
+    <string name="array_pref_value_auto_rotate" formatted="false">Auto. rotácia</string>
     		
 </resources>

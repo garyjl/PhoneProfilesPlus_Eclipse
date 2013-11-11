@@ -640,8 +640,9 @@ public class EditorProfileListFragment extends SherlockFragment {
 			{      
 		    	long profile_id = data.getLongExtra(GlobalData.EXTRA_PROFILE_ID, -1);
 		    	Profile profile = EditorProfilesActivity.dataWrapper.getProfileById(profile_id);
-		    	 
-		    	profileListAdapter.activateProfile(profile);
+		    	
+		    	if (profileListAdapter != null)
+		    		profileListAdapter.activateProfile(profile);
 				updateHeader(profile);
 		     }
 		     if (resultCode == Activity.RESULT_CANCELED)

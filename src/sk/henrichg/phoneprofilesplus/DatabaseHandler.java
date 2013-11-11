@@ -25,7 +25,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static SQLiteDatabase writableDb;	
     
 	// Database Version
-	private static final int DATABASE_VERSION = 1001;
+	private static final int DATABASE_VERSION = 1002;
 
 	// Database Name
 	private static final String DATABASE_NAME = "phoneProfilesManager";
@@ -417,6 +417,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.beginTransaction();
 			try {
 				db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_DEVICE_AUTOROTATE + "=0");
+				db.setTransactionSuccessful();
+		     } catch (Exception e){
+		         //Error in between database transaction 
+		     } finally {
+		    	db.endTransaction();
+	         }	
+		}
+
+		if (oldVersion < 1002)
+		{
+			// updatneme zaznamy
+			// autorotate off -> rotation 0
+			// autorotate on -> autorotate
+			db.beginTransaction();
+			try {
+				db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_DEVICE_AUTOROTATE + "=1 WHERE " + KEY_DEVICE_AUTOROTATE + "=1");
+				db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_DEVICE_AUTOROTATE + "=1 WHERE " + KEY_DEVICE_AUTOROTATE + "=3");
+				db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_DEVICE_AUTOROTATE + "=2 WHERE " + KEY_DEVICE_AUTOROTATE + "=2");
 				db.setTransactionSuccessful();
 		     } catch (Exception e){
 		         //Error in between database transaction 
@@ -1927,7 +1945,26 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 									{
 										// put only when columnNamesExportedDB[i] exists in cursorImportDB
 										if (cursorImportDB.getColumnIndex(columnNamesExportedDB[i]) != -1)
-											values.put(columnNamesExportedDB[i], cursorExportedDB.getString(i));
+										{
+											String value = cursorExportedDB.getString(i);
+										
+											// update values
+											if (exportedDBObj.getVersion() < 1002)
+											{
+												if (columnNamesExportedDB[i].equals(KEY_DEVICE_AUTOROTATE))
+												{
+													// change values:
+													// autorotate off -> rotation 0
+													// autorotate on -> autorotate
+													if (value.equals("1") || value.equals("3"))
+														value = "1";
+													if (value.equals("2"))
+														value = "2";
+												}
+											}
+											
+											values.put(columnNamesExportedDB[i], value);
+										}
 										//Log.d("DatabaseHandler.importDB", "cn="+columnNames[i]+" val="+cursor.getString(i));
 									}
 									
