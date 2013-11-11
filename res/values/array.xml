@@ -12,11 +12,11 @@
 	<item>@string/array_pref_ringerModeArray_silent</item>
 </string-array>
 <string-array name="ringerModeValues">
-    <item>@string/array_pref_value_0</item>
-    <item>@string/array_pref_value_1</item>
-    <item>@string/array_pref_value_2</item>
-    <item>@string/array_pref_value_3</item>
-    <item>@string/array_pref_value_4</item>
+    <item>0</item>
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+    <item>4</item>
 </string-array>
 <string-array name="hardwareModeArray">
 	<item>@string/array_pref_no_change</item>
@@ -25,10 +25,10 @@
 	<item>@string/array_pref_hardwareModeArray_toggle</item>
 </string-array>
 <string-array name="hardwareModeValues">
-    <item>@string/array_pref_value_0</item>
-    <item>@string/array_pref_value_1</item>
-    <item>@string/array_pref_value_2</item>
-    <item>@string/array_pref_value_3</item>
+    <item>0</item>
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
 </string-array>
 <string-array name="screenTimeoutArray">
 	<item>@string/array_pref_no_change</item>
@@ -40,13 +40,13 @@
 	<item>@string/array_pref_screenTimeoutArray_never_timeout</item>
 </string-array>
 <string-array name="screenTimeoutValues">
-    <item>@string/array_pref_value_0</item>
-    <item>@string/array_pref_value_1</item>
-    <item>@string/array_pref_value_2</item>
-    <item>@string/array_pref_value_3</item>
-    <item>@string/array_pref_value_4</item>
-    <item>@string/array_pref_value_5</item>
-    <item>@string/array_pref_value_6</item>
+    <item>0</item>
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+    <item>4</item>
+    <item>5</item>
+    <item>6</item>
 </string-array>
 <string-array name="languageArray">
 	<item>@string/phone_profiles_pref_applicationLanguage_system</item>
@@ -65,8 +65,8 @@
 	<item>@string/phone_profiles_pref_notificationStatusBarStyle_android</item>
 </string-array>
 <string-array name="notificationIconStyleValues">
-    <item>@string/array_pref_value_0</item>
-    <item>@string/array_pref_value_1</item>
+    <item>0</item>
+    <item>1</item>
 </string-array>
 <string-array name="themeArray">
 	<item>@string/phone_profiles_pref_applicationTheme_light</item>
@@ -79,11 +79,11 @@
     <item>@string/array_pref_value_dlight</item>
 </string-array>
 <string-array name="widgetBackgroundArray">
-	<item fromatted="false">0</item>
-	<item fromatted="false">25</item>
-	<item fromatted="false">50</item>
-	<item fromatted="false">75</item>
-	<item fromatted="false">100</item>
+	<item>@string/array_pref_value_0_percent</item>
+	<item>@string/array_pref_value_25_percent</item>
+	<item>@string/array_pref_value_50_percent</item>
+	<item>@string/array_pref_value_75_percent</item>
+	<item>@string/array_pref_value_100_percent</item>
 </string-array>
 <string-array name="widgetBackgroundValues">
 	<item>0</item>
@@ -93,11 +93,11 @@
 	<item>100</item>
 </string-array>
 <string-array name="widgetLightnessArray">
-	<item>0</item>
-	<item>25</item>
-	<item>50</item>
-	<item>75</item>
-	<item>100</item>
+	<item>@string/array_pref_value_0_percent</item>
+	<item>@string/array_pref_value_25_percent</item>
+	<item>@string/array_pref_value_50_percent</item>
+	<item>@string/array_pref_value_75_percent</item>
+	<item>@string/array_pref_value_100_percent</item>
 </string-array>
 <string-array name="widgetLightnessValues">
 	<item>0</item>
@@ -111,8 +111,8 @@
 	<item>@string/array_pref_widgetColor_monochrome</item>
 </string-array>
 <string-array name="widgetColorValues">
-	<item>@string/array_pref_value_0</item>
-	<item>@string/array_pref_value_1</item>
+	<item>0</item>
+	<item>1</item>
 </string-array>
 <string-array name="daysOfWeekArray">
     <item>@string/array_pref_event_all</item>
@@ -126,13 +126,13 @@
 </string-array>
 <string-array name="daysOfWeekValues">
     <item>#ALL#</item>
-	<item>@string/array_pref_value_0</item>
-	<item>@string/array_pref_value_1</item>
-	<item>@string/array_pref_value_2</item>
-	<item>@string/array_pref_value_3</item>
-	<item>@string/array_pref_value_4</item>
-	<item>@string/array_pref_value_5</item>
-	<item>@string/array_pref_value_6</item>
+	<item>0</item>
+	<item>1</item>
+	<item>2</item>
+	<item>3</item>
+	<item>4</item>
+	<item>5</item>
+	<item>6</item>
 </string-array>
 <string-array name="drawerOrderEvents">
     <item>@string/editor_drawer_order_event_name</item>
