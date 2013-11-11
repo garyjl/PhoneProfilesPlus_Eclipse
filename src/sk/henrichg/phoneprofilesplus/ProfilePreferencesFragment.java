@@ -434,8 +434,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 			key.equals(GlobalData.PREF_PROFILE_DEVICE_WIFI) ||
 			key.equals(GlobalData.PREF_PROFILE_DEVICE_BLUETOOTH) ||
 			key.equals(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA) ||
-			key.equals(GlobalData.PREF_PROFILE_DEVICE_GPS) ||
-			key.equals(GlobalData.PREF_PROFILE_DEVICE_AUTOROTATE))
+			key.equals(GlobalData.PREF_PROFILE_DEVICE_GPS))
 		{
 			boolean canChange = GlobalData.hardwareCheck(key, context);
 			if (!canChange)
@@ -472,6 +471,22 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 			}
 			String[] PrefScreenTimeouts = getResources().getStringArray(R.array.screenTimeoutArray);
 			prefMng.findPreference(key).setSummary(PrefScreenTimeouts[iPrefScreenTimeout]);
+		}
+		if (key.equals(GlobalData.PREF_PROFILE_DEVICE_AUTOROTATE))
+		{
+			String sPrefDeviceRotation = value.toString();
+			int iPrefDeviceRotation;
+			try {
+				iPrefDeviceRotation = Integer.parseInt(sPrefDeviceRotation);
+			} catch (Exception e) {
+				iPrefDeviceRotation = 0;
+			}
+			String[] PrefDeviceRotations;
+			if (android.os.Build.VERSION.SDK_INT < 11)
+				PrefDeviceRotations = getResources().getStringArray(R.array.dislayRotationArray);
+			else
+				PrefDeviceRotations = getResources().getStringArray(R.array.dislayRotationArray11);
+			prefMng.findPreference(key).setSummary(PrefDeviceRotations[iPrefDeviceRotation]);
 		}
 		
 	}

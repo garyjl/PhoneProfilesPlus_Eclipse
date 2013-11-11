@@ -142,13 +142,23 @@
 </string-array>
 <string-array name="dislayRotationArray">
 	<item>@string/array_pref_no_change</item>
+	<item>@string/array_pref_value_auto_rotate_on</item>
+	<item>@string/array_pref_value_auto_rotate_off</item>
+</string-array>
+<string-array name="displayRotationValues">
+	<item>0</item>
+	<item>1</item>
+	<item>2</item>
+</string-array>
+<string-array name="dislayRotationArray11">
+	<item>@string/array_pref_no_change</item>
 	<item>@string/array_pref_value_auto_rotate</item>
 	<item>@string/array_pref_value_0_degrees</item>
 	<item>@string/array_pref_value_90_degrees</item>
 	<item>@string/array_pref_value_180_degrees</item>
 	<item>@string/array_pref_value_270_degrees</item>
 </string-array>
-<string-array name="displayRotationValues">
+<string-array name="displayRotationValues11">
 	<item>0</item>
 	<item>1</item>
 	<item>2</item>

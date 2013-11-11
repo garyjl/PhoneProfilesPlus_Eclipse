@@ -1962,6 +1962,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 														value = "2";
 												}
 											}
+											if (exportedDBObj.getVersion() > 1001)
+											{
+												if ((Integer.parseInt(value) > 2) && (android.os.Build.VERSION.SDK_INT < 11))
+													// set degree not supported for API level < 11
+												    value = "2";
+											}
 											
 											values.put(columnNamesExportedDB[i], value);
 										}

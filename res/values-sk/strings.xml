@@ -225,6 +225,8 @@
     <string name="array_pref_value_90_degrees" formatted="false">90°</string>
     <string name="array_pref_value_180_degrees" formatted="false">180°</string>
     <string name="array_pref_value_270_degrees" formatted="false">270°</string>
-    <string name="array_pref_value_auto_rotate" formatted="false">Auto. rotácia</string>
+    <string name="array_pref_value_auto_rotate">Auto. rotácia</string>
+    <string name="array_pref_value_auto_rotate_on">Auto.rotácia ZAP</string>
+    <string name="array_pref_value_auto_rotate_off">Auto.rotácia VYP</string>
     		
 </resources>
