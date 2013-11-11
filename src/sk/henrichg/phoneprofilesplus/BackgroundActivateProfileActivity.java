@@ -144,6 +144,11 @@ public class BackgroundActivateProfileActivity extends Activity {
 	
 	private void activateProfileWithAlert(Profile profile, boolean interactive)
 	{
+		// set theme and language for dialog alert ;-)
+		// not working on Android 2.3.x
+		GUIData.setTheme(this, true);
+		GUIData.setLanguage(getBaseContext());
+
 		if ((GlobalData.applicationActivateWithAlert && interactive) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_EDITOR))	
 		{	
@@ -151,11 +156,6 @@ public class BackgroundActivateProfileActivity extends Activity {
 			final boolean _interactive = interactive;
 			final Activity activity = this;
 
-			// set theme and language for dialog alert ;-)
-			// not working on Android 2.3.x
-			GUIData.setTheme(this, true);
-			GUIData.setLanguage(getBaseContext());
-			
 			AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
 			dialogBuilder.setTitle(getResources().getString(R.string.profile_string_0) + ": " + profile._name);
 			dialogBuilder.setMessage(getResources().getString(R.string.activate_profile_alert_message) + "?");
