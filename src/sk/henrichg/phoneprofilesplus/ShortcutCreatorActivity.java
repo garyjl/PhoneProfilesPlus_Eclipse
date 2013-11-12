@@ -223,7 +223,7 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 		else
 		{
 			isIconResourceID = true;
-			iconIdentifier = GUIData.PROFILE_ICON_DEFAULT;
+			iconIdentifier = GlobalData.PROFILE_ICON_DEFAULT;
 			profileName = getResources().getString(R.string.profile_name_default);
 		}
 

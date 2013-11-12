@@ -15,8 +15,6 @@ public class GUIData {
 	
 	public static Collator collator = null;
 	
-	static final String PROFILE_ICON_DEFAULT = "ic_profile_default";
-
 	// import/export
 	public static final String DB_FILEPATH = "/data/" + GlobalData.PACKAGE_NAME + "/databases";
 	public static final String EXPORT_PATH = "/PhoneProfilesPlus";

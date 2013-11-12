@@ -11,6 +11,8 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.media.AudioManager;
+import android.provider.Settings;
 
 public class GlobalData extends Application {
 
@@ -51,36 +53,38 @@ public class GlobalData extends Application {
 	// musi byt tu, pouziva to ActivateProfileHelper
 	static final int NOTIFICATION_ID = 700420;
 
-	static final String PREF_PROFILE_NAME = "profileName";
-	static final String PREF_PROFILE_ICON = "profileIcon";
-	static final String PREF_PROFILE_VOLUME_RINGER_MODE = "volumeRingerMode";
-	static final String PREF_PROFILE_VOLUME_RINGTONE = "volumeRingtone";
-	static final String PREF_PROFILE_VOLUME_NOTIFICATION = "volumeNotification";
-	static final String PREF_PROFILE_VOLUME_MEDIA = "volumeMedia";
-	static final String PREF_PROFILE_VOLUME_ALARM = "volumeAlarm";
-	static final String PREF_PROFILE_VOLUME_SYSTEM = "volumeSystem";
-	static final String PREF_PROFILE_VOLUME_VOICE = "volumeVoice";
-	static final String PREF_PROFILE_SOUND_RINGTONE_CHANGE = "soundRingtoneChange";
-	static final String PREF_PROFILE_SOUND_RINGTONE = "soundRingtone";
-	static final String PREF_PROFILE_SOUND_NOTIFICATION_CHANGE = "soundNotificationChange";
-	static final String PREF_PROFILE_SOUND_NOTIFICATION = "soundNotification";
-	static final String PREF_PROFILE_SOUND_ALARM_CHANGE = "soundAlarmChange";
-	static final String PREF_PROFILE_SOUND_ALARM = "soundAlarm";
-	static final String PREF_PROFILE_DEVICE_AIRPLANE_MODE = "deviceAirplaneMode";
-	static final String PREF_PROFILE_DEVICE_WIFI = "deviceWiFi";
-	static final String PREF_PROFILE_DEVICE_BLUETOOTH = "deviceBluetooth";
-	static final String PREF_PROFILE_DEVICE_SCREEN_TIMEOUT = "deviceScreenTimeout";
-	static final String PREF_PROFILE_DEVICE_BRIGHTNESS = "deviceBrightness";
-	static final String PREF_PROFILE_DEVICE_WALLPAPER_CHANGE = "deviceWallpaperChange";
-	static final String PREF_PROFILE_DEVICE_WALLPAPER = "deviceWallpaper";
-	static final String PREF_PROFILE_DEVICE_MOBILE_DATA = "deviceMobileData";
-	static final String PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS = "deviceMobileDataPrefs";
-	static final String PREF_PROFILE_DEVICE_GPS = "deviceGPS";
-	static final String PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE = "deviceRunApplicationChange";
-	static final String PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME = "deviceRunApplicationPackageName";
-	static final String PREF_PROFILE_DEVICE_AUTOSYNC = "deviceAutosync";
-	static final String PREF_PROFILE_SHOW_IN_ACTIVATOR = "showInActivator";
-	static final String PREF_PROFILE_DEVICE_AUTOROTATE = "deviceAutoRotation";
+	static final String PREF_PROFILE_NAME = "prf_pref_profileName";
+	static final String PREF_PROFILE_ICON = "prf_pref_profileIcon";
+	static final String PREF_PROFILE_VOLUME_RINGER_MODE = "prf_pref_volumeRingerMode";
+	static final String PREF_PROFILE_VOLUME_RINGTONE = "prf_pref_volumeRingtone";
+	static final String PREF_PROFILE_VOLUME_NOTIFICATION = "prf_pref_volumeNotification";
+	static final String PREF_PROFILE_VOLUME_MEDIA = "prf_pref_volumeMedia";
+	static final String PREF_PROFILE_VOLUME_ALARM = "prf_pref_volumeAlarm";
+	static final String PREF_PROFILE_VOLUME_SYSTEM = "prf_pref_volumeSystem";
+	static final String PREF_PROFILE_VOLUME_VOICE = "prf_pref_volumeVoice";
+	static final String PREF_PROFILE_SOUND_RINGTONE_CHANGE = "prf_pref_soundRingtoneChange";
+	static final String PREF_PROFILE_SOUND_RINGTONE = "prf_pref_soundRingtone";
+	static final String PREF_PROFILE_SOUND_NOTIFICATION_CHANGE = "prf_pref_soundNotificationChange";
+	static final String PREF_PROFILE_SOUND_NOTIFICATION = "prf_pref_soundNotification";
+	static final String PREF_PROFILE_SOUND_ALARM_CHANGE = "prf_pref_soundAlarmChange";
+	static final String PREF_PROFILE_SOUND_ALARM = "prf_pref_soundAlarm";
+	static final String PREF_PROFILE_DEVICE_AIRPLANE_MODE = "prf_pref_deviceAirplaneMode";
+	static final String PREF_PROFILE_DEVICE_WIFI = "prf_pref_deviceWiFi";
+	static final String PREF_PROFILE_DEVICE_BLUETOOTH = "prf_pref_deviceBluetooth";
+	static final String PREF_PROFILE_DEVICE_SCREEN_TIMEOUT = "prf_pref_deviceScreenTimeout";
+	static final String PREF_PROFILE_DEVICE_BRIGHTNESS = "prf_pref_deviceBrightness";
+	static final String PREF_PROFILE_DEVICE_WALLPAPER_CHANGE = "prf_pref_deviceWallpaperChange";
+	static final String PREF_PROFILE_DEVICE_WALLPAPER = "prf_pref_deviceWallpaper";
+	static final String PREF_PROFILE_DEVICE_MOBILE_DATA = "prf_pref_deviceMobileData";
+	static final String PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS = "prf_pref_deviceMobileDataPrefs";
+	static final String PREF_PROFILE_DEVICE_GPS = "prf_pref_deviceGPS";
+	static final String PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE = "prf_pref_deviceRunApplicationChange";
+	static final String PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME = "prf_pref_deviceRunApplicationPackageName";
+	static final String PREF_PROFILE_DEVICE_AUTOSYNC = "prf_pref_deviceAutosync";
+	static final String PREF_PROFILE_SHOW_IN_ACTIVATOR = "prf_pref_showInActivator";
+	static final String PREF_PROFILE_DEVICE_AUTOROTATE = "prf_pref_deviceAutoRotation";
+	
+	static final String PROFILE_ICON_DEFAULT = "ic_profile_default";
 	
 	static final String APPLICATION_PREFS_NAME = "phone_profile_preferences";
 	
@@ -190,6 +194,61 @@ public class GlobalData extends Application {
 	    applicationWidgetListIconLightness = preferences.getString(PREF_APPLICATION_WIDGET_LIST_ICON_LIGHTNESS, "100");;
 	    applicationEditorAutoCloseDrawer = preferences.getBoolean(PREF_APPLICATION_EDITOR_AUTO_CLOSE_DRAWER, true);
 		
+	}
+	
+	private static String getVolumeLevelString(int percentage, int maxValue)
+	{
+		Double dValue = maxValue / 100.0 * percentage;
+		return String.valueOf(dValue.intValue());
+	}
+	
+	static public Profile getDefaultProfile(Context context)
+	{
+		AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+		int	maximumValueRing = audioManager.getStreamMaxVolume(AudioManager.STREAM_RING);
+		int	maximumValueNotification = audioManager.getStreamMaxVolume(AudioManager.STREAM_NOTIFICATION);
+		int	maximumValueMusic = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+		int	maximumValueAlarm = audioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM);
+		int	maximumValueSystem = audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM);
+		int	maximumValueVoicecall = audioManager.getStreamMaxVolume(AudioManager.STREAM_VOICE_CALL);
+		
+		SharedPreferences preferences = context.getSharedPreferences(APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+		
+		Profile profile = new Profile();
+		profile._id = -999;
+		profile._name = context.getResources().getString(R.string.default_profile_name);
+		profile._icon = PROFILE_ICON_DEFAULT;
+		profile._checked = false;
+		profile._porder = 0;
+    	profile._volumeRingerMode = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE, "1")); // ring
+    	profile._volumeRingtone = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_RINGTONE, getVolumeLevelString(71, maximumValueRing)+"|0");
+    	profile._volumeNotification = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_NOTIFICATION, getVolumeLevelString(86, maximumValueNotification)+"|0");
+    	profile._volumeMedia = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_MEDIA, getVolumeLevelString(80, maximumValueMusic)+"|0");
+    	profile._volumeAlarm = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_ALARM, getVolumeLevelString(100, maximumValueAlarm)+"|0");
+    	profile._volumeSystem = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_SYSTEM, getVolumeLevelString(70, maximumValueSystem)+"|0");
+    	profile._volumeVoice = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_VOICE, getVolumeLevelString(70, maximumValueVoicecall)+"|0");
+    	profile._soundRingtoneChange = preferences.getBoolean(GlobalData.PREF_PROFILE_SOUND_RINGTONE_CHANGE, true);
+    	profile._soundRingtone = preferences.getString(GlobalData.PREF_PROFILE_SOUND_RINGTONE, Settings.System.DEFAULT_RINGTONE_URI.toString());
+    	profile._soundNotificationChange = preferences.getBoolean(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION_CHANGE, true);
+    	profile._soundNotification = preferences.getString(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION, Settings.System.DEFAULT_NOTIFICATION_URI.toString());
+    	profile._soundAlarmChange = preferences.getBoolean(GlobalData.PREF_PROFILE_SOUND_ALARM_CHANGE, true);
+    	profile._soundAlarm = preferences.getString(GlobalData.PREF_PROFILE_SOUND_ALARM, Settings.System.DEFAULT_ALARM_ALERT_URI.toString());
+    	profile._deviceAirplaneMode = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE, "2")); // OFF
+    	profile._deviceWiFi = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_WIFI, "2")); // OFF
+    	profile._deviceBluetooth = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_BLUETOOTH, "2")); //OFF
+    	profile._deviceScreenTimeout = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_SCREEN_TIMEOUT, "2")); // 30 seconds
+    	profile._deviceBrightness = preferences.getString(GlobalData.PREF_PROFILE_DEVICE_BRIGHTNESS, "100|0|0");  // automatic on
+    	profile._deviceWallpaperChange = preferences.getBoolean(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER_CHANGE, false);
+   		profile._deviceWallpaper = preferences.getString(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER, "-|0");
+    	profile._deviceMobileData = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA, "1")); //ON
+    	profile._deviceMobileDataPrefs = preferences.getBoolean(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS, false);
+    	profile._deviceGPS = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_GPS, "2")); //OFF
+    	profile._deviceRunApplicationChange = preferences.getBoolean(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE, false);
+   		profile._deviceRunApplicationPackageName = preferences.getString(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME, "-");
+    	profile._deviceAutosync = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_AUTOSYNC, "1")); // ON
+    	profile._deviceAutoRotate = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_AUTOROTATE, "1")); // ON
+    	
+    	return profile;
 	}
 	
 	static public boolean getGlobalEventsRuning(Context context)

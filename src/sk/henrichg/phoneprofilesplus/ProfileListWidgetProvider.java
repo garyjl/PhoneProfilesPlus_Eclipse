@@ -117,7 +117,7 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 				// create empty profile and set icon resource
 				profile = new Profile();
 				profile._name = context.getResources().getString(R.string.profiles_header_profile_name_no_activated);
-				profile._icon = GUIData.PROFILE_ICON_DEFAULT+"|1";
+				profile._icon = GlobalData.PROFILE_ICON_DEFAULT+"|1";
 
 				profile.generateIconBitmap(context, 
 						GlobalData.applicationWidgetListIconColor.equals("1"), 

@@ -228,5 +228,7 @@
     <string name="array_pref_value_auto_rotate">Auto. rotácia</string>
     <string name="array_pref_value_auto_rotate_on">Auto.rotácia ZAP</string>
     <string name="array_pref_value_auto_rotate_off">Auto.rotácia VYP</string>
+    <string name="default_profile_name">Predvolený profil</string>
+    <string name="menu_default_profile">Predvolený profil</string>
     		
 </resources>

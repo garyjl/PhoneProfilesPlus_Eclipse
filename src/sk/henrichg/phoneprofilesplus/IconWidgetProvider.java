@@ -50,7 +50,7 @@ public class IconWidgetProvider extends AppWidgetProvider {
 			else
 			{
 				isIconResourceID = true;
-				iconIdentifier = GUIData.PROFILE_ICON_DEFAULT;
+				iconIdentifier = GlobalData.PROFILE_ICON_DEFAULT;
 				profileName = context.getResources().getString(R.string.profile_name_default);
 			}
 			

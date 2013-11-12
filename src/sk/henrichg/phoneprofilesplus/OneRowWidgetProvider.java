@@ -53,7 +53,7 @@ public class OneRowWidgetProvider extends AppWidgetProvider {
 			else
 			{
 				isIconResourceID = true;
-				iconIdentifier = GUIData.PROFILE_ICON_DEFAULT;
+				iconIdentifier = GlobalData.PROFILE_ICON_DEFAULT;
 				profileName = context.getResources().getString(R.string.profiles_header_profile_name_no_activated);
 			}
 			

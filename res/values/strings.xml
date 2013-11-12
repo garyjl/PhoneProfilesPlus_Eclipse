@@ -228,5 +228,7 @@
     <string name="array_pref_value_auto_rotate">Auto. rotate</string>
     <string name="array_pref_value_auto_rotate_on">Auto.rotate ON</string>
     <string name="array_pref_value_auto_rotate_off">Auto.rotate OFF</string>
+    <string name="default_profile_name">Default profile</string>
+    <string name="menu_default_profile">Default profile</string>
     	
 </resources>

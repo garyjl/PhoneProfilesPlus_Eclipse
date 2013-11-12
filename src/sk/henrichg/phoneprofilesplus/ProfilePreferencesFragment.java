@@ -127,7 +127,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 			// create new profile
 			profile = EditorProfilesActivity.dataWrapper.getNoinitializedProfile(
 						getResources().getString(R.string.profile_name_default), 
-						GUIData.PROFILE_ICON_DEFAULT, 0); 
+						GlobalData.PROFILE_ICON_DEFAULT, 0); 
 			profile._showInActivator = true;
 			profile_id = 0;
 		}
