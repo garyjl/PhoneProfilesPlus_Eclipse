@@ -15,6 +15,7 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.ListPreference;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -401,15 +402,11 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		}
 		if (key.equals(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE))
 		{
-			String sPrefVolumeMode = value.toString();
-			int iPrefVolumeMode;
-			try {
-				iPrefVolumeMode = Integer.parseInt(sPrefVolumeMode);
-			} catch (Exception e) {
-				iPrefVolumeMode = 0;
-			}
-			String[] prefVolumeModes = getResources().getStringArray(R.array.ringerModeArray);
-			prefMng.findPreference(key).setSummary(prefVolumeModes[iPrefVolumeMode]);
+			String sPrefDeviceMode = value.toString();
+			ListPreference listPreference = (ListPreference)prefMng.findPreference(key);
+			int index = listPreference.findIndexOfValue(sPrefDeviceMode);
+			CharSequence summary = (index >= 0) ? listPreference.getEntries()[index] : null;
+			listPreference.setSummary(summary);
 		}
 		if (key.equals(GlobalData.PREF_PROFILE_SOUND_RINGTONE) ||
 			key.equals(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION) ||
@@ -449,44 +446,28 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 			else
 			{
 				String sPrefDeviceMode = value.toString();
-				int iPrefDeviceMode;
-				try {
-					iPrefDeviceMode = Integer.parseInt(sPrefDeviceMode);
-				} catch (Exception e) {
-					iPrefDeviceMode = 0;
-				}
-				String[] PrefDeviceModes = getResources().getStringArray(R.array.hardwareModeArray);
-				prefMng.findPreference(key).setSummary(PrefDeviceModes[iPrefDeviceMode]);
+				ListPreference listPreference = (ListPreference)prefMng.findPreference(key);
+				int index = listPreference.findIndexOfValue(sPrefDeviceMode);
+				CharSequence summary = (index >= 0) ? listPreference.getEntries()[index] : null;
+				listPreference.setSummary(summary);
 			}
 			
 		}
 		if (key.equals(GlobalData.PREF_PROFILE_DEVICE_SCREEN_TIMEOUT))
 		{
-			String sPrefScreenTimeout = value.toString();
-			int iPrefScreenTimeout;
-			try {
-				iPrefScreenTimeout = Integer.parseInt(sPrefScreenTimeout);
-			} catch (Exception e) {
-				iPrefScreenTimeout = 0;
-			}
-			String[] PrefScreenTimeouts = getResources().getStringArray(R.array.screenTimeoutArray);
-			prefMng.findPreference(key).setSummary(PrefScreenTimeouts[iPrefScreenTimeout]);
+			String sPrefDeviceMode = value.toString();
+			ListPreference listPreference = (ListPreference)prefMng.findPreference(key);
+			int index = listPreference.findIndexOfValue(sPrefDeviceMode);
+			CharSequence summary = (index >= 0) ? listPreference.getEntries()[index] : null;
+			listPreference.setSummary(summary);
 		}
 		if (key.equals(GlobalData.PREF_PROFILE_DEVICE_AUTOROTATE))
 		{
-			String sPrefDeviceRotation = value.toString();
-			int iPrefDeviceRotation;
-			try {
-				iPrefDeviceRotation = Integer.parseInt(sPrefDeviceRotation);
-			} catch (Exception e) {
-				iPrefDeviceRotation = 0;
-			}
-			String[] PrefDeviceRotations;
-			if (android.os.Build.VERSION.SDK_INT < 11)
-				PrefDeviceRotations = getResources().getStringArray(R.array.dislayRotationArray);
-			else
-				PrefDeviceRotations = getResources().getStringArray(R.array.dislayRotationArray11);
-			prefMng.findPreference(key).setSummary(PrefDeviceRotations[iPrefDeviceRotation]);
+			String sPrefDeviceMode = value.toString();
+			ListPreference listPreference = (ListPreference)prefMng.findPreference(key);
+			int index = listPreference.findIndexOfValue(sPrefDeviceMode);
+			CharSequence summary = (index >= 0) ? listPreference.getEntries()[index] : null;
+			listPreference.setSummary(summary);
 		}
 		
 	}

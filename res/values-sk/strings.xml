@@ -233,5 +233,6 @@
     <string name="brightness_pref_dialog_default_profile_chb">Predvolený profil</string>
     <string name="preference_profile_default_profile">Predvolený profil</string>
     <string name="volume_pref_dialog_default_profile_chb">Predvolený profil</string>
+    <string name="array_pref_default_profile">Predvolený profil</string>
     		
 </resources>

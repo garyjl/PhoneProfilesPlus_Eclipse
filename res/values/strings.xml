@@ -233,5 +233,6 @@
     <string name="brightness_pref_dialog_default_profile_chb">Default profile</string>
     <string name="preference_profile_default_profile">Default profile</string>
     <string name="volume_pref_dialog_default_profile_chb">Default profile</string>
+    <string name="array_pref_default_profile">Default profile</string>
     	
 </resources>

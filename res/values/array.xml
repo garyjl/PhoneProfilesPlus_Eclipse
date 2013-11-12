@@ -6,6 +6,7 @@
 </string-array>
 <string-array name="ringerModeArray">
 	<item>@string/array_pref_no_change</item>
+	<item>@string/array_pref_default_profile</item>
 	<item>@string/array_pref_ringerModeArray_ring</item>
 	<item>@string/array_pref_ringerModeArray_ring_and_vibrate</item>
 	<item>@string/array_pref_ringerModeArray_vibrate</item>
@@ -13,6 +14,7 @@
 </string-array>
 <string-array name="ringerModeValues">
     <item>0</item>
+    <item>99</item>
     <item>1</item>
     <item>2</item>
     <item>3</item>
@@ -20,18 +22,21 @@
 </string-array>
 <string-array name="hardwareModeArray">
 	<item>@string/array_pref_no_change</item>
+	<item>@string/array_pref_default_profile</item>
 	<item>@string/array_pref_hardwareModeArray_on</item>
 	<item>@string/array_pref_hardwareModeArray_off</item>
 	<item>@string/array_pref_hardwareModeArray_toggle</item>
 </string-array>
 <string-array name="hardwareModeValues">
     <item>0</item>
+    <item>99</item>
     <item>1</item>
     <item>2</item>
     <item>3</item>
 </string-array>
 <string-array name="screenTimeoutArray">
 	<item>@string/array_pref_no_change</item>
+	<item>@string/array_pref_default_profile</item>
 	<item>@string/array_pref_screenTimeoutArray_15seconds</item>
 	<item>@string/array_pref_screenTimeoutArray_30seconds</item>
 	<item>@string/array_pref_screenTimeoutArray_1minute</item>
@@ -41,6 +46,7 @@
 </string-array>
 <string-array name="screenTimeoutValues">
     <item>0</item>
+    <item>99</item>
     <item>1</item>
     <item>2</item>
     <item>3</item>
@@ -142,16 +148,19 @@
 </string-array>
 <string-array name="dislayRotationArray">
 	<item>@string/array_pref_no_change</item>
+	<item>@string/array_pref_default_profile</item>
 	<item>@string/array_pref_value_auto_rotate_on</item>
 	<item>@string/array_pref_value_auto_rotate_off</item>
 </string-array>
 <string-array name="displayRotationValues">
 	<item>0</item>
+    <item>99</item>
 	<item>1</item>
 	<item>2</item>
 </string-array>
 <string-array name="dislayRotationArray11">
 	<item>@string/array_pref_no_change</item>
+	<item>@string/array_pref_default_profile</item>
 	<item>@string/array_pref_value_auto_rotate</item>
 	<item>@string/array_pref_value_0_degrees</item>
 	<item>@string/array_pref_value_90_degrees</item>
@@ -160,6 +169,7 @@
 </string-array>
 <string-array name="displayRotationValues11">
 	<item>0</item>
+    <item>99</item>
 	<item>1</item>
 	<item>2</item>
 	<item>3</item>
