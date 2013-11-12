@@ -37,10 +37,12 @@ public class BrightnessDialogPreference extends
 	private TextView valueText = null;
 	private CheckBox noChangeChBox = null; 
 	private CheckBox automaticChBox = null; 
+	private CheckBox defaultProfileChBox = null;
 
 	// Custom xml attributes.
 	private int noChange = 0;
 	private int automatic = 0;
+	private int defaultProfile = 0;
 	
 	private int maximumValue = 255;
 	private int minimumValue = 10;
@@ -66,6 +68,8 @@ public class BrightnessDialogPreference extends
 			R.styleable.BrightnessDialogPreference_bNoChange, 1);
 		automatic = typedArray.getInteger(
 			R.styleable.BrightnessDialogPreference_bAutomatic, 1);
+		defaultProfile = typedArray.getInteger(
+				R.styleable.BrightnessDialogPreference_bDefaultProfile, 0);
 
 		typedArray.recycle();
 	}
@@ -82,6 +86,7 @@ public class BrightnessDialogPreference extends
 		valueText = (TextView)view.findViewById(R.id.brightnessPrefDialogValueText);
 		noChangeChBox = (CheckBox)view.findViewById(R.id.brightnessPrefDialogNoChange);
 		automaticChBox = (CheckBox)view.findViewById(R.id.brightnessPrefDialogAutomatic);
+		defaultProfileChBox = (CheckBox)view.findViewById(R.id.brightnessPrefDialogDefaultProfile);
 
 		seekBar.setOnSeekBarChangeListener(this);
 		seekBar.setKeyProgressIncrement(stepSize);
@@ -96,6 +101,9 @@ public class BrightnessDialogPreference extends
 
 		automaticChBox.setOnCheckedChangeListener(this);
 		automaticChBox.setChecked((automatic == 1));
+		
+		defaultProfileChBox.setOnCheckedChangeListener(this);
+		defaultProfileChBox.setChecked((defaultProfile == 1));
 		
 		valueText.setEnabled((automatic == 0));
 		seekBar.setEnabled((automatic == 0));
@@ -139,11 +147,24 @@ public class BrightnessDialogPreference extends
 		{
 			noChange = (isChecked)? 1 : 0;
 
-			valueText.setEnabled((noChange == 0));
-			seekBar.setEnabled((noChange == 0));
-			automaticChBox.setEnabled((noChange == 0));
+			valueText.setEnabled((noChange == 0) && (defaultProfile == 0));
+			seekBar.setEnabled((noChange == 0) && (defaultProfile == 0));
+			automaticChBox.setEnabled((noChange == 0) && (defaultProfile == 0));
+			if (isChecked)
+				defaultProfileChBox.setChecked(false);
 		}
 
+		if (buttonView.getId() == R.id.brightnessPrefDialogDefaultProfile)
+		{
+			defaultProfile = (isChecked)? 1 : 0;
+
+			valueText.setEnabled((noChange == 0) && (defaultProfile == 0));
+			seekBar.setEnabled((noChange == 0) && (defaultProfile == 0));
+			automaticChBox.setEnabled((noChange == 0) && (defaultProfile == 0));
+			if (isChecked)
+				noChangeChBox.setChecked(false);
+		}
+		
 		if (buttonView.getId() == R.id.brightnessPrefDialogAutomatic)
 		{
 			automatic = (isChecked)? 1 : 0;
@@ -174,7 +195,8 @@ public class BrightnessDialogPreference extends
 			if (shouldPersist()) {
 				persistString(Integer.toString(value + minimumValue)
 						+ "|" + Integer.toString(noChange)
-						+ "|" + Integer.toString(automatic));
+						+ "|" + Integer.toString(automatic)
+						+ "|" + Integer.toString(defaultProfile));
 				setSummaryBDP();
 				
 				Window win = ProfilePreferencesFragment.getPreferencesActivity().getWindow();
@@ -199,9 +221,11 @@ public class BrightnessDialogPreference extends
 			value = 0;
 			noChange = 1;
 			automatic = 1;
+			defaultProfile = 0;
 			persistString(Integer.toString(value + minimumValue)
 					+ "|" + Integer.toString(noChange)
-					+ "|" + Integer.toString(automatic));
+					+ "|" + Integer.toString(automatic)
+					+ "|" + Integer.toString(defaultProfile));
 		}
 		setSummaryBDP();
 	}
@@ -236,6 +260,11 @@ public class BrightnessDialogPreference extends
 		} catch (Exception e) {
 			automatic = 1;
 		}
+		try {
+			defaultProfile = Integer.parseInt(splits[3]);
+		} catch (Exception e) {
+			defaultProfile = 0;
+		}
 		
 		//value = getPersistedInt(minimumValue) - minimumValue;
 
@@ -250,6 +279,9 @@ public class BrightnessDialogPreference extends
 		String prefVolumeDataSummary;
 		if (noChange == 1)
 			prefVolumeDataSummary = _context.getResources().getString(R.string.preference_profile_no_change);
+		else
+		if (defaultProfile == 1)
+			prefVolumeDataSummary = _context.getResources().getString(R.string.preference_profile_default_profile);
 		else
 		if (automatic == 1)
 			prefVolumeDataSummary = _context.getResources().getString(R.string.preference_profile_autobrightness);

@@ -167,8 +167,55 @@ Ako by to mohlo fungovat:
 3. ak zmenim orientaciu a nie je actionmode, vsetko bude fungovat ok
 4. ak zmenim orientaciu a je actionmode - zrusit actionmode (reset)? 
              
-             
+------------------------------------
 
-             
+Default profile:
+
+Upravy profile preferences pre normalne profily
+- profile name - ok
+- profile icon - ok
+- show in activator - ok
+- ringer mode - pridat - default profile
+- * volume - pridat do dialogu checkbox default profile
+- Sounds - Change * - zmenit na ListPreference - No change, Default profile, change ringtone
+                    - na No change a default profile disablovat Sounds - * sound        
+- airplane mode - pridat default profile
+- autosync - pridat default profile
+- mobile data - pridat default profile
+- mobile data preferences - zmenit na ListPreference - Default profile, no show preference, show preferences
+- wifi - pridat default profile
+- bluetooth - pridat default profile
+- gps - pridat default profile
+- screen timeout - prodat default profile
+- screen brightnees - pridat do dialogu checkbox default profile
+- display rotation - pridat default profile
+- run application - zmenit na ListPreference - Default profile, no run application, run apllication
+                  - na default profile disablovat Application
+- application - ok
+- change wallpaper - zmenit na ListPreference - Default profile, no change walpaper, change wallpaper
+                   - na default profile disablovat Wallpaper
+- wallpapper - ok
+                                
+Upravy profile preferences pre default profile
+- profile name - disablovat
+- profile icon - disablovat
+- show in activator - false - disablovat
+- ringer mode - vyhodit No change a default profile
+- * volume - disablovat v dialogu checkbox no change a default profile
+- Sounds - Change * - true - disablovat        
+- airplane mode - vyhodit No change a default profile
+- autosync - vyhodit No change a default profile
+- mobile data - vyhodit No change a default profile
+- mobile data preferences - vyhodit default profile
+- wifi - vyhodit No change a default profile
+- bluetooth -vyhodit No change a default profile
+- gps - vyhodit No change a default profile
+- screen timeout - vyhodit No change a default profile
+- screen brightnees - disablovat v dialogu checkbox no change default profile
+- display rotation - vyhodit No change a default profile
+- run application - vyhodit default profile
+- application - ok
+- change wallpaper - vyhodit default profile
+- wallpapper - ok
   
   

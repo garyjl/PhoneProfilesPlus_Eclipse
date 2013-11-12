@@ -33,12 +33,14 @@ public class VolumeDialogPreference extends
 	private SeekBar seekBar = null;
 	private TextView valueText = null;
 	private CheckBox noChangeChBox = null; 
+	private CheckBox defaultProfileChBox = null; 
 	
 	private AudioManager audioManager = null;
 
 	// Custom xml attributes.
 	private String volumeType = null;
 	private int noChange = 0;
+	private int defaultProfile = 0;
 	
 	private int maximumValue = 7;
 	private int minimumValue = 0;
@@ -65,6 +67,8 @@ public class VolumeDialogPreference extends
 			R.styleable.VolumeDialogPreference_volumeType);
 		noChange = typedArray.getInteger(
 			R.styleable.VolumeDialogPreference_vNoChange, 1);
+		defaultProfile = typedArray.getInteger(
+				R.styleable.VolumeDialogPreference_vDefaultProfile, 0);
 
 		audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
 		// zistima maximalnu hodnotu z audio managera
@@ -120,6 +124,7 @@ public class VolumeDialogPreference extends
 		seekBar = (SeekBar)view.findViewById(R.id.volumePrefDialogSeekbar);
 		valueText = (TextView)view.findViewById(R.id.volumePrefDialogValueText);
 		noChangeChBox = (CheckBox)view.findViewById(R.id.volumePrefDialogNoChange);
+		defaultProfileChBox = (CheckBox)view.findViewById(R.id.volumePrefDialogDefaultProfile);
 
 		seekBar.setOnSeekBarChangeListener(this);
 		seekBar.setKeyProgressIncrement(stepSize);
@@ -131,6 +136,9 @@ public class VolumeDialogPreference extends
 
 		noChangeChBox.setOnCheckedChangeListener(this);
 		noChangeChBox.setChecked((noChange == 1));
+		
+		defaultProfileChBox.setOnCheckedChangeListener(this);
+		defaultProfileChBox.setChecked((defaultProfile == 1));
 		
 		valueText.setEnabled((noChange == 0));
 		seekBar.setEnabled((noChange == 0));
@@ -160,10 +168,25 @@ public class VolumeDialogPreference extends
 
 		//Log.d("VolumeDialogPreference.onCheckedChanged", Boolean.toString(isChecked));
 		
-		noChange = (isChecked) ? 1 : 0;
+		if (buttonView.getId() == R.id.volumePrefDialogNoChange)
+		{
+			noChange = (isChecked)? 1 : 0;
 
-		valueText.setEnabled((noChange == 0));
-		seekBar.setEnabled((noChange == 0));
+			valueText.setEnabled((noChange == 0) && (defaultProfile == 0));
+			seekBar.setEnabled((noChange == 0) && (defaultProfile == 0));
+			if (isChecked)
+				defaultProfileChBox.setChecked(false);
+		}
+
+		if (buttonView.getId() == R.id.volumePrefDialogDefaultProfile)
+		{
+			defaultProfile = (isChecked)? 1 : 0;
+
+			valueText.setEnabled((noChange == 0) && (defaultProfile == 0));
+			seekBar.setEnabled((noChange == 0) && (defaultProfile == 0));
+			if (isChecked)
+				noChangeChBox.setChecked(false);
+		}
 		
 		callChangeListener(noChange);
 	}
@@ -204,7 +227,8 @@ public class VolumeDialogPreference extends
 			if (shouldPersist()) {
 				//Log.d("VolumeDialogPreference.onClick","xxxx");
 				persistString(Integer.toString(value + minimumValue)
-						+ "|" + Integer.toString(noChange));
+						+ "|" + Integer.toString(noChange)
+						+ "|" + Integer.toString(defaultProfile));
 				setSummaryVDP();
 				if (volumeType.equalsIgnoreCase("RINGTONE")) 
 					audioManager.setStreamVolume(AudioManager.STREAM_RING, defaultValue, 0);
@@ -240,8 +264,10 @@ public class VolumeDialogPreference extends
 			// set state
 			value = 0;
 			noChange = 1;
+			defaultProfile = 0;
 			persistString(Integer.toString(value + minimumValue)
-					+ "|" + Integer.toString(noChange));			
+					+ "|" + Integer.toString(noChange)
+					+ "|" + Integer.toString(defaultProfile));			
 		}
 		setSummaryVDP();
 	}
@@ -267,6 +293,11 @@ public class VolumeDialogPreference extends
 		} catch (Exception e) {
 			noChange = 1;
 		}
+		try {
+			defaultProfile = Integer.parseInt(splits[2]);
+		} catch (Exception e) {
+			defaultProfile = 0;
+		}
 		
 		// You're never know...
 		if (value < 0) {
@@ -279,6 +310,9 @@ public class VolumeDialogPreference extends
 		String prefVolumeDataSummary;
 		if (noChange == 1)
 			prefVolumeDataSummary = _context.getResources().getString(R.string.preference_profile_no_change);
+		else
+		if (defaultProfile == 1)
+			prefVolumeDataSummary = _context.getResources().getString(R.string.preference_profile_default_profile);
 		else
 			prefVolumeDataSummary = String.valueOf(value) + " / " + String.valueOf(maximumValue);
 		setSummary(prefVolumeDataSummary);

@@ -31,36 +31,42 @@
 			android:key="prf_pref_volumeRingtone"
 			henrichg:volumeType="ringtone"
 			henrichg:vNoChange="1"
+			henrichg:vDefaultProfile="0"
 			android:title="@string/profile_preferences_volumeRingtone"
 			android:summary="@string/volume_pref_dialog_no_change_chb" />        
 		<sk.henrichg.phoneprofilesplus.VolumeDialogPreference
 			android:key="prf_pref_volumeNotification"
 			henrichg:volumeType="notification"
 			henrichg:vNoChange="1"
+			henrichg:vDefaultProfile="0"
 			android:title="@string/profile_preferences_volumeNotification"
 			android:summary="@string/volume_pref_dialog_no_change_chb" />        
 		<sk.henrichg.phoneprofilesplus.VolumeDialogPreference
 			android:key="prf_pref_volumeMedia"
 			henrichg:volumeType="media"
 			henrichg:vNoChange="1"
+			henrichg:vDefaultProfile="0"
 			android:title="@string/profile_preferences_volumeMedia"
 			android:summary="@string/volume_pref_dialog_no_change_chb" />        
 		<sk.henrichg.phoneprofilesplus.VolumeDialogPreference
 			android:key="prf_pref_volumeAlarm"
 			henrichg:volumeType="alarm"
 			henrichg:vNoChange="1"
+			henrichg:vDefaultProfile="0"
 			android:title="@string/profile_preferences_volumeAlarm"
 			android:summary="@string/volume_pref_dialog_no_change_chb" />        
 		<sk.henrichg.phoneprofilesplus.VolumeDialogPreference
 			android:key="prf_pref_volumeSystem"
 			henrichg:volumeType="system"
 			henrichg:vNoChange="1"
+			henrichg:vDefaultProfile="0"
 			android:title="@string/profile_preferences_volumeSystem"
 			android:summary="@string/volume_pref_dialog_no_change_chb" />        
 		<sk.henrichg.phoneprofilesplus.VolumeDialogPreference
 			android:key="prf_pref_volumeVoice"
 			henrichg:volumeType="voice"
 			henrichg:vNoChange="1"
+			henrichg:vDefaultProfile="0"
 			android:title="@string/profile_preferences_volumeVoice"
 			android:summary="@string/volume_pref_dialog_no_change_chb" />        
 	</PreferenceCategory>
@@ -157,6 +163,7 @@
 			android:key="prf_pref_deviceBrightness"
 			henrichg:bNoChange="1"
 			henrichg:bAutomatic="0"
+			henrichg:bDefaultProfile="0"
 			android:title="@string/profile_preferences_deviceBrightness"
 			android:summary="@string/brightness_pref_dialog_no_change_chb" />   
 		<ListPreference android:title="@string/profile_preferences_deviceAutoRotation"
