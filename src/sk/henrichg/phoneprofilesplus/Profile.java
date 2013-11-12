@@ -285,6 +285,18 @@ public class Profile {
 		return (value == 0) ? true : false;
 	}
 	
+	public boolean getVolumeRingtoneDefaultProfile()
+	{
+		int value;
+		try {
+			String[] splits = _volumeRingtone.split("\\|");
+			value = Integer.parseInt(splits[2]);
+		} catch (Exception e) {
+			value = 0;
+		}
+		return (value == 1) ? true : false;
+	}
+	
 	public int getVolumeNotificationValue()
 	{
 		int value;
@@ -307,6 +319,18 @@ public class Profile {
 			value = 1;
 		}
 		return (value == 0) ? true : false;
+	}
+	
+	public boolean getVolumeNotificationDefaultProfile()
+	{
+		int value;
+		try {
+			String[] splits = _volumeNotification.split("\\|");
+			value = Integer.parseInt(splits[2]);
+		} catch (Exception e) {
+			value = 0;
+		}
+		return (value == 1) ? true : false;
 	}
 	
 	public int getVolumeMediaValue()
@@ -333,6 +357,18 @@ public class Profile {
 		return (value == 0) ? true : false;
 	}
 	
+	public boolean getVolumeMediaDefaultProfile()
+	{
+		int value;
+		try {
+			String[] splits = _volumeMedia.split("\\|");
+			value = Integer.parseInt(splits[2]);
+		} catch (Exception e) {
+			value = 0;
+		}
+		return (value == 1) ? true : false;
+	}
+	
 	public int getVolumeAlarmValue()
 	{
 		int value;
@@ -355,6 +391,18 @@ public class Profile {
 			value = 1;
 		}
 		return (value == 0) ? true : false;
+	}
+	
+	public boolean getVolumeAlarmDefaultProfile()
+	{
+		int value;
+		try {
+			String[] splits = _volumeAlarm.split("\\|");
+			value = Integer.parseInt(splits[2]);
+		} catch (Exception e) {
+			value = 0;
+		}
+		return (value == 1) ? true : false;
 	}
 	
 	public int getVolumeSystemValue()
@@ -381,6 +429,18 @@ public class Profile {
 		return (value == 0) ? true : false;
 	}
 	
+	public boolean getVolumeSystemDefaultProfile()
+	{
+		int value;
+		try {
+			String[] splits = _volumeSystem.split("\\|");
+			value = Integer.parseInt(splits[2]);
+		} catch (Exception e) {
+			value = 0;
+		}
+		return (value == 1) ? true : false;
+	}
+	
 	public int getVolumeVoiceValue()
 	{
 		int value;
@@ -405,6 +465,18 @@ public class Profile {
 		return (value == 0) ? true : false;
 	}
 	
+	public boolean getVolumeVoiceDefaultProfile()
+	{
+		int value;
+		try {
+			String[] splits = _volumeVoice.split("\\|");
+			value = Integer.parseInt(splits[2]);
+		} catch (Exception e) {
+			value = 0;
+		}
+		return (value == 1) ? true : false;
+	}
+	
 	public int getDeviceBrightnessValue()
 	{
 		int value;
@@ -427,6 +499,18 @@ public class Profile {
 			value = 1;
 		}
 		return (value == 0) ? true : false;
+	}
+
+	public boolean getDeviceBrightnessDefaultProfile()
+	{
+		int value;
+		try {
+			String[] splits = _deviceBrightness.split("\\|");
+			value = Integer.parseInt(splits[3]);
+		} catch (Exception e) {
+			value = 0;
+		}
+		return (value == 1) ? true : false;
 	}
 
 	public boolean getDeviceBrightnessAutomatic()

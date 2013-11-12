@@ -90,12 +90,12 @@ public class DataWrapper {
 				  false, 
 				  order,
 				  0,
-	         	  "-1|1",
-	         	  "-1|1",
-	         	  "-1|1",
-	         	  "-1|1",
-	         	  "-1|1",
-	         	  "-1|1",
+	         	  "-1|1|0",
+	         	  "-1|1|0",
+	         	  "-1|1|0",
+	         	  "-1|1|0",
+	         	  "-1|1|0",
+	         	  "-1|1|0",
 	         	  false,
 	         	  Settings.System.DEFAULT_RINGTONE_URI.toString(),
 	         	  false,
@@ -106,7 +106,7 @@ public class DataWrapper {
 	         	  0,
 	         	  0,
 	         	  0,
-	         	  "-1|1|1",
+	         	  "-1|1|1|0",
 	         	  false,
 				  "-|0",
 				  0,
@@ -145,52 +145,52 @@ public class DataWrapper {
 		profile = getNoinitializedProfile(context.getString(R.string.default_profile_name_home), "ic_profile_home_2", 1);
 		profile._showInActivator = true;
 		profile._volumeRingerMode = 1;
-		profile._volumeRingtone = getVolumeLevelString(71, maximumValueRing)+"|0";
-		profile._volumeNotification = getVolumeLevelString(86, maximumValueNotification)+"|0";
-		profile._volumeAlarm = getVolumeLevelString(100, maximumValueAlarm)+"|0";
-		profile._volumeMedia = getVolumeLevelString(80, maximumValueMusic)+"|0";
+		profile._volumeRingtone = getVolumeLevelString(71, maximumValueRing)+"|0|0";
+		profile._volumeNotification = getVolumeLevelString(86, maximumValueNotification)+"|0|0";
+		profile._volumeAlarm = getVolumeLevelString(100, maximumValueAlarm)+"|0|0";
+		profile._volumeMedia = getVolumeLevelString(80, maximumValueMusic)+"|0|0";
 		profile._deviceWiFi = 1;
-		//profile._deviceBrightness = "60|0|0";
+		//profile._deviceBrightness = "60|0|0|0";
 		getDatabaseHandler().addProfile(profile);
 		profile = getNoinitializedProfile(context.getString(R.string.default_profile_name_outdoor), "ic_profile_outdoors_1", 2);
 		profile._showInActivator = true;
 		profile._volumeRingerMode = 2;
-		profile._volumeRingtone = getVolumeLevelString(100, maximumValueRing)+"|0";
-		profile._volumeNotification = getVolumeLevelString(100, maximumValueNotification)+"|0";
-		profile._volumeAlarm = getVolumeLevelString(100, maximumValueAlarm)+"|0";
-		profile._volumeMedia = getVolumeLevelString(93, maximumValueMusic)+"|0";
+		profile._volumeRingtone = getVolumeLevelString(100, maximumValueRing)+"|0|0";
+		profile._volumeNotification = getVolumeLevelString(100, maximumValueNotification)+"|0|0";
+		profile._volumeAlarm = getVolumeLevelString(100, maximumValueAlarm)+"|0|0";
+		profile._volumeMedia = getVolumeLevelString(93, maximumValueMusic)+"|0|0";
 		profile._deviceWiFi = 2;
-		//profile._deviceBrightness = "255|0|0";
+		//profile._deviceBrightness = "255|0|0|0";
 		getDatabaseHandler().addProfile(profile);
 		profile = getNoinitializedProfile(context.getString(R.string.default_profile_name_work), "ic_profile_work_5", 3);
 		profile._showInActivator = true;
 		profile._volumeRingerMode = 1;
-		profile._volumeRingtone = getVolumeLevelString(57, maximumValueRing)+"|0"; 
-		profile._volumeNotification = getVolumeLevelString(71, maximumValueNotification)+"|0";
-		profile._volumeAlarm = getVolumeLevelString(57, maximumValueAlarm)+"|0";
-		profile._volumeMedia = getVolumeLevelString(80, maximumValueMusic)+"|0";
+		profile._volumeRingtone = getVolumeLevelString(57, maximumValueRing)+"|0|0"; 
+		profile._volumeNotification = getVolumeLevelString(71, maximumValueNotification)+"|0|0";
+		profile._volumeAlarm = getVolumeLevelString(57, maximumValueAlarm)+"|0|0";
+		profile._volumeMedia = getVolumeLevelString(80, maximumValueMusic)+"|0|0";
 		profile._deviceWiFi = 2;
-		//profile._deviceBrightness = "60|0|0";
+		//profile._deviceBrightness = "60|0|0|0";
 		getDatabaseHandler().addProfile(profile);
 		profile = getNoinitializedProfile(context.getString(R.string.default_profile_name_meeting), "ic_profile_meeting_2", 4);
 		profile._showInActivator = true;
 		profile._volumeRingerMode = 4;
-		profile._volumeRingtone = getVolumeLevelString(0, maximumValueRing)+"|0";
-		profile._volumeNotification = getVolumeLevelString(0, maximumValueNotification)+"|0";
-		profile._volumeAlarm = getVolumeLevelString(0, maximumValueAlarm)+"|0";
-		profile._volumeMedia = getVolumeLevelString(0, maximumValueMusic)+"|0";
+		profile._volumeRingtone = getVolumeLevelString(0, maximumValueRing)+"|0|0";
+		profile._volumeNotification = getVolumeLevelString(0, maximumValueNotification)+"|0|0";
+		profile._volumeAlarm = getVolumeLevelString(0, maximumValueAlarm)+"|0|0";
+		profile._volumeMedia = getVolumeLevelString(0, maximumValueMusic)+"|0|0";
 		profile._deviceWiFi = 0;
-		//profile._deviceBrightness = "-1|1|1";
+		//profile._deviceBrightness = "-1|1|1|0";
 		getDatabaseHandler().addProfile(profile);
 		profile = getNoinitializedProfile(context.getString(R.string.default_profile_name_sleep), "ic_profile_sleep", 5);
 		profile._showInActivator = true;
 		profile._volumeRingerMode = 4;
-		profile._volumeRingtone = getVolumeLevelString(0, maximumValueRing)+"|0";
-		profile._volumeNotification = getVolumeLevelString(0, maximumValueNotification)+"|0";
-		profile._volumeAlarm = getVolumeLevelString(100, maximumValueAlarm)+"|0";
-		profile._volumeMedia = getVolumeLevelString(0, maximumValueMusic)+"|0";
+		profile._volumeRingtone = getVolumeLevelString(0, maximumValueRing)+"|0|0";
+		profile._volumeNotification = getVolumeLevelString(0, maximumValueNotification)+"|0|0";
+		profile._volumeAlarm = getVolumeLevelString(100, maximumValueAlarm)+"|0|0";
+		profile._volumeMedia = getVolumeLevelString(0, maximumValueMusic)+"|0|0";
 		profile._deviceWiFi = 0;
-		//profile._deviceBrightness = "10|0|0";
+		//profile._deviceBrightness = "10|0|0|0";
 		getDatabaseHandler().addProfile(profile);
 		
 		return getProfileList();
