@@ -66,7 +66,7 @@ public class ActivateProfileHelper {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public void execute(Profile profile, boolean interactive)
+	public void execute(Profile _profile, boolean interactive)
 	{
 		// regrant root, maybe application is deleted from Superuser.apk
 		GlobalData.rootGranted = false;
@@ -75,6 +75,8 @@ public class ActivateProfileHelper {
 		//Settings.System.putInt(context.getContentResolver(), Settings.System.NOTIFICATIONS_USE_RING_VOLUME, 0);
 
 		AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+		
+		Profile profile = GlobalData.getMappedProfile(_profile, context);
 		
 		// nahodenie volume
 		if (profile.getVolumeRingtoneChange())

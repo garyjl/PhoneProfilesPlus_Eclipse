@@ -251,6 +251,108 @@ public class GlobalData extends Application {
     	return profile;
 	}
 	
+	static public Profile getMappedProfile(Profile profile, Context context)
+	{
+		Profile defaultProfile = getDefaultProfile(context);
+		
+		Profile mappedProfile = new Profile(
+				           profile._id,
+						   profile._name, 
+						   profile._icon, 
+						   profile._checked, 
+						   profile._porder,
+						   profile._volumeRingerMode,
+						   profile._volumeRingtone,
+						   profile._volumeNotification,
+						   profile._volumeMedia,
+						   profile._volumeAlarm,
+						   profile._volumeSystem,
+						   profile._volumeVoice,
+						   profile._soundRingtoneChange,
+						   profile._soundRingtone,
+						   profile._soundNotificationChange,
+						   profile._soundNotification,
+						   profile._soundAlarmChange,
+						   profile._soundAlarm,
+						   profile._deviceAirplaneMode,
+						   profile._deviceWiFi,
+						   profile._deviceBluetooth,
+						   profile._deviceScreenTimeout,
+						   profile._deviceBrightness,
+						   profile._deviceWallpaperChange,
+						   profile._deviceWallpaper,
+						   profile._deviceMobileData,
+						   profile._deviceMobileDataPrefs,
+						   profile._deviceGPS,
+						   profile._deviceRunApplicationChange,
+						   profile._deviceRunApplicationPackageName,
+						   profile._deviceAutosync,
+						   profile._showInActivator,
+						   profile._deviceAutoRotate);
+	
+		if (profile._volumeRingerMode == 99)
+			mappedProfile._volumeRingerMode = defaultProfile._volumeRingerMode;
+		if (profile.getVolumeRingtoneDefaultProfile())
+			mappedProfile._volumeRingtone = defaultProfile._volumeRingtone;
+		if (profile.getVolumeNotificationDefaultProfile())
+			mappedProfile._volumeNotification = defaultProfile._volumeNotification;
+		if (profile.getVolumeAlarmDefaultProfile())
+			mappedProfile._volumeAlarm = defaultProfile._volumeAlarm;
+		if (profile.getVolumeMediaDefaultProfile())
+			mappedProfile._volumeMedia = defaultProfile._volumeMedia;
+		if (profile.getVolumeSystemDefaultProfile())
+			mappedProfile._volumeSystem = defaultProfile._volumeSystem;
+		if (profile.getVolumeVoiceDefaultProfile())
+			mappedProfile._volumeVoice = defaultProfile._volumeVoice;
+		if (profile._soundRingtoneChange == 99)
+		{
+			mappedProfile._soundRingtoneChange = defaultProfile._soundRingtoneChange;
+			mappedProfile._soundRingtone = defaultProfile._soundRingtone;
+		}
+		if (profile._soundNotificationChange == 99)
+		{
+			mappedProfile._soundNotificationChange = defaultProfile._soundNotificationChange;
+			mappedProfile._soundNotification = defaultProfile._soundNotification;
+		}
+		if (profile._soundAlarmChange == 99)
+		{
+			mappedProfile._soundAlarmChange = defaultProfile._soundAlarmChange;
+			mappedProfile._soundAlarm = defaultProfile._soundAlarm;
+		}
+		if (profile._deviceAirplaneMode == 99)
+			mappedProfile._deviceAirplaneMode = defaultProfile._deviceAirplaneMode;
+		if (profile._deviceAutosync == 99)
+			mappedProfile._deviceAutosync = defaultProfile._deviceAutosync;
+		if (profile._deviceMobileData == 99)
+			mappedProfile._deviceMobileData = defaultProfile._deviceMobileData;
+		if (profile._deviceMobileDataPrefs == 99)
+			mappedProfile._deviceMobileDataPrefs = defaultProfile._deviceMobileDataPrefs;
+		if (profile._deviceWiFi == 99)
+			mappedProfile._deviceWiFi = defaultProfile._deviceWiFi;
+		if (profile._deviceBluetooth == 99)
+			mappedProfile._deviceBluetooth = defaultProfile._deviceBluetooth;
+		if (profile._deviceGPS == 99)
+			mappedProfile._deviceGPS = defaultProfile._deviceGPS;
+		if (profile._deviceScreenTimeout == 99)
+			mappedProfile._deviceScreenTimeout = defaultProfile._deviceScreenTimeout;
+		if (profile.getDeviceBrightnessDefaultProfile())
+			mappedProfile._deviceBrightness = defaultProfile._deviceBrightness;
+		if (profile._deviceAutoRotate == 99)
+			mappedProfile._deviceAutoRotate = defaultProfile._deviceAutoRotate;
+		if (profile._deviceRunApplicationChange == 99)
+		{
+			mappedProfile._deviceRunApplicationChange = defaultProfile._deviceRunApplicationChange;
+			mappedProfile._deviceRunApplicationPackageName = defaultProfile._deviceRunApplicationPackageName;
+		}
+		if (profile._deviceWallpaperChange == 99)
+		{
+			mappedProfile._deviceWallpaperChange = defaultProfile._deviceWallpaperChange;
+			mappedProfile._deviceWallpaper = defaultProfile._deviceWallpaper;
+		}
+		
+		return mappedProfile;
+	}
+	
 	static public boolean getGlobalEventsRuning(Context context)
 	{
 		SharedPreferences preferences = context.getSharedPreferences(APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);

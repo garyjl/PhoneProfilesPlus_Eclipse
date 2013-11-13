@@ -217,5 +217,23 @@ Upravy profile preferences pre default profile
 - application - ok
 - change wallpaper - vyhodit default profile
 - wallpapper - ok
+
+indicator -> kedy kukat do default profile na hodnoty
+- _volumeRingerMode == 99
+- getVolume*DefaultProfile() == true
+- _sound*Change == 99
+- _deviceAirplaneMode == 99
+- _deviceAutosync == 99
+- _deviceMobileData == 99
+- _deviceMobileDataPrefs == 99
+- _deviceWiFi == 99
+- _deviceBluetooth == 99
+- _deviceGPS == 99
+- _deviceScreenTimeout == 99
+- getDeviceBrightnessDefaultProfile() == true
+- _deviceAutoRotate == 99
+- _deviceRunApplicationChange == 99
+- _deviceWallpaperChange == 99
+
   
   
