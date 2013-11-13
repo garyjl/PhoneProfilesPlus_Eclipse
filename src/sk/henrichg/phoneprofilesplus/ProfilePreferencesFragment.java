@@ -317,12 +317,12 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	        editor.remove(GlobalData.PREF_PROFILE_DEVICE_BLUETOOTH).putString(GlobalData.PREF_PROFILE_DEVICE_BLUETOOTH, Integer.toString(profile._deviceBluetooth));
 	        editor.remove(GlobalData.PREF_PROFILE_DEVICE_SCREEN_TIMEOUT).putString(GlobalData.PREF_PROFILE_DEVICE_SCREEN_TIMEOUT, Integer.toString(profile._deviceScreenTimeout));
 	        editor.remove(GlobalData.PREF_PROFILE_DEVICE_BRIGHTNESS).putString(GlobalData.PREF_PROFILE_DEVICE_BRIGHTNESS, profile._deviceBrightness);
-	        editor.remove(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER_CHANGE).putBoolean(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER_CHANGE, profile._deviceWallpaperChange);
+	        editor.remove(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER_CHANGE).putString(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER_CHANGE, Integer.toString(profile._deviceWallpaperChange));
 	        editor.remove(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER).putString(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER, profile._deviceWallpaper);
 	        editor.remove(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA).putString(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA, Integer.toString(profile._deviceMobileData));
-	        editor.remove(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS).putBoolean(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS, profile._deviceMobileDataPrefs);
+	        editor.remove(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS).putString(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS, Integer.toString(profile._deviceMobileDataPrefs));
 	        editor.remove(GlobalData.PREF_PROFILE_DEVICE_GPS).putString(GlobalData.PREF_PROFILE_DEVICE_GPS, Integer.toString(profile._deviceGPS));
-	        editor.remove(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE).putBoolean(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE, profile._deviceRunApplicationChange);
+	        editor.remove(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE).putString(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE, Integer.toString(profile._deviceRunApplicationChange));
 	        editor.remove(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME).putString(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME, profile._deviceRunApplicationPackageName);
 	        editor.remove(GlobalData.PREF_PROFILE_DEVICE_AUTOSYNC).putString(GlobalData.PREF_PROFILE_DEVICE_AUTOSYNC, Integer.toString(profile._deviceAutosync));
 	        editor.remove(GlobalData.PREF_PROFILE_DEVICE_AUTOROTATE).putString(GlobalData.PREF_PROFILE_DEVICE_AUTOROTATE, Integer.toString(profile._deviceAutoRotate));
@@ -354,16 +354,16 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
     	profile._deviceBluetooth = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_BLUETOOTH, ""));
     	profile._deviceScreenTimeout = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_SCREEN_TIMEOUT, ""));
     	profile._deviceBrightness = preferences.getString(GlobalData.PREF_PROFILE_DEVICE_BRIGHTNESS, "");
-    	profile._deviceWallpaperChange = preferences.getBoolean(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER_CHANGE, false);
-    	if (profile._deviceWallpaperChange)
+    	profile._deviceWallpaperChange = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER_CHANGE, ""));
+    	if (profile._deviceWallpaperChange == 1)
     		profile._deviceWallpaper = preferences.getString(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER, "");
     	else
     		profile._deviceWallpaper = "-|0";
     	profile._deviceMobileData = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA, ""));
-    	profile._deviceMobileDataPrefs = preferences.getBoolean(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS, false);
+    	profile._deviceMobileDataPrefs = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS, ""));
     	profile._deviceGPS = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_GPS, ""));
-    	profile._deviceRunApplicationChange = preferences.getBoolean(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE, false);
-    	if (profile._deviceRunApplicationChange)
+    	profile._deviceRunApplicationChange = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE, ""));
+    	if (profile._deviceRunApplicationChange == 1)
     		profile._deviceRunApplicationPackageName = preferences.getString(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME, "-");
     	else
     		profile._deviceRunApplicationPackageName = "-";
@@ -486,7 +486,16 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 			CharSequence summary = (index >= 0) ? listPreference.getEntries()[index] : null;
 			listPreference.setSummary(summary);
 		}
-		
+    	if (key.equals(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER_CHANGE) ||
+	    	key.equals(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS) || 
+	    	key.equals(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE))
+    	{
+			String sValue = value.toString();
+			ListPreference listPreference = (ListPreference)prefMng.findPreference(key);
+			int index = listPreference.findIndexOfValue(sValue);
+			CharSequence summary = (index >= 0) ? listPreference.getEntries()[index] : null;
+			listPreference.setSummary(summary);
+    	}
 	}
 	
 	private void updateSharedPreference()
@@ -513,15 +522,18 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	        setSummary(GlobalData.PREF_PROFILE_DEVICE_GPS, profile._deviceGPS);
 	        setSummary(GlobalData.PREF_PROFILE_DEVICE_AUTOSYNC, profile._deviceAutosync);
 	        setSummary(GlobalData.PREF_PROFILE_DEVICE_AUTOROTATE, profile._deviceAutoRotate);
+	        setSummary(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER_CHANGE, profile._deviceWallpaperChange);
+	        setSummary(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS, profile._deviceMobileDataPrefs); 
+	        setSummary(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE, profile._deviceRunApplicationChange); 
 			
         }
 	}
 	
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
-    	if (!(key.equals(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER_CHANGE) ||
+    	if (!(/*key.equals(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER_CHANGE) ||
 	    		key.equals(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS) || 
-	    		key.equals(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE) ||
+	    		key.equals(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE) || */
 	    		key.equals(GlobalData.PREF_PROFILE_SHOW_IN_ACTIVATOR) 
 	    		))
 	    		setSummary(key, sharedPreferences.getString(key, ""));

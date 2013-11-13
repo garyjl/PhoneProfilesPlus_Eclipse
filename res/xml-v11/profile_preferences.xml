@@ -137,10 +137,12 @@
             android:defaultValue="0"
             android:entries="@array/hardwareModeArray"
             android:entryValues="@array/hardwareModeValues" />        
-		<CheckBoxPreference 
-		    android:key="prf_pref_deviceMobileDataPrefs"
-		    android:title="@string/profile_preferences_deviceMobileDataPrefs"
-		    android:defaultValue="false" />
+		<ListPreference android:title="@string/profile_preferences_deviceMobileDataPrefs"
+            android:summary="@string/array_pref_no_change"
+            android:key="prf_pref_deviceMobileDataPrefs"
+            android:defaultValue="0"
+            android:entries="@array/mobileDataPrefsArray"
+            android:entryValues="@array/mobileDataPrefsValues" />        
 		<ListPreference android:title="@string/profile_preferences_deviceWiFi"
             android:summary="@string/array_pref_no_change"
             android:key="prf_pref_deviceWiFi"
@@ -178,24 +180,26 @@
             android:defaultValue="0"
             android:entries="@array/displayRotationArray11"
             android:entryValues="@array/displayRotationValues11" />        
-		<CheckBoxPreference 
-		    android:key="prf_pref_deviceRunApplicationChange"
-		    android:title="@string/profile_preferences_deviceRunApplicationChange"
-		    android:defaultValue="false" />
+		<ListPreference android:title="@string/profile_preferences_deviceRunApplicationChange"
+            android:summary="@string/array_pref_no_change"
+            android:key="prf_pref_deviceRunApplicationChange"
+            android:defaultValue="0"
+            android:entries="@array/runApplicationArray"
+            android:entryValues="@array/runApplicationValues" />        
 		<sk.henrichg.phoneprofilesplus.ApplicationsPreference
             android:defaultValue="-"
             android:key="prf_pref_deviceRunApplicationPackageName"
-            android:title="@string/profile_preferences_deviceRunApplicationPackageName"
-            android:dependency="prf_pref_deviceRunApplicationChange" />
-		<CheckBoxPreference 
-		    android:key="prf_pref_deviceWallpaperChange"
-		    android:title="@string/profile_preferences_deviceWallpaperChange"
-		    android:defaultValue="false" />
+            android:title="@string/profile_preferences_deviceRunApplicationPackageName" />
+		<ListPreference android:title="@string/profile_preferences_deviceWallpaperChange"
+            android:summary="@string/array_pref_no_change"
+            android:key="prf_pref_deviceWallpaperChange"
+            android:defaultValue="0"
+            android:entries="@array/changeWallpaperArray"
+            android:entryValues="@array/changeWallpaperValues" />        
 		<sk.henrichg.phoneprofilesplus.ImageViewPreference
             android:defaultValue="-|0"
             android:key="prf_pref_deviceWallpaper"
             android:title="@string/profile_preferences_deviceWallpaper"
-            henrichg:imageSource="file"
-            android:dependency="prf_pref_deviceWallpaperChange" />
+            henrichg:imageSource="file" />
 	</PreferenceCategory>
 </PreferenceScreen>    

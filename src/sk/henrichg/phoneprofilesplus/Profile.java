@@ -27,15 +27,15 @@ public class Profile {
 	public String _soundAlarm;
 	public int _deviceAirplaneMode;
 	public int _deviceMobileData;
-	public boolean _deviceMobileDataPrefs;
+	public int _deviceMobileDataPrefs;
 	public int _deviceWiFi;
 	public int _deviceBluetooth;
 	public int _deviceGPS;
 	public int _deviceScreenTimeout;
 	public String _deviceBrightness;
-	public boolean _deviceWallpaperChange;
+	public int _deviceWallpaperChange;
 	public String _deviceWallpaper;
-	public boolean _deviceRunApplicationChange;
+	public int _deviceRunApplicationChange;
 	public String _deviceRunApplicationPackageName;
 	public int _deviceAutosync;
 	public boolean _showInActivator;
@@ -74,12 +74,12 @@ public class Profile {
 			   	   int deviceBluetooth,
 			   	   int deviceScreenTimeout,
 			   	   String deviceBrightness,
-			   	   boolean deviceWallpaperChange,
+			   	   int deviceWallpaperChange,
 			   	   String deviceWallpaper,
 			   	   int deviceMobileData,
-			   	   boolean deviceMobileDataPrefs,
+			   	   int deviceMobileDataPrefs,
 			   	   int deviceGPS,
-			   	   boolean deviceRunApplicationChange,
+			   	   int deviceRunApplicationChange,
 			   	   String deviceRunApplicationPackageName,
 			   	   int deviceAutosync,
 			   	   boolean showInActivator,
@@ -146,12 +146,12 @@ public class Profile {
 			   	   int deviceBluetooth,
 			   	   int deviceScreenTimeout,
 			   	   String deviceBrightness,
-			   	   boolean deviceWallpaperChange,
+			   	   int deviceWallpaperChange,
 			   	   String deviceWallpaper,
 			   	   int deviceMobileData,
-			   	   boolean deviceMobileDataPrefs,
+			   	   int deviceMobileDataPrefs,
 			   	   int deviceGPS,
-			   	   boolean deviceRunApplicationChange,
+			   	   int deviceRunApplicationChange,
 			   	   String deviceRunApplicationPackageName,
 			   	   int deviceAutosync,
 			   	   boolean showInActivator,

@@ -502,7 +502,7 @@ public class ActivateProfileHelper {
 		}
 		
 		// nahodenie pozadia
-		if (profile._deviceWallpaperChange)
+		if (profile._deviceWallpaperChange == 1)
 		{
 			//Log.d("ActivateProfileHelper.execute","set wallpaper");
 			DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -528,7 +528,7 @@ public class ActivateProfileHelper {
 			
 			if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA, context))
 			{
-				if (profile._deviceMobileDataPrefs)
+				if (profile._deviceMobileDataPrefs == 1)
 				{
 			    	if (android.os.Build.VERSION.SDK_INT > 10)
 			    	{
@@ -547,7 +547,7 @@ public class ActivateProfileHelper {
 				}
 			}
 
-			if (profile._deviceRunApplicationChange)
+			if (profile._deviceRunApplicationChange == 1)
 			{
 				Intent intent;
 				PackageManager packageManager = context.getPackageManager();

@@ -74,7 +74,7 @@ public class ProfilePreferencesIndicator {
 			if (profile._deviceMobileData == 2)
 				drawables[countDrawables++] = R.drawable.ic_profile_pref_mobiledata_off;
 			// mobile data preferences
-			if (profile._deviceMobileDataPrefs)
+			if (profile._deviceMobileDataPrefs == 1)
 				drawables[countDrawables++] = R.drawable.ic_profile_pref_mobiledata_pref;
 			// wifi
 			if ((profile._deviceWiFi == 1) || (profile._deviceWiFi == 3))
@@ -107,10 +107,10 @@ public class ProfilePreferencesIndicator {
 			if (profile._deviceAutoRotate != 0)
 				drawables[countDrawables++] = R.drawable.ic_profile_pref_autorotate_off;
 			// run application
-			if (profile._deviceRunApplicationChange)
+			if (profile._deviceRunApplicationChange == 1)
 				drawables[countDrawables++] = R.drawable.ic_profile_pref_run_application;
 			// wallpaper
-			if (profile._deviceWallpaperChange)
+			if (profile._deviceWallpaperChange == 1)
 				drawables[countDrawables++] = R.drawable.ic_profile_pref_wallpaper;
 			
 		}

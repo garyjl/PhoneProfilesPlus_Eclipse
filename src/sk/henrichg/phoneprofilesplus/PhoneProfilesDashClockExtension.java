@@ -127,7 +127,7 @@ public class PhoneProfilesDashClockExtension extends DashClockExtension {
 			if (profile._deviceMobileData == 2)
 				indicator1 = addIntoIndicator(indicator1, "md0");
 			// mobile data preferences
-			if (profile._deviceMobileDataPrefs)
+			if (profile._deviceMobileDataPrefs == 1)
 				indicator1 = addIntoIndicator(indicator1, "mdP");
 			// wifi
 			if ((profile._deviceWiFi == 1) || (profile._deviceWiFi == 3))
@@ -162,10 +162,10 @@ public class PhoneProfilesDashClockExtension extends DashClockExtension {
 			if (profile._deviceAutoRotate != 0)
 				indicator1 = addIntoIndicator(indicator1, "ar0");
 			// run application
-			if (profile._deviceRunApplicationChange)
+			if (profile._deviceRunApplicationChange == 1)
 				indicator1 = addIntoIndicator(indicator1, "rap");
 			// wallpaper
-			if (profile._deviceWallpaperChange)
+			if (profile._deviceWallpaperChange == 1)
 				indicator1 = addIntoIndicator(indicator1, "wlp");
 		}
 		/////////////////////////////////////////////////////////////

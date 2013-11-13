@@ -480,12 +480,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_DEVICE_BLUETOOTH, profile._deviceBluetooth);
 		values.put(KEY_DEVICE_SCREEN_TIMEOUT, profile._deviceScreenTimeout);
 		values.put(KEY_DEVICE_BRIGHTNESS, profile._deviceBrightness);
-		values.put(KEY_DEVICE_WALLPAPER_CHANGE, (profile._deviceWallpaperChange) ? 1 : 0);
+		values.put(KEY_DEVICE_WALLPAPER_CHANGE, profile._deviceWallpaperChange);
 		values.put(KEY_DEVICE_WALLPAPER, profile._deviceWallpaper);
 		values.put(KEY_DEVICE_MOBILE_DATA, profile._deviceMobileData);
-		values.put(KEY_DEVICE_MOBILE_DATA_PREFS, (profile._deviceMobileDataPrefs) ? 1 : 0);
+		values.put(KEY_DEVICE_MOBILE_DATA_PREFS, profile._deviceMobileDataPrefs);
 		values.put(KEY_DEVICE_GPS, profile._deviceGPS);
-		values.put(KEY_DEVICE_RUN_APPLICATION_CHANGE, (profile._deviceRunApplicationChange) ? 1 : 0);
+		values.put(KEY_DEVICE_RUN_APPLICATION_CHANGE, profile._deviceRunApplicationChange);
 		values.put(KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME, profile._deviceRunApplicationPackageName);
 		values.put(KEY_DEVICE_AUTOSYNC, profile._deviceAutosync);
 		values.put(KEY_SHOW_IN_ACTIVATOR, (profile._showInActivator) ? 1 : 0);
@@ -572,12 +572,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					                      Integer.parseInt(cursor.getString(20)),
 					                      Integer.parseInt(cursor.getString(21)),
 					                      cursor.getString(22),
-					                      (Integer.parseInt(cursor.getString(23)) == 1) ? true : false,
+					                      Integer.parseInt(cursor.getString(23)),
 					                      cursor.getString(24),
 					                      Integer.parseInt(cursor.getString(25)),
-					                      (Integer.parseInt(cursor.getString(26)) == 1) ? true : false,
+					                      Integer.parseInt(cursor.getString(26)),
 					                      Integer.parseInt(cursor.getString(27)),
-					                      (Integer.parseInt(cursor.getString(28)) == 1) ? true : false,
+					                      Integer.parseInt(cursor.getString(28)),
 					                      cursor.getString(29),
 					                      Integer.parseInt(cursor.getString(30)),
 					                      (Integer.parseInt(cursor.getString(31)) == 1) ? true : false,
@@ -664,12 +664,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 profile._deviceBluetooth = Integer.parseInt(cursor.getString(20));
                 profile._deviceScreenTimeout = Integer.parseInt(cursor.getString(21));
                 profile._deviceBrightness = cursor.getString(22);
-                profile._deviceWallpaperChange = (Integer.parseInt(cursor.getString(23)) == 1) ? true : false;
+                profile._deviceWallpaperChange = Integer.parseInt(cursor.getString(23));
                 profile._deviceWallpaper = cursor.getString(24);
                 profile._deviceMobileData = Integer.parseInt(cursor.getString(25));
-                profile._deviceMobileDataPrefs = (Integer.parseInt(cursor.getString(26)) == 1) ? true : false;
+                profile._deviceMobileDataPrefs = Integer.parseInt(cursor.getString(26));
                 profile._deviceGPS = Integer.parseInt(cursor.getString(27));
-                profile._deviceRunApplicationChange = (Integer.parseInt(cursor.getString(28)) == 1) ? true : false;
+                profile._deviceRunApplicationChange = Integer.parseInt(cursor.getString(28));
                 profile._deviceRunApplicationPackageName = cursor.getString(29);
                 profile._deviceAutosync = Integer.parseInt(cursor.getString(30));
                 profile._showInActivator = (Integer.parseInt(cursor.getString(31)) == 1) ? true : false;
@@ -714,12 +714,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_DEVICE_BLUETOOTH, profile._deviceBluetooth);
 		values.put(KEY_DEVICE_SCREEN_TIMEOUT, profile._deviceScreenTimeout);
 		values.put(KEY_DEVICE_BRIGHTNESS, profile._deviceBrightness);
-		values.put(KEY_DEVICE_WALLPAPER_CHANGE, (profile._deviceWallpaperChange) ? 1 : 0);
+		values.put(KEY_DEVICE_WALLPAPER_CHANGE, profile._deviceWallpaperChange);
 		values.put(KEY_DEVICE_WALLPAPER, profile._deviceWallpaper);
 		values.put(KEY_DEVICE_MOBILE_DATA, profile._deviceMobileData);
-		values.put(KEY_DEVICE_MOBILE_DATA_PREFS, (profile._deviceMobileDataPrefs) ? 1 : 0);
+		values.put(KEY_DEVICE_MOBILE_DATA_PREFS, profile._deviceMobileDataPrefs);
 		values.put(KEY_DEVICE_GPS, profile._deviceGPS);
-		values.put(KEY_DEVICE_RUN_APPLICATION_CHANGE, (profile._deviceRunApplicationChange) ? 1 : 0);
+		values.put(KEY_DEVICE_RUN_APPLICATION_CHANGE, profile._deviceRunApplicationChange);
 		values.put(KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME, profile._deviceRunApplicationPackageName);
 		values.put(KEY_DEVICE_AUTOSYNC, profile._deviceAutosync);
 		values.put(KEY_SHOW_IN_ACTIVATOR, (profile._showInActivator) ? 1 : 0);
@@ -970,12 +970,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					                      Integer.parseInt(cursor.getString(20)),
 					                      Integer.parseInt(cursor.getString(21)),
 					                      cursor.getString(22),
-					                      (Integer.parseInt(cursor.getString(23)) == 1) ? true : false,
+					                      Integer.parseInt(cursor.getString(23)),
 					                      cursor.getString(24),
 					                      Integer.parseInt(cursor.getString(25)),
-					                      (Integer.parseInt(cursor.getString(26)) == 1) ? true : false,
+					                      Integer.parseInt(cursor.getString(26)),
 					                      Integer.parseInt(cursor.getString(27)),
-					                      (Integer.parseInt(cursor.getString(28)) == 1) ? true : false,
+					                      Integer.parseInt(cursor.getString(28)),
 					                      cursor.getString(29),
 					                      Integer.parseInt(cursor.getString(30)),
 					                      (Integer.parseInt(cursor.getString(31)) == 1) ? true : false,
