@@ -125,11 +125,11 @@ public class ActivateProfileHelper {
 		}
 		
 		// nahodenie ringtone
-		if (profile._soundRingtoneChange)
+		if (profile._soundRingtoneChange == 1)
 			Settings.System.putString(context.getContentResolver(), Settings.System.RINGTONE, profile._soundRingtone);
-		if (profile._soundNotificationChange)
+		if (profile._soundNotificationChange == 1)
 			Settings.System.putString(context.getContentResolver(), Settings.System.NOTIFICATION_SOUND, profile._soundNotification);
-		if (profile._soundAlarmChange)
+		if (profile._soundAlarmChange == 1)
 			Settings.System.putString(context.getContentResolver(), Settings.System.ALARM_ALERT, profile._soundAlarm);
 
 		// nahodenie airplane modu

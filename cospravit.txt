@@ -177,22 +177,22 @@ Upravy profile preferences pre normalne profily
 - show in activator - ok
 - ringer mode - pridat - default profile
 - * volume - pridat do dialogu checkbox default profile
-- Sounds - Change * - zmenit na ListPreference - No change, Default profile, change ringtone
+- Sounds - Change * - zmenit na ListPreference - No change, Default profile, Change
                     - na No change a default profile disablovat Sounds - * sound        
 - airplane mode - pridat default profile
 - autosync - pridat default profile
 - mobile data - pridat default profile
-- mobile data preferences - zmenit na ListPreference - Default profile, no show preference, show preferences
+- mobile data preferences - zmenit na ListPreference - No show, Default profile, Show
 - wifi - pridat default profile
 - bluetooth - pridat default profile
 - gps - pridat default profile
 - screen timeout - prodat default profile
 - screen brightnees - pridat do dialogu checkbox default profile
 - display rotation - pridat default profile
-- run application - zmenit na ListPreference - Default profile, no run application, run apllication
+- run application - zmenit na ListPreference - No run, Default profile, Run
                   - na default profile disablovat Application
 - application - ok
-- change wallpaper - zmenit na ListPreference - Default profile, no change walpaper, change wallpaper
+- change wallpaper - zmenit na ListPreference - No change, Default profile, Change
                    - na default profile disablovat Wallpaper
 - wallpapper - ok
                                 

@@ -19,11 +19,11 @@ public class Profile {
 	public String _volumeAlarm;
 	public String _volumeSystem;
 	public String _volumeVoice;
-	public boolean _soundRingtoneChange;
+	public int _soundRingtoneChange;
 	public String _soundRingtone;
-	public boolean _soundNotificationChange;
+	public int _soundNotificationChange;
 	public String _soundNotification;
-	public boolean _soundAlarmChange;
+	public int _soundAlarmChange;
 	public String _soundAlarm;
 	public int _deviceAirplaneMode;
 	public int _deviceMobileData;
@@ -63,11 +63,11 @@ public class Profile {
 			   	   String volumeAlarm,
 			   	   String volumeSystem,
 			   	   String volumeVoice,
-			   	   boolean soundRingtoneChange,
+			   	   int soundRingtoneChange,
 			   	   String soundRingtone,
-			   	   boolean soundNotificationChange,
+			   	   int soundNotificationChange,
 			   	   String soundNotification,
-			   	   boolean soundAlarmChange,
+			   	   int soundAlarmChange,
 			   	   String soundAlarm,
 			   	   int deviceAirplaneMode,
 			   	   int deviceWiFi,
@@ -135,11 +135,11 @@ public class Profile {
 			   	   String volumeAlarm,
 			   	   String volumeSystem,
 			   	   String volumeVoice,
-			   	   boolean soundRingtoneChange,
+			   	   int soundRingtoneChange,
 			   	   String soundRingtone,
-			   	   boolean soundNotificationChange,
+			   	   int soundNotificationChange,
 			   	   String soundNotification,
-			   	   boolean soundAlarmChange,
+			   	   int soundAlarmChange,
 			   	   String soundAlarm,
 			   	   int deviceAirplaneMode,
 			   	   int deviceWiFi,

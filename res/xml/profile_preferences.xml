@@ -73,10 +73,12 @@
     <PreferenceCategory
         android:summary="@string/profile_preferences_category_sounds"
         android:title="@string/profile_preferences_category_sounds" >
-		<CheckBoxPreference 
-		    android:key="prf_pref_soundRingtoneChange"
-		    android:title="@string/profile_preferences_soundRingtoneChange"
-		    android:defaultValue="false" />
+		<ListPreference android:title="@string/profile_preferences_soundRingtoneChange"
+            android:summary="@string/array_pref_no_change"
+            android:key="prf_pref_soundRingtoneChange"
+            android:defaultValue="0"
+            android:entries="@array/soundChangeArray"
+            android:entryValues="@array/soundChangeValues" />  
         <RingtonePreference
             android:key="prf_pref_soundRingtone"
             android:summary="@string/array_pref_no_change"
@@ -85,10 +87,12 @@
             android:showSilent="false"
             android:showDefault="true"
             android:dependency="prf_pref_soundRingtoneChange" />
-		<CheckBoxPreference 
-		    android:key="prf_pref_soundNotificationChange"
-		    android:title="@string/profile_preferences_soundNotificationChange"
-		    android:defaultValue="false" />
+		<ListPreference android:title="@string/profile_preferences_soundNotificationChange"
+            android:summary="@string/array_pref_no_change"
+            android:key="prf_pref_soundNotificationChange"
+            android:defaultValue="0"
+            android:entries="@array/soundChangeArray"
+            android:entryValues="@array/soundChangeValues" />  
         <RingtonePreference
             android:key="prf_pref_soundNotification"
             android:summary="@string/array_pref_no_change"
@@ -97,10 +101,12 @@
             android:showSilent="false"
             android:showDefault="true"
             android:dependency="prf_pref_soundNotificationChange" />
-		<CheckBoxPreference 
-		    android:key="prf_pref_soundAlarmChange"
-		    android:title="@string/profile_preferences_soundAlarmChange"
-		    android:defaultValue="false" />
+		<ListPreference android:title="@string/profile_preferences_soundAlarmChange"
+            android:summary="@string/array_pref_no_change"
+            android:key="prf_pref_soundAlarmChange"
+            android:defaultValue="0"
+            android:entries="@array/soundChangeArray"
+            android:entryValues="@array/soundChangeValues" />  
         <RingtonePreference
             android:key="prf_pref_soundAlarm"
             android:summary="@string/array_pref_no_change"
@@ -170,7 +176,7 @@
             android:summary="@string/array_pref_no_change"
             android:key="prf_pref_deviceAutoRotation"
             android:defaultValue="0"
-            android:entries="@array/dislayRotationArray"
+            android:entries="@array/displayRotationArray"
             android:entryValues="@array/displayRotationValues" />        
 		<CheckBoxPreference 
 		    android:key="prf_pref_deviceRunApplicationChange"

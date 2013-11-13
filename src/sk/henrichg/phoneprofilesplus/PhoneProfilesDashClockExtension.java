@@ -107,7 +107,9 @@ public class PhoneProfilesDashClockExtension extends DashClockExtension {
 				profile.getVolumeVoiceChange())
 				indicator1 = addIntoIndicator(indicator1, "vol");
 			// sound
-			if (profile._soundRingtoneChange || profile._soundNotificationChange || profile._soundAlarmChange)
+			if ((profile._soundRingtoneChange == 1) || 
+				(profile._soundNotificationChange == 1) || 
+				(profile._soundAlarmChange == 1))
 				indicator1 = addIntoIndicator(indicator1, "snd");
 			// airplane mode
 			if ((profile._deviceAirplaneMode == 1) || (profile._deviceAirplaneMode == 3))

@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -113,6 +114,12 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 
 		preferencesActivity = getSherlockActivity();
 		
+		if (getArguments().containsKey(GlobalData.EXTRA_PREFERENCES_ACTIVITY) &&
+		    getArguments().getBoolean(GlobalData.EXTRA_PREFERENCES_ACTIVITY))
+			PREFS_NAME = PREFS_NAME_ACTIVITY;
+		else
+			PREFS_NAME = PREFS_NAME_FRAGMENT;
+		
 		prefMng = getPreferenceManager();
 		prefMng.setSharedPreferencesName(PREFS_NAME);
 		prefMng.setSharedPreferencesMode(Activity.MODE_PRIVATE);
@@ -182,8 +189,10 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		}
 		else
 			first_start_activity = false;
-        if (first_start_activity)
-        */
+		*/
+        preferences = prefMng.getSharedPreferences();
+
+        /*if (first_start_activity)*/
 		if (savedInstanceState == null)
         	loadPreferences();
     	
@@ -191,8 +200,6 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
         
 		addPreferencesFromResource(R.xml.profile_preferences);
 
-        preferences = prefMng.getSharedPreferences();
-        
         preferences.registerOnSharedPreferenceChangeListener(this);  
         
         createActionModeCallback();
@@ -285,8 +292,10 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	{
     	if (profile != null)
     	{
-	    	SharedPreferences preferences = getSherlockActivity().getSharedPreferences(PREFS_NAME, Activity.MODE_PRIVATE);
+	    	//SharedPreferences preferences = getSherlockActivity().getSharedPreferences(PREFS_NAME, Activity.MODE_PRIVATE);
 	
+			//Log.e("ProfilePreferencesFragment.loadPreferences","profile="+profile);
+	    	
 	    	Editor editor = preferences.edit();
 	    	editor.remove(GlobalData.PREF_PROFILE_NAME).putString(GlobalData.PREF_PROFILE_NAME, profile._name);
 	    	editor.remove(GlobalData.PREF_PROFILE_ICON).putString(GlobalData.PREF_PROFILE_ICON, profile._icon);
@@ -297,11 +306,11 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	        editor.remove(GlobalData.PREF_PROFILE_VOLUME_ALARM).putString(GlobalData.PREF_PROFILE_VOLUME_ALARM, profile._volumeAlarm);
 	        editor.remove(GlobalData.PREF_PROFILE_VOLUME_SYSTEM).putString(GlobalData.PREF_PROFILE_VOLUME_SYSTEM, profile._volumeSystem);
 	        editor.remove(GlobalData.PREF_PROFILE_VOLUME_VOICE).putString(GlobalData.PREF_PROFILE_VOLUME_VOICE, profile._volumeVoice);
-	        editor.remove(GlobalData.PREF_PROFILE_SOUND_RINGTONE_CHANGE).putBoolean(GlobalData.PREF_PROFILE_SOUND_RINGTONE_CHANGE, profile._soundRingtoneChange);
+	        editor.remove(GlobalData.PREF_PROFILE_SOUND_RINGTONE_CHANGE).putString(GlobalData.PREF_PROFILE_SOUND_RINGTONE_CHANGE, Integer.toString(profile._soundRingtoneChange));
 	        editor.remove(GlobalData.PREF_PROFILE_SOUND_RINGTONE).putString(GlobalData.PREF_PROFILE_SOUND_RINGTONE, profile._soundRingtone);
-	        editor.remove(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION_CHANGE).putBoolean(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION_CHANGE, profile._soundNotificationChange);
+	        editor.remove(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION_CHANGE).putString(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION_CHANGE, Integer.toString(profile._soundNotificationChange));
 	        editor.remove(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION).putString(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION, profile._soundNotification);
-	        editor.remove(GlobalData.PREF_PROFILE_SOUND_ALARM_CHANGE).putBoolean(GlobalData.PREF_PROFILE_SOUND_ALARM_CHANGE, profile._soundAlarmChange);
+	        editor.remove(GlobalData.PREF_PROFILE_SOUND_ALARM_CHANGE).putString(GlobalData.PREF_PROFILE_SOUND_ALARM_CHANGE, Integer.toString(profile._soundAlarmChange));
 	        editor.remove(GlobalData.PREF_PROFILE_SOUND_ALARM).putString(GlobalData.PREF_PROFILE_SOUND_ALARM, profile._soundAlarm);
 	        editor.remove(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE).putString(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE, Integer.toString(profile._deviceAirplaneMode));
 	        editor.remove(GlobalData.PREF_PROFILE_DEVICE_WIFI).putString(GlobalData.PREF_PROFILE_DEVICE_WIFI, Integer.toString(profile._deviceWiFi));
@@ -334,11 +343,11 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
     	profile._volumeAlarm = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_ALARM, "");
     	profile._volumeSystem = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_SYSTEM, "");
     	profile._volumeVoice = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_VOICE, "");
-    	profile._soundRingtoneChange = preferences.getBoolean(GlobalData.PREF_PROFILE_SOUND_RINGTONE_CHANGE, false);
+    	profile._soundRingtoneChange = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_SOUND_RINGTONE_CHANGE, ""));
     	profile._soundRingtone = preferences.getString(GlobalData.PREF_PROFILE_SOUND_RINGTONE, "");
-    	profile._soundNotificationChange = preferences.getBoolean(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION_CHANGE, false);
+    	profile._soundNotificationChange = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION_CHANGE, ""));
     	profile._soundNotification = preferences.getString(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION, "");
-    	profile._soundAlarmChange = preferences.getBoolean(GlobalData.PREF_PROFILE_SOUND_ALARM_CHANGE, false);
+    	profile._soundAlarmChange = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_SOUND_ALARM_CHANGE, ""));
     	profile._soundAlarm = preferences.getString(GlobalData.PREF_PROFILE_SOUND_ALARM, "");
     	profile._deviceAirplaneMode = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE, ""));
     	profile._deviceWiFi = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_WIFI, ""));
@@ -394,17 +403,25 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	
 	private void setSummary(String key, Object value)
 	{
-		//Log.d("ProfilePreferencesFragment.setSummary",key);
-		
 		if (key.equals(GlobalData.PREF_PROFILE_NAME))
 		{	
 	        prefMng.findPreference(key).setSummary(value.toString());
 		}
 		if (key.equals(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE))
 		{
-			String sPrefDeviceMode = value.toString();
+			String sValue = value.toString();
 			ListPreference listPreference = (ListPreference)prefMng.findPreference(key);
-			int index = listPreference.findIndexOfValue(sPrefDeviceMode);
+			int index = listPreference.findIndexOfValue(sValue);
+			CharSequence summary = (index >= 0) ? listPreference.getEntries()[index] : null;
+			listPreference.setSummary(summary);
+		}
+		if (key.equals(GlobalData.PREF_PROFILE_SOUND_RINGTONE_CHANGE) ||
+				key.equals(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION_CHANGE) ||
+				key.equals(GlobalData.PREF_PROFILE_SOUND_ALARM_CHANGE))
+		{
+			String sValue = value.toString();
+			ListPreference listPreference = (ListPreference)prefMng.findPreference(key);
+			int index = listPreference.findIndexOfValue(sValue);
 			CharSequence summary = (index >= 0) ? listPreference.getEntries()[index] : null;
 			listPreference.setSummary(summary);
 		}
@@ -445,9 +462,9 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 			}
 			else
 			{
-				String sPrefDeviceMode = value.toString();
+				String sValue = value.toString();
 				ListPreference listPreference = (ListPreference)prefMng.findPreference(key);
-				int index = listPreference.findIndexOfValue(sPrefDeviceMode);
+				int index = listPreference.findIndexOfValue(sValue);
 				CharSequence summary = (index >= 0) ? listPreference.getEntries()[index] : null;
 				listPreference.setSummary(summary);
 			}
@@ -455,17 +472,17 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		}
 		if (key.equals(GlobalData.PREF_PROFILE_DEVICE_SCREEN_TIMEOUT))
 		{
-			String sPrefDeviceMode = value.toString();
+			String sValue = value.toString();
 			ListPreference listPreference = (ListPreference)prefMng.findPreference(key);
-			int index = listPreference.findIndexOfValue(sPrefDeviceMode);
+			int index = listPreference.findIndexOfValue(sValue);
 			CharSequence summary = (index >= 0) ? listPreference.getEntries()[index] : null;
 			listPreference.setSummary(summary);
 		}
 		if (key.equals(GlobalData.PREF_PROFILE_DEVICE_AUTOROTATE))
 		{
-			String sPrefDeviceMode = value.toString();
+			String sValue = value.toString();
 			ListPreference listPreference = (ListPreference)prefMng.findPreference(key);
-			int index = listPreference.findIndexOfValue(sPrefDeviceMode);
+			int index = listPreference.findIndexOfValue(sValue);
 			CharSequence summary = (index >= 0) ? listPreference.getEntries()[index] : null;
 			listPreference.setSummary(summary);
 		}
@@ -482,8 +499,11 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
         	//Log.d("PhonePreferencesActivity.updateSharedPreference", profile.getName());
 	        setSummary(GlobalData.PREF_PROFILE_NAME, profile._name);
 	        setSummary(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE, profile._volumeRingerMode);
+	        setSummary(GlobalData.PREF_PROFILE_SOUND_RINGTONE_CHANGE, profile._soundRingtoneChange);
 	        setSummary(GlobalData.PREF_PROFILE_SOUND_RINGTONE, profile._soundRingtone);
+	        setSummary(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION_CHANGE, profile._soundNotificationChange);
 	        setSummary(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION, profile._soundNotification);
+	        setSummary(GlobalData.PREF_PROFILE_SOUND_ALARM_CHANGE, profile._soundAlarmChange);
 	        setSummary(GlobalData.PREF_PROFILE_SOUND_ALARM, profile._soundAlarm);
 	        setSummary(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE, profile._deviceAirplaneMode);
 	        setSummary(GlobalData.PREF_PROFILE_DEVICE_WIFI, profile._deviceWiFi);
@@ -499,10 +519,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
-    	if (!(key.equals(GlobalData.PREF_PROFILE_SOUND_RINGTONE_CHANGE) ||
-	    		key.equals(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION_CHANGE) ||
-	    		key.equals(GlobalData.PREF_PROFILE_SOUND_ALARM_CHANGE) ||
-	    		key.equals(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER_CHANGE) ||
+    	if (!(key.equals(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER_CHANGE) ||
 	    		key.equals(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS) || 
 	    		key.equals(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE) ||
 	    		key.equals(GlobalData.PREF_PROFILE_SHOW_IN_ACTIVATOR) 

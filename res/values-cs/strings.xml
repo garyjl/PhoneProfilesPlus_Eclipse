@@ -235,5 +235,10 @@
     <string name="preference_profile_default_profile">Předvolenej profil</string>
     <string name="volume_pref_dialog_default_profile_chb">Předvolenej profil</string>
     <string name="array_pref_default_profile">Předvolenej profil</string>
+    <string name="array_pref_change">Změnit</string>
+    <string name="array_pref_no_show">Nezobrazovat</string>
+    <string name="array_pref_show">Zobrazovat</string>
+    <string name="array_pref_no_run">Nespouštět</string>
+    <string name="array_pref_run">Spouštět</string>
     		
 </resources>

@@ -54,7 +54,9 @@ public class ProfilePreferencesIndicator {
 				profile.getVolumeVoiceChange())
 				drawables[countDrawables++] = R.drawable.ic_profile_pref_volume_level;
 			// sound
-			if (profile._soundRingtoneChange || profile._soundNotificationChange || profile._soundAlarmChange)
+			if ((profile._soundRingtoneChange == 1) || 
+				(profile._soundNotificationChange == 1) || 
+				(profile._soundAlarmChange == 1))
 				drawables[countDrawables++] = R.drawable.ic_profile_pref_sound;
 			// airplane mode
 			if ((profile._deviceAirplaneMode == 1) || (profile._deviceAirplaneMode == 3))

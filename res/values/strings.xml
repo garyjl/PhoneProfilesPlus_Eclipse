@@ -234,5 +234,10 @@
     <string name="preference_profile_default_profile">Default profile</string>
     <string name="volume_pref_dialog_default_profile_chb">Default profile</string>
     <string name="array_pref_default_profile">Default profile</string>
+    <string name="array_pref_change">Change</string>
+    <string name="array_pref_no_show">No show</string>
+    <string name="array_pref_show">Show</string>
+    <string name="array_pref_no_run">No run</string>
+    <string name="array_pref_run">Run</string>
     	
 </resources>

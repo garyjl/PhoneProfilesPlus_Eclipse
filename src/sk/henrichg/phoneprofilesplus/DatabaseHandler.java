@@ -469,11 +469,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_VOLUME_ALARM, profile._volumeAlarm);
 		values.put(KEY_VOLUME_SYSTEM, profile._volumeSystem);
 		values.put(KEY_VOLUME_VOICE, profile._volumeVoice);
-		values.put(KEY_SOUND_RINGTONE_CHANGE, (profile._soundRingtoneChange) ? 1 : 0);
+		values.put(KEY_SOUND_RINGTONE_CHANGE, profile._soundRingtoneChange);
 		values.put(KEY_SOUND_RINGTONE, profile._soundRingtone);
-		values.put(KEY_SOUND_NOTIFICATION_CHANGE, (profile._soundNotificationChange) ? 1 : 0);
+		values.put(KEY_SOUND_NOTIFICATION_CHANGE, profile._soundNotificationChange);
 		values.put(KEY_SOUND_NOTIFICATION, profile._soundNotification);
-		values.put(KEY_SOUND_ALARM_CHANGE, (profile._soundAlarmChange) ? 1 : 0);
+		values.put(KEY_SOUND_ALARM_CHANGE, profile._soundAlarmChange);
 		values.put(KEY_SOUND_ALARM, profile._soundAlarm);
 		values.put(KEY_DEVICE_AIRPLANE_MODE, profile._deviceAirplaneMode);
 		values.put(KEY_DEVICE_WIFI, profile._deviceWiFi);
@@ -561,11 +561,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					                      cursor.getString(9),
 					                      cursor.getString(10),
 					                      cursor.getString(11),
-					                      (Integer.parseInt(cursor.getString(12)) == 1) ? true : false,
+					                      Integer.parseInt(cursor.getString(12)),
 					                      cursor.getString(13),
-					                      (Integer.parseInt(cursor.getString(14)) == 1) ? true : false,
+					                      Integer.parseInt(cursor.getString(14)),
 					                      cursor.getString(15),
-					                      (Integer.parseInt(cursor.getString(16)) == 1) ? true : false,
+					                      Integer.parseInt(cursor.getString(16)),
 					                      cursor.getString(17),
 					                      Integer.parseInt(cursor.getString(18)),
 					                      Integer.parseInt(cursor.getString(19)),
@@ -653,11 +653,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 profile._volumeAlarm = cursor.getString(9);
                 profile._volumeSystem = cursor.getString(10);
                 profile._volumeVoice = cursor.getString(11);
-                profile._soundRingtoneChange = (Integer.parseInt(cursor.getString(12)) == 1) ? true : false;
+                profile._soundRingtoneChange = Integer.parseInt(cursor.getString(12));
                 profile._soundRingtone = cursor.getString(13);
-                profile._soundNotificationChange = (Integer.parseInt(cursor.getString(14)) == 1) ? true : false;
+                profile._soundNotificationChange = Integer.parseInt(cursor.getString(14));
                 profile._soundNotification = cursor.getString(15);
-                profile._soundAlarmChange = (Integer.parseInt(cursor.getString(16)) == 1) ? true : false;
+                profile._soundAlarmChange = Integer.parseInt(cursor.getString(16));
                 profile._soundAlarm = cursor.getString(17);
                 profile._deviceAirplaneMode = Integer.parseInt(cursor.getString(18));
                 profile._deviceWiFi = Integer.parseInt(cursor.getString(19));
@@ -703,11 +703,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_VOLUME_ALARM, profile._volumeAlarm);
 		values.put(KEY_VOLUME_SYSTEM, profile._volumeSystem);
 		values.put(KEY_VOLUME_VOICE, profile._volumeVoice);
-		values.put(KEY_SOUND_RINGTONE_CHANGE, (profile._soundRingtoneChange) ? 1 : 0);
+		values.put(KEY_SOUND_RINGTONE_CHANGE, profile._soundRingtoneChange);
 		values.put(KEY_SOUND_RINGTONE, profile._soundRingtone);
-		values.put(KEY_SOUND_NOTIFICATION_CHANGE, (profile._soundNotificationChange) ? 1 : 0);
+		values.put(KEY_SOUND_NOTIFICATION_CHANGE, profile._soundNotificationChange);
 		values.put(KEY_SOUND_NOTIFICATION, profile._soundNotification);
-		values.put(KEY_SOUND_ALARM_CHANGE, (profile._soundAlarmChange) ? 1 : 0);
+		values.put(KEY_SOUND_ALARM_CHANGE, profile._soundAlarmChange);
 		values.put(KEY_SOUND_ALARM, profile._soundAlarm);
 		values.put(KEY_DEVICE_AIRPLANE_MODE, profile._deviceAirplaneMode);
 		values.put(KEY_DEVICE_WIFI, profile._deviceWiFi);
@@ -959,11 +959,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					                      cursor.getString(9),
 					                      cursor.getString(10),
 					                      cursor.getString(11),
-					                      (Integer.parseInt(cursor.getString(12)) == 1) ? true : false,
+					                      Integer.parseInt(cursor.getString(12)),
 					                      cursor.getString(13),
-					                      (Integer.parseInt(cursor.getString(14)) == 1) ? true : false,
+					                      Integer.parseInt(cursor.getString(14)),
 					                      cursor.getString(15),
-					                      (Integer.parseInt(cursor.getString(16)) == 1) ? true : false,
+					                      Integer.parseInt(cursor.getString(16)),
 					                      cursor.getString(17),
 					                      Integer.parseInt(cursor.getString(18)),
 					                      Integer.parseInt(cursor.getString(19)),
@@ -1964,9 +1964,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 											}
 											if (exportedDBObj.getVersion() > 1001)
 											{
-												if ((Integer.parseInt(value) > 2) && (android.os.Build.VERSION.SDK_INT < 11))
-													// set degree not supported for API level < 11
-												    value = "2";
+												if (columnNamesExportedDB[i].equals(KEY_DEVICE_AUTOROTATE))
+												{
+													
+													if ((Integer.parseInt(value) > 2) && (android.os.Build.VERSION.SDK_INT < 11))
+														// set degree not supported for API level < 11
+													    value = "2";
+												}
 											}
 											
 											values.put(columnNamesExportedDB[i], value);
