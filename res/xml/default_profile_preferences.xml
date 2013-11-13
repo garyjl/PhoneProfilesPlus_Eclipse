@@ -2,37 +2,20 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
                   xmlns:henrichg="http://schemas.android.com/apk/res/sk.henrichg.phoneprofilesplus" >
     <PreferenceCategory
-        android:summary="@string/profile_preferences_category_profileidenification"
-        android:title="@string/profile_preferences_category_profileidenification" >
-        <EditTextPreference
-            android:key="prf_pref_profileName"
-            android:summary="@string/profile_preferences_profileName"
-            android:title="@string/profile_preferences_profileName" /> 
-        <sk.henrichg.phoneprofilesplus.ImageViewPreference
-            android:defaultValue="ic_profile_default|1"
-            android:key="prf_pref_profileIcon"
-            android:title="@string/profile_preferences_profileIcon"
-            henrichg:imageSource="resource_file" />
-		<CheckBoxPreference 
-		    android:key="prf_pref_showInActivator"
-		    android:title="@string/profile_preferences_showInActivator"
-		    android:defaultValue="true" />
-    </PreferenceCategory>
-    <PreferenceCategory
         android:summary="@string/profile_preferences_category_volumes"
         android:title="@string/profile_preferences_category_volumes" >
 		<ListPreference android:title="@string/profile_preferences_volumeRingerMode"
             android:summary="@string/array_pref_no_change"
             android:key="prf_pref_volumeRingerMode"
             android:defaultValue="0"
-            android:entries="@array/ringerModeArray"
-            android:entryValues="@array/ringerModeValues" />        
+            android:entries="@array/ringerModeDPArray"
+            android:entryValues="@array/ringerModeDPValues" />        
 		<sk.henrichg.phoneprofilesplus.VolumeDialogPreference
 			android:key="prf_pref_volumeRingtone"
 			henrichg:volumeType="ringtone"
 			henrichg:vNoChange="1"
 			henrichg:vDefaultProfile="0"
-			henrichg:vDisableDefaultProfile="0"
+			henrichg:vDisableDefaultProfile="1"
 			android:title="@string/profile_preferences_volumeRingtone"
 			android:summary="@string/volume_pref_dialog_no_change_chb" />        
 		<sk.henrichg.phoneprofilesplus.VolumeDialogPreference
@@ -40,7 +23,7 @@
 			henrichg:volumeType="notification"
 			henrichg:vNoChange="1"
 			henrichg:vDefaultProfile="0"
-			henrichg:vDisableDefaultProfile="0"
+			henrichg:vDisableDefaultProfile="1"
 			android:title="@string/profile_preferences_volumeNotification"
 			android:summary="@string/volume_pref_dialog_no_change_chb" />        
 		<sk.henrichg.phoneprofilesplus.VolumeDialogPreference
@@ -48,7 +31,7 @@
 			henrichg:volumeType="media"
 			henrichg:vNoChange="1"
 			henrichg:vDefaultProfile="0"
-			henrichg:vDisableDefaultProfile="0"
+			henrichg:vDisableDefaultProfile="1"
 			android:title="@string/profile_preferences_volumeMedia"
 			android:summary="@string/volume_pref_dialog_no_change_chb" />        
 		<sk.henrichg.phoneprofilesplus.VolumeDialogPreference
@@ -56,7 +39,7 @@
 			henrichg:volumeType="alarm"
 			henrichg:vNoChange="1"
 			henrichg:vDefaultProfile="0"
-			henrichg:vDisableDefaultProfile="0"
+			henrichg:vDisableDefaultProfile="1"
 			android:title="@string/profile_preferences_volumeAlarm"
 			android:summary="@string/volume_pref_dialog_no_change_chb" />        
 		<sk.henrichg.phoneprofilesplus.VolumeDialogPreference
@@ -64,7 +47,7 @@
 			henrichg:volumeType="system"
 			henrichg:vNoChange="1"
 			henrichg:vDefaultProfile="0"
-			henrichg:vDisableDefaultProfile="0"
+			henrichg:vDisableDefaultProfile="1"
 			android:title="@string/profile_preferences_volumeSystem"
 			android:summary="@string/volume_pref_dialog_no_change_chb" />        
 		<sk.henrichg.phoneprofilesplus.VolumeDialogPreference
@@ -72,7 +55,7 @@
 			henrichg:volumeType="voice"
 			henrichg:vNoChange="1"
 			henrichg:vDefaultProfile="0"
-			henrichg:vDisableDefaultProfile="0"
+			henrichg:vDisableDefaultProfile="1"
 			android:title="@string/profile_preferences_volumeVoice"
 			android:summary="@string/volume_pref_dialog_no_change_chb" />        
 	</PreferenceCategory>
@@ -83,8 +66,8 @@
             android:summary="@string/array_pref_no_change"
             android:key="prf_pref_soundRingtoneChange"
             android:defaultValue="0"
-            android:entries="@array/soundChangeArray"
-            android:entryValues="@array/soundChangeValues" />  
+            android:entries="@array/soundChangeDPArray"
+            android:entryValues="@array/soundChangeDPValues" />  
         <RingtonePreference
             android:key="prf_pref_soundRingtone"
             android:summary="@string/array_pref_no_change"
@@ -97,8 +80,8 @@
             android:summary="@string/array_pref_no_change"
             android:key="prf_pref_soundNotificationChange"
             android:defaultValue="0"
-            android:entries="@array/soundChangeArray"
-            android:entryValues="@array/soundChangeValues" />  
+            android:entries="@array/soundChangeDPArray"
+            android:entryValues="@array/soundChangeDPValues" />  
         <RingtonePreference
             android:key="prf_pref_soundNotification"
             android:summary="@string/array_pref_no_change"
@@ -111,8 +94,8 @@
             android:summary="@string/array_pref_no_change"
             android:key="prf_pref_soundAlarmChange"
             android:defaultValue="0"
-            android:entries="@array/soundChangeArray"
-            android:entryValues="@array/soundChangeValues" />  
+            android:entries="@array/soundChangeDPArray"
+            android:entryValues="@array/soundChangeDPValues" />  
         <RingtonePreference
             android:key="prf_pref_soundAlarm"
             android:summary="@string/array_pref_no_change"
@@ -129,70 +112,70 @@
             android:summary="@string/array_pref_no_change"
             android:key="prf_pref_deviceAirplaneMode"
             android:defaultValue="0"
-            android:entries="@array/hardwareModeArray"
-            android:entryValues="@array/hardwareModeValues" />        
+            android:entries="@array/hardwareModeDPArray"
+            android:entryValues="@array/hardwareModeDPValues" />        
 		<ListPreference android:title="@string/profile_preferences_deviceAutosync"
             android:summary="@string/array_pref_no_change"
             android:key="prf_pref_deviceAutosync"
             android:defaultValue="0"
-            android:entries="@array/hardwareModeArray"
-            android:entryValues="@array/hardwareModeValues" />        
+            android:entries="@array/hardwareModeDPArray"
+            android:entryValues="@array/hardwareModeDPValues" />        
 		<ListPreference android:title="@string/profile_preferences_deviceMobileData"
             android:summary="@string/array_pref_no_change"
             android:key="prf_pref_deviceMobileData"
             android:defaultValue="0"
-            android:entries="@array/hardwareModeArray"
-            android:entryValues="@array/hardwareModeValues" />        
+            android:entries="@array/hardwareModeDPArray"
+            android:entryValues="@array/hardwareModeDPValues" />        
 		<ListPreference android:title="@string/profile_preferences_deviceMobileDataPrefs"
             android:summary="@string/array_pref_no_change"
             android:key="prf_pref_deviceMobileDataPrefs"
             android:defaultValue="0"
-            android:entries="@array/mobileDataPrefsArray"
-            android:entryValues="@array/mobileDataPrefsValues" />        
+            android:entries="@array/mobileDataPrefsDPArray"
+            android:entryValues="@array/mobileDataPrefsDPValues" />        
 		<ListPreference android:title="@string/profile_preferences_deviceWiFi"
             android:summary="@string/array_pref_no_change"
             android:key="prf_pref_deviceWiFi"
             android:defaultValue="0"
-            android:entries="@array/hardwareModeArray"
-            android:entryValues="@array/hardwareModeValues" />        
+            android:entries="@array/hardwareModeDPArray"
+            android:entryValues="@array/hardwareModeDPValues" />        
 		<ListPreference android:title="@string/profile_preferences_deviceBluetooth"
             android:summary="@string/array_pref_no_change"
             android:key="prf_pref_deviceBluetooth"
             android:defaultValue="0"
-            android:entries="@array/hardwareModeArray"
-            android:entryValues="@array/hardwareModeValues" />        
+            android:entries="@array/hardwareModeDPArray"
+            android:entryValues="@array/hardwareModeDPValues" />        
 		<ListPreference android:title="@string/profile_preferences_deviceGPS"
             android:summary="@string/array_pref_no_change"
             android:key="prf_pref_deviceGPS"
             android:defaultValue="0"
-            android:entries="@array/hardwareModeArray"
-            android:entryValues="@array/hardwareModeValues" />        
+            android:entries="@array/hardwareModeDPArray"
+            android:entryValues="@array/hardwareModeDPValues" />        
 		<ListPreference android:title="@string/profile_preferences_deviceScreenTimeout"
             android:summary="@string/array_pref_no_change"
             android:key="prf_pref_deviceScreenTimeout"
             android:defaultValue="0"
-            android:entries="@array/screenTimeoutArray"
-            android:entryValues="@array/screenTimeoutValues" />        
+            android:entries="@array/screenTimeoutDPArray"
+            android:entryValues="@array/screenTimeoutDPValues" />        
 		<sk.henrichg.phoneprofilesplus.BrightnessDialogPreference
 			android:key="prf_pref_deviceBrightness"
 			henrichg:bNoChange="1"
 			henrichg:bAutomatic="0"
 			henrichg:bDefaultProfile="0"
-			henrichg:bDisableDefaultProfile="0"
+			henrichg:bDisableDefaultProfile="1"
 			android:title="@string/profile_preferences_deviceBrightness"
 			android:summary="@string/brightness_pref_dialog_no_change_chb" />   
 		<ListPreference android:title="@string/profile_preferences_deviceAutoRotation"
             android:summary="@string/array_pref_no_change"
             android:key="prf_pref_deviceAutoRotation"
             android:defaultValue="0"
-            android:entries="@array/displayRotationArray"
-            android:entryValues="@array/displayRotationValues" />        
+            android:entries="@array/displayRotationDPArray"
+            android:entryValues="@array/displayRotationDPValues" />        
 		<ListPreference android:title="@string/profile_preferences_deviceRunApplicationChange"
             android:summary="@string/array_pref_no_change"
             android:key="prf_pref_deviceRunApplicationChange"
             android:defaultValue="0"
-            android:entries="@array/runApplicationArray"
-            android:entryValues="@array/runApplicationValues" />        
+            android:entries="@array/runApplicationDPArray"
+            android:entryValues="@array/runApplicationDPValues" />        
 		<sk.henrichg.phoneprofilesplus.ApplicationsPreference
             android:defaultValue="-"
             android:key="prf_pref_deviceRunApplicationPackageName"
@@ -201,8 +184,8 @@
             android:summary="@string/array_pref_no_change"
             android:key="prf_pref_deviceWallpaperChange"
             android:defaultValue="0"
-            android:entries="@array/changeWallpaperArray"
-            android:entryValues="@array/changeWallpaperValues" />        
+            android:entries="@array/changeWallpaperDPArray"
+            android:entryValues="@array/changeWallpaperDPValues" />        
 		<sk.henrichg.phoneprofilesplus.ImageViewPreference
             android:defaultValue="-|0"
             android:key="prf_pref_deviceWallpaper"

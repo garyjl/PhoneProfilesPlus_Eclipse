@@ -217,4 +217,107 @@
 	<item>1</item>
 </string-array>
 
+<string-array name="ringerModeDPArray">
+	<item>@string/array_pref_no_change</item>
+	<item>@string/array_pref_ringerModeArray_ring</item>
+	<item>@string/array_pref_ringerModeArray_ring_and_vibrate</item>
+	<item>@string/array_pref_ringerModeArray_vibrate</item>
+	<item>@string/array_pref_ringerModeArray_silent</item>
+</string-array>
+<string-array name="ringerModeDPValues">
+    <item>0</item>
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+    <item>4</item>
+</string-array>
+<string-array name="hardwareModeDPArray">
+	<item>@string/array_pref_no_change</item>
+	<item>@string/array_pref_hardwareModeArray_on</item>
+	<item>@string/array_pref_hardwareModeArray_off</item>
+	<item>@string/array_pref_hardwareModeArray_toggle</item>
+</string-array>
+<string-array name="hardwareModeDPValues">
+    <item>0</item>
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+</string-array>
+<string-array name="screenTimeoutDPArray">
+	<item>@string/array_pref_no_change</item>
+	<item>@string/array_pref_screenTimeoutArray_15seconds</item>
+	<item>@string/array_pref_screenTimeoutArray_30seconds</item>
+	<item>@string/array_pref_screenTimeoutArray_1minute</item>
+	<item>@string/array_pref_screenTimeoutArray_2minutes</item>
+	<item>@string/array_pref_screenTimeoutArray_10minutes</item>
+	<item>@string/array_pref_screenTimeoutArray_never_timeout</item>
+</string-array>
+<string-array name="screenTimeoutDPValues">
+    <item>0</item>
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+    <item>4</item>
+    <item>5</item>
+    <item>6</item>
+</string-array>
+<string-array name="displayRotationDPArray">
+	<item>@string/array_pref_no_change</item>
+	<item>@string/array_pref_value_auto_rotate_on</item>
+	<item>@string/array_pref_value_auto_rotate_off</item>
+</string-array>
+<string-array name="displayRotationDPValues">
+	<item>0</item>
+	<item>1</item>
+	<item>2</item>
+</string-array>
+<string-array name="displayRotationDPArray11">
+	<item>@string/array_pref_no_change</item>
+	<item>@string/array_pref_value_auto_rotate</item>
+	<item>@string/array_pref_value_0_degrees</item>
+	<item>@string/array_pref_value_90_degrees</item>
+	<item>@string/array_pref_value_180_degrees</item>
+	<item>@string/array_pref_value_270_degrees</item>
+</string-array>
+<string-array name="displayRotationDPValues11">
+	<item>0</item>
+	<item>1</item>
+	<item>2</item>
+	<item>3</item>
+	<item>4</item>
+	<item>5</item>
+</string-array>
+<string-array name="soundChangeDPArray">
+	<item>@string/array_pref_no_change</item>
+	<item>@string/array_pref_change</item>
+</string-array>
+<string-array name="soundChangeDPValues">
+	<item>0</item>
+	<item>1</item>
+</string-array>
+<string-array name="mobileDataPrefsDPArray">
+	<item>@string/array_pref_no_show</item>
+	<item>@string/array_pref_show</item>
+</string-array>
+<string-array name="mobileDataPrefsDPValues">
+	<item>0</item>
+	<item>1</item>
+</string-array>
+<string-array name="runApplicationDPArray">
+	<item>@string/array_pref_no_run</item>
+	<item>@string/array_pref_run</item>
+</string-array>
+<string-array name="runApplicationDPValues">
+	<item>0</item>
+	<item>1</item>
+</string-array>
+<string-array name="changeWallpaperDPArray">
+	<item>@string/array_pref_no_change</item>
+	<item>@string/array_pref_change</item>
+</string-array>
+<string-array name="changeWallpaperDPValues">
+	<item>0</item>
+	<item>1</item>
+</string-array>
+
 </resources>

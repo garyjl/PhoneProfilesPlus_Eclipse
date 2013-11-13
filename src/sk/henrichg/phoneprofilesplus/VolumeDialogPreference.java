@@ -41,6 +41,7 @@ public class VolumeDialogPreference extends
 	private String volumeType = null;
 	private int noChange = 0;
 	private int defaultProfile = 0;
+	private int disableDefaultProfile = 0;
 	
 	private int maximumValue = 7;
 	private int minimumValue = 0;
@@ -69,6 +70,8 @@ public class VolumeDialogPreference extends
 			R.styleable.VolumeDialogPreference_vNoChange, 1);
 		defaultProfile = typedArray.getInteger(
 				R.styleable.VolumeDialogPreference_vDefaultProfile, 0);
+		disableDefaultProfile = typedArray.getInteger(
+				R.styleable.VolumeDialogPreference_vDisableDefaultProfile, 0);
 
 		audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
 		// zistima maximalnu hodnotu z audio managera
@@ -136,12 +139,18 @@ public class VolumeDialogPreference extends
 
 		noChangeChBox.setOnCheckedChangeListener(this);
 		noChangeChBox.setChecked((noChange == 1));
-		
+
 		defaultProfileChBox.setOnCheckedChangeListener(this);
 		defaultProfileChBox.setChecked((defaultProfile == 1));
+		defaultProfileChBox.setEnabled(disableDefaultProfile == 0);
+
+		if (noChange == 1)
+			defaultProfileChBox.setChecked(false);
+		if (defaultProfile == 1)
+			noChangeChBox.setChecked(false);
 		
-		valueText.setEnabled((noChange == 0));
-		seekBar.setEnabled((noChange == 0));
+		valueText.setEnabled((noChange == 0) && (defaultProfile == 0));
+		seekBar.setEnabled((noChange == 0) && (defaultProfile == 0));
 		
 		return view;
 	}

@@ -43,6 +43,7 @@ public class BrightnessDialogPreference extends
 	private int noChange = 0;
 	private int automatic = 0;
 	private int defaultProfile = 0;
+	private int disableDefaultProfile = 0;
 	
 	private int maximumValue = 255;
 	private int minimumValue = 10;
@@ -70,6 +71,8 @@ public class BrightnessDialogPreference extends
 			R.styleable.BrightnessDialogPreference_bAutomatic, 1);
 		defaultProfile = typedArray.getInteger(
 				R.styleable.BrightnessDialogPreference_bDefaultProfile, 0);
+		disableDefaultProfile = typedArray.getInteger(
+				R.styleable.BrightnessDialogPreference_bDisableDefaultProfile, 0);
 
 		typedArray.recycle();
 	}
@@ -104,15 +107,17 @@ public class BrightnessDialogPreference extends
 		
 		defaultProfileChBox.setOnCheckedChangeListener(this);
 		defaultProfileChBox.setChecked((defaultProfile == 1));
-		
-		valueText.setEnabled((automatic == 0));
-		seekBar.setEnabled((automatic == 0));
-		
-		valueText.setEnabled((noChange == 0));
-		seekBar.setEnabled((noChange == 0));
-		automaticChBox.setEnabled((noChange == 0));
-		
+		defaultProfileChBox.setEnabled(disableDefaultProfile == 0);
 
+		if (noChange == 1)
+			defaultProfileChBox.setChecked(false);
+		if (defaultProfile == 1)
+			noChangeChBox.setChecked(false);
+		
+		valueText.setEnabled((noChange == 0) && (defaultProfile == 0));
+		seekBar.setEnabled((noChange == 0) && (defaultProfile == 0));
+		automaticChBox.setEnabled((noChange == 0) && (defaultProfile == 0));
+		
 		return view;
 	}
 	/**
