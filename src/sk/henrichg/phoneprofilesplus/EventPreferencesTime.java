@@ -73,25 +73,6 @@ public class EventPreferencesTime extends EventPreferences {
 	}
 	
 	@Override
-	public boolean isRunable()
-	{
-		
-		boolean runable = super.isRunable();
-
-		boolean dayOfWeek = false;
-		dayOfWeek = dayOfWeek || this._sunday;
-		dayOfWeek = dayOfWeek || this._monday;
-		dayOfWeek = dayOfWeek || this._tuesday;
-		dayOfWeek = dayOfWeek || this._wendesday;
-		dayOfWeek = dayOfWeek || this._thursday;
-		dayOfWeek = dayOfWeek || this._friday;
-		dayOfWeek = dayOfWeek || this._saturday;
-		runable = runable && dayOfWeek;
-		
-		return runable;
-	}
-	
-	@Override
 	public void loadSharedPrefereces(SharedPreferences preferences)
 	{
     	Editor editor = preferences.edit();
@@ -220,6 +201,95 @@ public class EventPreferencesTime extends EventPreferences {
     	
     	return resDayOfWeek;
     }
+
+	@Override
+	public boolean isRunable()
+	{
+		
+		boolean runable = super.isRunable();
+
+		boolean dayOfWeek = false;
+		dayOfWeek = dayOfWeek || this._sunday;
+		dayOfWeek = dayOfWeek || this._monday;
+		dayOfWeek = dayOfWeek || this._tuesday;
+		dayOfWeek = dayOfWeek || this._wendesday;
+		dayOfWeek = dayOfWeek || this._thursday;
+		dayOfWeek = dayOfWeek || this._friday;
+		dayOfWeek = dayOfWeek || this._saturday;
+		runable = runable && dayOfWeek;
+		
+		return runable;
+	}
 	
+	@Override
+	public boolean isTimeToRun()
+	{
+		boolean isTime = false;
+		
+		Calendar now = new GregorianCalendar();
+	    now.setTimeInMillis(System.currentTimeMillis());
+	    
+	    int dayOfWeek = now.get(Calendar.DAY_OF_WEEK);
+	    
+	    if ((dayOfWeek == Calendar.MONDAY) && this._monday) isTime = true;
+	    if ((dayOfWeek == Calendar.TUESDAY) && this._tuesday) isTime = true;
+	    if ((dayOfWeek == Calendar.WEDNESDAY) && this._wendesday) isTime = true;
+	    if ((dayOfWeek == Calendar.THURSDAY) && this._thursday) isTime = true;
+	    if ((dayOfWeek == Calendar.FRIDAY) && this._friday) isTime = true;
+	    if ((dayOfWeek == Calendar.SATURDAY) && this._saturday) isTime = true;
+	    if ((dayOfWeek == Calendar.SUNDAY) && this._sunday) isTime = true;
+
+	    Calendar startTime = new GregorianCalendar();
+	    startTime.setTimeInMillis(_startTime);
+	    startTime.set(Calendar.DAY_OF_MONTH, 0);
+	    startTime.set(Calendar.MONTH, 0);
+	    startTime.set(Calendar.YEAR, 0);
+
+	    Calendar endTime = new GregorianCalendar();
+	    
+	    if (_useEndTime)
+	    {
+		    endTime.setTimeInMillis(_endTime);
+		    endTime.set(Calendar.DAY_OF_MONTH, 0);
+		    endTime.set(Calendar.MONTH, 0);
+		    endTime.set(Calendar.YEAR, 0);
+	    }
+	    else
+	    {
+	    	startTime.add(Calendar.SECOND, -30);
+		    endTime.setTimeInMillis(_startTime);
+		    endTime.set(Calendar.DAY_OF_MONTH, 0);
+		    endTime.set(Calendar.MONTH, 0);
+		    endTime.set(Calendar.YEAR, 0);
+	    	endTime.add(Calendar.SECOND, 30);
+	    }
+
+	    now.set(Calendar.DAY_OF_MONTH, 0);
+	    now.set(Calendar.MONTH, 0);
+	    now.set(Calendar.YEAR, 0);
+	    
+	    isTime = isTime && ((startTime.getTimeInMillis() <= now.getTimeInMillis()) &&
+	                        (endTime.getTimeInMillis() >= now.getTimeInMillis()));
+	    
+		return isTime;
+	}
 	
+	@Override
+	public void setSystemRunningEvent()
+	{
+		
+	}
+
+	@Override
+	public void setSystemPauseEvent()
+	{
+		
+	}
+	
+	@Override
+	public void removeAllSystemEvents()
+	{
+		
+	}
+    
 }
