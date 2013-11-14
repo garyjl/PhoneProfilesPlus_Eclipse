@@ -516,6 +516,41 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
     	}
 	}
 	
+	private void disableDependedPref(String key, Object value)
+	{
+		String sValue = value.toString();
+		
+		final String NO_CHANGE = "0";
+		final String DEFAULT_PROFILE = "99";
+		
+		if (key.equals(GlobalData.PREF_PROFILE_SOUND_RINGTONE_CHANGE))
+		{
+			boolean enabled = !(sValue.equals(DEFAULT_PROFILE) || sValue.equals(NO_CHANGE));
+			prefMng.findPreference(GlobalData.PREF_PROFILE_SOUND_RINGTONE).setEnabled(enabled);
+		}
+		if (key.equals(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION_CHANGE))
+		{
+			boolean enabled = !(sValue.equals(DEFAULT_PROFILE) || sValue.equals(NO_CHANGE));
+			prefMng.findPreference(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION).setEnabled(enabled);
+		}
+		if (key.equals(GlobalData.PREF_PROFILE_SOUND_ALARM_CHANGE))
+		{
+			boolean enabled = !(sValue.equals(DEFAULT_PROFILE) || sValue.equals(NO_CHANGE));
+			prefMng.findPreference(GlobalData.PREF_PROFILE_SOUND_ALARM).setEnabled(enabled);
+		}
+		if (key.equals(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER_CHANGE))
+		{
+			boolean enabled = !(sValue.equals(DEFAULT_PROFILE) || sValue.equals(NO_CHANGE));
+			prefMng.findPreference(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER).setEnabled(enabled);
+		}
+		if (key.equals(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE))
+		{
+			boolean enabled = !(sValue.equals(DEFAULT_PROFILE) || sValue.equals(NO_CHANGE));
+			prefMng.findPreference(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME).setEnabled(enabled);
+		}
+		
+	}
+	
 	private void updateSharedPreference()
 	{
         if (profile != null) 
@@ -548,6 +583,13 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	        setSummary(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS, profile._deviceMobileDataPrefs); 
 	        setSummary(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE, profile._deviceRunApplicationChange); 
 			
+		    // disable depended preferences
+		    disableDependedPref(GlobalData.PREF_PROFILE_SOUND_RINGTONE_CHANGE, profile._soundRingtoneChange);
+		    disableDependedPref(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION_CHANGE, profile._soundNotificationChange);
+		    disableDependedPref(GlobalData.PREF_PROFILE_SOUND_ALARM_CHANGE, profile._soundAlarmChange);
+		    disableDependedPref(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER_CHANGE, profile._deviceWallpaperChange);
+		    disableDependedPref(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE, profile._deviceRunApplicationChange);
+	        
         }
 	}
 	
@@ -559,6 +601,9 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	    		key.equals(GlobalData.PREF_PROFILE_SHOW_IN_ACTIVATOR) 
 	    		))
 	    		setSummary(key, sharedPreferences.getString(key, ""));
+    	
+	    // disable depended preferences
+	    disableDependedPref(key, sharedPreferences.getString(key, ""));
     	
     	Activity activity = getSherlockActivity();
     	boolean canShow = (EditorProfilesActivity.mTwoPane) && (activity instanceof EditorProfilesActivity);

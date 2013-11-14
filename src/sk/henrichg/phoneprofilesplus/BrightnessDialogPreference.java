@@ -114,8 +114,8 @@ public class BrightnessDialogPreference extends
 		if (defaultProfile == 1)
 			noChangeChBox.setChecked(false);
 		
-		valueText.setEnabled((noChange == 0) && (defaultProfile == 0));
-		seekBar.setEnabled((noChange == 0) && (defaultProfile == 0));
+		valueText.setEnabled((noChange == 0) && (defaultProfile == 0) && (automatic == 0));
+		seekBar.setEnabled((noChange == 0) && (defaultProfile == 0) && (automatic == 0));
 		automaticChBox.setEnabled((noChange == 0) && (defaultProfile == 0));
 		
 		return view;
@@ -152,8 +152,8 @@ public class BrightnessDialogPreference extends
 		{
 			noChange = (isChecked)? 1 : 0;
 
-			valueText.setEnabled((noChange == 0) && (defaultProfile == 0));
-			seekBar.setEnabled((noChange == 0) && (defaultProfile == 0));
+			valueText.setEnabled((noChange == 0) && (defaultProfile == 0) && (automatic == 0));
+			seekBar.setEnabled((noChange == 0) && (defaultProfile == 0) && (automatic == 0));
 			automaticChBox.setEnabled((noChange == 0) && (defaultProfile == 0));
 			if (isChecked)
 				defaultProfileChBox.setChecked(false);
@@ -163,8 +163,8 @@ public class BrightnessDialogPreference extends
 		{
 			defaultProfile = (isChecked)? 1 : 0;
 
-			valueText.setEnabled((noChange == 0) && (defaultProfile == 0));
-			seekBar.setEnabled((noChange == 0) && (defaultProfile == 0));
+			valueText.setEnabled((noChange == 0) && (defaultProfile == 0) && (automatic == 0));
+			seekBar.setEnabled((noChange == 0) && (defaultProfile == 0) && (automatic == 0));
 			automaticChBox.setEnabled((noChange == 0) && (defaultProfile == 0));
 			if (isChecked)
 				noChangeChBox.setChecked(false);
@@ -174,8 +174,8 @@ public class BrightnessDialogPreference extends
 		{
 			automatic = (isChecked)? 1 : 0;
 
-			valueText.setEnabled((automatic == 0));
-			seekBar.setEnabled((automatic == 0));
+			valueText.setEnabled((noChange == 0) && (defaultProfile == 0) && (automatic == 0));
+			seekBar.setEnabled((noChange == 0) && (defaultProfile == 0) && (automatic == 0));
 		}
 		
 		callChangeListener(noChange);
