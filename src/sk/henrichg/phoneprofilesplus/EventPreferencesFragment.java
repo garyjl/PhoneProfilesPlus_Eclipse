@@ -23,6 +23,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	public long event_id;
 	//private boolean first_start_activity;
 	private int new_event_mode;
+	private int startupSource;
 	public boolean eventNonEdited = true;
 	private PreferenceManager prefMng;
 	private SharedPreferences preferences;
@@ -105,6 +106,15 @@ public class EventPreferencesFragment extends PreferenceListFragment
 
 		preferencesActivity = getSherlockActivity();
 
+	    startupSource = getArguments().getInt(GlobalData.EXTRA_PREFERENCES_STARTUP_SOURCE, GlobalData.PREFERENCES_STARTUP_SOURCE_FRAGMENT);
+	    if (startupSource == GlobalData.PREFERENCES_STARTUP_SOURCE_ACTIVITY)
+	    	PREFS_NAME = PREFS_NAME_ACTIVITY;
+	    else
+	    if (startupSource == GlobalData.PREFERENCES_STARTUP_SOURCE_FRAGMENT)
+	    	PREFS_NAME = PREFS_NAME_FRAGMENT;
+	    else
+			PREFS_NAME = PREFS_NAME_FRAGMENT;
+		
 		prefMng = getPreferenceManager();
 		prefMng.setSharedPreferencesName(PREFS_NAME);
 		prefMng.setSharedPreferencesMode(Activity.MODE_PRIVATE);
@@ -141,16 +151,9 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		}
 		else
 			event = (Event)EditorProfilesActivity.dataWrapper.getEventById(event_id);
-		/*
-		if (getArguments().containsKey(GlobalData.EXTRA_FIRST_START_ACTIVITY))
-		{
-			first_start_activity = getArguments().getBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY);
-	        getArguments().remove(GlobalData.EXTRA_FIRST_START_ACTIVITY);
-		}
-		else
-			first_start_activity = false;
-        if (first_start_activity)
-        */
+
+        preferences = prefMng.getSharedPreferences();
+        
 		if (savedInstanceState == null)
         	loadPreferences();
    	
@@ -159,8 +162,6 @@ public class EventPreferencesFragment extends PreferenceListFragment
     	// get preference resource id from EventPreference
 		addPreferencesFromResource(event._eventPreferences._preferencesResourceID);
 
-        preferences = prefMng.getSharedPreferences();
-        
         preferences.registerOnSharedPreferenceChangeListener(this);  
         
         createActionModeCallback();
@@ -239,7 +240,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	{
     	if (event != null)
     	{
-	    	SharedPreferences preferences = getSherlockActivity().getSharedPreferences(PREFS_NAME, Activity.MODE_PRIVATE);
+	    	//SharedPreferences preferences = getSherlockActivity().getSharedPreferences(PREFS_NAME, Activity.MODE_PRIVATE);
 	    	event.loadSharedPrefereces(preferences);
     	}
 		

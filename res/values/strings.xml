@@ -239,5 +239,6 @@
     <string name="array_pref_show">Show</string>
     <string name="array_pref_no_run">No run</string>
     <string name="array_pref_run">Run</string>
+    <string name="title_activity_default_profile_preferences">Default profile</string>
     	
 </resources>

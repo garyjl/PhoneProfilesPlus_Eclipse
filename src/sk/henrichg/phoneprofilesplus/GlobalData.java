@@ -18,17 +18,14 @@ public class GlobalData extends Application {
 
 	static String PACKAGE_NAME;
 
-	// musi byt tu, pouziva t ActivateProfileHelper
 	static final String EXTRA_PROFILE_ID = "profile_id";
 	static final String EXTRA_EVENT_ID = "event_id";
 	static final String EXTRA_START_APP_SOURCE = "start_app_source";
 	static final String EXTRA_RESET_EDITOR = "reset_editor";
-	//static final String EXTRA_FIRST_START_ACTIVITY = "restart_activity";
 	static final String EXTRA_NEW_PROFILE_MODE = "new_profile_mode";
 	static final String EXTRA_NEW_EVENT_MODE = "new_event_mode";
-	static final String EXTRA_PREFERENCES_ACTIVITY = "preferences_activity";
+	static final String EXTRA_PREFERENCES_STARTUP_SOURCE = "preferences_startup_source";
 
-	// musi byt tu, pouziva to ActivateProfileHelper
 	static final int STARTUP_SOURCE_NOTIFICATION = 1;
 	static final int STARTUP_SOURCE_WIDGET = 2;
 	static final int STARTUP_SOURCE_SHORTCUT = 3;
@@ -39,6 +36,10 @@ public class GlobalData extends Application {
 	static final int STARTUP_SOURCE_EDITOR = 8;
 	static final int STARTUP_SOURCE_ACTIVATOR_START = 9;
 
+	static final int PREFERENCES_STARTUP_SOURCE_ACTIVITY = 1;
+	static final int PREFERENCES_STARTUP_SOURCE_FRAGMENT = 2;
+	static final int PREFERENCES_STARTUP_SOURCE_DEFAUT_PROFILE = 3;
+	
 	// request code for startActivityForResult with intent BackgroundActivateProfileActivity
 	static final int REQUEST_CODE_ACTIVATE_PROFILE = 6220;
 	// request code for startActivityForResult with intent ProfilePreferencesFragmentActivity
@@ -113,6 +114,8 @@ public class GlobalData extends Application {
     public static final String PREF_APPLICATION_WIDGET_LIST_ICON_LIGHTNESS = "applicationWidgetListIconLightness";
 	public static final String PREF_APPLICATION_EDITOR_AUTO_CLOSE_DRAWER = "applicationEditorAutoCloseDrawer";
 
+	static final long DEFAULT_PROFILE_ID = -999;
+	
 	private static final String PREF_GLOBAL_EVENTS_RUN_STOP = "globalEventsRunStop";
 	
     public static boolean applicationStartOnBoot;
@@ -215,7 +218,7 @@ public class GlobalData extends Application {
 		SharedPreferences preferences = context.getSharedPreferences(APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
 		
 		Profile profile = new Profile();
-		profile._id = -999;
+		profile._id = DEFAULT_PROFILE_ID;
 		profile._name = context.getResources().getString(R.string.default_profile_name);
 		profile._icon = PROFILE_ICON_DEFAULT;
 		profile._checked = false;

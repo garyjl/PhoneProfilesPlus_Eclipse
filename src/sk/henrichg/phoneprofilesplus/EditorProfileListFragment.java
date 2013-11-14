@@ -329,6 +329,14 @@ public class EditorProfileListFragment extends SherlockFragment {
 			deleteAllProfiles();
 			
 			return true;
+		case R.id.menu_default_profile:
+			// start preferences activity for default profile
+			Intent intent = new Intent(getSherlockActivity().getBaseContext(), ProfilePreferencesFragmentActivity.class);
+			intent.putExtra(GlobalData.EXTRA_PROFILE_ID, GlobalData.DEFAULT_PROFILE_ID);
+			intent.putExtra(GlobalData.EXTRA_NEW_PROFILE_MODE, EDIT_MODE_EDIT);
+			startActivityForResult(intent, GlobalData.REQUEST_CODE_PROFILE_PREFERENCES);
+			
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}

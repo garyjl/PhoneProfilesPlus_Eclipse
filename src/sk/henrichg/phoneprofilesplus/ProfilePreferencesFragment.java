@@ -31,6 +31,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	public long profile_id;
 	//private boolean first_start_activity;
 	private int new_profile_mode;
+	private int startupSource;
 	public boolean profileNonEdited = true;
 	private PreferenceManager prefMng;
 	private SharedPreferences preferences;
@@ -45,6 +46,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		
 	static final String PREFS_NAME_ACTIVITY = "profile_preferences_activity";
 	static final String PREFS_NAME_FRAGMENT = "profile_preferences_fragment";
+	static final String PREFS_NAME_DEFAULT_PROFILE = GlobalData.APPLICATION_PREFS_NAME;
 	private String PREFS_NAME;
 	
 	static final int BUTTON_UNDEFINED = 0;
@@ -113,11 +115,18 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		super.onCreate(savedInstanceState);
 
 		preferencesActivity = getSherlockActivity();
+        context = getSherlockActivity().getBaseContext();
 		
-		if (getArguments().containsKey(GlobalData.EXTRA_PREFERENCES_ACTIVITY) &&
-		    getArguments().getBoolean(GlobalData.EXTRA_PREFERENCES_ACTIVITY))
-			PREFS_NAME = PREFS_NAME_ACTIVITY;
-		else
+	    startupSource = getArguments().getInt(GlobalData.EXTRA_PREFERENCES_STARTUP_SOURCE, GlobalData.PREFERENCES_STARTUP_SOURCE_FRAGMENT);
+	    if (startupSource == GlobalData.PREFERENCES_STARTUP_SOURCE_ACTIVITY)
+	    	PREFS_NAME = PREFS_NAME_ACTIVITY;
+	    else
+	    if (startupSource == GlobalData.PREFERENCES_STARTUP_SOURCE_FRAGMENT)
+	    	PREFS_NAME = PREFS_NAME_FRAGMENT;
+	    else
+	    if (startupSource == GlobalData.PREFERENCES_STARTUP_SOURCE_DEFAUT_PROFILE)
+	    	PREFS_NAME = PREFS_NAME_DEFAULT_PROFILE;
+	    else
 			PREFS_NAME = PREFS_NAME_FRAGMENT;
 		
 		prefMng = getPreferenceManager();
@@ -130,6 +139,13 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		if (getArguments().containsKey(GlobalData.EXTRA_PROFILE_ID))
 			profile_id = getArguments().getLong(GlobalData.EXTRA_PROFILE_ID);
     	//Log.e("ProfilePreferencesFragment.onCreate", "profile_id=" + profile_id);
+		
+		if (startupSource == GlobalData.PREFERENCES_STARTUP_SOURCE_DEFAUT_PROFILE)
+		{
+			profile = GlobalData.getDefaultProfile(context);
+			profile_id = profile._id;
+		}
+		else
 		if (new_profile_mode == EditorProfileListFragment.EDIT_MODE_INSERT)
 		{
 			// create new profile
@@ -181,24 +197,17 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		}
 		else
 			profile = (Profile)EditorProfilesActivity.dataWrapper.getProfileById(profile_id);
-		/*
-		if (getArguments().containsKey(GlobalData.EXTRA_FIRST_START_ACTIVITY))
-		{
-			first_start_activity = getArguments().getBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY);
-	        getArguments().remove(GlobalData.EXTRA_FIRST_START_ACTIVITY);
-		}
-		else
-			first_start_activity = false;
-		*/
-        preferences = prefMng.getSharedPreferences();
+
+		preferences = prefMng.getSharedPreferences();
 
         /*if (first_start_activity)*/
 		if (savedInstanceState == null)
         	loadPreferences();
     	
-        context = getSherlockActivity().getBaseContext();
-        
-		addPreferencesFromResource(R.xml.profile_preferences);
+		if (startupSource == GlobalData.PREFERENCES_STARTUP_SOURCE_DEFAUT_PROFILE)
+			addPreferencesFromResource(R.xml.default_profile_preferences);
+		else
+			addPreferencesFromResource(R.xml.profile_preferences);
 
         preferences.registerOnSharedPreferenceChangeListener(this);  
         
@@ -297,8 +306,12 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 			//Log.e("ProfilePreferencesFragment.loadPreferences","profile="+profile);
 	    	
 	    	Editor editor = preferences.edit();
-	    	editor.remove(GlobalData.PREF_PROFILE_NAME).putString(GlobalData.PREF_PROFILE_NAME, profile._name);
-	    	editor.remove(GlobalData.PREF_PROFILE_ICON).putString(GlobalData.PREF_PROFILE_ICON, profile._icon);
+			if (startupSource != GlobalData.PREFERENCES_STARTUP_SOURCE_DEFAUT_PROFILE)
+			{
+				editor.remove(GlobalData.PREF_PROFILE_NAME).putString(GlobalData.PREF_PROFILE_NAME, profile._name);
+				editor.remove(GlobalData.PREF_PROFILE_ICON).putString(GlobalData.PREF_PROFILE_ICON, profile._icon);
+		        editor.remove(GlobalData.PREF_PROFILE_SHOW_IN_ACTIVATOR).putBoolean(GlobalData.PREF_PROFILE_SHOW_IN_ACTIVATOR, profile._showInActivator);
+			}
 	        editor.remove(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE).putString(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE, Integer.toString(profile._volumeRingerMode));
 	        editor.remove(GlobalData.PREF_PROFILE_VOLUME_RINGTONE).putString(GlobalData.PREF_PROFILE_VOLUME_RINGTONE, profile._volumeRingtone);
 	        editor.remove(GlobalData.PREF_PROFILE_VOLUME_NOTIFICATION).putString(GlobalData.PREF_PROFILE_VOLUME_NOTIFICATION, profile._volumeNotification);
@@ -326,7 +339,6 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	        editor.remove(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME).putString(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME, profile._deviceRunApplicationPackageName);
 	        editor.remove(GlobalData.PREF_PROFILE_DEVICE_AUTOSYNC).putString(GlobalData.PREF_PROFILE_DEVICE_AUTOSYNC, Integer.toString(profile._deviceAutosync));
 	        editor.remove(GlobalData.PREF_PROFILE_DEVICE_AUTOROTATE).putString(GlobalData.PREF_PROFILE_DEVICE_AUTOROTATE, Integer.toString(profile._deviceAutoRotate));
-	        editor.remove(GlobalData.PREF_PROFILE_SHOW_IN_ACTIVATOR).putBoolean(GlobalData.PREF_PROFILE_SHOW_IN_ACTIVATOR, profile._showInActivator);
 			editor.commit();
     	}
 		
@@ -334,8 +346,12 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	
 	private void savePreferences()
 	{
-    	profile._name = preferences.getString(GlobalData.PREF_PROFILE_NAME, "");
-    	profile._icon = preferences.getString(GlobalData.PREF_PROFILE_ICON, "");
+		if (startupSource != GlobalData.PREFERENCES_STARTUP_SOURCE_DEFAUT_PROFILE)
+		{
+			profile._name = preferences.getString(GlobalData.PREF_PROFILE_NAME, "");
+			profile._icon = preferences.getString(GlobalData.PREF_PROFILE_ICON, "");
+	    	profile._showInActivator = preferences.getBoolean(GlobalData.PREF_PROFILE_SHOW_IN_ACTIVATOR, true);
+		}
     	profile._volumeRingerMode = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE, ""));
     	profile._volumeRingtone = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_RINGTONE, "");
     	profile._volumeNotification = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_NOTIFICATION, "");
@@ -368,35 +384,37 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
     	else
     		profile._deviceRunApplicationPackageName = "-";
     	profile._deviceAutosync = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_AUTOSYNC, ""));
-    	profile._showInActivator = preferences.getBoolean(GlobalData.PREF_PROFILE_SHOW_IN_ACTIVATOR, true);
     	profile._deviceAutoRotate = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_AUTOROTATE, ""));
 
     	//Log.d("ProfilePreferencesFragment.onPause", "profile activated="+profile.getChecked());
     	
-    	// update bitmaps
-		profile.generateIconBitmap(context, false, 0);
-		profile.generatePreferencesIndicator(context, false, 0);
-
-    	//Log.d("ProfilePreferencesFragment.onPause", "profile activated="+profile.getChecked());
-		
-		if ((new_profile_mode == EditorProfileListFragment.EDIT_MODE_INSERT) ||
-		    (new_profile_mode == EditorProfileListFragment.EDIT_MODE_DUPLICATE))
+		if (startupSource != GlobalData.PREFERENCES_STARTUP_SOURCE_DEFAUT_PROFILE)
 		{
-			// add profile into DB
-			EditorProfilesActivity.dataWrapper.getDatabaseHandler().addProfile(profile);
-			profile_id = profile._id;
-
-        	//Log.d("ProfilePreferencesFragment.onPause", "addProfile");
+	    	// update bitmaps
+			profile.generateIconBitmap(context, false, 0);
+			profile.generatePreferencesIndicator(context, false, 0);
+	
+	    	//Log.d("ProfilePreferencesFragment.onPause", "profile activated="+profile.getChecked());
 			
+			if ((new_profile_mode == EditorProfileListFragment.EDIT_MODE_INSERT) ||
+			    (new_profile_mode == EditorProfileListFragment.EDIT_MODE_DUPLICATE))
+			{
+				// add profile into DB
+				EditorProfilesActivity.dataWrapper.getDatabaseHandler().addProfile(profile);
+				profile_id = profile._id;
+	
+	        	//Log.d("ProfilePreferencesFragment.onPause", "addProfile");
+				
+			}
+			else
+	        if (profile_id > 0) 
+	        {
+				EditorProfilesActivity.dataWrapper.getDatabaseHandler().updateProfile(profile);
+	        	
+	        	//Log.d("ProfilePreferencesFragment.onPause", "updateProfile");
+	
+	        }
 		}
-		else
-        if (profile_id > 0) 
-        {
-			EditorProfilesActivity.dataWrapper.getDatabaseHandler().updateProfile(profile);
-        	
-        	//Log.d("ProfilePreferencesFragment.onPause", "updateProfile");
-
-        }
 
         onRedrawProfileListFragmentCallback.onRedrawProfileListFragment(profile, new_profile_mode);
 	}
@@ -506,7 +524,11 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	    	// updating activity with selected profile preferences
 	    	
         	//Log.d("PhonePreferencesActivity.updateSharedPreference", profile.getName());
-	        setSummary(GlobalData.PREF_PROFILE_NAME, profile._name);
+        	
+    		if (startupSource != GlobalData.PREFERENCES_STARTUP_SOURCE_DEFAUT_PROFILE)
+    		{
+    			setSummary(GlobalData.PREF_PROFILE_NAME, profile._name);
+    		}
 	        setSummary(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE, profile._volumeRingerMode);
 	        setSummary(GlobalData.PREF_PROFILE_SOUND_RINGTONE_CHANGE, profile._soundRingtoneChange);
 	        setSummary(GlobalData.PREF_PROFILE_SOUND_RINGTONE, profile._soundRingtone);

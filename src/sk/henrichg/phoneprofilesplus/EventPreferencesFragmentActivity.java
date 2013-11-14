@@ -40,16 +40,13 @@ public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
 		getSupportActionBar().setTitle(R.string.title_activity_event_preferences);
 
         event_id = getIntent().getLongExtra(GlobalData.EXTRA_EVENT_ID, 0);
-        //boolean first_start_activity = getIntent().getBooleanExtra(GlobalData.EXTRA_FIRST_START_ACTIVITY, false);
-        //getIntent().removeExtra(GlobalData.EXTRA_FIRST_START_ACTIVITY);
         newEventMode = getIntent().getIntExtra(GlobalData.EXTRA_NEW_EVENT_MODE, EditorEventListFragment.EDIT_MODE_UNDEFINED);
 
 		if (savedInstanceState == null) {
 			Bundle arguments = new Bundle();
 			arguments.putLong(GlobalData.EXTRA_EVENT_ID, event_id);
-			//arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, first_start_activity);
 			arguments.putInt(GlobalData.EXTRA_NEW_EVENT_MODE, newEventMode);
-			arguments.putBoolean(GlobalData.EXTRA_PREFERENCES_ACTIVITY, true);
+			arguments.putInt(GlobalData.EXTRA_PREFERENCES_STARTUP_SOURCE, GlobalData.PREFERENCES_STARTUP_SOURCE_ACTIVITY);
 			EventPreferencesFragment fragment = new EventPreferencesFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
@@ -133,9 +130,8 @@ public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
 		{
 			Bundle arguments = new Bundle();
 			arguments.putLong(GlobalData.EXTRA_EVENT_ID, event._id);
-			//arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
 			arguments.putInt(GlobalData.EXTRA_NEW_EVENT_MODE, newEventMode);
-			arguments.putBoolean(GlobalData.EXTRA_PREFERENCES_ACTIVITY, true);
+			arguments.putInt(GlobalData.EXTRA_PREFERENCES_STARTUP_SOURCE, GlobalData.PREFERENCES_STARTUP_SOURCE_ACTIVITY);
 			EventPreferencesFragment fragment = new EventPreferencesFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()

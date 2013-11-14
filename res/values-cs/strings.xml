@@ -240,5 +240,6 @@
     <string name="array_pref_show">Zobrazovat</string>
     <string name="array_pref_no_run">Nespouštět</string>
     <string name="array_pref_run">Spouštět</string>
+    <string name="title_activity_default_profile_preferences">Předvolenej profil</string>
     		
 </resources>

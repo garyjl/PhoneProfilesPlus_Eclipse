@@ -34,21 +34,25 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 
 		getSupportActionBar().setHomeButtonEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		getSupportActionBar().setTitle(R.string.title_activity_profile_preferences);
 
         profile_id = getIntent().getLongExtra(GlobalData.EXTRA_PROFILE_ID, 0);
-        //boolean first_start_activity = getIntent().getBooleanExtra(GlobalData.EXTRA_FIRST_START_ACTIVITY, false);
-        //getIntent().removeExtra(GlobalData.EXTRA_FIRST_START_ACTIVITY);
         newProfileMode = getIntent().getIntExtra(GlobalData.EXTRA_NEW_PROFILE_MODE, EditorProfileListFragment.EDIT_MODE_UNDEFINED);
 
+        if (profile_id == GlobalData.DEFAULT_PROFILE_ID)
+        	getSupportActionBar().setTitle(R.string.title_activity_default_profile_preferences);
+        else
+        	getSupportActionBar().setTitle(R.string.title_activity_profile_preferences);
+        
         //Log.e("ProfilePreferencesFragmentActivity.onCreate","profile_id="+profile_id);
         
 		if (savedInstanceState == null) {
 			Bundle arguments = new Bundle();
 			arguments.putLong(GlobalData.EXTRA_PROFILE_ID, profile_id);
-			//arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, first_start_activity);
 			arguments.putInt(GlobalData.EXTRA_NEW_PROFILE_MODE, newProfileMode);
-			arguments.putBoolean(GlobalData.EXTRA_PREFERENCES_ACTIVITY, true);
+			if (profile_id == GlobalData.DEFAULT_PROFILE_ID)
+				arguments.putInt(GlobalData.EXTRA_PREFERENCES_STARTUP_SOURCE, GlobalData.PREFERENCES_STARTUP_SOURCE_DEFAUT_PROFILE);
+			else
+				arguments.putInt(GlobalData.EXTRA_PREFERENCES_STARTUP_SOURCE, GlobalData.PREFERENCES_STARTUP_SOURCE_ACTIVITY);
 			ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
@@ -134,9 +138,11 @@ public class ProfilePreferencesFragmentActivity extends SherlockFragmentActivity
 		{
 			Bundle arguments = new Bundle();
 			arguments.putLong(GlobalData.EXTRA_PROFILE_ID, profile._id);
-			//arguments.putBoolean(GlobalData.EXTRA_FIRST_START_ACTIVITY, true);
 			arguments.putInt(GlobalData.EXTRA_NEW_PROFILE_MODE, newProfileMode);
-			arguments.putBoolean(GlobalData.EXTRA_PREFERENCES_ACTIVITY, true);
+			if (profile_id == GlobalData.DEFAULT_PROFILE_ID)
+				arguments.putInt(GlobalData.EXTRA_PREFERENCES_STARTUP_SOURCE, GlobalData.PREFERENCES_STARTUP_SOURCE_DEFAUT_PROFILE);
+			else
+				arguments.putInt(GlobalData.EXTRA_PREFERENCES_STARTUP_SOURCE, GlobalData.PREFERENCES_STARTUP_SOURCE_ACTIVITY);
 			ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()

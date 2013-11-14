@@ -239,5 +239,6 @@
     <string name="array_pref_show">Zobrazovať</string>
     <string name="array_pref_no_run">Nespúšťať</string>
     <string name="array_pref_run">Spúšťať</string>
+    <string name="title_activity_default_profile_preferences">Predvolený profil</string>
     		
 </resources>
