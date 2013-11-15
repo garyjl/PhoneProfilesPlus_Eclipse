@@ -240,5 +240,7 @@
     <string name="array_pref_no_run">Nespúšťať</string>
     <string name="array_pref_run">Spúšťať</string>
     <string name="title_activity_default_profile_preferences">Predvolený profil</string>
+    <string name="toast_profile_activating_0">Profil</string>
+    <string name="toast_profile_activating_1">sa aktivuje&#8230;</string>
     		
 </resources>

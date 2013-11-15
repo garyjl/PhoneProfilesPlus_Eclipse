@@ -885,7 +885,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 					// toast notification
 					Toast msg = Toast.makeText(getBaseContext(), 
 							getResources().getString(R.string.toast_import_ok), 
-							Toast.LENGTH_LONG);
+							Toast.LENGTH_SHORT);
 					msg.show();
 
 					// refresh activity
@@ -1055,7 +1055,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 							// toast notification
 							Toast msg = Toast.makeText(getBaseContext(), 
 									getResources().getString(R.string.toast_export_ok), 
-									Toast.LENGTH_LONG);
+									Toast.LENGTH_SHORT);
 							msg.show();
 						
 						}

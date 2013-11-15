@@ -372,8 +372,8 @@ public class GlobalData extends Application {
 
 	// ----- Hardware check -------------------------------------
 	
-	static private boolean rootChecked = false;
-	static private boolean rooted = false;
+	static public boolean rootChecked = false;
+	static public boolean rooted = false;
 	static public boolean rootGranted = false;
 
 	static boolean hardwareCheck(String preferenceKey, Context context)

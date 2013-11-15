@@ -639,14 +639,14 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             /*    switch(item.getItemId()){
                     case R.id.action1:
-                        Toast.makeText(getBaseContext(), "Selected Action1 ", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getBaseContext(), "Selected Action1 ", Toast.LENGTH_SHORT).show();
                         mode.finish();  // Automatically exists the action mode, when the user selects this action
                         break;
                     case R.id.action2:
-                        Toast.makeText(getBaseContext(), "Selected Action2 ", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getBaseContext(), "Selected Action2 ", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.action3:
-                        Toast.makeText(getBaseContext(), "Selected Action3 ", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getBaseContext(), "Selected Action3 ", Toast.LENGTH_SHORT).show();
                         break;
                 }  */
                 return false;

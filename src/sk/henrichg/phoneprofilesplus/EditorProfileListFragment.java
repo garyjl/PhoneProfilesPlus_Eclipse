@@ -226,7 +226,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 					activateProfileHelper.updateWidget();
 					Toast msg = Toast.makeText(fragment.getSherlockActivity(), 
 							getResources().getString(R.string.toast_default_profiles_generated), 
-							Toast.LENGTH_LONG);
+							Toast.LENGTH_SHORT);
 					msg.show();
 				}
 			}

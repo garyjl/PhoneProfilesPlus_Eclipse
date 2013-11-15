@@ -115,11 +115,11 @@ public class Event {
 		this._eventPreferencesOld = null;
 	}
 	
-	public boolean isRunable()
+	public boolean isRunnable()
 	{
 		return  (this._fkProfile != 0) &&
 				(this._eventPreferences != null) &&
-				(this._eventPreferences.isRunable());
+				(this._eventPreferences.isRunnable());
 	}
 	
 	public boolean isTimeToRun()
@@ -153,7 +153,7 @@ public class Event {
 		this._status = (preferences.getBoolean(PREF_EVENT_ENABLED, false)) ? ESTATUS_PAUSE : ESTATUS_STOP;
 		this._eventPreferences.saveSharedPrefereces(preferences);
 		
-		if (!this.isRunable())
+		if (!this.isRunnable())
 			this._status = ESTATUS_STOP;
 		
 		this._typeOld = 0;
@@ -239,7 +239,7 @@ public class Event {
 			// events are globally stopped
 			return;
 		
-		if (!this.isRunable())
+		if (!this.isRunnable())
 			// event is not runnable, no pause it
 			return;
 		
@@ -268,7 +268,7 @@ public class Event {
 			// events are globally stopped
 			return;
 
-		if (!this.isRunable())
+		if (!this.isRunnable())
 			// event is not runnable, no pause it
 			return;
 		

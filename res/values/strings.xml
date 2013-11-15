@@ -240,5 +240,7 @@
     <string name="array_pref_no_run">No run</string>
     <string name="array_pref_run">Run</string>
     <string name="title_activity_default_profile_preferences">Default profile</string>
+    <string name="toast_profile_activating_0">Profile</string>
+    <string name="toast_profile_activating_1">activating&#8230;</string>
     	
 </resources>

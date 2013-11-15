@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.execution.CommandCapture;
@@ -29,6 +31,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
+import android.os.Handler;
 import android.provider.Settings;
 import android.provider.Settings.Global;
 import android.support.v4.app.NotificationCompat;
@@ -53,11 +56,16 @@ public class ActivateProfileHelper {
 
 	public void initialize(Activity a, Context c)
 	{
-		activity = a;
-		context = c;
+		initializeNoNotificationManager(a, c);
 		notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
 	}
 	
+	public void initializeNoNotificationManager(Activity a, Context c)
+	{
+		activity = a;
+		context = c;
+	}
+
 	public void deinitialize()
 	{
 		activity = null;
@@ -65,104 +73,8 @@ public class ActivateProfileHelper {
 		notificationManager = null;
 	}
 	
-	@SuppressWarnings("deprecation")
-	public void execute(Profile _profile, boolean interactive)
+	private void executeForRadios(Profile profile)
 	{
-		// regrant root, maybe application is deleted from Superuser.apk
-		GlobalData.rootGranted = false;
-		
-		// rozdelit zvonenie a notifikacie - zial je to oznacene ako @Hide :-(
-		//Settings.System.putInt(context.getContentResolver(), Settings.System.NOTIFICATIONS_USE_RING_VOLUME, 0);
-
-		AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
-		
-		Profile profile = GlobalData.getMappedProfile(_profile, context);
-		
-		// nahodenie volume
-		if (profile.getVolumeRingtoneChange())
-			audioManager.setStreamVolume(AudioManager.STREAM_RING, profile.getVolumeRingtoneValue(), 0);
-			//Settings.System.putInt(getContentResolver(), Settings.System.VOLUME_RING, profile.getVolumeRingtoneValue());
-		if (profile.getVolumeNotificationChange())
-			audioManager.setStreamVolume(AudioManager.STREAM_NOTIFICATION, profile.getVolumeNotificationValue(), 0);
-			//Settings.System.putInt(getContentResolver(), Settings.System.VOLUME_NOTIFICATION, profile.getVolumeNotificationValue());
-		if (profile.getVolumeMediaChange())
-			audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, profile.getVolumeMediaValue(), 0);
-			//Settings.System.putInt(getContentResolver(), Settings.System.VOLUME_MUSIC, profile.getVolumeMediaValue());
-		if (profile.getVolumeAlarmChange())
-			audioManager.setStreamVolume(AudioManager.STREAM_ALARM, profile.getVolumeAlarmValue(), 0);
-			//Settings.System.putInt(getContentResolver(), Settings.System.VOLUME_ALARM, profile.getVolumeAlarmValue());
-		if (profile.getVolumeSystemChange())
-			audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, profile.getVolumeSystemValue(), 0);
-			//Settings.System.putInt(getContentResolver(), Settings.System.VOLUME_SYSTEM, profile.getVolumeSystemValue());
-		if (profile.getVolumeVoiceChange())
-			audioManager.setStreamVolume(AudioManager.STREAM_VOICE_CALL, profile.getVolumeVoiceValue(), 0);
-			//Settings.System.putInt(getContentResolver(), Settings.System.VOLUME_VOICE, profile.getVolumeVoiceValue());
-
-		// nahodenie ringer modu
-		switch (profile._volumeRingerMode) {
-			case 1:  // Ring
-				audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_OFF);
-				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION, AudioManager.VIBRATE_SETTING_OFF);
-				Settings.System.putInt(context.getContentResolver(), "vibrate_when_ringing", 0);
-				break;
-			case 2:  // Ring & Vibrate
-				audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_ON);
-				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION, AudioManager.VIBRATE_SETTING_ON);
-				Settings.System.putInt(context.getContentResolver(), "vibrate_when_ringing", 1);
-				break;
-			case 3:  // Vibrate
-				audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
-				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_ON);
-				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION, AudioManager.VIBRATE_SETTING_ON);
-				Settings.System.putInt(context.getContentResolver(), "vibrate_when_ringing", 1);
-				break;
-			case 4:  // Silent
-				audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_OFF);
-				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION, AudioManager.VIBRATE_SETTING_OFF);
-				Settings.System.putInt(context.getContentResolver(), "vibrate_when_ringing", 0);
-				break;
-		}
-		
-		// nahodenie ringtone
-		if (profile._soundRingtoneChange == 1)
-			Settings.System.putString(context.getContentResolver(), Settings.System.RINGTONE, profile._soundRingtone);
-		if (profile._soundNotificationChange == 1)
-			Settings.System.putString(context.getContentResolver(), Settings.System.NOTIFICATION_SOUND, profile._soundNotification);
-		if (profile._soundAlarmChange == 1)
-			Settings.System.putString(context.getContentResolver(), Settings.System.ALARM_ALERT, profile._soundAlarm);
-
-		// nahodenie airplane modu
-		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE, context))
-		{
-			boolean _isAirplaneMode = isAirplaneMode(context);
-			boolean _setAirplaneMode = false;
-			switch (profile._deviceAirplaneMode) {
-				case 1:
-					if (!_isAirplaneMode)
-					{
-						_isAirplaneMode = true;
-						_setAirplaneMode = true;
-					}
-					break;
-				case 2:
-					if (_isAirplaneMode)
-					{
-						_isAirplaneMode = false;
-						_setAirplaneMode = true;
-					}
-					break;
-				case 3:
-					_isAirplaneMode = !_isAirplaneMode;
-					_setAirplaneMode = true;
-					break;
-			}
-			if (_setAirplaneMode)
-				setAirplaneMode(context, _isAirplaneMode);
-		}
-		
 		// nahodenie mobilnych dat
 		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA, context))
 		{
@@ -280,6 +192,158 @@ public class ActivateProfileHelper {
 					break;
 			}
 		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	public void execute(Profile _profile, boolean _interactive)
+	{
+		// regrant root, maybe application is deleted from Superuser.apk
+		GlobalData.rootGranted = false;
+		
+		// rozdelit zvonenie a notifikacie - zial je to oznacene ako @Hide :-(
+		//Settings.System.putInt(context.getContentResolver(), Settings.System.NOTIFICATIONS_USE_RING_VOLUME, 0);
+
+		AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+		
+		final Profile profile = GlobalData.getMappedProfile(_profile, context);
+		final boolean interactive = _interactive;
+		
+		boolean radiosExecuted = false;
+		
+		// nahodenie volume
+		if (profile.getVolumeRingtoneChange())
+			audioManager.setStreamVolume(AudioManager.STREAM_RING, profile.getVolumeRingtoneValue(), 0);
+			//Settings.System.putInt(getContentResolver(), Settings.System.VOLUME_RING, profile.getVolumeRingtoneValue());
+		if (profile.getVolumeNotificationChange())
+			audioManager.setStreamVolume(AudioManager.STREAM_NOTIFICATION, profile.getVolumeNotificationValue(), 0);
+			//Settings.System.putInt(getContentResolver(), Settings.System.VOLUME_NOTIFICATION, profile.getVolumeNotificationValue());
+		if (profile.getVolumeMediaChange())
+			audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, profile.getVolumeMediaValue(), 0);
+			//Settings.System.putInt(getContentResolver(), Settings.System.VOLUME_MUSIC, profile.getVolumeMediaValue());
+		if (profile.getVolumeAlarmChange())
+			audioManager.setStreamVolume(AudioManager.STREAM_ALARM, profile.getVolumeAlarmValue(), 0);
+			//Settings.System.putInt(getContentResolver(), Settings.System.VOLUME_ALARM, profile.getVolumeAlarmValue());
+		if (profile.getVolumeSystemChange())
+			audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, profile.getVolumeSystemValue(), 0);
+			//Settings.System.putInt(getContentResolver(), Settings.System.VOLUME_SYSTEM, profile.getVolumeSystemValue());
+		if (profile.getVolumeVoiceChange())
+			audioManager.setStreamVolume(AudioManager.STREAM_VOICE_CALL, profile.getVolumeVoiceValue(), 0);
+			//Settings.System.putInt(getContentResolver(), Settings.System.VOLUME_VOICE, profile.getVolumeVoiceValue());
+
+		// nahodenie ringer modu
+		switch (profile._volumeRingerMode) {
+			case 1:  // Ring
+				audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_OFF);
+				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION, AudioManager.VIBRATE_SETTING_OFF);
+				Settings.System.putInt(context.getContentResolver(), "vibrate_when_ringing", 0);
+				break;
+			case 2:  // Ring & Vibrate
+				audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_ON);
+				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION, AudioManager.VIBRATE_SETTING_ON);
+				Settings.System.putInt(context.getContentResolver(), "vibrate_when_ringing", 1);
+				break;
+			case 3:  // Vibrate
+				audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
+				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_ON);
+				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION, AudioManager.VIBRATE_SETTING_ON);
+				Settings.System.putInt(context.getContentResolver(), "vibrate_when_ringing", 1);
+				break;
+			case 4:  // Silent
+				audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_OFF);
+				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION, AudioManager.VIBRATE_SETTING_OFF);
+				Settings.System.putInt(context.getContentResolver(), "vibrate_when_ringing", 0);
+				break;
+		}
+		
+		// nahodenie ringtone
+		if (profile._soundRingtoneChange == 1)
+			Settings.System.putString(context.getContentResolver(), Settings.System.RINGTONE, profile._soundRingtone);
+		if (profile._soundNotificationChange == 1)
+			Settings.System.putString(context.getContentResolver(), Settings.System.NOTIFICATION_SOUND, profile._soundNotification);
+		if (profile._soundAlarmChange == 1)
+			Settings.System.putString(context.getContentResolver(), Settings.System.ALARM_ALERT, profile._soundAlarm);
+
+		// nahodenie airplane modu
+		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE, context))
+		{
+			boolean _isAirplaneMode = isAirplaneMode(context);
+			boolean _setAirplaneMode = false;
+			switch (profile._deviceAirplaneMode) {
+				case 1:
+					if (!_isAirplaneMode)
+					{
+						_isAirplaneMode = true;
+						_setAirplaneMode = true;
+					}
+					break;
+				case 2:
+					if (_isAirplaneMode)
+					{
+						_isAirplaneMode = false;
+						_setAirplaneMode = true;
+					}
+					break;
+				case 3:
+					_isAirplaneMode = !_isAirplaneMode;
+					_setAirplaneMode = true;
+					break;
+			}
+			if (_setAirplaneMode)
+			{
+				radiosExecuted = true;
+				setAirplaneMode(context, _isAirplaneMode);
+				
+				// SLEEP 0,1 SECONDS HERE ...
+				final Activity _a = activity;
+				final Context _c = context;
+				final boolean rootChecked = GlobalData.rootChecked;
+				final boolean rooted = GlobalData.rooted;
+				final boolean rootGranted = GlobalData.rootGranted;
+				final Handler handler = new Handler(); 
+		        Timer t = new Timer(); 
+		        t.schedule(new TimerTask() { 
+		            public void run() { 
+		                handler.post(new Runnable() { 
+		                    public void run() { 
+		                    	// this running in another thread,
+		                    	// copy needed GlobalData
+		                    	GlobalData.rootChecked = rootChecked;
+		                    	GlobalData.rooted = rooted;
+		                    	GlobalData.rootGranted = rootGranted;
+		           	      		ActivateProfileHelper aph = new ActivateProfileHelper();
+		        			    aph.initializeNoNotificationManager(_a, _c);
+		        			    aph.executeForRadios(profile);
+		        			    aph.deinitialize();
+		        			    aph = null;
+		                    } 
+		                }); 
+		            } 
+		        }, 100);
+		        
+				
+				/*
+				// SLEEP 0,1 SECONDS and set radios
+				final Activity _a = activity;
+				final Context _c = context;
+			    Handler handler = new Handler(); 
+			    handler.postDelayed(new Runnable() { 
+			         public void run() {
+			        	 ActivateProfileHelper aph = new ActivateProfileHelper();
+			        	 aph.initialize(_a, _c);
+			        	 aph.executeForRadios(profile, interactive);
+			        	 aph.deinitialize();
+			        	 aph = null;
+			         } 
+			    }, 100);
+			    */
+			}
+		}
+		
+		if (!radiosExecuted)
+			executeForRadios(profile);
 		
 		// nahodenie auto-sync
 		boolean _isAutosync = ContentResolver.getMasterSyncAutomatically();
@@ -306,121 +370,6 @@ public class ActivateProfileHelper {
 		}
 		if (_setAutosync)
 			ContentResolver.setMasterSyncAutomatically(_isAutosync);
-		
-/*		Intent intent = new Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED);
-		String enabledRadios = "";
-		String disabledRadios = "";
-			
-		// nahodenie WiFi
-		switch (profile.getDeviceWiFi()) {
-			case 1 : 
-				if (!enabledRadios.isEmpty())
-					enabledRadios = enabledRadios + ",";
-				enabledRadios = enabledRadios + "wifi";
-				break;
-			case 2 : 
-				if (!disabledRadios.isEmpty())
-					disabledRadios = disabledRadios + ",";
-				disabledRadios = disabledRadios + "wifi";
-				break;
-			case 3 :
-				int extraWifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, WifiManager.WIFI_STATE_UNKNOWN);
-				if ((extraWifiState == WifiManager.WIFI_STATE_DISABLED) || (extraWifiState == WifiManager.WIFI_STATE_DISABLING))
-				{
-					if (!enabledRadios.isEmpty())
-						enabledRadios = enabledRadios + ",";
-					enabledRadios = enabledRadios + "wifi";
-				}
-				else
-				if ((extraWifiState == WifiManager.WIFI_STATE_ENABLED) || (extraWifiState == WifiManager.WIFI_STATE_ENABLING))
-				{
-					if (!disabledRadios.isEmpty())
-						disabledRadios = disabledRadios + ",";
-					disabledRadios = disabledRadios + "wifi";
-				}
-				break;
-		}
-		
-		// nahodenie Bluetooth
-		switch (profile.getDeviceBluetooth()) {
-			case 1 : 
-				if (!enabledRadios.isEmpty())
-					enabledRadios = enabledRadios + ",";
-				enabledRadios = enabledRadios + "bluetooth";
-				break;
-			case 2 : 
-				if (!disabledRadios.isEmpty())
-					disabledRadios = disabledRadios + ",";
-				disabledRadios = disabledRadios + "bluetooth";
-				break;
-			case 3 :
-				BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-				if ((bluetoothAdapter != null) && (bluetoothAdapter.isEnabled()))
-				{
-					if (!enabledRadios.isEmpty())
-						enabledRadios = enabledRadios + ",";
-					enabledRadios = enabledRadios + "bluetooth";
-				}
-				else
-				if ((bluetoothAdapter != null) && (!bluetoothAdapter.isEnabled()))
-				{
-					if (!disabledRadios.isEmpty())
-						disabledRadios = disabledRadios + ",";
-					disabledRadios = disabledRadios + "bluetooth";
-				}
-				break;
-		}
-
-		// nahodenie airplane mode
-		switch (profile.getDeviceAirplaneMode()) {
-			case 1 :
-				// ak zapinam airplane mod disablujem vsetko
-				disabledRadios = "cell,bluetooth,wifi,nfc";
-				break;
-			case 2 : 
-				// ak vypinam airplane mod, enablujem este cell a ncf
-				if (!enabledRadios.isEmpty())
-					enabledRadios = enabledRadios + ",";
-				enabledRadios = enabledRadios + "cell,nfc";
-				break;
-			case 3 :
-				if (Settings.System.getInt(getContentResolver(), Settings.System.AIRPLANE_MODE_ON, 0) == 0)
-				{
-					disabledRadios = "cell,bluetooth,wifi,nfc";
-				}
-				else
-				{
-					if (!enabledRadios.isEmpty())
-						enabledRadios = enabledRadios + ",";
-					enabledRadios = enabledRadios + "cell,nfc";
-				} 
-				break;
-		}
-		
-		Log.d("ActivateProfileHelper.execute", "enabledRadios=" + enabledRadios);
-		Log.d("ActivateProfileHelper.execute", "disabledRadios=" + disabledRadios);
-		
-		// zapni radia
-		if (!enabledRadios.isEmpty())
-		{
-			Settings.System.putInt(getContentResolver(), Settings.System.AIRPLANE_MODE_ON, 0);
-			Settings.System.putString(getContentResolver(), Settings.System.AIRPLANE_MODE_RADIOS, enabledRadios);
-			intent.putExtra("state", false);
-			sendBroadcast(intent);
-		}
-
-		// vypni radia
-		if (!disabledRadios.isEmpty())
-		{
-			Settings.System.putInt(getContentResolver(), Settings.System.AIRPLANE_MODE_ON, 1);
-			Settings.System.putString(getContentResolver(), Settings.System.AIRPLANE_MODE_RADIOS, disabledRadios);
-			intent.putExtra("state", true);
-			sendBroadcast(intent);
-		}
-
-		// nastav default systemu
-		Settings.System.putString(getContentResolver(), Settings.System.AIRPLANE_MODE_RADIOS, "cell,wifi,bluetooth,nfc");
-*/
 		
 		// screen timeout
 		switch (profile._deviceScreenTimeout) {

@@ -203,10 +203,10 @@ public class EventPreferencesTime extends EventPreferences {
     }
 
 	@Override
-	public boolean isRunable()
+	public boolean isRunnable()
 	{
 		
-		boolean runable = super.isRunable();
+		boolean runable = super.isRunnable();
 
 		boolean dayOfWeek = false;
 		dayOfWeek = dayOfWeek || this._sunday;

@@ -1,5 +1,6 @@
 package sk.henrichg.phoneprofilesplus;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Toast;
 import android.app.Activity;
@@ -164,13 +165,6 @@ public class BackgroundActivateProfileActivity extends Activity {
 				
 				public void onClick(DialogInterface dialog, int which) {
 					activateProfile(_profile, _interactive);
-					
-					// for startActivityForResult
-					Intent returnIntent = new Intent();
-					returnIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile_id);
-					setResult(RESULT_OK,returnIntent);
-					
-					activity.finish();
 				}
 			});
 			dialogBuilder.setNegativeButton(R.string.alert_button_no, new DialogInterface.OnClickListener() {
@@ -199,36 +193,75 @@ public class BackgroundActivateProfileActivity extends Activity {
 		else
 		{
 			activateProfile(profile, interactive);
-
-			// for startActivityForResult
-			Intent returnIntent = new Intent();
-			returnIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile_id);
-			setResult(RESULT_OK,returnIntent);
-			
-			finish();
 		}
 	}
 	
-	private void activateProfile(Profile profile, boolean interactive)
+	private void activateProfile(Profile _profile, boolean _interactive)
 	{
-		databaseHandler.activateProfile(profile);
-		dataWrapper.activateProfile(profile);
-
-		activateProfileHelper.execute(profile, interactive);
-		activateProfileHelper.showNotification(profile);
-		activateProfileHelper.updateWidget();
+		final Profile profile = _profile;
+		final boolean interactive = _interactive;
+		final Activity activity = this;
 		
-		if (GlobalData.notificationsToast)
-		{	
-			// toast notification
-			Toast msg = Toast.makeText(this, 
-					getResources().getString(R.string.toast_profile_activated_0) + ": " + profile._name + " " +
-					getResources().getString(R.string.toast_profile_activated_1), 
-					Toast.LENGTH_LONG);
-			msg.show();
-		}
+		new AsyncTask<Void, Integer, Void>() {
+			
+			@Override
+			protected void onPreExecute()
+			{
+				super.onPreExecute();
+				
+				if (GlobalData.notificationsToast)
+				{	
+					Toast msg = Toast.makeText(activity, 
+							getResources().getString(R.string.toast_profile_activating_0) + ": " + profile._name + " " +
+							getResources().getString(R.string.toast_profile_activating_1), 
+							Toast.LENGTH_SHORT);
+					msg.show();
+				}
+			}
+			
+			@Override
+			protected Void doInBackground(Void... params) {
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				return null;
+			}
+			
+			@Override
+			protected void onPostExecute(Void result)
+			{
+				super.onPostExecute(result);
 
-		
+				databaseHandler.activateProfile(profile);
+				dataWrapper.activateProfile(profile);
+				
+				activateProfileHelper.execute(profile, interactive);
+				
+				activateProfileHelper.showNotification(profile);
+				activateProfileHelper.updateWidget();
+				
+				if (GlobalData.notificationsToast)
+				{	
+					// toast notification
+					Toast msg = Toast.makeText(activity, 
+							getResources().getString(R.string.toast_profile_activated_0) + ": " + profile._name + " " +
+							getResources().getString(R.string.toast_profile_activated_1), 
+							Toast.LENGTH_SHORT);
+					msg.show();
+				}
+				
+				// for startActivityForResult
+				Intent returnIntent = new Intent();
+				returnIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile_id);
+				setResult(RESULT_OK,returnIntent);
+				
+				activity.finish();
+				
+			}
+			
+		}.execute();
 	}
 	
 }
