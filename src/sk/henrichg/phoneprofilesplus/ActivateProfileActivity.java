@@ -15,6 +15,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
@@ -158,7 +159,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 					// nie je ziaden profile, startneme Editor
 					
 					Intent intent = new Intent(getBaseContext(), EditorProfilesActivity.class);
-					intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_ACTIVATOR);
+					intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_ACTIVATOR_START);
 					startActivity(intent);
 					
 					finish();
@@ -478,10 +479,28 @@ public class ActivateProfileActivity extends SherlockActivity {
 	
 	private void activateProfile(Profile profile, int startupSource)
 	{
+		boolean finish = false;
+		
+		if (GlobalData.applicationClose)
+		{	
+			// ma sa zatvarat aktivita po aktivacii
+			if (startupSource != GlobalData.STARTUP_SOURCE_ACTIVATOR_START)
+				finish = true;
+		}
+
 		Intent intent = new Intent(getBaseContext(), BackgroundActivateProfileActivity.class);
 		intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, startupSource);
 		intent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
-		startActivityForResult(intent, GlobalData.REQUEST_CODE_ACTIVATE_PROFILE);
+		
+		Log.e("ActivateProfileActivity.activateProfile","finish="+finish);
+		
+		if (finish)
+		{
+			startActivity(intent);
+			finish();
+		}
+		else
+			startActivityForResult(intent, GlobalData.REQUEST_CODE_ACTIVATE_PROFILE);
 	}
 	
 	private class ProfileComparator implements Comparator<Profile> {

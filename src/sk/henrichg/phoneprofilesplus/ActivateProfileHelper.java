@@ -208,7 +208,7 @@ public class ActivateProfileHelper {
 		final Profile profile = GlobalData.getMappedProfile(_profile, context);
 		final boolean interactive = _interactive;
 		
-		boolean radiosExecuted = false;
+		//boolean radiosExecuted = false;
 		
 		// nahodenie volume
 		if (profile.getVolumeRingtoneChange())
@@ -266,6 +266,7 @@ public class ActivateProfileHelper {
 		if (profile._soundAlarmChange == 1)
 			Settings.System.putString(context.getContentResolver(), Settings.System.ALARM_ALERT, profile._soundAlarm);
 
+		/*
 		// nahodenie airplane modu
 		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE, context))
 		{
@@ -323,7 +324,7 @@ public class ActivateProfileHelper {
 		            } 
 		        }, 100);
 		        
-				
+				*/
 				/*
 				// SLEEP 0,1 SECONDS and set radios
 				final Activity _a = activity;
@@ -339,11 +340,51 @@ public class ActivateProfileHelper {
 			         } 
 			    }, 100);
 			    */
-			}
+/*			}
 		}
+		
 		
 		if (!radiosExecuted)
 			executeForRadios(profile);
+*/		
+		// nahodenie airplane modu
+		boolean _isAirplaneMode = false;
+		boolean _setAirplaneMode = false;
+		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE, context))
+		{
+			_isAirplaneMode = isAirplaneMode(context);
+			switch (profile._deviceAirplaneMode) {
+				case 1:
+					if (!_isAirplaneMode)
+					{
+						_isAirplaneMode = true;
+						_setAirplaneMode = true;
+					}
+					break;
+				case 2:
+					if (_isAirplaneMode)
+					{
+						_isAirplaneMode = false;
+						_setAirplaneMode = true;
+					}
+					break;
+				case 3:
+					_isAirplaneMode = !_isAirplaneMode;
+					_setAirplaneMode = true;
+					break;
+			}
+		}
+		
+		if (_setAirplaneMode && _isAirplaneMode)
+			// switch ON airplane mode, set it before executeForRadios
+			setAirplaneMode(context, _isAirplaneMode);
+		
+		executeForRadios(profile);
+
+		if (_setAirplaneMode && !(_isAirplaneMode))
+			// switch OFF airplane mode, set if after executeForRadios
+			setAirplaneMode(context, _isAirplaneMode);
+		
 		
 		// nahodenie auto-sync
 		boolean _isAutosync = ContentResolver.getMasterSyncAutomatically();
