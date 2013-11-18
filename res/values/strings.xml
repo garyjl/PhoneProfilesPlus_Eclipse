@@ -144,7 +144,6 @@
     <string name="event_type_time">Time</string>
     <string name="title_activity_event_type_preference_dialog">Set event type</string>
     <string name="title_activity_profile_preference_dialog">Set profile</string>
-    <string name="title_activity_profile_preference_dialog">Set profile</string>
     <string name="delete_profile_progress_title">Deleting profile</string>
     <string name="delete_profiles_progress_title">Deleting profiles</string>
     <string name="event_preferences_category_eventidentification">Event identification</string>
@@ -212,6 +211,7 @@
     <string name="alert_button_yes">Yes</string>
     <string name="alert_button_no">No</string>
     <string name="profile_preferences_deviceAutoRotation">Display rotation</string>
+
     <string name="title_activity_activator">Activator</string>
     <string name="title_activity_editor">Editor</string>
     <string name="menu_run_events">Enable running events</string>
