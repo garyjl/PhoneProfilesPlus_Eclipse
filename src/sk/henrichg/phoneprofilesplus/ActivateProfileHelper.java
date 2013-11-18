@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.commonsware.cwac.wakeful.WakefulIntentService;
 import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.execution.CommandCapture;
 
@@ -73,7 +74,7 @@ public class ActivateProfileHelper {
 		notificationManager = null;
 	}
 	
-	private void executeForRadios(Profile profile)
+	private void doExecuteForRadios(Profile profile)
 	{
 		// nahodenie mobilnych dat
 		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA, context))
@@ -194,6 +195,47 @@ public class ActivateProfileHelper {
 		}
 	}
 	
+	public void executeForRadios(Profile profile)
+	{
+		boolean _isAirplaneMode = false;
+		boolean _setAirplaneMode = false;
+		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE, context))
+		{
+			_isAirplaneMode = isAirplaneMode(context);
+			switch (profile._deviceAirplaneMode) {
+				case 1:
+					if (!_isAirplaneMode)
+					{
+						_isAirplaneMode = true;
+						_setAirplaneMode = true;
+					}
+					break;
+				case 2:
+					if (_isAirplaneMode)
+					{
+						_isAirplaneMode = false;
+						_setAirplaneMode = true;
+					}
+					break;
+				case 3:
+					_isAirplaneMode = !_isAirplaneMode;
+					_setAirplaneMode = true;
+					break;
+			}
+		}
+		
+		if (_setAirplaneMode && _isAirplaneMode)
+			// switch ON airplane mode, set it before executeForRadios
+			setAirplaneMode(context, _isAirplaneMode);
+		
+		doExecuteForRadios(profile);
+
+		if (_setAirplaneMode && !(_isAirplaneMode))
+			// switch OFF airplane mode, set if after executeForRadios
+			setAirplaneMode(context, _isAirplaneMode);
+		
+	}
+	
 	@SuppressWarnings("deprecation")
 	public void execute(Profile _profile, boolean _interactive)
 	{
@@ -266,125 +308,11 @@ public class ActivateProfileHelper {
 		if (profile._soundAlarmChange == 1)
 			Settings.System.putString(context.getContentResolver(), Settings.System.ALARM_ALERT, profile._soundAlarm);
 
-		/*
-		// nahodenie airplane modu
-		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE, context))
-		{
-			boolean _isAirplaneMode = isAirplaneMode(context);
-			boolean _setAirplaneMode = false;
-			switch (profile._deviceAirplaneMode) {
-				case 1:
-					if (!_isAirplaneMode)
-					{
-						_isAirplaneMode = true;
-						_setAirplaneMode = true;
-					}
-					break;
-				case 2:
-					if (_isAirplaneMode)
-					{
-						_isAirplaneMode = false;
-						_setAirplaneMode = true;
-					}
-					break;
-				case 3:
-					_isAirplaneMode = !_isAirplaneMode;
-					_setAirplaneMode = true;
-					break;
-			}
-			if (_setAirplaneMode)
-			{
-				radiosExecuted = true;
-				setAirplaneMode(context, _isAirplaneMode);
-				
-				// SLEEP 0,1 SECONDS HERE ...
-				final Activity _a = activity;
-				final Context _c = context;
-				final boolean rootChecked = GlobalData.rootChecked;
-				final boolean rooted = GlobalData.rooted;
-				final boolean rootGranted = GlobalData.rootGranted;
-				final Handler handler = new Handler(); 
-		        Timer t = new Timer(); 
-		        t.schedule(new TimerTask() { 
-		            public void run() { 
-		                handler.post(new Runnable() { 
-		                    public void run() { 
-		                    	// this running in another thread,
-		                    	// copy needed GlobalData
-		                    	GlobalData.rootChecked = rootChecked;
-		                    	GlobalData.rooted = rooted;
-		                    	GlobalData.rootGranted = rootGranted;
-		           	      		ActivateProfileHelper aph = new ActivateProfileHelper();
-		        			    aph.initializeNoNotificationManager(_a, _c);
-		        			    aph.executeForRadios(profile);
-		        			    aph.deinitialize();
-		        			    aph = null;
-		                    } 
-		                }); 
-		            } 
-		        }, 100);
-		        
-				*/
-				/*
-				// SLEEP 0,1 SECONDS and set radios
-				final Activity _a = activity;
-				final Context _c = context;
-			    Handler handler = new Handler(); 
-			    handler.postDelayed(new Runnable() { 
-			         public void run() {
-			        	 ActivateProfileHelper aph = new ActivateProfileHelper();
-			        	 aph.initialize(_a, _c);
-			        	 aph.executeForRadios(profile, interactive);
-			        	 aph.deinitialize();
-			        	 aph = null;
-			         } 
-			    }, 100);
-			    */
-/*			}
-		}
-		
-		
-		if (!radiosExecuted)
-			executeForRadios(profile);
-*/		
-		// nahodenie airplane modu
-		boolean _isAirplaneMode = false;
-		boolean _setAirplaneMode = false;
-		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE, context))
-		{
-			_isAirplaneMode = isAirplaneMode(context);
-			switch (profile._deviceAirplaneMode) {
-				case 1:
-					if (!_isAirplaneMode)
-					{
-						_isAirplaneMode = true;
-						_setAirplaneMode = true;
-					}
-					break;
-				case 2:
-					if (_isAirplaneMode)
-					{
-						_isAirplaneMode = false;
-						_setAirplaneMode = true;
-					}
-					break;
-				case 3:
-					_isAirplaneMode = !_isAirplaneMode;
-					_setAirplaneMode = true;
-					break;
-			}
-		}
-		
-		if (_setAirplaneMode && _isAirplaneMode)
-			// switch ON airplane mode, set it before executeForRadios
-			setAirplaneMode(context, _isAirplaneMode);
-		
-		executeForRadios(profile);
-
-		if (_setAirplaneMode && !(_isAirplaneMode))
-			// switch OFF airplane mode, set if after executeForRadios
-			setAirplaneMode(context, _isAirplaneMode);
-		
+		// nahodenie radio preferences
+		// run service for execute radios
+		Intent radioServiceIntent = new Intent(context, ExecuteRadioProfilePrefsService.class);
+		radioServiceIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
+		WakefulIntentService.sendWakefulWork(context, radioServiceIntent);
 		
 		// nahodenie auto-sync
 		boolean _isAutosync = ContentResolver.getMasterSyncAutomatically();
