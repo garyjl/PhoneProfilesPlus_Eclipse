@@ -173,7 +173,8 @@
                 android:value="@string/dashclock_extension_description" />
         </service>
 	    <receiver android:name=".DashClockBroadcastReceiver"
-	        android:enabled="true" >
+	        android:enabled="true" 
+	        android:exported="false">
 	        <intent-filter>
 	         	<action android:name="sk.henrichg.phoneprofilesplus.REFRESH_DASHCLOCK" />
                 <category android:name="android.intent.category.DEFAULT" />
