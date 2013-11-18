@@ -312,7 +312,7 @@ public class ActivateProfileHelper {
 		// run service for execute radios
 		Intent radioServiceIntent = new Intent(context, ExecuteRadioProfilePrefsService.class);
 		radioServiceIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
-		WakefulIntentService.sendWakefulWork(context, radioServiceIntent);
+		context.startService(radioServiceIntent);
 		
 		// nahodenie auto-sync
 		boolean _isAutosync = ContentResolver.getMasterSyncAutomatically();
