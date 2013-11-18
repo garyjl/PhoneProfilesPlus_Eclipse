@@ -4,10 +4,6 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import com.commonsware.cwac.wakeful.WakefulIntentService;
 import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.execution.CommandCapture;
 
@@ -32,7 +28,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
-import android.os.Handler;
 import android.provider.Settings;
 import android.provider.Settings.Global;
 import android.support.v4.app.NotificationCompat;
@@ -236,6 +231,7 @@ public class ActivateProfileHelper {
 		
 	}
 	
+	@SuppressLint("InlinedApi")
 	@SuppressWarnings("deprecation")
 	public void execute(Profile _profile, boolean _interactive)
 	{

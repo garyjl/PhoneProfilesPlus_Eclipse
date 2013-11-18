@@ -4,8 +4,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import sk.henrichg.phoneprofilesplus.EventPreferencesFragment.OnRedrawEventListFragment;
-
 import com.actionbarsherlock.app.SherlockFragment;
 
 import android.os.AsyncTask;

@@ -15,7 +15,6 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
@@ -492,7 +491,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 		intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, startupSource);
 		intent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
 		
-		Log.e("ActivateProfileActivity.activateProfile","finish="+finish);
+		//Log.e("ActivateProfileActivity.activateProfile","finish="+finish);
 		
 		if (finish)
 		{

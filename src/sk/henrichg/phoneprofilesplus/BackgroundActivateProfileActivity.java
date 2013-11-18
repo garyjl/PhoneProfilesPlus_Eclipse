@@ -1,6 +1,5 @@
 package sk.henrichg.phoneprofilesplus;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Toast;
 import android.app.Activity;
