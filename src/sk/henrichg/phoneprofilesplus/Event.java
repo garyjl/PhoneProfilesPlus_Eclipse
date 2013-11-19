@@ -233,9 +233,9 @@ public class Event {
 	}
 	
 	
-	public void startEvent(DataWrapper dataWrapper)
+	public void startEvent(DataWrapper dataWrapper, boolean ignoreGlobalPref)
 	{
-		if (GlobalData.getGlobalEventsRuning(dataWrapper.context))
+		if ((!GlobalData.getGlobalEventsRuning(dataWrapper.context)) && (!ignoreGlobalPref))
 			// events are globally stopped
 			return;
 		
@@ -264,9 +264,9 @@ public class Event {
 		return;
 	}
 	
-	public void pauseEvent(DataWrapper dataWrapper, boolean activateReturnProfile)
+	public void pauseEvent(DataWrapper dataWrapper, boolean activateReturnProfile, boolean ignoreGlobalPref)
 	{
-		if (GlobalData.getGlobalEventsRuning(dataWrapper.context))
+		if ((!GlobalData.getGlobalEventsRuning(dataWrapper.context)) && (!ignoreGlobalPref))
 			// events are globally stopped
 			return;
 
@@ -335,12 +335,16 @@ public class Event {
 		return;
 	}
 	
-	public void stopEvent(DataWrapper dataWrapper, boolean activateReturnProfile)
+	public void stopEvent(DataWrapper dataWrapper, boolean activateReturnProfile, boolean ignoreGlobalPref)
 	{
+		if ((!GlobalData.getGlobalEventsRuning(dataWrapper.context)) && (!ignoreGlobalPref))
+			// events are globally stopped
+			return;
+
 		if (this._status == ESTATUS_RUNNING)
 		{
 			// event zrovna bezi, zapauzujeme ho
-			pauseEvent(dataWrapper, activateReturnProfile);
+			pauseEvent(dataWrapper, activateReturnProfile, ignoreGlobalPref);
 		}
 	
 		setSystemEvent(ESTATUS_STOP);

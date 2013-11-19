@@ -407,36 +407,6 @@ public class DataWrapper {
 			event._fkProfile = 0;
 		}
 	}
-
-	public void deleteProfileFromService(Profile profile)
-	{
-		if (profile == null)
-			return;
-		
-		profileList.remove(profile);
-		if (eventList == null)
-			eventList = getEventList();
-		// unlink profile from events
-		for (Event event : eventList)
-		{
-			if (event._fkProfile == profile._id) 
-				event._fkProfile = 0;
-			event.stopEvent(this, false);
-		}
-	}
-	
-	public void deleteAllProfilesFromService()
-	{
-		profileList.clear();
-		if (eventList == null)
-			eventList = getEventList();
-		// unlink profiles from events
-		for (Event event : eventList)
-		{
-			event._fkProfile = 0;
-			event.stopEvent(this, false);
-		}
-	}
 	
 //---------------------------------------------------
 
@@ -541,7 +511,7 @@ public class DataWrapper {
 		{
 			if ((event._status == Event.ESTATUS_RUNNING) &&
 				(event._fkProfile == profile._id))
-				event.pauseEvent(this, false);
+				event.pauseEvent(this, false, true);
 		}
 	}
 
@@ -552,7 +522,7 @@ public class DataWrapper {
 		{
 			if ((event._status == Event.ESTATUS_RUNNING) &&
 				(event._fkProfile == profile._id))
-				event.stopEvent(this, false);
+				event.stopEvent(this, false, true);
 		}
 	}
 	
@@ -562,7 +532,7 @@ public class DataWrapper {
 		for (Event event : getEventList())
 		{
 			if (event._status == Event.ESTATUS_RUNNING)
-				event.pauseEvent(this, false);
+				event.pauseEvent(this, false, true);
 		}
 	}
 
@@ -572,7 +542,7 @@ public class DataWrapper {
 		for (Event event : getEventList())
 		{
 			if (event._status != Event.ESTATUS_STOP)
-				event.stopEvent(this, false);
+				event.stopEvent(this, false, true);
 		}
 	}
 	

@@ -249,7 +249,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	private void savePreferences()
 	{
 		// pause edited event
-		event.pauseEvent(EditorProfilesActivity.dataWrapper, false);
+		event.pauseEvent(EditorProfilesActivity.dataWrapper, false, true);
 		
     	event.saveSharedPrefereces(preferences);
 

@@ -328,20 +328,26 @@ public class EditorEventListAdapter extends BaseAdapter
 
         holder.eventItemRunStop.setTag(R.id.event_list_item_run_stop_event);
         // change button icon by event status
-        if (event._status == Event.ESTATUS_STOP)
+        if (GlobalData.getGlobalEventsRuning(dataWrapper.context))
         {
-           	if (GlobalData.applicationTheme.equals("dark"))
-        		holder.eventItemRunStop.setImageResource(R.drawable.ic_action_event_run_dark);
-           	else
-        		holder.eventItemRunStop.setImageResource(R.drawable.ic_action_event_run);
+        	holder.eventItemRunStop.setVisibility(View.VISIBLE);
+	        if (event._status == Event.ESTATUS_STOP)
+	        {
+	           	if (GlobalData.applicationTheme.equals("dark"))
+	        		holder.eventItemRunStop.setImageResource(R.drawable.ic_action_event_run_dark);
+	           	else
+	        		holder.eventItemRunStop.setImageResource(R.drawable.ic_action_event_run);
+	        }
+	        else
+	        {
+	           	if (GlobalData.applicationTheme.equals("dark"))
+	        		holder.eventItemRunStop.setImageResource(R.drawable.ic_action_event_stop_dark);
+	           	else
+	        		holder.eventItemRunStop.setImageResource(R.drawable.ic_action_event_stop);
+	        }
         }
         else
-        {
-           	if (GlobalData.applicationTheme.equals("dark"))
-        		holder.eventItemRunStop.setImageResource(R.drawable.ic_action_event_stop_dark);
-           	else
-        		holder.eventItemRunStop.setImageResource(R.drawable.ic_action_event_stop);
-        }
+        	holder.eventItemRunStop.setVisibility(View.GONE);
         holder.eventItemRunStop.setOnClickListener(new OnClickListener() {
 
 				public void onClick(View v) {

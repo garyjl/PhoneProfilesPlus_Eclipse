@@ -320,7 +320,7 @@ public class EditorEventListFragment extends SherlockFragment {
 		if (event._status == Event.ESTATUS_STOP)
 		{
 			// pause event
-			event.pauseEvent(EditorProfilesActivity.dataWrapper, false); //no activate return profile
+			event.pauseEvent(EditorProfilesActivity.dataWrapper, false, false); //no activate return profile
 			if (event._status == Event.ESTATUS_PAUSE)
 			{
 				// event paused redraw event list
@@ -330,7 +330,7 @@ public class EditorEventListFragment extends SherlockFragment {
 		else
 		{
 			// stop event
-			event.stopEvent(EditorProfilesActivity.dataWrapper, false); //no activate return profile
+			event.stopEvent(EditorProfilesActivity.dataWrapper, false, false); //no activate return profile
 			// redraw event list
 			updateListView(event, false);
 		}
@@ -375,7 +375,7 @@ public class EditorEventListFragment extends SherlockFragment {
 			// event not exists
 			return;
 
-		event.stopEvent(EditorProfilesActivity.dataWrapper, false);
+		event.stopEvent(EditorProfilesActivity.dataWrapper, false, true);
 		
 		eventListAdapter.deleteItemNoNotify(event);
 		databaseHandler.deleteEvent(event);
