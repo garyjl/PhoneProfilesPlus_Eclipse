@@ -25,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -463,6 +464,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 			@Override
 			protected Integer doInBackground(Void... params) {
 				
+				EditorProfilesActivity.dataWrapper.stopEventsForProfile(_profile);
 				profileListAdapter.deleteItemNoNotify(_profile);
 				databaseHandler.unlinkEventsFromProfile(_profile);
 				databaseHandler.deleteProfile(_profile);
@@ -556,6 +558,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 					@Override
 					protected Integer doInBackground(Void... params) {
 						
+						EditorProfilesActivity.dataWrapper.stopAllEvents();
 						profileListAdapter.clearNoNotify();
 						databaseHandler.deleteAllProfiles();
 						databaseHandler.unlinkAllEvents();
@@ -693,12 +696,18 @@ public class EditorProfileListFragment extends SherlockFragment {
 
 		if (profileListAdapter != null)
 		{
+			int profilePos;
+			
+			if (profile != null)
+				profilePos = profileListAdapter.getItemPosition(profile);
+			else
+				profilePos = listView.getCheckedItemPosition();
+			
 			profileListAdapter.notifyDataSetChanged();
 
-			// set profile visible in list
-			if (profile != null)
-			{	
-				int profilePos = profileListAdapter.getItemPosition(profile);
+			if (profilePos != ListView.INVALID_POSITION)
+			{
+				// set event visible in list
 				listView.setSelection(profilePos);
 				listView.setItemChecked(profilePos, true);
 			}

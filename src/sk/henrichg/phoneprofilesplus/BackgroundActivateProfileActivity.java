@@ -60,8 +60,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 			(startupSource == GlobalData.STARTUP_SOURCE_ACTIVATOR) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_ACTIVATOR_START) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_EDITOR) ||
-			(startupSource == GlobalData.STARTUP_SOURCE_SERVICE) ||
-			(startupSource == GlobalData.STARTUP_SOURCE_SERVICE_INTERACTIVE))
+			(startupSource == GlobalData.STARTUP_SOURCE_SERVICE))
 		{
 			// aktivita spustena z shortcutu alebo zo service, profil aktivujeme
 			actProfile = true;
@@ -95,8 +94,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 			(startupSource == GlobalData.STARTUP_SOURCE_ACTIVATOR) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_ACTIVATOR_START) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_EDITOR) ||
-			(startupSource == GlobalData.STARTUP_SOURCE_SERVICE) ||
-			(startupSource == GlobalData.STARTUP_SOURCE_SERVICE_INTERACTIVE))	
+			(startupSource == GlobalData.STARTUP_SOURCE_SERVICE))	
 		{
 			if (profile_id == 0)
 				profile = null;
@@ -204,6 +202,9 @@ public class BackgroundActivateProfileActivity extends Activity {
 		
 		databaseHandler.activateProfile(profile);
 		dataWrapper.activateProfile(profile);
+		if (startupSource != GlobalData.STARTUP_SOURCE_SERVICE)
+			// for maual activation pause all running events
+			dataWrapper.pauseAllEvents();
 		
 		activateProfileHelper.execute(profile, interactive);
 		

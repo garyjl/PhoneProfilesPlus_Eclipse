@@ -32,7 +32,6 @@ public class GlobalData extends Application {
 	static final int STARTUP_SOURCE_BOOT = 4;
 	static final int STARTUP_SOURCE_ACTIVATOR = 5;
 	static final int STARTUP_SOURCE_SERVICE = 6;
-	static final int STARTUP_SOURCE_SERVICE_INTERACTIVE = 7;
 	static final int STARTUP_SOURCE_EDITOR = 8;
 	static final int STARTUP_SOURCE_ACTIVATOR_START = 9;
 

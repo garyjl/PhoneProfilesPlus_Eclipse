@@ -325,8 +325,6 @@ public class EditorEventListFragment extends SherlockFragment {
 			{
 				// event paused redraw event list
 				updateListView(event, false);
-				//TODO - save status into db in Event.pauseEvent
-				databaseHandler.updateEvent(event);
 			}
 		}
 		else
@@ -335,8 +333,6 @@ public class EditorEventListFragment extends SherlockFragment {
 			event.stopEvent(EditorProfilesActivity.dataWrapper, false); //no activate return profile
 			// redraw event list
 			updateListView(event, false);
-			//TODO - save status into db in Event.pauseEvent
-			databaseHandler.updateEvent(event);
 		}
 	}
 
@@ -378,6 +374,8 @@ public class EditorEventListFragment extends SherlockFragment {
 		if (EditorProfilesActivity.dataWrapper.getEventById(event._id) == null)
 			// event not exists
 			return;
+
+		event.stopEvent(EditorProfilesActivity.dataWrapper, false);
 		
 		eventListAdapter.deleteItemNoNotify(event);
 		databaseHandler.deleteEvent(event);
@@ -417,6 +415,9 @@ public class EditorEventListFragment extends SherlockFragment {
 		dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
 			
 			public void onClick(DialogInterface dialog, int which) {
+				
+				EditorProfilesActivity.dataWrapper.stopAllEvents();
+				
 				databaseHandler.deleteAllEvents();
 				eventListAdapter.clear();
 				
@@ -451,12 +452,18 @@ public class EditorEventListFragment extends SherlockFragment {
 
 		if (eventListAdapter != null)
 		{
-			eventListAdapter.notifyDataSetChanged();
+			int eventPos;
 
-			// set event visible in list
 			if (event != null)
-			{	
-				int eventPos = eventListAdapter.getItemPosition(event);
+				eventPos = eventListAdapter.getItemPosition(event);
+			else
+				eventPos = listView.getCheckedItemPosition();
+
+			eventListAdapter.notifyDataSetChanged();
+			
+			if (eventPos != ListView.INVALID_POSITION)
+			{
+				// set event visible in list
 				listView.setSelection(eventPos);
 				listView.setItemChecked(eventPos, true);
 			}
@@ -564,6 +571,7 @@ public class EditorEventListFragment extends SherlockFragment {
 			eventsRunStopIndicator.setBackgroundColor(0xFF00FF00);
 		else
 			eventsRunStopIndicator.setBackgroundColor(0xFFFF0000);
+		updateListView(null, false);
     }
 	
 }

@@ -14,12 +14,10 @@ Events:
      - spravit pause eventu, ake je v statuse running - hotovo
      - nastavit status eventu na stop - hotovo     
 3. manualna aktivacia profilu (Aktivator, Editor, witget, shortcut, ...)
-   - manualna aktivacia musi pauznut vsetky eventy v statuse running, a nesmu sa aktivovat
-     profily z eventTimeline - NIE JE HOTOVE
+   - manualna aktivacia musi pauznut vsetky eventy v statuse running - hotovo
 4. uprava eventu v Editore
    - ak upravovany event je v statuse running, musi sa pauznut, akoby prave skoncil, to zaisti
      jeho znovuspustenie az na dalsiu iteraciu - hotovo
-   - neaktivovat pri starte aktivoany profil - hotovo 
    - ak upravovany event uzivatel zakaze, event sa musi stopnut - hotovo
 5. mazanie eventu
    - vymazanie eventu uzivatelom musi vyvolat jeho stopnutie a az potom sa moze vymazat - hotovo
@@ -32,15 +30,15 @@ Events:
    - stopnut event, nie je mozne, aby bezal v dalsej iteracii, lebo nema prideleny profil - hotovo
 9. mazanie vsetkych profilov
    - vid mazanie vsetkych eventov, cize stopnut - hotovo
-10. import dat
+10. pridanie a duplikovanie eventu
+   - nastavit spustenie pauznuteho eventu - alarmy - NIE JE HOTOVO
+11. import dat
    - vid mazanie vsetkych eventov, cize stopnut - hotovo
-   - znovunacitanie vsetkcyh dat - hotovo
-   - service si eventy sam pospusta  - TODO
-12. start service
-   - pri spustani sa najprv testne, ci event je v running a uz sa nema spustit, taky sa da do
-     statusu PAUSE - TODO
-   - nasledne sa eventy pospustaju, ide o eventy, ktorych system event sa vytriggeruje pri
-     spusteni service (napr. ak Time event zrovna sadne do casu spustenie service) - TODO
+   - znovunacitanie vsetkcyh dat - NIE JE HOTOVO
+   - nastavit spustanie pauznutych eventov - alarmy - NIE JE HOTOVO
+12. start aplikacie (na boot alebo na spustenie launchera)
+   - nacitanie vsetkych dat - NIE JE HOTOVO
+   - nastavit spustanie pauznutych eventov - alarmy - NIE JE HOTOVO
 
 13. Callflow eventov:
 

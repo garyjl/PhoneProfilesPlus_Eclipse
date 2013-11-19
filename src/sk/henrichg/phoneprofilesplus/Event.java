@@ -259,6 +259,8 @@ public class Event {
 		
 		this._status = ESTATUS_RUNNING;
 		
+		dataWrapper.getDatabaseHandler().updateEventStatus(this);
+		
 		return;
 	}
 	
@@ -328,6 +330,8 @@ public class Event {
 		
 		this._status = ESTATUS_PAUSE;
 		
+		dataWrapper.getDatabaseHandler().updateEventStatus(this);
+		
 		return;
 	}
 	
@@ -342,6 +346,8 @@ public class Event {
 		setSystemEvent(ESTATUS_STOP);
 		
 		this._status = ESTATUS_STOP;
+		
+		dataWrapper.getDatabaseHandler().updateEventStatus(this);
 		
 		return;
 	}

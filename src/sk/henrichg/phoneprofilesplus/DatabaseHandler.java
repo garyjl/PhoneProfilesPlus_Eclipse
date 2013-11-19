@@ -1682,6 +1682,41 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		return r;
 	}
 	
+	public int updateEventStatus(Event event)
+	{
+		//SQLiteDatabase db = this.getWritableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put(KEY_E_STATUS, event._status);
+
+		int r = 0;
+		
+		db.beginTransaction();
+		
+		try {
+			// updating row
+			r = db.update(TABLE_EVENTS, values, KEY_ID + " = ?",
+				new String[] { String.valueOf(event._id) });
+		
+			db.setTransactionSuccessful();
+
+		} catch (Exception e){
+			//Error in between database transaction
+			Log.e("DatabaseHandler.updateEventStatus", e.toString());
+			r = 0;
+		} finally {
+			db.endTransaction();
+		}	
+		
+        //db.close();
+        
+		return r;
+		
+	}
+	
+	
+	
 // EVENT TIMELINE ------------------------------------------------------------------
 	
 	// Adding new event

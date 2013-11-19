@@ -413,7 +413,10 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			return super.onOptionsItemSelected(item);
 		case R.id.menu_run_stop_events:
 			if (GlobalData.getGlobalEventsRuning(getBaseContext()))
+			{
+				dataWrapper.pauseAllEvents();
 				GlobalData.setGlobalEventsRuning(getBaseContext(), false);
+			}
 			else
 				GlobalData.setGlobalEventsRuning(getBaseContext(), true);
 			EditorEventListFragment fragment = (EditorEventListFragment)getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
@@ -846,6 +849,9 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			
 			@Override
 			protected Integer doInBackground(Void... params) {
+				
+				dataWrapper.stopAllEvents();
+				
 				int ret = dataWrapper.getDatabaseHandler().importDB(_applicationDataPath);
 				
 				if (ret == 1)

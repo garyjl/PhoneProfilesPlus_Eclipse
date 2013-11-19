@@ -534,8 +534,29 @@ public class DataWrapper {
 		getEventList();
 	}
 	
+	// pause all events associated with profile
+	public void pauseEventsForProfile(Profile profile)
+	{
+		for (Event event : getEventList())
+		{
+			if ((event._status == Event.ESTATUS_RUNNING) &&
+				(event._fkProfile == profile._id))
+				event.pauseEvent(this, false);
+		}
+	}
+
+	// stops all events associated with profile
+	public void stopEventsForProfile(Profile profile)
+	{
+		for (Event event : getEventList())
+		{
+			if ((event._status == Event.ESTATUS_RUNNING) &&
+				(event._fkProfile == profile._id))
+				event.stopEvent(this, false);
+		}
+	}
+	
 	// pauses all events without activating profiles from Timeline
-	// for manual activation from gui
 	public void pauseAllEvents()
 	{
 		for (Event event : getEventList())
@@ -544,7 +565,16 @@ public class DataWrapper {
 				event.pauseEvent(this, false);
 		}
 	}
-	
+
+	// stops all events without activating profiles from Timeline
+	public void stopAllEvents()
+	{
+		for (Event event : getEventList())
+		{
+			if (event._status != Event.ESTATUS_STOP)
+				event.stopEvent(this, false);
+		}
+	}
 	
 //---------------------------------------------------
 	
