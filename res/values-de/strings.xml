@@ -101,12 +101,14 @@
     <string name="phone_profiles_pref_applicationLanguage_en">Englisch</string> 
     <string name="phone_profiles_pref_applicationLanguage_sk">Slowakisch</string> 
     <string name="phone_profiles_pref_applicationLanguage_cs">Tschechisch</string> 
+    <string name="phone_profiles_pref_applicationLanguage_de">Deutsch</string>
     <string name="title_activity_shortcut_creator">Schnellstarter erstellen</string>
     <string name="phone_profiles_pref_applicationStartOnBoot">Beim Hochfahren starten</string> 
-    <string name="array_pref_value_system">System</string> 
+    <string name="array_pref_value_system">system</string> 
     <string name="array_pref_value_en">en</string> 
     <string name="array_pref_value_sk">sk</string> 
     <string name="array_pref_value_cs">cs</string> 
+    <string name="array_pref_value_de">de</string>
     <string name="profile_preferences_device_not_allowed">Nicht möglich</string> 
     <string name="menu_export">App-Daten sichern</string> 
     <string name="menu_import">Aus Sicherung laden</string>

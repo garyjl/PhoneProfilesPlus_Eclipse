@@ -101,12 +101,14 @@
     <string name="phone_profiles_pref_applicationLanguage_en">Angličtina</string>
     <string name="phone_profiles_pref_applicationLanguage_sk">Slovenčina</string>
     <string name="phone_profiles_pref_applicationLanguage_cs">Čestina</string>
+    <string name="phone_profiles_pref_applicationLanguage_de">Nemčina</string>
     <string name="title_activity_shortcut_creator">Odkaz na profil</string>
     <string name="phone_profiles_pref_applicationStartOnBoot">Spusti pri štarte telefónu</string>
     <string name="array_pref_value_system">system</string>
     <string name="array_pref_value_en">en</string>
     <string name="array_pref_value_sk">sk</string>
     <string name="array_pref_value_cs">cs</string>
+    <string name="array_pref_value_de">de</string>
     <string name="profile_preferences_device_not_allowed">Nie je možné</string>
     <string name="menu_export">Export apl. dát</string>
     <string name="menu_import">Import apl. dát</string>

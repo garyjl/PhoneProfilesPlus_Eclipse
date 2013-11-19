@@ -3,21 +3,19 @@ Events:
 2. eventy
    - budeme si pamatat poradie spustania eventov a ktore profily vtedy boli zrovna aktivovane
    - spustenie eventu:
-     - zapamatat si venet a aktivny profil - hotovo
+     - zapamatat si evnet a aktivny profil - hotovo
      - nastavit status eventu na running - hotovo
      - aktivovat profil priradeny eventu - hotovo
    - pause:
-     - zahodit pamatany event a aktivovany profil - hotovo
-     - aktivovat pri starte aktivovany profil - hotovo
+     - aktivovat pri starte pamatany aktivny profil - hotovo
+     - zahodit pamatany event a aktivny profil - hotovo
      - nastavit status eventu na pause - hotovo
    - stop:
      - spravit pause eventu, ake je v statuse running - hotovo
      - nastavit status eventu na stop - hotovo     
 3. manualna aktivacia profilu (Aktivator, Editor, witget, shortcut, ...)
-   - manualna aktivacia musi poslat service, co sa aktivovalo a odkial, cize to musi poslat
-     BackgroundActivateProfileActivity - hotovo
-   - manualna aktivacia musi pauznut vsetky eventy v statuse running, ale nesmu sa aktivovat
-     profily z profileStack - hotovo
+   - manualna aktivacia musi pauznut vsetky eventy v statuse running, a nesmu sa aktivovat
+     profily z eventTimeline - NIE JE HOTOVE
 4. uprava eventu v Editore
    - ak upravovany event je v statuse running, musi sa pauznut, akoby prave skoncil, to zaisti
      jeho znovuspustenie az na dalsiu iteraciu - hotovo
@@ -234,6 +232,8 @@ indicator -> kedy kukat do default profile na hodnoty
 - _deviceAutoRotate == 99
 - _deviceRunApplicationChange == 99
 - _deviceWallpaperChange == 99
+
+------------------------------------------------------------------
 
   
   

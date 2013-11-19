@@ -4,7 +4,7 @@
     <string name="app_name">PhoneProfilesPlus</string>
     <string name="menu_edit_profiles">Edit profiles</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_phone_profiles">Phone Profiles Plus</string>
+    <string name="title_activity_phone_profiles">PhoneProfilesPlus</string>
     <string name="title_activity_profile_preferences">Profile preferences</string>
     <string name="title_activity_event_preferences">Event preferences</string>
     <string name="menu_new_profile">New profile</string>
@@ -101,12 +101,14 @@
     <string name="phone_profiles_pref_applicationLanguage_en">English</string>
     <string name="phone_profiles_pref_applicationLanguage_sk">Slovak</string>
     <string name="phone_profiles_pref_applicationLanguage_cs">Czech</string>
+    <string name="phone_profiles_pref_applicationLanguage_de">German</string>
     <string name="title_activity_shortcut_creator">Shortcut into profile</string>
     <string name="phone_profiles_pref_applicationStartOnBoot">Start on phone boot</string>
     <string name="array_pref_value_system">system</string>
     <string name="array_pref_value_en">en</string>
     <string name="array_pref_value_sk">sk</string>
     <string name="array_pref_value_cs">cs</string>
+    <string name="array_pref_value_de">de</string>
     <string name="profile_preferences_device_not_allowed">Not allowed</string>
     <string name="menu_export">Export app. data</string>
     <string name="menu_import">Import app. data</string>

@@ -4,7 +4,7 @@
     <string name="app_name">PhoneProfilesPlus</string>
     <string name="menu_edit_profiles">Úprava profilů</string>
     <string name="menu_settings">Nastavení</string>
-    <string name="title_activity_phone_profiles">Phone Profiles Plus</string>
+    <string name="title_activity_phone_profiles">PhoneProfilesPlus</string>
     <string name="title_activity_profile_preferences">Parametry profilu</string>
     <string name="title_activity_event_preferences">Parametry události</string>
     <string name="menu_new_profile">Nový profil</string>
@@ -102,12 +102,14 @@
     <string name="phone_profiles_pref_applicationLanguage_en">Angličtina</string>
     <string name="phone_profiles_pref_applicationLanguage_sk">Slovenčina</string>
     <string name="phone_profiles_pref_applicationLanguage_cs">Čeština</string>
+    <string name="phone_profiles_pref_applicationLanguage_de">Němčina</string>
     <string name="title_activity_shortcut_creator">Odkaz na profil</string>
     <string name="phone_profiles_pref_applicationStartOnBoot">Spustit při startu telefonu</string>
     <string name="array_pref_value_system">system</string>
     <string name="array_pref_value_en">en</string>
     <string name="array_pref_value_sk">sk</string>
     <string name="array_pref_value_cs">cs</string>
+    <string name="array_pref_value_de">de</string>
     <string name="profile_preferences_device_not_allowed">Není možné</string>
     <string name="menu_export">Export apl. dat</string>
     <string name="menu_import">Import apl. dat</string>

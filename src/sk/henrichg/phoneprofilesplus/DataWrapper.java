@@ -534,6 +534,18 @@ public class DataWrapper {
 		getEventList();
 	}
 	
+	// pauses all events without activating profiles from Timeline
+	// for manual activation from gui
+	public void pauseAllEvents()
+	{
+		for (Event event : getEventList())
+		{
+			if (event._status == Event.ESTATUS_RUNNING)
+				event.pauseEvent(this, false);
+		}
+	}
+	
+	
 //---------------------------------------------------
 	
 	public List<EventTimeline> getEventTimelineList()
