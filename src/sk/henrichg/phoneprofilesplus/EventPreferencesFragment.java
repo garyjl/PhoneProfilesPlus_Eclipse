@@ -257,8 +257,8 @@ public class EventPreferencesFragment extends PreferenceListFragment
 			EditorProfilesActivity.dataWrapper.getDatabaseHandler().addEvent(event);
 			event_id = event._id;
 
-			// setup event for actual status
-			event.setSystemEvent(event._status);
+			// setup event for next start
+			event.pauseEvent(EditorProfilesActivity.dataWrapper, false, false, false);
 			
         	//Log.d("ProfilePreferencesFragment.savePreferences", "addEvent");
 			
@@ -268,15 +268,15 @@ public class EventPreferencesFragment extends PreferenceListFragment
         {
 
     		// pause event
-			event.pauseEvent(EditorProfilesActivity.dataWrapper, false, true);
+			event.pauseEvent(EditorProfilesActivity.dataWrapper, false, true, true);
     		
 	    	event.saveSharedPrefereces(preferences);
 			
     		// udate event in DB
 			EditorProfilesActivity.dataWrapper.getDatabaseHandler().updateEvent(event);
 
-			// setup event for actual status
-			event.setSystemEvent(event._status);
+			// setup event for next start
+			event.pauseEvent(EditorProfilesActivity.dataWrapper, false, false, false);
 			
         	//Log.d("EventPreferencesFragment.savePreferences", "updateEvent");
 

@@ -203,8 +203,9 @@ public class BackgroundActivateProfileActivity extends Activity {
 		databaseHandler.activateProfile(profile);
 		dataWrapper.activateProfile(profile);
 		if (startupSource != GlobalData.STARTUP_SOURCE_SERVICE)
-			// for maual activation pause all running events
-			dataWrapper.pauseAllEvents();
+			// for manual activation pause all running events
+			// and setup for next start
+			dataWrapper.pauseAllEvents(false);
 		
 		activateProfileHelper.execute(profile, interactive);
 		

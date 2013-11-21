@@ -414,11 +414,16 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		case R.id.menu_run_stop_events:
 			if (GlobalData.getGlobalEventsRuning(getBaseContext()))
 			{
-				dataWrapper.pauseAllEvents();
+				// no setup for next start
+				dataWrapper.pauseAllEvents(true);
 				GlobalData.setGlobalEventsRuning(getBaseContext(), false);
 			}
 			else
+			{
 				GlobalData.setGlobalEventsRuning(getBaseContext(), true);
+				// setup for next start
+				dataWrapper.pauseAllEvents(false);
+			}
 			EditorEventListFragment fragment = (EditorEventListFragment)getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
 			if (fragment != null)
 				fragment.setEventsRunStopIndicator();

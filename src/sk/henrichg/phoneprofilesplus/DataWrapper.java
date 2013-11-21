@@ -505,13 +505,13 @@ public class DataWrapper {
 	}
 	
 	// pause all events associated with profile
-	public void pauseEventsForProfile(Profile profile)
+	public void pauseEventsForProfile(Profile profile, boolean noSetSystemEvent)
 	{
 		for (Event event : getEventList())
 		{
 			if ((event._status == Event.ESTATUS_RUNNING) &&
 				(event._fkProfile == profile._id))
-				event.pauseEvent(this, false, true);
+				event.pauseEvent(this, false, true, noSetSystemEvent);
 		}
 	}
 
@@ -527,12 +527,12 @@ public class DataWrapper {
 	}
 	
 	// pauses all events without activating profiles from Timeline
-	public void pauseAllEvents()
+	public void pauseAllEvents(boolean noSetSystemEvent)
 	{
 		for (Event event : getEventList())
 		{
 			if (event._status == Event.ESTATUS_RUNNING)
-				event.pauseEvent(this, false, true);
+				event.pauseEvent(this, false, true, noSetSystemEvent);
 		}
 	}
 

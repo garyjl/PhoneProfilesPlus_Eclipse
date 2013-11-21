@@ -320,7 +320,7 @@ public class EditorEventListFragment extends SherlockFragment {
 		if (event._status == Event.ESTATUS_STOP)
 		{
 			// pause event
-			event.pauseEvent(EditorProfilesActivity.dataWrapper, false, false); //no activate return profile
+			event.pauseEvent(EditorProfilesActivity.dataWrapper, false, false, false); //no activate return profile
 			if (event._status == Event.ESTATUS_PAUSE)
 			{
 				// event paused redraw event list
