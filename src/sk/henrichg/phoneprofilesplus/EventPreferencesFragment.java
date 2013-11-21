@@ -248,27 +248,36 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	
 	private void savePreferences()
 	{
-		// pause edited event
-		event.pauseEvent(EditorProfilesActivity.dataWrapper, false, true);
-		
-    	event.saveSharedPrefereces(preferences);
-
 		if ((new_event_mode == EditorEventListFragment.EDIT_MODE_INSERT) ||
 		    (new_event_mode == EditorEventListFragment.EDIT_MODE_DUPLICATE))
 		{
+	    	event.saveSharedPrefereces(preferences);
+			
 			// add event into DB
 			EditorProfilesActivity.dataWrapper.getDatabaseHandler().addEvent(event);
 			event_id = event._id;
 
+			// setup event for actual status
+			event.setSystemEvent(event._status);
+			
         	//Log.d("ProfilePreferencesFragment.savePreferences", "addEvent");
 			
 		}
 		else
     	if (event_id > 0) 
         {
-        	// udate event in DB
+
+    		// pause event
+			event.pauseEvent(EditorProfilesActivity.dataWrapper, false, true);
+    		
+	    	event.saveSharedPrefereces(preferences);
+			
+    		// udate event in DB
 			EditorProfilesActivity.dataWrapper.getDatabaseHandler().updateEvent(event);
-        	
+
+			// setup event for actual status
+			event.setSystemEvent(event._status);
+			
         	//Log.d("EventPreferencesFragment.savePreferences", "updateEvent");
 
         }

@@ -29,11 +29,6 @@ public class EventPreferences {
 		return true;
 	}
 	
-	public boolean isTimeToRun()
-	{
-		return false;
-	}
-
 	public void loadSharedPrefereces(SharedPreferences preferences)
 	{
 	}

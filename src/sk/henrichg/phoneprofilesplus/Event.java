@@ -122,18 +122,6 @@ public class Event {
 				(this._eventPreferences.isRunnable());
 	}
 	
-	public boolean isTimeToRun()
-	{
-		boolean isTime;
-		
-		if (_eventPreferences != null)
-			isTime = _eventPreferences.isTimeToRun();
-		else
-			isTime = false;
-		
-		return isTime;
-	}
-	
 	public void loadSharedPrefereces(SharedPreferences preferences)
 	{
     	Editor editor = preferences.edit();

@@ -31,7 +31,7 @@ Events:
 9. mazanie vsetkych profilov
    - vid mazanie vsetkych eventov, cize stopnut - hotovo
 10. pridanie a duplikovanie eventu
-   - nastavit spustenie pauznuteho eventu - alarmy - NIE JE HOTOVO
+   - nastavit spustenie pauznuteho eventu - alarmy - hotovo
 11. import dat
    - vid mazanie vsetkych eventov, cize stopnut - hotovo
    - znovunacitanie vsetkcyh dat - NIE JE HOTOVO

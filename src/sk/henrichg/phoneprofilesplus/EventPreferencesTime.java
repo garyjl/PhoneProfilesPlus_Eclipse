@@ -221,7 +221,7 @@ public class EventPreferencesTime extends EventPreferences {
 		return runable;
 	}
 	
-	@Override
+	/*
 	public boolean isTimeToRun()
 	{
 		boolean isTime = false;
@@ -273,6 +273,7 @@ public class EventPreferencesTime extends EventPreferences {
 	    
 		return isTime;
 	}
+	*/
 	
 	@Override
 	public void setSystemRunningEvent()
