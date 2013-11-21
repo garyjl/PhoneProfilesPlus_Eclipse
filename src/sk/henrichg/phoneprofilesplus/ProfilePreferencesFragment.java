@@ -594,15 +594,12 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
-    	if (!(/*key.equals(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER_CHANGE) ||
-	    		key.equals(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS) || 
-	    		key.equals(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE) || */
-	    		key.equals(GlobalData.PREF_PROFILE_SHOW_IN_ACTIVATOR) 
-	    		))
+    	if (!key.equals(GlobalData.PREF_PROFILE_SHOW_IN_ACTIVATOR))
 	    		setSummary(key, sharedPreferences.getString(key, ""));
     	
 	    // disable depended preferences
-	    disableDependedPref(key, sharedPreferences.getString(key, ""));
+    	if (!key.equals(GlobalData.PREF_PROFILE_SHOW_IN_ACTIVATOR))
+    		disableDependedPref(key, sharedPreferences.getString(key, ""));
     	
     	Activity activity = getSherlockActivity();
     	boolean canShow = (EditorProfilesActivity.mTwoPane) && (activity instanceof EditorProfilesActivity);
