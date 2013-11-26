@@ -65,7 +65,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
                                                OnFinishEventPreferencesActionMode
 {
 
-	public static DataWrapper dataWrapper;
+	private DataWrapper dataWrapper;
 	private static ApplicationsCache applicationsCache;
 	private int editModeProfile;
 	private int editModeEvent;
@@ -1256,16 +1256,16 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		if (fragment != null)
 		{
 			// update profile, this rewrite profile in profileList
-			dataWrapper.updateProfile(profile);
+			fragment.dataWrapper.updateProfile(profile);
 			
 			boolean newProfile = ((newProfileMode == EditorProfileListFragment.EDIT_MODE_INSERT) ||
 		              			  (newProfileMode == EditorProfileListFragment.EDIT_MODE_DUPLICATE));
 			fragment.updateListView(profile, newProfile);
 
-			Profile activeProfile = dataWrapper.getActivatedProfile();
+			Profile activeProfile = fragment.dataWrapper.getActivatedProfile();
 			fragment.updateHeader(activeProfile);
-			dataWrapper.getActivateProfileHelper().showNotification(activeProfile);
-			dataWrapper.getActivateProfileHelper().updateWidget();
+			fragment.dataWrapper.getActivateProfileHelper().showNotification(activeProfile);
+			fragment.dataWrapper.getActivateProfileHelper().updateWidget();
 			
 		}
 		onRestartProfilePreferences(profile, newProfileMode);
@@ -1363,7 +1363,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		if (fragment != null)
 		{
 			// update event, this rewrite event in eventList
-			dataWrapper.updateEvent(event);
+			fragment.dataWrapper.updateEvent(event);
 			
 			boolean newEvent = ((newEventMode == EditorEventListFragment.EDIT_MODE_INSERT) ||
          			            (newEventMode == EditorEventListFragment.EDIT_MODE_DUPLICATE));

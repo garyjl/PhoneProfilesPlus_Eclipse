@@ -78,7 +78,9 @@ public class PreferenceListFragment extends SherlockListFragment{
         lv = (ListView) LayoutInflater.from(getSherlockActivity()).inflate(R.layout.preference_list_content, null);
         lv.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
 
-        addPreferencesFromResource(xmlId);
+        if (xmlId != 0)
+        	addPreferencesFromResource(xmlId);
+        
         postBindPreferences();
         ((OnPreferenceAttachedListener)getSherlockActivity()).onPreferenceAttached(getPreferenceScreen(), xmlId);
     }

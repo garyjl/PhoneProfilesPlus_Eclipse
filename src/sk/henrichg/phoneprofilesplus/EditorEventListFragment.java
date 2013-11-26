@@ -25,6 +25,7 @@ import android.widget.ListView;
 
 public class EditorEventListFragment extends SherlockFragment {
 
+	public DataWrapper dataWrapper;
 	private List<Event> eventList;
 	private EditorEventListAdapter eventListAdapter;
 	private ListView listView;
@@ -130,7 +131,9 @@ public class EditorEventListFragment extends SherlockFragment {
         //Log.e("EditorEventListFragment.onCreate","filterType="+filterType);
         //Log.e("EditorEventListFragment.onCreate","orderType="+orderType);
 		
-       	databaseHandler = EditorProfilesActivity.dataWrapper.getDatabaseHandler();
+   		dataWrapper = new DataWrapper(getActivity().getBaseContext(), true, false, 0);
+             	
+       	databaseHandler = dataWrapper.getDatabaseHandler();
 		
 		getSherlockActivity().getIntent();
 		
@@ -183,10 +186,10 @@ public class EditorEventListFragment extends SherlockFragment {
 			@Override
 			protected Void doInBackground(Void... params) {
 				
-				eventList = EditorProfilesActivity.dataWrapper.getEventList();
+				eventList = dataWrapper.getEventList();
 				sortList(orderType);
 				
-				EditorProfilesActivity.dataWrapper.getProfileList();
+				dataWrapper.getProfileList();
 				
 				return null;
 			}
@@ -196,7 +199,7 @@ public class EditorEventListFragment extends SherlockFragment {
 			{
 				super.onPostExecute(result);
 
-				eventListAdapter = new EditorEventListAdapter(fragment, EditorProfilesActivity.dataWrapper, filterType);
+				eventListAdapter = new EditorEventListAdapter(fragment, dataWrapper, filterType);
 				listView.setAdapter(eventListAdapter);
 			}
 			
@@ -236,8 +239,13 @@ public class EditorEventListFragment extends SherlockFragment {
 			listView.setAdapter(null);
 		if (eventListAdapter != null)
 			eventListAdapter.release();
+
 		eventList = null;
 		databaseHandler = null;
+		
+		if (dataWrapper != null)
+			dataWrapper.invalidateDataWrapper();
+		dataWrapper = null;
 		
 		super.onDestroy();
 
@@ -320,7 +328,7 @@ public class EditorEventListFragment extends SherlockFragment {
 		if (event._status == Event.ESTATUS_STOP)
 		{
 			// pause event
-			event.pauseEvent(EditorProfilesActivity.dataWrapper, false, false, false); //no activate return profile
+			event.pauseEvent(dataWrapper, false, false, false); //no activate return profile
 			if (event._status == Event.ESTATUS_PAUSE)
 			{
 				// event paused redraw event list
@@ -330,7 +338,7 @@ public class EditorEventListFragment extends SherlockFragment {
 		else
 		{
 			// stop event
-			event.stopEvent(EditorProfilesActivity.dataWrapper, false, false); //no activate return profile
+			event.stopEvent(dataWrapper, false, false); //no activate return profile
 			// redraw event list
 			updateListView(event, false);
 		}
@@ -371,11 +379,11 @@ public class EditorEventListFragment extends SherlockFragment {
 
 	public void deleteEvent(Event event)
 	{
-		if (EditorProfilesActivity.dataWrapper.getEventById(event._id) == null)
+		if (dataWrapper.getEventById(event._id) == null)
 			// event not exists
 			return;
 
-		event.stopEvent(EditorProfilesActivity.dataWrapper, false, true);
+		event.stopEvent(dataWrapper, false, true);
 		
 		eventListAdapter.deleteItemNoNotify(event);
 		databaseHandler.deleteEvent(event);
@@ -416,7 +424,7 @@ public class EditorEventListFragment extends SherlockFragment {
 			
 			public void onClick(DialogInterface dialog, int which) {
 				
-				EditorProfilesActivity.dataWrapper.stopAllEvents();
+				dataWrapper.stopAllEvents();
 				
 				databaseHandler.deleteAllEvents();
 				eventListAdapter.clear();
@@ -518,8 +526,8 @@ public class EditorEventListFragment extends SherlockFragment {
 
 		public int compare(Event lhs, Event rhs) {
 
-			Profile profileLhs = EditorProfilesActivity.dataWrapper.getProfileById(lhs._fkProfile);
-			Profile profileRhs = EditorProfilesActivity.dataWrapper.getProfileById(rhs._fkProfile);
+			Profile profileLhs = dataWrapper.getProfileById(lhs._fkProfile);
+			Profile profileRhs = dataWrapper.getProfileById(rhs._fkProfile);
 			
 			String nameLhs = "";
 			if (profileLhs != null) nameLhs = profileLhs._name;
@@ -550,8 +558,8 @@ public class EditorEventListFragment extends SherlockFragment {
 		    int res = lhs._type - rhs._type;
 		    if (res == 0)
 		    {
-				Profile profileLhs = EditorProfilesActivity.dataWrapper.getProfileById(lhs._fkProfile);
-				Profile profileRhs = EditorProfilesActivity.dataWrapper.getProfileById(rhs._fkProfile);
+				Profile profileLhs = dataWrapper.getProfileById(lhs._fkProfile);
+				Profile profileRhs = dataWrapper.getProfileById(rhs._fkProfile);
 				
 				String nameLhs = "";
 				if (profileLhs != null) nameLhs = profileLhs._name;

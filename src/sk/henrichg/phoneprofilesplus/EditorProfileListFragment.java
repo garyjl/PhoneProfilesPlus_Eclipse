@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 public class EditorProfileListFragment extends SherlockFragment {
 
+	public DataWrapper dataWrapper;
 	private ActivateProfileHelper activateProfileHelper;
 	private List<Profile> profileList;
 	private EditorProfileListAdapter profileListAdapter;
@@ -129,9 +130,12 @@ public class EditorProfileListFragment extends SherlockFragment {
 
 		//Log.e("EditorProfileListFragment.onCreate","xxx");
 	
-    	databaseHandler = EditorProfilesActivity.dataWrapper.getDatabaseHandler(); 
+   		dataWrapper = new DataWrapper(getActivity().getBaseContext(), true, false, 0);
+        		
+    	databaseHandler = dataWrapper.getDatabaseHandler(); 
 	
-    	activateProfileHelper = EditorProfilesActivity.dataWrapper.getActivateProfileHelper();
+    	activateProfileHelper = dataWrapper.getActivateProfileHelper();
+    	activateProfileHelper.initialize(getSherlockActivity(), getActivity().getBaseContext());
 		
 		setHasOptionsMenu(true);
 
@@ -197,11 +201,11 @@ public class EditorProfileListFragment extends SherlockFragment {
 			
 			@Override
 			protected Void doInBackground(Void... params) {
-				profileList = EditorProfilesActivity.dataWrapper.getProfileList();
+				profileList = dataWrapper.getProfileList();
 				if (profileList.size() == 0)
 				{
 					// no profiles in DB, generate default profiles
-					profileList = EditorProfilesActivity.dataWrapper.getDefaultProfileList();
+					profileList = dataWrapper.getDefaultProfileList();
 					defaultProfilesGenerated = true;
 				}
 				// sort list
@@ -218,7 +222,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 			{
 				super.onPostExecute(result);
 
-				profileListAdapter = new EditorProfileListAdapter(fragment, EditorProfilesActivity.dataWrapper, filterType);
+				profileListAdapter = new EditorProfileListAdapter(fragment, dataWrapper, filterType);
 				listView.setAdapter(profileListAdapter);
 
 				if (defaultProfilesGenerated)
@@ -275,7 +279,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		Profile profile;
 		
 		// pre profil, ktory je prave aktivny, treba aktualizovat aktivitu
-		profile = EditorProfilesActivity.dataWrapper.getActivatedProfile();
+		profile = dataWrapper.getActivatedProfile();
 		updateHeader(profile);
 		
 		//Log.d("EditorProfileListFragment.onActivityCreated", "xxx");
@@ -298,9 +302,14 @@ public class EditorProfileListFragment extends SherlockFragment {
 			listView.setAdapter(null);
 		if (profileListAdapter != null)
 			profileListAdapter.release();
+		
 		activateProfileHelper = null;
 		profileList = null;
 		databaseHandler = null;
+		
+		if (dataWrapper != null)
+			dataWrapper.invalidateDataWrapper();
+		dataWrapper = null;
 		
 		super.onDestroy();
 		
@@ -436,7 +445,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		final Profile _profile = profile;
 		final Activity activity = getActivity();
 
-		if (EditorProfilesActivity.dataWrapper.getProfileById(profile._id) == null)
+		if (dataWrapper.getProfileById(profile._id) == null)
 			// profile not exists
 			return;
 		
@@ -464,7 +473,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 			@Override
 			protected Integer doInBackground(Void... params) {
 				
-				EditorProfilesActivity.dataWrapper.stopEventsForProfile(_profile);
+				dataWrapper.stopEventsForProfile(_profile);
 				profileListAdapter.deleteItemNoNotify(_profile);
 				databaseHandler.unlinkEventsFromProfile(_profile);
 				databaseHandler.deleteProfile(_profile);
@@ -558,7 +567,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 					@Override
 					protected Integer doInBackground(Void... params) {
 						
-						EditorProfilesActivity.dataWrapper.stopAllEvents();
+						dataWrapper.stopAllEvents();
 						profileListAdapter.clearNoNotify();
 						databaseHandler.deleteAllProfiles();
 						databaseHandler.unlinkAllEvents();
@@ -649,7 +658,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 			if(resultCode == Activity.RESULT_OK)
 			{      
 		    	long profile_id = data.getLongExtra(GlobalData.EXTRA_PROFILE_ID, -1);
-		    	Profile profile = EditorProfilesActivity.dataWrapper.getProfileById(profile_id);
+		    	Profile profile = dataWrapper.getProfileById(profile_id);
 		    	
 		    	if (profileListAdapter != null)
 		    		profileListAdapter.activateProfile(profile);

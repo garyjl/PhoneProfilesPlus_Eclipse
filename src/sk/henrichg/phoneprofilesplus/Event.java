@@ -181,7 +181,8 @@ public class Event {
 			} catch (Exception e) {
 				lProfileId = 0;
 			}
-		    Profile profile = EditorProfilesActivity.dataWrapper.getProfileById(lProfileId);
+			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
+		    Profile profile = dataWrapper.getProfileById(lProfileId);
 		    if (profile != null)
 		    {
     	        prefMng.findPreference(key).setSummary(profile._name);

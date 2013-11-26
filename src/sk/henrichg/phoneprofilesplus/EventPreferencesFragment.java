@@ -18,7 +18,7 @@ import android.view.View.OnClickListener;
 public class EventPreferencesFragment extends PreferenceListFragment 
 										implements SharedPreferences.OnSharedPreferenceChangeListener
 {
-	
+	private DataWrapper dataWrapper;
 	private Event event;
 	public long event_id;
 	//private boolean first_start_activity;
@@ -105,7 +105,10 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		super.onCreate(savedInstanceState);
 
 		preferencesActivity = getSherlockActivity();
+        context = getSherlockActivity().getBaseContext();
 
+        dataWrapper = new DataWrapper(context, true, false, 0);
+		
 	    startupSource = getArguments().getInt(GlobalData.EXTRA_PREFERENCES_STARTUP_SOURCE, GlobalData.PREFERENCES_STARTUP_SOURCE_FRAGMENT);
 	    if (startupSource == GlobalData.PREFERENCES_STARTUP_SOURCE_ACTIVITY)
 	    	PREFS_NAME = PREFS_NAME_ACTIVITY;
@@ -139,7 +142,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		if (new_event_mode == EditorEventListFragment.EDIT_MODE_DUPLICATE)
 		{
 			// duplicate event
-			Event origEvent = (Event)EditorProfilesActivity.dataWrapper.getEventById(event_id);
+			Event origEvent = dataWrapper.getEventById(event_id);
 			event = new Event(
 						   origEvent._name+"_d", 
 						   origEvent._type, 
@@ -150,15 +153,13 @@ public class EventPreferencesFragment extends PreferenceListFragment
 			event_id = 0;
 		}
 		else
-			event = (Event)EditorProfilesActivity.dataWrapper.getEventById(event_id);
+			event = dataWrapper.getEventById(event_id);
 
         preferences = prefMng.getSharedPreferences();
         
 		if (savedInstanceState == null)
         	loadPreferences();
    	
-        context = getSherlockActivity().getBaseContext();
-		
     	// get preference resource id from EventPreference
 		addPreferencesFromResource(event._eventPreferences._preferencesResourceID);
 
@@ -216,6 +217,11 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	{
         preferences.unregisterOnSharedPreferenceChangeListener(this);
         event = null;
+
+		if (dataWrapper != null)
+			dataWrapper.invalidateDataWrapper();
+		dataWrapper = null;
+        
 		super.onDestroy();
 	}
 
@@ -254,11 +260,11 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	    	event.saveSharedPrefereces(preferences);
 			
 			// add event into DB
-			EditorProfilesActivity.dataWrapper.getDatabaseHandler().addEvent(event);
+			dataWrapper.getDatabaseHandler().addEvent(event);
 			event_id = event._id;
 
 			// setup event for next start
-			event.pauseEvent(EditorProfilesActivity.dataWrapper, false, false, false);
+			event.pauseEvent(dataWrapper, false, false, false);
 			
         	//Log.d("ProfilePreferencesFragment.savePreferences", "addEvent");
 			
@@ -268,15 +274,15 @@ public class EventPreferencesFragment extends PreferenceListFragment
         {
 
     		// pause event
-			event.pauseEvent(EditorProfilesActivity.dataWrapper, false, true, true);
+			event.pauseEvent(dataWrapper, false, true, true);
     		
 	    	event.saveSharedPrefereces(preferences);
 			
     		// udate event in DB
-			EditorProfilesActivity.dataWrapper.getDatabaseHandler().updateEvent(event);
+			dataWrapper.getDatabaseHandler().updateEvent(event);
 
 			// setup event for next start
-			event.pauseEvent(EditorProfilesActivity.dataWrapper, false, false, false);
+			event.pauseEvent(dataWrapper, false, false, false);
 			
         	//Log.d("EventPreferencesFragment.savePreferences", "updateEvent");
 

@@ -25,7 +25,7 @@ import android.view.View.OnClickListener;
 public class ProfilePreferencesFragment extends PreferenceListFragment 
 										implements SharedPreferences.OnSharedPreferenceChangeListener
 {
-	
+	private DataWrapper dataWrapper;
 	private Profile profile;
 	public long profile_id;
 	//private boolean first_start_activity;
@@ -116,6 +116,8 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		preferencesActivity = getSherlockActivity();
         context = getSherlockActivity().getBaseContext();
 		
+        dataWrapper = new DataWrapper(context, true, false, 0);
+        
 	    startupSource = getArguments().getInt(GlobalData.EXTRA_PREFERENCES_STARTUP_SOURCE, GlobalData.PREFERENCES_STARTUP_SOURCE_FRAGMENT);
 	    if (startupSource == GlobalData.PREFERENCES_STARTUP_SOURCE_ACTIVITY)
 	    	PREFS_NAME = PREFS_NAME_ACTIVITY;
@@ -148,7 +150,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		if (new_profile_mode == EditorProfileListFragment.EDIT_MODE_INSERT)
 		{
 			// create new profile
-			profile = EditorProfilesActivity.dataWrapper.getNoinitializedProfile(
+			profile = dataWrapper.getNoinitializedProfile(
 						getResources().getString(R.string.profile_name_default), 
 						GlobalData.PROFILE_ICON_DEFAULT, 0); 
 			profile._showInActivator = true;
@@ -158,7 +160,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		if (new_profile_mode == EditorProfileListFragment.EDIT_MODE_DUPLICATE)
 		{
 			// duplicate profile
-			Profile origProfile = (Profile)EditorProfilesActivity.dataWrapper.getProfileById(profile_id);
+			Profile origProfile = dataWrapper.getProfileById(profile_id);
 			profile = new Profile(
 						   origProfile._name+"_d", 
 						   origProfile._icon, 
@@ -195,7 +197,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 			profile_id = 0;
 		}
 		else
-			profile = (Profile)EditorProfilesActivity.dataWrapper.getProfileById(profile_id);
+			profile = dataWrapper.getProfileById(profile_id);
 
 		preferences = prefMng.getSharedPreferences();
 
@@ -256,6 +258,11 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	{
         preferences.unregisterOnSharedPreferenceChangeListener(this);
         profile = null;
+        
+		if (dataWrapper != null)
+			dataWrapper.invalidateDataWrapper();
+		dataWrapper = null;
+        
 		super.onDestroy();
 	}
 
@@ -399,7 +406,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 			    (new_profile_mode == EditorProfileListFragment.EDIT_MODE_DUPLICATE))
 			{
 				// add profile into DB
-				EditorProfilesActivity.dataWrapper.getDatabaseHandler().addProfile(profile);
+				dataWrapper.getDatabaseHandler().addProfile(profile);
 				profile_id = profile._id;
 	
 	        	//Log.d("ProfilePreferencesFragment.onPause", "addProfile");
@@ -408,7 +415,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 			else
 	        if (profile_id > 0) 
 	        {
-				EditorProfilesActivity.dataWrapper.getDatabaseHandler().updateProfile(profile);
+				dataWrapper.getDatabaseHandler().updateProfile(profile);
 	        	
 	        	//Log.d("ProfilePreferencesFragment.onPause", "updateProfile");
 	
