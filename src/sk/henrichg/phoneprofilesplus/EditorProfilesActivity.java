@@ -428,6 +428,14 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			if (fragment != null)
 				fragment.setEventsRunStopIndicator();
 			return true;
+		case R.id.menu_default_profile:
+			// start preferences activity for default profile
+			intent = new Intent(getBaseContext(), ProfilePreferencesFragmentActivity.class);
+			intent.putExtra(GlobalData.EXTRA_PROFILE_ID, GlobalData.DEFAULT_PROFILE_ID);
+			intent.putExtra(GlobalData.EXTRA_NEW_PROFILE_MODE, EditorProfileListFragment.EDIT_MODE_EDIT);
+			startActivityForResult(intent, GlobalData.REQUEST_CODE_PROFILE_PREFERENCES);
+			
+			return true;
 		case R.id.menu_settings:
 			//Log.d("EditorProfilesActivity.onOptionsItemSelected", "menu_settings");
 			
