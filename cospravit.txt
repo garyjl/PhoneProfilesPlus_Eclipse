@@ -39,8 +39,10 @@ Events:
 12. start aplikacie (na boot alebo na spustenie launchera)
    - nacitanie vsetkych dat - NIE JE HOTOVO
    - nastavit spustanie pauznutych eventov - alarmy - NIE JE HOTOVO
+13. exit aplikacie
+   - sptopnut vsetky eventy - neaktivovat profily - NIE JE HOTOVO   
 
-13. Callflow eventov:
+Callflow eventov:
 
 -- vnorene
 P1a |               -> timeline:
