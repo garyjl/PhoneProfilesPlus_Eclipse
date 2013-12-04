@@ -18,6 +18,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.mobeta.android.dslv.DragSortListView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -168,6 +169,66 @@ public class EditorProfileListFragment extends SherlockFragment {
 
 		super.onViewCreated(view, savedInstanceState);
 	}
+
+	private static class LoadProfilesTask extends AsyncTask<Void, Integer, Void> 
+	{
+		EditorProfileListFragment fragment;
+		boolean defaultProfilesGenerated = false;
+		
+		LoadProfilesTask(EditorProfileListFragment fragment)
+		{
+			this.fragment = fragment;
+		}
+		
+		@Override
+		protected void onPreExecute()
+		{
+			super.onPreExecute();
+			//Log.e("EditorProfileListFragment.doOnViewCreated.onPreExecute",fragment.dataWrapper+"");
+
+			//updateHeader(null);
+		}
+		
+		@Override
+		protected Void doInBackground(Void... params) {
+			//Log.e("EditorProfileListFragment.doOnViewCreated.doInBackground",fragment.dataWrapper+"");
+
+			fragment.profileList = fragment.dataWrapper.getProfileList();
+			if (fragment.profileList.size() == 0)
+			{
+				// no profiles in DB, generate default profiles
+				fragment.profileList = fragment.dataWrapper.getDefaultProfileList();
+				defaultProfilesGenerated = true;
+			}
+			// sort list
+			if (fragment.filterType != EditorProfileListFragment.FILTER_TYPE_SHOW_IN_ACTIVATOR)
+				fragment.sortAlphabetically();
+			else
+				fragment.sortByPOrder();
+			
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void result)
+		{
+			super.onPostExecute(result);
+			
+			//Log.e("EditorProfileListFragment.doOnViewCreated.onPostExecute",fragment.dataWrapper+"");
+
+			fragment.profileListAdapter = new EditorProfileListAdapter(fragment, fragment.dataWrapper, fragment.filterType);
+			fragment.listView.setAdapter(fragment.profileListAdapter);
+
+			if (defaultProfilesGenerated)
+			{
+				fragment.activateProfileHelper.updateWidget();
+				Toast msg = Toast.makeText(fragment.getSherlockActivity(), 
+						fragment.getResources().getString(R.string.toast_default_profiles_generated), 
+						Toast.LENGTH_SHORT);
+				msg.show();
+			}
+		}
+	}
 	
 	//@Override
 	//public void onActivityCreated(Bundle savedInstanceState)
@@ -186,56 +247,8 @@ public class EditorProfileListFragment extends SherlockFragment {
 		listView = (DragSortListView)view.findViewById(R.id.editor_profiles_list);
 		listView.setEmptyView(view.findViewById(R.id.editor_profiles_list_empty));
 
-		final EditorProfileListFragment fragment = this;
-		
-		new AsyncTask<Void, Integer, Void>() {
-
-			boolean defaultProfilesGenerated = false;
-			
-			@Override
-			protected void onPreExecute()
-			{
-				super.onPreExecute();
-				//updateHeader(null);
-			}
-			
-			@Override
-			protected Void doInBackground(Void... params) {
-				profileList = dataWrapper.getProfileList();
-				if (profileList.size() == 0)
-				{
-					// no profiles in DB, generate default profiles
-					profileList = dataWrapper.getDefaultProfileList();
-					defaultProfilesGenerated = true;
-				}
-				// sort list
-				if (filterType != EditorProfileListFragment.FILTER_TYPE_SHOW_IN_ACTIVATOR)
-				   sortAlphabetically();
-				else
-					sortByPOrder();
-				
-				return null;
-			}
-			
-			@Override
-			protected void onPostExecute(Void result)
-			{
-				super.onPostExecute(result);
-
-				profileListAdapter = new EditorProfileListAdapter(fragment, dataWrapper, filterType);
-				listView.setAdapter(profileListAdapter);
-
-				if (defaultProfilesGenerated)
-				{
-					activateProfileHelper.updateWidget();
-					Toast msg = Toast.makeText(fragment.getSherlockActivity(), 
-							getResources().getString(R.string.toast_default_profiles_generated), 
-							Toast.LENGTH_SHORT);
-					msg.show();
-				}
-			}
-			
-		}.execute();
+		LoadProfilesTask task = new LoadProfilesTask(this);
+		task.execute();
 		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -282,7 +295,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 		profile = dataWrapper.getActivatedProfile();
 		updateHeader(profile);
 		
-		//Log.d("EditorProfileListFragment.onActivityCreated", "xxx");
+		//Log.e("EditorProfileListFragment.doOnViewCreated", "xxx");
         
 	}
 	

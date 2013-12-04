@@ -15,6 +15,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -160,6 +161,51 @@ public class EditorEventListFragment extends SherlockFragment {
 		//Log.e("EditorEventListFragment.onViewCreated", "xxxx");
 		super.onViewCreated(view, savedInstanceState);
 	}
+
+	private static class LoadProfilesTask extends AsyncTask<Void, Integer, Void>
+	{
+		EditorEventListFragment fragment;
+		
+		LoadProfilesTask(EditorEventListFragment fragment)
+		{
+			this.fragment = fragment;
+		}
+		
+		@Override
+		protected void onPreExecute()
+		{
+			super.onPreExecute();
+			//Log.e("EditorEventListFragment.doOnViewCreated.onPreExecute",fragment.dataWrapper+"");
+			//updateHeader(null);
+		}
+		
+		@Override
+		protected Void doInBackground(Void... params) {
+
+			//Log.e("EditorEventListFragment.doOnViewCreated.doInBackground 1",fragment.dataWrapper+"");
+			
+			fragment.eventList = fragment.dataWrapper.getEventList();
+			fragment.sortList(fragment.orderType);
+			
+			if (fragment.dataWrapper != null)
+				fragment.dataWrapper.getProfileList();
+			else
+				Log.e("EditorEventListFragment.doOnViewCreated.doInBackground 2",fragment.dataWrapper+"");
+			
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void result)
+		{
+			super.onPostExecute(result);
+
+			//Log.e("EditorEventListFragment.doOnViewCreated.onPostExecute",fragment.dataWrapper+"");
+
+			fragment.eventListAdapter = new EditorEventListAdapter(fragment, fragment.dataWrapper, fragment.filterType);
+			fragment.listView.setAdapter(fragment.eventListAdapter);
+		}
+	}
 	
 	//@Override
 	//public void onActivityCreated(Bundle savedInstanceState)
@@ -172,38 +218,8 @@ public class EditorEventListFragment extends SherlockFragment {
 		listView.setEmptyView(getSherlockActivity().findViewById(R.id.editor_events_list_empty));
 		eventsRunStopIndicator = (LinearLayout)getSherlockActivity().findViewById(R.id.editor_events_list_run_stop_indicator);
 		
-		final EditorEventListFragment fragment = this;
-
-		new AsyncTask<Void, Integer, Void>() {
-			
-			@Override
-			protected void onPreExecute()
-			{
-				super.onPreExecute();
-				//updateHeader(null);
-			}
-			
-			@Override
-			protected Void doInBackground(Void... params) {
-				
-				eventList = dataWrapper.getEventList();
-				sortList(orderType);
-				
-				dataWrapper.getProfileList();
-				
-				return null;
-			}
-			
-			@Override
-			protected void onPostExecute(Void result)
-			{
-				super.onPostExecute(result);
-
-				eventListAdapter = new EditorEventListAdapter(fragment, dataWrapper, filterType);
-				listView.setAdapter(eventListAdapter);
-			}
-			
-		}.execute();
+		LoadProfilesTask task = new LoadProfilesTask(this);
+		task.execute();
 		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 

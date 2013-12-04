@@ -482,100 +482,104 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
  
     private void selectDrawerItem(int position, boolean removePreferences) {
  
-    	drawerSelectedItem = position;
+		Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
+    	if ((position != drawerSelectedItem) || (fragment == null))
+    	{
+	    	drawerSelectedItem = position;
+	    	
+	    	// save into shared preferences
+	    	SharedPreferences preferences = getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Activity.MODE_PRIVATE);
+	    	Editor editor = preferences.edit();
+	    	editor.putInt(SP_EDITOR_DRAWER_SELECTED_ITEM, drawerSelectedItem);
+			editor.commit();
+	    	
+		    Bundle arguments;
+		    
+	        switch (position) {
+	        case 0:
+	        	profilesFilterType = EditorProfileListFragment.FILTER_TYPE_ALL;
+	    		fragment = new EditorProfileListFragment();
+	    	    arguments = new Bundle();
+	   		    arguments.putInt(EditorProfileListFragment.FILTER_TYPE_ARGUMENT, profilesFilterType);
+	   		    fragment.setArguments(arguments);
+	    		getSupportFragmentManager().beginTransaction()
+	    			.replace(R.id.editor_list_container, fragment).commit();
+	    		if (removePreferences)
+	    			onStartProfilePreferences(null, EditorProfileListFragment.EDIT_MODE_EDIT, profilesFilterType);
+	            break;
+	        case 1:
+	        	profilesFilterType = EditorProfileListFragment.FILTER_TYPE_SHOW_IN_ACTIVATOR;
+	    		fragment = new EditorProfileListFragment();
+	    	    arguments = new Bundle();
+	   		    arguments.putInt(EditorProfileListFragment.FILTER_TYPE_ARGUMENT, profilesFilterType);
+	   		    fragment.setArguments(arguments);
+	    		getSupportFragmentManager().beginTransaction()
+	    			.replace(R.id.editor_list_container, fragment).commit();
+	    		if (removePreferences)
+	    			onStartProfilePreferences(null, EditorProfileListFragment.EDIT_MODE_EDIT, profilesFilterType);
+	            break;
+	        case 2:
+	        	profilesFilterType = EditorProfileListFragment.FILTER_TYPE_NO_SHOW_IN_ACTIVATOR;
+	    		fragment = new EditorProfileListFragment();
+	    	    arguments = new Bundle();
+	   		    arguments.putInt(EditorProfileListFragment.FILTER_TYPE_ARGUMENT, profilesFilterType);
+	   		    fragment.setArguments(arguments);
+	    		getSupportFragmentManager().beginTransaction()
+	    			.replace(R.id.editor_list_container, fragment).commit();
+	    		if (removePreferences)
+	    			onStartProfilePreferences(null, EditorProfileListFragment.EDIT_MODE_EDIT, profilesFilterType);
+	            break;
+	        case 3:
+	        	eventsFilterType = EditorEventListFragment.FILTER_TYPE_ALL;
+	    		fragment = new EditorEventListFragment();
+	    	    arguments = new Bundle();
+	   		    arguments.putInt(EditorEventListFragment.FILTER_TYPE_ARGUMENT, eventsFilterType);
+	   		    arguments.putInt(EditorEventListFragment.ORDER_TYPE_ARGUMENT, eventsOrderType);
+	   		    fragment.setArguments(arguments);
+	    		getSupportFragmentManager().beginTransaction()
+	    			.replace(R.id.editor_list_container, fragment).commit();
+	    		if (removePreferences)
+	    			onStartEventPreferences(null, EditorEventListFragment.EDIT_MODE_EDIT, eventsFilterType, eventsOrderType);
+				break;	
+	        case 4:
+	        	eventsFilterType = EditorEventListFragment.FILTER_TYPE_RUNNING;
+	    		fragment = new EditorEventListFragment();
+	    	    arguments = new Bundle();
+	   		    arguments.putInt(EditorEventListFragment.FILTER_TYPE_ARGUMENT, eventsFilterType);
+	   		    arguments.putInt(EditorEventListFragment.ORDER_TYPE_ARGUMENT, eventsOrderType);
+	   		    fragment.setArguments(arguments);
+	    		getSupportFragmentManager().beginTransaction()
+	    			.replace(R.id.editor_list_container, fragment).commit();
+	    		if (removePreferences)
+	    			onStartEventPreferences(null, EditorEventListFragment.EDIT_MODE_EDIT, eventsFilterType, eventsOrderType);
+				break;	
+	        case 5:
+	        	eventsFilterType = EditorEventListFragment.FILTER_TYPE_PAUSED;
+	    		fragment = new EditorEventListFragment();
+	    	    arguments = new Bundle();
+	   		    arguments.putInt(EditorEventListFragment.FILTER_TYPE_ARGUMENT, eventsFilterType);
+	   		    arguments.putInt(EditorEventListFragment.ORDER_TYPE_ARGUMENT, eventsOrderType);
+	   		    fragment.setArguments(arguments);
+	    		getSupportFragmentManager().beginTransaction()
+	    			.replace(R.id.editor_list_container, fragment).commit();
+	    		if (removePreferences)
+	    			onStartEventPreferences(null, EditorEventListFragment.EDIT_MODE_EDIT, eventsFilterType, eventsOrderType);
+				break;	
+	        case 6:
+	        	eventsFilterType = EditorEventListFragment.FILTER_TYPE_STOPPED;
+	    		fragment = new EditorEventListFragment();
+	    	    arguments = new Bundle();
+	   		    arguments.putInt(EditorEventListFragment.FILTER_TYPE_ARGUMENT, eventsFilterType);
+	   		    arguments.putInt(EditorEventListFragment.FILTER_TYPE_ARGUMENT, eventsFilterType);
+	   		    fragment.setArguments(arguments);
+	    		getSupportFragmentManager().beginTransaction()
+	    			.replace(R.id.editor_list_container, fragment).commit();
+	    		if (removePreferences)
+	    			onStartEventPreferences(null, EditorEventListFragment.EDIT_MODE_EDIT, eventsFilterType, eventsOrderType);
+				break;	
+	        }
+    	}
     	
-    	// save into shared preferences
-    	SharedPreferences preferences = getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Activity.MODE_PRIVATE);
-    	Editor editor = preferences.edit();
-    	editor.putInt(SP_EDITOR_DRAWER_SELECTED_ITEM, drawerSelectedItem);
-		editor.commit();
-    	
-    	Fragment fragment;
-	    Bundle arguments;
-	    
-        switch (position) {
-        case 0:
-        	profilesFilterType = EditorProfileListFragment.FILTER_TYPE_ALL;
-    		fragment = new EditorProfileListFragment();
-    	    arguments = new Bundle();
-   		    arguments.putInt(EditorProfileListFragment.FILTER_TYPE_ARGUMENT, profilesFilterType);
-   		    fragment.setArguments(arguments);
-    		getSupportFragmentManager().beginTransaction()
-    			.replace(R.id.editor_list_container, fragment).commit();
-    		if (removePreferences)
-    			onStartProfilePreferences(null, EditorProfileListFragment.EDIT_MODE_EDIT, profilesFilterType);
-            break;
-        case 1:
-        	profilesFilterType = EditorProfileListFragment.FILTER_TYPE_SHOW_IN_ACTIVATOR;
-    		fragment = new EditorProfileListFragment();
-    	    arguments = new Bundle();
-   		    arguments.putInt(EditorProfileListFragment.FILTER_TYPE_ARGUMENT, profilesFilterType);
-   		    fragment.setArguments(arguments);
-    		getSupportFragmentManager().beginTransaction()
-    			.replace(R.id.editor_list_container, fragment).commit();
-    		if (removePreferences)
-    			onStartProfilePreferences(null, EditorProfileListFragment.EDIT_MODE_EDIT, profilesFilterType);
-            break;
-        case 2:
-        	profilesFilterType = EditorProfileListFragment.FILTER_TYPE_NO_SHOW_IN_ACTIVATOR;
-    		fragment = new EditorProfileListFragment();
-    	    arguments = new Bundle();
-   		    arguments.putInt(EditorProfileListFragment.FILTER_TYPE_ARGUMENT, profilesFilterType);
-   		    fragment.setArguments(arguments);
-    		getSupportFragmentManager().beginTransaction()
-    			.replace(R.id.editor_list_container, fragment).commit();
-    		if (removePreferences)
-    			onStartProfilePreferences(null, EditorProfileListFragment.EDIT_MODE_EDIT, profilesFilterType);
-            break;
-        case 3:
-        	eventsFilterType = EditorEventListFragment.FILTER_TYPE_ALL;
-    		fragment = new EditorEventListFragment();
-    	    arguments = new Bundle();
-   		    arguments.putInt(EditorEventListFragment.FILTER_TYPE_ARGUMENT, eventsFilterType);
-   		    arguments.putInt(EditorEventListFragment.ORDER_TYPE_ARGUMENT, eventsOrderType);
-   		    fragment.setArguments(arguments);
-    		getSupportFragmentManager().beginTransaction()
-    			.replace(R.id.editor_list_container, fragment).commit();
-    		if (removePreferences)
-    			onStartEventPreferences(null, EditorEventListFragment.EDIT_MODE_EDIT, eventsFilterType, eventsOrderType);
-			break;	
-        case 4:
-        	eventsFilterType = EditorEventListFragment.FILTER_TYPE_RUNNING;
-    		fragment = new EditorEventListFragment();
-    	    arguments = new Bundle();
-   		    arguments.putInt(EditorEventListFragment.FILTER_TYPE_ARGUMENT, eventsFilterType);
-   		    arguments.putInt(EditorEventListFragment.ORDER_TYPE_ARGUMENT, eventsOrderType);
-   		    fragment.setArguments(arguments);
-    		getSupportFragmentManager().beginTransaction()
-    			.replace(R.id.editor_list_container, fragment).commit();
-    		if (removePreferences)
-    			onStartEventPreferences(null, EditorEventListFragment.EDIT_MODE_EDIT, eventsFilterType, eventsOrderType);
-			break;	
-        case 5:
-        	eventsFilterType = EditorEventListFragment.FILTER_TYPE_PAUSED;
-    		fragment = new EditorEventListFragment();
-    	    arguments = new Bundle();
-   		    arguments.putInt(EditorEventListFragment.FILTER_TYPE_ARGUMENT, eventsFilterType);
-   		    arguments.putInt(EditorEventListFragment.ORDER_TYPE_ARGUMENT, eventsOrderType);
-   		    fragment.setArguments(arguments);
-    		getSupportFragmentManager().beginTransaction()
-    			.replace(R.id.editor_list_container, fragment).commit();
-    		if (removePreferences)
-    			onStartEventPreferences(null, EditorEventListFragment.EDIT_MODE_EDIT, eventsFilterType, eventsOrderType);
-			break;	
-        case 6:
-        	eventsFilterType = EditorEventListFragment.FILTER_TYPE_STOPPED;
-    		fragment = new EditorEventListFragment();
-    	    arguments = new Bundle();
-   		    arguments.putInt(EditorEventListFragment.FILTER_TYPE_ARGUMENT, eventsFilterType);
-   		    arguments.putInt(EditorEventListFragment.FILTER_TYPE_ARGUMENT, eventsFilterType);
-   		    fragment.setArguments(arguments);
-    		getSupportFragmentManager().beginTransaction()
-    			.replace(R.id.editor_list_container, fragment).commit();
-    		if (removePreferences)
-    			onStartEventPreferences(null, EditorEventListFragment.EDIT_MODE_EDIT, eventsFilterType, eventsOrderType);
-			break;	
-        }
         drawerListView.setItemChecked(position, true);
  
         // Get the title and icon followed by the position
