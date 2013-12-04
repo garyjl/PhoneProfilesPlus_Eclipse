@@ -320,7 +320,7 @@ public class Event {
 
 		if (!noSetSystemEvent)
 			setSystemEvent(ESTATUS_PAUSE);
-		
+
 		this._status = ESTATUS_PAUSE;
 		
 		dataWrapper.getDatabaseHandler().updateEventStatus(this);

@@ -263,8 +263,12 @@ public class EventPreferencesFragment extends PreferenceListFragment
 			dataWrapper.getDatabaseHandler().addEvent(event);
 			event_id = event._id;
 
-			// setup event for next start
-			event.pauseEvent(dataWrapper, false, false, false);
+			if (event._status == Event.ESTATUS_STOP)
+				// stop event
+				event.stopEvent(dataWrapper, false, false);
+			else
+				// setup event for next start
+				event.pauseEvent(dataWrapper, false, false, false);
 			
         	//Log.d("ProfilePreferencesFragment.savePreferences", "addEvent");
 			
@@ -281,8 +285,12 @@ public class EventPreferencesFragment extends PreferenceListFragment
     		// udate event in DB
 			dataWrapper.getDatabaseHandler().updateEvent(event);
 
-			// setup event for next start
-			event.pauseEvent(dataWrapper, false, false, false);
+			if (event._status == Event.ESTATUS_STOP)
+				// stop event
+				event.stopEvent(dataWrapper, false, false);
+			else
+				// setup event for next start
+				event.pauseEvent(dataWrapper, false, false, false);
 			
         	//Log.d("EventPreferencesFragment.savePreferences", "updateEvent");
 
