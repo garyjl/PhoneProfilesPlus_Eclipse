@@ -465,7 +465,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			dataWrapper.stopAllEvents(false);
 			
 			// zrusenie notifikacie
-			dataWrapper.getActivateProfileHelper().showNotification(null);
+			dataWrapper.getActivateProfileHelper().removeNotification();
 			
 			finish();
 

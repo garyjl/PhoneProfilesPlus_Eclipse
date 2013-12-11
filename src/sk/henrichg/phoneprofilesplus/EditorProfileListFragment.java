@@ -595,7 +595,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 							//Profile profile = databaseHandler.getActivatedProfile();
 							//Profile profile = profileListAdapter.getActivatedProfile();
 							updateHeader(null);
-							activateProfileHelper.showNotification(null);
+							activateProfileHelper.removeNotification();
 							activateProfileHelper.updateWidget();
 							
 							onStartProfilePreferencesCallback.onStartProfilePreferences(null, EDIT_MODE_DELETE, filterType);
