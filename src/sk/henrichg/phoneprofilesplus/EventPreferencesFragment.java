@@ -1,5 +1,7 @@
 package sk.henrichg.phoneprofilesplus;
  
+import java.util.List;
+
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.ActionMode.Callback;
 import com.actionbarsherlock.view.Menu;
@@ -147,7 +149,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 						   origEvent._name+"_d", 
 						   origEvent._type, 
 						   origEvent._fkProfile, 
-						   origEvent._status
+						   origEvent.getStatus()
 							);
 			event.copyEventPreferences(origEvent);
 			event_id = 0;
@@ -263,12 +265,13 @@ public class EventPreferencesFragment extends PreferenceListFragment
 			dataWrapper.getDatabaseHandler().addEvent(event);
 			event_id = event._id;
 
-			if (event._status == Event.ESTATUS_STOP)
+			List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
+			if (event.getStatus() == Event.ESTATUS_STOP)
 				// stop event
-				event.stopEvent(dataWrapper, false, false);
+				event.stopEvent(dataWrapper, eventTimelineList, false, false, true);
 			else
 				// setup event for next start
-				event.pauseEvent(dataWrapper, false, false, false);
+				event.pauseEvent(dataWrapper, eventTimelineList, false, false, false);
 			
         	//Log.d("ProfilePreferencesFragment.savePreferences", "addEvent");
 			
@@ -278,19 +281,20 @@ public class EventPreferencesFragment extends PreferenceListFragment
         {
 
     		// pause event
-			event.pauseEvent(dataWrapper, false, true, true);
+    		List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
+			event.pauseEvent(dataWrapper, eventTimelineList, false, true, true);
     		
 	    	event.saveSharedPrefereces(preferences);
 			
     		// udate event in DB
 			dataWrapper.getDatabaseHandler().updateEvent(event);
 
-			if (event._status == Event.ESTATUS_STOP)
+			if (event.getStatus() == Event.ESTATUS_STOP)
 				// stop event
-				event.stopEvent(dataWrapper, false, false);
+				event.stopEvent(dataWrapper, eventTimelineList, false, false, true);
 			else
 				// setup event for next start
-				event.pauseEvent(dataWrapper, false, false, false);
+				event.pauseEvent(dataWrapper, eventTimelineList, false, false, false);
 			
         	//Log.d("EventPreferencesFragment.savePreferences", "updateEvent");
 

@@ -19,8 +19,6 @@ public class DataWrapper {
 	private ActivateProfileHelper activateProfileHelper = null;
 	private List<Profile> profileList = null;
 	private List<Event> eventList = null;
-	// timeline of runnig events
-	private List<EventTimeline> eventTimelineList = null;
 	
 	DataWrapper(Context c, 
 						boolean fgui, 
@@ -507,42 +505,69 @@ public class DataWrapper {
 	// pause all events associated with profile
 	public void pauseEventsForProfile(Profile profile, boolean noSetSystemEvent)
 	{
+		List<EventTimeline> eventTimelineList = getEventTimelineList();
+		
 		for (Event event : getEventList())
 		{
-			if ((event._status == Event.ESTATUS_RUNNING) &&
+			if ((event.getStatusFromDB(this) == Event.ESTATUS_RUNNING) &&
 				(event._fkProfile == profile._id))
-				event.pauseEvent(this, false, true, noSetSystemEvent);
+				event.pauseEvent(this, eventTimelineList, false, true, noSetSystemEvent);
 		}
 	}
 
 	// stops all events associated with profile
-	public void stopEventsForProfile(Profile profile)
+	public void stopEventsForProfile(Profile profile, boolean saveEventStatus)
 	{
+		List<EventTimeline> eventTimelineList = getEventTimelineList();
+		
 		for (Event event : getEventList())
 		{
-			if ((event._status == Event.ESTATUS_RUNNING) &&
+			if ((event.getStatusFromDB(this) == Event.ESTATUS_RUNNING) &&
 				(event._fkProfile == profile._id))
-				event.stopEvent(this, false, true);
+				event.stopEvent(this, eventTimelineList, false, true, saveEventStatus);
 		}
 	}
 	
 	// pauses all events without activating profiles from Timeline
 	public void pauseAllEvents(boolean noSetSystemEvent)
 	{
+		List<EventTimeline> eventTimelineList = getEventTimelineList();
+		
 		for (Event event : getEventList())
 		{
-			if (event._status == Event.ESTATUS_RUNNING)
-				event.pauseEvent(this, false, true, noSetSystemEvent);
+			if (event.getStatusFromDB(this) == Event.ESTATUS_RUNNING)
+				event.pauseEvent(this, eventTimelineList, false, true, noSetSystemEvent);
 		}
 	}
 
 	// stops all events without activating profiles from Timeline
-	public void stopAllEvents()
+	public void stopAllEvents(boolean saveEventStatus)
 	{
+		List<EventTimeline> eventTimelineList = getEventTimelineList();
+		
 		for (Event event : getEventList())
 		{
-			if (event._status != Event.ESTATUS_STOP)
-				event.stopEvent(this, false, true);
+			if (event.getStatusFromDB(this) != Event.ESTATUS_STOP)
+				event.stopEvent(this, eventTimelineList, false, true, saveEventStatus);
+		}
+	}
+	
+	// this is called in boot or start application
+	// or when restart alarm triggered (?)
+	public void firstStartEvents()
+	{
+		invalidateEventList();  // force load form db
+		
+		for (Event event : getEventList())
+		{
+			int status = event.getStatus();
+			
+			// remove all system events
+			event.setSystemEvent(Event.ESTATUS_STOP);
+			
+			// reset system event
+			if (status != Event.ESTATUS_STOP)
+				event.setSystemEvent(status);
 		}
 	}
 	
@@ -550,32 +575,13 @@ public class DataWrapper {
 	
 	public List<EventTimeline> getEventTimelineList()
 	{
-		if (eventTimelineList == null)
-		{
-			eventTimelineList = getDatabaseHandler().getAllEventTimelines();
-		}
-
-		return eventTimelineList;
-	}
-	
-	public void invalidateEventTimelineList()
-	{
-		if (eventTimelineList != null)
-			eventTimelineList.clear();
-		eventTimelineList = null;
-	}
-	
-	public void reloadEventTimelineList()
-	{
-		invalidateEventTimelineList();
-		getEventTimelineList();
+		return getDatabaseHandler().getAllEventTimelines();
 	}
 	
 	public void invalidateDataWrapper()
 	{
 		invalidateProfileList();
 		invalidateEventList();
-		invalidateEventTimelineList();
 		databaseHandler = null;
 		if (activateProfileHelper != null)
 			activateProfileHelper.deinitialize();

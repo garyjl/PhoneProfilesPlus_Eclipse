@@ -11,7 +11,7 @@ public class ExecuteRadioProfilePrefsService extends IntentService //WakefulInte
 		super("ExecuteRadioProfilePrefsService");
 	}
 
-	//@Override
+	@Override
 	//protected void doWakefulWork(Intent intent) {
 	protected void onHandleIntent(Intent intent) {
 		

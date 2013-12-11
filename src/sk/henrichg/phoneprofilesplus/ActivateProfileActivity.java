@@ -272,10 +272,14 @@ public class ActivateProfileActivity extends SherlockActivity {
 			// lebo v tychto pripadoch sa nesmie spravit aktivacia profilu
 			// pri starte aktivity
 			
-			if (!GUIData.applicationStarted)
+			if (!GlobalData.getApplicationStarted(getBaseContext()))
 			{
-				// aplikacia este nie je nastartovana, takze mozeme
-				// aktivovat profil, ak je nastavene, ze sa tak ma stat 
+				// aplikacia este nie je nastartovana
+				
+				// startneme eventy
+				dataWrapper.firstStartEvents();
+				
+				// mozeme aktivovat profil, ak je nastavene, ze sa tak ma stat 
 				if (GlobalData.applicationActivate)
 				{
 					// je nastavene, ze pri starte sa ma aktivita aktivovat
@@ -318,7 +322,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 		startupSource = 0;
 
 		//  aplikacia uz je 1. krat spustena
-		GUIData.applicationStarted = true;
+		GlobalData.setApplicationStarted(getBaseContext(), true);
 	}
 	
 	@Override
@@ -459,7 +463,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 				if (GlobalData.applicationClose)
 				{	
 					// ma sa zatvarat aktivita po aktivacii
-					if (GUIData.applicationStarted)
+					if (GlobalData.getApplicationStarted(getBaseContext()))
 						// aplikacia je uz spustena, mozeme aktivitu zavriet
 						// tymto je vyriesene, ze pri spusteni aplikacie z launchera
 						// sa hned nezavrie

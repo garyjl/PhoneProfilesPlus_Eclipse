@@ -1278,7 +1278,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_E_NAME, event._name); // Event Name
 		values.put(KEY_E_TYPE, event._type); // Event type
 		values.put(KEY_E_FK_PROFILE, event._fkProfile); // profile
-		values.put(KEY_E_STATUS, event._status); // event status
+		values.put(KEY_E_STATUS, event.getStatus()); // event status
 		
 		db.beginTransaction();
 		
@@ -1367,7 +1367,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				event._type = Integer.parseInt(cursor.getString(2));
 				//Log.e("DatabaseHandler.getAllEvents","type="+event._type);
 				event._fkProfile = Long.parseLong(cursor.getString(3));
-				event._status = Integer.parseInt(cursor.getString(4));
+				event.setStatus(Integer.parseInt(cursor.getString(4)));
 				event.createEventPreferences();
 				getEventPreferences(event, db);
 				// Adding contact to list
@@ -1391,7 +1391,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_E_NAME, event._name);
 		values.put(KEY_E_TYPE, event._type);
 		values.put(KEY_E_FK_PROFILE, event._fkProfile);
-		values.put(KEY_E_STATUS, event._status);
+		values.put(KEY_E_STATUS, event.getStatus());
 
 		int r = 0;
 		
@@ -1682,13 +1682,42 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		return r;
 	}
 	
+	public int getEventStatus(Event event)
+	{
+		//SQLiteDatabase db = this.getReadableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+
+		int eventStatus = 0;
+		
+		Cursor cursor = db.query(TABLE_EVENTS, 
+				                 new String[] {  
+												KEY_E_STATUS
+												}, 
+				                 KEY_ID + "=?",
+				                 new String[] { String.valueOf(event._id) }, null, null, null, null);
+		if (cursor != null)
+			cursor.moveToFirst();
+
+		if (cursor.getCount() > 0)
+		{
+			eventStatus = Integer.parseInt(cursor.getString(0));
+		}
+
+		cursor.close();
+		
+		//db.close();
+
+		return eventStatus;
+		
+	}
+	
 	public int updateEventStatus(Event event)
 	{
 		//SQLiteDatabase db = this.getWritableDatabase();
 		SQLiteDatabase db = getMyWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(KEY_E_STATUS, event._status);
+		values.put(KEY_E_STATUS, event.getStatus());
 
 		int r = 0;
 		

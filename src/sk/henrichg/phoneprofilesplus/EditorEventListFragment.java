@@ -341,11 +341,12 @@ public class EditorEventListFragment extends SherlockFragment {
 	
 	public void runStopEvent(Event event)
 	{
-		if (event._status == Event.ESTATUS_STOP)
+		if (event.getStatusFromDB(dataWrapper) == Event.ESTATUS_STOP)
 		{
 			// pause event
-			event.pauseEvent(dataWrapper, false, false, false); //no activate return profile
-			if (event._status == Event.ESTATUS_PAUSE)
+			List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
+			event.pauseEvent(dataWrapper, eventTimelineList, false, false, false); //no activate return profile
+			if (event.getStatus() == Event.ESTATUS_PAUSE)
 			{
 				// event paused redraw event list
 				updateListView(event, false);
@@ -354,7 +355,8 @@ public class EditorEventListFragment extends SherlockFragment {
 		else
 		{
 			// stop event
-			event.stopEvent(dataWrapper, false, false); //no activate return profile
+			List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
+			event.stopEvent(dataWrapper, eventTimelineList, false, false, true); //no activate return profile
 			// redraw event list
 			updateListView(event, false);
 		}
@@ -399,7 +401,8 @@ public class EditorEventListFragment extends SherlockFragment {
 			// event not exists
 			return;
 
-		event.stopEvent(dataWrapper, false, true);
+		List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
+		event.stopEvent(dataWrapper, eventTimelineList, false, true, true);
 		
 		eventListAdapter.deleteItemNoNotify(event);
 		databaseHandler.deleteEvent(event);
@@ -440,7 +443,7 @@ public class EditorEventListFragment extends SherlockFragment {
 			
 			public void onClick(DialogInterface dialog, int which) {
 				
-				dataWrapper.stopAllEvents();
+				dataWrapper.stopAllEvents(true);
 				
 				databaseHandler.deleteAllEvents();
 				eventListAdapter.clear();

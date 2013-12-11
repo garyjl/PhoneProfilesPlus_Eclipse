@@ -13,7 +13,7 @@ public class Event {
 	public String _name;
 	public int _type;
 	public long _fkProfile;
-	public int _status;
+	private int _status;  // changed in background, load it from dataWrapper
 
 	public EventPreferences _eventPreferences;
 	public int _typeOld;
@@ -222,7 +222,9 @@ public class Event {
 	}
 	
 	
-	public void startEvent(DataWrapper dataWrapper, boolean ignoreGlobalPref)
+	public void startEvent(DataWrapper dataWrapper,
+							List<EventTimeline> eventTimelineList,
+							boolean ignoreGlobalPref)
 	{
 		if ((!GlobalData.getGlobalEventsRuning(dataWrapper.context)) && (!ignoreGlobalPref))
 			// events are globally stopped
@@ -231,8 +233,6 @@ public class Event {
 		if (!this.isRunnable())
 			// event is not runnable, no pause it
 			return;
-		
-		List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
 		
 		EventTimeline eventTimeline = new EventTimeline();
 		eventTimeline._fkEvent = this._id;
@@ -254,6 +254,7 @@ public class Event {
 	}
 	
 	public void pauseEvent(DataWrapper dataWrapper, 
+							List<EventTimeline> eventTimelineList,
 							boolean activateReturnProfile, 
 							boolean ignoreGlobalPref,
 							boolean noSetSystemEvent)
@@ -266,8 +267,6 @@ public class Event {
 			// event is not runnable, no pause it
 			return;
 		
-		List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
-
 		// test whenever event exists in timeline
 		boolean exists = false;
 		int eventPosition = 0;
@@ -328,9 +327,11 @@ public class Event {
 		return;
 	}
 	
-	public void stopEvent(DataWrapper dataWrapper, 
+	public void stopEvent(DataWrapper dataWrapper,
+							List<EventTimeline> eventTimelineList,
 							boolean activateReturnProfile, 
-							boolean ignoreGlobalPref)
+							boolean ignoreGlobalPref,
+							boolean saveEventStatus)
 	{
 		if ((!GlobalData.getGlobalEventsRuning(dataWrapper.context)) && (!ignoreGlobalPref))
 			// events are globally stopped
@@ -339,16 +340,32 @@ public class Event {
 		if (this._status == ESTATUS_RUNNING)
 		{
 			// event zrovna bezi, zapauzujeme ho
-			pauseEvent(dataWrapper, activateReturnProfile, ignoreGlobalPref, true);
+			pauseEvent(dataWrapper, eventTimelineList, activateReturnProfile, ignoreGlobalPref, true);
 		}
 	
 		setSystemEvent(ESTATUS_STOP);
 		
 		this._status = ESTATUS_STOP;
 		
-		dataWrapper.getDatabaseHandler().updateEventStatus(this);
+		if (saveEventStatus)
+			dataWrapper.getDatabaseHandler().updateEventStatus(this);
 		
 		return;
+	}
+	
+	public int getStatus()
+	{
+		return _status;
+	}
+	
+	public int getStatusFromDB(DataWrapper dataWrapper)
+	{
+		return dataWrapper.getDatabaseHandler().getEventStatus(this);
+	}
+	
+	public void setStatus(int status)
+	{
+		_status = status;
 	}
 	
 	public void setSystemEvent(int forStatus)

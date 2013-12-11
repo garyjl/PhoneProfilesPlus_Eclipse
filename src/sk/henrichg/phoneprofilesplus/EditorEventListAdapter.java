@@ -53,15 +53,15 @@ public class EditorEventListAdapter extends BaseAdapter
 	        switch (filterType)
 	        {
 				case EditorEventListFragment.FILTER_TYPE_RUNNING:
-					if (event._status == Event.ESTATUS_RUNNING)
+					if (event.getStatusFromDB(dataWrapper) == Event.ESTATUS_RUNNING)
 						++count;
 					break;
 				case EditorEventListFragment.FILTER_TYPE_PAUSED:
-					if (event._status == Event.ESTATUS_PAUSE)
+					if (event.getStatusFromDB(dataWrapper) == Event.ESTATUS_PAUSE)
 						++count;
 					break;
 				case EditorEventListFragment.FILTER_TYPE_STOPPED:
-					if (event._status == Event.ESTATUS_STOP)
+					if (event.getStatusFromDB(dataWrapper) == Event.ESTATUS_STOP)
 						++count;
 					break;
 	        }
@@ -87,15 +87,15 @@ public class EditorEventListAdapter extends BaseAdapter
 				switch (filterType)
 		        {
 					case EditorEventListFragment.FILTER_TYPE_RUNNING:
-						if (event._status == Event.ESTATUS_RUNNING)
+						if (event.getStatusFromDB(dataWrapper) == Event.ESTATUS_RUNNING)
 							++pos;
 						break;
 					case EditorEventListFragment.FILTER_TYPE_PAUSED:
-						if (event._status == Event.ESTATUS_PAUSE)
+						if (event.getStatusFromDB(dataWrapper) == Event.ESTATUS_PAUSE)
 							++pos;
 						break;
 					case EditorEventListFragment.FILTER_TYPE_STOPPED:
-						if (event._status == Event.ESTATUS_STOP)
+						if (event.getStatusFromDB(dataWrapper) == Event.ESTATUS_STOP)
 							++pos;
 						break;
 		        }
@@ -146,15 +146,15 @@ public class EditorEventListAdapter extends BaseAdapter
 			switch (filterType)
 	        {
 				case EditorEventListFragment.FILTER_TYPE_RUNNING:
-					if (event._status == Event.ESTATUS_RUNNING)
+					if (event.getStatusFromDB(dataWrapper) == Event.ESTATUS_RUNNING)
 						++pos;
 					break;
 				case EditorEventListFragment.FILTER_TYPE_PAUSED:
-					if (event._status == Event.ESTATUS_PAUSE)
+					if (event.getStatusFromDB(dataWrapper) == Event.ESTATUS_PAUSE)
 						++pos;
 					break;
 				case EditorEventListFragment.FILTER_TYPE_STOPPED:
-					if (event._status == Event.ESTATUS_STOP)
+					if (event.getStatusFromDB(dataWrapper) == Event.ESTATUS_STOP)
 						++pos;
 					break;
 	        }
@@ -263,7 +263,7 @@ public class EditorEventListAdapter extends BaseAdapter
        		holder.listItemRoot.setBackgroundResource(R.drawable.card_dark);
         
        	int statusRes = Event.ESTATUS_STOP; 
-       	switch (event._status)
+       	switch (event.getStatusFromDB(dataWrapper))
        	{
        		case Event.ESTATUS_RUNNING:
        			statusRes = R.drawable.ic_event_status_running;
@@ -331,7 +331,7 @@ public class EditorEventListAdapter extends BaseAdapter
         if (GlobalData.getGlobalEventsRuning(dataWrapper.context))
         {
         	holder.eventItemRunStop.setVisibility(View.VISIBLE);
-	        if (event._status == Event.ESTATUS_STOP)
+	        if (event.getStatusFromDB(dataWrapper) == Event.ESTATUS_STOP)
 	        {
 	           	if (GlobalData.applicationTheme.equals("dark"))
 	        		holder.eventItemRunStop.setImageResource(R.drawable.ic_action_event_run_dark);

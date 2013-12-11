@@ -11,8 +11,6 @@ import android.content.res.Resources;
 
 public class GUIData {
 
-	public static boolean applicationStarted = false;
-	
 	public static Collator collator = null;
 	
 	// import/export

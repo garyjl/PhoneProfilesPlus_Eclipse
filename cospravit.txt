@@ -34,13 +34,13 @@ Events:
    - nastavit spustenie pauznuteho eventu - alarmy - hotovo
 11. import dat
    - vid mazanie vsetkych eventov, cize stopnut - hotovo
-   - znovunacitanie vsetkcyh dat - NIE JE HOTOVO
-   - nastavit spustanie pauznutych eventov - alarmy - NIE JE HOTOVO
+   - znovunacitanie vsetkcyh dat - hotovo
+   - nastavit spustanie eventov - alarmy - hotovo
 12. start aplikacie (na boot alebo na spustenie launchera)
-   - nacitanie vsetkych dat - NIE JE HOTOVO
-   - nastavit spustanie pauznutych eventov - alarmy - NIE JE HOTOVO
+   - nacitanie vsetkych dat - hotovo
+   - nastavit spustanie eventov - alarmy - hotovo
 13. exit aplikacie
-   - sptopnut vsetky eventy - neaktivovat profily - NIE JE HOTOVO   
+   - stopnut vsetky eventy - neaktivovat profily - hotovo   
 
 Callflow eventov:
 

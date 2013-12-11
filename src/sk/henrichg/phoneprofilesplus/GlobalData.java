@@ -25,6 +25,8 @@ public class GlobalData extends Application {
 	static final String EXTRA_NEW_PROFILE_MODE = "new_profile_mode";
 	static final String EXTRA_NEW_EVENT_MODE = "new_event_mode";
 	static final String EXTRA_PREFERENCES_STARTUP_SOURCE = "preferences_startup_source";
+	static final String EXTRA_EVENTS_SERVICE_PROCEDURE = "events_service_procedure";
+	static final String EXTRA_EVENT_TYPE = "event_type";
 
 	static final int STARTUP_SOURCE_NOTIFICATION = 1;
 	static final int STARTUP_SOURCE_WIDGET = 2;
@@ -116,6 +118,7 @@ public class GlobalData extends Application {
 	static final long DEFAULT_PROFILE_ID = -999;
 	
 	private static final String PREF_GLOBAL_EVENTS_RUN_STOP = "globalEventsRunStop";
+	private static final String PREF_APPLICATION_STARTED = "applicationStarted";
 	
     public static boolean applicationStartOnBoot;
     public static boolean applicationActivate;
@@ -373,7 +376,21 @@ public class GlobalData extends Application {
 		editor.putBoolean(PREF_GLOBAL_EVENTS_RUN_STOP, globalEventsRuning);
 		editor.commit();
 	}
+	
+	static public boolean getApplicationStarted(Context context)
+	{
+		SharedPreferences preferences = context.getSharedPreferences(APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+		return preferences.getBoolean(PREF_APPLICATION_STARTED, false);
+	}
 
+	static public void setApplicationStarted(Context context, boolean globalEventsStarted)
+	{
+		SharedPreferences preferences = context.getSharedPreferences(APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+		Editor editor = preferences.edit();
+		editor.putBoolean(PREF_APPLICATION_STARTED, globalEventsStarted);
+		editor.commit();
+	}
+	
 	// ----- Hardware check -------------------------------------
 	
 	static public boolean rootChecked = false;

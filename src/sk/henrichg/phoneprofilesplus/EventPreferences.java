@@ -41,7 +41,7 @@ public class EventPreferences {
 	{
 		return description;
 	}
-	
+
 	public void setSystemRunningEvent()
 	{
 		

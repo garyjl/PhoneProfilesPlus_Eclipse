@@ -478,7 +478,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 			@Override
 			protected Integer doInBackground(Void... params) {
 				
-				dataWrapper.stopEventsForProfile(_profile);
+				dataWrapper.stopEventsForProfile(_profile, true);
 				profileListAdapter.deleteItemNoNotify(_profile);
 				databaseHandler.unlinkEventsFromProfile(_profile);
 				databaseHandler.deleteProfile(_profile);
@@ -572,7 +572,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 					@Override
 					protected Integer doInBackground(Void... params) {
 						
-						dataWrapper.stopAllEvents();
+						dataWrapper.stopAllEvents(true);
 						profileListAdapter.clearNoNotify();
 						databaseHandler.deleteAllProfiles();
 						databaseHandler.unlinkAllEvents();

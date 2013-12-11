@@ -458,6 +458,11 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			return true;
 		case R.id.menu_exit:
 			//Log.d("EditorProfilesActivity.onOptionsItemSelected", "menu_exit");
+
+			GlobalData.setApplicationStarted(getBaseContext(), false);
+			
+			// stop all events
+			dataWrapper.stopAllEvents(false);
 			
 			// zrusenie notifikacie
 			dataWrapper.getActivateProfileHelper().showNotification(null);
@@ -867,7 +872,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			@Override
 			protected Integer doInBackground(Void... params) {
 				
-				dataWrapper.stopAllEvents();
+				dataWrapper.stopAllEvents(true);
 				
 				int ret = dataWrapper.getDatabaseHandler().importDB(_applicationDataPath);
 				
@@ -883,6 +888,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 					if (!importApplicationPreferences(exportFile))
 						ret = 0;
 				}
+				
+				dataWrapper.firstStartEvents();
 				
 				return ret;
 			}
