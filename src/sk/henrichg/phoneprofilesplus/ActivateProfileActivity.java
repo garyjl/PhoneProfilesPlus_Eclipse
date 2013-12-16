@@ -31,9 +31,9 @@ public class ActivateProfileActivity extends SherlockActivity {
 
 	private DataWrapper dataWrapper;
 	private ActivateProfileHelper activateProfileHelper;
-	private List<Profile> profileList;
-	private ActivateProfileListAdapter profileListAdapter;
-	private ListView listView;
+	private List<Profile> profileList = null;
+	private ActivateProfileListAdapter profileListAdapter = null;
+	private ListView listView = null;
 	private TextView activeProfileName;
 	private ImageView activeProfileIcon;
 	private int startupSource = 0;
@@ -263,7 +263,9 @@ public class ActivateProfileActivity extends SherlockActivity {
 			return;
 		}
 		doOnStartCalled = true;
-			
+		
+		Profile profile = dataWrapper.getActivatedProfile();
+		
 		boolean actProfile = false;
 		if (startupSource == 0)
 		{
@@ -285,11 +287,15 @@ public class ActivateProfileActivity extends SherlockActivity {
 					// je nastavene, ze pri starte sa ma aktivita aktivovat
 					actProfile = true;
 				}
+				else
+				{
+					// profile sa nema aktivovat, tak ho deaktivujeme
+					dataWrapper.getDatabaseHandler().deactivateProfile();
+					profile = null;
+				}
 			}
 		}
 		//Log.d("ActivateProfilesActivity.onStart", "actProfile="+String.valueOf(actProfile));
-
-		Profile profile = dataWrapper.getActivatedProfile();
 
 		if (actProfile && (profile != null))
 		{
@@ -308,7 +314,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 			}
 			endOnStart();
 		}
-		
+
 		//GlobalData.getMeasuredRunTime(nanoTimeStart, "ActivateProfileActivity.onStart");
 		
 		//Log.d("PhoneProfileActivity.onStart", "xxxx");
@@ -469,7 +475,6 @@ public class ActivateProfileActivity extends SherlockActivity {
 						// sa hned nezavrie
 						finish();
 				}
-
 		     }
 		     if (resultCode == RESULT_CANCELED)
 		     {    
@@ -493,7 +498,10 @@ public class ActivateProfileActivity extends SherlockActivity {
 
 		Intent intent = new Intent(getBaseContext(), BackgroundActivateProfileActivity.class);
 		intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, startupSource);
-		intent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
+		if (profile != null)
+			intent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
+		else
+			intent.putExtra(GlobalData.EXTRA_PROFILE_ID, 0);
 		
 		//Log.e("ActivateProfileActivity.activateProfile","finish="+finish);
 		

@@ -58,14 +58,12 @@ public class BackgroundActivateProfileActivity extends Activity {
 		if ((startupSource == GlobalData.STARTUP_SOURCE_SHORTCUT) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_WIDGET) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_ACTIVATOR) ||
-			(startupSource == GlobalData.STARTUP_SOURCE_ACTIVATOR_START) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_EDITOR) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_SERVICE))
 		{
 			// aktivita spustena z shortcutu alebo zo service, profil aktivujeme
 			actProfile = true;
-			interactive = ((startupSource != GlobalData.STARTUP_SOURCE_SERVICE) &&
-				       	   (startupSource != GlobalData.STARTUP_SOURCE_ACTIVATOR_START));
+			interactive = ((startupSource != GlobalData.STARTUP_SOURCE_SERVICE));
 		}
 		else
 		if (startupSource == GlobalData.STARTUP_SOURCE_BOOT)	
@@ -87,12 +85,32 @@ public class BackgroundActivateProfileActivity extends Activity {
 				}
 			}
 		}
+		else
+		if (startupSource == GlobalData.STARTUP_SOURCE_ACTIVATOR_START)	
+		{
+			// aktivita bola spustena po boote telefonu
+			
+			if (GlobalData.applicationActivate)
+			{
+				// je nastavene, ze pri starte sa ma aktivita aktivovat
+				actProfile = true;
+			}
+			else
+			{
+				if (profile != null)
+				{
+					dataWrapper.getDatabaseHandler().deactivateProfile();
+					//profile._checked = false;
+					profile = null;
+				}
+			}
+		}
+			
 		//Log.d("BackgroundActivateProfileActivity.onStart", "actProfile="+String.valueOf(actProfile));
 
 		if ((startupSource == GlobalData.STARTUP_SOURCE_SHORTCUT) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_WIDGET) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_ACTIVATOR) ||
-			(startupSource == GlobalData.STARTUP_SOURCE_ACTIVATOR_START) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_EDITOR) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_SERVICE))	
 		{
