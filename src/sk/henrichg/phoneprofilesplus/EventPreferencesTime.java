@@ -5,7 +5,11 @@ import java.text.DateFormatSymbols;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.text.format.DateFormat;
@@ -274,23 +278,70 @@ public class EventPreferencesTime extends EventPreferences {
 		return isTime;
 	}
 	*/
-	
+
 	@Override
-	public void setSystemRunningEvent()
+	public void setSystemRunningEvent(Context context)
 	{
-		
+		//setAlarm(2); //set the alarm for this day of the week
 	}
 
 	@Override
-	public void setSystemPauseEvent()
+	public void setSystemPauseEvent(Context context)
 	{
 		
 	}
 	
 	@Override
-	public void removeAllSystemEvents()
+	public void removeAllSystemEvents(Context context)
+	{
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
+
+		Intent intent = new Intent(context, Mote.class);
+	    int alarmId = (int) (_event._id);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), alarmId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.cancel(pendingIntent);
+        
+        intent = new Intent(context, Mote.class);
+	    alarmId = (int) (_event._id * 10000);
+        pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), alarmId, intent, 0);
+        alarmManager.cancel(pendingIntent);
+	}
+
+
+	private void setAlarm(boolean startEvent, int dayOfWeek, Context context)
 	{
 		
+		Calendar alarmCalendar = Calendar.getInstance();
+		
+	    // Add this day of the week line to your existing code
+	    alarmCalendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
+
+	    if (startEvent)
+	    	alarmCalendar.setTimeInMillis(_startTime);
+	    else
+	    	alarmCalendar.setTimeInMillis(_endTime);
+	    
+	    //alarmCalendar.set(Calendar.HOUR, AlarmHrsInInt);
+	    //alarmCalendar.set(Calendar.MINUTE, AlarmMinsInInt);
+	    //alarmCalendar.set(Calendar.SECOND, 0);
+	    //alarmCalendar.set(Calendar.AM_PM, amorpm);
+
+	    Long alarmTime = alarmCalendar.getTimeInMillis();
+	    
+	    Intent intent = new Intent(context, Mote.class);
+	    intent.putExtra(GlobalData.EXTRA_EVENT_ID, _event._id);
+	    intent.putExtra(GlobalData.EXTRA_START_SYSTEM_EVENT, startEvent);
+	    
+	    int alarmId;
+	    if (startEvent)
+	    	alarmId = (int) (_event._id);
+	    else
+	    	alarmId = (int) (_event._id * 10000);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), alarmId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
+
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, alarmTime, 24 * 60 * 60 * 1000 , pendingIntent);
+        //alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, alarmTime, 24 * 60 * 60 * 1000 , pendingIntent);
 	}
-    
 }

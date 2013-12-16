@@ -42,17 +42,17 @@ public class EventPreferences {
 		return description;
 	}
 
-	public void setSystemRunningEvent()
+	public void setSystemRunningEvent(Context context)
 	{
 		
 	}
 
-	public void setSystemPauseEvent()
+	public void setSystemPauseEvent(Context context)
 	{
 		
 	}
 	
-	public void removeAllSystemEvents()
+	public void removeAllSystemEvents(Context context)
 	{
 		
 	}

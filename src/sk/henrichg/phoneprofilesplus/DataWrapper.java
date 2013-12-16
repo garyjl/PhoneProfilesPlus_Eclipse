@@ -563,11 +563,11 @@ public class DataWrapper {
 			int status = event.getStatus();
 			
 			// remove all system events
-			event.setSystemEvent(Event.ESTATUS_STOP);
+			event.setSystemEvent(context, Event.ESTATUS_STOP);
 			
 			// reset system event
 			if (status != Event.ESTATUS_STOP)
-				event.setSystemEvent(status);
+				event.setSystemEvent(context, status);
 		}
 	}
 	

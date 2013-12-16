@@ -244,7 +244,7 @@ public class Event {
 		
 		dataWrapper.activateProfileFromEvent(this._fkProfile);
 
-		setSystemEvent(ESTATUS_RUNNING);
+		setSystemEvent(dataWrapper.context, ESTATUS_RUNNING);
 		
 		this._status = ESTATUS_RUNNING;
 		
@@ -318,7 +318,7 @@ public class Event {
 		}
 
 		if (!noSetSystemEvent)
-			setSystemEvent(ESTATUS_PAUSE);
+			setSystemEvent(dataWrapper.context, ESTATUS_PAUSE);
 
 		this._status = ESTATUS_PAUSE;
 		
@@ -343,7 +343,7 @@ public class Event {
 			pauseEvent(dataWrapper, eventTimelineList, activateReturnProfile, ignoreGlobalPref, true);
 		}
 	
-		setSystemEvent(ESTATUS_STOP);
+		setSystemEvent(dataWrapper.context, ESTATUS_STOP);
 		
 		this._status = ESTATUS_STOP;
 		
@@ -368,27 +368,27 @@ public class Event {
 		_status = status;
 	}
 	
-	public void setSystemEvent(int forStatus)
+	public void setSystemEvent(Context context, int forStatus)
 	{
 		if (forStatus == ESTATUS_RUNNING)
 		{
 			// event started
 			// setup system event for next pause status
-			_eventPreferences.setSystemPauseEvent();
+			_eventPreferences.setSystemPauseEvent(context);
 		}
 		else
 		if (forStatus == ESTATUS_PAUSE)
 		{
 			// event paused
 			// setup system event for next running status
-			_eventPreferences.setSystemRunningEvent();
+			_eventPreferences.setSystemRunningEvent(context);
 		}
 		else
 		if (forStatus == ESTATUS_STOP)
 		{
 			// event stopped
 			// remove all system events
-			_eventPreferences.removeAllSystemEvents();
+			_eventPreferences.removeAllSystemEvents(context);
 		}
 	}
 
