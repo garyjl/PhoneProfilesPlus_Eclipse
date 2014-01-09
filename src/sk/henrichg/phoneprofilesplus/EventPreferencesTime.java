@@ -282,29 +282,45 @@ public class EventPreferencesTime extends EventPreferences {
 	@Override
 	public void setSystemRunningEvent(Context context)
 	{
-		//setAlarm(2); //set the alarm for this day of the week
+		// set alarm for state PAUSE
+		
+		// this alarm generates broadcast, that change state into RUNNING
+		// from broadcast will by called EventsService with 
+		// EXTRA_EVENTS_SERVICE_PROCEDURE == ESP_START_EVENT
+
+		setAlarm(true, 1, context);
 	}
 
 	@Override
 	public void setSystemPauseEvent(Context context)
 	{
+		// set alarm for state RUNNING
+
+		// this alarm generates broadcast, that change state into PAUSE
+		// from broadcast will by called EventsService with 
+		// EXTRA_EVENTS_SERVICE_PROCEDURE == ESP_PAUSE_EVENT
 		
+		setAlarm(false, 1, context);
 	}
 	
 	@Override
 	public void removeAllSystemEvents(Context context)
 	{
+		// remove alarms for state STOP
+		
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
 
-		Intent intent = new Intent(context, Mote.class);
+		Intent intent = new Intent(context, EventsAlarmBroadcastReceiver.class);
 	    int alarmId = (int) (_event._id);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), alarmId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.cancel(pendingIntent);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), alarmId, intent, PendingIntent.FLAG_NO_CREATE);
+        if (pendingIntent != null)
+        	alarmManager.cancel(pendingIntent);
         
-        intent = new Intent(context, Mote.class);
-	    alarmId = (int) (_event._id * 10000);
-        pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), alarmId, intent, 0);
-        alarmManager.cancel(pendingIntent);
+        intent = new Intent(context, EventsAlarmBroadcastReceiver.class);
+	    alarmId = (int) ((-1)*_event._id);
+        pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), alarmId, intent, PendingIntent.FLAG_NO_CREATE);
+        if (pendingIntent != null)
+        	alarmManager.cancel(pendingIntent);
 	}
 
 
@@ -319,7 +335,12 @@ public class EventPreferencesTime extends EventPreferences {
 	    if (startEvent)
 	    	alarmCalendar.setTimeInMillis(_startTime);
 	    else
-	    	alarmCalendar.setTimeInMillis(_endTime);
+	    {
+	    	if (_useEndTime)
+	    		alarmCalendar.setTimeInMillis(_endTime);
+	    	else
+	    		alarmCalendar.setTimeInMillis(_startTime + (5 * 1000)); 
+	    }
 	    
 	    //alarmCalendar.set(Calendar.HOUR, AlarmHrsInInt);
 	    //alarmCalendar.set(Calendar.MINUTE, AlarmMinsInInt);
@@ -328,7 +349,7 @@ public class EventPreferencesTime extends EventPreferences {
 
 	    Long alarmTime = alarmCalendar.getTimeInMillis();
 	    
-	    Intent intent = new Intent(context, Mote.class);
+	    Intent intent = new Intent(context, EventsAlarmBroadcastReceiver.class);
 	    intent.putExtra(GlobalData.EXTRA_EVENT_ID, _event._id);
 	    intent.putExtra(GlobalData.EXTRA_START_SYSTEM_EVENT, startEvent);
 	    
@@ -336,12 +357,13 @@ public class EventPreferencesTime extends EventPreferences {
 	    if (startEvent)
 	    	alarmId = (int) (_event._id);
 	    else
-	    	alarmId = (int) (_event._id * 10000);
+	    	alarmId = (int) ((-1)*_event._id);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), alarmId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
 
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, alarmTime, 24 * 60 * 60 * 1000 , pendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
+        //alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, alarmTime, 24 * 60 * 60 * 1000 , pendingIntent);
         //alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, alarmTime, 24 * 60 * 60 * 1000 , pendingIntent);
 	}
 }

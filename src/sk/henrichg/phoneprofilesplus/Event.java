@@ -370,18 +370,18 @@ public class Event {
 	
 	public void setSystemEvent(Context context, int forStatus)
 	{
-		if (forStatus == ESTATUS_RUNNING)
-		{
-			// event started
-			// setup system event for next pause status
-			_eventPreferences.setSystemPauseEvent(context);
-		}
-		else
 		if (forStatus == ESTATUS_PAUSE)
 		{
 			// event paused
 			// setup system event for next running status
 			_eventPreferences.setSystemRunningEvent(context);
+		}
+		else
+		if (forStatus == ESTATUS_RUNNING)
+		{
+			// event started
+			// setup system event for pause status
+			_eventPreferences.setSystemPauseEvent(context);
 		}
 		else
 		if (forStatus == ESTATUS_STOP)

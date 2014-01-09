@@ -235,5 +235,25 @@ indicator -> kedy kukat do default profile na hodnoty
 
 ------------------------------------------------------------------
 
-  
-  
+Ako sa maju nastavovat alarmy pre event TIME:
+
+1. firstStartEvents() nastavi:
+   a) ak ma event status PAUSE -> nastavi alarm pre nasledujuci RUNNING
+   b) ak ma event status RUNNING -> nastavi alarm pre PAUSE
+2. alarm na nasledujuci RUNNING
+   a) vypocita nasledujuci cas, kedy sa ma nastavit alarm a nastavi ho
+   b) alarm manager vygeneruje broadcast
+   c) broadcat receiver zavola EventsService s parametrom, ze ide o start eventu
+   d) EventsService zavola event.startEvent()
+   e) event.startEvent() aktivuje profil a vygeneruje alarm pre PAUSE
+3. alarm pre PAUSE
+   a) vypocita cas pre koniec eventu a nastavi alarm
+   b) alarm manager vygeneruje broadcast
+   c) broadcast receiver zavola EventsService s parametrom, ze ide o pause eventu
+   d) EventsService zavola event.pauseEvent()
+   e) event.pauseEvent() aktivuje povodny profil a vygeneruje alarm pre nasledujuci RUNNING     
+4. takto to pojde dokolecka az kim uzivatel nenastavi stop eventu
+   a) sposobi to vyhodenie alarmov z alarm managera
+5. ak uzivatel nastavi zasa pause eventu
+   a) sposobi to zavolanie event.pauseEvent()
+   b) event.pauseEvent() vygeneruje alarm pre nasledujuci RUNNING     

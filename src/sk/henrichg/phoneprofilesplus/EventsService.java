@@ -45,11 +45,14 @@ public class EventsService extends IntentService  //WakefulIntentService
 				long event_id = intent.getLongExtra(GlobalData.EXTRA_EVENT_ID, 0);
 				Event event = dataWrapper.getEventById(event_id);
 				doEvent_Time(dataWrapper, eventTimelineList, event, procedure);
+				
+				// completting wake
+				EventsAlarmBroadcastReceiver.completeWakefulIntent(intent);
+				
 				break;
 			default:
 				break;
 		}
-		
 	}
 
 	private void doEvent_Time(DataWrapper dataWrapper, 
