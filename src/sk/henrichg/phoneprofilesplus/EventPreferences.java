@@ -29,6 +29,11 @@ public class EventPreferences {
 		return true;
 	}
 	
+	public boolean setReturnProfile()
+	{
+		return true;
+	}
+	
 	public void loadSharedPrefereces(SharedPreferences preferences)
 	{
 	}

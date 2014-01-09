@@ -225,6 +225,11 @@ public class EventPreferencesTime extends EventPreferences {
 		return runable;
 	}
 	
+	public boolean setReturnProfile()
+	{
+		return _useEndTime;
+	}
+	
 	/*
 	public boolean isTimeToRun()
 	{

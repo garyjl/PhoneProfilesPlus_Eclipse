@@ -306,7 +306,8 @@ public class Event {
 			{
 				// activate profile only when profile not already activated 
 				if ((eventTimeline._fkProfileReturn != dataWrapper.getActivatedProfile()._id)
-					&& (activateReturnProfile))
+					&& (activateReturnProfile)
+					&& (_eventPreferences.setReturnProfile()))
 				{
 					dataWrapper.activateProfileFromEvent(eventTimeline._fkProfileReturn);
 				}
