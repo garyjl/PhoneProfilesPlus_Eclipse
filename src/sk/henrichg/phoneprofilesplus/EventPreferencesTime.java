@@ -288,7 +288,7 @@ public class EventPreferencesTime extends EventPreferences {
 		// from broadcast will by called EventsService with 
 		// EXTRA_EVENTS_SERVICE_PROCEDURE == ESP_START_EVENT
 
-		setAlarm(true, 1, context);
+		//setAlarm(true, 1, context);
 	}
 
 	@Override
@@ -300,7 +300,7 @@ public class EventPreferencesTime extends EventPreferences {
 		// from broadcast will by called EventsService with 
 		// EXTRA_EVENTS_SERVICE_PROCEDURE == ESP_PAUSE_EVENT
 		
-		setAlarm(false, 1, context);
+		//setAlarm(false, 1, context);
 	}
 	
 	@Override
