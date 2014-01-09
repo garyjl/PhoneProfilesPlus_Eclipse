@@ -6,7 +6,7 @@ import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 
-public class EventsService extends IntentService  //WakefulIntentService
+public class EventsService extends IntentService
 {
 	public static final int ESP_START_EVENT = 1;
 	public static final int ESP_PAUSE_EVENT = 2;
@@ -19,7 +19,6 @@ public class EventsService extends IntentService  //WakefulIntentService
 	}
 
 	@Override
-	//protected void doWakefulWork(Intent intent) {
 	protected void onHandleIntent(Intent intent) {
 
 		Context context = getBaseContext();
@@ -53,6 +52,9 @@ public class EventsService extends IntentService  //WakefulIntentService
 			default:
 				break;
 		}
+		
+		dataWrapper.invalidateDataWrapper();
+		
 	}
 
 	private void doEvent_Time(DataWrapper dataWrapper, 

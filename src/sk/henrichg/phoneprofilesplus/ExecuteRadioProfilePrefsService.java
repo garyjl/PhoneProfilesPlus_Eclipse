@@ -4,7 +4,7 @@ import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 
-public class ExecuteRadioProfilePrefsService extends IntentService //WakefulIntentService 
+public class ExecuteRadioProfilePrefsService extends IntentService 
 {
 	
 	public ExecuteRadioProfilePrefsService() {
@@ -12,7 +12,6 @@ public class ExecuteRadioProfilePrefsService extends IntentService //WakefulInte
 	}
 
 	@Override
-	//protected void doWakefulWork(Intent intent) {
 	protected void onHandleIntent(Intent intent) {
 		
 		Context context = getBaseContext();

@@ -27,6 +27,8 @@ public class EventsAlarmBroadcastReceiver extends WakefulBroadcastReceiver {
 			eventsServiceIntent.putExtra(GlobalData.EXTRA_EVENTS_SERVICE_PROCEDURE, eventsServiceProcedure);
 			startWakefulService(context, eventsServiceIntent);
 		}
+		
+		dataWrapper.invalidateDataWrapper();
 			
 	}
 
