@@ -2,6 +2,7 @@ package sk.henrichg.phoneprofilesplus;
 
 import java.sql.Date;
 import java.text.DateFormatSymbols;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -13,6 +14,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.text.format.DateFormat;
+import android.util.Log;
 
 public class EventPreferencesTime extends EventPreferences {
 
@@ -293,7 +295,86 @@ public class EventPreferencesTime extends EventPreferences {
 		// from broadcast will by called EventsService with 
 		// EXTRA_EVENTS_SERVICE_PROCEDURE == ESP_START_EVENT
 
-		//setAlarm(true, 1, context);
+		boolean[] daysOfWeek =  new boolean[8];
+		daysOfWeek[Calendar.SUNDAY] = this._sunday;
+		daysOfWeek[Calendar.MONDAY] = this._monday;
+		daysOfWeek[Calendar.TUESDAY] = this._tuesday;
+		daysOfWeek[Calendar.WEDNESDAY] = this._wendesday;
+		daysOfWeek[Calendar.THURSDAY] = this._thursday;
+		daysOfWeek[Calendar.FRIDAY] = this._friday;
+		daysOfWeek[Calendar.SATURDAY] = this._saturday;
+		
+		Calendar calendar = Calendar.getInstance();
+		
+		int thisDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+		int setDayOfWeek = thisDayOfWeek;
+
+		Log.e("EventPreferencesTime.setSystemRunningEvent","thisDayOfWeek="+thisDayOfWeek);
+		
+		boolean setNextDayOfWeek = false;
+		
+		if (daysOfWeek[thisDayOfWeek])
+		{
+			// current day of week is set in event preferences
+			Log.e("EventPreferencesTime.setSystemRunningEvent","thisDayOfWeek=true");
+
+			Calendar now = Calendar.getInstance();
+    		calendar.setTimeInMillis(_startTime);
+		    calendar.set(Calendar.DAY_OF_MONTH, now.get(Calendar.DAY_OF_MONTH));
+		    calendar.set(Calendar.MONTH, now.get(Calendar.MONTH)); 
+		    calendar.set(Calendar.YEAR,  now.get(Calendar.YEAR));
+
+			long thisTime = now.getTimeInMillis();
+
+			/*
+		    SimpleDateFormat sdf = new SimpleDateFormat("EE d.MM.yyyy HH:mm:ss:S");
+		    String result = sdf.format(thisTime);
+		    Log.e("EventPreferencesTime.setSystemRunningEvent","thisTime="+result);	    
+		    result = sdf.format(calendar.getTimeInMillis());
+		    Log.e("EventPreferencesTime.setSystemRunningEvent","calendar.Time="+result);	    
+			*/
+		    
+		    setNextDayOfWeek = (calendar.getTimeInMillis() <= thisTime);
+			
+		}
+		
+		if (setNextDayOfWeek)
+		{
+			// find next day of week 
+
+			Log.e("EventPreferencesTime.setSystemRunningEvent","setNextDayOfWeek=true");
+			
+			for (int i = thisDayOfWeek+1; i < 8; i++)
+			{
+				if (daysOfWeek[i])
+				{
+					setDayOfWeek = i;
+					break;
+				}
+			}
+			if (setDayOfWeek == thisDayOfWeek)
+			{
+				for (int i = 1; i < thisDayOfWeek; i++)
+				{
+					if (daysOfWeek[i])
+					{
+						setDayOfWeek = i;
+						break;
+					}
+				}
+			}
+		}
+
+		Log.e("EventPreferencesTime.setSystemRunningEvent","setDayOfWeek="+setDayOfWeek);
+		
+		int daysToAdd;
+		daysToAdd = setDayOfWeek - thisDayOfWeek;
+		if (setDayOfWeek <= thisDayOfWeek)
+			daysToAdd = 7 + daysToAdd;
+
+		Log.e("EventPreferencesTime.setSystemRunningEvent","daysToAdd="+daysToAdd);
+		
+		setAlarm(true, daysToAdd, context);
 	}
 
 	@Override
@@ -329,14 +410,12 @@ public class EventPreferencesTime extends EventPreferences {
 	}
 
 
-	private void setAlarm(boolean startEvent, int dayOfWeek, Context context)
+	private void setAlarm(boolean startEvent, int daysToAdd, Context context)
 	{
-		
+
+		Calendar now = Calendar.getInstance();
 		Calendar alarmCalendar = Calendar.getInstance();
 		
-	    // Add this day of the week line to your existing code
-	    alarmCalendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
-
 	    if (startEvent)
 	    	alarmCalendar.setTimeInMillis(_startTime);
 	    else
@@ -347,13 +426,21 @@ public class EventPreferencesTime extends EventPreferences {
 	    		alarmCalendar.setTimeInMillis(_startTime + (5 * 1000)); 
 	    }
 	    
-	    //alarmCalendar.set(Calendar.HOUR, AlarmHrsInInt);
-	    //alarmCalendar.set(Calendar.MINUTE, AlarmMinsInInt);
-	    //alarmCalendar.set(Calendar.SECOND, 0);
-	    //alarmCalendar.set(Calendar.AM_PM, amorpm);
-
-	    Long alarmTime = alarmCalendar.getTimeInMillis();
+	    alarmCalendar.set(Calendar.DAY_OF_MONTH, now.get(Calendar.DAY_OF_MONTH));
+	    alarmCalendar.set(Calendar.MONTH, now.get(Calendar.MONTH)); 
+	    alarmCalendar.set(Calendar.YEAR,  now.get(Calendar.YEAR));
 	    
+
+	    // Add this day of the week line to your existing code
+	    alarmCalendar.add(Calendar.DAY_OF_YEAR, daysToAdd);
+	    
+	    long alarmTime = alarmCalendar.getTimeInMillis();
+	    
+	    SimpleDateFormat sdf = new SimpleDateFormat("EE d.MM.yyyy HH:mm:ss:S");
+	    String result = sdf.format(alarmTime);
+	    Log.e("EventPreferencesTime.setAlarm",result);	    
+	   
+	    /*
 	    Intent intent = new Intent(context, EventsAlarmBroadcastReceiver.class);
 	    intent.putExtra(GlobalData.EXTRA_EVENT_ID, _event._id);
 	    intent.putExtra(GlobalData.EXTRA_START_SYSTEM_EVENT, startEvent);
@@ -370,5 +457,6 @@ public class EventPreferencesTime extends EventPreferences {
         alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
         //alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, alarmTime, 24 * 60 * 60 * 1000 , pendingIntent);
         //alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, alarmTime, 24 * 60 * 60 * 1000 , pendingIntent);
+        */
 	}
 }
