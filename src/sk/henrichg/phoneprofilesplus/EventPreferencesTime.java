@@ -209,10 +209,10 @@ public class EventPreferencesTime extends EventPreferences {
     }
 
 	@Override
-	public boolean isRunnable()
+	public boolean isRunable()
 	{
 		
-		boolean runable = super.isRunnable();
+		boolean runable = super.isRunable();
 
 		boolean dayOfWeek = false;
 		dayOfWeek = dayOfWeek || this._sunday;
@@ -224,10 +224,13 @@ public class EventPreferencesTime extends EventPreferences {
 		dayOfWeek = dayOfWeek || this._saturday;
 		runable = runable && dayOfWeek;
 		
+		if (_useEndTime && (_startTime >= _endTime)) 
+			runable = false;
+		
 		return runable;
 	}
 	
-	public boolean setReturnProfile()
+	public boolean activateReturnProfile()
 	{
 		return _useEndTime;
 	}
@@ -369,11 +372,13 @@ public class EventPreferencesTime extends EventPreferences {
 		
 		int daysToAdd;
 		daysToAdd = setDayOfWeek - thisDayOfWeek;
-		if (setDayOfWeek <= thisDayOfWeek)
+		if ((setDayOfWeek <= thisDayOfWeek) && setNextDayOfWeek)
 			daysToAdd = 7 + daysToAdd;
 
 		Log.e("EventPreferencesTime.setSystemRunningEvent","daysToAdd="+daysToAdd);
-		
+
+		removeAlarm(true, context);
+		removeAlarm(false, context);
 		setAlarm(true, daysToAdd, context);
 	}
 
@@ -386,29 +391,47 @@ public class EventPreferencesTime extends EventPreferences {
 		// from broadcast will by called EventsService with 
 		// EXTRA_EVENTS_SERVICE_PROCEDURE == ESP_PAUSE_EVENT
 		
-		//setAlarm(false, 1, context);
+		removeAlarm(true, context);
+		removeAlarm(false, context);
+		setAlarm(false, 0, context);
 	}
 	
 	@Override
 	public void removeAllSystemEvents(Context context)
 	{
 		// remove alarms for state STOP
+
+		removeAlarm(true, context);
+		removeAlarm(false, context);
 		
+    	Log.e("EventPreferencesTime.removeAllSystemEvents","xxx");
+	}
+
+	private void removeAlarm(boolean startEvent, Context context)
+	{
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
 
 		Intent intent = new Intent(context, EventsAlarmBroadcastReceiver.class);
-	    int alarmId = (int) (_event._id);
+	    
+	    int alarmId;
+	    if (startEvent)
+	    	alarmId = (int) (_event._id);
+	    else
+	    	alarmId = (int) ((-1)*_event._id);
+	    
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), alarmId, intent, PendingIntent.FLAG_NO_CREATE);
         if (pendingIntent != null)
+        {
+        	if (startEvent)
+        		Log.e("EventPreferencesTime.removeAlarm","startTime alarm found");
+        	else
+            	Log.e("EventPreferencesTime.removeAlarm","endTime alarm found");
+        		
         	alarmManager.cancel(pendingIntent);
+        	pendingIntent.cancel();
+        }
         
-        intent = new Intent(context, EventsAlarmBroadcastReceiver.class);
-	    alarmId = (int) ((-1)*_event._id);
-        pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), alarmId, intent, PendingIntent.FLAG_NO_CREATE);
-        if (pendingIntent != null)
-        	alarmManager.cancel(pendingIntent);
 	}
-
 
 	private void setAlarm(boolean startEvent, int daysToAdd, Context context)
 	{
@@ -438,9 +461,12 @@ public class EventPreferencesTime extends EventPreferences {
 	    
 	    SimpleDateFormat sdf = new SimpleDateFormat("EE d.MM.yyyy HH:mm:ss:S");
 	    String result = sdf.format(alarmTime);
-	    Log.e("EventPreferencesTime.setAlarm",result);	    
+	    if (startEvent)
+	    	Log.e("EventPreferencesTime.setAlarm","startTime="+result);
+	    else
+	    	Log.e("EventPreferencesTime.setAlarm","endTime="+result);
 	   
-	    /*
+	    
 	    Intent intent = new Intent(context, EventsAlarmBroadcastReceiver.class);
 	    intent.putExtra(GlobalData.EXTRA_EVENT_ID, _event._id);
 	    intent.putExtra(GlobalData.EXTRA_START_SYSTEM_EVENT, startEvent);
@@ -457,6 +483,6 @@ public class EventPreferencesTime extends EventPreferences {
         alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
         //alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, alarmTime, 24 * 60 * 60 * 1000 , pendingIntent);
         //alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, alarmTime, 24 * 60 * 60 * 1000 , pendingIntent);
-        */
+        
 	}
 }

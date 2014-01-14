@@ -119,7 +119,7 @@ public class Event {
 	{
 		return  (this._fkProfile != 0) &&
 				(this._eventPreferences != null) &&
-				(this._eventPreferences.isRunnable());
+				(this._eventPreferences.isRunable());
 	}
 	
 	public void loadSharedPrefereces(SharedPreferences preferences)
@@ -237,7 +237,11 @@ public class Event {
 		EventTimeline eventTimeline = new EventTimeline();
 		eventTimeline._fkEvent = this._id;
 		eventTimeline._eorder = 0;
-		eventTimeline._fkProfileReturn = dataWrapper.getActivatedProfile()._id;
+		Profile profile = dataWrapper.getActivatedProfile();
+		if (profile != null)
+			eventTimeline._fkProfileReturn = profile._id;
+		else
+			eventTimeline._fkProfileReturn = 0;
 		
 		dataWrapper.getDatabaseHandler().addEventTimeline(eventTimeline);
 		eventTimelineList.add(eventTimeline);
@@ -267,18 +271,19 @@ public class Event {
 			// event is not runnable, no pause it
 			return;
 		
+		int timeLineSize = eventTimelineList.size();
+		
 		// test whenever event exists in timeline
 		boolean exists = false;
-		int eventPosition = 0;
+		int eventPosition = -1;
 		for (EventTimeline eventTimeline : eventTimelineList)
 		{
+			eventPosition++;
 			if (eventTimeline._fkEvent == this._id)
 			{
 				exists = true;
 				break;
 			}
-			
-			eventPosition++;
 		}
 		
 		if (exists)
@@ -290,7 +295,7 @@ public class Event {
 			dataWrapper.getDatabaseHandler().deleteEventTimeline(eventTimeline);
 	
 			
-			if (eventPosition == 0)
+			if ((eventPosition == 0) && (timeLineSize > 1))
 			{
 				// move _fkProfileReturn up
 				for (int i = eventTimelineList.size()-1; i > 0; i--)
@@ -302,12 +307,12 @@ public class Event {
 				dataWrapper.getDatabaseHandler().updateProfileReturnET(eventTimelineList);
 			}
 			else
-			if (eventPosition == eventTimelineList.size() - 1)
+			if (eventPosition == (timeLineSize-1))
 			{
 				// activate profile only when profile not already activated 
 				if ((eventTimeline._fkProfileReturn != dataWrapper.getActivatedProfile()._id)
 					&& (activateReturnProfile)
-					&& (_eventPreferences.setReturnProfile()))
+					&& (_eventPreferences.activateReturnProfile()))
 				{
 					dataWrapper.activateProfileFromEvent(eventTimeline._fkProfileReturn);
 				}

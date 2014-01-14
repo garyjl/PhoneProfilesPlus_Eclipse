@@ -24,12 +24,12 @@ public class EventPreferences {
 		
 	}
 	
-	public boolean isRunnable()
+	public boolean isRunable()
 	{
 		return true;
 	}
 	
-	public boolean setReturnProfile()
+	public boolean activateReturnProfile()
 	{
 		return true;
 	}

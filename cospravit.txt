@@ -102,7 +102,7 @@ Posvanie PXe profilov pri prekrizeni robit odkonca hore, pre aktualny event zobr
 predchadzajuceho eventu, pre prvy event zobrat profil z odmazaneho eventu.
 
 Cize su 3 situacie, ked pride pauzovaci system event:
-1. event je zaciatku timeline:
+1. event je na zaciatku timeline:
    a) vyhodim event z timeline
    b) poposuvam PXe profily v eventoch od spodu smerom hore po timeline, prvy event v timeline
       dostene PXe z vyhodeneho eventu
