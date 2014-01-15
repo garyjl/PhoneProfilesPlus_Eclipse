@@ -591,7 +591,7 @@ public class EditorEventListFragment extends SherlockFragment {
 		    return res;
 	    }
 	}
-
+	
     public void setEventsRunStopIndicator()
     {
 		if (GlobalData.getGlobalEventsRuning(getSherlockActivity().getBaseContext()))

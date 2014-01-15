@@ -65,7 +65,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
                                                OnFinishEventPreferencesActionMode
 {
 
-	private DataWrapper dataWrapper;
+	//private DataWrapper dataWrapper;
 	private static ApplicationsCache applicationsCache;
 	private int editModeProfile;
 	private int editModeEvent;
@@ -113,8 +113,8 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		GUIData.setTheme(this, false);
 		GUIData.setLanguage(getBaseContext());
 
-		dataWrapper = new DataWrapper(getBaseContext(), true, false, 0);
-		dataWrapper.getActivateProfileHelper().initialize(this, getBaseContext());
+		//dataWrapper = new DataWrapper(getBaseContext(), true, false, 0);
+		//dataWrapper.getActivateProfileHelper().initialize(this, getBaseContext());
 		applicationsCache = new ApplicationsCache();
 		
 		super.onCreate(savedInstanceState);
@@ -364,9 +364,9 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		if (applicationsCache != null)
 			applicationsCache.clearCache();
 		applicationsCache = null;
-		if (dataWrapper != null)
-			dataWrapper.invalidateDataWrapper();
-		dataWrapper = null;
+		//if (dataWrapper != null)
+		//	dataWrapper.invalidateDataWrapper();
+		//dataWrapper = null;
 
 		super.onDestroy();
 
@@ -412,6 +412,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
             }	
 			return super.onOptionsItemSelected(item);
 		case R.id.menu_run_stop_events:
+			DataWrapper dataWrapper = getDataWrapper();
 			if (GlobalData.getGlobalEventsRuning(getBaseContext()))
 			{
 				// no setup for next start
@@ -424,9 +425,12 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 				// setup for next start
 				dataWrapper.pauseAllEvents(false);
 			}
-			EditorEventListFragment fragment = (EditorEventListFragment)getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
+			Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
 			if (fragment != null)
-				fragment.setEventsRunStopIndicator();
+			{
+				if (drawerSelectedItem >= COUNT_DRAWER_PROFILE_ITEMS)
+					((EditorEventListFragment)fragment).setEventsRunStopIndicator();
+			}
 			return true;
 		case R.id.menu_default_profile:
 			// start preferences activity for default profile
@@ -462,10 +466,10 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			GlobalData.setApplicationStarted(getBaseContext(), false);
 			
 			// stop all events
-			dataWrapper.stopAllEvents(false);
+			getDataWrapper().stopAllEvents(false);
 			
 			// zrusenie notifikacie
-			dataWrapper.getActivateProfileHelper().removeNotification();
+			getDataWrapper().getActivateProfileHelper().removeNotification();
 			
 			finish();
 
@@ -669,13 +673,13 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 				if ((newProfileMode == EditorProfileListFragment.EDIT_MODE_INSERT) ||
 					(newProfileMode == EditorProfileListFragment.EDIT_MODE_DUPLICATE))
 				{
-					profile = dataWrapper.getDatabaseHandler().getProfile(profile_id);
+					profile = getDataWrapper().getDatabaseHandler().getProfile(profile_id);
 			    	// generate bitmaps
 					profile.generateIconBitmap(getBaseContext(), false, 0);
 					profile.generatePreferencesIndicator(getBaseContext(), false, 0);
 				}
 				else
-					profile = dataWrapper.getProfileById(profile_id);	
+					profile = getDataWrapper().getProfileById(profile_id);	
 	
 				// redraw list fragment , notifications, widgets after finish ProfilePreferencesFragmentActivity
 				onRedrawProfileListFragment(profile, newProfileMode);
@@ -693,9 +697,9 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 				Event event;
 				if ((newEventMode == EditorEventListFragment.EDIT_MODE_INSERT) ||
 					(newEventMode == EditorEventListFragment.EDIT_MODE_DUPLICATE))
-					event = dataWrapper.getDatabaseHandler().getEvent(event_id);
+					event = getDataWrapper().getDatabaseHandler().getEvent(event_id);
 				else
-					event = dataWrapper.getEventById(event_id);	
+					event = getDataWrapper().getEventById(event_id);	
 	
 				// redraw list fragment , notifications, widgets after finish ProfilePreferencesFragmentActivity
 				onRedrawEventListFragment(event, newEventMode);
@@ -706,6 +710,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		{
 			boolean restart = data.getBooleanExtra(GlobalData.EXTRA_RESET_EDITOR, false); 
 
+			DataWrapper dataWrapper = getDataWrapper();
 			dataWrapper.getActivateProfileHelper().showNotification(dataWrapper.getActivatedProfile());
 			dataWrapper.getActivateProfileHelper().updateWidget();
 			
@@ -851,10 +856,12 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		class ImportAsyncTask extends AsyncTask<Void, Integer, Integer> 
 		{
 			private ProgressDialog dialog;
+			private DataWrapper dataWrapper;
 			
 			ImportAsyncTask()
 			{
 		         this.dialog = new ProgressDialog(activity);
+		         this.dataWrapper = getDataWrapper();
 			}
 			
 			@Override
@@ -1038,10 +1045,12 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 				class ExportAsyncTask extends AsyncTask<Void, Integer, Integer> 
 				{
 					private ProgressDialog dialog;
+					private DataWrapper dataWrapper;
 					
 					ExportAsyncTask()
 					{
 				         this.dialog = new ProgressDialog(activity);
+				         this.dataWrapper = getDataWrapper();
 					}
 					
 					@Override
@@ -1445,4 +1454,17 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		return applicationsCache;
 	}
 
+	private DataWrapper getDataWrapper()
+	{
+		Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
+		if (fragment != null)
+		{
+			if (drawerSelectedItem < COUNT_DRAWER_PROFILE_ITEMS)
+				return ((EditorProfileListFragment)fragment).dataWrapper;
+			else
+				return ((EditorEventListFragment)fragment).dataWrapper;
+		}
+		else
+			return null;
+	}
 }

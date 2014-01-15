@@ -257,3 +257,8 @@ Ako sa maju nastavovat alarmy pre event TIME:
 5. ak uzivatel nastavi zasa pause eventu
    a) sposobi to zavolanie event.pauseEvent()
    b) event.pauseEvent() vygeneruje alarm pre nasledujuci RUNNING     
+   
+-------------------------------------------------------------------------
+
+Check root treba na zaciatku pri spusteni aplikacie
+   
