@@ -669,17 +669,10 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			
 			if (profile_id > 0)
 			{
-				Profile profile;
-				if ((newProfileMode == EditorProfileListFragment.EDIT_MODE_INSERT) ||
-					(newProfileMode == EditorProfileListFragment.EDIT_MODE_DUPLICATE))
-				{
-					profile = getDataWrapper().getDatabaseHandler().getProfile(profile_id);
-			    	// generate bitmaps
-					profile.generateIconBitmap(getBaseContext(), false, 0);
-					profile.generatePreferencesIndicator(getBaseContext(), false, 0);
-				}
-				else
-					profile = getDataWrapper().getDatabaseHandler().getProfile(profile_id);
+				Profile profile = getDataWrapper().getDatabaseHandler().getProfile(profile_id);
+		    	// generate bitmaps
+				profile.generateIconBitmap(getBaseContext(), false, 0);
+				profile.generatePreferencesIndicator(getBaseContext(), false, 0);
 	
 				// redraw list fragment , notifications, widgets after finish ProfilePreferencesFragmentActivity
 				onRedrawProfileListFragment(profile, newProfileMode);
@@ -697,12 +690,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			
 			if (event_id > 0)
 			{
-				Event event;
-				if ((newEventMode == EditorEventListFragment.EDIT_MODE_INSERT) ||
-					(newEventMode == EditorEventListFragment.EDIT_MODE_DUPLICATE))
-					event = getDataWrapper().getDatabaseHandler().getEvent(event_id);
-				else
-					event = getDataWrapper().getDatabaseHandler().getEvent(event_id);
+				Event event = getDataWrapper().getDatabaseHandler().getEvent(event_id);
 
 				//Log.e("EditorProfilesActivity.onActivityResult","event._id="+event._id);
 	
