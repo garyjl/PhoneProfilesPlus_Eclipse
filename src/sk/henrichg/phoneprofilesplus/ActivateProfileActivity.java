@@ -58,7 +58,10 @@ public class ActivateProfileActivity extends SherlockActivity {
 		GUIData.setLanguage(getBaseContext());
 		
 		dataWrapper = new DataWrapper(getBaseContext(), true, false, 0);
+		activateProfileHelper = dataWrapper.getActivateProfileHelper();
+		activateProfileHelper.initialize(this, getBaseContext());
 
+		
 	// set window dimensions ----------------------------------------------------------
 		
 		Display display = getWindowManager().getDefaultDisplay();
@@ -179,9 +182,6 @@ public class ActivateProfileActivity extends SherlockActivity {
 
 		intent = getIntent();
 		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
-		
-		activateProfileHelper = dataWrapper.getActivateProfileHelper();
-		activateProfileHelper.initialize(this, getBaseContext());
 		
 		//Debug.startMethodTracing("phoneprofiles");
 

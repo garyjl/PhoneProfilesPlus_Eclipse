@@ -57,7 +57,8 @@
 	    <item name="actionGlobalEventRunIcon">@drawable/ic_action_global_event_run</item>
 	    <item name="actionGlobalEventStopIcon">@drawable/ic_action_global_event_stop</item>
         <item name="actionDefaultProfileIcon">@drawable/ic_action_default_profile</item> 
-	    
+        <item name="preferenceDialogBackground">@color/preferenceDialogBackgroud</item>
+        	    
         <item name="actionModeCloseButtonStyle">@style/NoCloseButton</item>
         <item name="android:actionModeCloseButtonStyle">@style/NoCloseButton</item>
         

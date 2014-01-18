@@ -574,7 +574,10 @@ public class ActivateProfileHelper {
 
 		        //contentView.setImageViewBitmap(R.id.notification_activated_profile_pref_indicator, 
 		        //		ProfilePreferencesIndicator.paint(profile, context));
-		        contentView.setImageViewBitmap(R.id.notification_activated_profile_pref_indicator, preferencesIndicator);
+		        if (preferencesIndicator != null)
+		        	contentView.setImageViewBitmap(R.id.notification_activated_profile_pref_indicator, preferencesIndicator);
+		        else
+		        	contentView.setImageViewResource(R.id.notification_activated_profile_pref_indicator, R.drawable.ic_empty);
 		        
 		        notification.contentView = contentView;
 		        

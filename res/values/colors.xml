@@ -5,4 +5,5 @@
     <color name="activityCardSelected_phoneprofilestheme">#FF33b5e5</color>
     <color name="navigationDrawerTextColor_phoneprofiletheme">#ff000000</color>
     <color name="filterStatusBarBackground_phoneprofilestheme">#FFb0b0b0</color>
+    <color name="preferenceDialogBackgroud">#FFFFFFFF</color>
 </resources>

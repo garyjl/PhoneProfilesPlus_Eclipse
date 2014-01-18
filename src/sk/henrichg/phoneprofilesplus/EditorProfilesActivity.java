@@ -670,12 +670,18 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			if (profile_id > 0)
 			{
 				Profile profile = getDataWrapper().getDatabaseHandler().getProfile(profile_id);
-		    	// generate bitmaps
+				// generate bitmaps
 				profile.generateIconBitmap(getBaseContext(), false, 0);
 				profile.generatePreferencesIndicator(getBaseContext(), false, 0);
-	
+				
 				// redraw list fragment , notifications, widgets after finish ProfilePreferencesFragmentActivity
 				onRedrawProfileListFragment(profile, newProfileMode);
+			}
+			else
+			if (profile_id == GlobalData.DEFAULT_PROFILE_ID)
+			{
+				// refresh activity for changes of default profile
+				GUIData.reloadActivity(this);
 			}
 		}
 		else
@@ -1273,6 +1279,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 
 	public void onRedrawProfileListFragment(Profile profile, int newProfileMode) {
 		// redraw headeru list fragmentu, notifikacie a widgetov
+		
 		EditorProfileListFragment fragment = (EditorProfileListFragment)getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
 		if (fragment != null)
 		{

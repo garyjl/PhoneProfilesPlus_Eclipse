@@ -56,7 +56,8 @@
 	    <item name="actionGlobalEventRunIcon">@drawable/ic_action_global_event_run_dark</item>
 	    <item name="actionGlobalEventStopIcon">@drawable/ic_action_global_event_stop_dark</item>
         <item name="actionDefaultProfileIcon">@drawable/ic_action_default_profile_dark</item> 
-	    
+        <item name="preferenceDialogBackground">@color/preferenceDialogBackgroud</item>
+        	    
         <item name="actionModeCloseButtonStyle">@style/NoCloseButton</item>
         
     </style>

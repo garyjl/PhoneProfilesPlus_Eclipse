@@ -59,5 +59,6 @@
     <attr name="actionGlobalEventRunIcon" format="reference" />
     <attr name="actionGlobalEventStopIcon" format="reference" />
     <attr name="actionDefaultProfileIcon" format="reference" />
+    <attr name="preferenceDialogBackground" format="reference" />
     
 </resources>

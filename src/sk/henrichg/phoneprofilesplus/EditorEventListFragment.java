@@ -132,6 +132,7 @@ public class EditorEventListFragment extends SherlockFragment {
         //Log.e("EditorEventListFragment.onCreate","orderType="+orderType);
 		
    		dataWrapper = new DataWrapper(getActivity().getBaseContext(), true, false, 0);
+    	dataWrapper.getActivateProfileHelper().initialize(getSherlockActivity(), getActivity().getBaseContext());
              	
        	databaseHandler = dataWrapper.getDatabaseHandler();
 		
