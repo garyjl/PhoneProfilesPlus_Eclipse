@@ -157,7 +157,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		    	}
 		    	if (resetMode == RESET_PREFERENCE_FRAGMENT_RESET_EVENT)
 		    	{
-					// restart profile preferences fragmentu
+					// restart event preferences fragmentu
 		    		long event_id = preferences.getLong(SP_RESET_PREFERENCES_FRAGMENT_DATA_ID, 0);
 		    		int editMode =  preferences.getInt(SP_RESET_PREFERENCES_FRAGMENT_EDIT_MODE, EditorProfileListFragment.EDIT_MODE_UNDEFINED);
 					Bundle arguments = new Bundle();
@@ -679,7 +679,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 					profile.generatePreferencesIndicator(getBaseContext(), false, 0);
 				}
 				else
-					profile = getDataWrapper().getProfileById(profile_id);	
+					profile = getDataWrapper().getDatabaseHandler().getProfile(profile_id);
 	
 				// redraw list fragment , notifications, widgets after finish ProfilePreferencesFragmentActivity
 				onRedrawProfileListFragment(profile, newProfileMode);
@@ -692,6 +692,9 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			long event_id = data.getLongExtra(GlobalData.EXTRA_EVENT_ID, 0);
 			int newEventMode = data.getIntExtra(GlobalData.EXTRA_NEW_EVENT_MODE, EditorEventListFragment.EDIT_MODE_UNDEFINED);
 			
+			//Log.e("EditorProfilesActivity.onActivityResult","event_id="+event_id);
+			//Log.e("EditorProfilesActivity.onActivityResult","newEventMode="+newEventMode);
+			
 			if (event_id > 0)
 			{
 				Event event;
@@ -699,7 +702,9 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 					(newEventMode == EditorEventListFragment.EDIT_MODE_DUPLICATE))
 					event = getDataWrapper().getDatabaseHandler().getEvent(event_id);
 				else
-					event = getDataWrapper().getEventById(event_id);	
+					event = getDataWrapper().getDatabaseHandler().getEvent(event_id);
+
+				//Log.e("EditorProfilesActivity.onActivityResult","event._id="+event._id);
 	
 				// redraw list fragment , notifications, widgets after finish ProfilePreferencesFragmentActivity
 				onRedrawEventListFragment(event, newEventMode);
@@ -1283,9 +1288,11 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		EditorProfileListFragment fragment = (EditorProfileListFragment)getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
 		if (fragment != null)
 		{
+			//Log.e("EditorProfilesActivity.onRedrawProfileListFragment","profile._showInActivator="+profile._showInActivator);
+			
 			// update profile, this rewrite profile in profileList
 			fragment.dataWrapper.updateProfile(profile);
-			
+
 			boolean newProfile = ((newProfileMode == EditorProfileListFragment.EDIT_MODE_INSERT) ||
 		              			  (newProfileMode == EditorProfileListFragment.EDIT_MODE_DUPLICATE));
 			fragment.updateListView(profile, newProfile);
@@ -1459,6 +1466,9 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
 		if (fragment != null)
 		{
+			//Log.e("EditorProfilesActivity.getDataWrapper","COUNT_DRAWER_PROFILE_ITEMS="+COUNT_DRAWER_PROFILE_ITEMS);
+			//Log.e("EditorProfilesActivity.getDataWrapper","drawerSelectedItem="+drawerSelectedItem);
+			
 			if (drawerSelectedItem < COUNT_DRAWER_PROFILE_ITEMS)
 				return ((EditorProfileListFragment)fragment).dataWrapper;
 			else

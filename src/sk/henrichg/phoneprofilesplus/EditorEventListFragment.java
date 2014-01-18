@@ -15,7 +15,6 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -189,8 +188,8 @@ public class EditorEventListFragment extends SherlockFragment {
 			
 			if (fragment.dataWrapper != null)
 				fragment.dataWrapper.getProfileList();
-			else
-				Log.e("EditorEventListFragment.doOnViewCreated.doInBackground 2",fragment.dataWrapper+"");
+			//else
+			//	Log.e("EditorEventListFragment.doOnViewCreated.doInBackground 2",fragment.dataWrapper+"");
 			
 			return null;
 		}

@@ -70,6 +70,7 @@ public class ActivateProfileHelper {
 		notificationManager = null;
 	}
 	
+	@SuppressWarnings("deprecation")
 	private void doExecuteForRadios(Profile profile)
 	{
 		// nahodenie mobilnych dat
@@ -165,7 +166,7 @@ public class ActivateProfileHelper {
 		// nahodenie GPS
 		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_GPS, context))
 		{
-		    String provider = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+			String provider = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
 
 			//Log.d("ActivateProfileHelper.execute", provider);
 		    
@@ -781,6 +782,7 @@ public class ActivateProfileHelper {
 		
 	}
 	
+	@SuppressWarnings("deprecation")
 	private void setGPS(Context context, boolean enable)
 	{
 		boolean isEnabled = Settings.Secure.isLocationProviderEnabled(context.getContentResolver(), LocationManager.GPS_PROVIDER);
@@ -808,7 +810,7 @@ public class ActivateProfileHelper {
 				String command1;
 				//String command2;
 
-			    String provider = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+				String provider = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
 				
 	    		String newSet;
 	    		if (provider == "")
