@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 public class Event {
 	
@@ -314,6 +315,7 @@ public class Event {
 					&& (activateReturnProfile)
 					&& (_eventPreferences.activateReturnProfile()))
 				{
+					Log.e("Event.pauseEvent","activate return time");
 					dataWrapper.activateProfileFromEvent(eventTimeline._fkProfileReturn);
 				}
 			}
