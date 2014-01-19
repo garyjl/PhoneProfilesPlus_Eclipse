@@ -97,7 +97,7 @@ public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
 	public void onConfigurationChanged(Configuration newConfig)
 	{
 		getBaseContext().getResources().updateConfiguration(newConfig, getBaseContext().getResources().getDisplayMetrics());
-		GUIData.reloadActivity(this);
+		GUIData.reloadActivity(this, false);
 	}
 	
 	@Override

@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import java.text.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -300,13 +301,14 @@ public class EditorEventListAdapter extends BaseAdapter
 	   		if ((event._type == Event.ETYPE_TIME) && GlobalData.getGlobalEventsRuning(vi.getContext()))
 	   		{
 	   			long alarmTime;
-	   		    SimpleDateFormat sdf = new SimpleDateFormat("EE d.MM.yyyy HH:mm");
+	   		    //SimpleDateFormat sdf = new SimpleDateFormat("EEd/MM/yy HH:mm");
 	   		    String alarmTimeS = "";
 	   			if (eventStatus == Event.ESTATUS_PAUSE)
 	   			{
 	   				int daysToAdd = ((EventPreferencesTime)event._eventPreferences).computeDaysForAdd();
 	   				alarmTime = ((EventPreferencesTime)event._eventPreferences).computeAlarm(true, daysToAdd);
-	   	   		    alarmTimeS = "ST: " + sdf.format(alarmTime);
+	   	   		    //alarmTimeS = "ST: " + sdf.format(alarmTime);
+	   	   		    alarmTimeS = "ST: " + DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(alarmTime);
 	   	   		    eventPrefDescription = eventPrefDescription + '\n';
 	   	   		    eventPrefDescription = eventPrefDescription + alarmTimeS;
 	   			}
@@ -314,7 +316,8 @@ public class EditorEventListAdapter extends BaseAdapter
 	   			if ((eventStatus == Event.ESTATUS_RUNNING) && ((EventPreferencesTime)event._eventPreferences)._useEndTime)
 	   			{
 	   				alarmTime = ((EventPreferencesTime)event._eventPreferences).computeAlarm(false, 0);
-	   				alarmTimeS = "ET: " + sdf.format(alarmTime);
+	   				//alarmTimeS = "ET: " + sdf.format(alarmTime);
+	   	   		    alarmTimeS = "ST: " + DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(alarmTime);
 	   	   		    eventPrefDescription = eventPrefDescription + '\n';
 	   	   		    eventPrefDescription = eventPrefDescription + alarmTimeS;
 	   			}

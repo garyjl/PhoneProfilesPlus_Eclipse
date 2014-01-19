@@ -98,9 +98,9 @@ public class GUIData {
 	}
 	
 	@SuppressLint("NewApi")
-	public static void reloadActivity(Activity activity)
+	public static void reloadActivity(Activity activity, boolean newIntent)
 	{
-		if (android.os.Build.VERSION.SDK_INT < 11)
+		if ((android.os.Build.VERSION.SDK_INT < 11) || newIntent)
 		{
 		    Intent intent = activity.getIntent();
 		    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);

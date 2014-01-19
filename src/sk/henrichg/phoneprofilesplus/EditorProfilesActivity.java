@@ -30,6 +30,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -344,7 +345,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
     	changeEventOrder(orderSelectedItem);
         
         
-		//Log.e("EditorProfilesActivity.onCreate", "xxxx");
+		Log.e("EditorProfilesActivity.onCreate", "drawerSelectedItem="+drawerSelectedItem);
 		
 		
 	}
@@ -681,7 +682,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			if (profile_id == GlobalData.DEFAULT_PROFILE_ID)
 			{
 				// refresh activity for changes of default profile
-				GUIData.reloadActivity(this);
+				GUIData.reloadActivity(this, false);
 			}
 		}
 		else
@@ -716,7 +717,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 			if (restart)
 			{
 				// refresh activity for special changes
-				GUIData.reloadActivity(this);
+				GUIData.reloadActivity(this, true);
 			}
 		}
 		else
@@ -921,8 +922,14 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 							Toast.LENGTH_SHORT);
 					msg.show();
 
+			    	SharedPreferences preferences = getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Activity.MODE_PRIVATE);
+			    	Editor editor = preferences.edit();
+			    	editor.putInt(SP_EDITOR_DRAWER_SELECTED_ITEM, 1);
+			    	editor.putInt(SP_EDITOR_ORDER_SELECTED_ITEM, 0);
+					editor.commit();
+			    	
 					// refresh activity
-					GUIData.reloadActivity(activity);
+					GUIData.reloadActivity(activity, true);
 				
 				}
 				else
@@ -1126,7 +1133,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
         drawerToggle.onConfigurationChanged(newConfig); */
 		
 		getBaseContext().getResources().updateConfiguration(newConfig, getBaseContext().getResources().getDisplayMetrics());
-		GUIData.reloadActivity(this);
+		GUIData.reloadActivity(this, false);
 	}
 
 	@Override

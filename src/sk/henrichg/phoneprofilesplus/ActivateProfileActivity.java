@@ -409,7 +409,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 	{
 		getBaseContext().getResources().updateConfiguration(newConfig, getBaseContext().getResources().getDisplayMetrics());
 		//setContentView(R.layout.activity_phone_profiles);
-		GUIData.reloadActivity(this);
+		GUIData.reloadActivity(this, false);
 	}
 
 	private void updateHeader(Profile profile)
