@@ -289,15 +289,8 @@ public class EventPreferencesTime extends EventPreferences {
 	}
 	*/
 
-	@Override
-	public void setSystemRunningEvent(Context context)
+	public int computeDaysForAdd()
 	{
-		// set alarm for state PAUSE
-		
-		// this alarm generates broadcast, that change state into RUNNING
-		// from broadcast will by called EventsService with 
-		// EXTRA_EVENTS_SERVICE_PROCEDURE == ESP_START_EVENT
-
 		boolean[] daysOfWeek =  new boolean[8];
 		daysOfWeek[Calendar.SUNDAY] = this._sunday;
 		daysOfWeek[Calendar.MONDAY] = this._monday;
@@ -312,14 +305,14 @@ public class EventPreferencesTime extends EventPreferences {
 		int thisDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
 		int setDayOfWeek = thisDayOfWeek;
 
-		Log.e("EventPreferencesTime.setSystemRunningEvent","thisDayOfWeek="+thisDayOfWeek);
+		Log.e("EventPreferencesTime.computeDaysForAdd","thisDayOfWeek="+thisDayOfWeek);
 		
 		boolean setNextDayOfWeek = false;
 		
 		if (daysOfWeek[thisDayOfWeek])
 		{
 			// current day of week is set in event preferences
-			Log.e("EventPreferencesTime.setSystemRunningEvent","thisDayOfWeek=true");
+			Log.e("EventPreferencesTime.computeDaysForAdd","thisDayOfWeek=true");
 
 			Calendar now = Calendar.getInstance();
     		calendar.setTimeInMillis(_startTime);
@@ -345,7 +338,7 @@ public class EventPreferencesTime extends EventPreferences {
 		{
 			// find next day of week 
 
-			Log.e("EventPreferencesTime.setSystemRunningEvent","setNextDayOfWeek=true");
+			Log.e("EventPreferencesTime.computeDaysForAdd","setNextDayOfWeek=true");
 			
 			for (int i = thisDayOfWeek+1; i < 8; i++)
 			{
@@ -368,15 +361,30 @@ public class EventPreferencesTime extends EventPreferences {
 			}
 		}
 
-		Log.e("EventPreferencesTime.setSystemRunningEvent","setDayOfWeek="+setDayOfWeek);
+		Log.e("EventPreferencesTime.computeDaysForAdd","setDayOfWeek="+setDayOfWeek);
 		
 		int daysToAdd;
 		daysToAdd = setDayOfWeek - thisDayOfWeek;
 		if ((setDayOfWeek <= thisDayOfWeek) && setNextDayOfWeek)
 			daysToAdd = 7 + daysToAdd;
 
-		Log.e("EventPreferencesTime.setSystemRunningEvent","daysToAdd="+daysToAdd);
+		Log.e("EventPreferencesTime.computeDaysForAdd","daysToAdd="+daysToAdd);
+		
+		return daysToAdd;
+		
+	}
+	
+	@Override
+	public void setSystemRunningEvent(Context context)
+	{
+		// set alarm for state PAUSE
+		
+		// this alarm generates broadcast, that change state into RUNNING
+		// from broadcast will by called EventsService with 
+		// EXTRA_EVENTS_SERVICE_PROCEDURE == ESP_START_EVENT
 
+		int daysToAdd = computeDaysForAdd();
+		
 		removeAlarm(true, context);
 		removeAlarm(false, context);
 		setAlarm(true, daysToAdd, context);
@@ -433,9 +441,8 @@ public class EventPreferencesTime extends EventPreferences {
         
 	}
 
-	private void setAlarm(boolean startEvent, int daysToAdd, Context context)
+	public long computeAlarm(boolean startEvent, int daysToAdd)
 	{
-
 		Calendar now = Calendar.getInstance();
 		Calendar alarmCalendar = Calendar.getInstance();
 		
@@ -459,13 +466,20 @@ public class EventPreferencesTime extends EventPreferences {
 	    
 	    long alarmTime = alarmCalendar.getTimeInMillis();
 	    
+	    return alarmTime;
+	}
+	
+	private void setAlarm(boolean startEvent, int daysToAdd, Context context)
+	{
+
+	    long alarmTime = computeAlarm(startEvent, daysToAdd);
+
 	    SimpleDateFormat sdf = new SimpleDateFormat("EE d.MM.yyyy HH:mm:ss:S");
 	    String result = sdf.format(alarmTime);
 	    if (startEvent)
 	    	Log.e("EventPreferencesTime.setAlarm","startTime="+result);
 	    else
 	    	Log.e("EventPreferencesTime.setAlarm","endTime="+result);
-	   
 	    
 	    Intent intent = new Intent(context, EventsAlarmBroadcastReceiver.class);
 	    intent.putExtra(GlobalData.EXTRA_EVENT_ID, _event._id);

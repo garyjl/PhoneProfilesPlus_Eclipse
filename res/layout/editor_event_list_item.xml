@@ -3,7 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/event_list_item_root"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="93dp"
     android:padding="5dp"
     android:orientation="horizontal"
     android:background="?attr/cardShape" >
@@ -102,7 +102,7 @@
 	        android:layout_toRightOf="@+id/event_list_item_event_icon" 
 	        android:paddingLeft="10dp"
 	        android:textSize="11sp"
-	        android:singleLine="true" />
+	        android:singleLine="false" />
 	
 	    <ImageView
 	        android:id="@+id/event_list_item_profile_icon"
@@ -114,7 +114,7 @@
 	        android:scaleType="centerCrop"
 	        android:paddingTop="10dp"
 	        android:paddingBottom="10dp"
-	        android:layout_marginTop="5dp"
+	        android:layout_marginTop="16dp"
 	        android:src="@drawable/ic_profile_default" />
 	    
 	    <TextView

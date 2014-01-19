@@ -1,7 +1,11 @@
 package sk.henrichg.phoneprofilesplus;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -219,6 +223,7 @@ public class EditorEventListAdapter extends BaseAdapter
 		  int position;
 		}
 	
+	@SuppressLint("SimpleDateFormat")
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
 		ViewHolder holder;
@@ -262,8 +267,9 @@ public class EditorEventListAdapter extends BaseAdapter
        	if (GlobalData.applicationTheme.equals("dark"))
        		holder.listItemRoot.setBackgroundResource(R.drawable.card_dark);
         
-       	int statusRes = Event.ESTATUS_STOP; 
-       	switch (event.getStatusFromDB(dataWrapper))
+       	int statusRes = Event.ESTATUS_STOP;
+       	int eventStatus = event.getStatusFromDB(dataWrapper); 
+       	switch (eventStatus)
        	{
        		case Event.ESTATUS_RUNNING:
        			statusRes = R.drawable.ic_event_status_running;
@@ -279,15 +285,44 @@ public class EditorEventListAdapter extends BaseAdapter
        			break;
        	}
    		holder.eventStatus.setImageResource(statusRes);
-       	
-        holder.eventName.setText(event._name);
+
+		holder.eventName.setText(event._name);
+   		
         if (event._eventPreferences != null)
         	holder.eventIcon.setImageResource(event._eventPreferences._iconResourceID); // resource na ikonu
         else
         	holder.eventIcon.setImageResource(R.drawable.ic_empty);
         
 	    if (GlobalData.applicationEditorPrefIndicator)
-	    	holder.eventPreferencesDescription.setText(event.getPreferecesDescription(vi.getContext()));
+	    {
+	    	String eventPrefDescription = event.getPreferecesDescription(vi.getContext());
+	   		
+	   		if ((event._type == Event.ETYPE_TIME) && GlobalData.getGlobalEventsRuning(vi.getContext()))
+	   		{
+	   			long alarmTime;
+	   		    SimpleDateFormat sdf = new SimpleDateFormat("EE d.MM.yyyy HH:mm");
+	   		    String alarmTimeS = "";
+	   			if (eventStatus == Event.ESTATUS_PAUSE)
+	   			{
+	   				int daysToAdd = ((EventPreferencesTime)event._eventPreferences).computeDaysForAdd();
+	   				alarmTime = ((EventPreferencesTime)event._eventPreferences).computeAlarm(true, daysToAdd);
+	   	   		    alarmTimeS = "ST: " + sdf.format(alarmTime);
+	   	   		    eventPrefDescription = eventPrefDescription + '\n';
+	   	   		    eventPrefDescription = eventPrefDescription + alarmTimeS;
+	   			}
+	   			else
+	   			if ((eventStatus == Event.ESTATUS_RUNNING) && ((EventPreferencesTime)event._eventPreferences)._useEndTime)
+	   			{
+	   				alarmTime = ((EventPreferencesTime)event._eventPreferences).computeAlarm(false, 0);
+	   				alarmTimeS = "ET: " + sdf.format(alarmTime);
+	   	   		    eventPrefDescription = eventPrefDescription + '\n';
+	   	   		    eventPrefDescription = eventPrefDescription + alarmTimeS;
+	   			}
+	   		}
+	   		
+	   		
+	    	holder.eventPreferencesDescription.setText(eventPrefDescription);
+	    }
 
         Profile profile =  dataWrapper.getProfileById(event._fkProfile);
         if (profile != null)
