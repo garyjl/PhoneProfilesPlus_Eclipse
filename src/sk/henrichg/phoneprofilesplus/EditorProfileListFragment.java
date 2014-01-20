@@ -1,5 +1,7 @@
 package sk.henrichg.phoneprofilesplus;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -174,6 +176,10 @@ public class EditorProfileListFragment extends SherlockFragment {
 		EditorProfileListFragment fragment;
 		boolean defaultProfilesGenerated = false;
 		
+		private WeakReference<List<Profile>> profileListReference;
+		private List<Profile> lProfileList;
+		
+		
 		LoadProfilesTask(EditorProfileListFragment fragment)
 		{
 			this.fragment = fragment;
@@ -183,27 +189,29 @@ public class EditorProfileListFragment extends SherlockFragment {
 		protected void onPreExecute()
 		{
 			super.onPreExecute();
+
 			//Log.e("EditorProfileListFragment.doOnViewCreated.onPreExecute",fragment.dataWrapper+"");
 
-			//updateHeader(null);
+			fragment.profileList = new ArrayList<Profile>();
+			profileListReference = new WeakReference<List<Profile>>(fragment.profileList);
 		}
 		
 		@Override
 		protected Void doInBackground(Void... params) {
 			//Log.e("EditorProfileListFragment.doOnViewCreated.doInBackground",fragment.dataWrapper+"");
 
-			fragment.profileList = fragment.dataWrapper.getProfileList();
-			if (fragment.profileList.size() == 0)
+			lProfileList = fragment.dataWrapper.getProfileList();
+			if (lProfileList.size() == 0)
 			{
 				// no profiles in DB, generate default profiles
-				fragment.profileList = fragment.dataWrapper.getDefaultProfileList();
+				lProfileList = fragment.dataWrapper.getDefaultProfileList();
 				defaultProfilesGenerated = true;
 			}
 			// sort list
 			if (fragment.filterType != EditorProfileListFragment.FILTER_TYPE_SHOW_IN_ACTIVATOR)
-				fragment.sortAlphabetically();
+				fragment.sortAlphabetically(lProfileList);
 			else
-				fragment.sortByPOrder();
+				fragment.sortByPOrder(lProfileList);
 			
 			return null;
 		}
@@ -215,6 +223,18 @@ public class EditorProfileListFragment extends SherlockFragment {
 			
 			//Log.e("EditorProfileListFragment.doOnViewCreated.onPostExecute",fragment.dataWrapper+"");
 
+			final List<Profile> profileList = profileListReference.get();
+			
+		    if (profileListReference != null && lProfileList != null) {
+		    	profileList.clear();
+		    	for (Profile origProfile : lProfileList)
+		    	{
+					Profile newProfile = new Profile();
+		    		newProfile.copyProfile(origProfile);
+					profileList.add(newProfile);
+		    	}
+		    }				
+			
 			fragment.profileListAdapter = new EditorProfileListAdapter(fragment, fragment.dataWrapper, fragment.filterType);
 			fragment.listView.setAdapter(fragment.profileListAdapter);
 
@@ -702,9 +722,9 @@ public class EditorProfileListFragment extends SherlockFragment {
 		{
 			// sort list
 			if (filterType != EditorProfileListFragment.FILTER_TYPE_SHOW_IN_ACTIVATOR)
-				sortAlphabetically();
+				sortAlphabetically(profileList);
 			else
-				sortByPOrder();
+				sortByPOrder(profileList);
 		}
 
 		if (profileListAdapter != null)
@@ -741,7 +761,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 	    }
 	}
 	
-	public void sortAlphabetically()
+	public void sortAlphabetically(List<Profile> profileList)
 	{
 	    Collections.sort(profileList, new AlphabeticallyComparator());
 	}
@@ -755,7 +775,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 	    }
 	}
 	
-	public void sortByPOrder()
+	public void sortByPOrder(List<Profile> profileList)
 	{
 	    Collections.sort(profileList, new ByPOrderComparator());
 	}

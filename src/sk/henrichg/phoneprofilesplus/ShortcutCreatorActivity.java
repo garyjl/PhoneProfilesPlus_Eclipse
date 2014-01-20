@@ -1,5 +1,7 @@
 package sk.henrichg.phoneprofilesplus;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -118,16 +120,22 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 
 		new AsyncTask<Void, Integer, Void>() {
 			
+			private WeakReference<List<Profile>> profileListReference;
+			private List<Profile> lProfileList;
+			
 			@Override
 			protected void onPreExecute()
 			{
 				super.onPreExecute();
+
+				profileList = new ArrayList<Profile>();
+				profileListReference = new WeakReference<List<Profile>>(profileList);
 			}
 			
 			@Override
 			protected Void doInBackground(Void... params) {
-				profileList = dataWrapper.getProfileList();
-			    Collections.sort(profileList, new ProfileComparator());
+				lProfileList = dataWrapper.getProfileList();
+			    Collections.sort(lProfileList, new ProfileComparator());
 				
 				return null;
 			}
@@ -137,6 +145,18 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 			{
 				super.onPostExecute(result);
 
+				final List<Profile> profileList = profileListReference.get();
+				
+			    if (profileListReference != null && lProfileList != null) {
+			    	profileList.clear();
+			    	for (Profile origProfile : lProfileList)
+			    	{
+						Profile newProfile = new Profile();
+			    		newProfile.copyProfile(origProfile);
+						profileList.add(newProfile);
+			    	}
+			    }				
+				
 				if (listView != null)
 				{
 					profileListAdapter = new ShortcutProfileListAdapter(getBaseContext(), profileList);

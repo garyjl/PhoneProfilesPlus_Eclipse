@@ -92,6 +92,8 @@ public class Event {
 	
 	public void copyEventPreferences(Event fromEvent)
 	{
+		if (this._eventPreferences == null)
+			createEventPreferences();
 		this._eventPreferences.copyPreferences(fromEvent);
 	}
 	

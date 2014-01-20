@@ -1,5 +1,7 @@
 package sk.henrichg.phoneprofilesplus;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -165,6 +167,10 @@ public class EditorEventListFragment extends SherlockFragment {
 	private static class LoadProfilesTask extends AsyncTask<Void, Integer, Void>
 	{
 		EditorEventListFragment fragment;
+
+		private WeakReference<List<Event>> eventListReference;
+		private List<Event> lEventList;
+		
 		
 		LoadProfilesTask(EditorEventListFragment fragment)
 		{
@@ -176,21 +182,20 @@ public class EditorEventListFragment extends SherlockFragment {
 		{
 			super.onPreExecute();
 			//Log.e("EditorEventListFragment.doOnViewCreated.onPreExecute",fragment.dataWrapper+"");
-			//updateHeader(null);
+
+			fragment.eventList = new ArrayList<Event>();
+			eventListReference = new WeakReference<List<Event>>(fragment.eventList);
 		}
 		
 		@Override
 		protected Void doInBackground(Void... params) {
 
 			//Log.e("EditorEventListFragment.doOnViewCreated.doInBackground 1",fragment.dataWrapper+"");
+
+			lEventList = fragment.dataWrapper.getEventList();
+			fragment.sortList(lEventList, fragment.orderType);
 			
-			fragment.eventList = fragment.dataWrapper.getEventList();
-			fragment.sortList(fragment.orderType);
-			
-			if (fragment.dataWrapper != null)
-				fragment.dataWrapper.getProfileList();
-			//else
-			//	Log.e("EditorEventListFragment.doOnViewCreated.doInBackground 2",fragment.dataWrapper+"");
+			//fragment.dataWrapper.getProfileList();
 			
 			return null;
 		}
@@ -202,6 +207,18 @@ public class EditorEventListFragment extends SherlockFragment {
 
 			//Log.e("EditorEventListFragment.doOnViewCreated.onPostExecute",fragment.dataWrapper+"");
 
+			final List<Event> eventList = eventListReference.get();
+			
+		    if (eventListReference != null && lEventList != null) {
+		    	eventList.clear();
+		    	for (Event origEvent : lEventList)
+		    	{
+		    		Event newEvent = new Event();
+		    		newEvent.copyEvent(origEvent);
+		    		eventList.add(newEvent);
+		    	}
+		    }				
+			
 			fragment.eventListAdapter = new EditorEventListAdapter(fragment, fragment.dataWrapper, fragment.filterType);
 			fragment.listView.setAdapter(fragment.eventListAdapter);
 		}
@@ -474,7 +491,7 @@ public class EditorEventListFragment extends SherlockFragment {
 		if (eventList != null)
 		{
 			// sort list
-			sortList(orderType);
+			sortList(eventList, orderType);
 		}
 
 		if (eventListAdapter != null)
@@ -508,12 +525,12 @@ public class EditorEventListFragment extends SherlockFragment {
 		this.orderType = orderType;
 		if (eventListAdapter != null)
 		{
-			sortList(orderType);
+			sortList(eventList, orderType);
 			eventListAdapter.notifyDataSetChanged();
 		}
 	}
 	
-	private void sortList(int orderType)
+	private void sortList(List<Event> eventList, int orderType)
 	{
 		switch (orderType)
 		{

@@ -1,5 +1,7 @@
 package sk.henrichg.phoneprofilesplus;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -133,17 +135,22 @@ public class ActivateProfileActivity extends SherlockActivity {
 
 		new AsyncTask<Void, Integer, Void>() {
 			
+			private WeakReference<List<Profile>> profileListReference;
+			private List<Profile> lProfileList;
+			
 			@Override
 			protected void onPreExecute()
 			{
 				super.onPreExecute();
-				//updateHeader(null);
+				
+				profileList = new ArrayList<Profile>();
+				profileListReference = new WeakReference<List<Profile>>(profileList);
 			}
 			
 			@Override
 			protected Void doInBackground(Void... params) {
-				profileList = dataWrapper.getProfileList();
-			    Collections.sort(profileList, new ProfileComparator());
+				lProfileList = dataWrapper.getProfileList();
+			    Collections.sort(lProfileList, new ProfileComparator());
 				
 				return null;
 			}
@@ -152,11 +159,26 @@ public class ActivateProfileActivity extends SherlockActivity {
 			protected void onPostExecute(Void result)
 			{
 				super.onPostExecute(result);
+				
+				final List<Profile> profileList = profileListReference.get();
+				
+			    if (profileListReference != null && lProfileList != null) {
+			    	profileList.clear();
+			    	for (Profile origProfile : lProfileList)
+			    	{
+						Profile newProfile = new Profile();
+			    		newProfile.copyProfile(origProfile);
+						profileList.add(newProfile);
+			    	}
+			    }				
 
+				/*
 				if (profileListAdapter == null)
 					profileListAdapter = new ActivateProfileListAdapter(getBaseContext(), profileList);
+				*/
 					
-				if (profileListAdapter.getCount() == 0)
+				//if (profileListAdapter.getCount() == 0)
+				if (profileList.size() == 0)
 				{
 					// nie je ziaden profile, startneme Editor
 					
@@ -171,6 +193,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 				
 				if (listView != null)
 				{
+					profileListAdapter = new ActivateProfileListAdapter(getBaseContext(), profileList);
 					listView.setAdapter(profileListAdapter);
 					
 					doOnStart();
@@ -338,10 +361,16 @@ public class ActivateProfileActivity extends SherlockActivity {
 		
 		if (profileList != null)
 		{
-			if (profileListAdapter == null)
-				profileListAdapter = new ActivateProfileListAdapter(getBaseContext(), profileList);
+			//if (profileListAdapter == null)
+			//	profileListAdapter = new ActivateProfileListAdapter(getBaseContext(), profileList);
 
-			listView.setAdapter(profileListAdapter);
+			//listView.setAdapter(profileListAdapter);
+
+			if (profileListAdapter == null)
+			{
+				profileListAdapter = new ActivateProfileListAdapter(getBaseContext(), profileList);
+				listView.setAdapter(profileListAdapter);
+			}
 		
 			doOnStart();
 		}
