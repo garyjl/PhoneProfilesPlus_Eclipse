@@ -345,7 +345,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
     	changeEventOrder(orderSelectedItem);
         
         
-		Log.e("EditorProfilesActivity.onCreate", "drawerSelectedItem="+drawerSelectedItem);
+		//Log.e("EditorProfilesActivity.onCreate", "drawerSelectedItem="+drawerSelectedItem);
 		
 		
 	}
@@ -969,7 +969,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 				    startActivityForResult(intent, GlobalData.REQUEST_CODE_REMOTE_EXPORT);		
 				}
 				else
-					doImportData(GUIData.EXPORT_PATH);
+					doImportData(GlobalData.EXPORT_PATH);
 			}
 		});
 		dialogBuilder2.setNegativeButton(R.string.alert_button_no, null);
@@ -1075,7 +1075,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 						if (ret == 1)
 						{
 							File sd = Environment.getExternalStorageDirectory();
-							File exportFile = new File(sd, GUIData.EXPORT_PATH + "/" + GUIData.EXPORT_APP_PREF_FILENAME);
+							File exportFile = new File(sd, GlobalData.EXPORT_PATH + "/" + GUIData.EXPORT_APP_PREF_FILENAME);
 							if (!exportApplicationPreferences(exportFile))
 								ret = 0;
 						}

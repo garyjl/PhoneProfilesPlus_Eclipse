@@ -315,7 +315,7 @@ public class Event {
 					&& (activateReturnProfile)
 					&& (_eventPreferences.activateReturnProfile()))
 				{
-					Log.e("Event.pauseEvent","activate return time");
+					GlobalData.logE("Event.pauseEvent","activate return time");
 					dataWrapper.activateProfileFromEvent(eventTimeline._fkProfileReturn);
 				}
 			}

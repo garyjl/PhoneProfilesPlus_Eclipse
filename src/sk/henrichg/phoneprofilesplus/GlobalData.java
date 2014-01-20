@@ -1,5 +1,12 @@
 package sk.henrichg.phoneprofilesplus;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import com.stericson.RootTools.RootTools;
 
 import android.app.Application;
@@ -12,11 +19,18 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.media.AudioManager;
+import android.os.Environment;
 import android.provider.Settings;
+import android.util.Log;
 
 public class GlobalData extends Application {
 
 	static String PACKAGE_NAME;
+	
+	public static boolean logIntoLogCat = true;
+	public static boolean logIntoFile = true;
+	public static final String EXPORT_PATH = "/PhoneProfilesPlus";
+	public static final String LOG_FILENAME = "log.txt";
 
 	static final String EXTRA_PROFILE_ID = "profile_id";
 	static final String EXTRA_EVENT_ID = "event_id";
@@ -151,6 +165,8 @@ public class GlobalData extends Application {
 	{
 	//	Debug.startMethodTracing("phoneprofiles");
 		
+		resetLog();
+		
 		super.onCreate();
 		
 		PACKAGE_NAME = this.getPackageName();
@@ -167,6 +183,80 @@ public class GlobalData extends Application {
 	public void onTerminate ()
 	{
 		DatabaseHandler.getInstance(this).closeConnecion();
+	}
+	
+	//--------------------------------------------------------------
+	
+	static private void resetLog()
+	{
+		File sd = Environment.getExternalStorageDirectory();
+		File logFile = new File(sd, EXPORT_PATH + "/" + LOG_FILENAME);
+		logFile.delete();
+	}
+	
+	static private void logIntoFile(String type, String tag, String text)
+	{
+		if (!logIntoFile)
+			return;
+		
+		File sd = Environment.getExternalStorageDirectory();
+		File logFile = new File(sd, EXPORT_PATH + "/" + LOG_FILENAME);
+
+		if (logFile.length() > 1024 * 10000)
+			resetLog();
+
+	    if (!logFile.exists())
+	    {
+	        try
+	        {
+	            logFile.createNewFile();
+	        } 
+	        catch (IOException e)
+	        {
+	            e.printStackTrace();
+	        }
+	    }
+	    try
+	    {
+	        //BufferedWriter for performance, true to set append to file flag
+	        BufferedWriter buf = new BufferedWriter(new FileWriter(logFile, true));
+	        String log = "";
+		    SimpleDateFormat sdf = new SimpleDateFormat("d.MM.yy HH:mm:ss:S");
+		    String time = sdf.format(Calendar.getInstance().getTimeInMillis());
+	        log = log + time + "--" + type + "-----" + tag + "------" + text;
+	        buf.append(log);
+	        buf.newLine();
+	        buf.flush();
+	        buf.close();
+	    }
+	    catch (IOException e)
+	    {
+	        e.printStackTrace();
+	    }		
+	}
+
+	static public void logI(String tag, String text)
+	{
+		if (logIntoLogCat) Log.i(tag, text);
+		logIntoFile("I", tag, text);
+	}
+	
+	static public void logW(String tag, String text)
+	{
+		if (logIntoLogCat) Log.w(tag, text);
+		logIntoFile("W", tag, text);
+	}
+	
+	static public void logE(String tag, String text)
+	{
+		if (logIntoLogCat) Log.e(tag, text);
+		logIntoFile("E", tag, text);
+	}
+
+	static public void logD(String tag, String text)
+	{
+		if (logIntoLogCat) Log.d(tag, text);
+		logIntoFile("D", tag, text);
 	}
 	
 	//--------------------------------------------------------------

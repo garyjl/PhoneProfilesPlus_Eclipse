@@ -35,20 +35,20 @@ public class EventsService extends IntentService
 		DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
 		List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
 
-		Log.e("EventsService.onHandleIntent","eventTimelineList.size()="+eventTimelineList.size());
+		GlobalData.logE("EventsService.onHandleIntent","eventTimelineList.size()="+eventTimelineList.size());
 		
 		int procedure = intent.getIntExtra(GlobalData.EXTRA_EVENTS_SERVICE_PROCEDURE, 0);
 		int eventType = intent.getIntExtra(GlobalData.EXTRA_EVENT_TYPE, 0);
 		
-		Log.e("EventsService.onHandleIntent","procedure="+procedure);
-		Log.e("EventsService.onHandleIntent","eventType="+eventType);
+		GlobalData.logE("EventsService.onHandleIntent","procedure="+procedure);
+		GlobalData.logE("EventsService.onHandleIntent","eventType="+eventType);
 		
 		switch (eventType)
 		{
 			case Event.ETYPE_TIME:
 				// in intent is event_id
 				long event_id = intent.getLongExtra(GlobalData.EXTRA_EVENT_ID, 0);
-				Log.e("EventsService.onHandleIntent","event_id="+event_id);
+				GlobalData.logE("EventsService.onHandleIntent","event_id="+event_id);
 
 				Event event = dataWrapper.getEventById(event_id);
 				doEvent_Time(dataWrapper, eventTimelineList, event, procedure);

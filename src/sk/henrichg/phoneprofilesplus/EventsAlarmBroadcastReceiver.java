@@ -13,8 +13,8 @@ public class EventsAlarmBroadcastReceiver extends WakefulBroadcastReceiver {
 		long eventId = intent.getLongExtra(GlobalData.EXTRA_EVENT_ID, 0);
 		boolean startEvent = intent.getBooleanExtra(GlobalData.EXTRA_START_SYSTEM_EVENT, true);
 		
-		Log.e("EventsAlarmBroadcastReceiver.onReceive","eventId="+eventId);
-		Log.e("EventsAlarmBroadcastReceiver.onReceive","startEvent="+startEvent);
+		GlobalData.logE("EventsAlarmBroadcastReceiver.onReceive","eventId="+eventId);
+		GlobalData.logE("EventsAlarmBroadcastReceiver.onReceive","startEvent="+startEvent);
 		
 		int eventsServiceProcedure = EventsService.ESP_PAUSE_EVENT;
 		if (startEvent)

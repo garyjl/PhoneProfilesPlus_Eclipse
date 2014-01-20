@@ -305,14 +305,14 @@ public class EventPreferencesTime extends EventPreferences {
 		int thisDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
 		int setDayOfWeek = thisDayOfWeek;
 
-		Log.e("EventPreferencesTime.computeDaysForAdd","thisDayOfWeek="+thisDayOfWeek);
+		GlobalData.logE("EventPreferencesTime.computeDaysForAdd","thisDayOfWeek="+thisDayOfWeek);
 		
 		boolean setNextDayOfWeek = false;
 		
 		if (daysOfWeek[thisDayOfWeek])
 		{
 			// current day of week is set in event preferences
-			Log.e("EventPreferencesTime.computeDaysForAdd","thisDayOfWeek=true");
+			GlobalData.logE("EventPreferencesTime.computeDaysForAdd","thisDayOfWeek=true");
 
 			Calendar now = Calendar.getInstance();
     		calendar.setTimeInMillis(_startTime);
@@ -338,7 +338,7 @@ public class EventPreferencesTime extends EventPreferences {
 		{
 			// find next day of week 
 
-			Log.e("EventPreferencesTime.computeDaysForAdd","setNextDayOfWeek=true");
+			GlobalData.logE("EventPreferencesTime.computeDaysForAdd","setNextDayOfWeek=true");
 			
 			for (int i = thisDayOfWeek+1; i < 8; i++)
 			{
@@ -361,14 +361,14 @@ public class EventPreferencesTime extends EventPreferences {
 			}
 		}
 
-		Log.e("EventPreferencesTime.computeDaysForAdd","setDayOfWeek="+setDayOfWeek);
+		GlobalData.logE("EventPreferencesTime.computeDaysForAdd","setDayOfWeek="+setDayOfWeek);
 		
 		int daysToAdd;
 		daysToAdd = setDayOfWeek - thisDayOfWeek;
 		if ((setDayOfWeek <= thisDayOfWeek) && setNextDayOfWeek)
 			daysToAdd = 7 + daysToAdd;
 
-		Log.e("EventPreferencesTime.computeDaysForAdd","daysToAdd="+daysToAdd);
+		GlobalData.logE("EventPreferencesTime.computeDaysForAdd","daysToAdd="+daysToAdd);
 		
 		return daysToAdd;
 		
@@ -412,7 +412,7 @@ public class EventPreferencesTime extends EventPreferences {
 		removeAlarm(true, context);
 		removeAlarm(false, context);
 		
-    	Log.e("EventPreferencesTime.removeAllSystemEvents","xxx");
+		GlobalData.logE("EventPreferencesTime.removeAllSystemEvents","xxx");
 	}
 
 	private void removeAlarm(boolean startEvent, Context context)
@@ -431,9 +431,9 @@ public class EventPreferencesTime extends EventPreferences {
         if (pendingIntent != null)
         {
         	if (startEvent)
-        		Log.e("EventPreferencesTime.removeAlarm","startTime alarm found");
+        		GlobalData.logE("EventPreferencesTime.removeAlarm","startTime alarm found");
         	else
-            	Log.e("EventPreferencesTime.removeAlarm","endTime alarm found");
+        		GlobalData.logE("EventPreferencesTime.removeAlarm","endTime alarm found");
         		
         	alarmManager.cancel(pendingIntent);
         	pendingIntent.cancel();
@@ -477,9 +477,9 @@ public class EventPreferencesTime extends EventPreferences {
 	    SimpleDateFormat sdf = new SimpleDateFormat("EE d.MM.yyyy HH:mm:ss:S");
 	    String result = sdf.format(alarmTime);
 	    if (startEvent)
-	    	Log.e("EventPreferencesTime.setAlarm","startTime="+result);
+	    	GlobalData.logE("EventPreferencesTime.setAlarm","startTime="+result);
 	    else
-	    	Log.e("EventPreferencesTime.setAlarm","endTime="+result);
+	    	GlobalData.logE("EventPreferencesTime.setAlarm","endTime="+result);
 	    
 	    Intent intent = new Intent(context, EventsAlarmBroadcastReceiver.class);
 	    intent.putExtra(GlobalData.EXTRA_EVENT_ID, _event._id);
@@ -490,7 +490,7 @@ public class EventPreferencesTime extends EventPreferences {
 	    	alarmId = (int) (_event._id);
 	    else
 	    	alarmId = (int) ((-1)*_event._id);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), alarmId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), alarmId, intent, PendingIntent.FLAG_ONE_SHOT);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
 

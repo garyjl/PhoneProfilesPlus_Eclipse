@@ -2192,7 +2192,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			File data = Environment.getDataDirectory();
 			
 			File dataDB = new File(data, GUIData.DB_FILEPATH + "/" + DATABASE_NAME);
-			File exportedDB = new File(sd, GUIData.EXPORT_PATH + "/" + EXPORT_DBFILENAME);
+			File exportedDB = new File(sd, GlobalData.EXPORT_PATH + "/" + EXPORT_DBFILENAME);
 			
 			//Log.d("DatabaseHandler.exportDB", "dataDB="+dataDB.getAbsolutePath());
 			//Log.d("DatabaseHandler.exportDB", "exportedDB="+exportedDB.getAbsolutePath());
@@ -2202,7 +2202,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				// close db
 				close();
 				
-				File exportDir = new File(sd, GUIData.EXPORT_PATH);
+				File exportDir = new File(sd, GlobalData.EXPORT_PATH);
 				if (!(exportDir.exists() && exportDir.isDirectory()))
 				{
 					exportDir.mkdirs();
