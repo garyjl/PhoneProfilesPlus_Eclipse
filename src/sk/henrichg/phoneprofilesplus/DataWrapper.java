@@ -80,6 +80,11 @@ public class DataWrapper {
 		return profileList;
 	}
 	
+	public void setProfileList(List<Profile> profileList)
+	{
+		this.profileList = profileList;
+	}
+
 	public Profile getNoinitializedProfile(String name, String icon, int order)
 	{
 		return new Profile(
@@ -416,6 +421,11 @@ public class DataWrapper {
 		}
 
 		return eventList;
+	}
+	
+	public void setEventList(List<Event> eventList)
+	{
+		this.eventList = eventList;
 	}
 
 	public void invalidateEventList()

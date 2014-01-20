@@ -170,6 +170,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 			    		newProfile.copyProfile(origProfile);
 						profileList.add(newProfile);
 			    	}
+			    	dataWrapper.setProfileList(profileList);
 			    }				
 
 				/*

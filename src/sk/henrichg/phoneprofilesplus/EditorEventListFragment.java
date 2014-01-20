@@ -217,6 +217,7 @@ public class EditorEventListFragment extends SherlockFragment {
 		    		newEvent.copyEvent(origEvent);
 		    		eventList.add(newEvent);
 		    	}
+		    	fragment.dataWrapper.setEventList(eventList);
 		    }				
 			
 			fragment.eventListAdapter = new EditorEventListAdapter(fragment, fragment.dataWrapper, fragment.filterType);
