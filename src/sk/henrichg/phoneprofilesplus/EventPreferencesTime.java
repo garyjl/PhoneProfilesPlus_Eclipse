@@ -4,8 +4,6 @@ import java.sql.Date;
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -15,7 +13,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.text.format.DateFormat;
-import android.util.Log;
 
 public class EventPreferencesTime extends EventPreferences {
 
@@ -177,7 +174,7 @@ public class EventPreferencesTime extends EventPreferences {
 	    	}
     	}
     	
-        Calendar calendar = new GregorianCalendar();
+        Calendar calendar = Calendar.getInstance();
 
         calendar.setTimeInMillis(this._startTime);
 		descr = descr + "- ";
@@ -241,7 +238,7 @@ public class EventPreferencesTime extends EventPreferences {
 	{
 		boolean isTime = false;
 		
-		Calendar now = new GregorianCalendar();
+		Calendar now = Calendar.getInstance();
 	    now.setTimeInMillis(System.currentTimeMillis());
 	    
 	    int dayOfWeek = now.get(Calendar.DAY_OF_WEEK);
@@ -254,13 +251,13 @@ public class EventPreferencesTime extends EventPreferences {
 	    if ((dayOfWeek == Calendar.SATURDAY) && this._saturday) isTime = true;
 	    if ((dayOfWeek == Calendar.SUNDAY) && this._sunday) isTime = true;
 
-	    Calendar startTime = new GregorianCalendar();
+	    Calendar startTime = Calendar.getInstance();
 	    startTime.setTimeInMillis(_startTime);
 	    startTime.set(Calendar.DAY_OF_MONTH, 0);
 	    startTime.set(Calendar.MONTH, 0);
 	    startTime.set(Calendar.YEAR, 0);
 
-	    Calendar endTime = new GregorianCalendar();
+	    Calendar endTime = Calendar.getInstance();
 	    
 	    if (_useEndTime)
 	    {

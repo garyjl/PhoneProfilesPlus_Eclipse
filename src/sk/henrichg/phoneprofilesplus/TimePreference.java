@@ -2,8 +2,6 @@ package sk.henrichg.phoneprofilesplus;
 
 import java.sql.Date;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.preference.DialogPreference;
@@ -28,7 +26,7 @@ public class TimePreference extends DialogPreference {
         setPositiveButtonText(android.R.string.ok);
         setNegativeButtonText(android.R.string.cancel);
 
-        calendar = new GregorianCalendar();
+        calendar = Calendar.getInstance();
     }
 
     @Override
