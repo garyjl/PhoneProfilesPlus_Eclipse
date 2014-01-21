@@ -57,7 +57,7 @@ public class EventPreferences {
 		
 	}
 	
-	public void removeAllSystemEvents(Context context)
+	public void removeSystemEvent(Context context)
 	{
 		
 	}

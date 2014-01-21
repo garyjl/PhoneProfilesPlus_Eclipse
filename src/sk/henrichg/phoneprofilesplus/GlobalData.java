@@ -165,7 +165,7 @@ public class GlobalData extends Application {
 	{
 	//	Debug.startMethodTracing("phoneprofiles");
 		
-		resetLog();
+		//resetLog();
 		
 		super.onCreate();
 		

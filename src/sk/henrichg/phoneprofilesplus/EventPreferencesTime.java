@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -385,8 +386,7 @@ public class EventPreferencesTime extends EventPreferences {
 
 		int daysToAdd = computeDaysForAdd();
 		
-		removeAlarm(true, context);
-		removeAlarm(false, context);
+		removeAlarm(context);
 		setAlarm(true, daysToAdd, context);
 	}
 
@@ -399,46 +399,34 @@ public class EventPreferencesTime extends EventPreferences {
 		// from broadcast will by called EventsService with 
 		// EXTRA_EVENTS_SERVICE_PROCEDURE == ESP_PAUSE_EVENT
 		
-		removeAlarm(true, context);
-		removeAlarm(false, context);
+		removeAlarm(context);
 		setAlarm(false, 0, context);
 	}
 	
 	@Override
-	public void removeAllSystemEvents(Context context)
+	public void removeSystemEvent(Context context)
 	{
 		// remove alarms for state STOP
 
-		removeAlarm(true, context);
-		removeAlarm(false, context);
+		removeAlarm(context);
 		
-		GlobalData.logE("EventPreferencesTime.removeAllSystemEvents","xxx");
+		GlobalData.logE("EventPreferencesTime.removeSystemEvent","xxx");
 	}
 
-	private void removeAlarm(boolean startEvent, Context context)
+	public void removeAlarm(Context context)
 	{
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
 
 		Intent intent = new Intent(context, EventsAlarmBroadcastReceiver.class);
 	    
-	    int alarmId;
-	    if (startEvent)
-	    	alarmId = (int) (_event._id);
-	    else
-	    	alarmId = (int) ((-1)*_event._id);
-	    
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), alarmId, intent, PendingIntent.FLAG_NO_CREATE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), (int) _event._id, intent, PendingIntent.FLAG_NO_CREATE);
         if (pendingIntent != null)
         {
-        	if (startEvent)
-        		GlobalData.logE("EventPreferencesTime.removeAlarm","startTime alarm found");
-        	else
-        		GlobalData.logE("EventPreferencesTime.removeAlarm","endTime alarm found");
+       		GlobalData.logE("EventPreferencesTime.removeAlarm","alarm found");
         		
         	alarmManager.cancel(pendingIntent);
         	pendingIntent.cancel();
         }
-        
 	}
 
 	public long computeAlarm(boolean startEvent, int daysToAdd)
@@ -469,6 +457,7 @@ public class EventPreferencesTime extends EventPreferences {
 	    return alarmTime;
 	}
 	
+	@SuppressLint("SimpleDateFormat")
 	private void setAlarm(boolean startEvent, int daysToAdd, Context context)
 	{
 
@@ -485,12 +474,7 @@ public class EventPreferencesTime extends EventPreferences {
 	    intent.putExtra(GlobalData.EXTRA_EVENT_ID, _event._id);
 	    intent.putExtra(GlobalData.EXTRA_START_SYSTEM_EVENT, startEvent);
 	    
-	    int alarmId;
-	    if (startEvent)
-	    	alarmId = (int) (_event._id);
-	    else
-	    	alarmId = (int) ((-1)*_event._id);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), alarmId, intent, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), (int) _event._id, intent, PendingIntent.FLAG_ONE_SHOT);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
 

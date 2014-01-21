@@ -398,7 +398,7 @@ public class Event {
 		{
 			// event stopped
 			// remove all system events
-			_eventPreferences.removeAllSystemEvents(context);
+			_eventPreferences.removeSystemEvent(context);
 		}
 	}
 

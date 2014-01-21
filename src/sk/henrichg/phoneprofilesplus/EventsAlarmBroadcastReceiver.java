@@ -16,15 +16,19 @@ public class EventsAlarmBroadcastReceiver extends WakefulBroadcastReceiver {
 		GlobalData.logE("EventsAlarmBroadcastReceiver.onReceive","eventId="+eventId);
 		GlobalData.logE("EventsAlarmBroadcastReceiver.onReceive","startEvent="+startEvent);
 		
-		int eventsServiceProcedure = EventsService.ESP_PAUSE_EVENT;
+		int eventsServiceProcedure;
 		if (startEvent)
 			eventsServiceProcedure = EventsService.ESP_START_EVENT;
+		else
+			eventsServiceProcedure = EventsService.ESP_PAUSE_EVENT;
 		
 		DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
 		Event event = dataWrapper.getEventById(eventId);
 		
 		if (event != null)
 		{
+			event._eventPreferences.removeSystemEvent(context);
+			
 			Intent eventsServiceIntent = new Intent(context, EventsService.class);
 			eventsServiceIntent.putExtra(GlobalData.EXTRA_EVENT_TYPE, event._type);
 			eventsServiceIntent.putExtra(GlobalData.EXTRA_EVENT_ID, eventId);
