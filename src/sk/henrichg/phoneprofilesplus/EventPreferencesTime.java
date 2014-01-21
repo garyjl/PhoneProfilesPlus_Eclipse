@@ -331,6 +331,8 @@ public class EventPreferencesTime extends EventPreferences {
 		    setNextDayOfWeek = (calendar.getTimeInMillis() <= thisTime);
 			
 		}
+		else
+			setNextDayOfWeek = true;
 		
 		if (setNextDayOfWeek)
 		{
