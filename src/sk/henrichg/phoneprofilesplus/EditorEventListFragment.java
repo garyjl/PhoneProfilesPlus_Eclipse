@@ -213,10 +213,12 @@ public class EditorEventListFragment extends SherlockFragment {
 		    	eventList.clear();
 		    	for (Event origEvent : lEventList)
 		    	{
-		    		Event newEvent = new Event();
-		    		newEvent.copyEvent(origEvent);
-		    		eventList.add(newEvent);
+		    		//Event newEvent = new Event();
+		    		//newEvent.copyEvent(origEvent);
+		    		//eventList.add(newEvent);
+		    		eventList.add(origEvent);
 		    	}
+		    	lEventList.clear();
 		    	fragment.dataWrapper.setEventList(eventList);
 		    }				
 			

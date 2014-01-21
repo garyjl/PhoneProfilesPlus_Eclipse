@@ -80,11 +80,16 @@ public class DataWrapper {
 		return profileList;
 	}
 	
-	public void setProfileList(List<Profile> profileList)
+	public void setProfileList(List<Profile> profileList, boolean recycleBitmaps)
 	{
+		if (recycleBitmaps)
+			invalidateProfileList();
+		else
+			if (this.profileList != null)
+				this.profileList.clear();
 		this.profileList = profileList;
 	}
-
+	
 	public Profile getNoinitializedProfile(String name, String icon, int order)
 	{
 		return new Profile(
@@ -425,6 +430,8 @@ public class DataWrapper {
 	
 	public void setEventList(List<Event> eventList)
 	{
+		if (this.eventList != null)
+			this.eventList.clear();
 		this.eventList = eventList;
 	}
 

@@ -151,11 +151,13 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 			    	profileList.clear();
 			    	for (Profile origProfile : lProfileList)
 			    	{
-						Profile newProfile = new Profile();
-			    		newProfile.copyProfile(origProfile);
-						profileList.add(newProfile);
+						//Profile newProfile = new Profile();
+			    		//newProfile.copyProfile(origProfile);
+						//profileList.add(newProfile);
+			    		profileList.add(origProfile);
 			    	}
-			    	dataWrapper.setProfileList(profileList);
+			    	lProfileList.clear();
+			    	dataWrapper.setProfileList(profileList, false);
 			    }				
 				
 				if (listView != null)

@@ -229,11 +229,13 @@ public class EditorProfileListFragment extends SherlockFragment {
 		    	profileList.clear();
 		    	for (Profile origProfile : lProfileList)
 		    	{
-					Profile newProfile = new Profile();
-		    		newProfile.copyProfile(origProfile);
-					profileList.add(newProfile);
+					//Profile newProfile = new Profile();
+		    		//newProfile.copyProfile(origProfile);
+					//profileList.add(newProfile);
+		    		profileList.add(origProfile);
 		    	}
-		    	fragment.dataWrapper.setProfileList(profileList);
+		    	lProfileList.clear();
+		    	fragment.dataWrapper.setProfileList(profileList, false);
 		    }				
 			
 			fragment.profileListAdapter = new EditorProfileListAdapter(fragment, fragment.dataWrapper, fragment.filterType);
