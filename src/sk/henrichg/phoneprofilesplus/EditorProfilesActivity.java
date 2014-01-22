@@ -285,12 +285,7 @@ public class EditorProfilesActivity extends ActionBarActivity
         							//android.R.layout.simple_spinner_item);
         							R.layout.editor_drawer_spinner);
         orderSpinneAadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        /*
-        if (android.os.Build.VERSION.SDK_INT >= 11)
-        	orderSpinneAadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        else
-        	orderSpinneAadapter.setDropDownViewResource(R.layout.editor_drawer_spinner_dropdown);
-        */
+       	//orderSpinneAadapter.setDropDownViewResource(R.layout.editor_drawer_spinner_dropdown);
         orderSpinner.setAdapter(orderSpinneAadapter);
         orderSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 

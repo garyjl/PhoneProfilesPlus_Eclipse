@@ -233,7 +233,6 @@ public class ActivateProfileHelper {
 		
 	}
 	
-	@SuppressLint("InlinedApi")
 	@SuppressWarnings("deprecation")
 	public void execute(Profile _profile, boolean _interactive)
 	{
@@ -386,36 +385,31 @@ public class ActivateProfileHelper {
 			case 1:
 				// set autorotate on
 				Settings.System.putInt(context.getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, 1);
-				if (android.os.Build.VERSION.SDK_INT > 10)
-					Settings.System.putInt(context.getContentResolver(), Settings.System.USER_ROTATION, Surface.ROTATION_0);
+				Settings.System.putInt(context.getContentResolver(), Settings.System.USER_ROTATION, Surface.ROTATION_0);
 				break;
 			case 2:
 				// set autorotate off
 				// degree 0
 				Settings.System.putInt(context.getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, 0);
-				if (android.os.Build.VERSION.SDK_INT > 10)
-					Settings.System.putInt(context.getContentResolver(), Settings.System.USER_ROTATION, Surface.ROTATION_0);
+				Settings.System.putInt(context.getContentResolver(), Settings.System.USER_ROTATION, Surface.ROTATION_0);
 				break;
 			case 3:
 				// set autorotate off
 				// degree 90
 				Settings.System.putInt(context.getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, 0);
-				if (android.os.Build.VERSION.SDK_INT > 10)
-					Settings.System.putInt(context.getContentResolver(), Settings.System.USER_ROTATION, Surface.ROTATION_90);
+				Settings.System.putInt(context.getContentResolver(), Settings.System.USER_ROTATION, Surface.ROTATION_90);
 				break;
 			case 4:
 				// set autorotate off
 				// degree 180
 				Settings.System.putInt(context.getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, 0);
-				if (android.os.Build.VERSION.SDK_INT > 10)
-					Settings.System.putInt(context.getContentResolver(), Settings.System.USER_ROTATION, Surface.ROTATION_180);
+				Settings.System.putInt(context.getContentResolver(), Settings.System.USER_ROTATION, Surface.ROTATION_180);
 				break;
 			case 5:
 				// set autorotate off
 				// degree 270
 				Settings.System.putInt(context.getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, 0);
-				if (android.os.Build.VERSION.SDK_INT > 10)
-					Settings.System.putInt(context.getContentResolver(), Settings.System.USER_ROTATION, Surface.ROTATION_270);
+				Settings.System.putInt(context.getContentResolver(), Settings.System.USER_ROTATION, Surface.ROTATION_270);
 				break;
 		}
 		
@@ -482,7 +476,6 @@ public class ActivateProfileHelper {
 	}
 	
 	//@SuppressWarnings("deprecation")
-	@SuppressLint("InlinedApi")
 	public void showNotification(Profile profile)
 	{
 		if (GlobalData.notificationStatusBar)
@@ -694,95 +687,36 @@ public class ActivateProfileHelper {
 	
 	private void setMobileData(Context context, boolean enable)
 	{
-    /* podpora pre Froyo skoncena
-		if (android.os.Build.VERSION.SDK_INT <= 8)
-    	{
-    		
-    		//     <uses-permission android:name="android.permission.MODIFY_PHONE_STATE"/>
-    		// toto nebude asik fungovat, lebo to vyzaduje, aby apka bola systemova
-    		// musime skusit najst riesenie pre root, ako je airplane mode
-    		
-    		Method dataConnSwitchmethod;
-    		Class<?> telephonyManagerClass;
-    		Object iTelephonyStub;
-    		Class<?> iTelephonyClass;
-    		
-    		TelephonyManager telephonyManager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
-    		
-    		boolean isEnabled;
-    		if (telephonyManager.getDataState() == TelephonyManager.DATA_CONNECTED)
-    			isEnabled = true;
-    		else
-    			isEnabled = false;
-    		
-    		try {
-				telephonyManagerClass = Class.forName(telephonyManager.getClass().getName());
-				Method getITelephonyMethod = telephonyManagerClass.getDeclaredMethod("getITelephony");
-				getITelephonyMethod.setAccessible(true);
-				iTelephonyStub = getITelephonyMethod.invoke(telephonyManager);
-				iTelephonyClass = Class.forName(iTelephonyStub.getClass().getName());
-				
-				if (isEnabled)
-					dataConnSwitchmethod = iTelephonyClass.getDeclaredMethod("disableDataConnectivity");
-				else
-					dataConnSwitchmethod = iTelephonyClass.getDeclaredMethod("enableDataConnectivity");
-				
-				dataConnSwitchmethod.setAccessible(true);
-				dataConnSwitchmethod.invoke(iTelephonyStub);
-				
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-				//Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
-			} catch (NoSuchMethodException e) {
-				e.printStackTrace();
-				//Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-				//Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-				//Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
-				//Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
-			}
-    		
-    		
-    	}
-    	else
-    	{  */
-    		final ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-    		try {
-				final Class<?> connectivityManagerClass = Class.forName(connectivityManager.getClass().getName());
-				final Field iConnectivityManagerField = connectivityManagerClass.getDeclaredField("mService");
-				iConnectivityManagerField.setAccessible(true);
-				final Object iConnectivityManager = iConnectivityManagerField.get(connectivityManager);
-				final Class<?> iConnectivityManagerClass = Class.forName(iConnectivityManager.getClass().getName());
-				final Method setMobileDataEnabledMethod = iConnectivityManagerClass.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
-				setMobileDataEnabledMethod.setAccessible(true);
-				
-				setMobileDataEnabledMethod.invoke(iConnectivityManager, enable);
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-				//Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
-			} catch (NoSuchFieldException e) {
-				e.printStackTrace();
-				//Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-				//Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-				//Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
-			} catch (NoSuchMethodException e) {
-				e.printStackTrace();
-				//Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
-				//Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
-			}
-    /*	}  */
-		
+		final ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		try {
+			final Class<?> connectivityManagerClass = Class.forName(connectivityManager.getClass().getName());
+			final Field iConnectivityManagerField = connectivityManagerClass.getDeclaredField("mService");
+			iConnectivityManagerField.setAccessible(true);
+			final Object iConnectivityManager = iConnectivityManagerField.get(connectivityManager);
+			final Class<?> iConnectivityManagerClass = Class.forName(iConnectivityManager.getClass().getName());
+			final Method setMobileDataEnabledMethod = iConnectivityManagerClass.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
+			setMobileDataEnabledMethod.setAccessible(true);
+			
+			setMobileDataEnabledMethod.invoke(iConnectivityManager, enable);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			//Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
+		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
+			//Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+			//Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+			//Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+			//Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+			//Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
+		}
 	}
 	
 	@SuppressWarnings("deprecation")

@@ -76,20 +76,6 @@ public class EditorDrawerListAdapter extends BaseAdapter {
     	holder.itemSubtitle.setText(drawerItemsSubtitle[position]);
     	holder.itemIcon.setImageResource(drawerItemsIcon[position]);
 
-        if (android.os.Build.VERSION.SDK_INT < 11)
-        {
-        	if (listView.isItemChecked(position))
-        	{
-        		holder.itemTitle.setTypeface(null,Typeface.BOLD);
-        		holder.itemSubtitle.setTypeface(null,Typeface.BOLD);
-        	}
-        	else
-        	{
-        		holder.itemTitle.setTypeface(null,Typeface.NORMAL);
-        		holder.itemSubtitle.setTypeface(null,Typeface.NORMAL);
-        	}
-        }
-    	
         return vi;	
     }
 

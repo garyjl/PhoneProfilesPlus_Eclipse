@@ -98,11 +98,15 @@
     </PreferenceCategory>
     
     <PreferenceCategory
-        android:title="@string/phone_profiles_pref_category_widget_one_row"
-        android:summary="@string/phone_profiles_pref_category_widget_one_row" >
+        android:title="@string/phone_profiles_pref_category_widget_list"
+        android:summary="@string/phone_profiles_pref_category_widget_list" >
 		<CheckBoxPreference 
 		    android:key="applicationWidgetListPrefIndicator"
 		    android:title="@string/phone_profiles_pref_applicationPrefIndicator"
+		    android:defaultValue="true" />
+		<CheckBoxPreference 
+		    android:key="applicationWidgetListHeader"
+		    android:title="@string/phone_profiles_pref_applicationHeader"
 		    android:defaultValue="true" />
 		<ListPreference android:title="@string/phone_profiles_pref_applicationWidgetBackground"
 	           android:summary="25%"

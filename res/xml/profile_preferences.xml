@@ -185,8 +185,8 @@
             android:summary="@string/array_pref_no_change"
             android:key="prf_pref_deviceAutoRotation"
             android:defaultValue="0"
-            android:entries="@array/displayRotationArray"
-            android:entryValues="@array/displayRotationValues" />        
+            android:entries="@array/displayRotationArray11"
+            android:entryValues="@array/displayRotationValues11" />        
 		<ListPreference android:title="@string/profile_preferences_deviceRunApplicationChange"
             android:summary="@string/array_pref_no_change"
             android:key="prf_pref_deviceRunApplicationChange"
