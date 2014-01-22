@@ -22,7 +22,7 @@
 	        android:layout_alignParentTop="true"
 	        android:ellipsize="end"
 	        android:singleLine="true"
-	        android:textAppearance="?attr/textAppearanceSmall" />    
+	        android:textAppearance="?android:attr/textAppearanceSmall" />    
 
 		<FrameLayout 
 		    android:id="@+id/editor_list_container"
@@ -49,7 +49,7 @@
 
 		    <TextView
 		        android:id="@+id/editor_drawer_order_title"
-		        android:textColor="?attr/actionMenuTextColor"
+		        android:textColor="?attr/navigationDrawerText"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:paddingLeft="10dp"

@@ -6,18 +6,17 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import com.actionbarsherlock.app.SherlockFragment;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -25,7 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-public class EditorEventListFragment extends SherlockFragment {
+public class EditorEventListFragment extends Fragment {
 
 	public DataWrapper dataWrapper;
 	private List<Event> eventList;
@@ -134,11 +133,11 @@ public class EditorEventListFragment extends SherlockFragment {
         //Log.e("EditorEventListFragment.onCreate","orderType="+orderType);
 		
    		dataWrapper = new DataWrapper(getActivity().getBaseContext(), true, false, 0);
-    	dataWrapper.getActivateProfileHelper().initialize(getSherlockActivity(), getActivity().getBaseContext());
+    	dataWrapper.getActivateProfileHelper().initialize(getActivity(), getActivity().getBaseContext());
              	
        	databaseHandler = dataWrapper.getDatabaseHandler();
 		
-		getSherlockActivity().getIntent();
+		getActivity().getIntent();
 		
 		setHasOptionsMenu(true);
 
@@ -234,9 +233,9 @@ public class EditorEventListFragment extends SherlockFragment {
 		//super.onActivityCreated(savedInstanceState);
 		
 		// az tu mame layout, tak mozeme ziskat view-y
-		listView = (ListView)getSherlockActivity().findViewById(R.id.editor_events_list);
-		listView.setEmptyView(getSherlockActivity().findViewById(R.id.editor_events_list_empty));
-		eventsRunStopIndicator = (LinearLayout)getSherlockActivity().findViewById(R.id.editor_events_list_run_stop_indicator);
+		listView = (ListView)getActivity().findViewById(R.id.editor_events_list);
+		listView.setEmptyView(getActivity().findViewById(R.id.editor_events_list_empty));
+		eventsRunStopIndicator = (LinearLayout)getActivity().findViewById(R.id.editor_events_list_run_stop_indicator);
 		
 		LoadProfilesTask task = new LoadProfilesTask(this);
 		task.execute();
@@ -439,7 +438,7 @@ public class EditorEventListFragment extends SherlockFragment {
 	{
 		final Event _event = event;
 
-		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getSherlockActivity());
+		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
 		dialogBuilder.setTitle(getResources().getString(R.string.event_string_0) + ": " + event._name);
 		dialogBuilder.setMessage(getResources().getString(R.string.delete_event_alert_message) + "?");
 		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
@@ -455,7 +454,7 @@ public class EditorEventListFragment extends SherlockFragment {
 
 	private void deleteAllEvents()
 	{
-		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getSherlockActivity());
+		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
 		dialogBuilder.setTitle(getResources().getString(R.string.alert_title_delete_all_events));
 		dialogBuilder.setMessage(getResources().getString(R.string.alert_message_delete_all_events) + "?");
 		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
@@ -614,7 +613,7 @@ public class EditorEventListFragment extends SherlockFragment {
 	
     public void setEventsRunStopIndicator()
     {
-		if (GlobalData.getGlobalEventsRuning(getSherlockActivity().getBaseContext()))
+		if (GlobalData.getGlobalEventsRuning(getActivity().getBaseContext()))
 			eventsRunStopIndicator.setBackgroundColor(0xFF00FF00);
 		else
 			eventsRunStopIndicator.setBackgroundColor(0xFFFF0000);

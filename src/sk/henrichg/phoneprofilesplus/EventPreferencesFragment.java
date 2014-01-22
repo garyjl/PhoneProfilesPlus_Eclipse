@@ -2,18 +2,18 @@ package sk.henrichg.phoneprofilesplus;
  
 import java.util.List;
 
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.ActionMode.Callback;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.view.ActionMode;
+import android.support.v7.view.ActionMode.Callback;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
  
@@ -106,8 +106,8 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		
 		super.onCreate(savedInstanceState);
 
-		preferencesActivity = getSherlockActivity();
-        context = getSherlockActivity().getBaseContext();
+		preferencesActivity = getActivity();
+        context = getActivity().getBaseContext();
 
         dataWrapper = new DataWrapper(context, true, false, 0);
 		
@@ -248,7 +248,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	{
     	if (event != null)
     	{
-	    	//SharedPreferences preferences = getSherlockActivity().getSharedPreferences(PREFS_NAME, Activity.MODE_PRIVATE);
+	    	//SharedPreferences preferences = getActivity().getSharedPreferences(PREFS_NAME, Activity.MODE_PRIVATE);
 	    	event.loadSharedPrefereces(preferences);
     	}
 		
@@ -340,7 +340,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 
 		event.setSummary(prefMng, key, sharedPreferences, context);
 		
-    	Activity activity = getSherlockActivity();
+    	Activity activity = getActivity();
     	boolean canShow = (EditorProfilesActivity.mTwoPane) && (activity instanceof EditorProfilesActivity);
     	canShow = canShow || ((!EditorProfilesActivity.mTwoPane) && (activity instanceof EventPreferencesFragmentActivity));
     	if (canShow)
@@ -370,7 +370,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
             /** This is called when the action mode is created. This is called by startActionMode() */
             public boolean onCreateActionMode(ActionMode mode, Menu menu) {
                 //mode.setTitle(R.string.phone_preferences_actionmode_title);
-                //getSherlockActivity().getSupportMenuInflater().inflate(R.menu.context_menu, menu);
+                //getActivity().getSupportMenuInflater().inflate(R.menu.context_menu, menu);
                 return true;
             }
  
@@ -403,10 +403,10 @@ public class EventPreferencesFragment extends PreferenceListFragment
         	
         	actionModeButtonClicked = BUTTON_UNDEFINED;
         	
-        	LayoutInflater inflater = LayoutInflater.from(getSherlockActivity());
+        	LayoutInflater inflater = LayoutInflater.from(getActivity());
         	View actionView = inflater.inflate(R.layout.event_preferences_action_mode, null);
 
-            actionMode = getSherlockActivity().startActionMode(actionModeCallback);
+            actionMode = ((ActionBarActivity)getActivity()).startSupportActionMode(actionModeCallback);
             actionMode.setCustomView(actionView); 
             
             actionMode.getCustomView().findViewById(R.id.event_preferences_action_menu_cancel).setOnClickListener(new OnClickListener() {
@@ -446,10 +446,10 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		if (_button == BUTTON_SAVE)
 			new_event_mode = EditorEventListFragment.EDIT_MODE_UNDEFINED;
 		
-		if (getSherlockActivity() instanceof EventPreferencesFragmentActivity)
+		if (getActivity() instanceof EventPreferencesFragmentActivity)
 		{
 			actionModeButtonClicked = BUTTON_UNDEFINED;
-			getSherlockActivity().finish(); // finish activity;
+			getActivity().finish(); // finish activity;
 		}
 		else
 		if (actionMode != null)

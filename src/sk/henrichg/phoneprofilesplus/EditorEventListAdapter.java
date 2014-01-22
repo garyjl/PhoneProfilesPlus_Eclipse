@@ -232,7 +232,7 @@ public class EditorEventListAdapter extends BaseAdapter
 		View vi = convertView;
         if (convertView == null)
         {
-    		LayoutInflater inflater = LayoutInflater.from(fragment.getSherlockActivity());
+    		LayoutInflater inflater = LayoutInflater.from(fragment.getActivity());
       	    if (GlobalData.applicationEditorPrefIndicator)
       		    vi = inflater.inflate(R.layout.editor_event_list_item, parent, false);
       	    else

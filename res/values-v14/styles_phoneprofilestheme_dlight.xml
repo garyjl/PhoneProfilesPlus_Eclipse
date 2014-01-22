@@ -19,7 +19,7 @@
 
 <resources>
 
-    <style name="Theme.Phoneprofilestheme_dlight" parent="@style/Theme.Sherlock.Light.DarkActionBar">
+    <style name="Theme.Phoneprofilestheme_dlight" parent="@style/Theme.AppCompat.Light.DarkActionBar">
 <!--         <item name="android:actionBarItemBackground">@drawable/selectable_background_phoneprofilestheme</item>
         <item name="android:popupMenuStyle">@style/PopupMenu.Phoneprofilestheme</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Phoneprofilestheme</item>
@@ -39,16 +39,16 @@
         <item name="activityPopupBackground">@color/activityPopupBackground_phoneprofilestheme</item>
         <item name="cardShape">@drawable/card</item>
         <item name="headerCardShape">@drawable/header_card</item>
-        <item name="cardSelector">@drawable/abs__list_selector_holo_light</item>
+        <item name="cardSelector">@drawable/abc_item_background_holo_light</item>
         <item name="dragHandleIcon">@drawable/ic_drag_handle</item>
         <item name="actionActivateIcon">@drawable/ic_action_activate</item>
         <item name="actionDuplicateIcon">@drawable/ic_action_duplicate</item>
         <item name="actionDeleteIcon">@drawable/ic_action_delete</item>
         <item name="actionProfilePrefSave">@drawable/ic_action_profile_pref_save_dark</item>
         <item name="actionProfilePrefCancel">@drawable/ic_action_profile_pref_cancel_dark</item>
-        <item name="actionProfileToolBackground">@drawable/abs__list_selector_holo_light</item>
-        <item name="actionProfileButtonTextStyle">@style/TextAppearance.Sherlock.Widget.ActionMode.Title.Inverse</item> 
-        <item name="navigationDrawerBackground">@drawable/abs__ab_solid_dark_holo</item> 
+        <item name="actionProfileToolBackground">@drawable/abc_item_background_holo_light</item>
+        <item name="actionProfileButtonTextStyle">@style/TextAppearance.AppCompat.Widget.ActionMode.Title.Inverse</item> 
+        <item name="navigationDrawerBackground">@drawable/abc_ab_solid_dark_holo</item> 
         <item name="navigationDrawerText">@color/navigationDrawerTextColor_phoneprofiletheme_dark</item>
         <item name="filterStatusBarBackground">@color/filterStatusBarBackground_phoneprofilestheme</item>
         <item name="editorDrawerSpinner">@style/editorDrawerSpinnerStyle</item> 
@@ -63,10 +63,13 @@
         <item name="android:actionModeCloseButtonStyle">@style/NoCloseButton</item>
         
     </style>
+
+<!-- 
     
     <style name="actionModeTextStyle" parent="@style/TextAppearance.Sherlock.Widget.ActionMode.Title">
         <item name="android:textColor">?android:color/white</item>
     </style>
+-->
     
 <!-- 
     <style name="ActionBar.Solid.Phoneprofilestheme" parent="@style/Widget.Sherlock.Light.ActionBar.Solid">

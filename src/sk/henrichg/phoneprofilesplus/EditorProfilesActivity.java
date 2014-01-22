@@ -20,8 +20,6 @@ import sk.henrichg.phoneprofilesplus.PreferenceListFragment.OnPreferenceAttached
 import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnRedrawProfileListFragment;
 import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnRestartProfilePreferences;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -30,8 +28,12 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -50,11 +52,8 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 
-public class EditorProfilesActivity extends SherlockFragmentActivity
+public class EditorProfilesActivity extends ActionBarActivity
                                     implements OnStartProfilePreferences,
                                                OnPreferenceAttachedListener,
                                                OnRestartProfilePreferences,
@@ -236,7 +235,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 		
 		
         // Pass string arrays to EditorDrawerListAdapter
-		// use sherlock action bar themed context
+		// use action bar themed context
         drawerAdapter = new EditorDrawerListAdapter(drawerListView, getSupportActionBar().getThemedContext(), drawerItemsTitle, drawerItemsSubtitle, drawerItemsIcon);
         
         // Set the MenuListAdapter to the ListView
@@ -280,13 +279,18 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
         
         orderSpinner = (Spinner) findViewById(R.id.editor_drawer_order);
         ArrayAdapter<CharSequence> orderSpinneAadapter = ArrayAdapter.createFromResource(
-        							getSupportActionBar().getThemedContext(), 
-        							R.array.drawerOrderEvents, 
+        							//getSupportActionBar().getThemedContext(),
+        							getBaseContext(),
+        							R.array.drawerOrderEvents,
+        							//android.R.layout.simple_spinner_item);
         							R.layout.editor_drawer_spinner);
+        orderSpinneAadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        /*
         if (android.os.Build.VERSION.SDK_INT >= 11)
-        	orderSpinneAadapter.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
+        	orderSpinneAadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         else
         	orderSpinneAadapter.setDropDownViewResource(R.layout.editor_drawer_spinner_dropdown);
+        */
         orderSpinner.setAdapter(orderSpinneAadapter);
         orderSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
@@ -378,7 +382,7 @@ public class EditorProfilesActivity extends SherlockFragmentActivity
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		MenuInflater inflater = getSupportMenuInflater();
+		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.activity_editor_profiles, menu);
 		return true;
 	}

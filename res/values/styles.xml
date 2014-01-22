@@ -20,12 +20,12 @@
       <item name="android:textStyle">bold</item>
     </style>
     
-    <style name="NoCloseButton" parent="@style/Widget.Sherlock.ActionButton.CloseMode">
+    <style name="NoCloseButton" parent="@style/Widget.AppCompat.ActionButton.CloseMode">
         <item name="android:visibility">gone</item>
     </style>
 
 	<style name="editorDrawerSpinnerStyle" parent="@android:TextAppearance.Widget.TextView.SpinnerItem">
-    	<item name="android:textColor">?attr/actionMenuTextColor</item>
+    	<item name="android:textColor">?attr/navigationDrawerText</item>
   		<item name="android:textSize">17sp</item>
     </style>
     

@@ -6,19 +6,18 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import com.actionbarsherlock.app.SherlockActivity;
-
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.content.Intent;
 import android.content.res.Configuration;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 
+import android.support.v7.app.ActionBarActivity;
 import android.util.TypedValue;
 import android.view.Display;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
@@ -29,7 +28,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class ActivateProfileActivity extends SherlockActivity {
+public class ActivateProfileActivity extends ActionBarActivity {
 
 	private DataWrapper dataWrapper;
 	private ActivateProfileHelper activateProfileHelper;
@@ -88,7 +87,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 		        actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
 		}
 		else 
-		if (getTheme().resolveAttribute(com.actionbarsherlock.R.attr.actionBarSize, tv, true))
+		if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
 		{
 			actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
 		}
@@ -413,7 +412,7 @@ public class ActivateProfileActivity extends SherlockActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		MenuInflater inflater = getSupportMenuInflater();
+		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.activity_activate_profile, menu);
 		return true;
 	}

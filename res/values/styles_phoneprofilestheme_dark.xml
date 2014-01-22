@@ -19,7 +19,7 @@
 
 <resources>
 
-    <style name="Theme.Phoneprofilestheme_dark" parent="@style/Theme.Sherlock">
+    <style name="Theme.Phoneprofilestheme_dark" parent="@style/Theme.AppCompat">
 <!--         <item name="actionBarItemBackground">@drawable/selectable_background_phoneprofilestheme_dark</item>
         <item name="popupMenuStyle">@style/PopupMenu.Phoneprofilestheme_dark</item>
         <item name="dropDownListViewStyle">@style/DropDownListView.Phoneprofilestheme_dark</item>
@@ -30,8 +30,9 @@
         <item name="actionModeSplitBackground">@drawable/cab_background_bottom_phoneprofilestheme_dark</item>
         <item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Phoneprofilestheme_dark</item>
  -->
+ <!-- 
         <item name="actionBarStyle">@style/ActionBar.Solid.Phoneprofilestheme_dark</item>
-
+ -->
         <item name="actionNewProfileIcon">@drawable/ic_action_new_profile_dark</item>
         <item name="actionDeleteAllIcon">@drawable/ic_action_delete_all_dark</item>
         <item name="actionSettingsIcon">@drawable/ic_action_settings_dark</item>
@@ -48,9 +49,10 @@
         <item name="actionDeleteIcon">@drawable/ic_action_delete_dark</item>
         <item name="actionProfilePrefSave">@drawable/ic_action_profile_pref_save_dark</item>
         <item name="actionProfilePrefCancel">@drawable/ic_action_profile_pref_cancel_dark</item>
-        <item name="actionProfileToolBackground">@drawable/abs__list_selector_holo_dark</item>
-        <item name="actionProfileButtonTextStyle">@style/TextAppearance.Sherlock.Widget.ActionMode.Title</item> 
-        <item name="navigationDrawerBackground">@color/navigationDrawerBackground_phoneprofilestheme_dark</item> 
+        <item name="actionProfileToolBackground">@drawable/abc_item_background_holo_dark</item>
+        <item name="actionProfileButtonTextStyle">@style/TextAppearance.AppCompat.Widget.ActionMode.Title</item> 
+        <item name="navigationDrawerBackground">@drawable/abc_ab_solid_dark_holo</item> 
+        <item name="navigationDrawerText">@color/navigationDrawerTextColor_phoneprofiletheme_dark</item>
         <item name="filterStatusBarBackground">@color/filterStatusBarBackground_phoneprofilestheme_dark</item> 
         <item name="editorDrawerSpinner">@style/editorDrawerSpinnerStyle</item> 
 	    <item name="actionEventRunIcon">@drawable/ic_action_event_run_dark</item>
@@ -64,10 +66,6 @@
         
     </style>
 
-    <style name="ActionBar.Solid.Phoneprofilestheme_dark" parent="@style/Widget.Sherlock.ActionBar.Solid">
-        <item name="background">#ff000000</item>
-    </style>
-    
 <!-- 
     <style name="ActionBar.Solid.Phoneprofilestheme_dark" parent="@style/Widget.Sherlock.ActionBar.Solid">
         <item name="background">@drawable/ab_solid_phoneprofilestheme_dark</item>

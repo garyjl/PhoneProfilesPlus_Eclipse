@@ -4,17 +4,16 @@ import sk.henrichg.phoneprofilesplus.PreferenceListFragment.OnPreferenceAttached
 import sk.henrichg.phoneprofilesplus.EventPreferencesFragment.OnRedrawEventListFragment;
 import sk.henrichg.phoneprofilesplus.EventPreferencesFragment.OnRestartEventPreferences;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.MenuItem;
-
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceScreen;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
+import android.view.MenuItem;
  
-public class EventPreferencesFragmentActivity extends SherlockFragmentActivity
+public class EventPreferencesFragmentActivity extends ActionBarActivity
 												implements OnPreferenceAttachedListener,
 	                                                       OnRestartEventPreferences,
 	                                                       OnRedrawEventListFragment

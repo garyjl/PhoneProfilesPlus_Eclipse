@@ -15,7 +15,7 @@
         <ProgressBar
             android:id="@+id/applications_pref_dlg_progress"
             android:layout_width="wrap_content"
-            style="@style/Sherlock.__Widget.Holo.Spinner"
+            style="@style/Widget.AppCompat.Base.Spinner"
             android:layout_height="wrap_content" />
         
     </LinearLayout>

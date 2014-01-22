@@ -1,10 +1,5 @@
 package sk.henrichg.phoneprofilesplus;
  
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.ActionMode.Callback;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +13,12 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.view.ActionMode;
+import android.support.v7.view.ActionMode.Callback;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
  
@@ -113,8 +113,8 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		
 		super.onCreate(savedInstanceState);
 
-		preferencesActivity = getSherlockActivity();
-        context = getSherlockActivity().getBaseContext();
+		preferencesActivity = getActivity();
+        context = getActivity().getBaseContext();
 		
         dataWrapper = new DataWrapper(context, true, false, 0);
         
@@ -307,7 +307,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	{
     	if (profile != null)
     	{
-	    	//SharedPreferences preferences = getSherlockActivity().getSharedPreferences(PREFS_NAME, Activity.MODE_PRIVATE);
+	    	//SharedPreferences preferences = getActivity().getSharedPreferences(PREFS_NAME, Activity.MODE_PRIVATE);
 	
 			//Log.e("ProfilePreferencesFragment.loadPreferences","profile="+profile);
 	    	
@@ -608,7 +608,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
     	if (!key.equals(GlobalData.PREF_PROFILE_SHOW_IN_ACTIVATOR))
     		disableDependedPref(key, sharedPreferences.getString(key, ""));
     	
-    	Activity activity = getSherlockActivity();
+    	Activity activity = getActivity();
     	boolean canShow = (EditorProfilesActivity.mTwoPane) && (activity instanceof EditorProfilesActivity);
     	canShow = canShow || ((!EditorProfilesActivity.mTwoPane) && (activity instanceof ProfilePreferencesFragmentActivity));
     	if (canShow)
@@ -634,7 +634,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
             /** This is called when the action mode is created. This is called by startActionMode() */
             public boolean onCreateActionMode(ActionMode mode, Menu menu) {
                 //mode.setTitle(R.string.phone_preferences_actionmode_title);
-                //getSherlockActivity().getSupportMenuInflater().inflate(R.menu.context_menu, menu);
+                //getActivity().getSupportMenuInflater().inflate(R.menu.context_menu, menu);
                 return true;
             }
  
@@ -667,10 +667,10 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
         	
         	actionModeButtonClicked = BUTTON_UNDEFINED;
         	
-        	LayoutInflater inflater = LayoutInflater.from(getSherlockActivity());
+        	LayoutInflater inflater = LayoutInflater.from(getActivity());
         	View actionView = inflater.inflate(R.layout.profile_preferences_action_mode, null);
 
-            actionMode = getSherlockActivity().startActionMode(actionModeCallback);
+            actionMode = ((ActionBarActivity)getActivity()).startSupportActionMode(actionModeCallback);
             actionMode.setCustomView(actionView); 
             
             actionMode.getCustomView().findViewById(R.id.profile_preferences_action_menu_cancel).setOnClickListener(new OnClickListener() {
@@ -709,10 +709,10 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		if (_button == BUTTON_SAVE)
 			new_profile_mode = EditorProfileListFragment.EDIT_MODE_UNDEFINED;
 		
-		if (getSherlockActivity() instanceof ProfilePreferencesFragmentActivity)
+		if (getActivity() instanceof ProfilePreferencesFragmentActivity)
 		{
 			actionModeButtonClicked = BUTTON_UNDEFINED;
-			getSherlockActivity().finish(); // finish activity;
+			getActivity().finish(); // finish activity;
 		}
 		else
 		if (actionMode != null)

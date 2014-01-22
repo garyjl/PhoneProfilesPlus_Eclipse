@@ -6,8 +6,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import com.actionbarsherlock.app.SherlockActivity;
-
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -17,6 +15,7 @@ import android.graphics.Canvas;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
@@ -26,7 +25,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class ShortcutCreatorActivity extends SherlockActivity {
+public class ShortcutCreatorActivity extends ActionBarActivity {
 
 	private DataWrapper dataWrapper;
 	private List<Profile> profileList;
@@ -73,7 +72,7 @@ public class ShortcutCreatorActivity extends SherlockActivity {
 		        actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
 		}
 		else 
-		if (getTheme().resolveAttribute(com.actionbarsherlock.R.attr.actionBarSize, tv, true))
+		if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
 		{
 			actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
 		}

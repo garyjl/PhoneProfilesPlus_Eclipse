@@ -263,7 +263,7 @@ public class EditorProfileListAdapter extends BaseAdapter
 		View vi = convertView;
         if (convertView == null)
         {
-    	    LayoutInflater inflater = LayoutInflater.from(fragment.getSherlockActivity());
+    	    LayoutInflater inflater = LayoutInflater.from(fragment.getActivity());
     	    if (filterType == EditorProfileListFragment.FILTER_TYPE_SHOW_IN_ACTIVATOR)
     	    {
 	      	    if (GlobalData.applicationEditorPrefIndicator)

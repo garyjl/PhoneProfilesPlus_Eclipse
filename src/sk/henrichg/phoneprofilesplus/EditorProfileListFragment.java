@@ -6,8 +6,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import com.actionbarsherlock.app.SherlockFragment;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
@@ -15,12 +13,13 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.mobeta.android.dslv.DragSortListView;
 
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -31,7 +30,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class EditorProfileListFragment extends SherlockFragment {
+public class EditorProfileListFragment extends Fragment {
 
 	public DataWrapper dataWrapper;
 	private ActivateProfileHelper activateProfileHelper;
@@ -137,7 +136,7 @@ public class EditorProfileListFragment extends SherlockFragment {
     	databaseHandler = dataWrapper.getDatabaseHandler(); 
 	
     	activateProfileHelper = dataWrapper.getActivateProfileHelper();
-    	activateProfileHelper.initialize(getSherlockActivity(), getActivity().getBaseContext());
+    	activateProfileHelper.initialize(getActivity(), getActivity().getBaseContext());
 		
 		setHasOptionsMenu(true);
 
@@ -244,7 +243,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 			if (defaultProfilesGenerated)
 			{
 				fragment.activateProfileHelper.updateWidget();
-				Toast msg = Toast.makeText(fragment.getSherlockActivity(), 
+				Toast msg = Toast.makeText(fragment.getActivity(), 
 						fragment.getResources().getString(R.string.toast_default_profiles_generated), 
 						Toast.LENGTH_SHORT);
 				msg.show();
@@ -259,10 +258,10 @@ public class EditorProfileListFragment extends SherlockFragment {
 		//super.onActivityCreated(savedInstanceState);
 		
 		// az tu mame layout, tak mozeme ziskat view-y
-	/*	activeProfileName = (TextView)getSherlockActivity().findViewById(R.id.activated_profile_name);
-		activeProfileIcon = (ImageView)getSherlockActivity().findViewById(R.id.activated_profile_icon);
-		listView = (DragSortListView)getSherlockActivity().findViewById(R.id.editor_profiles_list);
-		listView.setEmptyView(getSherlockActivity().findViewById(R.id.editor_profiles_list_empty));
+	/*	activeProfileName = (TextView)getActivity().findViewById(R.id.activated_profile_name);
+		activeProfileIcon = (ImageView)getActivity().findViewById(R.id.activated_profile_icon);
+		listView = (DragSortListView)getActivity().findViewById(R.id.editor_profiles_list);
+		listView.setEmptyView(getActivity().findViewById(R.id.editor_profiles_list_empty));
 	*/
 		activeProfileName = (TextView)view.findViewById(R.id.activated_profile_name);
 		activeProfileIcon = (ImageView)view.findViewById(R.id.activated_profile_icon);
@@ -450,8 +449,8 @@ public class EditorProfileListFragment extends SherlockFragment {
 		activateProfileHelper.updateWidget();
 		
     	// generate bitmaps
-		newProfile.generateIconBitmap(getSherlockActivity().getBaseContext(), false, 0);
-		newProfile.generatePreferencesIndicator(getSherlockActivity().getBaseContext(), false, 0);
+		newProfile.generateIconBitmap(getActivity().getBaseContext(), false, 0);
+		newProfile.generatePreferencesIndicator(getActivity().getBaseContext(), false, 0);
 		
 		startProfilePreferencesActivity(newProfile);
 		*/
@@ -543,7 +542,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 
 	public void deleteProfileWithAlert(Profile profile)
 	{
-		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getSherlockActivity());
+		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
 		dialogBuilder.setTitle(getResources().getString(R.string.profile_string_0) + ": " + profile._name);
 		dialogBuilder.setMessage(getResources().getString(R.string.delete_profile_alert_message) + "?");
 		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
@@ -562,7 +561,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 
 	private void deleteAllProfiles()
 	{
-		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getSherlockActivity());
+		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
 		dialogBuilder.setTitle(getResources().getString(R.string.alert_title_delete_all_profiles));
 		dialogBuilder.setMessage(getResources().getString(R.string.alert_message_delete_all_profiles) + "?");
 		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
@@ -649,7 +648,7 @@ public class EditorProfileListFragment extends SherlockFragment {
 			activeProfileName.setText(profile._name);
 	        if (profile.getIsIconResourceID())
 	        {
-				int res = getResources().getIdentifier(profile.getIconIdentifier(), "drawable", getSherlockActivity().getPackageName());
+				int res = getResources().getIdentifier(profile.getIconIdentifier(), "drawable", getActivity().getPackageName());
 				activeProfileIcon.setImageResource(res); // resource na ikonu
 	        }
 	        else
@@ -666,10 +665,10 @@ public class EditorProfileListFragment extends SherlockFragment {
 		if (GlobalData.applicationEditorPrefIndicator)
 		{
 			//Log.e("EditorProfileListFragment.updateHeader","indicator");
-			ImageView profilePrefIndicatorImageView = (ImageView)getSherlockActivity().findViewById(R.id.activated_profile_pref_indicator);
+			ImageView profilePrefIndicatorImageView = (ImageView)getActivity().findViewById(R.id.activated_profile_pref_indicator);
 			if (profilePrefIndicatorImageView != null)
 			{
-				//profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, getSherlockActivity().getBaseContext()));
+				//profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, getActivity().getBaseContext()));
 				if (profile == null)
 					profilePrefIndicatorImageView.setImageResource(R.drawable.ic_empty);
 				else
