@@ -18,7 +18,6 @@ public class EditorProfileListAdapter extends BaseAdapter
 	private DataWrapper dataWrapper;
 	private int filterType;
 	public List<Profile> profileList;
-	public static boolean editIconClicked = false;
 	public boolean released = false;
 	
 	
@@ -376,7 +375,6 @@ public class EditorProfileListAdapter extends BaseAdapter
 		holder.profileItemActivate.setTag(R.id.profile_list_item_activate);
 		holder.profileItemActivate.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				editIconClicked = true;
 				//Log.d("EditorProfileListAdapter.onClick", "activate");
 				((EditorProfileListFragment)fragment).finishProfilePreferencesActionMode();
 				((EditorProfileListFragment)fragment).activateProfile(profile, true);
@@ -386,7 +384,6 @@ public class EditorProfileListAdapter extends BaseAdapter
 		holder.profileItemDuplicate.setTag(R.id.profile_list_item_duplicate);
 		holder.profileItemDuplicate.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				editIconClicked = true;
 				//Log.d("EditorProfileListAdapter.onClick", "duplicate");
 				((EditorProfileListFragment)fragment).finishProfilePreferencesActionMode();
 				((EditorProfileListFragment)fragment).duplicateProfile(profile);
@@ -396,7 +393,6 @@ public class EditorProfileListAdapter extends BaseAdapter
 		holder.profileItemDelete.setTag(R.id.profile_list_item_delete);
 		holder.profileItemDelete.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				editIconClicked = true;
 				//Log.d("EditorProfileListAdapter.onClick", "delete");
 				((EditorProfileListFragment)fragment).finishProfilePreferencesActionMode();
 				((EditorProfileListFragment)fragment).deleteProfileWithAlert(profile);

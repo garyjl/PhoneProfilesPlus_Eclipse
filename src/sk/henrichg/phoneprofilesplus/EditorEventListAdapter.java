@@ -25,8 +25,6 @@ public class EditorEventListAdapter extends BaseAdapter
 	public List<Event> eventList;
 	public boolean released = false;
 	
-	public static boolean editIconClicked = false;
-	
 	public EditorEventListAdapter(EditorEventListFragment f, DataWrapper pdw, int filterType)
 	{
 		fragment = f;
@@ -391,7 +389,6 @@ public class EditorEventListAdapter extends BaseAdapter
         holder.eventItemRunStop.setOnClickListener(new OnClickListener() {
 
 				public void onClick(View v) {
-					editIconClicked = true;
 					//Log.d("EditorProfileListAdapter.onClick", "duplicate");
 					((EditorEventListFragment)fragment).finishEventPreferencesActionMode();
 					((EditorEventListFragment)fragment).runStopEvent(event);
@@ -402,7 +399,6 @@ public class EditorEventListAdapter extends BaseAdapter
         holder.eventItemDuplicate.setOnClickListener(new OnClickListener() {
 
 				public void onClick(View v) {
-					editIconClicked = true;
 					//Log.d("EditorProfileListAdapter.onClick", "duplicate");
 					((EditorEventListFragment)fragment).finishEventPreferencesActionMode();
 					((EditorEventListFragment)fragment).duplicateEvent(event);
@@ -413,7 +409,6 @@ public class EditorEventListAdapter extends BaseAdapter
         holder.eventItemDelete.setOnClickListener(new OnClickListener() {
 
 				public void onClick(View v) {
-					editIconClicked = true;
 					//Log.d("EditorProfileListAdapter.onClick", "delete");
 					((EditorEventListFragment)fragment).finishEventPreferencesActionMode();
 					((EditorEventListFragment)fragment).deleteEventWithAlert(event);

@@ -289,14 +289,9 @@ public class EditorProfileListFragment extends Fragment {
 
 				//Log.d("EditorProfileListFragment.onItemLongClick", "xxxx");
 				
-				if (!EditorProfileListAdapter.editIconClicked) // workaround
-				{
-					activateProfile((Profile)profileListAdapter.getItem(position), true);
-				}
+				activateProfile((Profile)profileListAdapter.getItem(position), true);
 				
-				EditorProfileListAdapter.editIconClicked = false;
-				
-				return false;
+				return true;
 			}
 			
 		});
