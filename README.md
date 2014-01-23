@@ -6,10 +6,8 @@ Android application - manualy and event triggered change of device settings like
 Required
 --------
 
-- ActionBarSherlock - http://actionbarsherlock.com/
+- ActionBarCompat
 - DragSortListView - https://github.com/bauerca/drag-sort-listview
 - RootTools - https://code.google.com/p/roottools/
-- UnifiedPreference - https://github.com/saik0/UnifiedPreference
 - DashClock API - https://code.google.com/p/dashclock/wiki/API
-- CWAC Wakeful - https://github.com/commonsguy/cwac-wakeful
 
