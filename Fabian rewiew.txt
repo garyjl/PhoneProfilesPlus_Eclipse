@@ -1,0 +1,33 @@
+Event type time works perfectly now. Next things, that I didn't want to mention before this was solved:
+
+1. Profile and event names: Text insertion should start with a capital letter. I know there are different text fields: E-Mail has additional @ and .com buttons, some start with a big letter, others not and again others even don't write capitals after dots. This seems to be type 3, but it should be type 2.
+-And what you prefer? No Capitals on first letter?
+
+2. When I choose a profile in event creation, the profiles are sorted like in "all profiles". And there and in "all profiles" I think the sorting should be like in "show in starter", but with the others at the bottom, maybe in alphabetical order. Now they are sorted completely random, it's hard to find one.
+-Profiles are sorted by name. Only for "show in started" are sorted by order you set via order handle (left icon on item). For events, you can set, what sorted in navigation panel (spinner in bottom of panel). Not sorted random. :-D
+
+3. Like in 2 with profiles, I think the "all events" should be sorted. Now they are sorted for example after type, but especially because there is only one type at the moment, it should be sorted more. For example: Time Monday morning, time Monday evening, time Tuesday, then GPS, plug/unplug, app (sorted by app name), ... whatever will be coming. Or manual sorting!
+-Will by more events type. Maybe I will adding filter events by event type. Maybe. :-D Maybe I add search function in profiles a events. :-;
+
+4. I think it's good that a click on the notification starts the starter (ha ha). But I think a click on a home screen or menu button (normal app starting) should open the editor. When I start it via home screen I mostly want to edit something. Or activate the background service again after upgrading to a new beta. :) Or maybe an option in settings: "Start on app start in..."/"start on notification click in...", "...starter"/"...editor profiles"/"...editor events"/...
+- I thought it :-; I will add option, that can change launcher. 
+
+5. An additional option not to go to last open page on app start or click on "edit profiles". I'm confused when it starts in event editor instead of profile editor, but this can be helpful, too.
+- OK, I will adding option for it.
+
+6. A profile shouldn't be activated through an event if it's already the profile that's shown in the status bar. Example: simple settings with only day and night profile. I wake up earlier and activate day profile for myself. Then I watch a movie and set off sounds manually. Then, at normal wake up time, day profile gets activated again, what is already active (longer screen timeout, mobile data and so on), but with a small edit of mine (no sounds). But the second profile activation sets sounds on again, but nothing changes in status bar. Manually activating profiles a second time should stay the use it has, but only events shouldn't happen when the set profile is already active.
+- OK, I will check, whne activating profile is already activated a then not activation executed.
+
+7. On phone boot, PPP should check what's the last activated event or what would be activated if the phone were on and activate it. For example there are events for 7, 8, 9 and 10 o'clock. Event 7 gets activated at 7, at 7:30 I set off my phone. Then I turn it on again at 9:30. Then PPP should activate the profile of event 9.
+PP+ set future events for activation. Evets that ale lost is not activated. In android, apllication cannot check and save, when you set device off. :-/ Applications cannot check, when android terminate applications via low memory, device off... Strange. :-/
+
+8. Finally one bug: I set mobile data on in standard profile and I set "standard profile" for mobile data in some profiles. But it works just like "no change" should work. It doesn't change anything in this category, but in the others. I will check tomorrow if there are more bugs with other categories and standard profile.﻿
+- Tis is strange. I check "standard profile":
+			if (profile._deviceMobileData == 99)
+				mappedProfile._deviceMobileData = defaultProfile._deviceMobileData;
+I will check it.
+
+EDIT: 9. Still the idea of playing a sound on profile activation. Of course only when media volume isn't zero.﻿
+- This is interesting idea. This is next option for application. :-D
+
+
