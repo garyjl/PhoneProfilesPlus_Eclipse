@@ -216,7 +216,7 @@
 
     <string name="title_activity_activator">Starter</string>
     <string name="title_activity_editor">Editor</string>
-    <string name="menu_run_events"> Laufende Ereignisse aktivieren</string>
+    <string name="menu_run_events">Laufende Ereignisse aktivieren</string>
     <string name="menu_stop_events">Ereignisse anhalten</string>
     <string name="array_pref_value_0_percent" formatted="false">0%</string>
     <string name="array_pref_value_25_percent" formatted="false">25%</string>
@@ -245,12 +245,13 @@
     <string name="toast_profile_activating_0">Profil</string>
     <string name="toast_profile_activating_1">activating&#8230;</string>
 
-    <string name="profile_list_item_menu_activate">Activate</string>
-    <string name="profile_list_item_menu_duplicate">Duplicate</string>
-    <string name="profile_list_item_menu_delete">Delete</string>
-    <string name="event_list_item_menu_run">Enable running event</string>
-    <string name="event_list_item_menu_stop">Stop event</string>
-    <string name="event_list_item_menu_duplicate">Duplicate</string>
-    <string name="event_list_item_menu_delete">Delete</string>
+
+  	<string name="profile_list_item_menu_activate">Aktivieren</string>
+    <string name="profile_list_item_menu_duplicate">Verdoppeln</string>
+    <string name="profile_list_item_menu_delete">Löschen</string>    
+    <string name="event_list_item_menu_run">Laufende Ereignis aktivieren</string>
+    <string name="event_list_item_menu_stop">Ereignis anhalten</string>
+    <string name="event_list_item_menu_duplicate">Verdoppeln</string>
+    <string name="event_list_item_menu_delete">Löschen</string>
     
 </resources>
