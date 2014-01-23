@@ -206,7 +206,7 @@
     <string name="default_profile_name_work">Arbeit</string> 
     <string name="default_profile_name_meeting">Besprechung</string> 
     <string name="default_profile_name_sleep">Schlafen</string> 
-    <string name="phone_profiles_pref_applicationAutoCloseDrawer">Editor automatisch schließen</string> 
+    <string name="phone_profiles_pref_applicationAutoCloseDrawer">Navigationsleiste autom. schließen</string> 
     <string name="import_profiles_from_phoneprofiles_alert_title">Sicherung laden</string> 
     <string name="import_profiles_from_phoneprofiles_alert_title2">Von PhoneProfiles importieren</string> 
     <string name="import_profiles_from_phoneprofiles_alert_message">Von PhoneProfiles importieren</string> 
@@ -247,7 +247,7 @@
 
 
   	<string name="profile_list_item_menu_activate">Aktivieren</string>
-    <string name="profile_list_item_menu_duplicate">Verdoppeln</string>
+    <string name="profile_list_item_menu_duplicate">Kopieren</string>
     <string name="profile_list_item_menu_delete">Löschen</string>    
     <string name="event_list_item_menu_run">Laufende Ereignis aktivieren</string>
     <string name="event_list_item_menu_stop">Ereignis anhalten</string>
