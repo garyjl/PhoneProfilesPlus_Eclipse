@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/profile_list_item_menu_activate"
+        android:title="@string/profile_list_item_menu_activate"
+        android:orderInCategory="100"
+	    android:icon="?attr/actionActivateIcon" />
+    <item android:id="@+id/profile_list_item_menu_duplicate"
+        android:title="@string/profile_list_item_menu_duplicate"
+        android:orderInCategory="101"
+	    android:icon="?attr/actionDuplicateIcon" />
+    <item android:id="@+id/profile_list_item_menu_delete"
+        android:title="@string/profile_list_item_menu_delete"
+        android:orderInCategory="102"
+	    android:icon="?attr/actionDeleteIcon" />
+</menu>
