@@ -11,11 +11,14 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import com.mobeta.android.dslv.DragSortListView;
 
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -535,6 +538,37 @@ public class EditorProfileListFragment extends Fragment {
 		new DeleteAsyncTask().execute();
 	}
 
+	public void showEditMenu(View view)
+	{
+		Context context = ((ActionBarActivity)getActivity()).getSupportActionBar().getThemedContext();
+		PopupMenu popup = new PopupMenu(context, view);
+		getActivity().getMenuInflater().inflate(R.menu.profile_list_item_edit, popup.getMenu());
+		
+		final Profile profile = (Profile)view.getTag();
+		
+		popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+
+			public boolean onMenuItemClick(android.view.MenuItem item) {
+				switch (item.getItemId()) {
+				case R.id.profile_list_item_menu_activate:
+					activateProfile(profile, true);
+					return true;
+				case R.id.profile_list_item_menu_duplicate:
+					duplicateProfile(profile);
+					return true;
+				case R.id.profile_list_item_menu_delete:
+					deleteProfileWithAlert(profile);
+					return true;
+				default:
+					return false;
+				}
+			}
+			});		
+		
+		
+		popup.show();		
+	}
+	
 	public void deleteProfileWithAlert(Profile profile)
 	{
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());

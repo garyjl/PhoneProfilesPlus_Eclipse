@@ -15,31 +15,9 @@
 	        android:layout_centerVertical="true"
         	android:layout_alignParentRight="true"
         	android:orientation="horizontal" >
-    
-	    <ImageView
-	        android:id="@+id/profile_list_item_activate"
-	        android:layout_width="45dp"
-	        android:layout_height="45dp"
-	        android:padding="10dp"
-	        android:scaleType="center"
-	        android:clickable="true"
-	        android:background="?attr/actionProfileToolBackground"
-	        android:contentDescription="@string/empty_string"
-	        android:src="?attr/actionActivateIcon" />
-        
-	    <ImageView
-	        android:id="@+id/profile_list_item_duplicate"
-	        android:layout_width="45dp"
-	        android:layout_height="45dp"
-	        android:padding="10dp"
-	        android:scaleType="center"
-	        android:clickable="true"
-	        android:background="?attr/actionProfileToolBackground"
-	        android:contentDescription="@string/empty_string"
-	        android:src="?attr/actionDuplicateIcon" />
 
 	    <ImageView
-	        android:id="@+id/profile_list_item_delete"
+	        android:id="@+id/profile_list_item_edit_menu"
 	        android:layout_width="45dp"
 	        android:layout_height="45dp"
 	        android:padding="10dp"
@@ -47,8 +25,8 @@
 	        android:clickable="true"
 	        android:background="?attr/actionProfileToolBackground"
 	        android:contentDescription="@string/empty_string"
-	        android:src="?attr/actionDeleteIcon" />
-	    	    
+	        android:src="?attr/editItemMenuIcon" />
+        
 	</LinearLayout>
     
     <RelativeLayout 

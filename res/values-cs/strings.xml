@@ -208,7 +208,7 @@
     <string name="default_profile_name_work">Práce</string>
     <string name="default_profile_name_meeting">Porada</string>
     <string name="default_profile_name_sleep">Spánek</string>
-    <string name="phone_profiles_pref_applicationAutoCloseDrawer">Auto. zavírání navig. panelu</string>
+    <string name="phone_profiles_pref_applicationAutoCloseDrawer">Auto-schování navig.panelu</string>
     <string name="import_profiles_from_phoneprofiles_alert_title">Import apl. dat</string>
     <string name="import_profiles_from_phoneprofiles_alert_title2">Importovat z PhoneProfiles</string>
     <string name="import_profiles_from_phoneprofiles_alert_message">Importovat z PhoneProfiles</string>
@@ -245,5 +245,9 @@
     <string name="title_activity_default_profile_preferences">Předvolenej profil</string>
     <string name="toast_profile_activating_0">Profil</string>
     <string name="toast_profile_activating_1">se aktivuje&#8230;</string>
-    		
+
+    <string name="profile_list_item_menu_activate">Aktivuj</string>
+    <string name="profile_list_item_menu_duplicate">Duplikuj</string>
+    <string name="profile_list_item_menu_delete">Smaž</string>
+    
 </resources>

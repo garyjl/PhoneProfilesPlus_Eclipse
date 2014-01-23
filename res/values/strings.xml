@@ -206,7 +206,7 @@
     <string name="default_profile_name_work">Work</string>
     <string name="default_profile_name_meeting">Meeting</string>
     <string name="default_profile_name_sleep">Sleep</string>
-    <string name="phone_profiles_pref_applicationAutoCloseDrawer">Auto. close navig. panel</string>
+    <string name="phone_profiles_pref_applicationAutoCloseDrawer">Auto-hide navig.panel</string>
     <string name="import_profiles_from_phoneprofiles_alert_title">Import app. data</string>
     <string name="import_profiles_from_phoneprofiles_alert_title2">Import from PhoneProfiles</string>
     <string name="import_profiles_from_phoneprofiles_alert_message">Import from PhoneProfiles</string>
@@ -244,5 +244,10 @@
     <string name="title_activity_default_profile_preferences">Default profile</string>
     <string name="toast_profile_activating_0">Profile</string>
     <string name="toast_profile_activating_1">activating&#8230;</string>
+    
+    <string name="profile_list_item_menu_activate">Activate</string>
+    <string name="profile_list_item_menu_duplicate">Duplicate</string>
+    <string name="profile_list_item_menu_delete">Delete</string>
+    
     	
 </resources>

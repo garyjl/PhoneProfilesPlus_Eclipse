@@ -60,5 +60,6 @@
     <attr name="actionGlobalEventStopIcon" format="reference" />
     <attr name="actionDefaultProfileIcon" format="reference" />
     <attr name="preferenceDialogBackground" format="reference" />
+    <attr name="editItemMenuIcon" format="reference" />
     
 </resources>

@@ -47,9 +47,9 @@
     <string name="phone_profiles_pref_category_activation">Profil-Aktivierung</string> 
     <string name="phone_profiles_pref_category_start">App starten</string> 
     <string name="phone_profiles_pref_category_notifications">Benachrichtigungen</string> 
-    <string name="phone_profiles_pref_applicationActivate">Beim Hochfahren Profil aktivieren</string> 
-    <string name="phone_profiles_pref_applicationClose">Nach Profil-Aktivierung schließen</string> 
-    <string name="phone_profiles_pref_applicationPrefIndicator">Änderungs-Symbole anzeigen</string> 
+    <string name="phone_profiles_pref_applicationActivate">Profilaktivierung bei Boot</string> 
+    <string name="phone_profiles_pref_applicationClose">Schließen nach Profil</string> 
+    <string name="phone_profiles_pref_applicationPrefIndicator">Typsymbole anzeigen</string> 
     <string name="phone_profiles_pref_applicationHeader">Aktiviertes Profil anzeigen</string>
     <string name="phone_profiles_pref_applicationAlert">Popup beim Aktivieren</string> 
     <string name="phone_profiles_pref_notificationsToast">Toast-Nachricht anzeigen</string> 
@@ -244,5 +244,9 @@
     <string name="title_activity_default_profile_preferences">Standard-Profil</string>
     <string name="toast_profile_activating_0">Profil</string>
     <string name="toast_profile_activating_1">activating&#8230;</string>
-        
+
+    <string name="profile_list_item_menu_activate">Activate</string>
+    <string name="profile_list_item_menu_duplicate">Duplicate</string>
+    <string name="profile_list_item_menu_delete">Delete</string>
+    
 </resources>

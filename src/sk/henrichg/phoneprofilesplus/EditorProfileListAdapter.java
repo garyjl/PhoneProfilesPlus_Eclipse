@@ -248,9 +248,7 @@ public class EditorProfileListAdapter extends BaseAdapter
 		  ImageView profileIcon;
 		  TextView profileName;
 		  ImageView profileIndicator;
-		  ImageView profileItemActivate;
-		  ImageView profileItemDuplicate;
-		  ImageView profileItemDelete;
+		  ImageView profileItemEditMenu;
 		  ImageView profileShowInActivator;
 		  int position;
 		}
@@ -281,9 +279,7 @@ public class EditorProfileListAdapter extends BaseAdapter
             holder.listItemRoot = (RelativeLayout)vi.findViewById(R.id.profile_list_item_root);
             holder.profileName = (TextView)vi.findViewById(R.id.profile_list_item_profile_name);
             holder.profileIcon = (ImageView)vi.findViewById(R.id.profile_list_item_profile_icon);
-  		    holder.profileItemActivate = (ImageView)vi.findViewById(R.id.profile_list_item_activate);
-  		    holder.profileItemDuplicate = (ImageView)vi.findViewById(R.id.profile_list_item_duplicate);
-  		    holder.profileItemDelete = (ImageView)vi.findViewById(R.id.profile_list_item_delete);
+    		holder.profileItemEditMenu = (ImageView)vi.findViewById(R.id.profile_list_item_edit_menu);
   		    holder.profileShowInActivator = (ImageView)vi.findViewById(R.id.profile_list_item_show_in_activator);
   		    if (GlobalData.applicationEditorPrefIndicator)
   			    holder.profileIndicator = (ImageView)vi.findViewById(R.id.profile_list_profile_pref_indicator);
@@ -372,32 +368,16 @@ public class EditorProfileListAdapter extends BaseAdapter
 			holder.profileIndicator.setImageBitmap(profile._preferencesIndicator);
 		}
 		
-		holder.profileItemActivate.setTag(R.id.profile_list_item_activate);
-		holder.profileItemActivate.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				//Log.d("EditorProfileListAdapter.onClick", "activate");
-				((EditorProfileListFragment)fragment).finishProfilePreferencesActionMode();
-				((EditorProfileListFragment)fragment).activateProfile(profile, true);
-			}
-		}); 
+        holder.profileItemEditMenu.setTag(profile);
+        final ImageView profileItemEditMenu = holder.profileItemEditMenu;
+        holder.profileItemEditMenu.setOnClickListener(new OnClickListener() {
 
-		holder.profileItemDuplicate.setTag(R.id.profile_list_item_duplicate);
-		holder.profileItemDuplicate.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				//Log.d("EditorProfileListAdapter.onClick", "duplicate");
-				((EditorProfileListFragment)fragment).finishProfilePreferencesActionMode();
-				((EditorProfileListFragment)fragment).duplicateProfile(profile);
-			}
-		}); 
-
-		holder.profileItemDelete.setTag(R.id.profile_list_item_delete);
-		holder.profileItemDelete.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				//Log.d("EditorProfileListAdapter.onClick", "delete");
-				((EditorProfileListFragment)fragment).finishProfilePreferencesActionMode();
-				((EditorProfileListFragment)fragment).deleteProfileWithAlert(profile);
-			}
-		}); 
+				public void onClick(View v) {
+					//Log.d("EditorProfileListAdapter.onClick", "delete");
+					((EditorProfileListFragment)fragment).finishProfilePreferencesActionMode();
+					((EditorProfileListFragment)fragment).showEditMenu(profileItemEditMenu);
+				}
+			}); 
 		
 		//Log.d("ProfileListAdapter.getView", profile.getName());
       
