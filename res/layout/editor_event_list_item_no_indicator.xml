@@ -17,7 +17,7 @@
         	android:orientation="horizontal" >
 
 	    <ImageView
-	        android:id="@+id/event_list_item_run_stop_event"
+	        android:id="@+id/event_list_item_edit_menu"
 	        android:layout_width="45dp"
 	        android:layout_height="45dp"
 	        android:padding="10dp"
@@ -25,30 +25,8 @@
 	        android:clickable="true"
 	        android:background="?attr/actionProfileToolBackground"
 	        android:contentDescription="@string/empty_string"
-	        android:src="?attr/actionEventRunIcon" />
-        
-	    <ImageView
-	        android:id="@+id/event_list_item_duplicate"
-	        android:layout_width="45dp"
-	        android:layout_height="45dp"
-	        android:padding="10dp"
-	        android:scaleType="center"
-	        android:clickable="true"
-	        android:background="?attr/actionProfileToolBackground"
-	        android:contentDescription="@string/empty_string"
-	        android:src="?attr/actionDuplicateIcon" />
-
-	    <ImageView
-	        android:id="@+id/event_list_item_delete"
-	        android:layout_width="45dp"
-	        android:layout_height="45dp"
-	        android:padding="10dp"
-	        android:scaleType="center"
-	        android:clickable="true"
-	        android:background="?attr/actionProfileToolBackground"
-	        android:contentDescription="@string/empty_string"
-	        android:src="?attr/actionDeleteIcon" />
-	    	    	    	    
+	        android:src="?attr/editItemMenuIcon" />
+        	    	    	    	    
 	</LinearLayout>
     
     <RelativeLayout 

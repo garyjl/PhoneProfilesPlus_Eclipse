@@ -249,5 +249,9 @@
     <string name="profile_list_item_menu_activate">Aktivuj</string>
     <string name="profile_list_item_menu_duplicate">Duplikuj</string>
     <string name="profile_list_item_menu_delete">Smaž</string>
+    <string name="event_list_item_menu_run">Povol běh události</string>
+    <string name="event_list_item_menu_stop">Zastav událost</string>
+    <string name="event_list_item_menu_duplicate">Duplikuj</string>
+    <string name="event_list_item_menu_delete">Smaž</string>
     
 </resources>

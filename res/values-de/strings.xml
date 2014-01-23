@@ -248,5 +248,9 @@
     <string name="profile_list_item_menu_activate">Activate</string>
     <string name="profile_list_item_menu_duplicate">Duplicate</string>
     <string name="profile_list_item_menu_delete">Delete</string>
+    <string name="event_list_item_menu_run">Enable running event</string>
+    <string name="event_list_item_menu_stop">Stop event</string>
+    <string name="event_list_item_menu_duplicate">Duplicate</string>
+    <string name="event_list_item_menu_delete">Delete</string>
     
 </resources>

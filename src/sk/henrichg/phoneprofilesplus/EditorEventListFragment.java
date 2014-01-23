@@ -10,9 +10,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -432,6 +435,65 @@ public class EditorEventListFragment extends Fragment {
 		
 			onStartEventPreferencesCallback.onStartEventPreferences(null, EDIT_MODE_DELETE, filterType, orderType);
 		}
+	}
+	
+	public void showEditMenu(View view)
+	{
+		Context context = ((ActionBarActivity)getActivity()).getSupportActionBar().getThemedContext();
+		PopupMenu popup = new PopupMenu(context, view);
+		Menu menu = popup.getMenu();
+		getActivity().getMenuInflater().inflate(R.menu.event_list_item_edit, menu);
+		
+		MenuItem menuItem = menu.findItem(R.id.event_list_item_menu_run_stop);
+        if (GlobalData.getGlobalEventsRuning(dataWrapper.context))
+        {
+        	menuItem.setVisible(true);
+        	
+        	Event event = (Event)view.getTag();
+        	
+	        if (event.getStatusFromDB(dataWrapper) == Event.ESTATUS_STOP)
+	        {
+	        	menuItem.setTitle(R.string.event_list_item_menu_run);
+	           	if (GlobalData.applicationTheme.equals("dark"))
+	        		menuItem.setIcon(R.drawable.ic_action_event_run_dark);
+	           	else
+	           		menuItem.setIcon(R.drawable.ic_action_event_run);
+	        }
+	        else
+	        {
+	        	menuItem.setTitle(R.string.event_list_item_menu_stop);
+	           	if (GlobalData.applicationTheme.equals("dark"))
+	           		menuItem.setIcon(R.drawable.ic_action_event_stop_dark);
+	           	else
+	           		menuItem.setIcon(R.drawable.ic_action_event_stop);
+	        }
+        }
+        else
+        	menuItem.setVisible(false);
+		
+		final Event event = (Event)view.getTag();
+		
+		popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+
+			public boolean onMenuItemClick(android.view.MenuItem item) {
+				switch (item.getItemId()) {
+				case R.id.event_list_item_menu_run_stop:
+					runStopEvent(event);
+					return true;
+				case R.id.event_list_item_menu_duplicate:
+					duplicateEvent(event);
+					return true;
+				case R.id.event_list_item_menu_delete:
+					deleteEventWithAlert(event);
+					return true;
+				default:
+					return false;
+				}
+			}
+			});		
+		
+		
+		popup.show();		
 	}
 	
 	public void deleteEventWithAlert(Event event)

@@ -216,9 +216,7 @@ public class EditorEventListAdapter extends BaseAdapter
 		  TextView eventPreferencesDescription;
 		  ImageView profileIndicator;
 		  ImageView eventStatus;
-		  ImageView eventItemRunStop;
-		  ImageView eventItemDuplicate;
-		  ImageView eventItemDelete;
+		  ImageView eventItemEditMenu;
 		  int position;
 		}
 	
@@ -242,9 +240,7 @@ public class EditorEventListAdapter extends BaseAdapter
             holder.profileName = (TextView)vi.findViewById(R.id.event_list_item_profile_name);
             holder.profileIcon = (ImageView)vi.findViewById(R.id.event_list_item_profile_icon);
             holder.eventStatus = (ImageView)vi.findViewById(R.id.event_list_item_status);
-  		    holder.eventItemRunStop = (ImageView)vi.findViewById(R.id.event_list_item_run_stop_event);
-  		    holder.eventItemDuplicate = (ImageView)vi.findViewById(R.id.event_list_item_duplicate);
-  		    holder.eventItemDelete = (ImageView)vi.findViewById(R.id.event_list_item_delete);
+    		holder.eventItemEditMenu = (ImageView)vi.findViewById(R.id.event_list_item_edit_menu);
   		    if (GlobalData.applicationEditorPrefIndicator)
   		    {
   		    	holder.eventPreferencesDescription  = (TextView)vi.findViewById(R.id.event_list_item_preferences_description);
@@ -364,6 +360,7 @@ public class EditorEventListAdapter extends BaseAdapter
 			}
         }
 
+        /*
         holder.eventItemRunStop.setTag(R.id.event_list_item_run_stop_event);
         // change button icon by event status
         if (GlobalData.getGlobalEventsRuning(dataWrapper.context))
@@ -393,25 +390,16 @@ public class EditorEventListAdapter extends BaseAdapter
 					((EditorEventListFragment)fragment).finishEventPreferencesActionMode();
 					((EditorEventListFragment)fragment).runStopEvent(event);
 				}
-			}); 
-        
-        holder.eventItemDuplicate.setTag(R.id.event_list_item_duplicate);
-        holder.eventItemDuplicate.setOnClickListener(new OnClickListener() {
+			});
+		*/ 
+        holder.eventItemEditMenu.setTag(event);
+        final ImageView eventItemEditMenu = holder.eventItemEditMenu;
+        holder.eventItemEditMenu.setOnClickListener(new OnClickListener() {
 
 				public void onClick(View v) {
-					//Log.d("EditorProfileListAdapter.onClick", "duplicate");
+					//Log.d("EditorEventListAdapter.onClick", "delete");
 					((EditorEventListFragment)fragment).finishEventPreferencesActionMode();
-					((EditorEventListFragment)fragment).duplicateEvent(event);
-				}
-			}); 
-
-        holder.eventItemDelete.setTag(R.id.event_list_item_delete);
-        holder.eventItemDelete.setOnClickListener(new OnClickListener() {
-
-				public void onClick(View v) {
-					//Log.d("EditorProfileListAdapter.onClick", "delete");
-					((EditorEventListFragment)fragment).finishEventPreferencesActionMode();
-					((EditorEventListFragment)fragment).deleteEventWithAlert(event);
+					((EditorEventListFragment)fragment).showEditMenu(eventItemEditMenu);
 				}
 			}); 
 		
