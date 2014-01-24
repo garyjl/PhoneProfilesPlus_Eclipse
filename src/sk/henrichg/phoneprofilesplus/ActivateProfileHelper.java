@@ -645,7 +645,7 @@ public class ActivateProfileHelper {
 	{
 		final ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 		
-	/*	try {
+		try {
 			final Class<?> connectivityManagerClass = Class.forName(connectivityManager.getClass().getName());
 			final Method getMobileDataEnabledMethod = connectivityManagerClass.getDeclaredMethod("getMobileDataEnabled");
 			getMobileDataEnabledMethod.setAccessible(true);
@@ -666,8 +666,8 @@ public class ActivateProfileHelper {
 			e.printStackTrace();
 			return false;
 		}
-		*/
 		
+		/*
 		final NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 		if (networkInfo != null)
 		{
@@ -675,19 +675,20 @@ public class ActivateProfileHelper {
 			//String netvorkTypeName = networkInfo.getTypeName(); // "mobile" or "WIFI"
 			boolean connected = networkInfo.isConnected();  // true = active connection
 			
-			if (netvorkType == 0)
-			{
+			//if (netvorkType == 0)
+			//{
 				// connected into mobile data
 				return connected;
-			}
-			else
-			{
+			//}
+			//else
+			//{
 				// conected into Wifi
-				return false;
-			}
+			//	return false;
+			//}
 		}
 		else
 			return false;
+		*/
 		
 	}
 	

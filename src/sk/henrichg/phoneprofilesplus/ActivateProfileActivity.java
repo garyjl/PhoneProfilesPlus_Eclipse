@@ -573,12 +573,16 @@ public class ActivateProfileActivity extends ActionBarActivity {
 			profileFromAdapter._checked = false;
 
 		Profile profileFromDB = dataWrapper.getDatabaseHandler().getActivatedProfile();
-		
-		Profile profileFromDataWrapper = dataWrapper.getProfileById(profileFromDB._id);
-		if (profileFromDataWrapper != null)
-			profileFromDataWrapper._checked = true;
+		if (profileFromDB != null)
+		{
+			Profile profileFromDataWrapper = dataWrapper.getProfileById(profileFromDB._id);
+			if (profileFromDataWrapper != null)
+				profileFromDataWrapper._checked = true;
+			updateHeader(profileFromDataWrapper);
+		}
+		else
+			updateHeader(null);
 
-		updateHeader(profileFromDataWrapper);
 		profileListAdapter.notifyDataSetChanged();
 	}
 	

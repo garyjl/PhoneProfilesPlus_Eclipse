@@ -21,6 +21,7 @@ public class ExecuteRadioProfilePrefsService extends IntentService
 		
 		long profile_id = intent.getLongExtra(GlobalData.EXTRA_PROFILE_ID, 0);
 		Profile profile = dataWrapper.getProfileById(profile_id);
+		profile = GlobalData.getMappedProfile(profile, context);
 		if (profile != null)
 		{
 			aph.executeForRadios(profile);

@@ -818,13 +818,20 @@ public class EditorProfileListFragment extends Fragment {
 			profileFromAdapter._checked = false;
 
 		Profile profileFromDB = dataWrapper.getDatabaseHandler().getActivatedProfile();
-		
-		Profile profileFromDataWrapper = dataWrapper.getProfileById(profileFromDB._id);
-		if (profileFromDataWrapper != null)
-			profileFromDataWrapper._checked = true;
-
-		updateHeader(profileFromDataWrapper);
-		updateListView(profileFromDataWrapper, false);
+		if (profileFromDB != null)
+		{
+			Profile profileFromDataWrapper = dataWrapper.getProfileById(profileFromDB._id);
+			if (profileFromDataWrapper != null)
+				profileFromDataWrapper._checked = true;
+			updateHeader(profileFromDataWrapper);
+			updateListView(profileFromDataWrapper, false);
+		}
+		else
+		{
+			updateHeader(null);
+			updateListView(null, false);
+		}
+			
 	}
 	
 }
