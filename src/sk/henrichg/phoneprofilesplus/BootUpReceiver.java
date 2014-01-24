@@ -15,6 +15,8 @@ public class BootUpReceiver extends BroadcastReceiver {
 		{	
 			GlobalData.setApplicationStarted(context, true);
 			
+			GlobalData.grantRoot();
+			
 			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
 			dataWrapper.firstStartEvents();
 			dataWrapper.invalidateDataWrapper();
