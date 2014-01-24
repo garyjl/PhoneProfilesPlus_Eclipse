@@ -253,4 +253,6 @@
     <string name="event_list_item_menu_duplicate">Duplikuj</string>
     <string name="event_list_item_menu_delete">Zmaž</string>
     
+    <string name="phone_profiles_pref_applicationEditorSaveEditorState">Ulož stav editora</string>
+    
 </resources>

@@ -337,14 +337,17 @@ public class EditorProfilesActivity extends ActionBarActivity
 	*/	
 
 		// set drawer item and order
-    	SharedPreferences preferences = getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Activity.MODE_PRIVATE);
-    	drawerSelectedItem = preferences.getInt(SP_EDITOR_DRAWER_SELECTED_ITEM, 1);
-    	orderSelectedItem = preferences.getInt(SP_EDITOR_ORDER_SELECTED_ITEM, 0);
+        Log.e("EditorProfilesActivity.onCreate","applicationEditorSaveEditorState="+GlobalData.applicationEditorSaveEditorState);
+        if ((savedInstanceState != null) || (GlobalData.applicationEditorSaveEditorState))
+        {
+        	SharedPreferences preferences = getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Activity.MODE_PRIVATE);
+        	drawerSelectedItem = preferences.getInt(SP_EDITOR_DRAWER_SELECTED_ITEM, 1);
+        	orderSelectedItem = preferences.getInt(SP_EDITOR_ORDER_SELECTED_ITEM, 0);
+        }
     	selectDrawerItem(drawerSelectedItem, false);
     	changeEventOrder(orderSelectedItem);
-        
-        
-		//Log.e("EditorProfilesActivity.onCreate", "drawerSelectedItem="+drawerSelectedItem);
+
+        //Log.e("EditorProfilesActivity.onCreate", "drawerSelectedItem="+drawerSelectedItem);
 		
 		
 	}
