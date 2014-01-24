@@ -65,6 +65,8 @@ public class EditorProfilesActivity extends ActionBarActivity
                                                OnFinishEventPreferencesActionMode
 {
 
+	private static EditorProfilesActivity instance;
+	
 	//private DataWrapper dataWrapper;
 	private static ApplicationsCache applicationsCache;
 	private int editModeProfile;
@@ -119,6 +121,8 @@ public class EditorProfilesActivity extends ActionBarActivity
 		
 		super.onCreate(savedInstanceState);
 
+		instance = this;
+		
 		setContentView(R.layout.activity_editor_list_onepane);
 		
 	/*	// add profile list into list container
@@ -352,6 +356,11 @@ public class EditorProfilesActivity extends ActionBarActivity
 		
 	}
 	
+	public static EditorProfilesActivity getInstance()
+	{
+		return instance;
+	}
+	
 	@Override
 	protected void onStart()
 	{
@@ -371,6 +380,8 @@ public class EditorProfilesActivity extends ActionBarActivity
 		//	dataWrapper.invalidateDataWrapper();
 		//dataWrapper = null;
 
+		instance = null;
+		
 		super.onDestroy();
 
 		//Log.e("EditorProfilesActivity.onDestroy","xxx");
@@ -1481,4 +1492,20 @@ public class EditorProfilesActivity extends ActionBarActivity
 		else
 			return null;
 	}
+	
+	public void refreshGUI()
+	{
+		Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
+		if (fragment != null)
+		{
+			//Log.e("EditorProfilesActivity.getDataWrapper","COUNT_DRAWER_PROFILE_ITEMS="+COUNT_DRAWER_PROFILE_ITEMS);
+			//Log.e("EditorProfilesActivity.getDataWrapper","drawerSelectedItem="+drawerSelectedItem);
+			
+			if (drawerSelectedItem < COUNT_DRAWER_PROFILE_ITEMS)
+				((EditorProfileListFragment)fragment).refreshGUI();
+			else
+				((EditorEventListFragment)fragment).refreshGUI();
+		}
+	}
+	
 }

@@ -811,4 +811,20 @@ public class EditorProfileListFragment extends Fragment {
 	    Collections.sort(profileList, new ByPOrderComparator());
 	}
 
+	public void refreshGUI()
+	{
+		Profile profileFromAdapter = profileListAdapter.getActivatedProfile();
+		if (profileFromAdapter != null)
+			profileFromAdapter._checked = false;
+
+		Profile profileFromDB = dataWrapper.getDatabaseHandler().getActivatedProfile();
+		
+		Profile profileFromDataWrapper = dataWrapper.getProfileById(profileFromDB._id);
+		if (profileFromDataWrapper != null)
+			profileFromDataWrapper._checked = true;
+
+		updateHeader(profileFromDataWrapper);
+		updateListView(profileFromDataWrapper, false);
+	}
+	
 }

@@ -681,5 +681,15 @@ public class EditorEventListFragment extends Fragment {
 			eventsRunStopIndicator.setBackgroundColor(0xFFFF0000);
 		updateListView(null, false);
     }
-	
+
+	public void refreshGUI()
+	{
+		for (Event event : eventList)
+		{
+			int status = dataWrapper.getDatabaseHandler().getEventStatus(event);
+			event.setStatus(status);
+		}
+		updateListView(null, false);
+	}
+    
 }

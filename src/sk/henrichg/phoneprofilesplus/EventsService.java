@@ -9,6 +9,12 @@ import android.util.Log;
 
 public class EventsService extends IntentService
 {
+	Context context;
+	DataWrapper dataWrapper;
+	List<EventTimeline> eventTimelineList;
+	int procedure;
+	int eventType;
+	
 	public static final int ESP_START_EVENT = 1;
 	public static final int ESP_PAUSE_EVENT = 2;
 	public static final int ESP_STOP_EVENT = 3;
@@ -22,7 +28,7 @@ public class EventsService extends IntentService
 	@Override
 	protected void onHandleIntent(Intent intent) {
 
-		Context context = getBaseContext();
+		context = getBaseContext();
 		
 		if (!GlobalData.getApplicationStarted(context))
 			// application is not started
@@ -32,13 +38,13 @@ public class EventsService extends IntentService
 			// events are globally stopped
 			return;
 		
-		DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
-		List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
+		dataWrapper = new DataWrapper(context, false, false, 0);
+		eventTimelineList = dataWrapper.getEventTimelineList();
 
 		GlobalData.logE("EventsService.onHandleIntent","eventTimelineList.size()="+eventTimelineList.size());
 		
-		int procedure = intent.getIntExtra(GlobalData.EXTRA_EVENTS_SERVICE_PROCEDURE, 0);
-		int eventType = intent.getIntExtra(GlobalData.EXTRA_EVENT_TYPE, 0);
+		procedure = intent.getIntExtra(GlobalData.EXTRA_EVENTS_SERVICE_PROCEDURE, 0);
+		eventType = intent.getIntExtra(GlobalData.EXTRA_EVENT_TYPE, 0);
 		
 		GlobalData.logE("EventsService.onHandleIntent","procedure="+procedure);
 		GlobalData.logE("EventsService.onHandleIntent","eventType="+eventType);
@@ -51,21 +57,20 @@ public class EventsService extends IntentService
 				GlobalData.logE("EventsService.onHandleIntent","event_id="+event_id);
 
 				Event event = dataWrapper.getEventById(event_id);
-				doEvent_Time(dataWrapper, eventTimelineList, event, procedure);
-				
-				// completting wake
-				EventsAlarmBroadcastReceiver.completeWakefulIntent(intent);
+				doEventTime(dataWrapper, eventTimelineList, event, procedure);
 				
 				break;
 			default:
 				break;
 		}
 		
+		doEndService();
+		
 		dataWrapper.invalidateDataWrapper();
 		
 	}
 
-	private void doEvent_Time(DataWrapper dataWrapper, 
+	private void doEventTime(DataWrapper dataWrapper, 
 								List<EventTimeline> eventTimelineList,
 								Event event, int procedure)
 	{
@@ -85,6 +90,26 @@ public class EventsService extends IntentService
 				break;
 			case ESP_STOP_EVENT:
 				event.stopEvent(dataWrapper, eventTimelineList, true, false, true);
+				break;
+			default:
+				break;
+		}
+		
+	}
+	
+	private void doEndService()
+	{
+		// refresh GUI
+		Intent intent = new Intent();
+	    intent.setAction(RefreshGUIBroadcastReceiver.INTENT_REFRESH_GUI);
+		context.sendBroadcast(intent);
+
+		switch (eventType)
+		{
+			case Event.ETYPE_TIME:
+				// completting wake
+				EventsAlarmBroadcastReceiver.completeWakefulIntent(intent);
+				
 				break;
 			default:
 				break;

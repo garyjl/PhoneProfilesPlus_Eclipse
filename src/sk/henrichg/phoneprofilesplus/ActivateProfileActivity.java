@@ -30,6 +30,8 @@ import android.widget.TextView;
 
 public class ActivateProfileActivity extends ActionBarActivity {
 
+	private static ActivateProfileActivity instance;
+	
 	private DataWrapper dataWrapper;
 	private ActivateProfileHelper activateProfileHelper;
 	private List<Profile> profileList = null;
@@ -52,6 +54,8 @@ public class ActivateProfileActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
+		
+		instance = this;
 		
 		doOnStartCalled = false;
 		
@@ -275,7 +279,12 @@ public class ActivateProfileActivity extends ActionBarActivity {
 		//Log.d("PhoneProfileActivity.onCreate", "xxxx");
 		
 	}
-
+	
+	public static ActivateProfileActivity getInstance()
+	{
+		return instance;
+	}
+	
 	private void doOnStart()
 	{
 		//long nanoTimeStart = GlobalData.startMeasuringRunTime();
@@ -403,11 +412,14 @@ public class ActivateProfileActivity extends ActionBarActivity {
 	protected void onDestroy()
 	{
 	//	Debug.stopMethodTracing();
-		super.onDestroy();
 		profileList = null;
 		activateProfileHelper = null;
 		dataWrapper.invalidateDataWrapper();
 		dataWrapper = null;
+
+		instance = null;
+		
+		super.onDestroy();
 	}
 
 	@Override
@@ -552,6 +564,22 @@ public class ActivateProfileActivity extends ActionBarActivity {
 		    int res = lhs._porder - rhs._porder;
 	        return res;
 	    }
+	}
+
+	public void refreshGUI()
+	{
+		Profile profileFromAdapter = profileListAdapter.getActivatedProfile();
+		if (profileFromAdapter != null)
+			profileFromAdapter._checked = false;
+
+		Profile profileFromDB = dataWrapper.getDatabaseHandler().getActivatedProfile();
+		
+		Profile profileFromDataWrapper = dataWrapper.getProfileById(profileFromDB._id);
+		if (profileFromDataWrapper != null)
+			profileFromDataWrapper._checked = true;
+
+		updateHeader(profileFromDataWrapper);
+		profileListAdapter.notifyDataSetChanged();
 	}
 	
 }

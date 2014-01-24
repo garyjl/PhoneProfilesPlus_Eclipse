@@ -191,6 +191,15 @@
 	        android:enabled="true" 
 	        android:exported="false">
         </receiver>
+        
+	    <receiver android:name=".RefreshGUIBroadcastReceiver"
+	        android:enabled="true"
+	        android:exported="false" >
+	        <intent-filter>
+	         	<action android:name="sk.henrichg.phoneprofiles.REFRESH_GUI" />
+                <category android:name="android.intent.category.DEFAULT" />
+   	      	</intent-filter>
+	   	</receiver>   
 	    
     </application>
 

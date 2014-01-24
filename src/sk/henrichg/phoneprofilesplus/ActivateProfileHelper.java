@@ -615,6 +615,12 @@ public class ActivateProfileHelper {
 		Intent intent3 = new Intent();
 	    intent3.setAction(DashClockBroadcastReceiver.INTENT_REFRESH_DASHCLOCK);
 		context.sendBroadcast(intent3);
+		
+		// activities
+		Intent intent5 = new Intent();
+	    intent5.setAction(RefreshGUIBroadcastReceiver.INTENT_REFRESH_GUI);
+		context.sendBroadcast(intent5);
+		
 	}
 	
 	
