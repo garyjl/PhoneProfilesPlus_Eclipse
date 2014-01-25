@@ -558,7 +558,6 @@ public class GlobalData extends Application {
 					// aplikacia je nainstalovana ako systemova
 					featurePresented = true;
 			    }
-				featurePresented = true;
 			}
 		}
 		else
