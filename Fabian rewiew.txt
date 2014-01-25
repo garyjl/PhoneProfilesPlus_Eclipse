@@ -27,6 +27,7 @@ Or activate the background service again after upgrading to a new beta. :) Or ma
 5. An additional option not to go to last open page on app start or click on "edit profiles". I'm confused when it starts 
 in event editor instead of profile editor, but this can be helpful, too.
 - OK, I will adding option for it.
+ADDED
 
 6. A profile shouldn't be activated through an event if it's already the profile that's shown in the status bar. Example: 
 simple settings with only day and night profile. I wake up earlier and activate day profile for myself. Then I watch a movie 
@@ -35,6 +36,7 @@ screen timeout, mobile data and so on), but with a small edit of mine (no sounds
 sounds on again, but nothing changes in status bar. Manually activating profiles a second time should stay the use it has, 
 but only events shouldn't happen when the set profile is already active.
 - OK, I will check, whne activating profile is already activated a then not activation executed.
+DONE.
 
 7. On phone boot, PPP should check what's the last activated event or what would be activated if the phone were on and 
 activate it. For example there are events for 7, 8, 9 and 10 o'clock. Event 7 gets activated at 7, at 7:30 I set off my phone. 
@@ -50,6 +52,7 @@ tomorrow if there are more bugs with other categories and standard profile.﻿
 			if (profile._deviceMobileData == 99)
 				mappedProfile._deviceMobileData = defaultProfile._deviceMobileData;
 I will check it.
+FIXED
 
 EDIT: 9. Still the idea of playing a sound on profile activation. Of course only when media volume isn't zero.﻿
 - This is interesting idea. This is next option for application. :-D
