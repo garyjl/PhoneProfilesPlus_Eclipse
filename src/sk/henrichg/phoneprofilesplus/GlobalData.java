@@ -542,7 +542,7 @@ public class GlobalData extends Application {
 			{
 				// device ma gps
 
-			/*	if (canExploitGPS(context))
+				if (canExploitGPS(context))
 				{
 					featurePresented = true;
 			    }
@@ -557,7 +557,7 @@ public class GlobalData extends Application {
 				{
 					// aplikacia je nainstalovana ako systemova
 					featurePresented = true;
-			    } */
+			    }
 				featurePresented = true;
 			}
 		}
