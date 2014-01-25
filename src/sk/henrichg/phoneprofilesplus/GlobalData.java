@@ -541,23 +541,27 @@ public class GlobalData extends Application {
 			if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_LOCATION_GPS))
 			{
 				// device ma gps
-
-				if (canExploitGPS(context))
+				if (android.os.Build.VERSION.SDK_INT >= 14)
 				{
-					featurePresented = true;
-			    }
-				else
-				if ((android.os.Build.VERSION.SDK_INT >= 17) && isRooted())
-				{
-					featurePresented = true;
+					if (canExploitGPS(context))
+					{
+						featurePresented = true;
+				    }
+					else
+					if ((android.os.Build.VERSION.SDK_INT >= 17) && isRooted())
+					{
+						featurePresented = true;
+					}
+					else 
+					//if (isSystemApp(context) && isAdminUser(context))
+					if (isSystemApp(context))
+					{
+						// aplikacia je nainstalovana ako systemova
+						featurePresented = true;
+				    }
 				}
-				else 
-				//if (isSystemApp(context) && isAdminUser(context))
-				if (isSystemApp(context))
-				{
-					// aplikacia je nainstalovana ako systemova
+				else
 					featurePresented = true;
-			    }
 			}
 		}
 		else

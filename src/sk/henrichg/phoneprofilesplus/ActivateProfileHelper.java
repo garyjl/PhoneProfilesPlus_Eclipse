@@ -786,9 +786,13 @@ public class ActivateProfileHelper {
 			else
 			{
 	    		//Log.d("ActivateProfileHelper.setGPS", "normal");
-				Intent intent = new Intent("android.location.GPS_ENABLED_CHANGE");
-				intent.putExtra("enabled", enable);
-				context.sendBroadcast(intent); 
+				try {
+					Intent intent = new Intent("android.location.GPS_ENABLED_CHANGE");
+					intent.putExtra("enabled", enable);
+					context.sendBroadcast(intent); 
+				} catch (SecurityException e) {
+					e.printStackTrace();
+				}
 
 				// for normal apps it is only possible to open the system settings dialog
 			/*	Intent intent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
@@ -870,9 +874,13 @@ public class ActivateProfileHelper {
 			else
 			{
 	    		//Log.d("ActivateProfileHelper.setGPS", "normal");
-				Intent intent = new Intent("android.location.GPS_ENABLED_CHANGE");
-				intent.putExtra("enabled", enable);
-				context.sendBroadcast(intent); 
+				try {
+					Intent intent = new Intent("android.location.GPS_ENABLED_CHANGE");
+					intent.putExtra("enabled", enable);
+					context.sendBroadcast(intent); 
+				} catch (SecurityException e) {
+					e.printStackTrace();
+				}
 
 				// for normal apps it is only possible to open the system settings dialog
 			/*	Intent intent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
