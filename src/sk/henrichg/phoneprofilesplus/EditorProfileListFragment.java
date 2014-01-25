@@ -813,6 +813,9 @@ public class EditorProfileListFragment extends Fragment {
 
 	public void refreshGUI()
 	{
+		if (profileListAdapter == null)
+			return;
+		
 		Profile profileFromAdapter = profileListAdapter.getActivatedProfile();
 		if (profileFromAdapter != null)
 			profileFromAdapter._checked = false;

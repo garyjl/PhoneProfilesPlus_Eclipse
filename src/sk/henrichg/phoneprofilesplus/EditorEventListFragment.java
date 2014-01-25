@@ -684,6 +684,9 @@ public class EditorEventListFragment extends Fragment {
 
 	public void refreshGUI()
 	{
+		if (eventList == null)
+			return;
+		
 		for (Event event : eventList)
 		{
 			int status = dataWrapper.getDatabaseHandler().getEventStatus(event);
