@@ -140,7 +140,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 			returnIntent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, startupSource);
 			setResult(RESULT_OK,returnIntent);
 			
-			finish();
+			finishActivity();
 		}
 		
 		//Log.d("ActivateProfileActivity.onStart", "xxxx");
@@ -191,7 +191,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 					Intent returnIntent = new Intent();
 					setResult(RESULT_CANCELED,returnIntent);
 
-					activity.finish();
+					finishActivity();
 				}
 			});
 			dialogBuilder.setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -201,7 +201,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 					Intent returnIntent = new Intent();
 					setResult(RESULT_CANCELED,returnIntent);
 
-					activity.finish();
+					finishActivity();
 				}
 			});
 			dialogBuilder.show();
@@ -246,7 +246,23 @@ public class BackgroundActivateProfileActivity extends Activity {
 		returnIntent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, startupSource);
 		setResult(RESULT_OK,returnIntent);
 		
-		activity.finish();
+		finishActivity();
+	}
+
+	private void finishActivity()
+	{
+		Thread t = new Thread(new Runnable() {
+            public void run() {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    System.out.println(e);
+                }
+                System.out.println("finally exit");
+                finish();
+            }
+        });
+		t.start();			
 	}
 	
 }

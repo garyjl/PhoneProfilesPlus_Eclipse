@@ -366,18 +366,18 @@ public class ActivateProfileHelper {
 			LayoutParams layoutParams = window.getAttributes();
 			
 			if (profile.getDeviceBrightnessAutomatic())
-			{
-				Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
 				layoutParams.screenBrightness = LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
-			}
+			else
+				layoutParams.screenBrightness = profile.getDeviceBrightnessValue() / 255.0f;
+			window.setAttributes(layoutParams);
+
+			if (profile.getDeviceBrightnessAutomatic())
+				Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
 			else
 			{
 				Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
 				Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, profile.getDeviceBrightnessValue());
-				layoutParams.screenBrightness = profile.getDeviceBrightnessValue() / 255.0f;
 			}
-			
-			window.setAttributes(layoutParams);
 		}
 		
 		// nahodenie rotate
