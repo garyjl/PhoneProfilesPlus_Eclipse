@@ -258,7 +258,6 @@ public class BackgroundActivateProfileActivity extends Activity {
                 } catch (InterruptedException e) {
                     System.out.println(e);
                 }
-                System.out.println("finally exit");
                 finish();
             }
         });

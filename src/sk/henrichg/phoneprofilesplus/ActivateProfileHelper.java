@@ -5,6 +5,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import sk.henrichg.phoneprofiles.Profile;
+
 import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.execution.CommandCapture;
 
@@ -233,23 +235,8 @@ public class ActivateProfileHelper {
 		
 	}
 	
-	@SuppressWarnings("deprecation")
-	public void execute(Profile _profile, boolean _interactive)
+	private void setVolumes(Profile profile, AudioManager audioManager)
 	{
-		// regrant root, maybe application is deleted from Superuser.apk
-		GlobalData.rootGranted = false;
-		
-		// rozdelit zvonenie a notifikacie - zial je to oznacene ako @Hide :-(
-		//Settings.System.putInt(context.getContentResolver(), Settings.System.NOTIFICATIONS_USE_RING_VOLUME, 0);
-
-		AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
-		
-		final Profile profile = GlobalData.getMappedProfile(_profile, context);
-		final boolean interactive = _interactive;
-		
-		//boolean radiosExecuted = false;
-		
-		// nahodenie volume
 		if (profile.getVolumeRingtoneChange())
 			audioManager.setStreamVolume(AudioManager.STREAM_RING, profile.getVolumeRingtoneValue(), 0);
 			//Settings.System.putInt(getContentResolver(), Settings.System.VOLUME_RING, profile.getVolumeRingtoneValue());
@@ -268,34 +255,76 @@ public class ActivateProfileHelper {
 		if (profile.getVolumeVoiceChange())
 			audioManager.setStreamVolume(AudioManager.STREAM_VOICE_CALL, profile.getVolumeVoiceValue(), 0);
 			//Settings.System.putInt(getContentResolver(), Settings.System.VOLUME_VOICE, profile.getVolumeVoiceValue());
-
-		// nahodenie ringer modu
+	}
+	
+	@SuppressWarnings("deprecation")
+	private void setRingerMode(Profile profile, AudioManager audioManager)
+	{
 		switch (profile._volumeRingerMode) {
-			case 1:  // Ring
-				audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_OFF);
-				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION, AudioManager.VIBRATE_SETTING_OFF);
-				Settings.System.putInt(context.getContentResolver(), "vibrate_when_ringing", 0);
-				break;
-			case 2:  // Ring & Vibrate
-				audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_ON);
-				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION, AudioManager.VIBRATE_SETTING_ON);
-				Settings.System.putInt(context.getContentResolver(), "vibrate_when_ringing", 1);
-				break;
-			case 3:  // Vibrate
-				audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
-				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_ON);
-				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION, AudioManager.VIBRATE_SETTING_ON);
-				Settings.System.putInt(context.getContentResolver(), "vibrate_when_ringing", 1);
-				break;
-			case 4:  // Silent
-				audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_OFF);
-				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION, AudioManager.VIBRATE_SETTING_OFF);
-				Settings.System.putInt(context.getContentResolver(), "vibrate_when_ringing", 0);
-				break;
+		case 1:  // Ring
+			audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+			audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_OFF);
+			audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION, AudioManager.VIBRATE_SETTING_OFF);
+			Settings.System.putInt(context.getContentResolver(), "vibrate_when_ringing", 0);
+			break;
+		case 2:  // Ring & Vibrate
+			audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+			audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_ON);
+			audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION, AudioManager.VIBRATE_SETTING_ON);
+			Settings.System.putInt(context.getContentResolver(), "vibrate_when_ringing", 1);
+			break;
+		case 3:  // Vibrate
+			audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
+			audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_ON);
+			audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION, AudioManager.VIBRATE_SETTING_ON);
+			Settings.System.putInt(context.getContentResolver(), "vibrate_when_ringing", 1);
+			break;
+		case 4:  // Silent
+			audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+			audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_OFF);
+			audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION, AudioManager.VIBRATE_SETTING_OFF);
+			Settings.System.putInt(context.getContentResolver(), "vibrate_when_ringing", 0);
+			break;
 		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	public void execute(Profile _profile, boolean _interactive)
+	{
+		// regrant root, maybe application is deleted from Superuser.apk
+		GlobalData.rootGranted = false;
+		
+		// rozdelit zvonenie a notifikacie - zial je to oznacene ako @Hide :-(
+		//Settings.System.putInt(context.getContentResolver(), Settings.System.NOTIFICATIONS_USE_RING_VOLUME, 0);
+
+		AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+		
+		final Profile profile = GlobalData.getMappedProfile(_profile, context);
+		final boolean interactive = _interactive;
+		
+		//boolean radiosExecuted = false;
+		
+		// nahodenie ringer modu - aby sa mohli nastavit hlasitosti
+		setRingerMode(profile, audioManager);
+		
+		// nahodenie volume
+		setVolumes(profile, audioManager);
+
+		/*
+		Thread t = new Thread(new Runnable() {
+            public void run() {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    System.out.println(e);
+                }
+            }
+        });
+		t.start();
+		*/			
+		
+		// nahodenie ringer modu - hlasitosti zmenia silent/vibrate
+		setRingerMode(profile, audioManager);
 		
 		// nahodenie ringtone
 		if (profile._soundRingtoneChange == 1)
