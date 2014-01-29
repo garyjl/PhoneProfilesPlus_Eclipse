@@ -57,7 +57,7 @@ public class PhoneProfilesPreferencesFragment extends PreferenceListFragment
 
 		String stringValue = preferences.getString(key, "");
 
-		Log.e("PhoneProfilesPreferencesFragment.setSummary",key+"="+stringValue);
+		//Log.e("PhoneProfilesPreferencesFragment.setSummary",key+"="+stringValue);
 		
 		if (preference instanceof ListPreference) {
 			// For list preferences, look up the correct display value in
@@ -104,7 +104,7 @@ public class PhoneProfilesPreferencesFragment extends PreferenceListFragment
 		 else {
 			// For all other preferences, set the summary to the value's
 			// simple string representation.
-		    Log.e("PhoneProfilesPreferencesFragment.setSummary",key+"="+stringValue);
+		    //Log.e("PhoneProfilesPreferencesFragment.setSummary",key+"="+stringValue);
 			preference.setSummary(preference.toString());
 		}
 	}

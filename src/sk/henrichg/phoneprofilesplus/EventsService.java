@@ -5,7 +5,6 @@ import java.util.List;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 public class EventsService extends IntentService
 {

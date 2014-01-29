@@ -171,7 +171,6 @@ public class BackgroundActivateProfileActivity extends Activity {
 		{	
 			final Profile _profile = profile;
 			final boolean _interactive = interactive;
-			final Activity activity = this;
 
 			AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
 			dialogBuilder.setTitle(getResources().getString(R.string.profile_string_0) + ": " + profile._name);

@@ -9,6 +9,7 @@ import java.util.Calendar;
 
 import com.stericson.RootTools.RootTools;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -27,8 +28,8 @@ public class GlobalData extends Application {
 
 	static String PACKAGE_NAME;
 	
-	public static boolean logIntoLogCat = true;
-	public static boolean logIntoFile = true;
+	public static boolean logIntoLogCat = false;
+	public static boolean logIntoFile = false;
 	public static final String EXPORT_PATH = "/PhoneProfilesPlus";
 	public static final String LOG_FILENAME = "log.txt";
 
@@ -196,6 +197,7 @@ public class GlobalData extends Application {
 		logFile.delete();
 	}
 	
+	@SuppressLint("SimpleDateFormat")
 	static private void logIntoFile(String type, String tag, String text)
 	{
 		if (!logIntoFile)

@@ -341,7 +341,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	*/	
 
 		// set drawer item and order
-        Log.e("EditorProfilesActivity.onCreate","applicationEditorSaveEditorState="+GlobalData.applicationEditorSaveEditorState);
+        //Log.e("EditorProfilesActivity.onCreate","applicationEditorSaveEditorState="+GlobalData.applicationEditorSaveEditorState);
         if ((savedInstanceState != null) || (GlobalData.applicationEditorSaveEditorState))
         {
         	SharedPreferences preferences = getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Activity.MODE_PRIVATE);

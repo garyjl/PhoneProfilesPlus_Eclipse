@@ -3,7 +3,6 @@ package sk.henrichg.phoneprofilesplus;
 import java.text.Collator;
 import java.util.Locale;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;

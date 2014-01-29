@@ -5,8 +5,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import sk.henrichg.phoneprofiles.Profile;
-
 import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.execution.CommandCapture;
 
@@ -28,7 +26,6 @@ import android.graphics.BitmapFactory;
 import android.location.LocationManager;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.provider.Settings;
@@ -288,7 +285,6 @@ public class ActivateProfileHelper {
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void execute(Profile _profile, boolean _interactive)
 	{
 		// regrant root, maybe application is deleted from Superuser.apk
