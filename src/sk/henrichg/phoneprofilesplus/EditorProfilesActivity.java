@@ -929,6 +929,8 @@ public class EditorProfilesActivity extends ActionBarActivity
 					GlobalData.loadPreferences(getBaseContext());
 
 					dataWrapper.invalidateProfileList();
+					dataWrapper.getDatabaseHandler().deactivateProfile();
+					dataWrapper.getActivateProfileHelper().showNotification(null);
 					dataWrapper.getActivateProfileHelper().updateWidget();
 
 					// toast notification

@@ -25,7 +25,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static SQLiteDatabase writableDb;	
     
 	// Database Version
-	private static final int DATABASE_VERSION = 1002;
+	private static final int DATABASE_VERSION = 1010;
 
 	// Database Name
 	private static final String DATABASE_NAME = "phoneProfilesManager";
@@ -2013,7 +2013,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 											String value = cursorExportedDB.getString(i);
 										
 											// update values
-											if (exportedDBObj.getVersion() < 1002)
+											if (((exportedDBObj.getVersion() < 1002) || (applicationDataPath.equals(GlobalData.EXPORT_PATH)))
+												||
+												((exportedDBObj.getVersion() < 52) || (applicationDataPath.equals(GUIData.REMOTE_EXPORT_PATH))))
 											{
 												if (columnNamesExportedDB[i].equals(KEY_DEVICE_AUTOROTATE))
 												{
@@ -2058,11 +2060,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 									{
 										values.put(KEY_DEVICE_AUTOSYNC, 0);
 									}
-									if (exportedDBObj.getVersion() < 1000)
+									if ((exportedDBObj.getVersion() < 1000) || (applicationDataPath.equals(GUIData.REMOTE_EXPORT_PATH)))
 									{
 										values.put(KEY_SHOW_IN_ACTIVATOR, 1);
 									}
-									if (exportedDBObj.getVersion() < 1001)
+									if (((exportedDBObj.getVersion() < 1001) || (applicationDataPath.equals(GlobalData.EXPORT_PATH)))
+										||
+										((exportedDBObj.getVersion() < 51) || (applicationDataPath.equals(GUIData.REMOTE_EXPORT_PATH))))
 									{
 										values.put(KEY_DEVICE_AUTOROTATE, 0);
 									}
@@ -2081,10 +2085,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						cursorExportedDB.close();
 						cursorImportDB.close();
 
+						db.execSQL("DELETE FROM " + TABLE_EVENTS);
+						
 						if (tableExists(TABLE_EVENTS, exportedDBObj))
 						{
-							db.execSQL("DELETE FROM " + TABLE_EVENTS);
-						
 							// cusor for events exportedDB
 							cursorExportedDB = exportedDBObj.rawQuery("SELECT * FROM "+TABLE_EVENTS, null);
 							columnNamesExportedDB = cursorExportedDB.getColumnNames();
