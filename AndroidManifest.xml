@@ -106,6 +106,18 @@
             </intent-filter>
         </activity>
         
+        
+        <activity android:name=".RemoteExportDataActivity"
+            android:label="@string/empty_string" 
+            android:taskAffinity="sk.henrichg.phoneprofilesplus"
+            android:excludeFromRecents="true"
+            android:theme="@style/EmptyActivity" >
+		    <intent-filter>
+		        <action android:name="phoneprofilesplus.intent.action.EXPORTDATA"/>
+		        <category android:name="android.intent.category.DEFAULT"/>
+		    </intent-filter>
+		</activity>
+        
         <receiver
             android:name=".IconWidgetProvider"
             android:icon="@drawable/ic_launcher"

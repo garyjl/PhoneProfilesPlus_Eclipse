@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -51,6 +52,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 
 public class EditorProfilesActivity extends ActionBarActivity
@@ -979,7 +981,13 @@ public class EditorProfilesActivity extends ActionBarActivity
 				{
 					// start RemoteExportDataActivity
 					Intent intent = new Intent("phoneprofiles.intent.action.EXPORTDATA");
-				    startActivityForResult(intent, GlobalData.REQUEST_CODE_REMOTE_EXPORT);		
+					
+					final PackageManager packageManager = getPackageManager();
+				    List<ResolveInfo> list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+				    if (list.size() > 0)					
+				    	startActivityForResult(intent, GlobalData.REQUEST_CODE_REMOTE_EXPORT);
+				    else
+				    	importExportErrorDialog(1);				    	
 				}
 				else
 					doImportData(GlobalData.EXPORT_PATH);
