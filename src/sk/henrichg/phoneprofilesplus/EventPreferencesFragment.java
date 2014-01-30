@@ -32,6 +32,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	private Context context;
 	private ActionMode actionMode;
 	private Callback actionModeCallback;
+	private Bundle savedInstanceStateFromCreate;
 	
 	private int actionModeButtonClicked = BUTTON_UNDEFINED;
 	
@@ -106,6 +107,8 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		
 		super.onCreate(savedInstanceState);
 
+		savedInstanceStateFromCreate = savedInstanceState;
+		
 		preferencesActivity = getActivity();
         context = getActivity().getBaseContext();
 
@@ -169,14 +172,6 @@ public class EventPreferencesFragment extends PreferenceListFragment
         
         createActionModeCallback();
         
-        if ((savedInstanceState != null) && savedInstanceState.getBoolean("action_mode_showed", false))
-            showActionMode();
-        else
-        if (((new_event_mode == EditorEventListFragment.EDIT_MODE_INSERT) ||
-             (new_event_mode == EditorEventListFragment.EDIT_MODE_DUPLICATE))
-           	&& (savedInstanceState == null))
-        	showActionMode();
-
     	//Log.d("EventPreferencesFragment.onCreate", "xxxx");
     }
 	
@@ -184,6 +179,15 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	public void onStart()
 	{
 		super.onStart();
+		
+		// must by in onStart(), in ocCreate() crashed
+        if ((savedInstanceStateFromCreate != null) && savedInstanceStateFromCreate.getBoolean("action_mode_showed", false))
+            showActionMode();
+        else
+        if (((new_event_mode == EditorEventListFragment.EDIT_MODE_INSERT) ||
+             (new_event_mode == EditorEventListFragment.EDIT_MODE_DUPLICATE))
+           	&& (savedInstanceStateFromCreate == null))
+        	showActionMode();
 
 		updateSharedPreference();
 

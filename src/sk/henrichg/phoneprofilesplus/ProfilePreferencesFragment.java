@@ -37,6 +37,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	private Context context;
 	private ActionMode actionMode;
 	private Callback actionModeCallback;
+	private Bundle savedInstanceStateFromCreate;
 	
 	private int actionModeButtonClicked = BUTTON_UNDEFINED;
 	
@@ -112,6 +113,8 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
     public void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
+		
+		savedInstanceStateFromCreate = savedInstanceState;
 
 		preferencesActivity = getActivity();
         context = getActivity().getBaseContext();
@@ -214,14 +217,6 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
         
         createActionModeCallback();
         
-        if ((savedInstanceState != null) && savedInstanceState.getBoolean("action_mode_showed", false))
-            showActionMode();
-        else
-        if (((new_profile_mode == EditorProfileListFragment.EDIT_MODE_INSERT) ||
-             (new_profile_mode == EditorProfileListFragment.EDIT_MODE_DUPLICATE))
-           	&& (savedInstanceState == null))
-        	showActionMode();
-
     	//Log.d("ProfilePreferencesFragment.onCreate", "xxxx");
     }
 	
@@ -229,6 +224,15 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	public void onStart()
 	{
 		super.onStart();
+		
+		// must by in onStart(), in ocCreate() crashed
+        if ((savedInstanceStateFromCreate != null) && savedInstanceStateFromCreate.getBoolean("action_mode_showed", false))
+            showActionMode();
+        else
+        if (((new_profile_mode == EditorProfileListFragment.EDIT_MODE_INSERT) ||
+             (new_profile_mode == EditorProfileListFragment.EDIT_MODE_DUPLICATE))
+           	&& (savedInstanceStateFromCreate == null))
+        	showActionMode();
 
 		updateSharedPreference();
 		
