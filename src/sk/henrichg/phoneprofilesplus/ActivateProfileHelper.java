@@ -232,23 +232,52 @@ public class ActivateProfileHelper {
 		
 	}
 	
+	private void waitForVolumeChange()
+	{
+		Thread t = new Thread(new Runnable() {
+            public void run() {
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    System.out.println(e);
+                }
+            }
+        });
+		t.start();			
+	}
+	
 	private void setVolumes(Profile profile, AudioManager audioManager)
 	{
-		if (profile.getVolumeRingtoneChange())
-			audioManager.setStreamVolume(AudioManager.STREAM_RING, profile.getVolumeRingtoneValue(), 0);
-			//Settings.System.putInt(getContentResolver(), Settings.System.VOLUME_RING, profile.getVolumeRingtoneValue());
-		if (profile.getVolumeNotificationChange())
-			audioManager.setStreamVolume(AudioManager.STREAM_NOTIFICATION, profile.getVolumeNotificationValue(), 0);
-			//Settings.System.putInt(getContentResolver(), Settings.System.VOLUME_NOTIFICATION, profile.getVolumeNotificationValue());
-		if (profile.getVolumeMediaChange())
-			audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, profile.getVolumeMediaValue(), 0);
-			//Settings.System.putInt(getContentResolver(), Settings.System.VOLUME_MUSIC, profile.getVolumeMediaValue());
-		if (profile.getVolumeAlarmChange())
-			audioManager.setStreamVolume(AudioManager.STREAM_ALARM, profile.getVolumeAlarmValue(), 0);
-			//Settings.System.putInt(getContentResolver(), Settings.System.VOLUME_ALARM, profile.getVolumeAlarmValue());
 		if (profile.getVolumeSystemChange())
+		{
 			audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, profile.getVolumeSystemValue(), 0);
+			waitForVolumeChange();
 			//Settings.System.putInt(getContentResolver(), Settings.System.VOLUME_SYSTEM, profile.getVolumeSystemValue());
+		}
+		if (profile.getVolumeRingtoneChange())
+		{
+			audioManager.setStreamVolume(AudioManager.STREAM_RING, profile.getVolumeRingtoneValue(), 0);
+			waitForVolumeChange();
+			//Settings.System.putInt(getContentResolver(), Settings.System.VOLUME_RING, profile.getVolumeRingtoneValue());
+		}
+		if (profile.getVolumeNotificationChange())
+		{
+			audioManager.setStreamVolume(AudioManager.STREAM_NOTIFICATION, profile.getVolumeNotificationValue(), 0);
+			waitForVolumeChange();
+			//Settings.System.putInt(getContentResolver(), Settings.System.VOLUME_NOTIFICATION, profile.getVolumeNotificationValue());
+		}
+		if (profile.getVolumeMediaChange())
+		{
+			audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, profile.getVolumeMediaValue(), 0);
+			waitForVolumeChange();
+			//Settings.System.putInt(getContentResolver(), Settings.System.VOLUME_MUSIC, profile.getVolumeMediaValue());
+		}
+		if (profile.getVolumeAlarmChange())
+		{
+			audioManager.setStreamVolume(AudioManager.STREAM_ALARM, profile.getVolumeAlarmValue(), 0);
+			waitForVolumeChange();
+			//Settings.System.putInt(getContentResolver(), Settings.System.VOLUME_ALARM, profile.getVolumeAlarmValue());
+		}
 		if (profile.getVolumeVoiceChange())
 			audioManager.setStreamVolume(AudioManager.STREAM_VOICE_CALL, profile.getVolumeVoiceValue(), 0);
 			//Settings.System.putInt(getContentResolver(), Settings.System.VOLUME_VOICE, profile.getVolumeVoiceValue());
@@ -301,7 +330,7 @@ public class ActivateProfileHelper {
 		//boolean radiosExecuted = false;
 		
 		// nahodenie ringer modu - aby sa mohli nastavit hlasitosti
-		setRingerMode(profile, audioManager);
+		//setRingerMode(profile, audioManager);
 		
 		// nahodenie volume
 		setVolumes(profile, audioManager);
