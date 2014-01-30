@@ -255,5 +255,6 @@
     <string name="event_list_item_menu_delete">Smaž</string>
     
     <string name="phone_profiles_pref_applicationEditorSaveEditorState">Ulož stav editoru</string>
+    <string name="phone_profiles_pref_notificationPrefIndicator">Indikátor parametrů profilu</string>
     
 </resources>

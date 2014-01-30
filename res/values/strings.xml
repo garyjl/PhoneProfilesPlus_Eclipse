@@ -254,6 +254,7 @@
     <string name="event_list_item_menu_delete">Delete</string>
     
     <string name="phone_profiles_pref_applicationEditorSaveEditorState">Save editor state</string>
+    <string name="phone_profiles_pref_notificationPrefIndicator">Show preferences indicator</string>
     
     	
 </resources>

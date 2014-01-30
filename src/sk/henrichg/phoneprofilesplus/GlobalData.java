@@ -131,6 +131,7 @@ public class GlobalData extends Application {
     public static final String PREF_APPLICATION_WIDGET_LIST_ICON_LIGHTNESS = "applicationWidgetListIconLightness";
 	public static final String PREF_APPLICATION_EDITOR_AUTO_CLOSE_DRAWER = "applicationEditorAutoCloseDrawer";
 	public static final String PREF_APPLICATION_EDITOR_SAVE_EDITOR_STATE = "applicationEditorSaveEditorState";
+    public static final String PREF_NOTIFICATION_PREF_INDICATOR = "notificationPrefIndicator";
 
 	static final long DEFAULT_PROFILE_ID = -999;
 	
@@ -162,6 +163,7 @@ public class GlobalData extends Application {
     public static String applicationWidgetListIconLightness;
     public static boolean applicationEditorAutoCloseDrawer;
     public static boolean applicationEditorSaveEditorState;
+    public static boolean notificationPrefIndicator;
     
     
 	public void onCreate()
@@ -294,6 +296,7 @@ public class GlobalData extends Application {
 	    applicationWidgetListIconLightness = preferences.getString(PREF_APPLICATION_WIDGET_LIST_ICON_LIGHTNESS, "100");;
 	    applicationEditorAutoCloseDrawer = preferences.getBoolean(PREF_APPLICATION_EDITOR_AUTO_CLOSE_DRAWER, true);
 	    applicationEditorSaveEditorState = preferences.getBoolean(PREF_APPLICATION_EDITOR_SAVE_EDITOR_STATE, false);
+	    notificationPrefIndicator = preferences.getBoolean(PREF_NOTIFICATION_PREF_INDICATOR, true);
 	}
 	
 	private static String getVolumeLevelString(int percentage, int maxValue)

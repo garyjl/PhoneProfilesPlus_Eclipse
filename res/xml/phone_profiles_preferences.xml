@@ -86,7 +86,11 @@
 	           android:defaultValue="0"
 	           android:entries="@array/notificationIconStyleArray"
 	           android:entryValues="@array/notificationIconStyleValues" />        
-    </PreferenceCategory>
+		<CheckBoxPreference 
+		    android:key="notificationPrefIndicator"
+		    android:title="@string/phone_profiles_pref_notificationPrefIndicator"
+		    android:defaultValue="true" />
+	</PreferenceCategory>
     
     <PreferenceCategory
         android:title="@string/phone_profiles_pref_category_start"

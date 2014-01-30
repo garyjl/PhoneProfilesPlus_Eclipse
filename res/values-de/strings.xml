@@ -255,5 +255,6 @@
     <string name="event_list_item_menu_delete">Löschen</string>
     
     <string name="phone_profiles_pref_applicationEditorSaveEditorState">Save editor state</string>
+    <string name="phone_profiles_pref_notificationPrefIndicator">Typsymbole anzeigen</string> 
     
 </resources>
