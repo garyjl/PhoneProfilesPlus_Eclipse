@@ -234,7 +234,7 @@ public class ActivateProfileHelper {
 	
 	private void waitForVolumeChange()
 	{
-		Thread t = new Thread(new Runnable() {
+		/*Thread t = new Thread(new Runnable() {
             public void run() {
                 try {
                     Thread.sleep(200);
@@ -243,11 +243,18 @@ public class ActivateProfileHelper {
                 }
             }
         });
-		t.start();			
+		t.start();*/			
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            System.out.println(e);
+        }
 	}
 	
-	private void setVolumes(Profile profile, AudioManager audioManager)
+	public void setVolumes(Profile profile)
 	{
+		AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+		
 		if (profile.getVolumeSystemChange())
 		{
 			audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, profile.getVolumeSystemValue(), 0);
@@ -333,7 +340,11 @@ public class ActivateProfileHelper {
 		//setRingerMode(profile, audioManager);
 		
 		// nahodenie volume
-		setVolumes(profile, audioManager);
+		// run service for execute volumes
+		Intent volumeServiceIntent = new Intent(context, ExecuteVolumeProfilePrefsService.class);
+		volumeServiceIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
+		//WakefulIntentService.sendWakefulWork(context, radioServiceIntent);
+		context.startService(volumeServiceIntent);
 
 		/*
 		Thread t = new Thread(new Runnable() {

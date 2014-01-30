@@ -196,7 +196,9 @@
 	   	
 	    <service android:name=".ExecuteRadioProfilePrefsService">
         </service>
-	    	    
+	    <service android:name=".ExecuteVolumeProfilePrefsService">
+        </service>
+	    	    	    
 	    <service android:name=".EventsService">
         </service>
         <receiver android:name=".EventsAlarmBroadcastReceiver"
