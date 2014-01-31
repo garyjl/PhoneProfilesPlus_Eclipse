@@ -26,7 +26,15 @@ public class ExecuteVolumeProfilePrefsService extends IntentService //WakefulInt
 		profile = GlobalData.getMappedProfile(profile, context);
 		if (profile != null)
 		{
-			aph.setVolumes(profile);
+			AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+			
+			// nahodenie ringer modu - aby sa mohli nastavit hlasitosti
+			//aph.setRingerMode(profile, audioManager);
+			
+			aph.setVolumes(profile, audioManager);
+
+			// nahodenie ringer modu - hlasitosti zmenia silent/vibrate
+			aph.setRingerMode(profile, audioManager);
 		}
 		dataWrapper.invalidateDataWrapper();
 		aph = null;

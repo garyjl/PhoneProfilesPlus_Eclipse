@@ -251,10 +251,8 @@ public class ActivateProfileHelper {
         }
 	}
 	
-	public void setVolumes(Profile profile)
+	public void setVolumes(Profile profile, AudioManager audioManager)
 	{
-		AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
-		
 		if (profile.getVolumeSystemChange())
 		{
 			audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, profile.getVolumeSystemValue(), 0);
@@ -291,7 +289,7 @@ public class ActivateProfileHelper {
 	}
 	
 	@SuppressWarnings("deprecation")
-	private void setRingerMode(Profile profile, AudioManager audioManager)
+	public void setRingerMode(Profile profile, AudioManager audioManager)
 	{
 		switch (profile._volumeRingerMode) {
 		case 1:  // Ring
@@ -336,9 +334,6 @@ public class ActivateProfileHelper {
 		
 		//boolean radiosExecuted = false;
 		
-		// nahodenie ringer modu - aby sa mohli nastavit hlasitosti
-		//setRingerMode(profile, audioManager);
-		
 		// nahodenie volume
 		// run service for execute volumes
 		Intent volumeServiceIntent = new Intent(context, ExecuteVolumeProfilePrefsService.class);
@@ -346,22 +341,6 @@ public class ActivateProfileHelper {
 		//WakefulIntentService.sendWakefulWork(context, radioServiceIntent);
 		context.startService(volumeServiceIntent);
 
-		/*
-		Thread t = new Thread(new Runnable() {
-            public void run() {
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    System.out.println(e);
-                }
-            }
-        });
-		t.start();
-		*/			
-		
-		// nahodenie ringer modu - hlasitosti zmenia silent/vibrate
-		setRingerMode(profile, audioManager);
-		
 		// nahodenie ringtone
 		if (profile._soundRingtoneChange == 1)
 			Settings.System.putString(context.getContentResolver(), Settings.System.RINGTONE, profile._soundRingtone);
