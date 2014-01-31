@@ -132,6 +132,9 @@ public class GlobalData extends Application {
 	public static final String PREF_APPLICATION_EDITOR_AUTO_CLOSE_DRAWER = "applicationEditorAutoCloseDrawer";
 	public static final String PREF_APPLICATION_EDITOR_SAVE_EDITOR_STATE = "applicationEditorSaveEditorState";
     public static final String PREF_NOTIFICATION_PREF_INDICATOR = "notificationPrefIndicator";
+    public static final String PREF_APPLICATION_HOME_LAUNCHER = "applicationHomeLauncher";
+    public static final String PREF_APPLICATION_WIDGET_LAUNCHER = "applicationWidgetLauncher";
+    public static final String PREF_APPLICATION_NOTIFICATION_LAUNCHER = "applicationNotificationLauncher";
 
 	static final long DEFAULT_PROFILE_ID = -999;
 	
@@ -164,6 +167,9 @@ public class GlobalData extends Application {
     public static boolean applicationEditorAutoCloseDrawer;
     public static boolean applicationEditorSaveEditorState;
     public static boolean notificationPrefIndicator;
+    public static String applicationHomeLauncher;
+    public static String applicationWidgetLauncher;
+    public static String applicationNotificationLauncher;
     
     
 	public void onCreate()
@@ -297,6 +303,10 @@ public class GlobalData extends Application {
 	    applicationEditorAutoCloseDrawer = preferences.getBoolean(PREF_APPLICATION_EDITOR_AUTO_CLOSE_DRAWER, true);
 	    applicationEditorSaveEditorState = preferences.getBoolean(PREF_APPLICATION_EDITOR_SAVE_EDITOR_STATE, false);
 	    notificationPrefIndicator = preferences.getBoolean(PREF_NOTIFICATION_PREF_INDICATOR, true);
+	    applicationHomeLauncher = preferences.getString(PREF_APPLICATION_HOME_LAUNCHER, "activator");
+	    applicationWidgetLauncher = preferences.getString(PREF_APPLICATION_WIDGET_LAUNCHER, "activator");
+	    applicationNotificationLauncher = preferences.getString(PREF_APPLICATION_NOTIFICATION_LAUNCHER, "activator");
+
 	}
 	
 	private static String getVolumeLevelString(int percentage, int maxValue)

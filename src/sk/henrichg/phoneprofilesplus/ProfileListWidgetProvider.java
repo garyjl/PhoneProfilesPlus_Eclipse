@@ -210,7 +210,7 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 		}
 		else
 		{
-			Intent intent = new Intent(context, ActivateProfileActivity.class);
+			Intent intent = new Intent(context, LauncherActivity.class);
 			intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_WIDGET);
 			PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent,  
 														PendingIntent.FLAG_UPDATE_CURRENT);

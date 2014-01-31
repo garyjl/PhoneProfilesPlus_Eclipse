@@ -68,6 +68,7 @@ public class PhoneProfilesPreferencesFragment extends PreferenceListFragment
 			// Set the summary to reflect the new value.
 			// **** Heno changes ** support for "%" in list items
 			CharSequence summary = (index >= 0) ? listPreference.getEntries()[index] : null;
+			//Log.e("PhoneProfilesPreferencesFragment.setSummary",key+"="+summary);
 			if (summary != null)
 			{
 				String sSummary = summary.toString();
@@ -121,6 +122,9 @@ public class PhoneProfilesPreferencesFragment extends PreferenceListFragment
 	    setSummary(GlobalData.PREF_APPLICATION_ALERT);
 	    setSummary(GlobalData.PREF_APPLICATION_CLOSE);
 	    setSummary(GlobalData.PREF_APPLICATION_LONG_PRESS_ACTIVATION);
+	    setSummary(GlobalData.PREF_APPLICATION_HOME_LAUNCHER);
+	    setSummary(GlobalData.PREF_APPLICATION_NOTIFICATION_LAUNCHER);
+	    setSummary(GlobalData.PREF_APPLICATION_WIDGET_LAUNCHER);
 	    setSummary(GlobalData.PREF_APPLICATION_LANGUAGE);
 	    setSummary(GlobalData.PREF_APPLICATION_THEME);
 	    setSummary(GlobalData.PREF_APPLICATION_ACTIVATOR_PREF_INDICATOR);

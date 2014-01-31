@@ -53,20 +53,35 @@
         android:theme="@style/Theme.Phoneprofilestheme"
         android:configChanges="locale|layoutDirection"
         android:name="sk.henrichg.phoneprofilesplus.GlobalData" >
+
         <activity
-            android:name=".ActivateProfileActivity"
+            android:name=".LauncherActivity"
             android:label="@string/title_activity_phone_profiles"
-            android:theme="@style/PopupTheme"
-            android:configChanges="locale|layoutDirection" >
+            android:taskAffinity="sk.henrichg.phoneprofilesplus"
+            android:excludeFromRecents="true"
+            android:theme="@style/EmptyActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <activity
+            android:name=".ActivateProfileActivity"
+            android:label="@string/title_activity_activator"
+            android:theme="@style/PopupTheme"
+            android:configChanges="locale|layoutDirection"
+            android:launchMode="singleTask" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".EditorProfilesActivity"
             android:label="@string/title_activity_editor"
-            android:configChanges="locale|layoutDirection" >
+            android:configChanges="locale|layoutDirection"
+            android:launchMode="singleTask" >
         </activity>
         <activity
             android:name=".ProfilePreferencesFragmentActivity"

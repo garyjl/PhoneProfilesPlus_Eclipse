@@ -256,5 +256,10 @@
     
     <string name="phone_profiles_pref_applicationEditorSaveEditorState">Save editor state</string>
     <string name="phone_profiles_pref_notificationPrefIndicator">Typsymbole anzeigen</string> 
+    <string name="phone_profiles_pref_applicationHomeLauncher">Launch from app.list</string>
+    <string name="phone_profiles_pref_applicationWidgetLauncher">Launch from widget</string>
+    <string name="phone_profiles_pref_notificationLauncher">Launch from notification</string>
+    <string name="array_pref_launcher_activator">Starter</string>
+    <string name="array_pref_launcher_editor">Editor</string>
     
 </resources>

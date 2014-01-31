@@ -75,7 +75,7 @@ public class IconWidgetProvider extends AppWidgetProvider {
 			remoteViews.setTextViewText(R.id.icon_widget_name, profileName);
 			
 			// konfiguracia, ze ma spustit hlavnu aktivitu zoznamu profilov, ked kliknme na widget
-			Intent intent = new Intent(context, ActivateProfileActivity.class);
+			Intent intent = new Intent(context, LauncherActivity.class);
 			intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_WIDGET);
 			PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 			remoteViews.setOnClickPendingIntent(R.id.icon_widget_icon, pendingIntent);
