@@ -244,11 +244,11 @@ public class ActivateProfileHelper {
             }
         });
 		t.start();*/			
-        try {
+        /*try {
             Thread.sleep(200);
         } catch (InterruptedException e) {
             System.out.println(e);
-        }
+        }*/
 	}
 	
 	public void setVolumes(Profile profile, AudioManager audioManager)
@@ -338,6 +338,7 @@ public class ActivateProfileHelper {
 		// run service for execute volumes
 		Intent volumeServiceIntent = new Intent(context, ExecuteVolumeProfilePrefsService.class);
 		volumeServiceIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
+		volumeServiceIntent.putExtra(GlobalData.EXTRA_SECOND_SET_VOLUMES, true);
 		//WakefulIntentService.sendWakefulWork(context, radioServiceIntent);
 		context.startService(volumeServiceIntent);
 
