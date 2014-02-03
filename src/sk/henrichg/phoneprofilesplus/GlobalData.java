@@ -28,8 +28,8 @@ public class GlobalData extends Application {
 
 	static String PACKAGE_NAME;
 	
-	public static boolean logIntoLogCat = false;
-	public static boolean logIntoFile = false;
+	public static boolean logIntoLogCat = true;
+	public static boolean logIntoFile = true;
 	public static final String EXPORT_PATH = "/PhoneProfilesPlus";
 	public static final String LOG_FILENAME = "log.txt";
 
@@ -562,11 +562,13 @@ public class GlobalData extends Application {
 					if (canExploitGPS(context))
 					{
 						featurePresented = true;
+						logE("GlobalData.hardwareCheck - GPS","level 14, exploit");
 				    }
 					else
 					if ((android.os.Build.VERSION.SDK_INT >= 17) && isRooted())
 					{
 						featurePresented = true;
+						logE("GlobalData.hardwareCheck - GPS","level 14, rooted");
 					}
 					else 
 					//if (isSystemApp(context) && isAdminUser(context))
@@ -574,10 +576,19 @@ public class GlobalData extends Application {
 					{
 						// aplikacia je nainstalovana ako systemova
 						featurePresented = true;
+						logE("GlobalData.hardwareCheck - GPS","level 14, system app.");
 				    }
+					else
+					{
+						featurePresented = true;
+						logE("GlobalData.hardwareCheck - GPS","level 14, normal");
+					}
 				}
 				else
+				{
 					featurePresented = true;
+					logE("GlobalData.hardwareCheck - GPS","level < 14");
+				}
 			}
 		}
 		else

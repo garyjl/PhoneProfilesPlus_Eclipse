@@ -327,8 +327,6 @@ public class ActivateProfileHelper {
 		// rozdelit zvonenie a notifikacie - zial je to oznacene ako @Hide :-(
 		//Settings.System.putInt(context.getContentResolver(), Settings.System.NOTIFICATIONS_USE_RING_VOLUME, 0);
 
-		AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
-		
 		final Profile profile = GlobalData.getMappedProfile(_profile, context);
 		final boolean interactive = _interactive;
 		
@@ -784,7 +782,8 @@ public class ActivateProfileHelper {
     		//Log.d("ActivateProfileHelper.setGPS", "enable=true");
 	    	if (GlobalData.canExploitGPS(context))
 	    	{
-	    		//Log.d("ActivateProfileHelper.setGPS", "exploit");
+				GlobalData.logE("ActivateProfileHelper.setGPS", "exploit");
+
 		        final Intent poke = new Intent();
 		        poke.setClassName("com.android.settings", "com.android.settings.widget.SettingsAppWidgetProvider"); 
 		        poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
@@ -795,7 +794,8 @@ public class ActivateProfileHelper {
 	    	if ((android.os.Build.VERSION.SDK_INT >= 17) && GlobalData.grantRoot())
 			{
 				// zariadenie je rootnute
-	    		//Log.d("ActivateProfileHelper.setGPS", "root");
+				GlobalData.logE("ActivateProfileHelper.setGPS", "rooted");
+
 				String command1;
 				//String command2;
 
@@ -820,7 +820,9 @@ public class ActivateProfileHelper {
 			//if (CheckHardwareFeatures.isSystemApp(context) && CheckHardwareFeatures.isAdminUser(context))
 			if (GlobalData.isSystemApp(context))
 	    	{
-	    	/*	String newSet;
+				GlobalData.logE("ActivateProfileHelper.setGPS", "system app.");
+
+			/*	String newSet;
 	    		if (provider == "")
 	    			newSet = LocationManager.GPS_PROVIDER;
 	    		else
@@ -830,7 +832,8 @@ public class ActivateProfileHelper {
 	    	}
 			else
 			{
-	    		//Log.d("ActivateProfileHelper.setGPS", "normal");
+				GlobalData.logE("ActivateProfileHelper.setGPS", "normal");
+
 				try {
 					Intent intent = new Intent("android.location.GPS_ENABLED_CHANGE");
 					intent.putExtra("enabled", enable);
