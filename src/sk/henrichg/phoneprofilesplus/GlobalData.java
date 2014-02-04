@@ -580,7 +580,7 @@ public class GlobalData extends Application {
 				    }
 					else
 					{
-						featurePresented = true;
+						featurePresented = false;
 						logE("GlobalData.hardwareCheck - GPS","level 14, normal");
 					}
 				}
