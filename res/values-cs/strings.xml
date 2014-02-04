@@ -256,7 +256,7 @@
     
     <string name="phone_profiles_pref_applicationEditorSaveEditorState">Ulož stav editoru</string>
     <string name="phone_profiles_pref_notificationPrefIndicator">Indikátor parametrů profilu</string>
-    <string name="phone_profiles_pref_applicationHomeLauncher">Spustit se seznamu aplikací</string>
+    <string name="phone_profiles_pref_applicationHomeLauncher">Spustit z domovské obrazovky</string>
     <string name="phone_profiles_pref_applicationWidgetLauncher">Spustit z miniaplikace</string>
     <string name="phone_profiles_pref_notificationLauncher">Spustit z notifikací</string>
     <string name="array_pref_launcher_activator">Aktivátor</string>

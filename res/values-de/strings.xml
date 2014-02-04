@@ -254,11 +254,11 @@
     <string name="event_list_item_menu_duplicate">Kopieren</string>
     <string name="event_list_item_menu_delete">Löschen</string>
     
-    <string name="phone_profiles_pref_applicationEditorSaveEditorState">Save editor state</string>
+    <string name="phone_profiles_pref_applicationEditorSaveEditorState">Editor-Zustand speichern</string>
     <string name="phone_profiles_pref_notificationPrefIndicator">Typsymbole anzeigen</string> 
-    <string name="phone_profiles_pref_applicationHomeLauncher">Launch from app.list</string>
-    <string name="phone_profiles_pref_applicationWidgetLauncher">Launch from widget</string>
-    <string name="phone_profiles_pref_notificationLauncher">Launch from notification</string>
+    <string name="phone_profiles_pref_applicationHomeLauncher">Aus Homescreen starten</string>
+    <string name="phone_profiles_pref_applicationWidgetLauncher">Aus Widget starten</string>
+    <string name="phone_profiles_pref_notificationLauncher">Aus Benachrichtigung starten</string>
     <string name="array_pref_launcher_activator">Starter</string>
     <string name="array_pref_launcher_editor">Editor</string>
     
