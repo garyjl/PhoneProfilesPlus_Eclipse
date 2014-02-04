@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">PhoneProfilesPlus</string>
-    <string name="menu_edit_profiles">Edit profiles</string>
+    <string name="menu_edit_profiles">Editor</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_phone_profiles">PhoneProfiles Plus</string>
     <string name="title_activity_profile_preferences">Profile preferences</string>
