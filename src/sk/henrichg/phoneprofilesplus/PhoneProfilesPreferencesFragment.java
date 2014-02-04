@@ -10,7 +10,6 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.preference.TwoStatePreference;
-import android.util.Log;
 
 public class PhoneProfilesPreferencesFragment extends PreferenceListFragment 
                                               implements SharedPreferences.OnSharedPreferenceChangeListener
