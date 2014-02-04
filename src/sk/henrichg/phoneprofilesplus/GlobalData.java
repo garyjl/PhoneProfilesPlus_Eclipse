@@ -12,6 +12,7 @@ import com.stericson.RootTools.RootTools;
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.ActivityInfo;
@@ -28,7 +29,7 @@ public class GlobalData extends Application {
 
 	static String PACKAGE_NAME;
 	
-	public static boolean logIntoLogCat = false;
+	public static boolean logIntoLogCat = true;
 	public static boolean logIntoFile = false;
 	public static final String EXPORT_PATH = "/PhoneProfilesPlus";
 	public static final String LOG_FILENAME = "log.txt";
@@ -557,38 +558,31 @@ public class GlobalData extends Application {
 			if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_LOCATION_GPS))
 			{
 				// device ma gps
-				if (android.os.Build.VERSION.SDK_INT >= 14)
-				{
-					if (canExploitGPS(context))
-					{
-						featurePresented = true;
-						logE("GlobalData.hardwareCheck - GPS","level 14, exploit");
-				    }
-					else
-					if ((android.os.Build.VERSION.SDK_INT >= 17) && isRooted())
-					{
-						featurePresented = true;
-						logE("GlobalData.hardwareCheck - GPS","level 14, rooted");
-					}
-					else 
-					//if (isSystemApp(context) && isAdminUser(context))
-					if (isSystemApp(context))
-					{
-						// aplikacia je nainstalovana ako systemova
-						featurePresented = true;
-						logE("GlobalData.hardwareCheck - GPS","level 14, system app.");
-				    }
-					else
-					{
-						featurePresented = false;
-						logE("GlobalData.hardwareCheck - GPS","level 14, normal");
-					}
-				}
-				else
+				if (canExploitGPS(context))
 				{
 					featurePresented = true;
-					logE("GlobalData.hardwareCheck - GPS","level < 14");
+					logE("GlobalData.hardwareCheck - GPS","level 14, exploit");
+			    }
+				else
+				if (oldGPSMethodPresented(context))
+				{
+					featurePresented = true;
+					logE("GlobalData.hardwareCheck - GPS","old method");
 				}
+				else
+				if ((android.os.Build.VERSION.SDK_INT >= 17) && isRooted())
+				{
+					featurePresented = true;
+					logE("GlobalData.hardwareCheck - GPS","rooted");
+				}
+				else 
+				//if (isSystemApp(context) && isAdminUser(context))
+				if (isSystemApp(context))
+				{
+					// aplikacia je nainstalovana ako systemova
+					featurePresented = true;
+					logE("GlobalData.hardwareCheck - GPS","system app.");
+			    }
 			}
 		}
 		else
@@ -617,6 +611,23 @@ public class GlobalData extends Application {
 	        return false; //package not found
 	    }   
 	    return false;
+	}
+	
+	static boolean oldGPSMethodPresented(Context context)
+	{
+		@SuppressWarnings("deprecation")
+		String provider = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+		
+		try {
+			Intent intent = new Intent("android.location.GPS_ENABLED_CHANGE");
+			intent.putExtra("enabled", provider.contains("gps"));
+			context.sendBroadcast(intent);
+			Log.e("GlobalData.oldGPSMethodPresented","true");
+			return true;
+		} catch (SecurityException e) {
+			Log.e("GlobalData.oldGPSMethodPresented","false");
+			return false;
+		}
 	}
 	
 	static boolean isSystemApp(Context context)
