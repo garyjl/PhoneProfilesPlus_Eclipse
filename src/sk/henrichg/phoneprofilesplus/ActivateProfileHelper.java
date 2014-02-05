@@ -799,7 +799,7 @@ public class ActivateProfileHelper {
 				//command2 = "am broadcast -a android.location.GPS_ENABLED_CHANGE --ez state true";
 				CommandCapture command = new CommandCapture(0, command1); //, command2);
 				try {
-					RootTools.getShell(true).add(command).waitForFinish();
+					RootTools.getShell(true).add(command).wait();
 				} catch (Exception e) {
 					Log.e("ActivateProfileHelper.setGPS", "Error on run su");
 				} 
@@ -882,7 +882,7 @@ public class ActivateProfileHelper {
 				//command2 = "am broadcast -a android.location.GPS_ENABLED_CHANGE --ez state false";
 				CommandCapture command = new CommandCapture(0, command1);//, command2);
 				try {
-					RootTools.getShell(true).add(command).waitForFinish();
+					RootTools.getShell(true).add(command).wait();
 				} catch (Exception e) {
 					Log.e("ActivateProfileHelper.setGPS", "Error on run su");
 				}
@@ -973,7 +973,7 @@ public class ActivateProfileHelper {
 				}
 				CommandCapture command = new CommandCapture(0, command1, command2);
 				try {
-					RootTools.getShell(true).add(command).waitForFinish();
+					RootTools.getShell(true).add(command).wait();
 				} catch (Exception e) {
 					Log.e("AirPlaneMode_SDK17.setAirplaneMode", "Error on run su");
 				}

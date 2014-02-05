@@ -49,7 +49,6 @@
     <string name="phone_profiles_pref_category_notifications">Notifikace</string>
     <string name="phone_profiles_pref_applicationActivate">Aktivovat profil při startu</string>
     <string name="phone_profiles_pref_applicationClose">Po aktivaci profilu zavřít</string>
-    <string name="phone_profiles_pref_applicationHeader">Show activated profile</string>
     <string name="phone_profiles_pref_applicationAlert">Dotazovat se na aktivaci profilu</string>
     <string name="phone_profiles_pref_applicationPrefIndicator">Indikátor parametrů profilu</string>
     <string name="phone_profiles_pref_applicationHeader">Zobraz aktivovanej profil</string>
