@@ -778,24 +778,6 @@ public class ActivateProfileHelper {
 		        poke.setData(Uri.parse("3")); 
 		        context.sendBroadcast(poke);
 	    	}
-			else
-			if (GlobalData.oldGPSMethodPresented(context))
-			{
-				GlobalData.logE("ActivateProfileHelper.setGPS", "old method");
-
-				try {
-					Intent intent = new Intent("android.location.GPS_ENABLED_CHANGE");
-					intent.putExtra("enabled", enable);
-					context.sendBroadcast(intent); 
-				} catch (SecurityException e) {
-					e.printStackTrace();
-				}
-
-				// for normal apps it is only possible to open the system settings dialog
-			/*	Intent intent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				context.startActivity(intent); */ 
-			}
 	    	else
 	    	if ((android.os.Build.VERSION.SDK_INT >= 17) && GlobalData.grantRoot())
 			{
@@ -836,6 +818,23 @@ public class ActivateProfileHelper {
 				Settings.Secure.putString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED, newSet); */
 				Settings.Secure.setLocationProviderEnabled(context.getContentResolver(), LocationManager.GPS_PROVIDER, true);
 	    	}
+			else
+			{
+				/*GlobalData.logE("ActivateProfileHelper.setGPS", "old method");
+
+				try {
+					Intent intent = new Intent("android.location.GPS_ENABLED_CHANGE");
+					intent.putExtra("enabled", enable);
+					context.sendBroadcast(intent); 
+				} catch (SecurityException e) {
+					e.printStackTrace();
+				}*/
+
+				// for normal apps it is only possible to open the system settings dialog
+			/*	Intent intent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				context.startActivity(intent); */ 
+			}
 	    }
 	    else
         //if(provider.contains(LocationManager.GPS_PROVIDER) && (!enable))
@@ -844,35 +843,20 @@ public class ActivateProfileHelper {
     		//Log.d("ActivateProfileHelper.setGPS", "enable=false");
     		if (GlobalData.canExploitGPS(context))
 	    	{
-	    		//Log.d("ActivateProfileHelper.setGPS", "exploit");
+				GlobalData.logE("ActivateProfileHelper.setGPS", "exploit");
+				
 	            final Intent poke = new Intent();
 	            poke.setClassName("com.android.settings", "com.android.settings.widget.SettingsAppWidgetProvider");
 	            poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
 	            poke.setData(Uri.parse("3")); 
 	            context.sendBroadcast(poke);
 	    	}
-			else
-			if (GlobalData.oldGPSMethodPresented(context))
-			{
-	    		//Log.d("ActivateProfileHelper.setGPS", "normal");
-				try {
-					Intent intent = new Intent("android.location.GPS_ENABLED_CHANGE");
-					intent.putExtra("enabled", enable);
-					context.sendBroadcast(intent); 
-				} catch (SecurityException e) {
-					e.printStackTrace();
-				}
-
-				// for normal apps it is only possible to open the system settings dialog
-			/*	Intent intent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				context.startActivity(intent); */ 
-			}
 	    	else
 	    	if ((android.os.Build.VERSION.SDK_INT >= 17) && GlobalData.grantRoot())
 			{
 				// zariadenie je rootnute
-	    		//Log.d("ActivateProfileHelper.setGPS", "root");
+				GlobalData.logE("ActivateProfileHelper.setGPS", "rooted");
+				
 				String command1;
 				//String command2;
 
@@ -907,6 +891,9 @@ public class ActivateProfileHelper {
 			//if (CheckHardwareFeatures.isSystemApp(context) && CheckHardwareFeatures.isAdminUser(context))
 			if (GlobalData.isSystemApp(context))
 			{
+				
+				GlobalData.logE("ActivateProfileHelper.setGPS", "system app.");
+				
 	    	/*	String[] list = provider.split(",");
 	    		
 	    		String newSet = "";
@@ -925,6 +912,23 @@ public class ActivateProfileHelper {
 				Settings.Secure.putString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED, newSet); */
 				Settings.Secure.setLocationProviderEnabled(context.getContentResolver(), LocationManager.GPS_PROVIDER, false);
 	    	}
+			else
+			{
+	    		//GlobalData.logE("ActivateProfileHelper.setGPS", "old method");
+				
+				/*try {
+					Intent intent = new Intent("android.location.GPS_ENABLED_CHANGE");
+					intent.putExtra("enabled", enable);
+					context.sendBroadcast(intent); 
+				} catch (SecurityException e) {
+					e.printStackTrace();
+				}*/
+
+				// for normal apps it is only possible to open the system settings dialog
+			/*	Intent intent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				context.startActivity(intent); */ 
+			}
         }	    	
 	}
 	

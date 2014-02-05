@@ -564,12 +564,6 @@ public class GlobalData extends Application {
 					logE("GlobalData.hardwareCheck - GPS","level 14, exploit");
 			    }
 				else
-				if (oldGPSMethodPresented(context))
-				{
-					featurePresented = true;
-					logE("GlobalData.hardwareCheck - GPS","old method");
-				}
-				else
 				if ((android.os.Build.VERSION.SDK_INT >= 17) && isRooted())
 				{
 					featurePresented = true;
@@ -611,23 +605,6 @@ public class GlobalData extends Application {
 	        return false; //package not found
 	    }   
 	    return false;
-	}
-	
-	static boolean oldGPSMethodPresented(Context context)
-	{
-		@SuppressWarnings("deprecation")
-		String provider = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-		
-		try {
-			Intent intent = new Intent("android.location.GPS_ENABLED_CHANGE");
-			intent.putExtra("enabled", provider.contains("gps"));
-			context.sendBroadcast(intent);
-			Log.e("GlobalData.oldGPSMethodPresented","true");
-			return true;
-		} catch (SecurityException e) {
-			Log.e("GlobalData.oldGPSMethodPresented","false");
-			return false;
-		}
 	}
 	
 	static boolean isSystemApp(Context context)
