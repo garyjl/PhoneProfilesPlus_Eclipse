@@ -66,8 +66,6 @@ public class ActivateProfileActivity extends ActionBarActivity {
 		activateProfileHelper = dataWrapper.getActivateProfileHelper();
 		activateProfileHelper.initialize(this, getBaseContext());
 
-		GlobalData.grantRoot();
-		
 	// set window dimensions ----------------------------------------------------------
 		
 		Display display = getWindowManager().getDefaultDisplay();
@@ -301,6 +299,7 @@ public class ActivateProfileActivity extends ActionBarActivity {
 		
 		Profile profile = dataWrapper.getActivatedProfile();
 		
+		/*
 		boolean actProfile = false;
 		if (startupSource == 0)
 		{
@@ -331,7 +330,9 @@ public class ActivateProfileActivity extends ActionBarActivity {
 			}
 		}
 		//Log.d("ActivateProfilesActivity.onStart", "actProfile="+String.valueOf(actProfile));
+		 */
 
+		/*
 		if (actProfile && (profile != null))
 		{
 			// aktivacia profilu
@@ -339,7 +340,9 @@ public class ActivateProfileActivity extends ActionBarActivity {
 		}
 		else
 		{
+		*/
 			updateHeader(profile);
+			/*
 			if (startupSource == 0)
 			{
 				// aktivita nebola spustena z notifikacie, ani z widgetu
@@ -347,8 +350,11 @@ public class ActivateProfileActivity extends ActionBarActivity {
 				activateProfileHelper.showNotification(profile);
 				activateProfileHelper.updateWidget();
 			}
+			*/
 			endOnStart();
+		/*
 		}
+		*/
 
 		//GlobalData.getMeasuredRunTime(nanoTimeStart, "ActivateProfileActivity.onStart");
 		

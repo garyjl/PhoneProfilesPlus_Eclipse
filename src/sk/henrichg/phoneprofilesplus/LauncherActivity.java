@@ -6,14 +6,85 @@ import android.content.Intent;
 
 public class LauncherActivity extends Activity {
 
+	int startupSource;
+	DataWrapper dataWrapper;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		int startupSource;
+		GlobalData.grantRoot();
+		
+		dataWrapper = new DataWrapper(getBaseContext(), false, false, 0);
+		dataWrapper.getActivateProfileHelper().initialize(this, getBaseContext());
 		
 		Intent intent = getIntent();
 		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
+	}
+	
+	@Override
+	protected void onStart()
+	{
+		super.onStart();
+		
+		Profile profile = dataWrapper.getActivatedProfile();
+		
+		boolean actProfile = false;
+		if (startupSource == 0)
+		{
+			
+			// aktivita nebola spustena z notifikacie, ani z widgetu
+			// lebo v tychto pripadoch sa nesmie spravit aktivacia profilu
+			// pri starte aktivity
+			
+			if (!GlobalData.getApplicationStarted(getBaseContext()))
+			{
+				// aplikacia este nie je nastartovana
+				
+				// startneme eventy
+				dataWrapper.firstStartEvents();
+				
+				// mozeme aktivovat profil, ak je nastavene, ze sa tak ma stat 
+				if (GlobalData.applicationActivate)
+				{
+					// je nastavene, ze pri starte sa ma aktivita aktivovat
+					actProfile = true;
+				}
+				else
+				{
+					// profile sa nema aktivovat, tak ho deaktivujeme
+					dataWrapper.getDatabaseHandler().deactivateProfile();
+					profile = null;
+				}
+			}
+		}
+		//Log.e("LauncherActivity.onStart", "actProfile="+String.valueOf(actProfile));
+
+		if (actProfile && (profile != null))
+		{
+			// aktivacia profilu
+			activateProfile(profile, GlobalData.STARTUP_SOURCE_ACTIVATOR_START);
+		}
+		else
+		{
+			if (startupSource == 0)
+			{
+				// aktivita nebola spustena z notifikacie, ani z widgetu
+				// pre profil, ktory je prave aktivny, treba aktualizovat notifikaciu a widgety 
+				dataWrapper.getActivateProfileHelper().showNotification(profile);
+				dataWrapper.getActivateProfileHelper().updateWidget();
+			}
+			endOnStart();
+		}
+		
+	}
+
+	private void endOnStart()
+	{
+		//Log.e("LauncherActivity.endOnStart","xxx");
+
+		//  aplikacia uz je 1. krat spustena
+		GlobalData.setApplicationStarted(getBaseContext(), true);
 		
 		Intent intentLaunch;
 		
@@ -41,19 +112,42 @@ public class LauncherActivity extends Activity {
 		intentLaunch.putExtra(GlobalData.EXTRA_START_APP_SOURCE, startupSource);
 		startActivity(intentLaunch);
 		
+		// reset, aby sa to dalej chovalo ako normalne spustenie z lauchera
+		startupSource = 0;
+		
 		finish();
-	}
-	
-	@Override
-	protected void onStart()
-	{
-		super.onStart();
 	}
 	
 	@Override
 	protected void onDestroy()
 	{
+		dataWrapper.invalidateDataWrapper();
+		dataWrapper = null;
+		
 		super.onDestroy();
 	}	
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
+	{
+		if (requestCode == GlobalData.REQUEST_CODE_ACTIVATE_PROFILE)
+		{
+			//Log.e("LauncherActivity.onActivityResult","xxx");
+		     endOnStart();
+		}
+	}
+	
+	private void activateProfile(Profile profile, int startupSource)
+	{
+		Intent intent = new Intent(getBaseContext(), BackgroundActivateProfileActivity.class);
+		intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, startupSource);
+		if (profile != null)
+			intent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
+		else
+			intent.putExtra(GlobalData.EXTRA_PROFILE_ID, 0);
+		
+		//Log.e("LauncherActivity.activateProfile","finish="+finish);
+		
+		startActivityForResult(intent, GlobalData.REQUEST_CODE_ACTIVATE_PROFILE);
+	}
 	
 }
