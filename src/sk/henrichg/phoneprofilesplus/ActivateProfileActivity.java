@@ -39,8 +39,8 @@ public class ActivateProfileActivity extends ActionBarActivity {
 	private ListView listView = null;
 	private TextView activeProfileName;
 	private ImageView activeProfileIcon;
-	private int startupSource = 0;
-	private Intent intent;
+	//private int startupSource = 0;
+	//private Intent intent;
 	
 	private float popupWidth;
 	private float popupMaxHeight;
@@ -208,8 +208,10 @@ public class ActivateProfileActivity extends ActionBarActivity {
 			
 		}.execute();
 
+		/*
 		intent = getIntent();
 		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
+		*/
 		
 		//Debug.startMethodTracing("phoneprofiles");
 
@@ -366,7 +368,7 @@ public class ActivateProfileActivity extends ActionBarActivity {
 	{
 		//Log.e("ActivateProfileActivity.endOnStart","xxx");
 		// reset, aby sa to dalej chovalo ako normalne spustenie z lauchera
-		startupSource = 0;
+		//startupSource = 0;
 
 		//  aplikacia uz je 1. krat spustena
 		GlobalData.setApplicationStarted(getBaseContext(), true);
