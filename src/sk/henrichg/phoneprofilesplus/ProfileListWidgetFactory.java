@@ -10,7 +10,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
+import android.text.style.StyleSpan;
 import android.util.TypedValue;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -118,10 +121,12 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
     		row.setImageViewBitmap(R.id.widget_profile_list_item_profile_icon, profile._iconBitmap);
 		}
 		if ((!GlobalData.applicationWidgetListHeader) && (profile._checked))
-			row.setTextViewText(R.id.widget_profile_list_item_profile_name, 
-					// hm, interesting, how to set bold style for RemoteView text ;-)
-					new SpannableStringBuilder(Html.fromHtml("<b>"+profile._name+"</b>"))
-					);
+		{
+			// hm, interesting, how to set bold style for RemoteView text ;-)
+			Spannable sb = new SpannableString(profile._name);
+			sb.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, profile._name.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			row.setTextViewText(R.id.widget_profile_list_item_profile_name, sb);
+		}
 		else
 			row.setTextViewText(R.id.widget_profile_list_item_profile_name, profile._name);
 		int red = 0xFF;
