@@ -19,6 +19,7 @@ import com.mobeta.android.dslv.DragSortListView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.PopupMenu;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -143,7 +144,7 @@ public class EditorProfileListFragment extends Fragment {
 		
 		setHasOptionsMenu(true);
 
-		//Log.e("EditorProfileListFragment.onCreate", "xxxx");
+		Log.e("EditorProfileListFragment.onCreate", "xxxx");
 		
 	}
 	
@@ -159,7 +160,7 @@ public class EditorProfileListFragment extends Fragment {
 		else
 			rootView = inflater.inflate(R.layout.editor_profile_list_no_header, container, false); 
 
-		//Log.e("EditorProfileListFragment.onCreateView", "xxxx");
+		Log.e("EditorProfileListFragment.onCreateView", "xxxx");
 		
 		return rootView;
 	}
@@ -168,7 +169,7 @@ public class EditorProfileListFragment extends Fragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		doOnViewCreated(view, savedInstanceState);
 
-		//Log.e("EditorProfileListFragment.onViewCreated", "xxxx");
+		Log.e("EditorProfileListFragment.onViewCreated", "xxxx");
 
 		super.onViewCreated(view, savedInstanceState);
 	}
@@ -271,8 +272,15 @@ public class EditorProfileListFragment extends Fragment {
 		listView = (DragSortListView)view.findViewById(R.id.editor_profiles_list);
 		listView.setEmptyView(view.findViewById(R.id.editor_profiles_list_empty));
 
-		LoadProfilesTask task = new LoadProfilesTask(this);
-		task.execute();
+		if (profileList == null)
+		{
+			Log.e("EditorProfileListFragment.doOnViewCreated", "getProfileList");
+			LoadProfilesTask task = new LoadProfilesTask(this);
+			task.execute();
+		}
+		else
+			listView.setAdapter(profileListAdapter);
+			
 		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -354,7 +362,7 @@ public class EditorProfileListFragment extends Fragment {
 		
 		super.onDestroy();
 		
-		//Log.e("EditorProfileListFragment.onDestroy","xxx");
+		Log.e("EditorProfileListFragment.onDestroy","xxx");
 	}
 	
 	@Override

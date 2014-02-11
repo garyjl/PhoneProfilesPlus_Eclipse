@@ -197,7 +197,7 @@ public class EditorEventListFragment extends Fragment {
 			lEventList = fragment.dataWrapper.getEventList();
 			fragment.sortList(lEventList, fragment.orderType);
 			
-			//fragment.dataWrapper.getProfileList();
+			fragment.dataWrapper.getProfileList();
 			
 			return null;
 		}
@@ -240,8 +240,13 @@ public class EditorEventListFragment extends Fragment {
 		listView.setEmptyView(getActivity().findViewById(R.id.editor_events_list_empty));
 		eventsRunStopIndicator = (LinearLayout)getActivity().findViewById(R.id.editor_events_list_run_stop_indicator);
 		
-		LoadProfilesTask task = new LoadProfilesTask(this);
-		task.execute();
+		if (eventList == null)
+		{
+			LoadProfilesTask task = new LoadProfilesTask(this);
+			task.execute();
+		}
+		else
+			listView.setAdapter(eventListAdapter);
 		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
