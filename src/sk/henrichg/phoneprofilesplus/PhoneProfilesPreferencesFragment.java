@@ -38,6 +38,15 @@ public class PhoneProfilesPreferencesFragment extends PreferenceListFragment
         preferences.registerOnSharedPreferenceChangeListener(this);  
         
     }
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState)
+	{
+		super.onActivityCreated(savedInstanceState);
+		// this is really important in order to save the state across screen
+		// configuration changes for example
+		setRetainInstance(true);
+	}
 
 	private void setSummary(String key)
 	{
