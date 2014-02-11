@@ -1169,6 +1169,67 @@ public class EditorProfilesActivity extends ActionBarActivity
     }
  
 	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		
+		if (mTwoPane) {
+	    	SharedPreferences preferences = getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Activity.MODE_PRIVATE);
+			
+			if (drawerSelectedItem < COUNT_DRAWER_PROFILE_ITEMS)
+			{
+				if ((editModeProfile != EditorProfileListFragment.EDIT_MODE_INSERT) &&
+				    (editModeProfile != EditorProfileListFragment.EDIT_MODE_DUPLICATE))
+				{
+					FragmentManager fragmentManager = getSupportFragmentManager();
+					Fragment fragment = fragmentManager.findFragmentByTag("ProfilePreferencesFragment");
+					if (fragment != null)
+					{
+						Editor editor = preferences.edit();
+						editor.putInt(SP_RESET_PREFERENCES_FRAGMENT, RESET_PREFERENCE_FRAGMENT_RESET_PROFILE);
+						editor.putLong(SP_RESET_PREFERENCES_FRAGMENT_DATA_ID, ((ProfilePreferencesFragment)fragment).profile_id);
+						editor.putInt(SP_RESET_PREFERENCES_FRAGMENT_EDIT_MODE, editModeProfile);
+						editor.commit();
+					}
+				}
+				else
+				{
+			    	Editor editor = preferences.edit();
+			    	editor.putInt(SP_RESET_PREFERENCES_FRAGMENT, RESET_PREFERENCE_FRAGMENT_REMOVE);
+			    	editor.putLong(SP_RESET_PREFERENCES_FRAGMENT_DATA_ID, 0);
+			    	editor.putInt(SP_RESET_PREFERENCES_FRAGMENT_EDIT_MODE, editModeProfile);
+					editor.commit();
+				}
+			}
+			else
+			{
+				if ((editModeEvent != EditorProfileListFragment.EDIT_MODE_INSERT) &&
+				    (editModeEvent != EditorProfileListFragment.EDIT_MODE_DUPLICATE))
+				{
+					FragmentManager fragmentManager = getSupportFragmentManager();
+					Fragment fragment = fragmentManager.findFragmentByTag("EventPreferencesFragment");
+					if (fragment != null)
+					{
+						Editor editor = preferences.edit();
+						editor.putInt(SP_RESET_PREFERENCES_FRAGMENT, RESET_PREFERENCE_FRAGMENT_RESET_EVENT);
+						editor.putLong(SP_RESET_PREFERENCES_FRAGMENT_DATA_ID, ((EventPreferencesFragment)fragment).event_id);
+						editor.putInt(SP_RESET_PREFERENCES_FRAGMENT_EDIT_MODE, editModeEvent);
+						editor.commit();
+					}
+				}
+				else
+				{
+			    	Editor editor = preferences.edit();
+			    	editor.putInt(SP_RESET_PREFERENCES_FRAGMENT, RESET_PREFERENCE_FRAGMENT_REMOVE);
+			    	editor.putLong(SP_RESET_PREFERENCES_FRAGMENT_DATA_ID, 0);
+			    	editor.putInt(SP_RESET_PREFERENCES_FRAGMENT_EDIT_MODE, editModeEvent);
+					editor.commit();
+				}
+			}
+		}
+    	
+	}	
+    
+	@Override
 	public void onConfigurationChanged(Configuration newConfig)
 	{
 		// activity will restarted
@@ -1189,13 +1250,6 @@ public class EditorProfilesActivity extends ActionBarActivity
 	    changeEventOrder(orderSelectedItem);  */
 	}
 
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-	/*    outState.putInt("editor_drawer_selected_item", drawerSelectedItem);
-	    outState.putInt("editor_order_selected_item", orderSelectedItem); */
-	    super.onSaveInstanceState(outState);
-	}	
-	
 	 @Override
 	 public void setTitle(CharSequence title) {
 	     getSupportActionBar().setTitle(title);
