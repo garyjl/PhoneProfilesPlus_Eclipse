@@ -55,7 +55,7 @@ public class ProfilePreferencesFragmentActivity extends ActionBarActivity
 			ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.activity_profile_preferences_container, fragment).commit();
+					.replace(R.id.activity_profile_preferences_container, fragment, "ProfilePreferencesFragment").commit();
 		}
 		
     	//Log.d("ProfilePreferencesFragmentActivity.onCreate", "xxxx");
@@ -145,7 +145,7 @@ public class ProfilePreferencesFragmentActivity extends ActionBarActivity
 			ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.activity_profile_preferences_container, fragment).commit();
+					.replace(R.id.activity_profile_preferences_container, fragment, "ProfilePreferencesFragment").commit();
 		}
 		else
 		{

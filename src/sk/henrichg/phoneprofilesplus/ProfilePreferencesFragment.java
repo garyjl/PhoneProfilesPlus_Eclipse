@@ -37,7 +37,6 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	private Context context;
 	private ActionMode actionMode;
 	private Callback actionModeCallback;
-	private Bundle savedInstanceStateFromCreate;
 	
 	private int actionModeButtonClicked = BUTTON_UNDEFINED;
 	
@@ -48,6 +47,8 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	static final String PREFS_NAME_FRAGMENT = "profile_preferences_fragment";
 	static final String PREFS_NAME_DEFAULT_PROFILE = GlobalData.APPLICATION_PREFS_NAME;
 	private String PREFS_NAME;
+
+	static final String SP_ACTION_MODE_SHOWED = "action_mode_showed";
 	
 	static final int BUTTON_UNDEFINED = 0;
 	static final int BUTTON_CANCEL = 1;
@@ -114,8 +115,6 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		
 		super.onCreate(savedInstanceState);
 		
-		savedInstanceStateFromCreate = savedInstanceState;
-
 		preferencesActivity = getActivity();
         context = getActivity().getBaseContext();
 		
@@ -217,6 +216,11 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
         
         createActionModeCallback();
         
+    	SharedPreferences preferences = getActivity().getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Activity.MODE_PRIVATE);
+    	Editor editor = preferences.edit();
+    	editor.remove(SP_ACTION_MODE_SHOWED);
+		editor.commit();
+        
     	//Log.d("ProfilePreferencesFragment.onCreate", "xxxx");
     }
 	
@@ -226,12 +230,14 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		super.onStart();
 		
 		// must by in onStart(), in ocCreate() crashed
-        if ((savedInstanceStateFromCreate != null) && savedInstanceStateFromCreate.getBoolean("action_mode_showed", false))
-            showActionMode();
+    	SharedPreferences preferences = getActivity().getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Activity.MODE_PRIVATE);
+    	int actionModeShowed = preferences.getInt(SP_ACTION_MODE_SHOWED, 0);
+        if (actionModeShowed == 2)
+        	showActionMode();
         else
         if (((new_profile_mode == EditorProfileListFragment.EDIT_MODE_INSERT) ||
-             (new_profile_mode == EditorProfileListFragment.EDIT_MODE_DUPLICATE))
-           	&& (savedInstanceStateFromCreate == null))
+            (new_profile_mode == EditorProfileListFragment.EDIT_MODE_DUPLICATE))
+        	&& (actionModeShowed == 0))
         	showActionMode();
 
 		updateSharedPreference();
@@ -313,7 +319,14 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-        outState.putBoolean("action_mode_showed", (actionMode != null));
+
+		SharedPreferences preferences = getActivity().getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Activity.MODE_PRIVATE);
+    	Editor editor = preferences.edit();
+    	if (actionMode != null) 
+    		editor.putInt(SP_ACTION_MODE_SHOWED, 2);
+    	else
+    		editor.putInt(SP_ACTION_MODE_SHOWED, 1);
+		editor.commit();
 	}	
 	
 	private void loadPreferences()
@@ -675,39 +688,38 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	{
 		profileNonEdited = false;
 		
-        if (actionMode == null)
-        {
-        	
-        	actionModeButtonClicked = BUTTON_UNDEFINED;
-        	
-        	LayoutInflater inflater = LayoutInflater.from(getActivity());
-        	View actionView = inflater.inflate(R.layout.profile_preferences_action_mode, null);
+		if (actionMode != null)
+			actionMode.finish();
+		
+    	actionModeButtonClicked = BUTTON_UNDEFINED;
+    	
+    	LayoutInflater inflater = LayoutInflater.from(getActivity());
+    	View actionView = inflater.inflate(R.layout.profile_preferences_action_mode, null);
 
-            actionMode = ((ActionBarActivity)getActivity()).startSupportActionMode(actionModeCallback);
-            actionMode.setCustomView(actionView); 
-            
-            actionMode.getCustomView().findViewById(R.id.profile_preferences_action_menu_cancel).setOnClickListener(new OnClickListener() {
-				public void onClick(View v) {
-					
-					//Log.d("actionMode.onClick", "cancel");
-					
-					finishActionMode(BUTTON_CANCEL);
-					
-				}
-           	});
+        actionMode = ((ActionBarActivity)getActivity()).startSupportActionMode(actionModeCallback);
+        actionMode.setCustomView(actionView); 
+        
+        actionMode.getCustomView().findViewById(R.id.profile_preferences_action_menu_cancel).setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				
+				//Log.d("actionMode.onClick", "cancel");
+				
+				finishActionMode(BUTTON_CANCEL);
+				
+			}
+       	});
 
-            actionMode.getCustomView().findViewById(R.id.profile_preferences_action_menu_save).setOnClickListener(new OnClickListener() {
-				public void onClick(View v) {
-					
-					//Log.d("actionMode.onClick", "save");
-			
-					savePreferences();
-					
-					finishActionMode(BUTTON_SAVE);
-					
-				}
-           	});
-        }
+        actionMode.getCustomView().findViewById(R.id.profile_preferences_action_menu_save).setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				
+				//Log.d("actionMode.onClick", "save");
+		
+				savePreferences();
+				
+				finishActionMode(BUTTON_SAVE);
+				
+			}
+       	});
 	}
 	
 	public boolean isActionModeActive()

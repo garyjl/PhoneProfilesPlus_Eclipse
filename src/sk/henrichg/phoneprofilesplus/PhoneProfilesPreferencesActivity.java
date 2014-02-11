@@ -51,7 +51,7 @@ public class PhoneProfilesPreferencesActivity extends ActionBarActivity
 		if (savedInstanceState == null) {
 			PhoneProfilesPreferencesFragment fragment = new PhoneProfilesPreferencesFragment();
 			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.activity_phone_profiles_preferences_container, fragment).commit();
+					.replace(R.id.activity_phone_profiles_preferences_container, fragment, "PhoneProfilesPreferencesFragment").commit();
 		}
 		
         

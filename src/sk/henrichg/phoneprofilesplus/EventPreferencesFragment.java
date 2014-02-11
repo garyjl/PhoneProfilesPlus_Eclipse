@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
@@ -32,7 +33,6 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	private Context context;
 	private ActionMode actionMode;
 	private Callback actionModeCallback;
-	private Bundle savedInstanceStateFromCreate;
 	
 	private int actionModeButtonClicked = BUTTON_UNDEFINED;
 	
@@ -41,6 +41,8 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	static final String PREFS_NAME_ACTIVITY = "event_preferences_activity";
 	static final String PREFS_NAME_FRAGMENT = "event_preferences_fragment";
 	private String PREFS_NAME;
+
+	static final String SP_ACTION_MODE_SHOWED = "action_mode_showed";
 	
 	static final int BUTTON_UNDEFINED = 0;
 	static final int BUTTON_CANCEL = 1;
@@ -107,8 +109,6 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		
 		super.onCreate(savedInstanceState);
 
-		savedInstanceStateFromCreate = savedInstanceState;
-		
 		preferencesActivity = getActivity();
         context = getActivity().getBaseContext();
 
@@ -172,6 +172,11 @@ public class EventPreferencesFragment extends PreferenceListFragment
         
         createActionModeCallback();
         
+    	SharedPreferences preferences = getActivity().getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Activity.MODE_PRIVATE);
+    	Editor editor = preferences.edit();
+    	editor.remove(SP_ACTION_MODE_SHOWED);
+		editor.commit();
+        
     	//Log.d("EventPreferencesFragment.onCreate", "xxxx");
     }
 	
@@ -190,12 +195,14 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		super.onStart();
 		
 		// must by in onStart(), in ocCreate() crashed
-        if ((savedInstanceStateFromCreate != null) && savedInstanceStateFromCreate.getBoolean("action_mode_showed", false))
-            showActionMode();
+    	SharedPreferences preferences = getActivity().getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Activity.MODE_PRIVATE);
+    	int actionModeShowed = preferences.getInt(SP_ACTION_MODE_SHOWED, 0);
+        if (actionModeShowed == 2)
+        	showActionMode();
         else
         if (((new_event_mode == EditorEventListFragment.EDIT_MODE_INSERT) ||
-             (new_event_mode == EditorEventListFragment.EDIT_MODE_DUPLICATE))
-           	&& (savedInstanceStateFromCreate == null))
+            (new_event_mode == EditorEventListFragment.EDIT_MODE_DUPLICATE))
+        	&& (actionModeShowed == 0))
         	showActionMode();
 
 		updateSharedPreference();
@@ -254,7 +261,14 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-        outState.putBoolean("action_mode_showed", (actionMode != null));
+
+		SharedPreferences preferences = getActivity().getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Activity.MODE_PRIVATE);
+    	Editor editor = preferences.edit();
+    	if (actionMode != null) 
+    		editor.putInt(SP_ACTION_MODE_SHOWED, 2);
+    	else
+    		editor.putInt(SP_ACTION_MODE_SHOWED, 1);
+		editor.commit();
 	}	
 	
 	private void loadPreferences()
@@ -411,40 +425,38 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	{
 		eventNonEdited = false;
 		
-        if (actionMode == null)
-        {
-        	
-        	actionModeButtonClicked = BUTTON_UNDEFINED;
-        	
-        	LayoutInflater inflater = LayoutInflater.from(getActivity());
-        	View actionView = inflater.inflate(R.layout.event_preferences_action_mode, null);
-
-            actionMode = ((ActionBarActivity)getActivity()).startSupportActionMode(actionModeCallback);
-            actionMode.setCustomView(actionView); 
-            
-            actionMode.getCustomView().findViewById(R.id.event_preferences_action_menu_cancel).setOnClickListener(new OnClickListener() {
-				public void onClick(View v) {
-					
-					//Log.d("actionMode.onClick", "cancel");
-					
-					finishActionMode(BUTTON_CANCEL);
-					
-				}
-           	});
-
-            actionMode.getCustomView().findViewById(R.id.event_preferences_action_menu_save).setOnClickListener(new OnClickListener() {
-				public void onClick(View v) {
-					
-					//Log.d("actionMode.onClick", "save");
-
-					savePreferences();
-					
-					finishActionMode(BUTTON_SAVE);
-					
-				}
-           	});
-        }
+		if (actionMode != null)
+			actionMode.finish();
 		
+    	actionModeButtonClicked = BUTTON_UNDEFINED;
+    	
+    	LayoutInflater inflater = LayoutInflater.from(getActivity());
+    	View actionView = inflater.inflate(R.layout.event_preferences_action_mode, null);
+
+        actionMode = ((ActionBarActivity)getActivity()).startSupportActionMode(actionModeCallback);
+        actionMode.setCustomView(actionView); 
+        
+        actionMode.getCustomView().findViewById(R.id.event_preferences_action_menu_cancel).setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				
+				//Log.d("actionMode.onClick", "cancel");
+				
+				finishActionMode(BUTTON_CANCEL);
+				
+			}
+       	});
+
+        actionMode.getCustomView().findViewById(R.id.event_preferences_action_menu_save).setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				
+				//Log.d("actionMode.onClick", "save");
+
+				savePreferences();
+				
+				finishActionMode(BUTTON_SAVE);
+				
+			}
+       	});
 	}
 	
 	public boolean isActionModeActive()

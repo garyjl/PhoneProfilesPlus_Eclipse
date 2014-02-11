@@ -27,9 +27,11 @@ import android.os.Environment;
 import android.preference.PreferenceScreen;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -129,7 +131,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	/*	// add profile list into list container
 		EditorProfileListFragment fragment = new EditorProfileListFragment();
 		getSupportFragmentManager().beginTransaction()
-			.replace(R.id.editor_list_container, fragment).commit(); */
+			.replace(R.id.editor_list_container, fragment, "EditorProfileListFragment").commit(); */
 		
 		
 		if (findViewById(R.id.editor_detail_container) != null) {
@@ -165,7 +167,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 					ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 					fragment.setArguments(arguments);
 					getSupportFragmentManager().beginTransaction()
-							.replace(R.id.editor_detail_container, fragment).commit();
+							.replace(R.id.editor_detail_container, fragment, "ProfilePreferencesFragment").commit();
 		    	}
 		    	if (resetMode == RESET_PREFERENCE_FRAGMENT_RESET_EVENT)
 		    	{
@@ -179,7 +181,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 					EventPreferencesFragment fragment = new EventPreferencesFragment();
 					fragment.setArguments(arguments);
 					getSupportFragmentManager().beginTransaction()
-							.replace(R.id.editor_detail_container, fragment).commit();
+							.replace(R.id.editor_detail_container, fragment, "EventPreferencesFragment").commit();
 		    	}
 		    	else
 		    	if (resetMode == RESET_PREFERENCE_FRAGMENT_REMOVE)
@@ -200,7 +202,19 @@ public class EditorProfilesActivity extends ActionBarActivity
 			}
 		}
 		else
+		{
 			mTwoPane = false;
+			FragmentManager fragmentManager = getSupportFragmentManager();
+			Fragment fragment = fragmentManager.findFragmentByTag("ProfilePreferencesFragment");
+			if (fragment != null)
+				fragmentManager.beginTransaction()
+				.remove(fragment).commit();
+			fragment = fragmentManager.findFragmentByTag("EventPreferencesFragment");
+			if (fragment != null)
+				fragmentManager.beginTransaction()
+				.remove(fragment).commit();
+			fragmentManager.executePendingTransactions();
+		}
 		
 		drawerLayout = (DrawerLayout) findViewById(R.id.editor_list_drawer_layout);
 		drawerRoot = (RelativeLayout) findViewById(R.id.editor_drawer_root);
@@ -329,13 +343,13 @@ public class EditorProfilesActivity extends ActionBarActivity
 	            case 0:
 	        		EditorProfileListFragment profileFragment = new EditorProfileListFragment();
 	        		getSupportFragmentManager().beginTransaction()
-	        			.replace(R.id.editor_list_container, profileFragment).commit();
+	        			.replace(R.id.editor_list_container, profileFragment, "EditorProfileListFragment").commit();
 	    			onStartProfilePreferences(-1, false);
 	                break;
 	            case 1:
 	        		EditorEventListFragment eventFragment = new EditorEventListFragment();
 	        		getSupportFragmentManager().beginTransaction()
-	        			.replace(R.id.editor_list_container, eventFragment).commit();
+	        			.replace(R.id.editor_list_container, eventFragment, "EditorEventListFragment").commit();
 	    			onStartEventPreferences(-1, false);
 	                break;
 	            }
@@ -535,7 +549,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	   		    arguments.putInt(EditorProfileListFragment.FILTER_TYPE_ARGUMENT, profilesFilterType);
 	   		    fragment.setArguments(arguments);
 	    		getSupportFragmentManager().beginTransaction()
-	    			.replace(R.id.editor_list_container, fragment).commit();
+	    			.replace(R.id.editor_list_container, fragment, "EditorProfileListFragment").commit();
 	    		if (removePreferences)
 	    			onStartProfilePreferences(null, EditorProfileListFragment.EDIT_MODE_EDIT, profilesFilterType);
 	            break;
@@ -546,7 +560,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	   		    arguments.putInt(EditorProfileListFragment.FILTER_TYPE_ARGUMENT, profilesFilterType);
 	   		    fragment.setArguments(arguments);
 	    		getSupportFragmentManager().beginTransaction()
-	    			.replace(R.id.editor_list_container, fragment).commit();
+	    			.replace(R.id.editor_list_container, fragment, "EditorProfileListFragment").commit();
 	    		if (removePreferences)
 	    			onStartProfilePreferences(null, EditorProfileListFragment.EDIT_MODE_EDIT, profilesFilterType);
 	            break;
@@ -557,7 +571,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	   		    arguments.putInt(EditorProfileListFragment.FILTER_TYPE_ARGUMENT, profilesFilterType);
 	   		    fragment.setArguments(arguments);
 	    		getSupportFragmentManager().beginTransaction()
-	    			.replace(R.id.editor_list_container, fragment).commit();
+	    			.replace(R.id.editor_list_container, fragment, "EditorProfileListFragment").commit();
 	    		if (removePreferences)
 	    			onStartProfilePreferences(null, EditorProfileListFragment.EDIT_MODE_EDIT, profilesFilterType);
 	            break;
@@ -569,7 +583,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	   		    arguments.putInt(EditorEventListFragment.ORDER_TYPE_ARGUMENT, eventsOrderType);
 	   		    fragment.setArguments(arguments);
 	    		getSupportFragmentManager().beginTransaction()
-	    			.replace(R.id.editor_list_container, fragment).commit();
+	    			.replace(R.id.editor_list_container, fragment, "EditorEventListFragment").commit();
 	    		if (removePreferences)
 	    			onStartEventPreferences(null, EditorEventListFragment.EDIT_MODE_EDIT, eventsFilterType, eventsOrderType);
 				break;	
@@ -581,7 +595,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	   		    arguments.putInt(EditorEventListFragment.ORDER_TYPE_ARGUMENT, eventsOrderType);
 	   		    fragment.setArguments(arguments);
 	    		getSupportFragmentManager().beginTransaction()
-	    			.replace(R.id.editor_list_container, fragment).commit();
+	    			.replace(R.id.editor_list_container, fragment, "EditorEventListFragment").commit();
 	    		if (removePreferences)
 	    			onStartEventPreferences(null, EditorEventListFragment.EDIT_MODE_EDIT, eventsFilterType, eventsOrderType);
 				break;	
@@ -593,7 +607,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	   		    arguments.putInt(EditorEventListFragment.ORDER_TYPE_ARGUMENT, eventsOrderType);
 	   		    fragment.setArguments(arguments);
 	    		getSupportFragmentManager().beginTransaction()
-	    			.replace(R.id.editor_list_container, fragment).commit();
+	    			.replace(R.id.editor_list_container, fragment, "EditorEventListFragment").commit();
 	    		if (removePreferences)
 	    			onStartEventPreferences(null, EditorEventListFragment.EDIT_MODE_EDIT, eventsFilterType, eventsOrderType);
 				break;	
@@ -605,7 +619,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	   		    arguments.putInt(EditorEventListFragment.FILTER_TYPE_ARGUMENT, eventsFilterType);
 	   		    fragment.setArguments(arguments);
 	    		getSupportFragmentManager().beginTransaction()
-	    			.replace(R.id.editor_list_container, fragment).commit();
+	    			.replace(R.id.editor_list_container, fragment, "EditorEventListFragment").commit();
 	    		if (removePreferences)
 	    			onStartEventPreferences(null, EditorEventListFragment.EDIT_MODE_EDIT, eventsFilterType, eventsOrderType);
 				break;	
@@ -1234,7 +1248,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 				ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 				fragment.setArguments(arguments);
 				getSupportFragmentManager().beginTransaction()
-					.replace(R.id.editor_detail_container, fragment).commit();
+					.replace(R.id.editor_detail_container, fragment, "ProfilePreferencesFragment").commit();
 			}
 			else
 			{
@@ -1278,7 +1292,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 				ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 				fragment.setArguments(arguments);
 				getSupportFragmentManager().beginTransaction()
-						.replace(R.id.editor_detail_container, fragment).commit();
+						.replace(R.id.editor_detail_container, fragment, "ProfilePreferencesFragment").commit();
 			}
 			else
 			{
@@ -1393,7 +1407,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 				EventPreferencesFragment fragment = new EventPreferencesFragment();
 				fragment.setArguments(arguments);
 				getSupportFragmentManager().beginTransaction()
-					.replace(R.id.editor_detail_container, fragment).commit();
+					.replace(R.id.editor_detail_container, fragment, "EventPreferencesFragment").commit();
 			}
 			else
 			{
@@ -1452,7 +1466,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 				EventPreferencesFragment fragment = new EventPreferencesFragment();
 				fragment.setArguments(arguments);
 				getSupportFragmentManager().beginTransaction()
-						.replace(R.id.editor_detail_container, fragment).commit();
+						.replace(R.id.editor_detail_container, fragment, "EventPreferencesFragment").commit();
 			}
 			else
 			{

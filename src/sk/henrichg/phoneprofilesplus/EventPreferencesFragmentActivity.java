@@ -49,7 +49,7 @@ public class EventPreferencesFragmentActivity extends ActionBarActivity
 			EventPreferencesFragment fragment = new EventPreferencesFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.activity_event_preferences_container, fragment).commit();
+					.replace(R.id.activity_event_preferences_container, fragment, "EventPreferencesFragment").commit();
 		}
 		
     	//Log.d("EventPreferencesFragmentActivity.onCreate", "xxxx");
@@ -134,7 +134,7 @@ public class EventPreferencesFragmentActivity extends ActionBarActivity
 			EventPreferencesFragment fragment = new EventPreferencesFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.activity_event_preferences_container, fragment).commit();
+					.replace(R.id.activity_event_preferences_container, fragment, "EventPreferencesFragment").commit();
 		}
 		else
 		{
