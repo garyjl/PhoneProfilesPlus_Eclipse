@@ -102,7 +102,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	Integer[] drawerItemsIcon;
 	EditorDrawerListAdapter drawerAdapter;
 	
-	private int drawerSelectedItem = 1;
+	private int drawerSelectedItem = 0;
 	private int orderSelectedItem = 0;
 	private int profilesFilterType = EditorProfileListFragment.FILTER_TYPE_SHOW_IN_ACTIVATOR;
 	private int eventsFilterType = EditorEventListFragment.FILTER_TYPE_ALL;
@@ -143,7 +143,14 @@ public class EditorProfilesActivity extends ActionBarActivity
 				onStartProfilePreferences(null, EditorProfileListFragment.EDIT_MODE_EDIT, profilesFilterType);
 			else
 			{
-				// reset preferences fragment
+				// for 7 inch tablets lauout changed:
+				//   - portrait - one pane
+				//   - landscape - two pane
+				// onRestartProfilePreferences is called, when user save/not save profile
+				// preference changes (Back button, or Cancel in ActionMode)
+				// In this method, editmode and profile_id is saved into shared preferences
+				// And when orientaion changed into lanscape mode, profile preferences fragment
+				// must by recreated due profile preference changes
 		    	SharedPreferences preferences = getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Activity.MODE_PRIVATE);
 		    	int resetMode = preferences.getInt(SP_RESET_PREFERENCES_FRAGMENT, 0);
 		    	if (resetMode == RESET_PREFERENCE_FRAGMENT_RESET_PROFILE)
@@ -507,6 +514,7 @@ public class EditorProfilesActivity extends ActionBarActivity
     private void selectDrawerItem(int position, boolean removePreferences) {
  
 		Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
+		if (position == 0) position = 1;
     	if ((position != drawerSelectedItem) || (fragment == null))
     	{
 	    	drawerSelectedItem = position;

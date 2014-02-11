@@ -243,6 +243,15 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	}
 	
 	@Override
+	public void onActivityCreated(Bundle savedInstanceState)
+	{
+		super.onActivityCreated(savedInstanceState);
+		// this is really important in order to save the state across screen
+		// configuration changes for example
+		setRetainInstance(true);
+	}
+	
+	@Override
 	public void onPause()
 	{
 		super.onPause();
