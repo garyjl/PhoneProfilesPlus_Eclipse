@@ -494,6 +494,9 @@ public class ActivateProfileActivity extends ActionBarActivity {
 	
 	public void refreshGUI()
 	{
+		if ((dataWrapper == null) || (profileListAdapter == null))
+			return;
+		
 		Profile profileFromAdapter = profileListAdapter.getActivatedProfile();
 		if (profileFromAdapter != null)
 			profileFromAdapter._checked = false;

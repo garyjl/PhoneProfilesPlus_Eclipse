@@ -900,7 +900,7 @@ public class EditorProfileListFragment extends Fragment {
 
 	public void refreshGUI()
 	{
-		if (profileListAdapter == null)
+		if ((dataWrapper == null) || (profileListAdapter == null))
 			return;
 		
 		Profile profileFromAdapter = profileListAdapter.getActivatedProfile();
