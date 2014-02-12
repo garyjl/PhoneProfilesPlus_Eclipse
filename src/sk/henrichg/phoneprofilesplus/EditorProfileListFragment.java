@@ -1,7 +1,6 @@
 package sk.henrichg.phoneprofilesplus;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -44,6 +43,8 @@ public class EditorProfileListFragment extends Fragment {
 	private TextView activeProfileName;
 	private ImageView activeProfileIcon;
 	private DatabaseHandler databaseHandler;
+	
+	private WeakReference<LoadProfileListAsyncTask> asyncTaskContext;
 	
 	public static final int EDIT_MODE_UNDEFINED = 0;
 	public static final int EDIT_MODE_INSERT = 1;
@@ -128,6 +129,10 @@ public class EditorProfileListFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
+
+		// this is really important in order to save the state across screen
+		// configuration changes for example
+		setRetainInstance(true);
 		
         filterType = getArguments() != null ? 
         		getArguments().getInt(FILTER_TYPE_ARGUMENT, EditorProfileListFragment.FILTER_TYPE_ALL) : 
@@ -174,6 +179,79 @@ public class EditorProfileListFragment extends Fragment {
 		super.onViewCreated(view, savedInstanceState);
 	}
 
+	//@Override
+	//public void onActivityCreated(Bundle savedInstanceState)
+	public void doOnViewCreated(View view, Bundle savedInstanceState)
+	{
+		//super.onActivityCreated(savedInstanceState);
+		
+		// az tu mame layout, tak mozeme ziskat view-y
+	/*	activeProfileName = (TextView)getActivity().findViewById(R.id.activated_profile_name);
+		activeProfileIcon = (ImageView)getActivity().findViewById(R.id.activated_profile_icon);
+		listView = (DragSortListView)getActivity().findViewById(R.id.editor_profiles_list);
+		listView.setEmptyView(getActivity().findViewById(R.id.editor_profiles_list_empty));
+	*/
+		activeProfileName = (TextView)view.findViewById(R.id.activated_profile_name);
+		activeProfileIcon = (ImageView)view.findViewById(R.id.activated_profile_icon);
+		listView = (DragSortListView)view.findViewById(R.id.editor_profiles_list);
+		listView.setEmptyView(view.findViewById(R.id.editor_profiles_list_empty));
+
+		listView.setOnItemClickListener(new OnItemClickListener() {
+
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+				//Log.d("EditorProfileListFragment.onItemClick", "xxxx");
+
+				startProfilePreferencesActivity((Profile)profileListAdapter.getItem(position));
+				
+			}
+			
+		}); 
+		
+		listView.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+				//Log.d("EditorProfileListFragment.onItemLongClick", "xxxx");
+				
+				activateProfile((Profile)profileListAdapter.getItem(position), true);
+				
+				return true;
+			}
+			
+		});
+		
+        listView.setDropListener(new DragSortListView.DropListener() {
+            public void drop(int from, int to) {
+            	profileListAdapter.changeItemOrder(from, to); // swap profiles
+            	databaseHandler.setPOrder(profileList);  // set profiles _porder and write it into db
+				activateProfileHelper.updateWidget();
+        		//Log.d("EditorProfileListFragment.drop", "xxxx");
+            }
+        });
+
+		if (profileList == null)
+		{
+			Log.e("EditorProfileListFragment.doOnViewCreated", "getProfileList");
+			LoadProfileListAsyncTask asyncTask = new LoadProfileListAsyncTask(this, filterType);
+		    this.asyncTaskContext = new WeakReference<LoadProfileListAsyncTask >(asyncTask );
+		    asyncTask.execute();			
+		}
+		else
+		{
+			listView.setAdapter(profileListAdapter);
+        
+			// pre profil, ktory je prave aktivny, treba aktualizovat aktivitu
+			Profile profile;
+			profile = dataWrapper.getActivatedProfile();
+			updateHeader(profile);
+		}
+		
+		//Log.e("EditorProfileListFragment.doOnViewCreated", "xxx");
+        
+	}
+
+	/*
 	private static class LoadProfilesTask extends AsyncTask<Void, Integer, Void> 
 	{
 		EditorProfileListFragment fragment;
@@ -254,86 +332,82 @@ public class EditorProfileListFragment extends Fragment {
 			}
 		}
 	}
-	
-	//@Override
-	//public void onActivityCreated(Bundle savedInstanceState)
-	public void doOnViewCreated(View view, Bundle savedInstanceState)
-	{
-		//super.onActivityCreated(savedInstanceState);
-		
-		// az tu mame layout, tak mozeme ziskat view-y
-	/*	activeProfileName = (TextView)getActivity().findViewById(R.id.activated_profile_name);
-		activeProfileIcon = (ImageView)getActivity().findViewById(R.id.activated_profile_icon);
-		listView = (DragSortListView)getActivity().findViewById(R.id.editor_profiles_list);
-		listView.setEmptyView(getActivity().findViewById(R.id.editor_profiles_list_empty));
 	*/
-		activeProfileName = (TextView)view.findViewById(R.id.activated_profile_name);
-		activeProfileIcon = (ImageView)view.findViewById(R.id.activated_profile_icon);
-		listView = (DragSortListView)view.findViewById(R.id.editor_profiles_list);
-		listView.setEmptyView(view.findViewById(R.id.editor_profiles_list_empty));
-
-		if (profileList == null)
-		{
-			Log.e("EditorProfileListFragment.doOnViewCreated", "getProfileList");
-			LoadProfilesTask task = new LoadProfilesTask(this);
-			task.execute();
-		}
-		else
-			listView.setAdapter(profileListAdapter);
-			
-		
-		listView.setOnItemClickListener(new OnItemClickListener() {
-
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-				//Log.d("EditorProfileListFragment.onItemClick", "xxxx");
-
-				startProfilePreferencesActivity((Profile)profileListAdapter.getItem(position));
-				
-			}
-			
-		}); 
-		
-		listView.setOnItemLongClickListener(new OnItemLongClickListener() {
-
-			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-				//Log.d("EditorProfileListFragment.onItemLongClick", "xxxx");
-				
-				activateProfile((Profile)profileListAdapter.getItem(position), true);
-				
-				return true;
-			}
-			
-		});
-		
-        listView.setDropListener(new DragSortListView.DropListener() {
-            public void drop(int from, int to) {
-            	profileListAdapter.changeItemOrder(from, to); // swap profiles
-            	databaseHandler.setPOrder(profileList);  // set profiles _porder and write it into db
-				activateProfileHelper.updateWidget();
-        		//Log.d("EditorProfileListFragment.drop", "xxxx");
-            }
-        });
-        
-		Profile profile;
-		
-		// pre profil, ktory je prave aktivny, treba aktualizovat aktivitu
-		profile = dataWrapper.getActivatedProfile();
-		updateHeader(profile);
-		
-		//Log.e("EditorProfileListFragment.doOnViewCreated", "xxx");
-        
-	}
 	
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState)
-	{
-		super.onActivityCreated(savedInstanceState);
-		// this is really important in order to save the state across screen
-		// configuration changes for example
-		setRetainInstance(true);
-	}
+	private static class LoadProfileListAsyncTask extends AsyncTask<Void, Void, Void> {
+
+        private WeakReference<EditorProfileListFragment> fragmentWeakRef;
+		private DataWrapper dataWrapper;
+		private int filterType;
+		boolean defaultProfilesGenerated = false;
+		
+
+        private LoadProfileListAsyncTask (EditorProfileListFragment fragment, int filterType) {
+            this.fragmentWeakRef = new WeakReference<EditorProfileListFragment>(fragment);
+            this.filterType = filterType;
+	        this.dataWrapper = new DataWrapper(fragment.getActivity().getBaseContext(), true, false, 0);
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+			List<Profile> profileList = dataWrapper.getProfileList();
+			if (profileList.size() == 0)
+			{
+				// no profiles in DB, generate default profiles
+				profileList = dataWrapper.getDefaultProfileList();
+				defaultProfilesGenerated = true;
+			}
+			// sort list
+			if (filterType != EditorProfileListFragment.FILTER_TYPE_SHOW_IN_ACTIVATOR)
+				EditorProfileListFragment.sortAlphabetically(profileList);
+			else
+				EditorProfileListFragment.sortByPOrder(profileList);
+
+			return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void response) {
+            super.onPostExecute(response);
+            
+            EditorProfileListFragment fragment = this.fragmentWeakRef.get(); 
+            
+            if (fragment != null) {
+            	
+    	        // get local profileList
+    	    	List<Profile> profileList = dataWrapper.getProfileList();
+    	    	// set local profile list into activity dataWrapper
+    	        fragment.dataWrapper.setProfileList(profileList, false);
+    	        // set reference of profile list from dataWrapper
+    	        fragment.profileList = fragment.dataWrapper.getProfileList();
+
+    	        fragment.profileListAdapter = new EditorProfileListAdapter(fragment, fragment.dataWrapper, fragment.filterType); 
+    	        fragment.listView.setAdapter(fragment.profileListAdapter);
+    	        
+    			// pre profil, ktory je prave aktivny, treba aktualizovat aktivitu
+    			Profile profile;
+    			profile = fragment.dataWrapper.getActivatedProfile();
+    			fragment.updateHeader(profile);
+
+				if (defaultProfilesGenerated)
+				{
+					fragment.activateProfileHelper.updateWidget();
+					Toast msg = Toast.makeText(fragment.getActivity(), 
+							fragment.getResources().getString(R.string.toast_default_profiles_generated), 
+							Toast.LENGTH_SHORT);
+					msg.show();
+				}
+            
+            }
+        }
+    }
+
+	@SuppressWarnings("unused")
+	private boolean isAsyncTaskPendingOrRunning() {
+	    return this.asyncTaskContext != null &&
+	          this.asyncTaskContext.get() != null && 
+	          !this.asyncTaskContext.get().getStatus().equals(AsyncTask.Status.FINISHED);
+	}	
 	
 	@Override
 	public void onStart()
@@ -800,32 +874,28 @@ public class EditorProfileListFragment extends Fragment {
 		return filterType;
 	}
 
-	private class AlphabeticallyComparator implements Comparator<Profile> {
-
-		public int compare(Profile lhs, Profile rhs) {
-
-		    int res = GUIData.collator.compare(lhs._name, rhs._name);
-	        return res;
-	    }
-	}
-	
-	public void sortAlphabetically(List<Profile> profileList)
+	public static void sortAlphabetically(List<Profile> profileList)
 	{
-	    Collections.sort(profileList, new AlphabeticallyComparator());
+		class AlphabeticallyComparator implements Comparator<Profile> {
+			public int compare(Profile lhs, Profile rhs) {
+
+			    int res = GUIData.collator.compare(lhs._name, rhs._name);
+		        return res;
+		    }
+		}
+		Collections.sort(profileList, new AlphabeticallyComparator());
 	}
 
-	private class ByPOrderComparator implements Comparator<Profile> {
-
-		public int compare(Profile lhs, Profile rhs) {
-
-		    int res =  lhs._porder - rhs._porder;
-	        return res;
-	    }
-	}
-	
-	public void sortByPOrder(List<Profile> profileList)
+	public static void sortByPOrder(List<Profile> profileList)
 	{
-	    Collections.sort(profileList, new ByPOrderComparator());
+		class ByPOrderComparator implements Comparator<Profile> {
+			public int compare(Profile lhs, Profile rhs) {
+
+			    int res =  lhs._porder - rhs._porder;
+		        return res;
+		    }
+		}
+		Collections.sort(profileList, new ByPOrderComparator());
 	}
 
 	public void refreshGUI()

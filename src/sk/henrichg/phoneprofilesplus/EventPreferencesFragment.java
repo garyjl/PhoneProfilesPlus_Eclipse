@@ -109,6 +109,10 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		
 		super.onCreate(savedInstanceState);
 
+		// this is really important in order to save the state across screen
+		// configuration changes for example
+		setRetainInstance(true);
+		
 		preferencesActivity = getActivity();
         context = getActivity().getBaseContext();
 
@@ -179,15 +183,6 @@ public class EventPreferencesFragment extends PreferenceListFragment
         
     	//Log.d("EventPreferencesFragment.onCreate", "xxxx");
     }
-	
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState)
-	{
-		super.onActivityCreated(savedInstanceState);
-		// this is really important in order to save the state across screen
-		// configuration changes for example
-		setRetainInstance(true);
-	}
 	
 	@Override
 	public void onStart()

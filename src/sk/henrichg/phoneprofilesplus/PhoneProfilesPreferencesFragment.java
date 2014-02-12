@@ -24,6 +24,10 @@ public class PhoneProfilesPreferencesFragment extends PreferenceListFragment
 		
 		super.onCreate(savedInstanceState);
 
+		// this is really important in order to save the state across screen
+		// configuration changes for example
+		setRetainInstance(true);
+		
 		preferencesActivity = getActivity();
         //context = getActivity().getBaseContext();
 
@@ -39,15 +43,6 @@ public class PhoneProfilesPreferencesFragment extends PreferenceListFragment
         
     }
 	
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState)
-	{
-		super.onActivityCreated(savedInstanceState);
-		// this is really important in order to save the state across screen
-		// configuration changes for example
-		setRetainInstance(true);
-	}
-
 	private void setSummary(String key)
 	{
 		

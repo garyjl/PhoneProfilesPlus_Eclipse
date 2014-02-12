@@ -252,30 +252,33 @@ public class ActivateProfileActivity extends ActionBarActivity {
 	            
 	        ActivateProfileActivity activity = this.myWeakContext.get();
 
-	        // get local profileList
-	    	List<Profile> profileList = dataWrapper.getProfileList();
-	    	// set copy local profile list into activity dataWrapper
-	        activity.dataWrapper.setProfileList(profileList, false);
-	        // set reference of profile list from dataWrapper
-	        activity.profileList = activity.dataWrapper.getProfileList();
-	        
-			if (activity.profileList.size() == 0)
-			{
-				// nie je ziaden profile, startneme Editor
+	        if (activity != null)
+	        {
+		        // get local profileList
+		    	List<Profile> profileList = dataWrapper.getProfileList();
+		    	// set copy local profile list into activity dataWrapper
+		        activity.dataWrapper.setProfileList(profileList, false);
+		        // set reference of profile list from dataWrapper
+		        activity.profileList = activity.dataWrapper.getProfileList();
+		        
+				if (activity.profileList.size() == 0)
+				{
+					// nie je ziaden profile, startneme Editor
+					
+					Intent intent = new Intent(activity.getBaseContext(), EditorProfilesActivity.class);
+					intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_ACTIVATOR_START);
+					activity.startActivity(intent);
+					
+					activity.finish();
+	
+					return;
+				}
 				
-				Intent intent = new Intent(activity.getBaseContext(), EditorProfilesActivity.class);
-				intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_ACTIVATOR_START);
-				activity.startActivity(intent);
-				
-				activity.finish();
-
-				return;
-			}
-			
-			activity.profileListAdapter = new ActivateProfileListAdapter(activity.getBaseContext(), profileList);
-			activity.listView.setAdapter(activity.profileListAdapter);
-				
-			activity.doOnStart();
+				activity.profileListAdapter = new ActivateProfileListAdapter(activity.getBaseContext(), profileList);
+				activity.listView.setAdapter(activity.profileListAdapter);
+					
+				activity.doOnStart();
+	        }
 	    }
 
 	    public void attach(ActivateProfileActivity activity) {

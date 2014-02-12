@@ -190,16 +190,19 @@ public class ShortcutCreatorActivity extends ActionBarActivity {
 	        super.onPostExecute(result);
 	            
 	        ShortcutCreatorActivity activity = this.myWeakContext.get();
-
-	        // get local profileList
-	    	List<Profile> profileList = dataWrapper.getProfileList();
-	    	// set copy local profile list into activity dataWrapper
-	        activity.dataWrapper.setProfileList(profileList, false);
-	        // set reference of profile list from profilesDataWrapper
-	        activity.profileList = activity.dataWrapper.getProfileList();
-
-			activity.profileListAdapter = new ShortcutProfileListAdapter(activity.getBaseContext(), activity.profileList);
-			activity.listView.setAdapter(activity.profileListAdapter);
+	        
+	        if (activity != null)
+	        {
+		        // get local profileList
+		    	List<Profile> profileList = dataWrapper.getProfileList();
+		    	// set copy local profile list into activity dataWrapper
+		        activity.dataWrapper.setProfileList(profileList, false);
+		        // set reference of profile list from profilesDataWrapper
+		        activity.profileList = activity.dataWrapper.getProfileList();
+	
+				activity.profileListAdapter = new ShortcutProfileListAdapter(activity.getBaseContext(), activity.profileList);
+				activity.listView.setAdapter(activity.profileListAdapter);
+	        }
 	    }
 
 	    public void attach(ShortcutCreatorActivity activity) {

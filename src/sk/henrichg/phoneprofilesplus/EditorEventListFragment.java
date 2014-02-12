@@ -1,7 +1,6 @@
 package sk.henrichg.phoneprofilesplus;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -35,6 +34,8 @@ public class EditorEventListFragment extends Fragment {
 	private ListView listView;
 	private LinearLayout eventsRunStopIndicator;
 	private DatabaseHandler databaseHandler;
+	
+	private WeakReference<LoadEventListAsyncTask> asyncTaskContext;
 	
 	public static final int EDIT_MODE_UNDEFINED = 0;
 	public static final int EDIT_MODE_INSERT = 1;
@@ -125,6 +126,10 @@ public class EditorEventListFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
+
+		// this is really important in order to save the state across screen
+		// configuration changes for example
+		setRetainInstance(true);
 		
         filterType = getArguments() != null ? 
         		getArguments().getInt(FILTER_TYPE_ARGUMENT, EditorEventListFragment.FILTER_TYPE_ALL) : 
@@ -166,69 +171,6 @@ public class EditorEventListFragment extends Fragment {
 		super.onViewCreated(view, savedInstanceState);
 	}
 
-	private static class LoadProfilesTask extends AsyncTask<Void, Integer, Void>
-	{
-		EditorEventListFragment fragment;
-
-		private WeakReference<List<Event>> eventListReference;
-		private List<Event> lEventList;
-		
-		
-		LoadProfilesTask(EditorEventListFragment fragment)
-		{
-			this.fragment = fragment;
-		}
-		
-		@Override
-		protected void onPreExecute()
-		{
-			super.onPreExecute();
-			//Log.e("EditorEventListFragment.doOnViewCreated.onPreExecute",fragment.dataWrapper+"");
-
-			fragment.eventList = new ArrayList<Event>();
-			eventListReference = new WeakReference<List<Event>>(fragment.eventList);
-		}
-		
-		@Override
-		protected Void doInBackground(Void... params) {
-
-			//Log.e("EditorEventListFragment.doOnViewCreated.doInBackground 1",fragment.dataWrapper+"");
-
-			lEventList = fragment.dataWrapper.getEventList();
-			fragment.sortList(lEventList, fragment.orderType);
-			
-			fragment.dataWrapper.getProfileList();
-			
-			return null;
-		}
-		
-		@Override
-		protected void onPostExecute(Void result)
-		{
-			super.onPostExecute(result);
-
-			//Log.e("EditorEventListFragment.doOnViewCreated.onPostExecute",fragment.dataWrapper+"");
-
-			final List<Event> eventList = eventListReference.get();
-			
-		    if (eventListReference != null && lEventList != null) {
-		    	eventList.clear();
-		    	for (Event origEvent : lEventList)
-		    	{
-		    		//Event newEvent = new Event();
-		    		//newEvent.copyEvent(origEvent);
-		    		//eventList.add(newEvent);
-		    		eventList.add(origEvent);
-		    	}
-		    	lEventList.clear();
-		    	fragment.dataWrapper.setEventList(eventList);
-		    }				
-			
-			fragment.eventListAdapter = new EditorEventListAdapter(fragment, fragment.dataWrapper, fragment.filterType);
-			fragment.listView.setAdapter(fragment.eventListAdapter);
-		}
-	}
-	
 	//@Override
 	//public void onActivityCreated(Bundle savedInstanceState)
 	public void doOnViewCreated(View view, Bundle savedInstanceState)
@@ -239,14 +181,6 @@ public class EditorEventListFragment extends Fragment {
 		listView = (ListView)getActivity().findViewById(R.id.editor_events_list);
 		listView.setEmptyView(getActivity().findViewById(R.id.editor_events_list_empty));
 		eventsRunStopIndicator = (LinearLayout)getActivity().findViewById(R.id.editor_events_list_run_stop_indicator);
-		
-		if (eventList == null)
-		{
-			LoadProfilesTask task = new LoadProfilesTask(this);
-			task.execute();
-		}
-		else
-			listView.setAdapter(eventListAdapter);
 		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -259,21 +193,71 @@ public class EditorEventListFragment extends Fragment {
 			}
 			
 		}); 
-		
-        setEventsRunStopIndicator();
+
+		if (eventList == null)
+		{
+			LoadEventListAsyncTask asyncTask = new LoadEventListAsyncTask(this, orderType);
+		    this.asyncTaskContext = new WeakReference<LoadEventListAsyncTask >(asyncTask );
+		    asyncTask.execute();			
+		}
+		else
+		{
+			listView.setAdapter(eventListAdapter);
+			setEventsRunStopIndicator();
+		}
 		
 		//Log.d("EditorEventListFragment.onActivityCreated", "xxx");
         
 	}
 	
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState)
-	{
-		super.onActivityCreated(savedInstanceState);
-		// this is really important in order to save the state across screen
-		// configuration changes for example
-		setRetainInstance(true);
-	}
+	private static class LoadEventListAsyncTask extends AsyncTask<Void, Void, Void> {
+
+        private WeakReference<EditorEventListFragment> fragmentWeakRef;
+		private DataWrapper dataWrapper;
+		private int orderType;
+
+        private LoadEventListAsyncTask (EditorEventListFragment fragment, int orderType) {
+            this.fragmentWeakRef = new WeakReference<EditorEventListFragment>(fragment);
+            this.orderType = orderType;
+	        this.dataWrapper = new DataWrapper(fragment.getActivity().getBaseContext(), true, false, 0);
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+        	List<Event> eventList = dataWrapper.getEventList();
+        	EditorEventListFragment.sortList(eventList, orderType, dataWrapper);
+			dataWrapper.getProfileList();
+
+			return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void response) {
+            super.onPostExecute(response);
+            
+            EditorEventListFragment fragment = this.fragmentWeakRef.get(); 
+            
+            if (fragment != null) {
+    	        // get local eventList
+    	    	List<Event> eventList = dataWrapper.getEventList();
+    	    	// set local event list into activity dataWrapper
+    	        fragment.dataWrapper.setEventList(eventList);
+    	        // set reference of profile list from dataWrapper
+    	        fragment.eventList = fragment.dataWrapper.getEventList();
+
+    			fragment.eventListAdapter = new EditorEventListAdapter(fragment, fragment.dataWrapper, fragment.filterType);
+    			fragment.listView.setAdapter(fragment.eventListAdapter);
+    			fragment.setEventsRunStopIndicator();
+            }
+        }
+    }
+
+	@SuppressWarnings("unused")
+	private boolean isAsyncTaskPendingOrRunning() {
+	    return this.asyncTaskContext != null &&
+	          this.asyncTaskContext.get() != null && 
+	          !this.asyncTaskContext.get().getStatus().equals(AsyncTask.Status.FINISHED);
+	}	
 	
 	@Override
 	public void onStart()
@@ -569,7 +553,7 @@ public class EditorEventListFragment extends Fragment {
 		if (eventList != null)
 		{
 			// sort list
-			sortList(eventList, orderType);
+			sortList(eventList, orderType, dataWrapper);
 		}
 
 		if (eventListAdapter != null)
@@ -603,13 +587,61 @@ public class EditorEventListFragment extends Fragment {
 		this.orderType = orderType;
 		if (eventListAdapter != null)
 		{
-			sortList(eventList, orderType);
+			sortList(eventList, orderType, dataWrapper);
 			eventListAdapter.notifyDataSetChanged();
 		}
 	}
 	
-	private void sortList(List<Event> eventList, int orderType)
+	private static void sortList(List<Event> eventList, int orderType, DataWrapper _dataWrapper)
 	{
+		final DataWrapper dataWrapper = _dataWrapper;
+		
+		class EventNameComparator implements Comparator<Event> {
+			public int compare(Event lhs, Event rhs) {
+			    int res = GUIData.collator.compare(lhs._name, rhs._name); 
+		        return res;
+		    }
+		}
+		
+		class ProfileNameComparator implements Comparator<Event> {
+			public int compare(Event lhs, Event rhs) {
+				Profile profileLhs = dataWrapper.getProfileById(lhs._fkProfile);
+				Profile profileRhs = dataWrapper.getProfileById(rhs._fkProfile);
+				String nameLhs = "";
+				if (profileLhs != null) nameLhs = profileLhs._name;
+				String nameRhs = "";
+				if (profileRhs != null) nameRhs = profileRhs._name;
+			    int res = GUIData.collator.compare(nameLhs, nameRhs);
+		        return res;
+		    }
+		}
+		
+		class EventTypeEventNameComparator implements Comparator<Event> {
+			public int compare(Event lhs, Event rhs) {
+			    int res = lhs._type - rhs._type;
+			    if (res == 0)
+			    	res = GUIData.collator.compare(lhs._name, rhs._name);
+		        return res;
+		    }
+		}
+		
+		class EventTypeProfileNameComparator implements Comparator<Event> {
+			public int compare(Event lhs, Event rhs) {
+			    int res = lhs._type - rhs._type;
+			    if (res == 0)
+			    {
+					Profile profileLhs = dataWrapper.getProfileById(lhs._fkProfile);
+					Profile profileRhs = dataWrapper.getProfileById(rhs._fkProfile);
+					String nameLhs = "";
+					if (profileLhs != null) nameLhs = profileLhs._name;
+					String nameRhs = "";
+					if (profileRhs != null) nameRhs = profileRhs._name;
+				    res = GUIData.collator.compare(nameLhs, nameRhs);
+			    }
+			    return res;
+		    }
+		}
+		
 		switch (orderType)
 		{
 			case ORDER_TYPE_EVENT_NAME: 
@@ -625,66 +657,6 @@ public class EditorEventListFragment extends Fragment {
 				Collections.sort(eventList, new EventTypeProfileNameComparator());
 				break;
 		}
-	}
-	
-	private class EventNameComparator implements Comparator<Event> {
-
-		public int compare(Event lhs, Event rhs) {
-
-		    int res = GUIData.collator.compare(lhs._name, rhs._name); 
-	        return res;
-	    }
-	}
-	
-	private class ProfileNameComparator implements Comparator<Event> {
-
-		public int compare(Event lhs, Event rhs) {
-
-			Profile profileLhs = dataWrapper.getProfileById(lhs._fkProfile);
-			Profile profileRhs = dataWrapper.getProfileById(rhs._fkProfile);
-			
-			String nameLhs = "";
-			if (profileLhs != null) nameLhs = profileLhs._name;
-			String nameRhs = "";
-			if (profileRhs != null) nameRhs = profileRhs._name;
-			
-		    int res = GUIData.collator.compare(nameLhs, nameRhs);
-		    
-	        return res;
-	    }
-	}
-	
-	private class EventTypeEventNameComparator implements Comparator<Event> {
-
-		public int compare(Event lhs, Event rhs) {
-			
-		    int res = lhs._type - rhs._type;
-		    if (res == 0)
-		    	res = GUIData.collator.compare(lhs._name, rhs._name);
-	        return res;
-	    }
-	}
-	
-	private class EventTypeProfileNameComparator implements Comparator<Event> {
-
-		public int compare(Event lhs, Event rhs) {
-
-		    int res = lhs._type - rhs._type;
-		    if (res == 0)
-		    {
-				Profile profileLhs = dataWrapper.getProfileById(lhs._fkProfile);
-				Profile profileRhs = dataWrapper.getProfileById(rhs._fkProfile);
-				
-				String nameLhs = "";
-				if (profileLhs != null) nameLhs = profileLhs._name;
-				String nameRhs = "";
-				if (profileRhs != null) nameRhs = profileRhs._name;
-				
-			    res = GUIData.collator.compare(nameLhs, nameRhs);
-		    }
-
-		    return res;
-	    }
 	}
 	
     public void setEventsRunStopIndicator()

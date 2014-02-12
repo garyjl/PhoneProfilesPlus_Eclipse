@@ -115,6 +115,10 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		
 		super.onCreate(savedInstanceState);
 		
+		// this is really important in order to save the state across screen
+		// configuration changes for example
+		setRetainInstance(true);
+		
 		preferencesActivity = getActivity();
         context = getActivity().getBaseContext();
 		
@@ -246,15 +250,6 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 
     	//Log.d("ProfilePreferencesFragment.onStart", "profile activated="+profile.getChecked());
 
-	}
-	
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState)
-	{
-		super.onActivityCreated(savedInstanceState);
-		// this is really important in order to save the state across screen
-		// configuration changes for example
-		setRetainInstance(true);
 	}
 	
 	@Override
