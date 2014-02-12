@@ -1,7 +1,6 @@
 package sk.henrichg.phoneprofilesplus;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -32,13 +31,15 @@ public class ShortcutCreatorActivity extends ActionBarActivity {
 	private ShortcutProfileListAdapter profileListAdapter;
 	private ListView listView;
 	
+	private WeakReference<LoadProfileListAsyncTask> asyncTaskContext;
+	
 	private float popupWidth;
 	private float popupMaxHeight;
 	private float popupHeight;
 	private float actionBarHeight;
 
 	
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -98,10 +99,6 @@ public class ShortcutCreatorActivity extends ActionBarActivity {
 		
 		final float scale = getResources().getDisplayMetrics().density;
 		
-		// add header height
-		if (GlobalData.applicationActivatorHeader)
-			popupHeight = popupHeight + 64f * scale;
-		
 		// add list items height
 		int profileCount = dataWrapper.getDatabaseHandler().getProfilesCount(false);
 		popupHeight = popupHeight + (50f * scale * profileCount); // item
@@ -117,59 +114,6 @@ public class ShortcutCreatorActivity extends ActionBarActivity {
 		
 	//-----------------------------------------------------------------------------------
 
-		new AsyncTask<Void, Integer, Void>() {
-			
-			private WeakReference<List<Profile>> profileListReference;
-			private List<Profile> lProfileList;
-			
-			@Override
-			protected void onPreExecute()
-			{
-				super.onPreExecute();
-
-				profileList = new ArrayList<Profile>();
-				profileListReference = new WeakReference<List<Profile>>(profileList);
-			}
-			
-			@Override
-			protected Void doInBackground(Void... params) {
-				lProfileList = dataWrapper.getProfileList();
-			    Collections.sort(lProfileList, new ProfileComparator());
-				
-				return null;
-			}
-			
-			@Override
-			protected void onPostExecute(Void result)
-			{
-				super.onPostExecute(result);
-
-				final List<Profile> profileList = profileListReference.get();
-				
-			    if (profileListReference != null && lProfileList != null) {
-			    	profileList.clear();
-			    	for (Profile origProfile : lProfileList)
-			    	{
-						//Profile newProfile = new Profile();
-			    		//newProfile.copyProfile(origProfile);
-						//profileList.add(newProfile);
-			    		profileList.add(origProfile);
-			    	}
-			    	lProfileList.clear();
-			    	dataWrapper.setProfileList(profileList, false);
-			    }				
-				
-				if (listView != null)
-				{
-					profileListAdapter = new ShortcutProfileListAdapter(getBaseContext(), profileList);
-					listView.setAdapter(profileListAdapter);
-				}
-				
-			}
-			
-		}.execute();
-		
-		
 		setContentView(R.layout.activity_shortcut_creator);
 
 		getSupportActionBar().setTitle(R.string.title_activity_shortcut_creator);
@@ -190,21 +134,83 @@ public class ShortcutCreatorActivity extends ActionBarActivity {
 			
 		});
 		
+		this.asyncTaskContext = (WeakReference<LoadProfileListAsyncTask>) getLastNonConfigurationInstance();
+
+	    if (asyncTaskContext != null && this.asyncTaskContext.get() != null
+	        && !this.asyncTaskContext.get().getStatus().equals(AsyncTask.Status.FINISHED)) {
+	        this.asyncTaskContext.get().attach(this);
+	    } else {
+	    	LoadProfileListAsyncTask myAsyncTask = new LoadProfileListAsyncTask (this);
+	        this.asyncTaskContext = new WeakReference<ShortcutCreatorActivity.LoadProfileListAsyncTask>(myAsyncTask);
+	        myAsyncTask.execute();
+	    }
+		
 	}
+	
+	@Override
+	public Object onRetainCustomNonConfigurationInstance() {
+	        
+	    WeakReference<LoadProfileListAsyncTask> weakReference = null;
+	            
+	    if (this.asyncTaskContext != null
+	        && this.asyncTaskContext.get() != null
+	        && !this.asyncTaskContext.get().getStatus().equals(AsyncTask.Status.FINISHED)) {
+	        weakReference = this.asyncTaskContext;
+	    }
+	    return weakReference;
+	}	
+	
+	static private class LoadProfileListAsyncTask extends AsyncTask<Void, Void, Void> {
+
+	    private WeakReference<ShortcutCreatorActivity> myWeakContext;
+		private DataWrapper dataWrapper; 
+
+		private class ProfileComparator implements Comparator<Profile> {
+			public int compare(Profile lhs, Profile rhs) {
+			    int res = GUIData.collator.compare(lhs._name, rhs._name);
+		        return res;
+		    }
+		}
+		
+	    private LoadProfileListAsyncTask (ShortcutCreatorActivity activity) {
+	        this.myWeakContext = new WeakReference<ShortcutCreatorActivity>(activity);
+	        this.dataWrapper = new DataWrapper(activity.getBaseContext(), true, false, 0);
+	    }
+
+	    @Override
+	    protected Void doInBackground(Void... params) {
+	    	List<Profile> profileList = dataWrapper.getProfileList();
+		    Collections.sort(profileList, new ProfileComparator());
+
+			return null;
+	    }
+
+	    @Override
+	    protected void onPostExecute(Void result) {
+	        super.onPostExecute(result);
+	            
+	        ShortcutCreatorActivity activity = this.myWeakContext.get();
+
+	        // get local profileList
+	    	List<Profile> profileList = dataWrapper.getProfileList();
+	    	// set copy local profile list into activity dataWrapper
+	        activity.dataWrapper.setProfileList(profileList, false);
+	        // set reference of profile list from profilesDataWrapper
+	        activity.profileList = activity.dataWrapper.getProfileList();
+
+			activity.profileListAdapter = new ShortcutProfileListAdapter(activity.getBaseContext(), activity.profileList);
+			activity.listView.setAdapter(activity.profileListAdapter);
+	    }
+
+	    public void attach(ShortcutCreatorActivity activity) {
+	        this.myWeakContext = new WeakReference<ShortcutCreatorActivity>(activity);
+	    }
+	}	
 	
 	@Override
 	protected void onStart()
 	{
 		super.onStart();
-		
-		if (profileList != null)
-		{
-			if (profileListAdapter == null)
-			{
-				profileListAdapter = new ShortcutProfileListAdapter(getBaseContext(), profileList);
-				listView.setAdapter(profileListAdapter);
-			}
-		}
 	}
 	
 	@Override
@@ -315,14 +321,4 @@ public class ShortcutCreatorActivity extends ActionBarActivity {
 		return combined;
 	}
 
-	private class ProfileComparator implements Comparator<Profile> {
-
-		public int compare(Profile lhs, Profile rhs) {
-
-		    int res = GUIData.collator.compare(lhs._name, rhs._name);
-	        return res;
-	    }
-
-	}
-	
 }

@@ -1,7 +1,6 @@
 package sk.henrichg.phoneprofilesplus;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -39,25 +38,22 @@ public class ActivateProfileActivity extends ActionBarActivity {
 	private ListView listView = null;
 	private TextView activeProfileName;
 	private ImageView activeProfileIcon;
-	//private int startupSource = 0;
-	//private Intent intent;
+	
+	private WeakReference<LoadProfileListAsyncTask> asyncTaskContext;
 	
 	private float popupWidth;
 	private float popupMaxHeight;
 	private float popupHeight;
 	private int actionBarHeight;
-	private boolean doOnStartCalled;
 	
 
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings({ "deprecation", "unchecked" })
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 		
 		instance = this;
-		
-		doOnStartCalled = false;
 		
 		GUIData.setTheme(this, true);
 		GUIData.setLanguage(getBaseContext());
@@ -135,84 +131,6 @@ public class ActivateProfileActivity extends ActionBarActivity {
 		
 	//-----------------------------------------------------------------------------------
 
-		new AsyncTask<Void, Integer, Void>() {
-			
-			private WeakReference<List<Profile>> profileListReference;
-			private List<Profile> lProfileList;
-			
-			@Override
-			protected void onPreExecute()
-			{
-				super.onPreExecute();
-				
-				profileList = new ArrayList<Profile>();
-				profileListReference = new WeakReference<List<Profile>>(profileList);
-			}
-			
-			@Override
-			protected Void doInBackground(Void... params) {
-				lProfileList = dataWrapper.getProfileList();
-			    Collections.sort(lProfileList, new ProfileComparator());
-				
-				return null;
-			}
-			
-			@Override
-			protected void onPostExecute(Void result)
-			{
-				super.onPostExecute(result);
-				
-				final List<Profile> profileList = profileListReference.get();
-				
-			    if (profileListReference != null && lProfileList != null) {
-			    	profileList.clear();
-			    	for (Profile origProfile : lProfileList)
-			    	{
-						//Profile newProfile = new Profile();
-			    		//newProfile.copyProfile(origProfile);
-						//profileList.add(newProfile);
-			    		profileList.add(origProfile);
-			    	}
-			    	lProfileList.clear();
-			    	dataWrapper.setProfileList(profileList, false);
-			    }				
-
-				/*
-				if (profileListAdapter == null)
-					profileListAdapter = new ActivateProfileListAdapter(getBaseContext(), profileList);
-				*/
-					
-				//if (profileListAdapter.getCount() == 0)
-				if (profileList.size() == 0)
-				{
-					// nie je ziaden profile, startneme Editor
-					
-					Intent intent = new Intent(getBaseContext(), EditorProfilesActivity.class);
-					intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_ACTIVATOR_START);
-					startActivity(intent);
-					
-					finish();
-
-					return;
-				}
-				
-				if (listView != null)
-				{
-					profileListAdapter = new ActivateProfileListAdapter(getBaseContext(), profileList);
-					listView.setAdapter(profileListAdapter);
-					
-					doOnStart();
-				}
-				
-			}
-			
-		}.execute();
-
-		/*
-		intent = getIntent();
-		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
-		*/
-		
 		//Debug.startMethodTracing("phoneprofiles");
 
 	// Layout ---------------------------------------------------------------------------------
@@ -275,10 +193,95 @@ public class ActivateProfileActivity extends ActionBarActivity {
 		
     //-----------------------------------------------------------------------------------------		
 		
+		this.asyncTaskContext = (WeakReference<LoadProfileListAsyncTask>) getLastNonConfigurationInstance();
+
+	    if (asyncTaskContext != null && this.asyncTaskContext.get() != null
+	        && !this.asyncTaskContext.get().getStatus().equals(AsyncTask.Status.FINISHED)) {
+	        this.asyncTaskContext.get().attach(this);
+	    } else {
+	    	LoadProfileListAsyncTask myAsyncTask = new LoadProfileListAsyncTask (this);
+	        this.asyncTaskContext = new WeakReference<ActivateProfileActivity.LoadProfileListAsyncTask>(myAsyncTask);
+	        myAsyncTask.execute();
+	    }
+		
 		
 		//Log.d("PhoneProfileActivity.onCreate", "xxxx");
 		
 	}
+	
+	@Override
+	public Object onRetainCustomNonConfigurationInstance() {
+	        
+	    WeakReference<LoadProfileListAsyncTask> weakReference = null;
+	            
+	    if (this.asyncTaskContext != null
+	        && this.asyncTaskContext.get() != null
+	        && !this.asyncTaskContext.get().getStatus().equals(AsyncTask.Status.FINISHED)) {
+	        weakReference = this.asyncTaskContext;
+	    }
+	    return weakReference;
+	}	
+	
+	static private class LoadProfileListAsyncTask extends AsyncTask<Void, Void, Void> {
+
+	    private WeakReference<ActivateProfileActivity> myWeakContext;
+		private DataWrapper dataWrapper; 
+		
+		private class ProfileComparator implements Comparator<Profile> {
+			public int compare(Profile lhs, Profile rhs) {
+			    int res = lhs._porder - rhs._porder;
+		        return res;
+		    }
+		}
+
+	    private LoadProfileListAsyncTask (ActivateProfileActivity activity) {
+	        this.myWeakContext = new WeakReference<ActivateProfileActivity>(activity);
+	        this.dataWrapper = new DataWrapper(activity.getBaseContext(), true, false, 0);
+	    }
+
+	    @Override
+	    protected Void doInBackground(Void... params) {
+	    	List<Profile> profileList = dataWrapper.getProfileList();
+		    Collections.sort(profileList, new ProfileComparator());
+			return null;
+	    }
+
+	    @Override
+	    protected void onPostExecute(Void result) {
+	        super.onPostExecute(result);
+	            
+	        ActivateProfileActivity activity = this.myWeakContext.get();
+
+	        // get local profileList
+	    	List<Profile> profileList = dataWrapper.getProfileList();
+	    	// set copy local profile list into activity dataWrapper
+	        activity.dataWrapper.setProfileList(profileList, false);
+	        // set reference of profile list from dataWrapper
+	        activity.profileList = activity.dataWrapper.getProfileList();
+	        
+			if (activity.profileList.size() == 0)
+			{
+				// nie je ziaden profile, startneme Editor
+				
+				Intent intent = new Intent(activity.getBaseContext(), EditorProfilesActivity.class);
+				intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_ACTIVATOR_START);
+				activity.startActivity(intent);
+				
+				activity.finish();
+
+				return;
+			}
+			
+			activity.profileListAdapter = new ActivateProfileListAdapter(activity.getBaseContext(), profileList);
+			activity.listView.setAdapter(activity.profileListAdapter);
+				
+			activity.doOnStart();
+	    }
+
+	    public void attach(ActivateProfileActivity activity) {
+	        this.myWeakContext = new WeakReference<ActivateProfileActivity>(activity);
+	    }
+	}	
 	
 	public static ActivateProfileActivity getInstance()
 	{
@@ -291,72 +294,10 @@ public class ActivateProfileActivity extends ActionBarActivity {
 
 		//Log.d("ActivateProfilesActivity.onStart", "startupSource="+startupSource);
 
-		// call doOnStart only one (from AsyncTask or from onStart) 
-		if (doOnStartCalled)
-		{
-			doOnStartCalled = false;
-			return;
-		}
-		doOnStartCalled = true;
-		
 		Profile profile = dataWrapper.getActivatedProfile();
 		
-		/*
-		boolean actProfile = false;
-		if (startupSource == 0)
-		{
-			
-			// aktivita nebola spustena z notifikacie, ani z widgetu
-			// lebo v tychto pripadoch sa nesmie spravit aktivacia profilu
-			// pri starte aktivity
-			
-			if (!GlobalData.getApplicationStarted(getBaseContext()))
-			{
-				// aplikacia este nie je nastartovana
-				
-				// startneme eventy
-				dataWrapper.firstStartEvents();
-				
-				// mozeme aktivovat profil, ak je nastavene, ze sa tak ma stat 
-				if (GlobalData.applicationActivate)
-				{
-					// je nastavene, ze pri starte sa ma aktivita aktivovat
-					actProfile = true;
-				}
-				else
-				{
-					// profile sa nema aktivovat, tak ho deaktivujeme
-					dataWrapper.getDatabaseHandler().deactivateProfile();
-					profile = null;
-				}
-			}
-		}
-		//Log.d("ActivateProfilesActivity.onStart", "actProfile="+String.valueOf(actProfile));
-		 */
-
-		/*
-		if (actProfile && (profile != null))
-		{
-			// aktivacia profilu
-			activateProfile(profile, GlobalData.STARTUP_SOURCE_ACTIVATOR_START);
-		}
-		else
-		{
-		*/
-			updateHeader(profile);
-			/*
-			if (startupSource == 0)
-			{
-				// aktivita nebola spustena z notifikacie, ani z widgetu
-				// pre profil, ktory je prave aktivny, treba aktualizovat notifikaciu a widgety 
-				activateProfileHelper.showNotification(profile);
-				activateProfileHelper.updateWidget();
-			}
-			*/
-			endOnStart();
-		/*
-		}
-		*/
+		updateHeader(profile);
+		endOnStart();
 
 		//GlobalData.getMeasuredRunTime(nanoTimeStart, "ActivateProfileActivity.onStart");
 		
@@ -367,8 +308,6 @@ public class ActivateProfileActivity extends ActionBarActivity {
 	private void endOnStart()
 	{
 		//Log.e("ActivateProfileActivity.endOnStart","xxx");
-		// reset, aby sa to dalej chovalo ako normalne spustenie z lauchera
-		//startupSource = 0;
 
 		//  aplikacia uz je 1. krat spustena
 		GlobalData.setApplicationStarted(getBaseContext(), true);
@@ -378,22 +317,6 @@ public class ActivateProfileActivity extends ActionBarActivity {
 	protected void onStart()
 	{
 		super.onStart();
-		
-		if (profileList != null)
-		{
-			//if (profileListAdapter == null)
-			//	profileListAdapter = new ActivateProfileListAdapter(getBaseContext(), profileList);
-
-			//listView.setAdapter(profileListAdapter);
-
-			if (profileListAdapter == null)
-			{
-				profileListAdapter = new ActivateProfileListAdapter(getBaseContext(), profileList);
-				listView.setAdapter(profileListAdapter);
-			}
-		
-			doOnStart();
-		}
 	}
 	
 	@Override
@@ -566,14 +489,6 @@ public class ActivateProfileActivity extends ActionBarActivity {
 			startActivityForResult(intent, GlobalData.REQUEST_CODE_ACTIVATE_PROFILE);
 	}
 	
-	private class ProfileComparator implements Comparator<Profile> {
-
-		public int compare(Profile lhs, Profile rhs) {
-		    int res = lhs._porder - rhs._porder;
-	        return res;
-	    }
-	}
-
 	public void refreshGUI()
 	{
 		Profile profileFromAdapter = profileListAdapter.getActivatedProfile();
