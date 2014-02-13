@@ -187,6 +187,12 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
+        <receiver android:name=".PackageReplacedReceiver">
+    		<intent-filter>
+        		<action android:name="android.intent.action.PACKAGE_REPLACED" />
+        		<data android:scheme="package" android:path="sk.henrichg.phoneprofilesplus" />
+    		</intent-filter>
+		</receiver>
         
         <service android:name=".PhoneProfilesDashClockExtension"
             android:icon="@drawable/ic_dashclock"
