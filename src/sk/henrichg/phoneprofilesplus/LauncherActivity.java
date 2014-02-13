@@ -63,7 +63,7 @@ public class LauncherActivity extends Activity {
 		if (actProfile && (profile != null))
 		{
 			// aktivacia profilu
-			activateProfile(profile, GlobalData.STARTUP_SOURCE_ACTIVATOR_START);
+			activateProfile(profile, 0);
 		}
 		else
 		{
