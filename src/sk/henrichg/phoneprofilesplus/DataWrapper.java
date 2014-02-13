@@ -709,9 +709,6 @@ public class DataWrapper {
 		
 		boolean finish = true;
 		
-		if (startupSource == GlobalData.STARTUP_SOURCE_ACTIVATOR_START)
-			finish = false;
-		else
 		if (startupSource == GlobalData.STARTUP_SOURCE_ACTIVATOR)
 		{
 			finish = false;
@@ -744,6 +741,15 @@ public class DataWrapper {
 	
 	public void activateProfile(long profile_id, int startupSource, Activity activity)
 	{
+		if (!GlobalData.getApplicationStarted(activity.getBaseContext()))
+		{
+			// aplikacia este nie je nastartovana
+			
+			// startneme eventy
+			firstStartEvents();
+		}
+		
+		
 		Profile profile;
 		
 		// pre profil, ktory je prave aktivny, treba aktualizovat aktivitu
@@ -782,7 +788,7 @@ public class DataWrapper {
 			}
 		}
 		else
-		if (startupSource == GlobalData.STARTUP_SOURCE_ACTIVATOR_START)	
+		if (startupSource == GlobalData.STARTUP_SOURCE_LAUNCHER_START)	
 		{
 			// aktivita bola spustena po boote telefonu
 			
@@ -808,7 +814,8 @@ public class DataWrapper {
 			(startupSource == GlobalData.STARTUP_SOURCE_WIDGET) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_ACTIVATOR) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_EDITOR) ||
-			(startupSource == GlobalData.STARTUP_SOURCE_SERVICE))	
+			(startupSource == GlobalData.STARTUP_SOURCE_SERVICE) ||
+			(startupSource == GlobalData.STARTUP_SOURCE_LAUNCHER_START))	
 		{
 			if (profile_id == 0)
 				profile = null;

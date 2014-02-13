@@ -30,8 +30,8 @@ public class LauncherActivity extends Activity {
 		Profile profile = dataWrapper.getActivatedProfile();
 		
 		boolean actProfile = false;
-		if (startupSource == 0)
-		{
+		//if ((startupSource == 0)
+		//{
 			
 			// aktivita nebola spustena z notifikacie, ani z widgetu
 			// lebo v tychto pripadoch sa nesmie spravit aktivacia profilu
@@ -57,13 +57,14 @@ public class LauncherActivity extends Activity {
 					profile = null;
 				}
 			}
-		}
+		//}
 		//Log.e("LauncherActivity.onStart", "actProfile="+String.valueOf(actProfile));
 
 		if (actProfile && (profile != null))
 		{
 			// aktivacia profilu
-			activateProfile(profile, 0);
+			activateProfile(profile, GlobalData.STARTUP_SOURCE_LAUNCHER_START);
+			endOnStart();
 		}
 		else
 		{
@@ -129,11 +130,13 @@ public class LauncherActivity extends Activity {
 	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
 	{
+		/*
 		if (requestCode == GlobalData.REQUEST_CODE_ACTIVATE_PROFILE)
 		{
 			//Log.e("LauncherActivity.onActivityResult","xxx");
 		     endOnStart();
 		}
+		*/
 	}
 	
 	private void activateProfile(Profile profile, int startupSource)
