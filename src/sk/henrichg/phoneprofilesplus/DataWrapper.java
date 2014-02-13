@@ -2,10 +2,14 @@ package sk.henrichg.phoneprofilesplus;
 
 import java.util.List;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.provider.Settings;
+import android.widget.Toast;
 
 public class DataWrapper {
 
@@ -295,7 +299,7 @@ public class DataWrapper {
 		}
 	}
 */	
-	public void activateProfile(Profile profile)
+	public void setProfileActive(Profile profile)
 	{
 		if ((profileList == null) || (profile == null))
 			return;
@@ -603,6 +607,238 @@ public class DataWrapper {
 		if (activateProfileHelper != null)
 			activateProfileHelper.deinitialize();
 		activateProfileHelper = null;
+	}
+
+//----- Activate profile ---------------------------------------------------------------------------------------------
+
+	private void _activateProfile(Profile _profile, int startupSource, boolean _interactive, Activity _activity)
+	{
+		final Profile profile = _profile;
+		final boolean interactive = _interactive;
+		final Activity activity = _activity;
+		
+		databaseHandler.activateProfile(profile);
+		setProfileActive(profile);
+		
+		if (startupSource != GlobalData.STARTUP_SOURCE_SERVICE)
+			// for manual activation pause all running events
+			// and setup for next start
+			pauseAllEvents(false);
+		
+		activateProfileHelper.execute(profile, interactive);
+		
+		activateProfileHelper.showNotification(profile);
+		activateProfileHelper.updateWidget();
+		
+		if (GlobalData.notificationsToast)
+		{	
+			// toast notification
+			Toast msg = Toast.makeText(activity, 
+					activity.getResources().getString(R.string.toast_profile_activated_0) + ": " + profile._name + " " +
+					activity.getResources().getString(R.string.toast_profile_activated_1), 
+					Toast.LENGTH_SHORT);
+			msg.show();
+		}
+		
+		// for startActivityForResult
+		Intent returnIntent = new Intent();
+		returnIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
+		returnIntent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, startupSource);
+		activity.setResult(Activity.RESULT_OK,returnIntent);
+		
+		finishActivity(startupSource, true, activity);
+	}
+	
+	private void activateProfileWithAlert(Profile profile, int startupSource, boolean interactive, Activity activity)
+	{
+		// set theme and language for dialog alert ;-)
+		// not working on Android 2.3.x
+		GUIData.setTheme(activity, true);
+		GUIData.setLanguage(activity.getBaseContext());
+
+		if ((GlobalData.applicationActivateWithAlert && interactive) ||
+			(startupSource == GlobalData.STARTUP_SOURCE_EDITOR))	
+		{	
+			final Profile _profile = profile;
+			final boolean _interactive = interactive;
+			final int _startupSource = startupSource;
+			final Activity _activity = activity;
+
+			AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
+			dialogBuilder.setTitle(activity.getResources().getString(R.string.profile_string_0) + ": " + profile._name);
+			dialogBuilder.setMessage(activity.getResources().getString(R.string.activate_profile_alert_message) + "?");
+			//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
+			dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
+				
+				public void onClick(DialogInterface dialog, int which) {
+					_activateProfile(_profile, _startupSource, _interactive, _activity);
+				}
+			});
+			dialogBuilder.setNegativeButton(R.string.alert_button_no, new DialogInterface.OnClickListener() {
+				
+				public void onClick(DialogInterface dialog, int which) {
+
+					// for startActivityForResult
+					Intent returnIntent = new Intent();
+					_activity.setResult(Activity.RESULT_CANCELED,returnIntent);
+					
+					finishActivity(_startupSource, false, _activity);
+				}
+			});
+			dialogBuilder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+				
+				public void onCancel(DialogInterface dialog) {
+					// for startActivityForResult
+					Intent returnIntent = new Intent();
+					_activity.setResult(Activity.RESULT_CANCELED,returnIntent);
+
+					finishActivity(_startupSource, false, _activity);
+				}
+			});
+			dialogBuilder.show();
+		}
+		else
+		{
+			_activateProfile(profile, startupSource, interactive, activity);
+		}
+	}
+
+	private void finishActivity(int startupSource, boolean activate, Activity _activity)
+	{
+		final Activity activity = _activity;
+		
+		boolean finish = true;
+		
+		if (startupSource == GlobalData.STARTUP_SOURCE_ACTIVATOR_START)
+			finish = false;
+		else
+		if (startupSource == GlobalData.STARTUP_SOURCE_ACTIVATOR)
+		{
+			finish = false;
+			if (GlobalData.applicationClose)
+			{	
+				// ma sa zatvarat aktivita po aktivacii
+				if (GlobalData.getApplicationStarted(activity.getBaseContext()))
+					// aplikacia je uz spustena, mozeme aktivitu zavriet
+					// tymto je vyriesene, ze pri spusteni aplikacie z launchera
+					// sa hned nezavrie
+					finish = activate;
+			}
+		}
+		
+		if (finish)
+		{
+			Thread t = new Thread(new Runnable() {
+	            public void run() {
+	                try {
+	                    Thread.sleep(500);
+	                } catch (InterruptedException e) {
+	                    System.out.println(e);
+	                }
+	                activity.finish();
+	            }
+	        });
+			t.start();
+		}
+	}
+	
+	public void activateProfile(long profile_id, int startupSource, Activity activity)
+	{
+		Profile profile;
+		
+		// pre profil, ktory je prave aktivny, treba aktualizovat aktivitu
+		profile = getActivatedProfile();
+		
+		boolean actProfile = false;
+		boolean interactive = false;
+		if ((startupSource == GlobalData.STARTUP_SOURCE_SHORTCUT) ||
+			(startupSource == GlobalData.STARTUP_SOURCE_WIDGET) ||
+			(startupSource == GlobalData.STARTUP_SOURCE_ACTIVATOR) ||
+			(startupSource == GlobalData.STARTUP_SOURCE_EDITOR) ||
+			(startupSource == GlobalData.STARTUP_SOURCE_SERVICE))
+		{
+			// aktivita spustena z shortcutu alebo zo service, profil aktivujeme
+			actProfile = true;
+			interactive = ((startupSource != GlobalData.STARTUP_SOURCE_SERVICE));
+		}
+		else
+		if (startupSource == GlobalData.STARTUP_SOURCE_BOOT)	
+		{
+			// aktivita bola spustena po boote telefonu
+			
+			if (GlobalData.applicationActivate)
+			{
+				// je nastavene, ze pri starte sa ma aktivita aktivovat
+				actProfile = true;
+			}
+			else
+			{
+				if (profile != null)
+				{
+					getDatabaseHandler().deactivateProfile();
+					//profile._checked = false;
+					profile = null;
+				}
+			}
+		}
+		else
+		if (startupSource == GlobalData.STARTUP_SOURCE_ACTIVATOR_START)	
+		{
+			// aktivita bola spustena po boote telefonu
+			
+			if (GlobalData.applicationActivate)
+			{
+				// je nastavene, ze pri starte sa ma aktivita aktivovat
+				actProfile = true;
+			}
+			else
+			{
+				if (profile != null)
+				{
+					getDatabaseHandler().deactivateProfile();
+					//profile._checked = false;
+					profile = null;
+				}
+			}
+		}
+			
+		//Log.d("BackgroundActivateProfileActivity.onStart", "actProfile="+String.valueOf(actProfile));
+
+		if ((startupSource == GlobalData.STARTUP_SOURCE_SHORTCUT) ||
+			(startupSource == GlobalData.STARTUP_SOURCE_WIDGET) ||
+			(startupSource == GlobalData.STARTUP_SOURCE_ACTIVATOR) ||
+			(startupSource == GlobalData.STARTUP_SOURCE_EDITOR) ||
+			(startupSource == GlobalData.STARTUP_SOURCE_SERVICE))	
+		{
+			if (profile_id == 0)
+				profile = null;
+			else
+				profile = getProfileById(profile_id);
+
+			//Log.d("BackgroundActivateProfileActivity.onStart","_iconBitmap="+String.valueOf(profile._iconBitmap));
+			//Log.d("BackgroundActivateProfileActivity.onStart","_preferencesIndicator="+String.valueOf(profile._preferencesIndicator));
+		}
+
+		
+		if (actProfile && (profile != null))
+		{
+			// aktivacia profilu
+			activateProfileWithAlert(profile, startupSource, interactive, activity);
+		}
+		else
+		{
+			activateProfileHelper.showNotification(profile);
+			activateProfileHelper.updateWidget();
+
+			// for startActivityForResult
+			Intent returnIntent = new Intent();
+			returnIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile_id);
+			returnIntent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, startupSource);
+			activity.setResult(Activity.RESULT_OK,returnIntent);
+			
+			finishActivity(startupSource, true, activity);
+		}
+		
 	}
 	
 }

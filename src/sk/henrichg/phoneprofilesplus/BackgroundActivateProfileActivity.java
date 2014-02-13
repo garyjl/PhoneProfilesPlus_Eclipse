@@ -10,8 +10,8 @@ import android.content.Intent;
 public class BackgroundActivateProfileActivity extends Activity {
 
 	private DataWrapper dataWrapper;
-	private DatabaseHandler databaseHandler;
-	private ActivateProfileHelper activateProfileHelper;
+	//private DatabaseHandler databaseHandler;
+	//private ActivateProfileHelper activateProfileHelper;
 	
 	private int startupSource = 0;
 	private long profile_id;
@@ -33,11 +33,13 @@ public class BackgroundActivateProfileActivity extends Activity {
 		//Log.d("BackgroundActivateProfileActivity.onStart", "profile_id="+profile_id);
 
 		
-		activateProfileHelper = dataWrapper.getActivateProfileHelper();
-		activateProfileHelper.initialize(this, getBaseContext());
+		//activateProfileHelper = dataWrapper.getActivateProfileHelper();
+		//activateProfileHelper.initialize(this, getBaseContext());
 
 		// initialize global profile list
-		databaseHandler = dataWrapper.getDatabaseHandler();
+		//databaseHandler = dataWrapper.getDatabaseHandler();
+		
+		dataWrapper.getActivateProfileHelper().initialize(this, getBaseContext());
 		
 	}
 
@@ -47,7 +49,10 @@ public class BackgroundActivateProfileActivity extends Activity {
 		super.onStart();
 
 		//Log.d("BackgroundActivateProfileActivity.onStart", "startupSource="+startupSource);
-		
+
+		dataWrapper.activateProfile(profile_id, startupSource, this);
+
+		/*
 		Profile profile;
 		
 		// pre profil, ktory je prave aktivny, treba aktualizovat aktivitu
@@ -142,6 +147,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 			
 			finishActivity();
 		}
+		*/
 		
 		//Log.d("ActivateProfileActivity.onStart", "xxxx");
 		
@@ -152,13 +158,13 @@ public class BackgroundActivateProfileActivity extends Activity {
 	{
 		super.onDestroy();
 		
-		activateProfileHelper = null;
-		databaseHandler = null;
+		//activateProfileHelper = null;
+		//databaseHandler = null;
 		dataWrapper.invalidateDataWrapper();
 		dataWrapper = null;
 	}
 	
-	
+/*	
 	private void activateProfileWithAlert(Profile profile, boolean interactive)
 	{
 		// set theme and language for dialog alert ;-)
@@ -262,5 +268,6 @@ public class BackgroundActivateProfileActivity extends Activity {
         });
 		t.start();			
 	}
+*/
 	
 }

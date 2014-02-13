@@ -432,6 +432,7 @@ public class ActivateProfileActivity extends ActionBarActivity {
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
 	{
+		/*
 		if (requestCode == GlobalData.REQUEST_CODE_ACTIVATE_PROFILE)
 		{
 			//Log.e("ActivateProfileActivity.onActivityResult","xxx");
@@ -461,10 +462,12 @@ public class ActivateProfileActivity extends ActionBarActivity {
 		     
 		     endOnStart();
 		}
+		*/
 	}
 	
 	private void activateProfile(Profile profile, int startupSource)
 	{
+		/*
 		boolean finish = false;
 		
 		if (GlobalData.applicationClose)
@@ -490,6 +493,10 @@ public class ActivateProfileActivity extends ActionBarActivity {
 		}
 		else
 			startActivityForResult(intent, GlobalData.REQUEST_CODE_ACTIVATE_PROFILE);
+		*/
+		
+		dataWrapper.activateProfile(profile._id, startupSource, this);
+		
 	}
 	
 	public void refreshGUI()
@@ -513,6 +520,7 @@ public class ActivateProfileActivity extends ActionBarActivity {
 			updateHeader(null);
 
 		profileListAdapter.notifyDataSetChanged();
+		
 	}
 	
 }
