@@ -708,6 +708,7 @@ public class DataWrapper {
 		final Activity activity = _activity;
 		
 		boolean finish = true;
+		boolean sleep = true;
 		
 		if (startupSource == GlobalData.STARTUP_SOURCE_ACTIVATOR)
 		{
@@ -715,27 +716,36 @@ public class DataWrapper {
 			if (GlobalData.applicationClose)
 			{	
 				// ma sa zatvarat aktivita po aktivacii
+				
 				if (GlobalData.getApplicationStarted(activity.getBaseContext()))
 					// aplikacia je uz spustena, mozeme aktivitu zavriet
 					// tymto je vyriesene, ze pri spusteni aplikacie z launchera
 					// sa hned nezavrie
 					finish = activate;
 			}
+			else
+				// nerobit sleep, lebo aktivita zostane otvorena 
+				sleep = false;
 		}
 		
 		if (finish)
 		{
-			Thread t = new Thread(new Runnable() {
-	            public void run() {
-	                try {
-	                    Thread.sleep(500);
-	                } catch (InterruptedException e) {
-	                    System.out.println(e);
-	                }
-	                activity.finish();
-	            }
-	        });
-			t.start();
+			if (sleep)
+			{
+				Thread t = new Thread(new Runnable() {
+		            public void run() {
+		                try {
+		                    Thread.sleep(500);
+		                } catch (InterruptedException e) {
+		                    System.out.println(e);
+		                }
+		                activity.finish();
+		            }
+		        });
+				t.start();
+			}
+			else
+                activity.finish();
 		}
 	}
 	
