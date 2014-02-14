@@ -236,6 +236,8 @@ public class Event {
 			// event is not runnable, no pause it
 			return;
 		
+		GlobalData.logE("Event.startEvent","event_id="+this._id+"-----------------------------------");
+		
 		EventTimeline eventTimeline = new EventTimeline();
 		eventTimeline._fkEvent = this._id;
 		eventTimeline._eorder = 0;
@@ -274,6 +276,8 @@ public class Event {
 		if (!this.isRunnable())
 			// event is not runnable, no pause it
 			return;
+
+		GlobalData.logE("Event.pauseEvent","event_id="+this._id+"-----------------------------------");
 		
 		int timeLineSize = eventTimelineList.size();
 		
@@ -348,6 +352,8 @@ public class Event {
 			// events are globally stopped
 			return;
 
+		GlobalData.logE("Event.stopEvent","event_id="+this._id+"-----------------------------------");
+		
 		if (this._status == ESTATUS_RUNNING)
 		{
 			// event zrovna bezi, zapauzujeme ho

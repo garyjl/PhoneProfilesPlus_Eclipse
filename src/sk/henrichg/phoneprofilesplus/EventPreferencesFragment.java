@@ -301,10 +301,13 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		else
     	if (event_id > 0) 
         {
-
-    		// pause event
     		List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
-			event.pauseEvent(dataWrapper, eventTimelineList, false, true, true);
+
+    		// stop event
+    		int oldEventStatus = event.getStatus();
+			//event.pauseEvent(dataWrapper, eventTimelineList, false, true, true);
+			event.stopEvent(dataWrapper, eventTimelineList, false, false, false);
+			event.setStatus(oldEventStatus);
     		
 	    	event.saveSharedPrefereces(preferences);
 			
