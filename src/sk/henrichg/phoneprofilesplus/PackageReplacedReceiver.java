@@ -10,16 +10,21 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 
-		Log.e("PackageReplacedReceiver.onReceive","xxx");
-		
-		if (GlobalData.getApplicationStarted(context))
+		int intentUid = intent.getExtras().getInt("android.intent.extra.UID");
+		int myUid = android.os.Process.myUid();
+		if (intentUid == myUid)
 		{
-			GlobalData.grantRoot();
-				
-			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
-			dataWrapper.firstStartEvents();
-			dataWrapper.invalidateDataWrapper();
-		}
+			Log.e("PackageReplacedReceiver.onReceive","xxx");
+			
+			if (GlobalData.getApplicationStarted(context))
+			{
+				GlobalData.grantRoot();
+					
+				DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
+				dataWrapper.firstStartEvents();
+				dataWrapper.invalidateDataWrapper();
+			}
+		}		
 	}
 
 }
