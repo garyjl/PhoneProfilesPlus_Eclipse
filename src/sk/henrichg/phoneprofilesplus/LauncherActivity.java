@@ -141,6 +141,7 @@ public class LauncherActivity extends Activity {
 	
 	private void activateProfile(Profile profile, int startupSource)
 	{
+		/*
 		Intent intent = new Intent(getBaseContext(), BackgroundActivateProfileActivity.class);
 		intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, startupSource);
 		if (profile != null)
@@ -151,6 +152,10 @@ public class LauncherActivity extends Activity {
 		//Log.e("LauncherActivity.activateProfile","finish="+finish);
 		
 		startActivityForResult(intent, GlobalData.REQUEST_CODE_ACTIVATE_PROFILE);
+		*/
+		
+		dataWrapper.activateProfile(profile._id, startupSource, this);
+		
 	}
 	
 }
