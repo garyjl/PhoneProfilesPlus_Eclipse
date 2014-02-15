@@ -150,7 +150,6 @@ public class EventPreferencesFragment extends PreferenceListFragment
 						0,
 						Event.ESTATUS_STOP
 		         );
-			event_id = 0;
 		}
 		else
 		if (new_event_mode == EditorEventListFragment.EDIT_MODE_DUPLICATE)
@@ -164,7 +163,6 @@ public class EventPreferencesFragment extends PreferenceListFragment
 						   origEvent.getStatus()
 							);
 			event.copyEventPreferences(origEvent);
-			event_id = 0;
 		}
 		else
 			event = dataWrapper.getEventById(event_id);
@@ -381,6 +379,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 				iEventType = 1;
 			}
 			event.saveSharedPreferecesTmp(sharedPreferences);
+			event._id = event_id; // set original id for reset when duplicate event mode
      	    onRestartEventPreferencesCallback.onRestartEventPreferences(event, new_event_mode, iEventType);
 		}
 		else

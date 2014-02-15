@@ -1509,8 +1509,9 @@ public class EditorProfilesActivity extends ActionBarActivity
 
 	public void onRestartEventPreferences(Event event, int newEventMode, int newType) {
 		if (mTwoPane) {
-			if ((newEventMode != EditorEventListFragment.EDIT_MODE_INSERT) &&
-			    (newEventMode != EditorEventListFragment.EDIT_MODE_DUPLICATE))
+			if (((newEventMode != EditorEventListFragment.EDIT_MODE_INSERT) &&
+			    (newEventMode != EditorEventListFragment.EDIT_MODE_DUPLICATE)) ||
+			     (newType != 0))
 			{
 				// restart event preferences fragmentu
 				Bundle arguments = new Bundle();
