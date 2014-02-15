@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.preference.PreferenceScreen;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
  
@@ -112,6 +113,8 @@ public class EventPreferencesFragmentActivity extends ActionBarActivity
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
             // handle your back button code here
         	EventPreferencesFragment fragment = (EventPreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.activity_event_preferences_container);
+        	Log.e("EventPreferencesFragmentActivity.dispatchKeyEvent","fragment="+fragment);
+        	Log.e("EventPreferencesFragmentActivity.dispatchKeyEvent","isActionModeActive="+fragment.isActionModeActive());
     		if ((fragment != null) && (fragment.isActionModeActive()))
     		{
     			fragment.finishActionMode(EventPreferencesFragment.BUTTON_CANCEL);
@@ -123,14 +126,16 @@ public class EventPreferencesFragmentActivity extends ActionBarActivity
 	    return super.dispatchKeyEvent(event);
 	}
 
-	public void onRestartEventPreferences(Event event, int newEventMode) {
-		if ((newEventMode != EditorEventListFragment.EDIT_MODE_INSERT) &&
-		    (newEventMode != EditorEventListFragment.EDIT_MODE_DUPLICATE))
+	public void onRestartEventPreferences(Event event, int newEventMode, int newType) {
+		if (((newEventMode != EditorEventListFragment.EDIT_MODE_INSERT) &&
+		     (newEventMode != EditorEventListFragment.EDIT_MODE_DUPLICATE)) ||
+		     (newType != 0))
 		{
 			Bundle arguments = new Bundle();
 			arguments.putLong(GlobalData.EXTRA_EVENT_ID, event._id);
 			arguments.putInt(GlobalData.EXTRA_NEW_EVENT_MODE, newEventMode);
 			arguments.putInt(GlobalData.EXTRA_PREFERENCES_STARTUP_SOURCE, GlobalData.PREFERENCES_STARTUP_SOURCE_ACTIVITY);
+			arguments.putInt(GlobalData.EXTRA_EVENT_TYPE_NEW, newType);
 			EventPreferencesFragment fragment = new EventPreferencesFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()

@@ -1504,10 +1504,10 @@ public class EditorProfilesActivity extends ActionBarActivity
          			            (newEventMode == EditorEventListFragment.EDIT_MODE_DUPLICATE));
 			fragment.updateListView(event, newEvent);
 		}
-		onRestartEventPreferences(event, newEventMode);
+		onRestartEventPreferences(event, newEventMode, 0);
 	}
 
-	public void onRestartEventPreferences(Event event, int newEventMode) {
+	public void onRestartEventPreferences(Event event, int newEventMode, int newType) {
 		if (mTwoPane) {
 			if ((newEventMode != EditorEventListFragment.EDIT_MODE_INSERT) &&
 			    (newEventMode != EditorEventListFragment.EDIT_MODE_DUPLICATE))
@@ -1517,6 +1517,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 				arguments.putLong(GlobalData.EXTRA_EVENT_ID, event._id);
 				arguments.putInt(GlobalData.EXTRA_NEW_EVENT_MODE, editModeEvent);
 				arguments.putInt(GlobalData.EXTRA_PREFERENCES_STARTUP_SOURCE, GlobalData.PREFERENCES_STARTUP_SOURCE_FRAGMENT);
+				arguments.putInt(GlobalData.EXTRA_EVENT_TYPE_NEW, newType);
 				EventPreferencesFragment fragment = new EventPreferencesFragment();
 				fragment.setArguments(arguments);
 				getSupportFragmentManager().beginTransaction()

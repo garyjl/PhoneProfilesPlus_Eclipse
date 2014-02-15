@@ -288,36 +288,6 @@ public class EditorEventListAdapter extends BaseAdapter
 	    if (GlobalData.applicationEditorPrefIndicator)
 	    {
 	    	String eventPrefDescription = event.getPreferecesDescription(vi.getContext());
-	   		
-	   		if ((event._type == Event.ETYPE_TIME) && GlobalData.getGlobalEventsRuning(vi.getContext()))
-	   		{
-	   			long alarmTime;
-	   		    //SimpleDateFormat sdf = new SimpleDateFormat("EEd/MM/yy HH:mm");
-	   		    String alarmTimeS = "";
-	   			if (eventStatus == Event.ESTATUS_PAUSE)
-	   			{
-	   				int daysToAdd = ((EventPreferencesTime)event._eventPreferences).computeDaysForAdd(true);
-	   				alarmTime = ((EventPreferencesTime)event._eventPreferences).computeAlarm(true, daysToAdd);
-	   				// date and time format by user system settings configuration
-	   	   		    alarmTimeS = "(st) " + DateFormat.getDateFormat(vi.getContext()).format(alarmTime) +
-	   	   		    			 " " + DateFormat.getTimeFormat(vi.getContext()).format(alarmTime);
-	   	   		    eventPrefDescription = eventPrefDescription + '\n';
-	   	   		    eventPrefDescription = eventPrefDescription + alarmTimeS;
-	   			}
-	   			else
-	   			if ((eventStatus == Event.ESTATUS_RUNNING) && ((EventPreferencesTime)event._eventPreferences)._useEndTime)
-	   			{
-	   				int daysToAdd = ((EventPreferencesTime)event._eventPreferences).computeDaysForAdd(false);
-	   				alarmTime = ((EventPreferencesTime)event._eventPreferences).computeAlarm(false, daysToAdd);
-	   				// date and time format by user system settings configuration
-	   	   		    alarmTimeS = "(et) " + DateFormat.getDateFormat(vi.getContext()).format(alarmTime) +
-	   	   		    			 " " + DateFormat.getTimeFormat(vi.getContext()).format(alarmTime);
-	   	   		    eventPrefDescription = eventPrefDescription + '\n';
-	   	   		    eventPrefDescription = eventPrefDescription + alarmTimeS;
-	   			}
-	   		}
-	   		
-	   		
 	    	holder.eventPreferencesDescription.setText(eventPrefDescription);
 	    }
 

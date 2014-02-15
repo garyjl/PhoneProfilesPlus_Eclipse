@@ -2,6 +2,7 @@ package sk.henrichg.phoneprofilesplus;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 public class EventPreferences {
 	
@@ -41,12 +42,24 @@ public class EventPreferences {
 	public void saveSharedPrefereces(SharedPreferences preferences)
 	{
 	}
-	
+
 	public String getPreferencesDescription(String description, Context context)
 	{
 		return description;
 	}
 
+	public void setSummary(PreferenceManager prefMng, String key, String value, Context context)
+	{
+	}
+	
+	public void setSummary(PreferenceManager prefMng, String key, SharedPreferences preferences, Context context)
+	{
+	}
+	
+	public void setAllSummary(PreferenceManager prefMng, Context context)
+	{
+	}
+	
 	public void setSystemRunningEvent(Context context)
 	{
 		

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 public class Event {
 	
@@ -20,6 +21,7 @@ public class Event {
 	public EventPreferences _eventPreferencesOld;
 	
 	public static final int ETYPE_TIME = 1;
+	public static final int ETYPE_BATTERY = 2;
 	
 	public static final int ESTATUS_STOP = 0;
 	public static final int ESTATUS_PAUSE = 1;
@@ -30,6 +32,9 @@ public class Event {
     static final String PREF_EVENT_TYPE = "eventType";
     static final String PREF_EVENT_PROFILE = "eventProfile";
 	
+    static final String PREF_EVENT_ENABLED_TMP = "eventEnabledTmp";
+    static final String PREF_EVENT_NAME_TMP = "eventNameTmp";
+    static final String PREF_EVENT_PROFILE_TMP = "eventProfileTmp";
 	
 
 	// Empty constructorn
@@ -86,6 +91,9 @@ public class Event {
         case ETYPE_TIME:
         	this._eventPreferences = new EventPreferencesTime(this, false, false, false, false, false, false, false, 0, 0, false);
         	break;
+        case ETYPE_BATTERY:
+        	this._eventPreferences = new EventPreferencesBattery(this, 15, 95);
+        	break;
         }
 	}
 	
@@ -117,6 +125,17 @@ public class Event {
 		this._eventPreferencesOld = null;
 	}
 	
+	public Event getOldEvent()
+	{
+		Event event = new Event();
+		event.copyEvent(this);
+		event._eventPreferences = this._eventPreferencesOld;
+		event._typeOld = 0;
+		event._eventPreferencesOld = null;
+		
+		return event;
+	}
+	
 	public boolean isRunnable()
 	{
 		return  (this._fkProfile != 0) &&
@@ -127,10 +146,10 @@ public class Event {
 	public void loadSharedPrefereces(SharedPreferences preferences)
 	{
     	Editor editor = preferences.edit();
-        editor.putString(PREF_EVENT_NAME, this._name);
-        editor.putString(PREF_EVENT_TYPE, Integer.toString(this._type));
-        editor.putString(PREF_EVENT_PROFILE, Long.toString(this._fkProfile));
-        editor.putBoolean(PREF_EVENT_ENABLED, this._status == ESTATUS_PAUSE);
+   		editor.putString(PREF_EVENT_NAME, this._name);
+   		editor.putString(PREF_EVENT_TYPE, Integer.toString(this._type));
+   		editor.putString(PREF_EVENT_PROFILE, Long.toString(this._fkProfile));
+   		editor.putBoolean(PREF_EVENT_ENABLED, this._status == ESTATUS_PAUSE);
         this._eventPreferences.loadSharedPrefereces(preferences);
 		editor.commit();
 	}
@@ -148,6 +167,33 @@ public class Event {
 		
 		this._typeOld = 0;
 		this._eventPreferencesOld = null;
+	}
+
+	public void loadSharedPreferecesTmp(SharedPreferences preferences)
+	{
+		String eventName = preferences.getString(PREF_EVENT_NAME_TMP, "");
+		String fkProfile = preferences.getString(PREF_EVENT_PROFILE_TMP, "0");
+		boolean eventEnabled = preferences.getBoolean(PREF_EVENT_ENABLED_TMP, false);
+    	Editor editor = preferences.edit();
+   		editor.putString(PREF_EVENT_NAME, eventName);
+   		editor.putString(PREF_EVENT_PROFILE, fkProfile);
+   		editor.putBoolean(PREF_EVENT_ENABLED, eventEnabled);
+		editor.commit();
+		this._name = eventName;
+		this._fkProfile = Long.parseLong(fkProfile);
+		this._status = (eventEnabled) ? ESTATUS_PAUSE : ESTATUS_STOP;
+	}
+
+	public void saveSharedPreferecesTmp(SharedPreferences preferences)
+	{
+		String eventName = preferences.getString(PREF_EVENT_NAME, "");
+		String fkProfile = preferences.getString(PREF_EVENT_PROFILE, "0");
+		boolean eventEnabled = preferences.getBoolean(PREF_EVENT_ENABLED, false);
+    	Editor editor = preferences.edit();
+   		editor.putString(PREF_EVENT_NAME_TMP, eventName);
+   		editor.putString(PREF_EVENT_PROFILE_TMP, fkProfile);
+   		editor.putBoolean(PREF_EVENT_ENABLED_TMP, eventEnabled);
+		editor.commit();
 	}
 	
 	public void setSummary(PreferenceManager prefMng, String key, String value, Context context)
@@ -202,6 +248,7 @@ public class Event {
 			key.equals(PREF_EVENT_TYPE) ||
 			key.equals(PREF_EVENT_PROFILE))
 			setSummary(prefMng, key, preferences.getString(key, ""), context);
+		_eventPreferences.setSummary(prefMng, key, preferences, context);
 	}
 	
 	public void setAllSummary(PreferenceManager prefMng, Context context)
@@ -209,6 +256,7 @@ public class Event {
 		setSummary(prefMng, PREF_EVENT_NAME, _name, context);
 		setSummary(prefMng, PREF_EVENT_TYPE, Integer.toString(_type), context);
 		setSummary(prefMng, PREF_EVENT_PROFILE, Long.toString(_fkProfile), context);
+		_eventPreferences.setAllSummary(prefMng, context);
 	}
 	
 	public String getPreferecesDescription(Context context)

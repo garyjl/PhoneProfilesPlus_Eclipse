@@ -186,6 +186,35 @@ public class EventPreferencesTime extends EventPreferences {
 			descr = descr + DateFormat.getTimeFormat(context).format(new Date(calendar.getTimeInMillis()));
 		}
 		
+		
+   		if (GlobalData.getGlobalEventsRuning(context))
+   		{
+   			long alarmTime;
+   		    //SimpleDateFormat sdf = new SimpleDateFormat("EEd/MM/yy HH:mm");
+   		    String alarmTimeS = "";
+   			if (_event.getStatus() == Event.ESTATUS_PAUSE)
+   			{
+   				int daysToAdd = computeDaysForAdd(true);
+   				alarmTime = computeAlarm(true, daysToAdd);
+   				// date and time format by user system settings configuration
+   	   		    alarmTimeS = "(st) " + DateFormat.getDateFormat(context).format(alarmTime) +
+   	   		    			 " " + DateFormat.getTimeFormat(context).format(alarmTime);
+   	   		    descr = descr + '\n';
+   	   		    descr = descr + alarmTimeS;
+   			}
+   			else
+   			if ((_event.getStatus() == Event.ESTATUS_RUNNING) && _useEndTime)
+   			{
+   				int daysToAdd = computeDaysForAdd(false);
+   				alarmTime = computeAlarm(false, daysToAdd);
+   				// date and time format by user system settings configuration
+   	   		    alarmTimeS = "(et) " + DateFormat.getDateFormat(context).format(alarmTime) +
+   	   		    			 " " + DateFormat.getTimeFormat(context).format(alarmTime);
+   	   		    descr = descr + '\n';
+   	   		    descr = descr + alarmTimeS;
+   			}
+   		}
+   		
 		return descr;
 	}
 	
@@ -225,6 +254,7 @@ public class EventPreferencesTime extends EventPreferences {
 		return runable;
 	}
 	
+	@Override
 	public boolean activateReturnProfile()
 	{
 		return _useEndTime;

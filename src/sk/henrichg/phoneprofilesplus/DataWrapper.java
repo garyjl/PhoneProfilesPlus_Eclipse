@@ -512,7 +512,20 @@ public class DataWrapper {
 		if (event != null)
 		{
 			Event origEvent = getEventById(event._id);
-			if (origEvent != null)
+			if (origEvent._type != event._type)
+			{
+				for (int i = 0; i < eventList.size(); i++)
+				{
+					if (eventList.get(i)._id == event._id)
+					{
+						Event newEvent = new Event();
+						newEvent.copyEvent(event);
+						eventList.set(i, newEvent);
+						break;
+					}
+				}				
+			}
+			else
 				origEvent.copyEvent(event);
 		}
 	}

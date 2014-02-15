@@ -333,21 +333,6 @@ public class EditorEventListFragment extends Fragment {
 		else
 		{
 			// pridanie novej udalost
-			/*
-			_event = new Event(getResources().getString(R.string.event_name_default), 
-								  Event.ETYPE_TIME, 
-								  0,
-					         	  Event.ESTATUS_STOP
-					         );
-			
-			// add event into db and set id
-			databaseHandler.addEvent(_event); 
-			// add event into listview
-			eventListAdapter.addItem(_event, false);
-			
-			updateListView(_event);
-			*/
-			
 			editMode = EDIT_MODE_INSERT;
 
 		}

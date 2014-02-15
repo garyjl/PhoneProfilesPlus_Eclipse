@@ -244,7 +244,6 @@
     <string name="title_activity_default_profile_preferences">Default profile</string>
     <string name="toast_profile_activating_0">Profile</string>
     <string name="toast_profile_activating_1">activating&#8230;</string>
-    
     <string name="profile_list_item_menu_activate">Activate</string>
     <string name="profile_list_item_menu_duplicate">Duplicate</string>
     <string name="profile_list_item_menu_delete">Delete</string>
@@ -252,7 +251,6 @@
     <string name="event_list_item_menu_stop">Stop event</string>
     <string name="event_list_item_menu_duplicate">Duplicate</string>
     <string name="event_list_item_menu_delete">Delete</string>
-    
     <string name="phone_profiles_pref_applicationEditorSaveEditorState">Save editor state</string>
     <string name="phone_profiles_pref_notificationPrefIndicator">Show preferences indicator</string>
     <string name="phone_profiles_pref_applicationHomeLauncher">Launch from home screen</string>
@@ -260,6 +258,12 @@
     <string name="phone_profiles_pref_notificationLauncher">Launch from notification</string>
     <string name="array_pref_launcher_activator">Activator</string>
     <string name="array_pref_launcher_editor">Editor</string>
+    
+    <string name="event_preferences_battery_level">Battery level</string>
+    <string name="event_preferences_battery_levelType">Level type</string>
+    <string name="array_pref_event_battery_level_type_low">Low level</string>
+	<string name="array_pref_event_battery_level_type_hight">Hight level</string>
+    <string name="event_type_battery">Battery</string>
     
     	
 </resources>

@@ -44,6 +44,7 @@ public class GlobalData extends Application {
 	static final String EXTRA_EVENT_TYPE = "event_type";
 	static final String EXTRA_START_SYSTEM_EVENT = "start_system_event";
 	static final String EXTRA_SECOND_SET_VOLUMES = "second_set_volumes";
+	static final String EXTRA_EVENT_TYPE_NEW = "event_type_new";
 
 	static final int STARTUP_SOURCE_NOTIFICATION = 1;
 	static final int STARTUP_SOURCE_WIDGET = 2;

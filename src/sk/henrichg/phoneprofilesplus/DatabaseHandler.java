@@ -25,7 +25,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static SQLiteDatabase writableDb;	
     
 	// Database Version
-	private static final int DATABASE_VERSION = 1010;
+	private static final int DATABASE_VERSION = 1013;
 
 	// Database Name
 	private static final String DATABASE_NAME = "phoneProfilesManager";
@@ -82,6 +82,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_E_END_TIME = "endTime";
 	private static final String KEY_E_DAYS_OF_WEEK = "daysOfWeek";
 	private static final String KEY_E_USE_END_TIME = "useEndTime";
+	private static final String KEY_E_BATTERY_LEVEL = "batteryLevel";
+	private static final String KEY_E_BATTERY_LEVEL_TYPE = "batteryLevelType";
 	
 	private static final String KEY_ET_ID = "id";
 	private static final String KEY_ET_EORDER = "eorder";
@@ -198,7 +200,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_E_END_TIME + " INTEGER,"
 				+ KEY_E_DAYS_OF_WEEK + " TEXT,"
 				+ KEY_E_USE_END_TIME + " INTEGER,"
-				+ KEY_E_STATUS + " INTEGER"
+				+ KEY_E_STATUS + " INTEGER,"
+				+ KEY_E_BATTERY_LEVEL + " INTEGER,"
+				+ KEY_E_BATTERY_LEVEL_TYPE + " INTEGER"
 				+ ")";
 		db.execSQL(CREATE_EVENTS_TABLE);
 
@@ -441,6 +445,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		     } finally {
 		    	db.endTransaction();
 	         }	
+		}
+
+		if (oldVersion < 1012)
+		{
+			// pridame nove stlpce
+			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_BATTERY_LEVEL + " INTEGER");
+			
+			// updatneme zaznamy
+			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_BATTERY_LEVEL + "=15");
+		}
+
+		if (oldVersion < 1013)
+		{
+			// pridame nove stlpce
+			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_BATTERY_LEVEL_TYPE + " INTEGER");
+			
+			// updatneme zaznamy
+			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_BATTERY_LEVEL_TYPE + "=0");
 		}
 		
 	}
@@ -1567,6 +1589,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         case Event.ETYPE_TIME:
         	getEventPreferencesTime(event, db);
         	break;
+        case Event.ETYPE_BATTERY:
+        	getEventPreferencesBattery(event, db);
+        	break;
         }
 	}
 	
@@ -1627,6 +1652,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 		cursor.close();
 	}
+
+	private void getEventPreferencesBattery(Event event, SQLiteDatabase db) {
+		Cursor cursor = db.query(TABLE_EVENTS, 
+				                 new String[] { KEY_E_BATTERY_LEVEL, 
+												KEY_E_BATTERY_LEVEL_TYPE,
+												}, 
+				                 KEY_ID + "=?",
+				                 new String[] { String.valueOf(event._id) }, null, null, null, null);
+		if (cursor != null)
+			cursor.moveToFirst();
+
+		EventPreferencesBattery eventPreferences = (EventPreferencesBattery)event._eventPreferences;
+
+		eventPreferences._level = Integer.parseInt(cursor.getString(0));
+		eventPreferences._levelType = Integer.parseInt(cursor.getString(1));
+		
+		cursor.close();
+	}
 	
 	public int updateEventPreferences(Event event) {
 		//SQLiteDatabase db = this.getReadableDatabase();
@@ -1644,6 +1687,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         {
         case Event.ETYPE_TIME:
         	r = updateEventPreferencesTime(event, db);
+        	break;
+        case Event.ETYPE_BATTERY:
+        	r = updateEventPreferencesBattery(event, db);
         	break;
         default:
         	r = 0;
@@ -1674,6 +1720,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_E_START_TIME, eventPreferences._startTime);
 		values.put(KEY_E_END_TIME, eventPreferences._endTime);
 		values.put(KEY_E_USE_END_TIME, (eventPreferences._useEndTime) ? 1 : 0);
+
+		// updating row
+		int r = db.update(TABLE_EVENTS, values, KEY_ID + " = ?",
+				        new String[] { String.valueOf(event._id) });
+        
+		return r;
+	}
+
+	private int updateEventPreferencesBattery(Event event, SQLiteDatabase db) {
+		ContentValues values = new ContentValues();
+		
+		EventPreferencesBattery eventPreferences = (EventPreferencesBattery)event._eventPreferences; 
+
+		//Log.e("DatabaseHandler.updateEventPreferencesBattery","type="+event._type);
+		
+		values.put(KEY_E_TYPE, event._type);
+		values.put(KEY_E_BATTERY_LEVEL, eventPreferences._level);
+		values.put(KEY_E_BATTERY_LEVEL_TYPE, eventPreferences._levelType);
 
 		// updating row
 		int r = db.update(TABLE_EVENTS, values, KEY_ID + " = ?",

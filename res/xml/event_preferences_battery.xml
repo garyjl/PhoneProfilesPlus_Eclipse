@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:henrichg="http://schemas.android.com/apk/res/sk.henrichg.phoneprofilesplus" >
+    <PreferenceCategory
+        android:summary="@string/event_preferences_category_eventidentification"
+        android:title="@string/event_preferences_category_eventidentification" >
+		<CheckBoxPreference 
+		    android:key="eventEnabled"
+		    android:title="@string/event_preferences_eventEnabled"
+		    android:defaultValue="false" />
+        <EditTextPreference
+            android:key="eventName"
+            android:summary="@string/event_preferences_eventName"
+            android:title="@string/event_preferences_eventName" /> 
+        <sk.henrichg.phoneprofilesplus.EventTypePreference
+            android:defaultValue="1"
+            android:key="eventType"
+            android:title="@string/event_preferences_eventType" />
+        <sk.henrichg.phoneprofilesplus.ProfilePreference
+            android:defaultValue="0"
+            android:key="eventProfile"
+            android:title="@string/event_preferences_eventProfile" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:summary="@string/event_preferences_category_eventParameters"
+        android:title="@string/event_preferences_category_eventParameters" >
+		<ListPreference android:title="@string/event_preferences_battery_levelType"
+	           android:summary="@string/array_pref_event_battery_level_type_low"
+	           android:key="eventBatteryLevelType"
+	           android:defaultValue="0"
+	           android:entries="@array/batteryLevelTypeArray"
+	           android:entryValues="@array/batteryLevelTypeValues" />        
+        <EditTextPreference
+            android:key="eventBatteryLevel"
+            android:summary="@string/event_preferences_battery_level"
+            android:title="@string/event_preferences_battery_level" 
+			android:inputType="number"
+            android:defaultValue="15" /> 
+    </PreferenceCategory>
+</PreferenceScreen>    

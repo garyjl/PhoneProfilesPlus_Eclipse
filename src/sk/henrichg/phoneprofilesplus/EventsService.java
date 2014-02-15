@@ -48,15 +48,26 @@ public class EventsService extends IntentService
 		GlobalData.logE("EventsService.onHandleIntent","procedure="+procedure);
 		GlobalData.logE("EventsService.onHandleIntent","eventType="+eventType);
 		
+		long event_id;
+		Event event;
 		switch (eventType)
 		{
 			case Event.ETYPE_TIME:
 				// in intent is event_id
-				long event_id = intent.getLongExtra(GlobalData.EXTRA_EVENT_ID, 0);
+				event_id = intent.getLongExtra(GlobalData.EXTRA_EVENT_ID, 0);
 				GlobalData.logE("EventsService.onHandleIntent","event_id="+event_id);
 
-				Event event = dataWrapper.getEventById(event_id);
-				doEventTime(dataWrapper, eventTimelineList, event, procedure);
+				event = dataWrapper.getEventById(event_id);
+				doEvent(dataWrapper, eventTimelineList, event, procedure);
+				
+				break;
+			case Event.ETYPE_BATTERY:
+				// in intent is event_id
+				event_id = intent.getLongExtra(GlobalData.EXTRA_EVENT_ID, 0);
+				GlobalData.logE("EventsService.onHandleIntent","event_id="+event_id);
+
+				event = dataWrapper.getEventById(event_id);
+				doEvent(dataWrapper, eventTimelineList, event, procedure);
 				
 				break;
 			default:
@@ -69,9 +80,9 @@ public class EventsService extends IntentService
 		
 	}
 
-	private void doEventTime(DataWrapper dataWrapper, 
-								List<EventTimeline> eventTimelineList,
-								Event event, int procedure)
+	private void doEvent(DataWrapper dataWrapper, 
+							List<EventTimeline> eventTimelineList,
+							Event event, int procedure)
 	{
 		if (event == null)
 			return;
@@ -93,7 +104,6 @@ public class EventsService extends IntentService
 			default:
 				break;
 		}
-		
 	}
 	
 	private void doEndService()
