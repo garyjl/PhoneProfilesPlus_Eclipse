@@ -5,25 +5,37 @@ import java.util.Comparator;
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 public class ProfilePreferenceAdapter extends BaseAdapter {
 
 	public List<Profile> profileList;
+	long profileId;
+	ProfilePreferenceDialog dialog;
 	
 	//private Context context;
 	
 	private LayoutInflater inflater = null;
 	
-	public ProfilePreferenceAdapter(Context c)
+	public ProfilePreferenceAdapter(ProfilePreferenceDialog dialog, Context c, String profileId)
 	{
 		//context = c;
 
+		this.dialog = dialog;
+		
+		if (profileId.isEmpty())
+			this.profileId = 0;
+		else
+			this.profileId = Long.valueOf(profileId);
+			
 		inflater = (LayoutInflater)c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		
 		profileList = ProfilePreference.dataWrapper.getProfileList();
@@ -47,6 +59,7 @@ public class ProfilePreferenceAdapter extends BaseAdapter {
 		  ImageView profileIcon;
 		  TextView profileLabel;
 		  ImageView profileIndicator;
+		  RadioButton radioBtn;
 		  int position;
 		}
 	
@@ -67,6 +80,7 @@ public class ProfilePreferenceAdapter extends BaseAdapter {
 	  		holder.profileLabel = (TextView)vi.findViewById(R.id.profile_pref_dlg_item_label);
 	  		if (GlobalData.applicationEditorPrefIndicator)
 	  			holder.profileIndicator = (ImageView)vi.findViewById(R.id.profile_pref_dlg_item_indicator);
+	        holder.radioBtn = (RadioButton)vi.findViewById(R.id.profile_pref_dlg_item_radiobtn);
 	        vi.setTag(holder);        
 	    }
 	    else
@@ -77,7 +91,9 @@ public class ProfilePreferenceAdapter extends BaseAdapter {
 	    Profile profile = profileList.get(position);
 	    if (profile != null)
 	    {
-			holder.profileLabel.setText(profile._name);
+	    	holder.radioBtn.setChecked(profileId == profile._id);
+
+	    	holder.profileLabel.setText(profile._name);
 		    if (profile.getIsIconResourceID())
 		    {
 		      	holder.profileIcon.setImageResource(0);
@@ -92,6 +108,7 @@ public class ProfilePreferenceAdapter extends BaseAdapter {
 	    }
 	    else
 	    {
+	    	holder.radioBtn.setChecked(false);
 	    	holder.profileLabel.setText("");
 	    	holder.profileIcon.setImageResource(0);
 			holder.profileIndicator.setImageResource(0);

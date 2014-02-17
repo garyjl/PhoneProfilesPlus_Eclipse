@@ -24,7 +24,7 @@ public class EventTypePreferenceDialog extends Dialog implements OnShowListener 
 		super(context);
 	}
 	
-	public EventTypePreferenceDialog(Context context, EventTypePreference preference)
+	public EventTypePreferenceDialog(Context context, EventTypePreference preference, String eventType)
 	{
 		super(context);
 		
@@ -36,7 +36,7 @@ public class EventTypePreferenceDialog extends Dialog implements OnShowListener 
 		
 		listView = (ListView)findViewById(R.id.event_type_pref_dlg_listview);
 		
-		eventTypePreferenceAdapter = new EventTypePreferenceAdapter(_context); 
+		eventTypePreferenceAdapter = new EventTypePreferenceAdapter(this, _context, eventType); 
 	
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {

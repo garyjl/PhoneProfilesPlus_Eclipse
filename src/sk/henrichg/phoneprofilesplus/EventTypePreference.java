@@ -81,7 +81,7 @@ public class EventTypePreference extends Preference {
 
 		//Log.d("ApplicationsPreference.onClick", "packageName="+packageName);
 
-		final EventTypePreferenceDialog dialog = new EventTypePreferenceDialog(prefContext, this);
+		final EventTypePreferenceDialog dialog = new EventTypePreferenceDialog(prefContext, this, eventType);
 		dialog.setTitle(R.string.title_activity_event_type_preference_dialog);
 		dialog.show();
 	}

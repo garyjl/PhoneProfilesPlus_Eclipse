@@ -14,7 +14,7 @@ import android.content.DialogInterface.OnShowListener;
 
 public class ProfilePreferenceDialog extends Dialog implements OnShowListener {
 
-	private ProfilePreference profilePreference;
+	public ProfilePreference profilePreference;
 	private ProfilePreferenceAdapter profilePreferenceAdapter;
 	
 	private Context _context;
@@ -24,7 +24,7 @@ public class ProfilePreferenceDialog extends Dialog implements OnShowListener {
 		super(context);
 	}
 	
-	public ProfilePreferenceDialog(Context context, ProfilePreference preference)
+	public ProfilePreferenceDialog(Context context, ProfilePreference preference, String profileId)
 	{
 		super(context);
 		
@@ -36,8 +36,9 @@ public class ProfilePreferenceDialog extends Dialog implements OnShowListener {
 		
 		listView = (ListView)findViewById(R.id.profile_pref_dlg_listview);
 		
-		profilePreferenceAdapter = new ProfilePreferenceAdapter(_context); 
+		profilePreferenceAdapter = new ProfilePreferenceAdapter(this, _context, profileId); 
 	
+		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 				profilePreference.setProfileId(profilePreferenceAdapter.profileList.get(position)._id);
@@ -45,6 +46,7 @@ public class ProfilePreferenceDialog extends Dialog implements OnShowListener {
 			}
 
 		});
+		
 
 /*		applicationPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 			public boolean onPreferenceChange(Preference preference, Object newValue) {

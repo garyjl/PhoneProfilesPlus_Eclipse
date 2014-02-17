@@ -94,7 +94,7 @@ public class ProfilePreference extends Preference {
 
 		//Log.d("ApplicationsPreference.onClick", "packageName="+packageName);
 
-		final ProfilePreferenceDialog dialog = new ProfilePreferenceDialog(prefContext, this);
+		final ProfilePreferenceDialog dialog = new ProfilePreferenceDialog(prefContext, this, profileId);
 		dialog.setTitle(R.string.title_activity_profile_preference_dialog);
 		dialog.show();
 	}

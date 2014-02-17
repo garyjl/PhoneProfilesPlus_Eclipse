@@ -2194,6 +2194,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 										{
 											values.put(KEY_E_STATUS, 0);
 										}
+										if (exportedDBObj.getVersion() < 1013)
+										{
+											values.put(KEY_E_BATTERY_LEVEL, 15);
+											values.put(KEY_E_BATTERY_LEVEL_TYPE, 0);
+										}
 	
 										// Inserting Row do db z SQLiteOpenHelper
 										db.insert(TABLE_EVENTS, null, values);
