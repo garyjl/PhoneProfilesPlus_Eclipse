@@ -61,6 +61,7 @@ public class EventsService extends IntentService
 			GlobalData.logE("EventsService.onHandleIntent","event_id="+event_id);
 			Event event = dataWrapper.getEventById(event_id);
 
+			
 			if (procedure == ESP_STOP_EVENT)
 			{
 				event.stopEvent(dataWrapper, eventTimelineList, true, false, true);
@@ -73,7 +74,8 @@ public class EventsService extends IntentService
 						doEvent(dataWrapper, eventTimelineList, event, procedure);
 						break;
 					case Event.ETYPE_BATTERY:
-						doBatteryEvent(dataWrapper, eventTimelineList, event);
+						boolean powerChangeReceived = intent.getBooleanExtra(GlobalData.EXTRA_POWER_CHANGE_RECEIVED, false);
+						doBatteryEvent(dataWrapper, eventTimelineList, event, powerChangeReceived);
 						break;
 					default:
 						break;
@@ -109,48 +111,64 @@ public class EventsService extends IntentService
 	
 	private void doBatteryEvent(DataWrapper dataWrapper, 
 								List<EventTimeline> eventTimelineList,
-								Event event)
+								Event event, boolean powerChangeReceived)
 	{
-	
+		if (powerChangeReceived)
+			GlobalData.logE("EventService.doBatteryEvent","powerChangeReceived");
+			
 		// get battery status
 		IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
 		Intent batteryStatus = context.registerReceiver(null, ifilter);
 		
-		int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-		int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-	
-		float batteryPct = level / (float)scale;		
-	
-		GlobalData.logE("EventService.doBatteryEvent","batteryPct="+batteryPct);
+		int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+		GlobalData.logE("EventService.doBatteryEvent","status="+status);
+		boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
+		                     status == BatteryManager.BATTERY_STATUS_FULL;
+		GlobalData.logE("EventService.doBatteryEvent","isCharging="+isCharging);
 		
-		EventPreferencesBattery eventPreferences = (EventPreferencesBattery)event._eventPreferences;
-		if (eventPreferences._levelType == EventPreferencesBattery.LEVELTYPE_LOW)
+		
+		if (isCharging)
 		{
-			if (batteryPct <= (eventPreferences._level / (float)100))
-			{
-				if (event.getStatus() != Event.ESTATUS_RUNNING)
-					event.startEvent(dataWrapper, eventTimelineList, false);
-			}
-			else
-			{
-				if (event.getStatus() != Event.ESTATUS_PAUSE)
-					event.pauseEvent(dataWrapper, eventTimelineList, true, false, false);
-			}
+			if (event.getStatus() != Event.ESTATUS_PAUSE)
+				event.pauseEvent(dataWrapper, eventTimelineList, true, false, false);
 		}
 		else
 		{
-			if (batteryPct >= (eventPreferences._level / (float)100))
+			int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+			int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+		
+			float batteryPct = level / (float)scale;		
+		
+			GlobalData.logE("EventService.doBatteryEvent","batteryPct="+batteryPct);
+
+			EventPreferencesBattery eventPreferences = (EventPreferencesBattery)event._eventPreferences;
+			if (eventPreferences._levelType == EventPreferencesBattery.LEVELTYPE_LOW)
 			{
-				if (event.getStatus() != Event.ESTATUS_RUNNING)
-					event.startEvent(dataWrapper, eventTimelineList, false);
+				if (batteryPct <= (eventPreferences._level / (float)100))
+				{
+					if (event.getStatus() != Event.ESTATUS_RUNNING)
+						event.startEvent(dataWrapper, eventTimelineList, false);
+				}
+				else
+				{
+					if (event.getStatus() != Event.ESTATUS_PAUSE)
+						event.pauseEvent(dataWrapper, eventTimelineList, true, false, false);
+				}
 			}
 			else
 			{
-				if (event.getStatus() != Event.ESTATUS_RUNNING)
-					event.pauseEvent(dataWrapper, eventTimelineList, true, false, false);
+				if (batteryPct >= (eventPreferences._level / (float)100))
+				{
+					if (event.getStatus() != Event.ESTATUS_RUNNING)
+						event.startEvent(dataWrapper, eventTimelineList, false);
+				}
+				else
+				{
+					if (event.getStatus() != Event.ESTATUS_RUNNING)
+						event.pauseEvent(dataWrapper, eventTimelineList, true, false, false);
+				}
 			}
 		}
-	
 	}
 	
 
