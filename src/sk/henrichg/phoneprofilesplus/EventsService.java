@@ -5,6 +5,8 @@ import java.util.List;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.BatteryManager;
 
 public class EventsService extends IntentService
 {
@@ -48,32 +50,37 @@ public class EventsService extends IntentService
 		GlobalData.logE("EventsService.onHandleIntent","procedure="+procedure);
 		GlobalData.logE("EventsService.onHandleIntent","eventType="+eventType);
 		
-		long event_id;
-		Event event;
-		switch (eventType)
+		if (procedure == ESP_RESTART_EVENTS)
 		{
-			case Event.ETYPE_TIME:
-				// in intent is event_id
-				event_id = intent.getLongExtra(GlobalData.EXTRA_EVENT_ID, 0);
-				GlobalData.logE("EventsService.onHandleIntent","event_id="+event_id);
-
-				event = dataWrapper.getEventById(event_id);
-				doEvent(dataWrapper, eventTimelineList, event, procedure);
-				
-				break;
-			case Event.ETYPE_BATTERY:
-				// in intent is event_id
-				event_id = intent.getLongExtra(GlobalData.EXTRA_EVENT_ID, 0);
-				GlobalData.logE("EventsService.onHandleIntent","event_id="+event_id);
-
-				event = dataWrapper.getEventById(event_id);
-				doEvent(dataWrapper, eventTimelineList, event, procedure);
-				
-				break;
-			default:
-				break;
+			dataWrapper.firstStartEvents(true);
 		}
-		
+		else
+		{
+			// in intent is event_id
+			long event_id = intent.getLongExtra(GlobalData.EXTRA_EVENT_ID, 0);
+			GlobalData.logE("EventsService.onHandleIntent","event_id="+event_id);
+			Event event = dataWrapper.getEventById(event_id);
+
+			if (procedure == ESP_STOP_EVENT)
+			{
+				event.stopEvent(dataWrapper, eventTimelineList, true, false, true);
+			}
+			else
+			{
+				switch (eventType)
+				{
+					case Event.ETYPE_TIME:
+						doEvent(dataWrapper, eventTimelineList, event, procedure);
+						break;
+					case Event.ETYPE_BATTERY:
+						doBatteryEvent(dataWrapper, eventTimelineList, event);
+						break;
+					default:
+						break;
+				}
+			}
+		}
+
 		doEndService();
 		
 		dataWrapper.invalidateDataWrapper();
@@ -89,23 +96,64 @@ public class EventsService extends IntentService
 		
 		switch (procedure)
 		{
-			case ESP_RESTART_EVENTS:
-				dataWrapper.firstStartEvents();
-				break;
 			case ESP_START_EVENT:
 				event.startEvent(dataWrapper, eventTimelineList, false);
 				break;
 			case ESP_PAUSE_EVENT:
 				event.pauseEvent(dataWrapper, eventTimelineList, true, false, false);
 				break;
-			case ESP_STOP_EVENT:
-				event.stopEvent(dataWrapper, eventTimelineList, true, false, true);
-				break;
 			default:
 				break;
 		}
 	}
 	
+	private void doBatteryEvent(DataWrapper dataWrapper, 
+								List<EventTimeline> eventTimelineList,
+								Event event)
+	{
+	
+		// get battery status
+		IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+		Intent batteryStatus = context.registerReceiver(null, ifilter);
+		
+		int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+		int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+	
+		float batteryPct = level / (float)scale;		
+	
+		GlobalData.logE("EventService.doBatteryEvent","batteryPct="+batteryPct);
+		
+		EventPreferencesBattery eventPreferences = (EventPreferencesBattery)event._eventPreferences;
+		if (eventPreferences._levelType == EventPreferencesBattery.LEVELTYPE_LOW)
+		{
+			if (batteryPct <= (eventPreferences._level / (float)100))
+			{
+				if (event.getStatus() != Event.ESTATUS_RUNNING)
+					event.startEvent(dataWrapper, eventTimelineList, false);
+			}
+			else
+			{
+				if (event.getStatus() != Event.ESTATUS_PAUSE)
+					event.pauseEvent(dataWrapper, eventTimelineList, true, false, false);
+			}
+		}
+		else
+		{
+			if (batteryPct >= (eventPreferences._level / (float)100))
+			{
+				if (event.getStatus() != Event.ESTATUS_RUNNING)
+					event.startEvent(dataWrapper, eventTimelineList, false);
+			}
+			else
+			{
+				if (event.getStatus() != Event.ESTATUS_RUNNING)
+					event.pauseEvent(dataWrapper, eventTimelineList, true, false, false);
+			}
+		}
+	
+	}
+	
+
 	private void doEndService()
 	{
 		// refresh GUI

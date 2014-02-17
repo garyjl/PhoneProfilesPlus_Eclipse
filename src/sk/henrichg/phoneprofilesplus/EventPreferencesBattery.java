@@ -1,6 +1,13 @@
 package sk.henrichg.phoneprofilesplus;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
@@ -9,6 +16,9 @@ public class EventPreferencesBattery extends EventPreferences {
 
 	public int _level;
 	public int _levelType;
+	
+	static final int LEVELTYPE_LOW = 0;
+	static final int LEVELTYPE_HIGHT = 0;
 	
 	static final String PREF_EVENT_BATTERY_LEVEL = "eventBatteryLevel";
 	static final String PREF_EVENT_BATTERY_LEVEL_TYPE = "eventBatteryLevelType";
@@ -115,11 +125,16 @@ public class EventPreferencesBattery extends EventPreferences {
 	@Override
 	public void setSystemRunningEvent(Context context)
 	{
+		// set alarm for state PAUSE
+		setAlarm(context);
 	}
 
 	@Override
 	public void setSystemPauseEvent(Context context)
 	{
+		// set alarm for state RUNNING
+	
+		setAlarm(context);
 	}
 	
 	@Override
@@ -127,5 +142,35 @@ public class EventPreferencesBattery extends EventPreferences {
 	{
 	}
 
+	private boolean isAlarmSet(Context context)
+	{
+		Intent intent = new Intent(context, BatteryEventsAlarmBroadcastReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), 0, intent, PendingIntent.FLAG_NO_CREATE);
+		return (pendingIntent != null);
+	}
+	
+	private void setAlarm(Context context)
+	{
+		GlobalData.logE("EventPreferencesBattery.setAlarm","xxx");
+		
+		if (!isAlarmSet(context))
+		{
+			GlobalData.logE("EventPreferencesBattery.setAlarm","set");
+
+			AlarmManager alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+			
+			Intent intent = new Intent(context, BatteryEventsAlarmBroadcastReceiver.class);
+			
+			Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(System.currentTimeMillis());
+            calendar.add(Calendar.SECOND, 10);
+            
+			PendingIntent alarmIntent = PendingIntent.getBroadcast(context.getApplicationContext(), 0, intent, 0);
+			alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+											5 * 1000,
+											//AlarmManager.INTERVAL_HALF_HOUR
+											10 * 1000, alarmIntent);
+		}
+	}
 	
 }

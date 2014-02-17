@@ -3,10 +3,13 @@ package sk.henrichg.phoneprofilesplus;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.provider.Settings;
 import android.widget.Toast;
@@ -588,9 +591,10 @@ public class DataWrapper {
 	
 	// this is called in boot or start application
 	// or when restart alarm triggered (?)
-	public void firstStartEvents()
+	public void firstStartEvents(boolean invalidateList)
 	{
-		invalidateEventList();  // force load form db
+		if (invalidateList)
+			invalidateEventList();  // force load form db
 		
 		for (Event event : getEventList())
 		{
@@ -603,6 +607,7 @@ public class DataWrapper {
 			if (status != Event.ESTATUS_STOP)
 				event.setSystemEvent(context, status);
 		}
+
 	}
 	
 //---------------------------------------------------
@@ -769,7 +774,7 @@ public class DataWrapper {
 			// aplikacia este nie je nastartovana
 			
 			// startneme eventy
-			firstStartEvents();
+			firstStartEvents(true);
 		}
 		
 		

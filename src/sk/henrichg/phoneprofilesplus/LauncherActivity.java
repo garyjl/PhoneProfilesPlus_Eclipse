@@ -42,7 +42,10 @@ public class LauncherActivity extends Activity {
 				// aplikacia este nie je nastartovana
 				
 				// startneme eventy
-				dataWrapper.firstStartEvents();
+				if (GlobalData.getGlobalEventsRuning(getBaseContext()))
+					dataWrapper.firstStartEvents(true);
+				else
+					BatteryEventsAlarmBroadcastReceiver.removeAlarm(getBaseContext());
 				
 				// mozeme aktivovat profil, ak je nastavene, ze sa tak ma stat 
 				if (GlobalData.applicationActivate)

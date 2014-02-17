@@ -21,7 +21,7 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 				GlobalData.grantRoot();
 					
 				DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
-				dataWrapper.firstStartEvents();
+				dataWrapper.firstStartEvents(true);
 				dataWrapper.invalidateDataWrapper();
 			}
 		}		

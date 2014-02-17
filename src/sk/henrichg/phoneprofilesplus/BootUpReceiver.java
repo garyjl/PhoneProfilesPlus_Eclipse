@@ -18,7 +18,7 @@ public class BootUpReceiver extends BroadcastReceiver {
 			GlobalData.grantRoot();
 			
 			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
-			dataWrapper.firstStartEvents();
+			dataWrapper.firstStartEvents(true);
 			dataWrapper.invalidateDataWrapper();
 			
 			Intent i = new Intent(context, BackgroundActivateProfileActivity.class);

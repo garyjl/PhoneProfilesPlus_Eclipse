@@ -454,12 +454,13 @@ public class EditorProfilesActivity extends ActionBarActivity
 				// no setup for next start
 				dataWrapper.pauseAllEvents(true);
 				GlobalData.setGlobalEventsRuning(getBaseContext(), false);
+				BatteryEventsAlarmBroadcastReceiver.removeAlarm(getBaseContext());
 			}
 			else
 			{
 				GlobalData.setGlobalEventsRuning(getBaseContext(), true);
 				// setup for next start
-				dataWrapper.pauseAllEvents(false);
+				dataWrapper.firstStartEvents(false);
 			}
 			Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
 			if (fragment != null)
@@ -932,7 +933,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 						ret = 0;
 				}
 				
-				dataWrapper.firstStartEvents();
+				dataWrapper.firstStartEvents(true);
 				
 				return ret;
 			}
