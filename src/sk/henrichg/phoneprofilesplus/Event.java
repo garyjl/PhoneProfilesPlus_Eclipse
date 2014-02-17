@@ -129,9 +129,12 @@ public class Event {
 	{
 		Event event = new Event();
 		event.copyEvent(this);
-		event._eventPreferences = this._eventPreferencesOld;
-		event._typeOld = 0;
-		event._eventPreferencesOld = null;
+		if (this._typeOld != 0)
+		{
+			event._eventPreferences = this._eventPreferencesOld;
+			event._typeOld = 0;
+			event._eventPreferencesOld = null;
+		}
 		
 		return event;
 	}
