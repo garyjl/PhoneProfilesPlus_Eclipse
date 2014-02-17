@@ -7,7 +7,8 @@
         <EditTextPreference
             android:key="prf_pref_profileName"
             android:summary="@string/profile_preferences_profileName"
-            android:title="@string/profile_preferences_profileName" /> 
+            android:title="@string/profile_preferences_profileName"
+            android:selectAllOnFocus="true" /> 
         <sk.henrichg.phoneprofilesplus.ImageViewPreference
             android:defaultValue="ic_profile_default|1"
             android:key="prf_pref_profileIcon"

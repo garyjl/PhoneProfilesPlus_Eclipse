@@ -213,7 +213,6 @@
     <string name="alert_button_yes">Ja</string> 
     <string name="alert_button_no">Nein</string> 
     <string name="profile_preferences_deviceAutoRotation">Automatische Drehung</string> 
-
     <string name="title_activity_activator">Starter</string>
     <string name="title_activity_editor">Editor</string>
     <string name="menu_run_events">Laufende Ereignisse aktivieren</string>

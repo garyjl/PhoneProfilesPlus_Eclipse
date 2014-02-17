@@ -11,7 +11,8 @@
         <EditTextPreference
             android:key="eventName"
             android:summary="@string/event_preferences_eventName"
-            android:title="@string/event_preferences_eventName" /> 
+            android:title="@string/event_preferences_eventName"
+            android:selectAllOnFocus="true" /> 
         <sk.henrichg.phoneprofilesplus.EventTypePreference
             android:defaultValue="1"
             android:key="eventType"
