@@ -69,6 +69,8 @@ public class EditorProfilesActivity extends ActionBarActivity
 {
 
 	private static EditorProfilesActivity instance;
+
+	private static boolean savedInstanceStateChanged; 
 	
 	//private DataWrapper dataWrapper;
 	private static ApplicationsCache applicationsCache;
@@ -118,13 +120,15 @@ public class EditorProfilesActivity extends ActionBarActivity
 		GUIData.setTheme(this, false);
 		GUIData.setLanguage(getBaseContext());
 
-		//dataWrapper = new DataWrapper(getBaseContext(), true, false, 0);
-		//dataWrapper.getActivateProfileHelper().initialize(this, getBaseContext());
-		createApplicationsCache();
-		
 		super.onCreate(savedInstanceState);
 
 		instance = this;
+
+		savedInstanceStateChanged = (savedInstanceState != null);
+		
+		//dataWrapper = new DataWrapper(getBaseContext(), true, false, 0);
+		//dataWrapper.getActivateProfileHelper().initialize(this, getBaseContext());
+		createApplicationsCache();
 		
 		setContentView(R.layout.activity_editor_list_onepane);
 		
@@ -395,9 +399,14 @@ public class EditorProfilesActivity extends ActionBarActivity
 	@Override
 	protected void onDestroy()
 	{
-		if (applicationsCache != null)
-			applicationsCache.clearCache();
-		applicationsCache = null;
+		if (!savedInstanceStateChanged)
+		{
+			// no destroy applicationsCache on orientation change
+			if (applicationsCache != null)
+				applicationsCache.clearCache();
+			applicationsCache = null;
+		}
+		
 		//if (dataWrapper != null)
 		//	dataWrapper.invalidateDataWrapper();
 		//dataWrapper = null;
@@ -1173,6 +1182,8 @@ public class EditorProfilesActivity extends ActionBarActivity
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		
+		savedInstanceStateChanged = true; 
+		
 		if (mTwoPane) {
 	    	SharedPreferences preferences = getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Activity.MODE_PRIVATE);
 			
@@ -1566,7 +1577,12 @@ public class EditorProfilesActivity extends ActionBarActivity
 
 	public static void createApplicationsCache()
 	{
-		applicationsCache =  new ApplicationsCache();
+		if (!savedInstanceStateChanged)
+		{
+			if (applicationsCache != null)
+				applicationsCache.clearCache();
+			applicationsCache =  new ApplicationsCache();
+		}
 	}
 	
 	private DataWrapper getDataWrapper()
