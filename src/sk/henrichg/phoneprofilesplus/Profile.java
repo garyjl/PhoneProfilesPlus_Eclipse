@@ -551,7 +551,21 @@ public class Profile {
     		int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
     		int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
     		_iconBitmap = BitmapManipulator.resampleBitmap(getIconIdentifier(), width, height);
-
+    		
+    		if (_iconBitmap == null)
+    		{
+    			// no icon found, set default icon
+				_icon = "ic_profile_default|1";
+    			if (monochrome)
+    			{
+    	        	int iconResource = context.getResources().getIdentifier(getIconIdentifier(), "drawable", context.getPackageName());
+    	        	Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), iconResource);
+    	        	_iconBitmap = BitmapManipulator.monochromeBitmap(bitmap, monochromeValue, context);
+    	        	// getIsIconResourceID must return false
+    	        	_icon = getIconIdentifier() + "|0";
+    			}
+    		}
+    		else
     		if (monochrome)
     			_iconBitmap = BitmapManipulator.grayscaleBitmap(_iconBitmap);
         }

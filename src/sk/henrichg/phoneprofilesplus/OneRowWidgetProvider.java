@@ -52,9 +52,17 @@ public class OneRowWidgetProvider extends AppWidgetProvider {
 			}
 			else
 			{
-				isIconResourceID = true;
-				iconIdentifier = GlobalData.PROFILE_ICON_DEFAULT;
-				profileName = context.getResources().getString(R.string.profiles_header_profile_name_no_activated);
+				// create empty profile and set icon resource
+				profile = new Profile();
+				profile._name = context.getResources().getString(R.string.profiles_header_profile_name_no_activated);
+				profile._icon = GlobalData.PROFILE_ICON_DEFAULT+"|1";
+
+				profile.generateIconBitmap(context, 
+						GlobalData.applicationWidgetListIconColor.equals("1"), 
+						monochromeValue);
+				isIconResourceID = profile.getIsIconResourceID();
+				iconIdentifier = profile.getIconIdentifier();
+				profileName = profile._name;
 			}
 			
 			RemoteViews remoteViews;

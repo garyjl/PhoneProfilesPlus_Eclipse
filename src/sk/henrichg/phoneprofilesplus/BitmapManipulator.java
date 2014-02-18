@@ -39,6 +39,9 @@ public class BitmapManipulator {
 	
 	public static Bitmap monochromeBitmap(Bitmap bitmap, int value, Context context)
 	{
+		if (bitmap == null)
+			return null;
+		
     	Bitmap monochromeBitmap = Bitmap.createBitmap(bitmap.getWidth(),
 														bitmap.getHeight(),
 														bitmap.getConfig());
@@ -62,7 +65,10 @@ public class BitmapManipulator {
 
 	public static Bitmap grayscaleBitmap(Bitmap bitmap)
 	{
-    	Bitmap monochromeBitmap = Bitmap.createBitmap(bitmap.getWidth(),
+		if (bitmap == null)
+			return null;
+    
+		Bitmap monochromeBitmap = Bitmap.createBitmap(bitmap.getWidth(),
 													bitmap.getHeight(),
 													bitmap.getConfig());
     	Canvas canvas = new Canvas(monochromeBitmap);
