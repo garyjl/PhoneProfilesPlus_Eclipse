@@ -631,9 +631,10 @@ public class DataWrapper {
 
 	private void _activateProfile(Profile _profile, int startupSource, boolean _interactive, Activity _activity)
 	{
-		final Profile profile = _profile;
-		final boolean interactive = _interactive;
-		final Activity activity = _activity;
+		Profile profile = GlobalData.getMappedProfile(_profile, context);
+		profile = filterProfileWithBatteryEvents(profile);
+		boolean interactive = _interactive;
+		Activity activity = _activity;
 		
 		databaseHandler.activateProfile(profile);
 		setProfileActive(profile);
@@ -873,6 +874,121 @@ public class DataWrapper {
 			
 			finishActivity(startupSource, true, activity);
 		}
+		
+	}
+
+	public Profile filterProfileWithBatteryEvents(Profile profile)
+	{
+		if (profile != null)
+		{
+			Profile filteredProfile = new Profile(
+					           profile._id,
+							   profile._name, 
+							   profile._icon, 
+							   profile._checked, 
+							   profile._porder,
+							   profile._volumeRingerMode,
+							   profile._volumeRingtone,
+							   profile._volumeNotification,
+							   profile._volumeMedia,
+							   profile._volumeAlarm,
+							   profile._volumeSystem,
+							   profile._volumeVoice,
+							   profile._soundRingtoneChange,
+							   profile._soundRingtone,
+							   profile._soundNotificationChange,
+							   profile._soundNotification,
+							   profile._soundAlarmChange,
+							   profile._soundAlarm,
+							   profile._deviceAirplaneMode,
+							   profile._deviceWiFi,
+							   profile._deviceBluetooth,
+							   profile._deviceScreenTimeout,
+							   profile._deviceBrightness,
+							   profile._deviceWallpaperChange,
+							   profile._deviceWallpaper,
+							   profile._deviceMobileData,
+							   profile._deviceMobileDataPrefs,
+							   profile._deviceGPS,
+							   profile._deviceRunApplicationChange,
+							   profile._deviceRunApplicationPackageName,
+							   profile._deviceAutosync,
+							   profile._showInActivator,
+							   profile._deviceAutoRotate);
+		
+			List<EventTimeline> eventTimelineList = getEventTimelineList();
+			
+			// search from last events in timeline
+			for (int i = eventTimelineList.size()-1; i >= 0; i--)
+			{
+				EventTimeline eventTimeline = eventTimelineList.get(i);
+				
+				Event event = getEventById(eventTimeline._fkEvent);
+
+				if ((event != null) && (event._type == Event.ETYPE_BATTERY))
+				{
+					EventPreferencesBattery eventPreferences = (EventPreferencesBattery)event._eventPreferences;
+					if (eventPreferences._levelType == EventPreferencesBattery.LEVELTYPE_LOW)
+					{
+						Profile eventProfile = getProfileById(event._fkProfile);
+						
+						// preferences which event profile change, must by set as "no change" for filtered profile 
+						
+						if (eventProfile._volumeRingerMode != 0)
+							filteredProfile._volumeRingerMode = 0;
+						if (eventProfile.getVolumeRingtoneChange())
+							filteredProfile._volumeRingtone = "0|0|0";
+						if (profile.getVolumeNotificationChange())
+							filteredProfile._volumeNotification = "0|0|0";
+						if (profile.getVolumeAlarmChange())
+							filteredProfile._volumeAlarm = "0|0|0";
+						if (profile.getVolumeMediaChange())
+							filteredProfile._volumeMedia = "0|0|0";
+						if (profile.getVolumeSystemChange())
+							filteredProfile._volumeSystem = "0|0|0";
+						if (profile.getVolumeVoiceChange())
+							filteredProfile._volumeVoice = "0|0|";
+						if (profile._soundRingtoneChange != 0)
+							filteredProfile._soundRingtoneChange = 0;
+						if (profile._soundNotificationChange != 0)
+							filteredProfile._soundNotificationChange = 0;
+						if (profile._soundAlarmChange != 0)
+							filteredProfile._soundAlarmChange = 0;
+						if (profile._deviceAirplaneMode != 0)
+							filteredProfile._deviceAirplaneMode = 0;
+						if (profile._deviceAutosync != 0)
+							filteredProfile._deviceAutosync = 0;
+						if (profile._deviceMobileData != 0)
+							filteredProfile._deviceMobileData = 0;
+						if (profile._deviceMobileDataPrefs != 0)
+							filteredProfile._deviceMobileDataPrefs = 0;
+						if (profile._deviceWiFi != 0)
+							filteredProfile._deviceWiFi = 0;
+						if (profile._deviceBluetooth != 0)
+							filteredProfile._deviceBluetooth = 0;
+						if (profile._deviceGPS != 0)
+							filteredProfile._deviceGPS = 0;
+						if (profile._deviceScreenTimeout != 0)
+							filteredProfile._deviceScreenTimeout = 0;
+						if (profile.getDeviceBrightnessChange() || profile.getDeviceBrightnessAutomatic())
+							filteredProfile._deviceBrightness = "0|0|0|0";
+						if (profile._deviceAutoRotate != 0)
+							filteredProfile._deviceAutoRotate = 0;
+						if (profile._deviceRunApplicationChange != 0)
+							filteredProfile._deviceRunApplicationChange = 0;
+						if (profile._deviceWallpaperChange != 0)
+							filteredProfile._deviceWallpaperChange = 0;
+						
+						// last event finded
+						break;
+					}
+				}
+			}
+			
+			return filteredProfile;
+		}
+		else 
+			return profile;
 		
 	}
 	

@@ -60,7 +60,7 @@ public class ActivateProfileActivity extends ActionBarActivity {
 		
 		dataWrapper = new DataWrapper(getBaseContext(), true, false, 0);
 		activateProfileHelper = dataWrapper.getActivateProfileHelper();
-		activateProfileHelper.initialize(this, getBaseContext());
+		activateProfileHelper.initialize(dataWrapper, this, getBaseContext());
 
 	// set window dimensions ----------------------------------------------------------
 		

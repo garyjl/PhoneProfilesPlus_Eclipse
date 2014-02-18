@@ -39,6 +39,8 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.RemoteViews;
 
 public class ActivateProfileHelper {
+
+	private DataWrapper dataWrapper;
 	
 	private Activity activity;
 	private Context context;
@@ -50,8 +52,10 @@ public class ActivateProfileHelper {
 		
 	}
 
-	public void initialize(Activity a, Context c)
+	public void initialize(DataWrapper dataWrapper, Activity a, Context c)
 	{
+		this.dataWrapper = dataWrapper;
+		
 		initializeNoNotificationManager(a, c);
 		notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
 	}
@@ -64,6 +68,7 @@ public class ActivateProfileHelper {
 
 	public void deinitialize()
 	{
+		dataWrapper = null;
 		activity = null;
 		context = null;
 		notificationManager = null;
@@ -327,8 +332,10 @@ public class ActivateProfileHelper {
 		// rozdelit zvonenie a notifikacie - zial je to oznacene ako @Hide :-(
 		//Settings.System.putInt(context.getContentResolver(), Settings.System.NOTIFICATIONS_USE_RING_VOLUME, 0);
 
-		final Profile profile = GlobalData.getMappedProfile(_profile, context);
-		final boolean interactive = _interactive;
+		Profile profile = GlobalData.getMappedProfile(_profile, context);
+		profile = dataWrapper.filterProfileWithBatteryEvents(profile);
+		
+		boolean interactive = _interactive;
 		
 		//boolean radiosExecuted = false;
 		

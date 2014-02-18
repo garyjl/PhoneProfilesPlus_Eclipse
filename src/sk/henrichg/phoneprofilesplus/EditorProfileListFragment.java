@@ -145,7 +145,7 @@ public class EditorProfileListFragment extends Fragment {
     	databaseHandler = dataWrapper.getDatabaseHandler(); 
 	
     	activateProfileHelper = dataWrapper.getActivateProfileHelper();
-    	activateProfileHelper.initialize(getActivity(), getActivity().getBaseContext());
+    	activateProfileHelper.initialize(dataWrapper, getActivity(), getActivity().getBaseContext());
 		
 		setHasOptionsMenu(true);
 

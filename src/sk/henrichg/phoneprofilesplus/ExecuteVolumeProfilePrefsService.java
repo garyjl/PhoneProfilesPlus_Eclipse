@@ -19,11 +19,12 @@ public class ExecuteVolumeProfilePrefsService extends IntentService //WakefulInt
 		Context context = getBaseContext();
 		DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
 		ActivateProfileHelper aph = dataWrapper.getActivateProfileHelper();
-		aph.initialize(null, context);
+		aph.initialize(dataWrapper, null, context);
 		
 		long profile_id = intent.getLongExtra(GlobalData.EXTRA_PROFILE_ID, 0);
 		Profile profile = dataWrapper.getProfileById(profile_id);
 		profile = GlobalData.getMappedProfile(profile, context);
+		profile = dataWrapper.filterProfileWithBatteryEvents(profile);
 		if (profile != null)
 		{
 			AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);

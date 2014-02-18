@@ -39,7 +39,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 		// initialize global profile list
 		//databaseHandler = dataWrapper.getDatabaseHandler();
 		
-		dataWrapper.getActivateProfileHelper().initialize(this, getBaseContext());
+		dataWrapper.getActivateProfileHelper().initialize(dataWrapper, this, getBaseContext());
 		
 	}
 
