@@ -120,7 +120,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 
 		//dataWrapper = new DataWrapper(getBaseContext(), true, false, 0);
 		//dataWrapper.getActivateProfileHelper().initialize(this, getBaseContext());
-		applicationsCache = new ApplicationsCache();
+		createApplicationsCache();
 		
 		super.onCreate(savedInstanceState);
 
@@ -1564,6 +1564,11 @@ public class EditorProfilesActivity extends ActionBarActivity
 		return applicationsCache;
 	}
 
+	public static void createApplicationsCache()
+	{
+		applicationsCache =  new ApplicationsCache();
+	}
+	
 	private DataWrapper getDataWrapper()
 	{
 		Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_list_container);

@@ -63,6 +63,9 @@ public class ApplicationsPreferenceDialog extends Dialog implements OnShowListen
 	
 	public void onShow(DialogInterface dialog) {
 
+		if (EditorProfilesActivity.getApplicationsCache() == null)
+			EditorProfilesActivity.createApplicationsCache();
+		
 		if (!EditorProfilesActivity.getApplicationsCache().isCached())
 		{
 			new AsyncTask<Void, Integer, Void>() {
