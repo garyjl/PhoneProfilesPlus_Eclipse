@@ -195,7 +195,9 @@ public class EventPreferencesFragment extends PreferenceListFragment
        	Editor editor = preferences.edit();
        	editor.remove(SP_ACTION_MODE_SHOWED);
        	editor.commit();
-        
+
+		updateSharedPreference();
+       	
     	//Log.d("EventPreferencesFragment.onCreate", "xxxx");
     }
 	
@@ -218,8 +220,6 @@ public class EventPreferencesFragment extends PreferenceListFragment
         else
    		if (eventTypeChanged)
    			showActionMode();
-
-		updateSharedPreference();
 
 		Log.e("EventPreferencesFragment.onStart","typeOld="+String.valueOf(event._typeOld));
 		

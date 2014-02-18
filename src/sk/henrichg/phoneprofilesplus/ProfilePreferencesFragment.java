@@ -224,7 +224,9 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
     	Editor editor = preferences.edit();
     	editor.remove(SP_ACTION_MODE_SHOWED);
 		editor.commit();
-        
+
+		updateSharedPreference();
+		
     	//Log.d("ProfilePreferencesFragment.onCreate", "xxxx");
     }
 	
@@ -244,8 +246,6 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
         	&& (actionModeShowed == 0))
         	showActionMode();
 
-		updateSharedPreference();
-		
     	//Log.d("ProfilePreferencesFragment.onStart", preferences.getString(PREF_PROFILE_NAME, ""));
 
     	//Log.d("ProfilePreferencesFragment.onStart", "profile activated="+profile.getChecked());
