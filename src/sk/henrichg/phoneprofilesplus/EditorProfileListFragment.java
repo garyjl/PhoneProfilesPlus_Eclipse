@@ -149,7 +149,7 @@ public class EditorProfileListFragment extends Fragment {
 		
 		setHasOptionsMenu(true);
 
-		Log.e("EditorProfileListFragment.onCreate", "xxxx");
+		//Log.e("EditorProfileListFragment.onCreate", "xxxx");
 		
 	}
 	
@@ -165,7 +165,7 @@ public class EditorProfileListFragment extends Fragment {
 		else
 			rootView = inflater.inflate(R.layout.editor_profile_list_no_header, container, false); 
 
-		Log.e("EditorProfileListFragment.onCreateView", "xxxx");
+		//Log.e("EditorProfileListFragment.onCreateView", "xxxx");
 		
 		return rootView;
 	}
@@ -174,7 +174,7 @@ public class EditorProfileListFragment extends Fragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		doOnViewCreated(view, savedInstanceState);
 
-		Log.e("EditorProfileListFragment.onViewCreated", "xxxx");
+		//Log.e("EditorProfileListFragment.onViewCreated", "xxxx");
 
 		super.onViewCreated(view, savedInstanceState);
 	}
@@ -232,7 +232,7 @@ public class EditorProfileListFragment extends Fragment {
 
 		if (profileList == null)
 		{
-			Log.e("EditorProfileListFragment.doOnViewCreated", "getProfileList");
+			//Log.e("EditorProfileListFragment.doOnViewCreated", "getProfileList");
 			LoadProfileListAsyncTask asyncTask = new LoadProfileListAsyncTask(this, filterType);
 		    this.asyncTaskContext = new WeakReference<LoadProfileListAsyncTask >(asyncTask );
 		    asyncTask.execute();			
@@ -436,7 +436,7 @@ public class EditorProfileListFragment extends Fragment {
 		
 		super.onDestroy();
 		
-		Log.e("EditorProfileListFragment.onDestroy","xxx");
+		//Log.e("EditorProfileListFragment.onDestroy","xxx");
 	}
 	
 	@Override

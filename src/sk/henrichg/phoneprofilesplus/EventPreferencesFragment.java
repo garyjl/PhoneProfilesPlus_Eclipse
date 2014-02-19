@@ -167,7 +167,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		else
 			event = dataWrapper.getEventById(event_id);
 
-    	Log.e("EventPreferencesFragment.onCreate", "event_type_new="+event_type_new);
+    	//Log.e("EventPreferencesFragment.onCreate", "event_type_new="+event_type_new);
     	
 		if ((event_type_new != 0) && (event_type_new != event._type))
 			event.changeEventType(event_type_new);
@@ -209,7 +209,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		// must by in onStart(), in ocCreate() crashed
     	SharedPreferences preferences = getActivity().getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Activity.MODE_PRIVATE);
     	int actionModeShowed = preferences.getInt(SP_ACTION_MODE_SHOWED, 0);
-		Log.e("EventPreferencesFragment.onStart","actionModeShowed="+actionModeShowed);
+		//Log.e("EventPreferencesFragment.onStart","actionModeShowed="+actionModeShowed);
         if (actionModeShowed == 2)
         	showActionMode();
         else
@@ -221,7 +221,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
    		if (eventTypeChanged)
    			showActionMode();
 
-		Log.e("EventPreferencesFragment.onStart","typeOld="+String.valueOf(event._typeOld));
+		//Log.e("EventPreferencesFragment.onStart","typeOld="+String.valueOf(event._typeOld));
 		
     	//Log.d("EventPreferencesFragment.onStart", preferences.getString(PREF_EVENT_NAME, ""));
 
@@ -293,7 +293,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	
 	private void savePreferences()
 	{
-		Log.e("EventPreferencesFragment.savePreferences","xxx");
+		//Log.e("EventPreferencesFragment.savePreferences","xxx");
 		
 		List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
 

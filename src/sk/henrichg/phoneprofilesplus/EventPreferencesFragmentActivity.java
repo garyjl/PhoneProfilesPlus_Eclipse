@@ -113,8 +113,8 @@ public class EventPreferencesFragmentActivity extends ActionBarActivity
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
             // handle your back button code here
         	EventPreferencesFragment fragment = (EventPreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.activity_event_preferences_container);
-        	Log.e("EventPreferencesFragmentActivity.dispatchKeyEvent","fragment="+fragment);
-        	Log.e("EventPreferencesFragmentActivity.dispatchKeyEvent","isActionModeActive="+fragment.isActionModeActive());
+        	//Log.e("EventPreferencesFragmentActivity.dispatchKeyEvent","fragment="+fragment);
+        	//Log.e("EventPreferencesFragmentActivity.dispatchKeyEvent","isActionModeActive="+fragment.isActionModeActive());
     		if ((fragment != null) && (fragment.isActionModeActive()))
     		{
     			fragment.finishActionMode(EventPreferencesFragment.BUTTON_CANCEL);

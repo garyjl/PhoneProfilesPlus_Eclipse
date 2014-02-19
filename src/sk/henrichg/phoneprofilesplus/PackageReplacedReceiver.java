@@ -14,7 +14,7 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 		int myUid = android.os.Process.myUid();
 		if (intentUid == myUid)
 		{
-			Log.e("PackageReplacedReceiver.onReceive","xxx");
+			//Log.e("PackageReplacedReceiver.onReceive","xxx");
 			
 			if (GlobalData.getApplicationStarted(context))
 			{
