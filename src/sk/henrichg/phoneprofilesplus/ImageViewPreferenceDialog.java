@@ -20,7 +20,8 @@ public class ImageViewPreferenceDialog extends Dialog {
 		super(context);
 	}
 	
-	public ImageViewPreferenceDialog(Context context, ImageViewPreference preference, String imgSource)
+	public ImageViewPreferenceDialog(Context context, ImageViewPreference preference, String imgSource, 
+										String imageIdentifier, boolean isImageResourceID)
 	{
 		super(context);
 		
@@ -44,8 +45,8 @@ public class ImageViewPreferenceDialog extends Dialog {
 			gridView = (GridView)findViewById(R.id.imageview_resource_pref_dlg_gridview);
 		}
 		
-		gridView.setAdapter(new ImageViewPreferenceAdapter(_context));
-	
+		gridView.setAdapter(new ImageViewPreferenceAdapter(_context, imageIdentifier, isImageResourceID));
+		
 		gridView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 				imageViewPreference.setImageIdentifierAndType(ImageViewPreferenceAdapter.ThumbsIds[position], true);

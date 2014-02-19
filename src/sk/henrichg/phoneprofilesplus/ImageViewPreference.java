@@ -111,7 +111,8 @@ public class ImageViewPreference extends Preference {
 		
 		if (imageSource.equals("resource_file") || imageSource.equals("resource"))
 		{
-			final ImageViewPreferenceDialog dialog = new ImageViewPreferenceDialog(prefContext, this, imageSource);
+			final ImageViewPreferenceDialog dialog = new ImageViewPreferenceDialog(prefContext, this, imageSource,
+																					imageIdentifier, isImageResourceID);
 			dialog.setTitle(R.string.title_activity_image_view_preference_dialog);
 			dialog.show();
 		}

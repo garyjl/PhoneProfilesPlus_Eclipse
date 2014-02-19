@@ -1,15 +1,18 @@
 package sk.henrichg.phoneprofilesplus;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 
 public class ImageViewPreferenceAdapter extends BaseAdapter {
 
 	private Context context;
+	private LayoutInflater inflater = null;
+	String imageIdentifier;
+	boolean isImageResourceID;
 	
 	static final String[] ThumbsIds = {
 		"ic_profile_default", 
@@ -31,9 +34,14 @@ public class ImageViewPreferenceAdapter extends BaseAdapter {
 		"ic_profile_car_6", "ic_profile_car_7", "ic_profile_car_8", "ic_profile_car_9"
 	};
 	
-	public ImageViewPreferenceAdapter(Context c)
+	public ImageViewPreferenceAdapter(Context c, String imageIdentifier, boolean isImageResourceID)
 	{
 		context = c;
+		
+		inflater = (LayoutInflater)c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		
+		this.imageIdentifier = imageIdentifier; 
+		this.isImageResourceID = isImageResourceID;
 	}
 	
 	public int getCount() {
@@ -48,25 +56,34 @@ public class ImageViewPreferenceAdapter extends BaseAdapter {
 		return position;
 	}
 
+	static class ViewHolder {
+		  ImageView icon;
+		  int position;
+		}
+
 	public View getView(int position, View convertView, ViewGroup parent) {
 		
-		ImageView imageView;
+		ViewHolder holder;
 		
+		View vi = convertView;
 		if (convertView == null)
 		{
-			imageView = new ImageView(context);
-			imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
-			imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-			imageView.setPadding(8, 8, 8, 8);
+      		vi = inflater.inflate(R.layout.imageview_preference_gridview_item, null);
+      		holder = new ViewHolder();
+  			holder.icon = (ImageView)vi.findViewById(R.id.imageview_preference_gridview_item_icon);
+  			vi.setTag(holder);        
 		}
 		else
 		{
-			imageView = (ImageView)convertView;
+			holder = (ViewHolder)vi.getTag();
 		}
+
+		if (ThumbsIds[position].equals(imageIdentifier) && isImageResourceID)
+			holder.icon.setBackgroundResource(R.color.activityCardSelected_phoneprofilestheme);
 		
-		imageView.setImageResource(context.getResources().getIdentifier(ThumbsIds[position], "drawable", context.getPackageName()));
+		holder.icon.setImageResource(context.getResources().getIdentifier(ThumbsIds[position], "drawable", context.getPackageName()));
 		
-		return imageView;
+		return vi;
 	}
 
 }
