@@ -1577,7 +1577,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 
 	public static void createApplicationsCache()
 	{
-		if (!savedInstanceStateChanged)
+		if ((!savedInstanceStateChanged) || (applicationsCache == null))
 		{
 			if (applicationsCache != null)
 				applicationsCache.clearCache();
