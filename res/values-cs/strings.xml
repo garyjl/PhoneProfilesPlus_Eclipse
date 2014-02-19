@@ -259,9 +259,10 @@
     <string name="array_pref_launcher_activator">Aktivátor</string>
     <string name="array_pref_launcher_editor">Editor</string>
 
-    <string name="event_preferences_battery_level">Baterie</ string> 
-    <string name="event_preferences_battery_levelType">Typ úrovně </ string> 
-    <string name="array_pref_event_battery_level_type_low">Nízká úroveň</ string> 
-    <string name="array_pref_event_battery_level_type_hight">Vysoká úroveň</ string> 
-    <string name="event_type_battery">Baterie</ string>    
+    <string name="event_preferences_battery_level">Baterie</string>
+    <string name="event_preferences_battery_levelType">Typ úrovně</string>
+    <string name="array_pref_event_battery_level_type_low">Nízká úroveň</string>
+	<string name="array_pref_event_battery_level_type_hight">Vysoká úroveň</string>
+    <string name="event_type_battery">Baterie</string>
+    
 </resources>
