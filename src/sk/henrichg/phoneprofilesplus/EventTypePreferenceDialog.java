@@ -2,17 +2,16 @@ package sk.henrichg.phoneprofilesplus;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 //import android.preference.Preference;
 //import android.preference.Preference.OnPreferenceChangeListener;
 import android.view.View;
-import android.content.DialogInterface.OnShowListener;
 
 
-public class EventTypePreferenceDialog extends Dialog implements OnShowListener {
+public class EventTypePreferenceDialog extends Dialog
+{
 
 	private EventTypePreference eventTypePreference;
 	private EventTypePreferenceAdapter eventTypePreferenceAdapter;
@@ -20,9 +19,12 @@ public class EventTypePreferenceDialog extends Dialog implements OnShowListener 
 	private Context _context;
 	
 	private ListView listView;
+
+	
 	public EventTypePreferenceDialog(Context context) {
 		super(context);
 	}
+	
 	
 	public EventTypePreferenceDialog(Context context, EventTypePreference preference, String eventType)
 	{
@@ -37,6 +39,7 @@ public class EventTypePreferenceDialog extends Dialog implements OnShowListener 
 		listView = (ListView)findViewById(R.id.event_type_pref_dlg_listview);
 		
 		eventTypePreferenceAdapter = new EventTypePreferenceAdapter(this, _context, eventType); 
+		listView.setAdapter(eventTypePreferenceAdapter);
 	
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -46,19 +49,6 @@ public class EventTypePreferenceDialog extends Dialog implements OnShowListener 
 
 		});
 
-/*		applicationPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-			public boolean onPreferenceChange(Preference preference, Object newValue) {
-			}	
-		}); */
-
-		setOnShowListener(this);
 	}
-
-	
-	public void onShow(DialogInterface dialog) {
-		listView.setAdapter(eventTypePreferenceAdapter);
-	}
-	
-	
 
 }
