@@ -244,7 +244,6 @@
     <string name="title_activity_default_profile_preferences">Predvolený profil</string>
     <string name="toast_profile_activating_0">Profil</string>
     <string name="toast_profile_activating_1">sa aktivuje&#8230;</string>
-    		
     <string name="profile_list_item_menu_activate">Aktivuj</string>
     <string name="profile_list_item_menu_duplicate">Duplikuj</string>
     <string name="profile_list_item_menu_delete">Zmaž</string>
@@ -252,7 +251,6 @@
     <string name="event_list_item_menu_stop">Zastav udalosť</string>
     <string name="event_list_item_menu_duplicate">Duplikuj</string>
     <string name="event_list_item_menu_delete">Zmaž</string>
-    
     <string name="phone_profiles_pref_applicationEditorSaveEditorState">Ulož stav editora</string>
     <string name="phone_profiles_pref_notificationPrefIndicator">Indikátor parametrov profilu</string>
     <string name="phone_profiles_pref_applicationHomeLauncher">Spustiť z domácej obrazovky</string>
@@ -260,5 +258,11 @@
     <string name="phone_profiles_pref_notificationLauncher">Spustiť z notifikácií</string>
     <string name="array_pref_launcher_activator">Aktivátor</string>
     <string name="array_pref_launcher_editor">Editor</string>
+
+    <string name="event_preferences_battery_level">Batéria</string>
+    <string name="event_preferences_battery_levelType">Typ úrovne</string>
+    <string name="array_pref_event_battery_level_type_low">Nízka úroveň</string>
+	<string name="array_pref_event_battery_level_type_hight">Vysoká úroveň</string>
+    <string name="event_type_battery">Batéria</string>
     
 </resources>
