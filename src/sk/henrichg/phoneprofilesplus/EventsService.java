@@ -83,7 +83,7 @@ public class EventsService extends IntentService
 			}
 		}
 
-		doEndService();
+		doEndService(intent);
 		
 		dataWrapper.invalidateDataWrapper();
 		
@@ -172,18 +172,22 @@ public class EventsService extends IntentService
 	}
 	
 
-	private void doEndService()
+	private void doEndService(Intent intent)
 	{
 		// refresh GUI
-		Intent intent = new Intent();
-	    intent.setAction(RefreshGUIBroadcastReceiver.INTENT_REFRESH_GUI);
-		context.sendBroadcast(intent);
+		Intent refreshIntent = new Intent();
+		refreshIntent.setAction(RefreshGUIBroadcastReceiver.INTENT_REFRESH_GUI);
+		context.sendBroadcast(refreshIntent);
 
+		// completting wake
 		switch (eventType)
 		{
 			case Event.ETYPE_TIME:
-				// completting wake
 				EventsAlarmBroadcastReceiver.completeWakefulIntent(intent);
+				
+				break;
+			case Event.ETYPE_BATTERY:
+				BatteryEventsAlarmBroadcastReceiver.completeWakefulIntent(intent);
 				
 				break;
 			default:
