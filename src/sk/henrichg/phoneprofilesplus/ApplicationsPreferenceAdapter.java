@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 public class ApplicationsPreferenceAdapter extends BaseAdapter {
@@ -14,13 +15,15 @@ public class ApplicationsPreferenceAdapter extends BaseAdapter {
 	//private Context context;
 	
 	private LayoutInflater inflater = null;
+	String packageName;
 	
-	
-	public ApplicationsPreferenceAdapter(Context c)
+	public ApplicationsPreferenceAdapter(ApplicationsPreferenceDialog dialog, Context c, String packageName)
 	{
 		//context = c;
 
 		inflater = (LayoutInflater)c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		
+		this.packageName = packageName;
 	}
 	
 	public int getCount() {
@@ -38,6 +41,7 @@ public class ApplicationsPreferenceAdapter extends BaseAdapter {
 	static class ViewHolder {
 		  ImageView applicationIcon;
 		  TextView applicationLabel;
+		  RadioButton radioBtn;
 		  int position;
 		}
 	
@@ -46,32 +50,36 @@ public class ApplicationsPreferenceAdapter extends BaseAdapter {
 		ViewHolder holder;
 		
 		View vi = convertView;
-      if (convertView == null)
-      {
-      	vi = inflater.inflate(R.layout.applications_preference_list_item, null);
-        holder = new ViewHolder();
-  		holder.applicationIcon = (ImageView)vi.findViewById(R.id.applications_pref_dlg_item_icon);
-  		holder.applicationLabel = (TextView)vi.findViewById(R.id.applications_pref_dlg_item_label);
-          vi.setTag(holder);        
-      }
-      else
-      {
-      	holder = (ViewHolder)vi.getTag();
-      }
+		if (convertView == null)
+		{
+      		vi = inflater.inflate(R.layout.applications_preference_list_item, null);
+      		holder = new ViewHolder();
+  			holder.applicationIcon = (ImageView)vi.findViewById(R.id.applications_pref_dlg_item_icon);
+  			holder.applicationLabel = (TextView)vi.findViewById(R.id.applications_pref_dlg_item_label);
+	        holder.radioBtn = (RadioButton)vi.findViewById(R.id.applications_pref_dlg_item_radiobtn);
+  			vi.setTag(holder);        
+		}
+		else
+		{
+			holder = (ViewHolder)vi.getTag();
+		}
 		
 		//Log.d("ApplicationsPreferenceAdapter.getView", EditorProfilesActivity.getApplicationsCache().getApplicationLabel(position).toString());
 		//Log.d("ApplicationsPreferenceAdapter.getView", EditorProfilesActivity.getApplicationsCache().getApplicationIcon(position).toString());
 		
-		holder.applicationLabel.setText(EditorProfilesActivity.getApplicationsCache().getApplicationLabel(position));
+		ApplicationsCache applicationsCahce = EditorProfilesActivity.getApplicationsCache();
+		
+		holder.applicationLabel.setText(applicationsCahce.getApplicationLabel(position));
 
-		Drawable icon = EditorProfilesActivity.getApplicationsCache().getApplicationIcon(position);
+		Drawable icon = applicationsCahce.getApplicationIcon(position);
 		//Resources resources = context.getResources();
 		//int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
 		//int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
 		//icon.setBounds(0, 0, width, height);
 		//applicationIcon.setCompoundDrawables(icon, null, null, null);
 		holder.applicationIcon.setImageDrawable(icon);
-
+    	holder.radioBtn.setChecked(applicationsCahce.getPackageName(position).equals(packageName));
+		
 		return vi;
 	}
 

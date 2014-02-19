@@ -97,7 +97,7 @@ public class ApplicationsPreference extends Preference {
 
 		//Log.d("ApplicationsPreference.onClick", "packageName="+packageName);
 
-		final ApplicationsPreferenceDialog dialog = new ApplicationsPreferenceDialog(prefContext, this);
+		final ApplicationsPreferenceDialog dialog = new ApplicationsPreferenceDialog(prefContext, this, packageName);
 		dialog.setTitle(R.string.title_activity_applications_preference_dialog);
 		dialog.show();
 	}

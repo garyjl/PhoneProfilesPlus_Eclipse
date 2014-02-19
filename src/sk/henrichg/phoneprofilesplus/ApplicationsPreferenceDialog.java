@@ -28,7 +28,7 @@ public class ApplicationsPreferenceDialog extends Dialog implements OnShowListen
 		super(context);
 	}
 	
-	public ApplicationsPreferenceDialog(Context context, ApplicationsPreference preference)
+	public ApplicationsPreferenceDialog(Context context, ApplicationsPreference preference, String packageName)
 	{
 		super(context);
 		
@@ -41,7 +41,7 @@ public class ApplicationsPreferenceDialog extends Dialog implements OnShowListen
 		linlaProgress = (LinearLayout)findViewById(R.id.applications_pref_dlg_linla_progress);
 		listView = (ListView)findViewById(R.id.applications_pref_dlg_listview);
 		
-		applicationsPreferenceAdapter = new ApplicationsPreferenceAdapter(_context); 
+		applicationsPreferenceAdapter = new ApplicationsPreferenceAdapter(this, _context, packageName); 
 	
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
