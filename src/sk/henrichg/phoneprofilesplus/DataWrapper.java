@@ -932,6 +932,9 @@ public class DataWrapper {
 					{
 						Profile eventProfile = getProfileById(event._fkProfile);
 						
+						if (filteredProfile._id == eventProfile._id)
+							break;
+						
 						// preferences which event profile change, must by set as "no change" for filtered profile 
 						
 						if (eventProfile._volumeRingerMode != 0)
