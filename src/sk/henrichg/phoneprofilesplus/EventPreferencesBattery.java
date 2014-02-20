@@ -1,9 +1,7 @@
 package sk.henrichg.phoneprofilesplus;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;

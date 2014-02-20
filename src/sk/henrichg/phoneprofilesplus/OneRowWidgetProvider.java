@@ -126,7 +126,7 @@ public class OneRowWidgetProvider extends AppWidgetProvider {
 			remoteViews.setTextViewText(R.id.widget_one_row_header_profile_name, profileName);
 			if (GlobalData.applicationWidgetListPrefIndicator)
 			{
-				if (profile == null)
+				if (profile._preferencesIndicator == null)
 					remoteViews.setImageViewResource(R.id.widget_one_row_header_profile_pref_indicator, R.drawable.ic_empty);
 				else
 					remoteViews.setImageViewBitmap(R.id.widget_one_row_header_profile_pref_indicator, profile._preferencesIndicator);

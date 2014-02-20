@@ -1,10 +1,7 @@
 package sk.henrichg.phoneprofilesplus;
 
 import android.os.Bundle;
-import android.widget.Toast;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 
 public class BackgroundActivateProfileActivity extends Activity {

@@ -3,7 +3,6 @@ package sk.henrichg.phoneprofilesplus;
 import java.util.List;
 
 import android.annotation.SuppressLint;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
