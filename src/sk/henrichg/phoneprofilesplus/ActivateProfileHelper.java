@@ -6,6 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import com.stericson.RootTools.RootTools;
+import com.stericson.RootTools.execution.Command;
 import com.stericson.RootTools.execution.CommandCapture;
 
 import android.annotation.SuppressLint;
@@ -803,12 +804,34 @@ public class ActivateProfileHelper {
 	    			newSet = String.format("%s,%s", provider, LocationManager.GPS_PROVIDER);
 				
 				command1 = "settings put secure location_providers_allowed \"" + newSet + "\"";
+	    		//command1 = "sqlite3 /data/data/com.android.providers.settings/databases/settings.db \'update secure set value=\"" + newSet + "\" where name=\"location_providers_allowed\";\'";
+	    		Log.e("ActivateProfileHelper.setGPS","command1="+command1);
 				//command2 = "am broadcast -a android.location.GPS_ENABLED_CHANGE --ez state true";
 				CommandCapture command = new CommandCapture(0, command1); //, command2);
 				try {
-					RootTools.getShell(true).add(command).wait();
+	    		/*	Command command = new Command(0, command1)
+	    			{
+							@Override
+							public void commandCompleted(int arg0, int arg1) {
+								// TODO Auto-generated method stub
+								
+							}
+
+							@Override
+							public void commandOutput(int arg0, String arg1) {
+								Log.e("ActivateProfileHelper.setGPS", arg1);
+							}
+
+							@Override
+							public void commandTerminated(int arg0, String arg1) {
+								// TODO Auto-generated method stub
+								
+							}
+	    			};*/	    			
+					RootTools.getShell(true).add(command);
+					commandWait(command);
 				} catch (Exception e) {
-					Log.e("ActivateProfileHelper.setGPS", "Error on run su");
+					Log.e("ActivateProfileHelper.setGPS", "Error on run su: "+e.toString());
 				} 
 			}	    	
 	    	else
@@ -886,12 +909,34 @@ public class ActivateProfileHelper {
 	    		}
 				
 				command1 = "settings put secure location_providers_allowed \"" + newSet + "\"";
+	    		//command1 = "sqlite3 /data/data/com.android.providers.settings/databases/settings.db \'update secure set value=\"" + newSet + "\" where name=\"location_providers_allowed\";\'";
+	    		Log.e("ActivateProfileHelper.setGPS","command1="+command1);
 				//command2 = "am broadcast -a android.location.GPS_ENABLED_CHANGE --ez state false";
 				CommandCapture command = new CommandCapture(0, command1);//, command2);
-				try {
-					RootTools.getShell(true).add(command).wait();
+	    		try {
+	    		/*	Command command = new Command(0, command1)
+	    			{
+							@Override
+							public void commandCompleted(int arg0, int arg1) {
+								// TODO Auto-generated method stub
+								
+							}
+
+							@Override
+							public void commandOutput(int arg0, String arg1) {
+								Log.e("ActivateProfileHelper.setGPS", arg1);
+							}
+
+							@Override
+							public void commandTerminated(int arg0, String arg1) {
+								// TODO Auto-generated method stub
+								
+							}
+	    			};	*/    			
+					RootTools.getShell(true).add(command);
+					commandWait(command);
 				} catch (Exception e) {
-					Log.e("ActivateProfileHelper.setGPS", "Error on run su");
+					Log.e("ActivateProfileHelper.setGPS", "Error on run su: "+e.toString());
 				}
 			}	    	
 	    	else
@@ -980,7 +1025,8 @@ public class ActivateProfileHelper {
 				}
 				CommandCapture command = new CommandCapture(0, command1, command2);
 				try {
-					RootTools.getShell(true).add(command).wait();
+					RootTools.getShell(true).add(command);
+					commandWait(command);
 				} catch (Exception e) {
 					Log.e("AirPlaneMode_SDK17.setAirplaneMode", "Error on run su");
 				}
@@ -1013,5 +1059,27 @@ public class ActivateProfileHelper {
 			context.sendBroadcast(intent);
 		}
 	}
+
+	private void commandWait(Command cmd) throws Exception {
+        int waitTill = 50;
+        int waitTillMultiplier = 2;
+        int waitTillLimit = 3200; //7 tries, 6350 msec
+
+        while (!cmd.isFinished() && waitTill<=waitTillLimit) {
+            synchronized (cmd) {
+                try {
+                    if (!cmd.isFinished()) {
+                        cmd.wait(waitTill);
+                        waitTill *= waitTillMultiplier;
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        if (!cmd.isFinished()){
+            Log.e("ActivateProfileHelper", "Could not finish root command in " + (waitTill/waitTillMultiplier));
+        }
+    }	
 	
 }
