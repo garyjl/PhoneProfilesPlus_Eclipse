@@ -258,10 +258,10 @@
     <string name="array_pref_launcher_activator">Starter</string>
     <string name="array_pref_launcher_editor">Editor</string>
 
-    <string name="event_preferences_battery_level">Battery</string>
-    <string name="event_preferences_battery_levelType">Level type</string>
-    <string name="array_pref_event_battery_level_type_low">Low level</string>
-	<string name="array_pref_event_battery_level_type_hight">Hight level</string>
-    <string name="event_type_battery">Battery</string>
+	<string name="event_preferences_battery_level">Batterie</string>
+    <string name="event_preferences_battery_levelType">Ladung</string>
+    <string name="array_pref_event_battery_level_type_low">Niedrig</string>
+	<string name="array_pref_event_battery_level_type_hight">Hoch</string>
+    <string name="event_type_battery">Batterie</string>﻿    
     
 </resources>
