@@ -150,6 +150,12 @@
             android:defaultValue="0"
             android:entries="@array/hardwareModeDPArray"
             android:entryValues="@array/hardwareModeDPValues" />        
+		<ListPreference android:title="@string/profile_preferences_deviceLocationServicePrefs"
+            android:summary="@string/array_pref_no_change"
+            android:key="prf_pref_deviceLocationServicePrefs"
+            android:defaultValue="0"
+            android:entries="@array/locationServicePrefsArray"
+            android:entryValues="@array/locationServicePrefsValues" />        
 		<ListPreference android:title="@string/profile_preferences_deviceScreenTimeout"
             android:summary="@string/array_pref_no_change"
             android:key="prf_pref_deviceScreenTimeout"

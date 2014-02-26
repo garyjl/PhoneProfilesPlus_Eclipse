@@ -145,6 +145,9 @@ public class PhoneProfilesDashClockExtension extends DashClockExtension {
 				indicator1 = addIntoIndicator(indicator1, "gp1");
 			if (profile._deviceGPS == 2)
 				indicator1 = addIntoIndicator(indicator1, "gp0");
+			// location settings preferences
+			if (profile._deviceLocationServicePrefs == 1)
+				indicator1 = addIntoIndicator(indicator1, "lsP");
 			// screen timeout
 			if (profile._deviceScreenTimeout != 0)
 				indicator1 = addIntoIndicator(indicator1, "stm");

@@ -262,6 +262,6 @@
     <string name="event_preferences_battery_levelType">Ladung</string>
     <string name="array_pref_event_battery_level_type_low">Niedrig</string>
 	<string name="array_pref_event_battery_level_type_hight">Hoch</string>
-    <string name="event_type_battery">Batterie</string>﻿    
-    
+	<string name="event_type_battery">Batterie</string>
+	
 </resources>

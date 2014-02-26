@@ -93,6 +93,9 @@ public class ProfilePreferencesIndicator {
 				drawables[countDrawables++] = R.drawable.ic_profile_pref_gps_on;
 			if (profile._deviceGPS == 2)
 				drawables[countDrawables++] = R.drawable.ic_profile_pref_gps_off;
+			// location settings preferences
+			if (profile._deviceLocationServicePrefs == 1)
+				drawables[countDrawables++] = R.drawable.ic_profile_pref_locationsettings_pref;
 			// screen timeout
 			if (profile._deviceScreenTimeout != 0)
 				drawables[countDrawables++] = R.drawable.ic_profile_pref_screen_timeout;
