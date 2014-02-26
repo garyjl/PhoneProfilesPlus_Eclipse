@@ -128,6 +128,7 @@ public class DataWrapper {
 				  "-",
 				  0,
 				  false,
+				  0,
 				  0
 			);
 	}
@@ -911,7 +912,8 @@ public class DataWrapper {
 							   profile._deviceRunApplicationPackageName,
 							   profile._deviceAutosync,
 							   profile._showInActivator,
-							   profile._deviceAutoRotate);
+							   profile._deviceAutoRotate,
+							   profile._deviceLocationServicePrefs);
 		
 			List<EventTimeline> eventTimelineList = getEventTimelineList();
 			
@@ -968,6 +970,8 @@ public class DataWrapper {
 							filteredProfile._deviceBluetooth = 0;
 						if (profile._deviceGPS != 0)
 							filteredProfile._deviceGPS = 0;
+						if (profile._deviceLocationServicePrefs != 0)
+							filteredProfile._deviceLocationServicePrefs = 0;
 						if (profile._deviceScreenTimeout != 0)
 							filteredProfile._deviceScreenTimeout = 0;
 						if (profile.getDeviceBrightnessChange() || profile.getDeviceBrightnessAutomatic())

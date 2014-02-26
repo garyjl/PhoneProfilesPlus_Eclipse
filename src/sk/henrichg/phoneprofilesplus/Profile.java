@@ -31,6 +31,7 @@ public class Profile {
 	public int _deviceWiFi;
 	public int _deviceBluetooth;
 	public int _deviceGPS;
+	public int _deviceLocationServicePrefs;
 	public int _deviceScreenTimeout;
 	public String _deviceBrightness;
 	public int _deviceWallpaperChange;
@@ -83,7 +84,8 @@ public class Profile {
 			   	   String deviceRunApplicationPackageName,
 			   	   int deviceAutosync,
 			   	   boolean showInActivator,
-			   	   int deviceAutoRotate)
+			   	   int deviceAutoRotate,
+			   	   int deviceLocationServicePrefs)
 	{
 		this._id = id;
 		this._name = name;
@@ -118,6 +120,7 @@ public class Profile {
 		this._deviceAutosync = deviceAutosync;
 		this._showInActivator = showInActivator;
 		this._deviceAutoRotate = deviceAutoRotate;
+		this._deviceLocationServicePrefs = deviceLocationServicePrefs;
 		
 		this._iconBitmap = null;
 		this._preferencesIndicator = null;
@@ -155,7 +158,8 @@ public class Profile {
 			   	   String deviceRunApplicationPackageName,
 			   	   int deviceAutosync,
 			   	   boolean showInActivator,
-			   	   int deviceAutoRotate)
+			   	   int deviceAutoRotate,
+			   	   int deviceLocationServicePrefs)
 	{
 		this._name = name;
 		this._icon = icon;
@@ -189,6 +193,7 @@ public class Profile {
 		this._deviceAutosync = deviceAutosync;
 		this._showInActivator = showInActivator;
 		this._deviceAutoRotate = deviceAutoRotate;
+		this._deviceLocationServicePrefs = deviceLocationServicePrefs;
 		
 		this._iconBitmap = null;
 		this._preferencesIndicator = null;
@@ -229,6 +234,7 @@ public class Profile {
 		this._deviceAutosync = profile._deviceAutosync;
 		this._showInActivator = profile._showInActivator;
 		this._deviceAutoRotate = profile._deviceAutoRotate;
+		this._deviceLocationServicePrefs = profile._deviceLocationServicePrefs;
 		
 		this._iconBitmap = profile._iconBitmap;
 		this._preferencesIndicator = profile._preferencesIndicator;

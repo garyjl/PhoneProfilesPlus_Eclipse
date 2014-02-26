@@ -199,7 +199,8 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 						   origProfile._deviceRunApplicationPackageName,
 						   origProfile._deviceAutosync,
 						   origProfile._showInActivator,
-						   origProfile._deviceAutoRotate);
+						   origProfile._deviceAutoRotate,
+						   origProfile._deviceLocationServicePrefs);
 			profile_id = 0;
 		}
 		else
@@ -372,6 +373,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	        editor.remove(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME).putString(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME, profile._deviceRunApplicationPackageName);
 	        editor.remove(GlobalData.PREF_PROFILE_DEVICE_AUTOSYNC).putString(GlobalData.PREF_PROFILE_DEVICE_AUTOSYNC, Integer.toString(profile._deviceAutosync));
 	        editor.remove(GlobalData.PREF_PROFILE_DEVICE_AUTOROTATE).putString(GlobalData.PREF_PROFILE_DEVICE_AUTOROTATE, Integer.toString(profile._deviceAutoRotate));
+	        editor.remove(GlobalData.PREF_PROFILE_DEVICE_LOCATION_SERVICE_PREFS).editor.putString(GlobalData.PREF_PROFILE_DEVICE_LOCATION_SERVICE_PREFS, Integer.toString(profile._deviceLocationServicePrefs));
 	        */
 	        editor.putString(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE, Integer.toString(profile._volumeRingerMode));
 	        editor.putString(GlobalData.PREF_PROFILE_VOLUME_RINGTONE, profile._volumeRingtone);
@@ -400,6 +402,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	        editor.putString(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME, profile._deviceRunApplicationPackageName);
 	        editor.putString(GlobalData.PREF_PROFILE_DEVICE_AUTOSYNC, Integer.toString(profile._deviceAutosync));
 	        editor.putString(GlobalData.PREF_PROFILE_DEVICE_AUTOROTATE, Integer.toString(profile._deviceAutoRotate));
+	        editor.putString(GlobalData.PREF_PROFILE_DEVICE_LOCATION_SERVICE_PREFS, Integer.toString(profile._deviceLocationServicePrefs));
 			editor.commit();
     	}
 		
@@ -446,6 +449,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
     		profile._deviceRunApplicationPackageName = "-";
     	profile._deviceAutosync = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_AUTOSYNC, ""));
     	profile._deviceAutoRotate = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_AUTOROTATE, ""));
+    	profile._deviceLocationServicePrefs = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_LOCATION_SERVICE_PREFS, ""));
 
     	//Log.d("ProfilePreferencesFragment.onPause", "profile activated="+profile.getChecked());
     	
@@ -567,7 +571,8 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		}
     	if (key.equals(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER_CHANGE) ||
 	    	key.equals(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS) || 
-	    	key.equals(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE))
+	    	key.equals(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE) ||
+	    	key.equals(GlobalData.PREF_PROFILE_DEVICE_LOCATION_SERVICE_PREFS))
     	{
 			String sValue = value.toString();
 			ListPreference listPreference = (ListPreference)prefMng.findPreference(key);
@@ -643,6 +648,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	        setSummary(GlobalData.PREF_PROFILE_DEVICE_WALLPAPER_CHANGE, profile._deviceWallpaperChange);
 	        setSummary(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS, profile._deviceMobileDataPrefs); 
 	        setSummary(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE, profile._deviceRunApplicationChange); 
+	        setSummary(GlobalData.PREF_PROFILE_DEVICE_LOCATION_SERVICE_PREFS, profile._deviceLocationServicePrefs); 
 			
 		    // disable depended preferences
 		    disableDependedPref(GlobalData.PREF_PROFILE_SOUND_RINGTONE_CHANGE, profile._soundRingtoneChange);

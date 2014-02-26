@@ -25,7 +25,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static SQLiteDatabase writableDb;	
     
 	// Database Version
-	private static final int DATABASE_VERSION = 1013;
+	private static final int DATABASE_VERSION = 1015;
 
 	// Database Name
 	private static final String DATABASE_NAME = "phoneProfilesManager";
@@ -72,6 +72,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_DEVICE_AUTOSYNC = "deviceAutosync";
 	private static final String KEY_SHOW_IN_ACTIVATOR = "showInActivator";
 	private static final String KEY_DEVICE_AUTOROTATE = "deviceAutoRotate";
+	private static final String KEY_DEVICE_LOCATION_SERVICE_PREFS = "deviceLocationServicePrefs";
 
 	private static final String KEY_E_ID = "id";
 	private static final String KEY_E_NAME = "name";
@@ -183,7 +184,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME + " TEXT,"
 				+ KEY_DEVICE_AUTOSYNC + " INTEGER,"
 				+ KEY_SHOW_IN_ACTIVATOR + " INTEGER,"
-				+ KEY_DEVICE_AUTOROTATE + " INTEGER"
+				+ KEY_DEVICE_AUTOROTATE + " INTEGER,"
+				+ KEY_DEVICE_LOCATION_SERVICE_PREFS + " INTEGER"
 				+ ")";
 		db.execSQL(CREATE_PROFILES_TABLE);
 		
@@ -465,6 +467,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_BATTERY_LEVEL_TYPE + "=0");
 		}
 		
+		if (oldVersion < 1015)
+		{
+			// pridame nove stlpce
+			db.execSQL("ALTER TABLE " + TABLE_PROFILES + " ADD COLUMN " + KEY_DEVICE_LOCATION_SERVICE_PREFS + " INTEGER");
+			
+			// updatneme zaznamy
+			db.beginTransaction();
+			try {
+				db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_DEVICE_LOCATION_SERVICE_PREFS + "=0");
+				db.setTransactionSuccessful();
+		     } catch (Exception e){
+		         //Error in between database transaction 
+		     } finally {
+		    	db.endTransaction();
+	         }	
+		}
+		
 	}
 	
 
@@ -512,6 +531,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_DEVICE_AUTOSYNC, profile._deviceAutosync);
 		values.put(KEY_SHOW_IN_ACTIVATOR, (profile._showInActivator) ? 1 : 0);
 		values.put(KEY_DEVICE_AUTOROTATE, profile._deviceAutoRotate);
+		values.put(KEY_DEVICE_LOCATION_SERVICE_PREFS, profile._deviceLocationServicePrefs);
 		
 
 		// Inserting Row
@@ -560,7 +580,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 								         		KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME,
 								         		KEY_DEVICE_AUTOSYNC, 
 								         		KEY_SHOW_IN_ACTIVATOR,
-								         		KEY_DEVICE_AUTOROTATE 
+								         		KEY_DEVICE_AUTOROTATE,
+								         		KEY_DEVICE_LOCATION_SERVICE_PREFS
 												}, 
 				                 KEY_ID + "=?",
 				                 new String[] { String.valueOf(profile_id) }, null, null, null, null);
@@ -603,7 +624,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					                      cursor.getString(29),
 					                      Integer.parseInt(cursor.getString(30)),
 					                      (Integer.parseInt(cursor.getString(31)) == 1) ? true : false,
-					                      Integer.parseInt(cursor.getString(32))
+					                      Integer.parseInt(cursor.getString(32)),
+					                      Integer.parseInt(cursor.getString(33))
 					                      );
 		}
 
@@ -651,7 +673,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						         		 KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME + "," +
 						         		 KEY_DEVICE_AUTOSYNC + "," +
 						         		 KEY_SHOW_IN_ACTIVATOR + "," +
-						         		 KEY_DEVICE_AUTOROTATE +
+						         		 KEY_DEVICE_AUTOROTATE + "," +
+						         		 KEY_DEVICE_LOCATION_SERVICE_PREFS +
 		                     " FROM " + TABLE_PROFILES;
 
 		//SQLiteDatabase db = this.getReadableDatabase();
@@ -696,6 +719,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 profile._deviceAutosync = Integer.parseInt(cursor.getString(30));
                 profile._showInActivator = (Integer.parseInt(cursor.getString(31)) == 1) ? true : false;
                 profile._deviceAutoRotate = Integer.parseInt(cursor.getString(32));
+                profile._deviceLocationServicePrefs = Integer.parseInt(cursor.getString(33));
 				// Adding contact to list
 				profileList.add(profile);
 			} while (cursor.moveToNext());
@@ -746,7 +770,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_DEVICE_AUTOSYNC, profile._deviceAutosync);
 		values.put(KEY_SHOW_IN_ACTIVATOR, (profile._showInActivator) ? 1 : 0);
 		values.put(KEY_DEVICE_AUTOROTATE, profile._deviceAutoRotate);
-		
+		values.put(KEY_DEVICE_LOCATION_SERVICE_PREFS, profile._deviceLocationServicePrefs);
 
 		// updating row
 		int r = db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
@@ -957,7 +981,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 								         		KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME,
 								         		KEY_DEVICE_AUTOSYNC,
 								         		KEY_SHOW_IN_ACTIVATOR,
-								         		KEY_DEVICE_AUTOROTATE
+								         		KEY_DEVICE_AUTOROTATE,
+								         		KEY_DEVICE_LOCATION_SERVICE_PREFS
 												}, 
 				                 KEY_CHECKED + "=?",
 				                 new String[] { "1" }, null, null, null, null);
@@ -1001,7 +1026,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					                      cursor.getString(29),
 					                      Integer.parseInt(cursor.getString(30)),
 					                      (Integer.parseInt(cursor.getString(31)) == 1) ? true : false,
-					                      Integer.parseInt(cursor.getString(32))
+					                      Integer.parseInt(cursor.getString(32)),
+					                      Integer.parseInt(cursor.getString(33))
 					                      );
 		}
 		else
@@ -1049,7 +1075,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						        		 KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME + "," +
 						        		 KEY_DEVICE_AUTOSYNC + "," +
 						        		 KEY_SHOW_IN_ACTIVATOR + "," +
-						        		 KEY_DEVICE_AUTOROTATE +
+						        		 KEY_DEVICE_AUTOROTATE + "," +
+						        		 KEY_DEVICE_LOCATION_SERVICE_PREFS +
 						    " FROM " + TABLE_PROFILES;
 
 		//SQLiteDatabase db = this.getReadableDatabase();
@@ -1095,6 +1122,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			profile._deviceAutosync = Integer.parseInt(cursor.getString(30));
 			profile._showInActivator = (Integer.parseInt(cursor.getString(31)) == 1) ? true : false;
 			profile._deviceAutoRotate = Integer.parseInt(cursor.getString(32));
+			profile._deviceLocationServicePrefs = Integer.parseInt(cursor.getString(33));
 		}
 		
 		cursor.close();
@@ -1205,7 +1233,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 										KEY_DEVICE_BLUETOOTH + "," +
 										KEY_DEVICE_MOBILE_DATA + "," +
 										KEY_DEVICE_MOBILE_DATA_PREFS + "," +
-										KEY_DEVICE_GPS + 
+										KEY_DEVICE_GPS + "," + 
+										KEY_DEVICE_LOCATION_SERVICE_PREFS + 
 							" FROM " + TABLE_PROFILES;
 
 		//SQLiteDatabase db = this.getWritableDatabase();
@@ -1268,6 +1297,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 							   new String[] { String.valueOf(Integer.parseInt(cursor.getString(0))) });							
 						}
 
+						if ((Integer.parseInt(cursor.getString(7)) != 0) &&
+							(!GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_LOCATION_SERVICE_PREFS, context)))
+						{
+							values.put(KEY_DEVICE_LOCATION_SERVICE_PREFS, 0);
+							db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
+							   new String[] { String.valueOf(Integer.parseInt(cursor.getString(0))) });							
+						}
+						
 				} while (cursor.moveToNext());
 			}
 
@@ -2134,7 +2171,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 									{
 										values.put(KEY_DEVICE_AUTOROTATE, 0);
 									}
-									
+									if (exportedDBObj.getVersion() < 1015)
+									{
+										values.put(KEY_DEVICE_LOCATION_SERVICE_PREFS, 0);
+									}
 									
 									///////////////////////////////////////////////////////
 									

@@ -497,6 +497,15 @@ public class ActivateProfileHelper {
 					activity.startActivityForResult(intent, 1);
 				}
 			}
+			
+			//if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_GPS, context))
+			//{  No check only GPS
+				if (profile._deviceLocationServicePrefs == 1)
+				{
+				     final Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+				     activity.startActivity(intent);
+				}
+			//}			
 
 			if (profile._deviceRunApplicationChange == 1)
 			{

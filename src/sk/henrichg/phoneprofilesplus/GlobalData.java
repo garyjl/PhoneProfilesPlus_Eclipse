@@ -105,6 +105,7 @@ public class GlobalData extends Application {
 	static final String PREF_PROFILE_DEVICE_AUTOSYNC = "prf_pref_deviceAutosync";
 	static final String PREF_PROFILE_SHOW_IN_ACTIVATOR = "prf_pref_showInActivator";
 	static final String PREF_PROFILE_DEVICE_AUTOROTATE = "prf_pref_deviceAutoRotation";
+	static final String PREF_PROFILE_DEVICE_LOCATION_SERVICE_PREFS = "prf_pref_deviceLocationServicePrefs";
 	
 	static final String PROFILE_ICON_DEFAULT = "ic_profile_default";
 	
@@ -406,7 +407,8 @@ public class GlobalData extends Application {
 							   profile._deviceRunApplicationPackageName,
 							   profile._deviceAutosync,
 							   profile._showInActivator,
-							   profile._deviceAutoRotate);
+							   profile._deviceAutoRotate,
+							   profile._deviceLocationServicePrefs);
 		
 			if (profile._volumeRingerMode == 99)
 				mappedProfile._volumeRingerMode = defaultProfile._volumeRingerMode;
@@ -451,6 +453,8 @@ public class GlobalData extends Application {
 				mappedProfile._deviceBluetooth = defaultProfile._deviceBluetooth;
 			if (profile._deviceGPS == 99)
 				mappedProfile._deviceGPS = defaultProfile._deviceGPS;
+			if (profile._deviceLocationServicePrefs == 99)
+				mappedProfile._deviceLocationServicePrefs = defaultProfile._deviceLocationServicePrefs;
 			if (profile._deviceScreenTimeout == 99)
 				mappedProfile._deviceScreenTimeout = defaultProfile._deviceScreenTimeout;
 			if (profile.getDeviceBrightnessDefaultProfile())
