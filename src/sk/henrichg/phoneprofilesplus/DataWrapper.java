@@ -637,7 +637,7 @@ public class DataWrapper {
 		databaseHandler.activateProfile(profile);
 		setProfileActive(profile);
 		
-		if (startupSource != GlobalData.STARTUP_SOURCE_SERVICE)
+		if ((startupSource != GlobalData.STARTUP_SOURCE_SERVICE) && (startupSource != GlobalData.STARTUP_SOURCE_BOOT))
 			// for manual activation pause all running events
 			// and setup for next start
 			pauseAllEvents(false);
@@ -768,15 +768,6 @@ public class DataWrapper {
 	
 	public void activateProfile(long profile_id, int startupSource, Activity activity)
 	{
-		if (!GlobalData.getApplicationStarted(activity.getBaseContext()))
-		{
-			// aplikacia este nie je nastartovana
-			
-			// startneme eventy
-			firstStartEvents(true);
-		}
-		
-		
 		Profile profile;
 		
 		// pre profil, ktory je prave aktivny, treba aktualizovat aktivitu
@@ -806,7 +797,23 @@ public class DataWrapper {
 			}
 			else
 			{
-				if (profile != null)
+				// nema sa aktivovat profil pri starte, ale musim pozriet, ci daky event bezi
+				// a ak ano, aktivovat profil posledneho eventu v timeline
+				boolean eventRunning = false;
+				List<EventTimeline> eventTimelineList = getEventTimelineList();
+				if (eventTimelineList.size() > 0)
+				{
+					eventRunning = true;
+					
+					EventTimeline eventTimeline = eventTimelineList.get(eventTimelineList.size()-1);
+					
+					Event event = getEventById(eventTimeline._fkEvent);
+					profile = getProfileById(event._fkProfile);
+					actProfile = true;
+				}
+
+				
+				if ((profile != null) && (!eventRunning))
 				{
 					getDatabaseHandler().deactivateProfile();
 					//profile._checked = false;

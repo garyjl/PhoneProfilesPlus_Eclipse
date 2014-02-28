@@ -19,9 +19,20 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 			{
 				GlobalData.grantRoot();
 					
-				DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
-				dataWrapper.firstStartEvents(true);
-				dataWrapper.invalidateDataWrapper();
+				// startneme eventy
+				if (GlobalData.getGlobalEventsRuning(context))
+				{
+					DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
+					dataWrapper.firstStartEvents(true);
+					dataWrapper.invalidateDataWrapper();
+				}
+				else
+					BatteryEventsAlarmBroadcastReceiver.removeAlarm(context);
+			
+				Intent i = new Intent(context, BackgroundActivateProfileActivity.class);
+				i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				i.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_BOOT);
+				context.startActivity(i);
 			}
 		}		
 	}

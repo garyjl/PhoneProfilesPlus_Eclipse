@@ -941,7 +941,11 @@ public class EditorProfilesActivity extends ActionBarActivity
 						ret = 0;
 				}
 				
-				dataWrapper.firstStartEvents(true);
+				// startneme eventy
+				if (GlobalData.getGlobalEventsRuning(getBaseContext()))
+					dataWrapper.firstStartEvents(true);
+				else
+					BatteryEventsAlarmBroadcastReceiver.removeAlarm(getBaseContext());
 				
 				return ret;
 			}
