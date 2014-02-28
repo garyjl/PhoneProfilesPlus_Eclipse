@@ -213,7 +213,6 @@
     <string name="alert_button_yes">Yes</string>
     <string name="alert_button_no">No</string>
     <string name="profile_preferences_deviceAutoRotation">Display rotation</string>
-
     <string name="title_activity_activator">Activator</string>
     <string name="title_activity_editor">Editor</string>
     <string name="menu_run_events">Enable running events</string>
@@ -258,13 +257,12 @@
     <string name="phone_profiles_pref_notificationLauncher">Launch from notification</string>
     <string name="array_pref_launcher_activator">Activator</string>
     <string name="array_pref_launcher_editor">Editor</string>
-    
     <string name="event_preferences_battery_level">Battery</string>
     <string name="event_preferences_battery_levelType">Level type</string>
     <string name="array_pref_event_battery_level_type_low">Low level</string>
 	<string name="array_pref_event_battery_level_type_hight">Hight level</string>
     <string name="event_type_battery">Battery</string>
-
-    <string name="profile_preferences_deviceLocationServicePrefs">Location service preferences</string>
+    
+    <string name="profile_preferences_deviceLocationServicePrefs">Location preferences</string>
     	
 </resources>

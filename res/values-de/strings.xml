@@ -257,11 +257,12 @@
     <string name="phone_profiles_pref_notificationLauncher">Aus Benachrichtigung starten</string>
     <string name="array_pref_launcher_activator">Starter</string>
     <string name="array_pref_launcher_editor">Editor</string>
-
 	<string name="event_preferences_battery_level">Batterie</string>
     <string name="event_preferences_battery_levelType">Ladung</string>
     <string name="array_pref_event_battery_level_type_low">Niedrig</string>
 	<string name="array_pref_event_battery_level_type_hight">Hoch</string>
 	<string name="event_type_battery">Batterie</string>
-	
+
+    <string name="profile_preferences_deviceLocationServicePrefs">Standort-Einstellungen</string>
+			
 </resources>
