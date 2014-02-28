@@ -87,8 +87,9 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:padding="10dip"
-        	android:divider="@android:color/transparent" >
-	    </ListView>
+        	android:divider="@android:color/transparent"
+	    	android:clipToPadding="false"
+    		android:scrollbarStyle="outsideOverlay" />
 	    
 	    <TextView
 		    android:id="@+id/widget_profiles_list_empty"

@@ -16,7 +16,9 @@
         android:padding="10dip"
         android:dividerHeight="5dp"
         android:listSelector="?attr/cardSelector"
-        android:drawSelectorOnTop="true" >
+        android:drawSelectorOnTop="true"
+	    android:clipToPadding="false"
+    	android:scrollbarStyle="outsideOverlay" >
 
     </ListView>
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:dslv="http://schemas.android.com/apk/res/sk.henrichg.phoneprofilesplus"
+    xmlns:dslv="http://schemas.android.com/apk/res-auto"
     android:id="@+id/layout_profiles_list_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -74,6 +74,8 @@
         android:listSelector="?attr/cardSelector"
         android:drawSelectorOnTop="true"
         android:choiceMode="singleChoice"
+	    android:clipToPadding="false"
+    	android:scrollbarStyle="outsideOverlay"
         dslv:drag_enabled="true"
 	    dslv:collapsed_height="2dp"
 	    dslv:drag_scroll_start="0.33"

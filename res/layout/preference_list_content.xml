@@ -22,4 +22,7 @@
     android:layout_height="fill_parent"
     android:drawSelectorOnTop="false"
     android:scrollbarAlwaysDrawVerticalTrack="true"
+    android:padding="10dp"
+    android:clipToPadding="false"
+    android:scrollbarStyle="outsideOverlay"
     />
