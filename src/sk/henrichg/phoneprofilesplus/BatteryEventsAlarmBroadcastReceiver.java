@@ -13,9 +13,13 @@ public class BatteryEventsAlarmBroadcastReceiver extends WakefulBroadcastReceive
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		GlobalData.logE("##### BatteryEventsAlarmBroadcastReceiver.onReceive","xxx");
+		doOnReceive(context);
+	}
 
-		
-		GlobalData.logE("BatteryEventsAlarmBroadcastReceiver.onReceive","xxx");
+	static public void doOnReceive(Context context)
+	{
+		GlobalData.logE("BatteryEventsAlarmBroadcastReceiver.doOnReceive","xxx");
 		
 		DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
 		List<Event> eventList = dataWrapper.getEventList();
@@ -49,9 +53,8 @@ public class BatteryEventsAlarmBroadcastReceiver extends WakefulBroadcastReceive
 			removeAlarm(context);
 		
 		dataWrapper.invalidateDataWrapper();
-			
 	}
-
+	
 	static public void removeAlarm(Context context)
 	{
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);

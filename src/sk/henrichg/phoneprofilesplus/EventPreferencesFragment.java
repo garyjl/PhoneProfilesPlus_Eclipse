@@ -308,12 +308,10 @@ public class EventPreferencesFragment extends PreferenceListFragment
 			dataWrapper.getDatabaseHandler().addEvent(event);
 			event_id = event._id;
 
-			if (oldEvent.getStatus() == Event.ESTATUS_STOP)
-				// stop event
-				event.stopEvent(dataWrapper, eventTimelineList, false, false, true);
-			else
-				// setup event for next start
+			// setup event for next start
+			if (!event.invokeBroadcastReceiver(context))
 				event.pauseEvent(dataWrapper, eventTimelineList, false, false, false);
+				
 			
         	//Log.d("ProfilePreferencesFragment.savePreferences", "addEvent");
 			
@@ -322,13 +320,11 @@ public class EventPreferencesFragment extends PreferenceListFragment
     	if (event_id > 0) 
         {
     		// stop event
-    		int oldEventStatus = event.getStatus();
 			//event.pauseEvent(dataWrapper, eventTimelineList, false, true, true);
 			event.stopEvent(dataWrapper, eventTimelineList, false, false, false);
-			event.setStatus(oldEventStatus);
     		
 	    	event.saveSharedPrefereces(preferences);
-			
+	    	
     		// udate event in DB
 			dataWrapper.getDatabaseHandler().updateEvent(event);
 
@@ -336,8 +332,11 @@ public class EventPreferencesFragment extends PreferenceListFragment
 				// stop event
 				event.stopEvent(dataWrapper, eventTimelineList, false, false, true);
 			else
+			{
 				// setup event for next start
-				event.pauseEvent(dataWrapper, eventTimelineList, false, false, false);
+				if (!event.invokeBroadcastReceiver(context))
+					event.pauseEvent(dataWrapper, eventTimelineList, false, false, false);
+			}
 			
         	//Log.d("EventPreferencesFragment.savePreferences", "updateEvent");
 

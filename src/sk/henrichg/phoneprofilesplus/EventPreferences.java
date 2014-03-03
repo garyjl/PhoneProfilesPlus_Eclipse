@@ -74,5 +74,10 @@ public class EventPreferences {
 	{
 		
 	}
+
+	public boolean invokeBroadcastReceiver(Context context)
+	{
+		return false;
+	}
 	
 }

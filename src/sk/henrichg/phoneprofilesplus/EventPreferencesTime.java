@@ -472,4 +472,11 @@ public class EventPreferencesTime extends EventPreferences {
         //alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, alarmTime, 24 * 60 * 60 * 1000 , pendingIntent);
         
 	}
+	
+	@Override
+	public boolean invokeBroadcastReceiver(Context context)
+	{
+		return false;
+	}
+
 }

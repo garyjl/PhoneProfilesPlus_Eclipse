@@ -151,7 +151,7 @@ public class Event {
    		editor.putString(PREF_EVENT_NAME, this._name);
    		editor.putString(PREF_EVENT_TYPE, Integer.toString(this._type));
    		editor.putString(PREF_EVENT_PROFILE, Long.toString(this._fkProfile));
-   		editor.putBoolean(PREF_EVENT_ENABLED, this._status == ESTATUS_PAUSE);
+   		editor.putBoolean(PREF_EVENT_ENABLED, this._status != ESTATUS_STOP);
         this._eventPreferences.loadSharedPrefereces(preferences);
 		editor.commit();
 	}
@@ -288,7 +288,66 @@ public class Event {
 		
 		GlobalData.logE("Event.startEvent","event_id="+this._id+"-----------------------------------");
 		
-		EventTimeline eventTimeline = new EventTimeline();
+		EventTimeline eventTimeline;		
+		
+	/////// delete duplicate from timeline
+		
+		// test whenever event exists in timeline
+		boolean exists = true;
+		while (exists)
+		{
+			exists = false;
+
+			int timeLineSize = eventTimelineList.size();
+			
+			eventTimeline = null;
+			int eventPosition = -1;
+			for (EventTimeline _eventTimeline : eventTimelineList)
+			{
+				eventPosition++;
+				if (_eventTimeline._fkEvent == this._id)
+				{
+					eventTimeline = _eventTimeline;
+					exists = true;
+					break;
+				}
+			}
+			
+			if (exists)
+			{
+				// remove event from timeline
+				eventTimelineList.remove(eventTimeline);
+				dataWrapper.getDatabaseHandler().deleteEventTimeline(eventTimeline);
+				
+				if ((eventPosition == 0) && (timeLineSize > 1))
+				{
+					// event is in start of timeline
+					
+					// move _fkProfileReturn up
+					for (int i = eventTimelineList.size()-1; i > 0; i--)
+					{
+						eventTimelineList.get(i)._fkProfileReturn = 
+								eventTimelineList.get(i-1)._fkProfileReturn;
+					}
+					eventTimelineList.get(0)._fkProfileReturn = eventTimeline._fkProfileReturn;
+					dataWrapper.getDatabaseHandler().updateProfileReturnET(eventTimelineList);
+				}
+				else
+				if (eventPosition == (timeLineSize-1))
+				{
+					// event is in end of timeline 
+					// do nothing
+				}
+				else
+				{
+					// event is in middle of timeline 
+					// do nothing
+				}
+			}
+		}
+	//////////////////////////////////
+
+		eventTimeline = new EventTimeline();
 		eventTimeline._fkEvent = this._id;
 		eventTimeline._eorder = 0;
 		Profile profile = dataWrapper.getActivatedProfile();
@@ -355,6 +414,8 @@ public class Event {
 			
 			if ((eventPosition == 0) && (timeLineSize > 1))
 			{
+				// event is in start of timeline
+
 				// move _fkProfileReturn up
 				for (int i = eventTimelineList.size()-1; i > 0; i--)
 				{
@@ -367,17 +428,21 @@ public class Event {
 			else
 			if (eventPosition == (timeLineSize-1))
 			{
+				// event is in end of timeline 
+				
 				// activate profile only when profile not already activated 
 				if ((eventTimeline._fkProfileReturn != dataWrapper.getActivatedProfile()._id)
 					&& (activateReturnProfile)
 					&& (_eventPreferences.activateReturnProfile()))
 				{
-					GlobalData.logE("Event.pauseEvent","activate return time");
+					GlobalData.logE("Event.pauseEvent","activate return profile");
 					dataWrapper.activateProfileFromEvent(eventTimeline._fkProfileReturn);
 				}
 			}
 			else
 			{
+				// event is in middle of timeline 
+
 				// do nothing
 			}
 		}
@@ -457,6 +522,12 @@ public class Event {
 			// remove all system events
 			_eventPreferences.removeSystemEvent(context);
 		}
+	}
+	
+	public boolean invokeBroadcastReceiver(Context context)
+	{
+		boolean started = _eventPreferences.invokeBroadcastReceiver(context); 
+		return started;
 	}
 
 }

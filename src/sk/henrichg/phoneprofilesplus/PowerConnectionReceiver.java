@@ -10,8 +10,13 @@ public class PowerConnectionReceiver extends WakefulBroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-
-		GlobalData.logE("PowerConnectionReceiver.onReceive","xxx");
+		GlobalData.logE("#### PowerConnectionReceiver.onReceive","xxx");
+		doOnReceive(context);
+	}
+	
+	static public void doOnReceive(Context context)
+	{
+		GlobalData.logE("PowerConnectionReceiver.doOnReceive","xxx");
 		
 		DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
 		List<Event> eventList = dataWrapper.getEventList();
@@ -38,7 +43,6 @@ public class PowerConnectionReceiver extends WakefulBroadcastReceiver {
 		}
 		
 		dataWrapper.invalidateDataWrapper();
-			
+		
 	}
-	
 }

@@ -16,16 +16,16 @@ public class BootUpReceiver extends BroadcastReceiver {
 			GlobalData.setApplicationStarted(context, true);
 			
 			GlobalData.grantRoot();
+
+			BatteryEventsAlarmBroadcastReceiver.removeAlarm(context);
 			
 			// startneme eventy
 			if (GlobalData.getGlobalEventsRuning(context))
 			{
 				DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
-				dataWrapper.firstStartEvents(true);
+				dataWrapper.firstStartEvents(true, false);
 				dataWrapper.invalidateDataWrapper();
 			}
-			else
-				BatteryEventsAlarmBroadcastReceiver.removeAlarm(context);
 			
 			Intent i = new Intent(context, BackgroundActivateProfileActivity.class);
 			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

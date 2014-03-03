@@ -468,7 +468,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 			{
 				GlobalData.setGlobalEventsRuning(getBaseContext(), true);
 				// setup for next start
-				dataWrapper.firstStartEvents(false);
+				dataWrapper.firstStartEvents(false, false);
 			}
 			Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
 			if (fragment != null)
@@ -943,7 +943,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 				
 				// startneme eventy
 				if (GlobalData.getGlobalEventsRuning(getBaseContext()))
-					dataWrapper.firstStartEvents(true);
+					dataWrapper.firstStartEvents(true, false);
 				else
 					BatteryEventsAlarmBroadcastReceiver.removeAlarm(getBaseContext());
 				

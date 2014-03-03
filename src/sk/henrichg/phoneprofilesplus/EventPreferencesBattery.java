@@ -1,7 +1,5 @@
 package sk.henrichg.phoneprofilesplus;
 
-import java.util.Calendar;
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -75,16 +73,21 @@ public class EventPreferencesBattery extends EventPreferences {
 		String descr = description;
 		
 		if (this._detectorType == 0)
+		{
 			descr = descr + context.getString(R.string.array_pref_event_battery_detector_type_low_level);
+			descr = descr + ": " + this._level + "%";
+		}
 		else
 		if (this._detectorType == 1)
+		{
 			descr = descr + context.getString(R.string.array_pref_event_battery_detector_type_hight_level);
+			descr = descr + ": " + this._level + "%";
+		}
 		else
 		if (this._detectorType == 2)
 			descr = descr + context.getString(R.string.array_pref_event_battery_detector_type_plug);
 		else
 			descr = descr + context.getString(R.string.array_pref_event_battery_detector_type_unplug);
-		descr = descr + ": " + this._level + "%";
 
 		return descr;
 	}
@@ -117,7 +120,10 @@ public class EventPreferencesBattery extends EventPreferences {
 	{
 		if (key.equals(PREF_EVENT_BATTERY_LEVEL) ||
 			key.equals(PREF_EVENT_BATTERY_DETECTOR_TYPE))
+		{
 			setSummary(prefMng, key, preferences.getString(key, ""), context);
+			disableDependedPref(prefMng, PREF_EVENT_BATTERY_DETECTOR_TYPE, preferences.getString(key, ""));
+		}
 	}
 	
 	@Override
@@ -125,28 +131,41 @@ public class EventPreferencesBattery extends EventPreferences {
 	{
 		setSummary(prefMng, PREF_EVENT_BATTERY_LEVEL, Integer.toString(_level), context);
 		setSummary(prefMng, PREF_EVENT_BATTERY_DETECTOR_TYPE, Integer.toString(_detectorType), context);
+		
+		disableDependedPref(prefMng, PREF_EVENT_BATTERY_DETECTOR_TYPE, Integer.toString(_detectorType));
+	}
+	
+	private void disableDependedPref(PreferenceManager prefMng, String key, Object value)
+	{
+		String sValue = value.toString();
+		
+		if (key.equals(PREF_EVENT_BATTERY_DETECTOR_TYPE))
+		{
+			boolean enabled = (sValue.equals("0") || sValue.equals("1"));
+			prefMng.findPreference(PREF_EVENT_BATTERY_LEVEL).setEnabled(enabled);
+		}
 	}
 	
 	@Override
 	public boolean activateReturnProfile()
 	{
-		// one shot event, return profile
-		return false;
+		return true;
 	}
 	
 	@Override
 	public void setSystemRunningEvent(Context context)
 	{
 		// set alarm for state PAUSE
-		setAlarm(context);
+		if ((_detectorType == DETECTOR_TYPE_LOW_LEVEL) || (_detectorType == DETECTOR_TYPE_HIGHT_LEVEL))
+			setAlarm(context);
 	}
 
 	@Override
 	public void setSystemPauseEvent(Context context)
 	{
 		// set alarm for state RUNNING
-	
-		setAlarm(context);
+		if ((_detectorType == DETECTOR_TYPE_LOW_LEVEL) || (_detectorType == DETECTOR_TYPE_HIGHT_LEVEL))
+			setAlarm(context);
 	}
 	
 	@Override
@@ -173,16 +192,30 @@ public class EventPreferencesBattery extends EventPreferences {
 			
 			Intent intent = new Intent(context, BatteryEventsAlarmBroadcastReceiver.class);
 			
+			/*
 			Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(System.currentTimeMillis());
             calendar.add(Calendar.SECOND, 10);
+            */
             
 			PendingIntent alarmIntent = PendingIntent.getBroadcast(context.getApplicationContext(), 0, intent, 0);
 			alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-											//5 * 1000,
-											AlarmManager.INTERVAL_HALF_HOUR,
-											10 * 1000, alarmIntent);
+											5 * 1000,
+											AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+											alarmIntent);
 		}
 	}
+
+	@Override
+	public boolean invokeBroadcastReceiver(Context context)
+	{
+		if ((_detectorType == DETECTOR_TYPE_LOW_LEVEL) || (_detectorType == DETECTOR_TYPE_HIGHT_LEVEL))
+			BatteryEventsAlarmBroadcastReceiver.doOnReceive(context);
+		else
+			PowerConnectionReceiver.doOnReceive(context);
+		
+		return true;
+	}
+	
 	
 }

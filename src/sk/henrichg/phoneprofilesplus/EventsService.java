@@ -52,7 +52,7 @@ public class EventsService extends IntentService
 		
 		if (procedure == ESP_RESTART_EVENTS)
 		{
-			dataWrapper.firstStartEvents(true);
+			dataWrapper.firstStartEvents(true, false);
 		}
 		else
 		{
@@ -124,79 +124,91 @@ public class EventsService extends IntentService
 		GlobalData.logE("EventService.doBatteryEvent","isCharging="+isCharging);
 
 		EventPreferencesBattery eventPreferences = (EventPreferencesBattery)event._eventPreferences;
-		
+
 		if (powerChangeReceived)
 		{
 			GlobalData.logE("EventService.doBatteryEvent","powerChangeReceived");
-
-			if ((eventPreferences._detectorType == EventPreferencesBattery.DETECTOR_TYPE_LOW_LEVEL) ||
-			    (eventPreferences._detectorType == EventPreferencesBattery.DETECTOR_TYPE_HIGHT_LEVEL))
-			{
-				if (isCharging)
-				{
-					if (event.getStatus() != Event.ESTATUS_PAUSE)
-						event.pauseEvent(dataWrapper, eventTimelineList, true, false, false);
-				}
-			}
-			else	
-			if (eventPreferences._detectorType == EventPreferencesBattery.DETECTOR_TYPE_PLUG)
-			{
-				if (isCharging)
-					event.startEvent(dataWrapper, eventTimelineList, false);
-				else
-					event.pauseEvent(dataWrapper, eventTimelineList, true, false, false);
-			}
+		}
+		
+		if (eventPreferences._detectorType == EventPreferencesBattery.DETECTOR_TYPE_PLUG)
+		{
+			// unblock starting battery events
+			GlobalData.setBatteryPausedByManualProfileActivation(context, false);
+			
+			if (isCharging)
+				event.startEvent(dataWrapper, eventTimelineList, false);
 			else
-			if (eventPreferences._detectorType == EventPreferencesBattery.DETECTOR_TYPE_UNPLUG)
-			{
-				if (!isCharging)
-					event.startEvent(dataWrapper, eventTimelineList, false);
-				else
-					event.pauseEvent(dataWrapper, eventTimelineList, true, false, false);
-			}
+				event.pauseEvent(dataWrapper, eventTimelineList, true, false, false);
+		}
+		else
+		if (eventPreferences._detectorType == EventPreferencesBattery.DETECTOR_TYPE_UNPLUG)
+		{
+			// unblock starting battery events
+			GlobalData.setBatteryPausedByManualProfileActivation(context, false);
+
+			if (!isCharging)
+				event.startEvent(dataWrapper, eventTimelineList, false);
+			else
+				event.pauseEvent(dataWrapper, eventTimelineList, true, false, false);
 		}
 		else
 		{
-			int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-			int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-		
-			float batteryPct = level / (float)scale;		
-		
-			GlobalData.logE("EventService.doBatteryEvent","batteryPct="+batteryPct);
-
-			boolean batteryPaused = GlobalData.getBatteryPausedByManualProfileActivation(context);
-			
-			if (eventPreferences._detectorType == EventPreferencesBattery.DETECTOR_TYPE_LOW_LEVEL)
+			if (isCharging)
 			{
-				if ((!batteryPaused) && (batteryPct <= (eventPreferences._level / (float)100)))
-				{
-					if (event.getStatus() != Event.ESTATUS_RUNNING)
-						event.startEvent(dataWrapper, eventTimelineList, false);
-				}
-				else
-				{
-					// unblock starting battery events
-					GlobalData.setBatteryPausedByManualProfileActivation(context, false);
-
-					if (event.getStatus() != Event.ESTATUS_PAUSE)
-						event.pauseEvent(dataWrapper, eventTimelineList, true, false, false);
-				}
+				if (event.getStatus() != Event.ESTATUS_PAUSE)
+					event.pauseEvent(dataWrapper, eventTimelineList, true, false, false);
 			}
 			else
-			if (eventPreferences._detectorType == EventPreferencesBattery.DETECTOR_TYPE_HIGHT_LEVEL)
 			{
-				if ((!batteryPaused) && (batteryPct >= (eventPreferences._level / (float)100)))
+				int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+				int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+			
+				float batteryPct = level / (float)scale;		
+			
+				GlobalData.logE("EventService.doBatteryEvent","batteryPct="+batteryPct);
+	
+				boolean batteryPaused = GlobalData.getBatteryPausedByManualProfileActivation(context);
+				
+				if (eventPreferences._detectorType == EventPreferencesBattery.DETECTOR_TYPE_LOW_LEVEL)
 				{
-					if (event.getStatus() != Event.ESTATUS_RUNNING)
-						event.startEvent(dataWrapper, eventTimelineList, false);
+					if (batteryPct <= (eventPreferences._level / (float)100))
+					{
+						if (!batteryPaused)
+						{
+							// starting battery level unblocked
+							if (event.getStatus() != Event.ESTATUS_RUNNING)
+								event.startEvent(dataWrapper, eventTimelineList, false);
+						}
+					}
+					else
+					{
+						// unblock starting battery events
+						GlobalData.setBatteryPausedByManualProfileActivation(context, false);
+	
+						if (event.getStatus() != Event.ESTATUS_PAUSE)
+							event.pauseEvent(dataWrapper, eventTimelineList, true, false, false);
+					}
 				}
 				else
+				if (eventPreferences._detectorType == EventPreferencesBattery.DETECTOR_TYPE_HIGHT_LEVEL)
 				{
-					// unblock starting battery events
-					GlobalData.setBatteryPausedByManualProfileActivation(context, false);
-
-					if (event.getStatus() != Event.ESTATUS_RUNNING)
-						event.pauseEvent(dataWrapper, eventTimelineList, true, false, false);
+					if (batteryPct >= (eventPreferences._level / (float)100))
+					{
+						if (!batteryPaused)
+						{
+							// starting battery level unblocked
+							if (event.getStatus() != Event.ESTATUS_RUNNING)
+								event.startEvent(dataWrapper, eventTimelineList, false);
+						}
+					}
+					else
+					{
+						// unblock starting battery events
+						GlobalData.setBatteryPausedByManualProfileActivation(context, false);
+	
+						if (event.getStatus() != Event.ESTATUS_RUNNING)
+							event.pauseEvent(dataWrapper, eventTimelineList, true, false, false);
+					}
 				}
 			}
 		}

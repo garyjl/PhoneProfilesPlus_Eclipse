@@ -589,21 +589,30 @@ public class DataWrapper {
 	
 	// this is called in boot or start application
 	// or when restart alarm triggered (?)
-	public void firstStartEvents(boolean invalidateList)
+	public void firstStartEvents(boolean invalidateList, boolean ignoreGlobalPref)
 	{
 		if (invalidateList)
 			invalidateEventList();  // force load form db
+
+		List<EventTimeline> eventTimelineList = getEventTimelineList();
 		
 		for (Event event : getEventList())
 		{
 			int status = event.getStatus();
+
 			
 			// remove all system events
-			event.setSystemEvent(context, Event.ESTATUS_STOP);
+			//event.setSystemEvent(context, Event.ESTATUS_STOP);
+			event.stopEvent(this, eventTimelineList, false, ignoreGlobalPref, false);
 			
 			// reset system event
+			//if (status != Event.ESTATUS_STOP)
+			//	event.setSystemEvent(context, status);
 			if (status != Event.ESTATUS_STOP)
-				event.setSystemEvent(context, status);
+			{
+				if (!event.invokeBroadcastReceiver(context))
+					event.pauseEvent(this, eventTimelineList, false, ignoreGlobalPref, false);
+			}
 		}
 
 	}
