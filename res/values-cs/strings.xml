@@ -258,12 +258,14 @@
     <string name="phone_profiles_pref_notificationLauncher">Spustit z notifikací</string>
     <string name="array_pref_launcher_activator">Aktivátor</string>
     <string name="array_pref_launcher_editor">Editor</string>
-    <string name="event_preferences_battery_level">Baterie</string>
-    <string name="event_preferences_battery_levelType">Typ úrovně</string>
-    <string name="array_pref_event_battery_level_type_low">Nízká úroveň</string>
-	<string name="array_pref_event_battery_level_type_hight">Vysoká úroveň</string>
-    <string name="event_type_battery">Baterie</string>
-
     <string name="profile_preferences_deviceLocationServicePrefs">Nastavení polohy</string>
     
+	<string name="event_preferences_battery_level">Úroveň baterie</string>
+	<string name="event_preferences_battery_detectorType">Co detekovat</string>
+	<string name="array_pref_event_battery_detector_type_low_level">Nízká úroveň</string>
+	<string name="array_pref_event_battery_detector_type_hight_level">Vysoká úroveň </string>
+	<string name="array_pref_event_battery_detector_type_plug">Zasunutí nabíječky</string>
+	<string name="array_pref_event_battery_detector_type_unplug">Vysunutí nabíječky</string>
+	<string name="event_type_battery">Baterie</string>
+
 </resources>

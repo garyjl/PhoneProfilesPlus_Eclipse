@@ -257,12 +257,15 @@
     <string name="phone_profiles_pref_notificationLauncher">Aus Benachrichtigung starten</string>
     <string name="array_pref_launcher_activator">Starter</string>
     <string name="array_pref_launcher_editor">Editor</string>
-	<string name="event_preferences_battery_level">Batterie</string>
-    <string name="event_preferences_battery_levelType">Ladung</string>
-    <string name="array_pref_event_battery_level_type_low">Niedrig</string>
-	<string name="array_pref_event_battery_level_type_hight">Hoch</string>
-	<string name="event_type_battery">Batterie</string>
-
     <string name="profile_preferences_deviceLocationServicePrefs">Standort-Einstellungen</string>
-			
+
+    <string name="event_preferences_battery_level">Battery level</string>
+    <string name="event_preferences_battery_detectorType">What detected</string>
+    <string name="array_pref_event_battery_detector_type_low_level">Low level</string>
+	<string name="array_pref_event_battery_detector_type_hight_level">Hight level</string>
+    <string name="array_pref_event_battery_detector_type_plug">Charger plug</string>
+	<string name="array_pref_event_battery_detector_type_unplug">Charger unplug</string>
+	<string name="event_type_battery">Battery</string>
+		
+    			
 </resources>

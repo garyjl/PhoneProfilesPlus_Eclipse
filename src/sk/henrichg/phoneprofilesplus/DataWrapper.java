@@ -638,9 +638,13 @@ public class DataWrapper {
 		setProfileActive(profile);
 		
 		if ((startupSource != GlobalData.STARTUP_SOURCE_SERVICE) && (startupSource != GlobalData.STARTUP_SOURCE_BOOT))
+		{
 			// for manual activation pause all running events
 			// and setup for next start
 			pauseAllEvents(false);
+			// block starting battery events
+			GlobalData.setBatteryPausedByManualProfileActivation(context, true);
+		}
 		
 		activateProfileHelper.execute(profile, interactive);
 		
@@ -934,7 +938,7 @@ public class DataWrapper {
 				if ((event != null) && (event._type == Event.ETYPE_BATTERY))
 				{
 					EventPreferencesBattery eventPreferences = (EventPreferencesBattery)event._eventPreferences;
-					if (eventPreferences._levelType == EventPreferencesBattery.LEVELTYPE_LOW)
+					if (eventPreferences._detectorType == EventPreferencesBattery.DETECTOR_TYPE_LOW_LEVEL)
 					{
 						Profile eventProfile = getProfileById(event._fkProfile);
 						

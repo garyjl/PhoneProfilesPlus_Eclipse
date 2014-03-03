@@ -145,6 +145,7 @@ public class GlobalData extends Application {
 	
 	private static final String PREF_GLOBAL_EVENTS_RUN_STOP = "globalEventsRunStop";
 	private static final String PREF_APPLICATION_STARTED = "applicationStarted";
+	private static final String PREF_BATTERY_PAUSED_BY_MANUAL_PROFILE_ACTIVATION = "batteryPausedByManualProfileActivation";
 	
     public static boolean applicationStartOnBoot;
     public static boolean applicationActivate;
@@ -503,6 +504,20 @@ public class GlobalData extends Application {
 		SharedPreferences preferences = context.getSharedPreferences(APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
 		Editor editor = preferences.edit();
 		editor.putBoolean(PREF_APPLICATION_STARTED, globalEventsStarted);
+		editor.commit();
+	}
+
+	static public boolean getBatteryPausedByManualProfileActivation(Context context)
+	{
+		SharedPreferences preferences = context.getSharedPreferences(APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+		return preferences.getBoolean(PREF_BATTERY_PAUSED_BY_MANUAL_PROFILE_ACTIVATION, false);
+	}
+
+	static public void setBatteryPausedByManualProfileActivation(Context context, boolean batteryPausedByManualProfileActivation)
+	{
+		SharedPreferences preferences = context.getSharedPreferences(APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+		Editor editor = preferences.edit();
+		editor.putBoolean(PREF_BATTERY_PAUSED_BY_MANUAL_PROFILE_ACTIVATION, batteryPausedByManualProfileActivation);
 		editor.commit();
 	}
 	

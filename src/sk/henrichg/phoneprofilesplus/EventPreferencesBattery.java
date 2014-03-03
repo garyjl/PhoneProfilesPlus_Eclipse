@@ -13,22 +13,24 @@ import android.preference.PreferenceManager;
 public class EventPreferencesBattery extends EventPreferences {
 
 	public int _level;
-	public int _levelType;
+	public int _detectorType;
 	
-	static final int LEVELTYPE_LOW = 0;
-	static final int LEVELTYPE_HIGHT = 0;
+	static final int DETECTOR_TYPE_LOW_LEVEL = 0;
+	static final int DETECTOR_TYPE_HIGHT_LEVEL = 1;
+	static final int DETECTOR_TYPE_PLUG = 2;
+	static final int DETECTOR_TYPE_UNPLUG = 3;
 	
 	static final String PREF_EVENT_BATTERY_LEVEL = "eventBatteryLevel";
-	static final String PREF_EVENT_BATTERY_LEVEL_TYPE = "eventBatteryLevelType";
+	static final String PREF_EVENT_BATTERY_DETECTOR_TYPE = "eventBatteryDetectorType";
 	
 	public EventPreferencesBattery(Event event, 
 									int level,
-									int levelType)
+									int detectorType)
 	{
 		super(event);
 		
 		this._level = level;
-		this._levelType = levelType;
+		this._detectorType = detectorType;
 		
 		_preferencesResourceID = R.xml.event_preferences_battery;
 		_iconResourceID = R.drawable.ic_event_battery; 
@@ -38,7 +40,7 @@ public class EventPreferencesBattery extends EventPreferences {
 	public void copyPreferences(Event fromEvent)
 	{
 		this._level = ((EventPreferencesBattery)fromEvent._eventPreferences)._level;
-		this._levelType = ((EventPreferencesBattery)fromEvent._eventPreferences)._levelType;
+		this._detectorType = ((EventPreferencesBattery)fromEvent._eventPreferences)._detectorType;
 	}
 	
 	@Override
@@ -46,7 +48,7 @@ public class EventPreferencesBattery extends EventPreferences {
 	{
 		Editor editor = preferences.edit();
 		editor.putString(PREF_EVENT_BATTERY_LEVEL, String.valueOf(this._level));
-		editor.putString(PREF_EVENT_BATTERY_LEVEL_TYPE, String.valueOf(this._levelType));
+		editor.putString(PREF_EVENT_BATTERY_DETECTOR_TYPE, String.valueOf(this._detectorType));
 		editor.commit();
 	}
 	
@@ -62,8 +64,8 @@ public class EventPreferencesBattery extends EventPreferences {
 		if ((iLevel < 0) || (iLevel > 100)) iLevel = 15;
 		this._level= iLevel;
 
-		sLevel = preferences.getString(PREF_EVENT_BATTERY_LEVEL_TYPE, "0");
-		this._levelType = Integer.parseInt(sLevel);
+		sLevel = preferences.getString(PREF_EVENT_BATTERY_DETECTOR_TYPE, "0");
+		this._detectorType = Integer.parseInt(sLevel);
 	
 	}
 	
@@ -72,10 +74,16 @@ public class EventPreferencesBattery extends EventPreferences {
 	{
 		String descr = description;
 		
-		if (this._levelType == 0)
-			descr = descr + context.getString(R.string.array_pref_event_battery_level_type_low);
+		if (this._detectorType == 0)
+			descr = descr + context.getString(R.string.array_pref_event_battery_detector_type_low_level);
 		else
-			descr = descr + context.getString(R.string.array_pref_event_battery_level_type_hight);
+		if (this._detectorType == 1)
+			descr = descr + context.getString(R.string.array_pref_event_battery_detector_type_hight_level);
+		else
+		if (this._detectorType == 2)
+			descr = descr + context.getString(R.string.array_pref_event_battery_detector_type_plug);
+		else
+			descr = descr + context.getString(R.string.array_pref_event_battery_detector_type_unplug);
 		descr = descr + ": " + this._level + "%";
 
 		return descr;
@@ -89,12 +97,18 @@ public class EventPreferencesBattery extends EventPreferences {
 	        prefMng.findPreference(key).setSummary(value + "%");
 		}
 		else
-		if (key.equals(PREF_EVENT_BATTERY_LEVEL_TYPE))
+		if (key.equals(PREF_EVENT_BATTERY_DETECTOR_TYPE))
 		{	
 			if (value.equals("0"))
-		        prefMng.findPreference(key).setSummary(R.string.array_pref_event_battery_level_type_low);
+		        prefMng.findPreference(key).setSummary(R.string.array_pref_event_battery_detector_type_low_level);
 			else
-				prefMng.findPreference(key).setSummary(R.string.array_pref_event_battery_level_type_hight);
+			if (value.equals("1"))
+				prefMng.findPreference(key).setSummary(R.string.array_pref_event_battery_detector_type_hight_level);
+			else
+			if (value.equals("2"))
+				prefMng.findPreference(key).setSummary(R.string.array_pref_event_battery_detector_type_plug);
+			else
+				prefMng.findPreference(key).setSummary(R.string.array_pref_event_battery_detector_type_unplug);
 		}
 	}
 	
@@ -102,7 +116,7 @@ public class EventPreferencesBattery extends EventPreferences {
 	public void setSummary(PreferenceManager prefMng, String key, SharedPreferences preferences, Context context)
 	{
 		if (key.equals(PREF_EVENT_BATTERY_LEVEL) ||
-			key.equals(PREF_EVENT_BATTERY_LEVEL_TYPE))
+			key.equals(PREF_EVENT_BATTERY_DETECTOR_TYPE))
 			setSummary(prefMng, key, preferences.getString(key, ""), context);
 	}
 	
@@ -110,7 +124,7 @@ public class EventPreferencesBattery extends EventPreferences {
 	public void setAllSummary(PreferenceManager prefMng, Context context)
 	{
 		setSummary(prefMng, PREF_EVENT_BATTERY_LEVEL, Integer.toString(_level), context);
-		setSummary(prefMng, PREF_EVENT_BATTERY_LEVEL_TYPE, Integer.toString(_levelType), context);
+		setSummary(prefMng, PREF_EVENT_BATTERY_DETECTOR_TYPE, Integer.toString(_detectorType), context);
 	}
 	
 	@Override
