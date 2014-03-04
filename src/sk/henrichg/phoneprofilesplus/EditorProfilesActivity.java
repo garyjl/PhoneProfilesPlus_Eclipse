@@ -473,7 +473,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 			Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
 			if (fragment != null)
 			{
-				if (drawerSelectedItem >= COUNT_DRAWER_PROFILE_ITEMS)
+				if (drawerSelectedItem > COUNT_DRAWER_PROFILE_ITEMS)
 					((EditorEventListFragment)fragment).setEventsRunStopIndicator();
 			}
 			return true;
@@ -530,7 +530,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 
         public void onItemClick(AdapterView<?> parent, View view, int position,
                 long id) {
-            selectDrawerItem(position, true);
+            selectDrawerItem(position+1, true);
         }
     }
  
@@ -550,8 +550,8 @@ public class EditorProfilesActivity extends ActionBarActivity
 	    	
 		    Bundle arguments;
 		    
-	        switch (position) {
-	        case 0:
+	        switch (drawerSelectedItem) {
+	        case 1:
 	        	profilesFilterType = EditorProfileListFragment.FILTER_TYPE_ALL;
 	    		fragment = new EditorProfileListFragment();
 	    	    arguments = new Bundle();
@@ -562,7 +562,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	    		if (removePreferences)
 	    			onStartProfilePreferences(null, EditorProfileListFragment.EDIT_MODE_EDIT, profilesFilterType);
 	            break;
-	        case 1:
+	        case 2:
 	        	profilesFilterType = EditorProfileListFragment.FILTER_TYPE_SHOW_IN_ACTIVATOR;
 	    		fragment = new EditorProfileListFragment();
 	    	    arguments = new Bundle();
@@ -573,7 +573,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	    		if (removePreferences)
 	    			onStartProfilePreferences(null, EditorProfileListFragment.EDIT_MODE_EDIT, profilesFilterType);
 	            break;
-	        case 2:
+	        case 3:
 	        	profilesFilterType = EditorProfileListFragment.FILTER_TYPE_NO_SHOW_IN_ACTIVATOR;
 	    		fragment = new EditorProfileListFragment();
 	    	    arguments = new Bundle();
@@ -584,7 +584,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	    		if (removePreferences)
 	    			onStartProfilePreferences(null, EditorProfileListFragment.EDIT_MODE_EDIT, profilesFilterType);
 	            break;
-	        case 3:
+	        case 4:
 	        	eventsFilterType = EditorEventListFragment.FILTER_TYPE_ALL;
 	    		fragment = new EditorEventListFragment();
 	    	    arguments = new Bundle();
@@ -596,7 +596,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	    		if (removePreferences)
 	    			onStartEventPreferences(null, EditorEventListFragment.EDIT_MODE_EDIT, eventsFilterType, eventsOrderType);
 				break;	
-	        case 4:
+	        case 5:
 	        	eventsFilterType = EditorEventListFragment.FILTER_TYPE_RUNNING;
 	    		fragment = new EditorEventListFragment();
 	    	    arguments = new Bundle();
@@ -608,7 +608,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	    		if (removePreferences)
 	    			onStartEventPreferences(null, EditorEventListFragment.EDIT_MODE_EDIT, eventsFilterType, eventsOrderType);
 				break;	
-	        case 5:
+	        case 6:
 	        	eventsFilterType = EditorEventListFragment.FILTER_TYPE_PAUSED;
 	    		fragment = new EditorEventListFragment();
 	    	    arguments = new Bundle();
@@ -620,7 +620,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	    		if (removePreferences)
 	    			onStartEventPreferences(null, EditorEventListFragment.EDIT_MODE_EDIT, eventsFilterType, eventsOrderType);
 				break;	
-	        case 6:
+	        case 7:
 	        	eventsFilterType = EditorEventListFragment.FILTER_TYPE_STOPPED;
 	    		fragment = new EditorEventListFragment();
 	    	    arguments = new Bundle();
@@ -635,14 +635,14 @@ public class EditorProfilesActivity extends ActionBarActivity
 	        }
     	}
     	
-        drawerListView.setItemChecked(position, true);
+        drawerListView.setItemChecked(drawerSelectedItem-1, true);
  
         // Get the title and icon followed by the position
-        setTitle(drawerItemsTitle[position]);
-        setIcon(drawerItemsIcon[position]);
+        setTitle(drawerItemsTitle[drawerSelectedItem-1]);
+        setIcon(drawerItemsIcon[drawerSelectedItem-1]);
         
         // show/hide order
-        if (position < 3)
+        if (drawerSelectedItem <= COUNT_DRAWER_PROFILE_ITEMS)
         {
         	orderLabel.setVisibility(View.GONE);
         	orderSpinner.setVisibility(View.GONE);
@@ -778,7 +778,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 		else
 		{
 			// send other activity results into preference fragment
-			if (drawerSelectedItem < COUNT_DRAWER_PROFILE_ITEMS)
+			if (drawerSelectedItem <= COUNT_DRAWER_PROFILE_ITEMS)
 			{
 				ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
 				if (fragment != null)
@@ -798,7 +798,7 @@ public class EditorProfilesActivity extends ActionBarActivity
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
 	        // handle your back button code here
     		if (mTwoPane) {
-	    		if (drawerSelectedItem < COUNT_DRAWER_PROFILE_ITEMS)
+	    		if (drawerSelectedItem <= COUNT_DRAWER_PROFILE_ITEMS)
 	    		{
 		    		ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
 		    		if ((fragment != null) && (fragment.isActionModeActive()))
@@ -1190,7 +1190,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 		if (mTwoPane) {
 	    	SharedPreferences preferences = getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Activity.MODE_PRIVATE);
 			
-			if (drawerSelectedItem < COUNT_DRAWER_PROFILE_ITEMS)
+			if (drawerSelectedItem <= COUNT_DRAWER_PROFILE_ITEMS)
 			{
 				if ((editModeProfile != EditorProfileListFragment.EDIT_MODE_INSERT) &&
 				    (editModeProfile != EditorProfileListFragment.EDIT_MODE_DUPLICATE))
@@ -1278,14 +1278,14 @@ public class EditorProfilesActivity extends ActionBarActivity
 	 {
         // set filter statusbar title
 		String text = "";
-        if (drawerSelectedItem < COUNT_DRAWER_PROFILE_ITEMS)
+        if (drawerSelectedItem <= COUNT_DRAWER_PROFILE_ITEMS)
         {
-        	text = drawerItemsSubtitle[drawerSelectedItem];
+        	text = drawerItemsSubtitle[drawerSelectedItem-1];
         }
         else
         {
         	String[] orderItems = getResources().getStringArray(R.array.drawerOrderEvents);
-        	text = drawerItemsSubtitle[drawerSelectedItem] + 
+        	text = drawerItemsSubtitle[drawerSelectedItem-1] + 
         			"; " +
         			orderItems[orderSelectedItem];
         }
@@ -1596,7 +1596,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 			//Log.e("EditorProfilesActivity.getDataWrapper","COUNT_DRAWER_PROFILE_ITEMS="+COUNT_DRAWER_PROFILE_ITEMS);
 			//Log.e("EditorProfilesActivity.getDataWrapper","drawerSelectedItem="+drawerSelectedItem);
 			
-			if (drawerSelectedItem < COUNT_DRAWER_PROFILE_ITEMS)
+			if (drawerSelectedItem <= COUNT_DRAWER_PROFILE_ITEMS)
 				return ((EditorProfileListFragment)fragment).dataWrapper;
 			else
 				return ((EditorEventListFragment)fragment).dataWrapper;
@@ -1613,7 +1613,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 			//Log.e("EditorProfilesActivity.getDataWrapper","COUNT_DRAWER_PROFILE_ITEMS="+COUNT_DRAWER_PROFILE_ITEMS);
 			//Log.e("EditorProfilesActivity.getDataWrapper","drawerSelectedItem="+drawerSelectedItem);
 			
-			if (drawerSelectedItem < COUNT_DRAWER_PROFILE_ITEMS)
+			if (drawerSelectedItem <= COUNT_DRAWER_PROFILE_ITEMS)
 				((EditorProfileListFragment)fragment).refreshGUI();
 			else
 				((EditorEventListFragment)fragment).refreshGUI();
