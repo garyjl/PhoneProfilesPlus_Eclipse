@@ -107,10 +107,10 @@ public class ProfilePreferencesIndicator {
 					drawables[countDrawables++] = R.drawable.ic_profile_pref_brightness;
 			// auto-rotate
 			if (profile._deviceAutoRotate == 1)
-				drawables[countDrawables++] = R.drawable.ic_profile_pref_autorotate;
+				drawables[countDrawables++] = R.drawable.ic_profile_pref_autorotate_off;
 			else
 			if (profile._deviceAutoRotate != 0)
-				drawables[countDrawables++] = R.drawable.ic_profile_pref_autorotate_off;
+				drawables[countDrawables++] = R.drawable.ic_profile_pref_autorotate;
 			// run application
 			if (profile._deviceRunApplicationChange == 1)
 				drawables[countDrawables++] = R.drawable.ic_profile_pref_run_application;
