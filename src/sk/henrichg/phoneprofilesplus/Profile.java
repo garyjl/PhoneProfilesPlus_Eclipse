@@ -41,6 +41,7 @@ public class Profile {
 	public int _deviceAutosync;
 	public boolean _showInActivator;
 	public int _deviceAutoRotate;
+	public int _volumeSpeakerPhone;
 	
 	public Bitmap _iconBitmap;
 	public Bitmap _preferencesIndicator;
@@ -85,7 +86,8 @@ public class Profile {
 			   	   int deviceAutosync,
 			   	   boolean showInActivator,
 			   	   int deviceAutoRotate,
-			   	   int deviceLocationServicePrefs)
+			   	   int deviceLocationServicePrefs,
+			   	   int volumeSpeakerPhone)
 	{
 		this._id = id;
 		this._name = name;
@@ -121,6 +123,7 @@ public class Profile {
 		this._showInActivator = showInActivator;
 		this._deviceAutoRotate = deviceAutoRotate;
 		this._deviceLocationServicePrefs = deviceLocationServicePrefs;
+		this._volumeSpeakerPhone = volumeSpeakerPhone;
 		
 		this._iconBitmap = null;
 		this._preferencesIndicator = null;
@@ -159,7 +162,8 @@ public class Profile {
 			   	   int deviceAutosync,
 			   	   boolean showInActivator,
 			   	   int deviceAutoRotate,
-			   	   int deviceLocationServicePrefs)
+			   	   int deviceLocationServicePrefs,
+			   	   int volumeSpeakerPhone)
 	{
 		this._name = name;
 		this._icon = icon;
@@ -194,6 +198,7 @@ public class Profile {
 		this._showInActivator = showInActivator;
 		this._deviceAutoRotate = deviceAutoRotate;
 		this._deviceLocationServicePrefs = deviceLocationServicePrefs;
+		this._volumeSpeakerPhone = volumeSpeakerPhone;
 		
 		this._iconBitmap = null;
 		this._preferencesIndicator = null;
@@ -235,6 +240,7 @@ public class Profile {
 		this._showInActivator = profile._showInActivator;
 		this._deviceAutoRotate = profile._deviceAutoRotate;
 		this._deviceLocationServicePrefs = profile._deviceLocationServicePrefs;
+		this._volumeSpeakerPhone = profile._volumeSpeakerPhone;
 		
 		this._iconBitmap = profile._iconBitmap;
 		this._preferencesIndicator = profile._preferencesIndicator;

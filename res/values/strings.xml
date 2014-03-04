@@ -258,12 +258,13 @@
     <string name="array_pref_launcher_activator">Activator</string>
     <string name="array_pref_launcher_editor">Editor</string>
     <string name="profile_preferences_deviceLocationServicePrefs">(I) Location preferences</string>
-
     <string name="event_preferences_battery_level">Battery level</string>
     <string name="event_preferences_battery_detectorType">What detected</string>
     <string name="array_pref_event_battery_detector_type_low_level">Low level</string>
 	<string name="array_pref_event_battery_detector_type_hight_level">Hight level</string>
     <string name="array_pref_event_battery_detector_type_plug">Charging</string>
 	<string name="event_type_battery">Battery</string>
-    	
+
+    <string name="profile_preferences_volumeSpeakerPhone">Speaker phone</string>
+			
 </resources>

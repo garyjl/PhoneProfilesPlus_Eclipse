@@ -55,6 +55,11 @@ public class ProfilePreferencesIndicator {
 				profile.getVolumeSystemChange() ||
 				profile.getVolumeVoiceChange())
 				drawables[countDrawables++] = R.drawable.ic_profile_pref_volume_level;
+			// speaker phone
+			if (profile._volumeSpeakerPhone == 1)
+				drawables[countDrawables++] = R.drawable.ic_profile_pref_speakerphone;
+			if (profile._volumeSpeakerPhone == 2)
+				drawables[countDrawables++] = R.drawable.ic_profile_pref_speakerphone_off;
 			// sound
 			if ((profile._soundRingtoneChange == 1) || 
 				(profile._soundNotificationChange == 1) || 

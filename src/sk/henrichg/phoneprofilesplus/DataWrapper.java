@@ -129,6 +129,7 @@ public class DataWrapper {
 				  0,
 				  false,
 				  0,
+				  0,
 				  0
 			);
 	}
@@ -933,7 +934,8 @@ public class DataWrapper {
 							   profile._deviceAutosync,
 							   profile._showInActivator,
 							   profile._deviceAutoRotate,
-							   profile._deviceLocationServicePrefs);
+							   profile._deviceLocationServicePrefs,
+							   profile._volumeSpeakerPhone);
 		
 			List<EventTimeline> eventTimelineList = getEventTimelineList();
 			
@@ -1002,6 +1004,8 @@ public class DataWrapper {
 							filteredProfile._deviceRunApplicationChange = 0;
 						if (profile._deviceWallpaperChange != 0)
 							filteredProfile._deviceWallpaperChange = 0;
+						if (profile._volumeSpeakerPhone != 0)
+							filteredProfile._volumeSpeakerPhone = 0;
 						
 						// last event finded
 						break;

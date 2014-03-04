@@ -107,6 +107,11 @@ public class PhoneProfilesDashClockExtension extends DashClockExtension {
 				profile.getVolumeSystemChange() ||
 				profile.getVolumeVoiceChange())
 				indicator1 = addIntoIndicator(indicator1, "vol");
+			// speaker phone
+			if (profile._volumeSpeakerPhone == 1)
+				indicator1 = addIntoIndicator(indicator1, "sp1");
+			if (profile._volumeSpeakerPhone == 2)
+				indicator1 = addIntoIndicator(indicator1, "sp0");
 			// sound
 			if ((profile._soundRingtoneChange == 1) || 
 				(profile._soundNotificationChange == 1) || 

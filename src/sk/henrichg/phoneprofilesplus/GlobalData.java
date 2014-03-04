@@ -106,6 +106,7 @@ public class GlobalData extends Application {
 	static final String PREF_PROFILE_SHOW_IN_ACTIVATOR = "prf_pref_showInActivator";
 	static final String PREF_PROFILE_DEVICE_AUTOROTATE = "prf_pref_deviceAutoRotation";
 	static final String PREF_PROFILE_DEVICE_LOCATION_SERVICE_PREFS = "prf_pref_deviceLocationServicePrefs";
+	static final String PREF_PROFILE_VOLUME_SPEAKER_PHONE = "prf_pref_volumeSpeakerPhone";
 	
 	static final String PROFILE_ICON_DEFAULT = "ic_profile_default";
 	
@@ -365,6 +366,8 @@ public class GlobalData extends Application {
    		profile._deviceRunApplicationPackageName = preferences.getString(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME, "-");
     	profile._deviceAutosync = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_AUTOSYNC, "1")); // ON
     	profile._deviceAutoRotate = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_AUTOROTATE, "1")); // ON
+    	profile._deviceLocationServicePrefs = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_LOCATION_SERVICE_PREFS, "0"));
+    	profile._volumeSpeakerPhone = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_VOLUME_SPEAKER_PHONE, "0"));
     	
     	return profile;
 	}
@@ -409,7 +412,8 @@ public class GlobalData extends Application {
 							   profile._deviceAutosync,
 							   profile._showInActivator,
 							   profile._deviceAutoRotate,
-							   profile._deviceLocationServicePrefs);
+							   profile._deviceLocationServicePrefs,
+							   profile._volumeSpeakerPhone);
 		
 			if (profile._volumeRingerMode == 99)
 				mappedProfile._volumeRingerMode = defaultProfile._volumeRingerMode;
@@ -472,6 +476,8 @@ public class GlobalData extends Application {
 				mappedProfile._deviceWallpaperChange = defaultProfile._deviceWallpaperChange;
 				mappedProfile._deviceWallpaper = defaultProfile._deviceWallpaper;
 			}
+			if (profile._volumeSpeakerPhone == 99)
+				mappedProfile._volumeSpeakerPhone = defaultProfile._volumeSpeakerPhone;
 			
 			return mappedProfile;
 		}

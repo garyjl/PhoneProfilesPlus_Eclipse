@@ -76,6 +76,12 @@
 			henrichg:vDisableDefaultProfile="0"
 			android:title="@string/profile_preferences_volumeVoice"
 			android:summary="@string/volume_pref_dialog_no_change_chb" />        
+		<ListPreference android:title="@string/profile_preferences_volumeSpeakerPhone"
+            android:summary="@string/array_pref_no_change"
+            android:key="prf_pref_volumeSpeakerPhone"
+            android:defaultValue="0"
+            android:entries="@array/volumeSpeakerPhoneArray"
+            android:entryValues="@array/volumeSpeakerPhoneValues" />        
 	</PreferenceCategory>
     <PreferenceCategory
         android:summary="@string/profile_preferences_category_sounds"

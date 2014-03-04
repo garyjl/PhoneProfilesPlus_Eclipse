@@ -349,5 +349,35 @@
     <item>99</item>
 	<item>1</item>
 </string-array>
+<string-array name="locationServicePrefsDPArray">
+	<item>@string/array_pref_no_show</item>
+	<item>@string/array_pref_show</item>
+</string-array>
+<string-array name="locationServicePrefsDPValues">
+	<item>0</item>
+	<item>1</item>
+</string-array>
+<string-array name="volumeSpeakerPhoneArray">
+	<item>@string/array_pref_no_change</item>
+	<item>@string/array_pref_default_profile</item>
+	<item>@string/array_pref_hardwareModeArray_on</item>
+	<item>@string/array_pref_hardwareModeArray_off</item>
+</string-array>
+<string-array name="volumeSpeakerPhoneValues">
+    <item>0</item>
+    <item>99</item>
+    <item>1</item>
+    <item>2</item>
+</string-array>
+<string-array name="volumeSpeakerPhoneDPArray">
+	<item>@string/array_pref_no_change</item>
+	<item>@string/array_pref_hardwareModeArray_on</item>
+	<item>@string/array_pref_hardwareModeArray_off</item>
+</string-array>
+<string-array name="volumeSpeakerPhoneDPValues">
+    <item>0</item>
+    <item>1</item>
+    <item>2</item>
+</string-array>
 
 </resources>

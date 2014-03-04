@@ -58,6 +58,12 @@
 			henrichg:vDisableDefaultProfile="1"
 			android:title="@string/profile_preferences_volumeVoice"
 			android:summary="@string/volume_pref_dialog_no_change_chb" />        
+		<ListPreference android:title="@string/profile_preferences_volumeSpeakerPhone"
+            android:summary="@string/array_pref_no_change"
+            android:key="prf_pref_volumeSpeakerPhone"
+            android:defaultValue="0"
+            android:entries="@array/volumeSpeakerPhoneDPArray"
+            android:entryValues="@array/volumeSpeakerPhoneDPValues" />        
 	</PreferenceCategory>
     <PreferenceCategory
         android:summary="@string/profile_preferences_category_sounds"
@@ -154,8 +160,8 @@
             android:summary="@string/array_pref_no_change"
             android:key="prf_pref_deviceLocationServicePrefs"
             android:defaultValue="0"
-            android:entries="@array/locationServicePrefsArray"
-            android:entryValues="@array/locationServicePrefsValues" />        
+            android:entries="@array/locationServicePrefsDPArray"
+            android:entryValues="@array/locationServicePrefsDPValues" />        
 		<ListPreference android:title="@string/profile_preferences_deviceScreenTimeout"
             android:summary="@string/array_pref_no_change"
             android:key="prf_pref_deviceScreenTimeout"
