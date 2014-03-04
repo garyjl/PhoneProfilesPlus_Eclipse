@@ -370,7 +370,7 @@ public class EditorProfilesActivity extends ActionBarActivity
         if ((savedInstanceState != null) || (GlobalData.applicationEditorSaveEditorState))
         {
         	SharedPreferences preferences = getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Activity.MODE_PRIVATE);
-        	drawerSelectedItem = preferences.getInt(SP_EDITOR_DRAWER_SELECTED_ITEM, 1);
+        	drawerSelectedItem = preferences.getInt(SP_EDITOR_DRAWER_SELECTED_ITEM, 2);
         	orderSelectedItem = preferences.getInt(SP_EDITOR_ORDER_SELECTED_ITEM, 0);
         }
     	selectDrawerItem(drawerSelectedItem, false);
@@ -537,7 +537,7 @@ public class EditorProfilesActivity extends ActionBarActivity
     private void selectDrawerItem(int position, boolean removePreferences) {
  
 		Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
-		if (position == 0) position = 1;
+		if (position == 0) position = 2;
     	if ((position != drawerSelectedItem) || (fragment == null))
     	{
 	    	drawerSelectedItem = position;
