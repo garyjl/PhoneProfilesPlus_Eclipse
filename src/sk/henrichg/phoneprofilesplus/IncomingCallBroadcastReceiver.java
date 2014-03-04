@@ -11,6 +11,9 @@ public class IncomingCallBroadcastReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 
+		if (!GlobalData.getApplicationStarted(context))
+			return;
+		
 		DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
 		Profile profile = dataWrapper.getActivatedProfile();
 		
