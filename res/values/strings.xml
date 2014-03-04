@@ -265,6 +265,6 @@
     <string name="array_pref_event_battery_detector_type_plug">Charging</string>
 	<string name="event_type_battery">Battery</string>
 
-    <string name="profile_preferences_volumeSpeakerPhone">Speaker phone</string>
+    <string name="profile_preferences_volumeSpeakerPhone">Speakerphone</string>
 			
 </resources>
