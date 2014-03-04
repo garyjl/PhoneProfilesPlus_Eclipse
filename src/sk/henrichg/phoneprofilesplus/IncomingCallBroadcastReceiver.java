@@ -37,7 +37,7 @@ public class IncomingCallBroadcastReceiver extends BroadcastReceiver {
 	                //Activate loudspeaker
 	                AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
 	                audioManager.setMode(AudioManager.MODE_IN_CALL);
-	                audioManager.setSpeakerphoneOn(true);
+	                audioManager.setSpeakerphoneOn(profile._volumeSpeakerPhone == 1);
 	            }
 	              
 	            if (state.equals(TelephonyManager.EXTRA_STATE_IDLE))
