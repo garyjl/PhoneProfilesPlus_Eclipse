@@ -351,11 +351,9 @@ public class EditorEventListFragment extends Fragment {
 			// pause event
 			List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
 			event.pauseEvent(dataWrapper, eventTimelineList, false, false, false); //no activate return profile
-			if (event.getStatus() == Event.ESTATUS_PAUSE)
-			{
-				// event paused redraw event list
+			if (!event.invokeBroadcastReceiver(dataWrapper.context))
+				// redraw event list
 				updateListView(event, false);
-			}
 		}
 		else
 		{
