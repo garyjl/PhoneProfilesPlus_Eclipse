@@ -121,7 +121,7 @@
     <string name="export_profiles_alert_message">Are you sure</string>
     <string name="export_profiles_alert_error">Error when exporting app. data</string>
     <string name="profile_preferences_deviceMobileData">Mobile data</string>
-    <string name="profile_preferences_deviceMobileDataPrefs">Mobile data preferences</string>
+    <string name="profile_preferences_deviceMobileDataPrefs">(I) Mobile data preferences</string>
     <string name="phone_profiles_pref_notificationStatusBarStyle_color">Colorfull</string>
     <string name="phone_profiles_pref_notificationStatusBarStyle_android">Native</string>
     <string name="phone_profiles_pref_applicationLongClickActivation">Long click activate profile</string>
@@ -257,7 +257,7 @@
     <string name="phone_profiles_pref_notificationLauncher">Launch from notification</string>
     <string name="array_pref_launcher_activator">Activator</string>
     <string name="array_pref_launcher_editor">Editor</string>
-    <string name="profile_preferences_deviceLocationServicePrefs">Location preferences</string>
+    <string name="profile_preferences_deviceLocationServicePrefs">(I) Location preferences</string>
 
     <string name="event_preferences_battery_level">Battery level</string>
     <string name="event_preferences_battery_detectorType">What detected</string>
