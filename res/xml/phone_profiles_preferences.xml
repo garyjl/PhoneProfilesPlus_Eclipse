@@ -99,9 +99,9 @@
 		    android:title="@string/phone_profiles_pref_notificationStatusBar"
 		    android:defaultValue="true" />
 		<ListPreference android:title="@string/phone_profiles_pref_notificationStatusBarStyle"
-	           android:summary="@string/phone_profiles_pref_notificationStatusBarStyle_color"
+	           android:summary="@string/phone_profiles_pref_notificationStatusBarStyle_android"
 	           android:key="notificationStatusBarStyle"
-	           android:defaultValue="0"
+	           android:defaultValue="1"
 	           android:entries="@array/notificationIconStyleArray"
 	           android:entryValues="@array/notificationIconStyleValues" />        
 		<CheckBoxPreference 
