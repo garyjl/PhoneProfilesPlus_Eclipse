@@ -259,13 +259,11 @@
     <string name="array_pref_launcher_editor">Editor</string>
     <string name="profile_preferences_deviceLocationServicePrefs">(I) Standort-Einstellungen</string>
 
-    <string name="event_preferences_battery_level">Battery level</string>
-    <string name="event_preferences_battery_detectorType">What detected</string>
-    <string name="array_pref_event_battery_detector_type_low_level">Low level</string>
-	<string name="array_pref_event_battery_detector_type_hight_level">Hight level</string>
-    <string name="array_pref_event_battery_detector_type_plug">Charger plug</string>
-	<string name="array_pref_event_battery_detector_type_unplug">Charger unplug</string>
-	<string name="event_type_battery">Battery</string>
-		
+    <string name="event_preferences_battery_level">Akkustatus</string>
+    <string name="event_preferences_battery_detectorType">Was verzeichnen</string>
+    <string name="array_pref_event_battery_detector_type_low_level">Niedriger Stand</string>
+	<string name="array_pref_event_battery_detector_type_hight_level">Hoher Stand</string>
+    <string name="array_pref_event_battery_detector_type_plug">Aufladen</string>
+	<string name="event_type_battery">Akku</string>
     			
 </resources>

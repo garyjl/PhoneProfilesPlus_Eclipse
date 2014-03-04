@@ -263,8 +263,7 @@
     <string name="event_preferences_battery_detectorType">What detected</string>
     <string name="array_pref_event_battery_detector_type_low_level">Low level</string>
 	<string name="array_pref_event_battery_detector_type_hight_level">Hight level</string>
-    <string name="array_pref_event_battery_detector_type_plug">Charger plug</string>
-	<string name="array_pref_event_battery_detector_type_unplug">Charger unplug</string>
+    <string name="array_pref_event_battery_detector_type_plug">Charging</string>
 	<string name="event_type_battery">Battery</string>
     	
 </resources>

@@ -16,7 +16,6 @@ public class EventPreferencesBattery extends EventPreferences {
 	static final int DETECTOR_TYPE_LOW_LEVEL = 0;
 	static final int DETECTOR_TYPE_HIGHT_LEVEL = 1;
 	static final int DETECTOR_TYPE_PLUG = 2;
-	static final int DETECTOR_TYPE_UNPLUG = 3;
 	
 	static final String PREF_EVENT_BATTERY_LEVEL = "eventBatteryLevel";
 	static final String PREF_EVENT_BATTERY_DETECTOR_TYPE = "eventBatteryDetectorType";
@@ -29,6 +28,11 @@ public class EventPreferencesBattery extends EventPreferences {
 		
 		this._level = level;
 		this._detectorType = detectorType;
+		
+		// removed detector type unplug
+		if (detectorType > DETECTOR_TYPE_PLUG)
+			this._detectorType = DETECTOR_TYPE_PLUG;
+			
 		
 		_preferencesResourceID = R.xml.event_preferences_battery;
 		_iconResourceID = R.drawable.ic_event_battery; 
@@ -86,8 +90,6 @@ public class EventPreferencesBattery extends EventPreferences {
 		else
 		if (this._detectorType == 2)
 			descr = descr + context.getString(R.string.array_pref_event_battery_detector_type_plug);
-		else
-			descr = descr + context.getString(R.string.array_pref_event_battery_detector_type_unplug);
 
 		return descr;
 	}
@@ -110,8 +112,6 @@ public class EventPreferencesBattery extends EventPreferences {
 			else
 			if (value.equals("2"))
 				prefMng.findPreference(key).setSummary(R.string.array_pref_event_battery_detector_type_plug);
-			else
-				prefMng.findPreference(key).setSummary(R.string.array_pref_event_battery_detector_type_unplug);
 		}
 	}
 	

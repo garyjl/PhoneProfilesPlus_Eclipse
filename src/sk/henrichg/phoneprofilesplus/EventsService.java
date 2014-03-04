@@ -141,17 +141,6 @@ public class EventsService extends IntentService
 				event.pauseEvent(dataWrapper, eventTimelineList, true, false, false);
 		}
 		else
-		if (eventPreferences._detectorType == EventPreferencesBattery.DETECTOR_TYPE_UNPLUG)
-		{
-			// unblock starting battery events
-			GlobalData.setBatteryPausedByManualProfileActivation(context, false);
-
-			if (!isCharging)
-				event.startEvent(dataWrapper, eventTimelineList, false);
-			else
-				event.pauseEvent(dataWrapper, eventTimelineList, true, false, false);
-		}
-		else
 		{
 			if (isCharging)
 			{

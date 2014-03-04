@@ -333,13 +333,11 @@
 	<item>@string/array_pref_event_battery_detector_type_low_level</item>
 	<item>@string/array_pref_event_battery_detector_type_hight_level</item>
 	<item>@string/array_pref_event_battery_detector_type_plug</item>
-	<item>@string/array_pref_event_battery_detector_type_unplug</item>
 </string-array>
 <string-array name="batteryDetectorTypeValues">
 	<item>0</item>
 	<item>1</item>
 	<item>2</item>
-	<item>3</item>
 </string-array>
 <string-array name="locationServicePrefsArray">
 	<item>@string/array_pref_no_show</item>

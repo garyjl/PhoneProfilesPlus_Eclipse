@@ -264,8 +264,7 @@
     <string name="event_preferences_battery_detectorType">Čo detegovať</string>
     <string name="array_pref_event_battery_detector_type_low_level">Nízka úroveň</string>
 	<string name="array_pref_event_battery_detector_type_hight_level">Vysoká úroveň</string>
-    <string name="array_pref_event_battery_detector_type_plug">Zasunutie nabíjačky</string>
-	<string name="array_pref_event_battery_detector_type_unplug">Vysunutie nabíjačky</string>
+    <string name="array_pref_event_battery_detector_type_plug">Nabíjanie</string>
 	<string name="event_type_battery">Batéria</string>
     
     
