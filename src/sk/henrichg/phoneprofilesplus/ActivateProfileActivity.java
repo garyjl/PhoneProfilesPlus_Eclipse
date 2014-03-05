@@ -346,10 +346,19 @@ public class ActivateProfileActivity extends ActionBarActivity {
 	protected void onDestroy()
 	{
 	//	Debug.stopMethodTracing();
-		profileList = null;
-		activateProfileHelper = null;
-		dataWrapper.invalidateDataWrapper();
-		dataWrapper = null;
+		
+		if (this.asyncTaskContext != null
+		    && this.asyncTaskContext.get() != null
+		    && !this.asyncTaskContext.get().getStatus().equals(AsyncTask.Status.FINISHED))
+		{
+		}
+		else
+		{
+			profileList = null;
+			activateProfileHelper = null;
+			dataWrapper.invalidateDataWrapper();
+			dataWrapper = null;
+		}
 
 		instance = null;
 		

@@ -222,9 +222,17 @@ public class ShortcutCreatorActivity extends ActionBarActivity {
 	//	Debug.stopMethodTracing();
 		super.onDestroy();
 
-		profileList = null;
-		dataWrapper.invalidateDataWrapper();
-		dataWrapper = null;
+		if (this.asyncTaskContext != null
+		    && this.asyncTaskContext.get() != null
+		    && !this.asyncTaskContext.get().getStatus().equals(AsyncTask.Status.FINISHED))
+		{
+		}
+		else
+		{
+			profileList = null;
+			dataWrapper.invalidateDataWrapper();
+			dataWrapper = null;
+		}
 	}
 	
 	
