@@ -39,17 +39,22 @@ public class ContactsMultiSelectDialogPreference extends DialogPreference
 	protected View onCreateDialogView() {
 		LayoutInflater layoutInflater = LayoutInflater.from(getContext());
 
+		//TODO urob layout
+		/*
 		View view = layoutInflater.inflate(
 			R.layout.activity_contacts_multiselect_pref_dialog, null);
 		
 		listView = (ListView)view.findViewById(R.id.contactsListView);
+		*/
 		
 		//TODO a tu vytiahni kontakty, sprav adapter a nahod ho do listView
 		// pravdepodobne asynctask
 
 		getValueCMSDP();
 		
-		return view;
+		//TODO urob layout, potom zamen
+		//return view;
+		return null;
 	}
 	
 	public void onClick(DialogInterface dialog, int which) {
