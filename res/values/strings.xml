@@ -122,7 +122,7 @@
     <string name="export_profiles_alert_error">Error when exporting app. data</string>
     <string name="profile_preferences_deviceMobileData">Mobile data</string>
     <string name="profile_preferences_deviceMobileDataPrefs">(I) Mobile data preferences</string>
-    <string name="phone_profiles_pref_notificationStatusBarStyle_color">Colorfull</string>
+    <string name="phone_profiles_pref_notificationStatusBarStyle_color">Colorful</string>
     <string name="phone_profiles_pref_notificationStatusBarStyle_android">Native</string>
     <string name="phone_profiles_pref_applicationLongClickActivation">Long click activate profile</string>
     <string name="profile_preferences_deviceRunApplicationPackageName">Application</string>
@@ -163,7 +163,7 @@
     <string name="phone_profiles_pref_applicationWidgetLightnessI">Icon lightness</string>
     <string name="dashclock_extension_description">Display active profile with preferences indicator. On click will be open Activator.</string>
     <string name="phone_profiles_pref_category_widget_icon_shortcut">Widget-Icon; Shortcut</string>
-	<string name="array_pref_widgetColor_colorfull">Colorfull</string>
+	<string name="array_pref_widgetColor_colorful">Colorful</string>
 	<string name="array_pref_widgetColor_monochrome">Monochrome</string>
 	<string name="phone_profiles_pref_applicationWidgetIconColor">Icon color type</string>
     <string name="phone_profiles_pref_category_widget_one_row">Widget-single row</string>

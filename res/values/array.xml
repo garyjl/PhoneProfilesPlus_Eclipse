@@ -115,7 +115,7 @@
 	<item>100</item>
 </string-array>
 <string-array name="widgetColorArray">
-	<item>@string/array_pref_widgetColor_colorfull</item>
+	<item>@string/array_pref_widgetColor_colorful</item>
 	<item>@string/array_pref_widgetColor_monochrome</item>
 </string-array>
 <string-array name="widgetColorValues">
