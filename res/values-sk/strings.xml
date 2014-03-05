@@ -75,7 +75,7 @@
     <string name="profile_preferences_soundAlarmChange">Zmeniť tón budíka</string>
     <string name="profile_preferences_soundAlarm">Tón budíka</string>
     <string name="profile_preferences_deviceAirplaneMode">Mód lietadlo</string>
-    <string name="profile_preferences_deviceWiFi">WiFi</string>
+    <string name="profile_preferences_deviceWiFi">Wi-Fi</string>
     <string name="profile_preferences_deviceBluetooth">Bluetooth</string>
     <string name="profile_preferences_deviceGPS">GPS</string>
     <string name="profile_preferences_deviceScreenTimeout">Čas do vypnutia obrazovky</string>

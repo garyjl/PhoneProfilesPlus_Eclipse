@@ -75,7 +75,7 @@
     <string name="profile_preferences_soundAlarmChange">Alarmton ändern</string> 
     <string name="profile_preferences_soundAlarm">Alarmton</string> 
     <string name="profile_preferences_deviceAirplaneMode">Flugzeugmodus</string> 
-    <string name="profile_preferences_deviceWiFi">WLAN</string> 
+    <string name="profile_preferences_deviceWiFi">Wi-Fi</string> 
     <string name="profile_preferences_deviceBluetooth">BlueTooth</string>
     <string name="profile_preferences_deviceGPS">GPS</string> 
     <string name="profile_preferences_deviceScreenTimeout">Beleuchtungsdauer</string> 
