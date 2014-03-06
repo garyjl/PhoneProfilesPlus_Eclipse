@@ -5,12 +5,10 @@ import java.util.List;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.media.AudioManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 public class Event {
 	
@@ -177,7 +175,7 @@ public class Event {
 		this._fkProfile = Long.parseLong(preferences.getString(PREF_EVENT_PROFILE, "0"));
 		this._status = (preferences.getBoolean(PREF_EVENT_ENABLED, false)) ? ESTATUS_PAUSE : ESTATUS_STOP;
 		this._notificationSound = preferences.getString(PREF_EVENT_NOTIFICATION_SOUND, ""); 
-		Log.e("Event.saveSharedPrefereces","notificationSound="+this._notificationSound);
+		//Log.e("Event.saveSharedPrefereces","notificationSound="+this._notificationSound);
 		this._eventPreferences.saveSharedPrefereces(preferences);
 		
 		if (!this.isRunnable())

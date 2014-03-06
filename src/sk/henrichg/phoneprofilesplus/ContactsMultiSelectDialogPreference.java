@@ -3,22 +3,13 @@ package sk.henrichg.phoneprofilesplus;
 import android.content.Context;
 import android.content.DialogInterface;
 
-import android.content.res.TypedArray;
-
 import android.preference.DialogPreference;
-import android.provider.Settings.SettingNotFoundException;
 
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
-import android.widget.CheckBox;
 import android.widget.ListView;
-import android.widget.SeekBar;
-import android.widget.TextView;
-import android.widget.CompoundButton;
 
 public class ContactsMultiSelectDialogPreference extends DialogPreference
 {

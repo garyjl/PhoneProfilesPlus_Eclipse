@@ -815,7 +815,7 @@ public class ActivateProfileHelper {
 				
 				command1 = "settings put secure location_providers_allowed \"" + newSet + "\"";
 	    		//command1 = "sqlite3 /data/data/com.android.providers.settings/databases/settings.db \'update secure set value=\"" + newSet + "\" where name=\"location_providers_allowed\";\'";
-	    		Log.e("ActivateProfileHelper.setGPS","command1="+command1);
+	    		//Log.e("ActivateProfileHelper.setGPS","command1="+command1);
 				//command2 = "am broadcast -a android.location.GPS_ENABLED_CHANGE --ez state true";
 				CommandCapture command = new CommandCapture(0, command1); //, command2);
 				try {
@@ -920,7 +920,7 @@ public class ActivateProfileHelper {
 				
 				command1 = "settings put secure location_providers_allowed \"" + newSet + "\"";
 	    		//command1 = "sqlite3 /data/data/com.android.providers.settings/databases/settings.db \'update secure set value=\"" + newSet + "\" where name=\"location_providers_allowed\";\'";
-	    		Log.e("ActivateProfileHelper.setGPS","command1="+command1);
+	    		//Log.e("ActivateProfileHelper.setGPS","command1="+command1);
 				//command2 = "am broadcast -a android.location.GPS_ENABLED_CHANGE --ez state false";
 				CommandCapture command = new CommandCapture(0, command1);//, command2);
 	    		try {
