@@ -14,53 +14,55 @@ public class BatteryEventsAlarmBroadcastReceiver extends WakefulBroadcastReceive
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		GlobalData.logE("##### BatteryEventsAlarmBroadcastReceiver.onReceive","xxx");
-		doOnReceive(context);
+		doOnReceive(context, 0);
 	}
 
-	static public void doOnReceive(Context context)
+	static public void doOnReceive(Context context, long event_id)
 	{
 		GlobalData.logE("BatteryEventsAlarmBroadcastReceiver.doOnReceive","xxx");
 		
-		DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
-		List<Event> eventList = dataWrapper.getEventList();
-
 		boolean batteryEventsExists = false;
 
-		if (GlobalData.getGlobalEventsRuning(dataWrapper.context))
+		if (GlobalData.getGlobalEventsRuning(context))
 		{
-		
-			for (Event event : eventList)
+			if (event_id == 0)
 			{
-				GlobalData.logE("BatteryEventsAlarmBroadcastReceiver.onReceive","event._type="+event._type);
-				GlobalData.logE("BatteryEventsAlarmBroadcastReceiver.onReceive","event.getStatus()="+event.getStatus());
-				
-				if ((event._type == Event.ETYPE_BATTERY) && (event.getStatus() != Event.ESTATUS_STOP))
+				DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
+				List<Event> eventList = dataWrapper.getEventList();
+				for (Event event : eventList)
 				{
-					batteryEventsExists = true;
-					
-					// start service
-					Intent eventsServiceIntent = new Intent(context, EventsService.class);
-					eventsServiceIntent.putExtra(GlobalData.EXTRA_EVENT_TYPE, event._type);
-					eventsServiceIntent.putExtra(GlobalData.EXTRA_EVENT_ID, event._id);
-					eventsServiceIntent.putExtra(GlobalData.EXTRA_POWER_CHANGE_RECEIVED, false);
-					startWakefulService(context, eventsServiceIntent);
+					if ((event._type == Event.ETYPE_BATTERY) && (event.getStatus() != Event.ESTATUS_STOP))
+					{
+						batteryEventsExists = true;
+					}
 				}
+				dataWrapper.invalidateDataWrapper();
+			}
+			else
+				batteryEventsExists = true;
+
+			if (batteryEventsExists)
+			{
+				// start service
+				Intent eventsServiceIntent = new Intent(context, EventsService.class);
+				eventsServiceIntent.putExtra(GlobalData.EXTRA_EVENT_TYPE, Event.ETYPE_BATTERY);
+				eventsServiceIntent.putExtra(GlobalData.EXTRA_EVENT_ID, event_id);
+				eventsServiceIntent.putExtra(GlobalData.EXTRA_POWER_CHANGE_RECEIVED, false);
+				startWakefulService(context, eventsServiceIntent);
 			}
 			
 		}
 		
 		if (!batteryEventsExists)
 			removeAlarm(context);
-		
-		dataWrapper.invalidateDataWrapper();
 	}
 	
 	static public void removeAlarm(Context context)
 	{
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
+   		GlobalData.logE("BatteryEventsAlarmBroadcastReceiver.removeAlarm","xxx");
 
+		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
 		Intent intent = new Intent(context, BatteryEventsAlarmBroadcastReceiver.class);
-	    
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), 0, intent, PendingIntent.FLAG_NO_CREATE);
         if (pendingIntent != null)
         {

@@ -25,7 +25,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static SQLiteDatabase writableDb;	
     
 	// Database Version
-	private static final int DATABASE_VERSION = 1020;
+	private static final int DATABASE_VERSION = 1021;
 
 	// Database Name
 	private static final String DATABASE_NAME = "phoneProfilesManager";
@@ -86,6 +86,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_E_USE_END_TIME = "useEndTime";
 	private static final String KEY_E_BATTERY_LEVEL = "batteryLevel";
 	private static final String KEY_E_BATTERY_DETECTOR_TYPE = "batteryDetectorType";
+	private static final String KEY_E_BATTERY_BLOCKED = "batteryBlocked";
 	
 	private static final String KEY_ET_ID = "id";
 	private static final String KEY_ET_EORDER = "eorder";
@@ -206,7 +207,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_E_USE_END_TIME + " INTEGER,"
 				+ KEY_E_STATUS + " INTEGER,"
 				+ KEY_E_BATTERY_LEVEL + " INTEGER,"
-				+ KEY_E_BATTERY_DETECTOR_TYPE + " INTEGER"
+				+ KEY_E_BATTERY_DETECTOR_TYPE + " INTEGER,"
+				+ KEY_E_BATTERY_BLOCKED + " INTEGER"
 				+ ")";
 		db.execSQL(CREATE_EVENTS_TABLE);
 
@@ -501,6 +503,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		     } finally {
 		    	db.endTransaction();
 	         }	
+		}
+		
+		if (oldVersion < 1021)
+		{
+			// pridame nove stlpce
+			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_BATTERY_BLOCKED + " INTEGER");
+			
+			// updatneme zaznamy
+			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_BATTERY_BLOCKED + "=0");
 		}
 		
 	}
@@ -1723,6 +1734,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		Cursor cursor = db.query(TABLE_EVENTS, 
 				                 new String[] { KEY_E_BATTERY_LEVEL, 
 												KEY_E_BATTERY_DETECTOR_TYPE,
+												KEY_E_BATTERY_BLOCKED
 												}, 
 				                 KEY_ID + "=?",
 				                 new String[] { String.valueOf(event._id) }, null, null, null, null);
@@ -1733,6 +1745,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 		eventPreferences._level = Integer.parseInt(cursor.getString(0));
 		eventPreferences._detectorType = Integer.parseInt(cursor.getString(1));
+		eventPreferences._blocked = (Integer.parseInt(cursor.getString(2)) == 1);
 		
 		cursor.close();
 	}
@@ -1804,12 +1817,48 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_E_TYPE, event._type);
 		values.put(KEY_E_BATTERY_LEVEL, eventPreferences._level);
 		values.put(KEY_E_BATTERY_DETECTOR_TYPE, eventPreferences._detectorType);
+		values.put(KEY_E_BATTERY_BLOCKED, eventPreferences._blocked ? 1 : 0);
 
 		// updating row
 		int r = db.update(TABLE_EVENTS, values, KEY_ID + " = ?",
 				        new String[] { String.valueOf(event._id) });
         
 		return r;
+	}
+
+	public int updateEventPreferencesBatteryBlocked(Event event)
+	{
+		//SQLiteDatabase db = this.getWritableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+
+		EventPreferencesBattery eventPreferences = (EventPreferencesBattery)event._eventPreferences; 
+		
+		ContentValues values = new ContentValues();
+		values.put(KEY_E_BATTERY_BLOCKED, eventPreferences._blocked);
+
+		int r = 0;
+		
+		db.beginTransaction();
+		
+		try {
+			// updating row
+			r = db.update(TABLE_EVENTS, values, KEY_ID + " = ?",
+				new String[] { String.valueOf(event._id) });
+		
+			db.setTransactionSuccessful();
+
+		} catch (Exception e){
+			//Error in between database transaction
+			Log.e("DatabaseHandler.updateEventPreferencesBatteryBlocked", e.toString());
+			r = 0;
+		} finally {
+			db.endTransaction();
+		}	
+		
+        //db.close();
+        
+		return r;
+		
 	}
 	
 	public int getEventStatus(Event event)
@@ -1873,8 +1922,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		return r;
 		
 	}
-	
-	
 	
 // EVENT TIMELINE ------------------------------------------------------------------
 	
@@ -2272,7 +2319,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 											values.put(KEY_E_BATTERY_LEVEL, 15);
 											values.put(KEY_E_BATTERY_DETECTOR_TYPE, 0);
 										}
-	
+
+										if (exportedDBObj.getVersion() < 1021)
+										{
+											values.put(KEY_E_BATTERY_BLOCKED, 0);
+										}
+										
 										// Inserting Row do db z SQLiteOpenHelper
 										db.insert(TABLE_EVENTS, null, values);
 										

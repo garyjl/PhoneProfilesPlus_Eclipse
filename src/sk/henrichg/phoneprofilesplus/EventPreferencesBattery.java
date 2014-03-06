@@ -13,6 +13,8 @@ public class EventPreferencesBattery extends EventPreferences {
 	public int _level;
 	public int _detectorType;
 	
+	public boolean _blocked;
+	
 	static final int DETECTOR_TYPE_LOW_LEVEL = 0;
 	static final int DETECTOR_TYPE_HIGHT_LEVEL = 1;
 	static final int DETECTOR_TYPE_PLUG = 2;
@@ -28,6 +30,7 @@ public class EventPreferencesBattery extends EventPreferences {
 		
 		this._level = level;
 		this._detectorType = detectorType;
+		this._blocked = false;
 		
 		// removed detector type unplug
 		if (detectorType > DETECTOR_TYPE_PLUG)
@@ -43,6 +46,7 @@ public class EventPreferencesBattery extends EventPreferences {
 	{
 		this._level = ((EventPreferencesBattery)fromEvent._eventPreferences)._level;
 		this._detectorType = ((EventPreferencesBattery)fromEvent._eventPreferences)._detectorType;
+		this._blocked = false;
 	}
 	
 	@Override
@@ -68,6 +72,7 @@ public class EventPreferencesBattery extends EventPreferences {
 
 		sLevel = preferences.getString(PREF_EVENT_BATTERY_DETECTOR_TYPE, "0");
 		this._detectorType = Integer.parseInt(sLevel);
+		this._blocked = false;
 	
 	}
 	
@@ -122,7 +127,9 @@ public class EventPreferencesBattery extends EventPreferences {
 			key.equals(PREF_EVENT_BATTERY_DETECTOR_TYPE))
 		{
 			setSummary(prefMng, key, preferences.getString(key, ""), context);
-			disableDependedPref(prefMng, PREF_EVENT_BATTERY_DETECTOR_TYPE, preferences.getString(key, ""));
+			
+			if (key.equals(PREF_EVENT_BATTERY_DETECTOR_TYPE))
+				disableDependedPref(prefMng, PREF_EVENT_BATTERY_DETECTOR_TYPE, preferences.getString(key, ""));
 		}
 	}
 	
@@ -210,9 +217,9 @@ public class EventPreferencesBattery extends EventPreferences {
 	public boolean invokeBroadcastReceiver(Context context)
 	{
 		if ((_detectorType == DETECTOR_TYPE_LOW_LEVEL) || (_detectorType == DETECTOR_TYPE_HIGHT_LEVEL))
-			BatteryEventsAlarmBroadcastReceiver.doOnReceive(context);
+			BatteryEventsAlarmBroadcastReceiver.doOnReceive(context, _event._id);
 		else
-			PowerConnectionReceiver.doOnReceive(context);
+			PowerConnectionReceiver.doOnReceive(context, _event._id);
 		
 		return true;
 	}

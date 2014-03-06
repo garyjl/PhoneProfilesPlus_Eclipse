@@ -460,7 +460,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 			if (GlobalData.getGlobalEventsRuning(getBaseContext()))
 			{
 				// no setup for next start
-				dataWrapper.pauseAllEvents(true);
+				dataWrapper.pauseAllEvents(true, false);
 				GlobalData.setGlobalEventsRuning(getBaseContext(), false);
 				BatteryEventsAlarmBroadcastReceiver.removeAlarm(getBaseContext());
 			}

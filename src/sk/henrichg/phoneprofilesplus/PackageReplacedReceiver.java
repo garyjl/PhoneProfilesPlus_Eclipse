@@ -3,6 +3,7 @@ package sk.henrichg.phoneprofilesplus;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 public class PackageReplacedReceiver extends BroadcastReceiver {
 
@@ -13,27 +14,36 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 		int myUid = android.os.Process.myUid();
 		if (intentUid == myUid)
 		{
-			//Log.e("PackageReplacedReceiver.onReceive","xxx");
+			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
 			
 			if (GlobalData.getApplicationStarted(context))
 			{
-				GlobalData.grantRoot();
-
-				BatteryEventsAlarmBroadcastReceiver.removeAlarm(context);
+				GlobalData.setApplicationStarted(context, false);
 				
-				// startneme eventy
-				if (GlobalData.getGlobalEventsRuning(context))
-				{
-					DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
-					dataWrapper.firstStartEvents(true, false);
-					dataWrapper.invalidateDataWrapper();
-				}
-			
-				Intent i = new Intent(context, BackgroundActivateProfileActivity.class);
-				i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				i.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_BOOT);
-				context.startActivity(i);
+				// stop all events
+				dataWrapper.stopAllEvents(false);
+				
+				// zrusenie notifikacie
+				dataWrapper.getActivateProfileHelper().initialize(dataWrapper, null, context);
+				dataWrapper.getActivateProfileHelper().removeNotification();
 			}
+
+			GlobalData.setApplicationStarted(context, true);
+			
+			GlobalData.grantRoot();
+
+			// startneme eventy
+			if (GlobalData.getGlobalEventsRuning(context))
+			{
+				dataWrapper.firstStartEvents(true, false);
+			}
+
+			dataWrapper.invalidateDataWrapper();
+			
+			Intent i = new Intent(context, BackgroundActivateProfileActivity.class);
+			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			i.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_BOOT);
+			context.startActivity(i);
 		}		
 	}
 

@@ -565,14 +565,47 @@ public class DataWrapper {
 	}
 	
 	// pauses all events without activating profiles from Timeline
-	public void pauseAllEvents(boolean noSetSystemEvent)
+	public void pauseAllEvents(boolean noSetSystemEvent, boolean blockBatteryEvents)
 	{
 		List<EventTimeline> eventTimelineList = getEventTimelineList();
 		
 		for (Event event : getEventList())
 		{
 			if (event.getStatusFromDB(this) == Event.ESTATUS_RUNNING)
+			{
 				event.pauseEvent(this, eventTimelineList, false, true, noSetSystemEvent);
+				
+				if (blockBatteryEvents)
+				{
+					if (event._type == Event.ETYPE_BATTERY)
+					{
+						EventPreferencesBattery eventPreferences = (EventPreferencesBattery)event._eventPreferences;
+						if ((eventPreferences._detectorType == EventPreferencesBattery.DETECTOR_TYPE_LOW_LEVEL) ||
+							(eventPreferences._detectorType == EventPreferencesBattery.DETECTOR_TYPE_HIGHT_LEVEL))
+						{
+							eventPreferences._blocked = true;
+							databaseHandler.updateEventPreferencesBatteryBlocked(event);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	public void blockAllBatteryEvents(boolean block)
+	{
+		for (Event event : getEventList())
+		{
+			if (event._type == Event.ETYPE_BATTERY)
+			{
+				EventPreferencesBattery eventPreferences = (EventPreferencesBattery)event._eventPreferences;
+				if ((eventPreferences._detectorType == EventPreferencesBattery.DETECTOR_TYPE_LOW_LEVEL) ||
+					(eventPreferences._detectorType == EventPreferencesBattery.DETECTOR_TYPE_HIGHT_LEVEL))
+				{
+					eventPreferences._blocked = block;
+					databaseHandler.updateEventPreferencesBatteryBlocked(event);
+				}
+			}
 		}
 	}
 
@@ -586,6 +619,7 @@ public class DataWrapper {
 			if (event.getStatusFromDB(this) != Event.ESTATUS_STOP)
 				event.stopEvent(this, eventTimelineList, false, true, saveEventStatus);
 		}
+		BatteryEventsAlarmBroadcastReceiver.removeAlarm(context);
 	}
 	
 	// this is called in boot or start application
@@ -651,9 +685,8 @@ public class DataWrapper {
 		{
 			// for manual activation pause all running events
 			// and setup for next start
-			pauseAllEvents(false);
-			// block starting battery events
-			GlobalData.setBatteryPausedByManualProfileActivation(context, true);
+			// block battery events
+			pauseAllEvents(false, true);
 		}
 		
 		activateProfileHelper.execute(profile, interactive);

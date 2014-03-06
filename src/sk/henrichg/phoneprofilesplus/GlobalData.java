@@ -28,8 +28,13 @@ public class GlobalData extends Application {
 
 	static String PACKAGE_NAME;
 	
-	public static boolean logIntoLogCat = false;
-	public static boolean logIntoFile = false;
+	public static boolean logIntoLogCat = true;
+	public static boolean logIntoFile = true;
+	public static String logFilterTags = "EventPreferencesBattery|"+
+	                                     "BatteryEventsAlarmBroadcastReceiver|"+
+			                             "EventService.doBatteryEven|"+
+	                                     "PowerConnectionReceiver";
+	
 	public static final String EXPORT_PATH = "/PhoneProfilesPlus";
 	public static final String LOG_FILENAME = "log.txt";
 
@@ -146,7 +151,6 @@ public class GlobalData extends Application {
 	
 	private static final String PREF_GLOBAL_EVENTS_RUN_STOP = "globalEventsRunStop";
 	private static final String PREF_APPLICATION_STARTED = "applicationStarted";
-	private static final String PREF_BATTERY_PAUSED_BY_MANUAL_PROFILE_ACTIVATION = "batteryPausedByManualProfileActivation";
 	
     public static boolean applicationStartOnBoot;
     public static boolean applicationActivate;
@@ -210,7 +214,7 @@ public class GlobalData extends Application {
 		File logFile = new File(sd, EXPORT_PATH + "/" + LOG_FILENAME);
 		logFile.delete();
 	}
-	
+
 	@SuppressLint("SimpleDateFormat")
 	static private void logIntoFile(String type, String tag, String text)
 	{
@@ -253,28 +257,55 @@ public class GlobalData extends Application {
 	    }		
 	}
 
+	private static boolean logContainsFilterTag(String tag)
+	{
+		boolean contains = false;
+		String[] splits = logFilterTags.split("\\|");
+		for (int i = 0; i < splits.length; i++)
+		{
+			if (tag.contains(splits[i]))
+			{
+				contains = true;
+				break;		
+			}
+		}
+		return contains;
+	}
+	
 	static public void logI(String tag, String text)
 	{
-		if (logIntoLogCat) Log.i(tag, text);
-		logIntoFile("I", tag, text);
+		if (logContainsFilterTag(tag))
+		{
+			if (logIntoLogCat) Log.i(tag, text);
+			logIntoFile("I", tag, text);
+		}
 	}
 	
 	static public void logW(String tag, String text)
 	{
-		if (logIntoLogCat) Log.w(tag, text);
-		logIntoFile("W", tag, text);
+		if (logContainsFilterTag(tag))
+		{
+			if (logIntoLogCat) Log.w(tag, text);
+			logIntoFile("W", tag, text);
+		}
 	}
 	
 	static public void logE(String tag, String text)
 	{
-		if (logIntoLogCat) Log.e(tag, text);
-		logIntoFile("E", tag, text);
+		if (logContainsFilterTag(tag))
+		{
+			if (logIntoLogCat) Log.e(tag, text);
+			logIntoFile("E", tag, text);
+		}
 	}
 
 	static public void logD(String tag, String text)
 	{
-		if (logIntoLogCat) Log.d(tag, text);
-		logIntoFile("D", tag, text);
+		if (logContainsFilterTag(tag))
+		{
+			if (logIntoLogCat) Log.d(tag, text);
+			logIntoFile("D", tag, text);
+		}
 	}
 	
 	//--------------------------------------------------------------
@@ -513,20 +544,6 @@ public class GlobalData extends Application {
 		editor.commit();
 	}
 
-	static public boolean getBatteryPausedByManualProfileActivation(Context context)
-	{
-		SharedPreferences preferences = context.getSharedPreferences(APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
-		return preferences.getBoolean(PREF_BATTERY_PAUSED_BY_MANUAL_PROFILE_ACTIVATION, false);
-	}
-
-	static public void setBatteryPausedByManualProfileActivation(Context context, boolean batteryPausedByManualProfileActivation)
-	{
-		SharedPreferences preferences = context.getSharedPreferences(APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
-		Editor editor = preferences.edit();
-		editor.putBoolean(PREF_BATTERY_PAUSED_BY_MANUAL_PROFILE_ACTIVATION, batteryPausedByManualProfileActivation);
-		editor.commit();
-	}
-	
 	// ----- Hardware check -------------------------------------
 	
 	static public boolean rootChecked = false;

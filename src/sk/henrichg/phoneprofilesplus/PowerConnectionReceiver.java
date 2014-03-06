@@ -11,38 +11,43 @@ public class PowerConnectionReceiver extends WakefulBroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		GlobalData.logE("#### PowerConnectionReceiver.onReceive","xxx");
-		doOnReceive(context);
+		doOnReceive(context, 0);
 	}
 	
-	static public void doOnReceive(Context context)
+	static public void doOnReceive(Context context, long event_id)
 	{
 		GlobalData.logE("PowerConnectionReceiver.doOnReceive","xxx");
 		
-		DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
-		List<Event> eventList = dataWrapper.getEventList();
-
-		if (GlobalData.getGlobalEventsRuning(dataWrapper.context))
-		{
+		boolean batteryEventsExists = false;
 		
-			for (Event event : eventList)
+		if (GlobalData.getGlobalEventsRuning(context))
+		{
+			if (event_id == 0)
 			{
-				GlobalData.logE("PowerConnectionReceiver.onReceive","event._type="+event._type);
-				GlobalData.logE("PowerConnectionReceiver.onReceive","event.getStatus()="+event.getStatus());
-				
-				if ((event._type == Event.ETYPE_BATTERY) && (event.getStatus() != Event.ESTATUS_STOP))
+				DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
+				List<Event> eventList = dataWrapper.getEventList();
+				for (Event event : eventList)
 				{
-					// start service
-					Intent eventsServiceIntent = new Intent(context, EventsService.class);
-					eventsServiceIntent.putExtra(GlobalData.EXTRA_EVENT_TYPE, event._type);
-					eventsServiceIntent.putExtra(GlobalData.EXTRA_EVENT_ID, event._id);
-					eventsServiceIntent.putExtra(GlobalData.EXTRA_POWER_CHANGE_RECEIVED, true);
-					startWakefulService(context, eventsServiceIntent);
+					if ((event._type == Event.ETYPE_BATTERY) && (event.getStatus() != Event.ESTATUS_STOP))
+					{
+						batteryEventsExists = true;
+					}
 				}
+				dataWrapper.invalidateDataWrapper();
+			}
+			else
+				batteryEventsExists = true;
+	
+			if (batteryEventsExists)
+			{
+				// start service
+				Intent eventsServiceIntent = new Intent(context, EventsService.class);
+				eventsServiceIntent.putExtra(GlobalData.EXTRA_EVENT_TYPE, Event.ETYPE_BATTERY);
+				eventsServiceIntent.putExtra(GlobalData.EXTRA_EVENT_ID, event_id);
+				eventsServiceIntent.putExtra(GlobalData.EXTRA_POWER_CHANGE_RECEIVED, true);
+				startWakefulService(context, eventsServiceIntent);
 			}
 			
 		}
-		
-		dataWrapper.invalidateDataWrapper();
-		
 	}
 }

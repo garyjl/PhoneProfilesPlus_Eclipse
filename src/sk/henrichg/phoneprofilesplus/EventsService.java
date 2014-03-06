@@ -109,8 +109,8 @@ public class EventsService extends IntentService
 		}
 	}
 	
-	private void doBatteryEvent(DataWrapper dataWrapper, 
-								List<EventTimeline> eventTimelineList,
+	private void _doBatteryEvent(DataWrapper dataWrapper, 
+								List<EventTimeline> eventTimelineList, 
 								Event event, boolean powerChangeReceived)
 	{
 		// get battery status
@@ -132,8 +132,10 @@ public class EventsService extends IntentService
 		
 		if (eventPreferences._detectorType == EventPreferencesBattery.DETECTOR_TYPE_PLUG)
 		{
+			GlobalData.logE("EventService.doBatteryEvent","plug event");
+
 			// unblock starting battery events
-			GlobalData.setBatteryPausedByManualProfileActivation(context, false);
+			dataWrapper.blockAllBatteryEvents(false);
 			
 			if (isCharging)
 				event.startEvent(dataWrapper, eventTimelineList, false);
@@ -142,10 +144,10 @@ public class EventsService extends IntentService
 		}
 		else
 		{
+			GlobalData.logE("EventService.doBatteryEvent","not plug event");
 			if (isCharging)
 			{
-				if (event.getStatus() != Event.ESTATUS_PAUSE)
-					event.pauseEvent(dataWrapper, eventTimelineList, true, false, false);
+				event.pauseEvent(dataWrapper, eventTimelineList, true, false, false);
 			}
 			else
 			{
@@ -156,13 +158,12 @@ public class EventsService extends IntentService
 			
 				GlobalData.logE("EventService.doBatteryEvent","batteryPct="+batteryPct);
 	
-				boolean batteryPaused = GlobalData.getBatteryPausedByManualProfileActivation(context);
-				
 				if (eventPreferences._detectorType == EventPreferencesBattery.DETECTOR_TYPE_LOW_LEVEL)
 				{
 					if (batteryPct <= (eventPreferences._level / (float)100))
 					{
-						if (!batteryPaused)
+						GlobalData.logE("EventService.doBatteryEvent","low-inlevel blocked="+eventPreferences._blocked);
+						if (!eventPreferences._blocked)
 						{
 							// starting battery level unblocked
 							if (event.getStatus() != Event.ESTATUS_RUNNING)
@@ -171,11 +172,12 @@ public class EventsService extends IntentService
 					}
 					else
 					{
-						// unblock starting battery events
-						GlobalData.setBatteryPausedByManualProfileActivation(context, false);
+						GlobalData.logE("EventService.doBatteryEvent","low-outlevel blocked="+eventPreferences._blocked);
+						// unblock starting battery event
+						eventPreferences._blocked = false;
+						dataWrapper.getDatabaseHandler().updateEventPreferencesBatteryBlocked(event);
 	
-						if (event.getStatus() != Event.ESTATUS_PAUSE)
-							event.pauseEvent(dataWrapper, eventTimelineList, true, false, false);
+						event.pauseEvent(dataWrapper, eventTimelineList, true, false, false);
 					}
 				}
 				else
@@ -183,7 +185,7 @@ public class EventsService extends IntentService
 				{
 					if (batteryPct >= (eventPreferences._level / (float)100))
 					{
-						if (!batteryPaused)
+						if (!eventPreferences._blocked)
 						{
 							// starting battery level unblocked
 							if (event.getStatus() != Event.ESTATUS_RUNNING)
@@ -192,15 +194,39 @@ public class EventsService extends IntentService
 					}
 					else
 					{
-						// unblock starting battery events
-						GlobalData.setBatteryPausedByManualProfileActivation(context, false);
+						// unblock starting battery event
+						eventPreferences._blocked = false;
+						dataWrapper.getDatabaseHandler().updateEventPreferencesBatteryBlocked(event);
 	
-						if (event.getStatus() != Event.ESTATUS_RUNNING)
-							event.pauseEvent(dataWrapper, eventTimelineList, true, false, false);
+						event.pauseEvent(dataWrapper, eventTimelineList, true, false, false);
 					}
 				}
 			}
 		}
+	}
+
+	private void doBatteryEvent(DataWrapper dataWrapper, 
+								List<EventTimeline> eventTimelineList,
+								Event event, boolean powerChangeReceived)
+	{
+		List<Event> eventList = dataWrapper.getEventList();
+		
+		if (event == null)
+		{
+			for (Event _event : eventList)
+			{
+				GlobalData.logE("EventService.doBatteryEvent","event._type="+_event._type);
+				GlobalData.logE("EventService.doBatteryEvent","event.getStatus()="+_event.getStatus());
+				
+				if ((_event._type == Event.ETYPE_BATTERY) && (_event.getStatus() != Event.ESTATUS_STOP))
+				{
+					_doBatteryEvent(dataWrapper, eventTimelineList, _event, powerChangeReceived);
+				}
+			}
+		}
+		else
+			_doBatteryEvent(dataWrapper, eventTimelineList, event, powerChangeReceived);
+		
 	}
 	
 
