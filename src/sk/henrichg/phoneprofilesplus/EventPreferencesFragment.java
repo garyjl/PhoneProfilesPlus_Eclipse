@@ -147,7 +147,8 @@ public class EventPreferencesFragment extends PreferenceListFragment
 			event = new Event(getResources().getString(R.string.event_name_default), 
 						Event.ETYPE_TIME, 
 						0,
-						Event.ESTATUS_STOP
+						Event.ESTATUS_STOP,
+						""
 		         );
 		}
 		else
@@ -159,7 +160,8 @@ public class EventPreferencesFragment extends PreferenceListFragment
 						   origEvent._name+"_d", 
 						   origEvent._type, 
 						   origEvent._fkProfile, 
-						   origEvent.getStatus()
+						   origEvent.getStatus(),
+						   origEvent._notificationSound
 							);
 			event.copyEventPreferences(origEvent);
 		}

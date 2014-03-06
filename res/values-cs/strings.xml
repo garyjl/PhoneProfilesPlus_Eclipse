@@ -265,7 +265,9 @@
 	<string name="array_pref_event_battery_detector_type_hight_level">Vysoká úroveň </string>
 	<string name="array_pref_event_battery_detector_type_plug">Nabíjení</string>
 	<string name="event_type_battery">Baterie</string>
-
     <string name="profile_preferences_volumeSpeakerPhone">Hlasitý odposlech</string>
-		
+
+    <string name="event_preferences_notificationSound">Tón notifikace</string>
+    <string name="event_preferences_notificationSound_None">Žádné</string>
+    		
 </resources>

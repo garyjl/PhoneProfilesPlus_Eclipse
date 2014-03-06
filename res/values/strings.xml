@@ -264,7 +264,9 @@
 	<string name="array_pref_event_battery_detector_type_hight_level">Hight level</string>
     <string name="array_pref_event_battery_detector_type_plug">Charging</string>
 	<string name="event_type_battery">Battery</string>
-
     <string name="profile_preferences_volumeSpeakerPhone">Speakerphone</string>
-			
+    
+    <string name="event_preferences_notificationSound">Notification sound</string>
+    <string name="event_preferences_notificationSound_None">None</string>
+    			
 </resources>

@@ -264,7 +264,9 @@
 	<string name="array_pref_event_battery_detector_type_hight_level">Hoher Stand</string>
     <string name="array_pref_event_battery_detector_type_plug">Aufladen</string>
 	<string name="event_type_battery">Akku</string>
-
     <string name="profile_preferences_volumeSpeakerPhone">Lautsprechertelefon</string>
-					
+
+    <string name="event_preferences_notificationSound">Benachrichtigungston</string>
+    <string name="event_preferences_notificationSound_None">Keine</string>
+    					
 </resources>

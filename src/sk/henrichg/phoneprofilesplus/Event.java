@@ -5,7 +5,12 @@ import java.util.List;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.media.AudioManager;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 public class Event {
 	
@@ -13,7 +18,8 @@ public class Event {
 	public String _name;
 	public int _type;
 	public long _fkProfile;
-	private int _status;  // changed in background, load it from dataWrapper
+	private int _status;  
+	public String _notificationSound;
 
 	public EventPreferences _eventPreferences;
 	public int _typeOld;
@@ -30,10 +36,12 @@ public class Event {
     static final String PREF_EVENT_NAME = "eventName";
     static final String PREF_EVENT_TYPE = "eventType";
     static final String PREF_EVENT_PROFILE = "eventProfile";
+    static final String PREF_EVENT_NOTIFICATION_SOUND = "eventNotificationSound";
 	
     static final String PREF_EVENT_ENABLED_TMP = "eventEnabledTmp";
     static final String PREF_EVENT_NAME_TMP = "eventNameTmp";
     static final String PREF_EVENT_PROFILE_TMP = "eventProfileTmp";
+    static final String PREF_EVENT_NOTIFICATION_SOUND_TMP = "eventNotificationSoundTmp";
 	
 
 	// Empty constructorn
@@ -46,13 +54,15 @@ public class Event {
 		         String name,
 		         int type,
 		         long fkProfile,
-		         int status)
+		         int status,
+		         String notificationSound)
 	{
 		this._id = id;
 		this._name = name;
         this._type = type;
         this._fkProfile = fkProfile;
         this._status = status;
+        this._notificationSound = notificationSound;
         
         createEventPreferences();
 	}
@@ -61,12 +71,14 @@ public class Event {
 	public Event(String name,
 	         	 int type,
 	         	 long fkProfile,
-	         	 int status)
+	         	 int status,
+	         	 String notificationSound)
 	{
 		this._name = name;
 	    this._type = type;
 	    this._fkProfile = fkProfile;
         this._status = status;
+        this._notificationSound = notificationSound;
 	    
 	    createEventPreferences();
 	}
@@ -78,6 +90,7 @@ public class Event {
         this._type = event._type;
         this._fkProfile = event._fkProfile;
         this._status = event._status;
+        this._notificationSound = event._notificationSound;
         
         copyEventPreferences(event);
 	}
@@ -152,6 +165,7 @@ public class Event {
    		editor.putString(PREF_EVENT_TYPE, Integer.toString(this._type));
    		editor.putString(PREF_EVENT_PROFILE, Long.toString(this._fkProfile));
    		editor.putBoolean(PREF_EVENT_ENABLED, this._status != ESTATUS_STOP);
+   		editor.putString(PREF_EVENT_NOTIFICATION_SOUND, this._notificationSound);
         this._eventPreferences.loadSharedPrefereces(preferences);
 		editor.commit();
 	}
@@ -162,6 +176,8 @@ public class Event {
 		this._type = Integer.parseInt(preferences.getString(PREF_EVENT_TYPE, "0"));
 		this._fkProfile = Long.parseLong(preferences.getString(PREF_EVENT_PROFILE, "0"));
 		this._status = (preferences.getBoolean(PREF_EVENT_ENABLED, false)) ? ESTATUS_PAUSE : ESTATUS_STOP;
+		this._notificationSound = preferences.getString(PREF_EVENT_NOTIFICATION_SOUND, ""); 
+		Log.e("Event.saveSharedPrefereces","notificationSound="+this._notificationSound);
 		this._eventPreferences.saveSharedPrefereces(preferences);
 		
 		if (!this.isRunnable())
@@ -176,10 +192,12 @@ public class Event {
 		String eventName = preferences.getString(PREF_EVENT_NAME_TMP, "");
 		String fkProfile = preferences.getString(PREF_EVENT_PROFILE_TMP, "0");
 		boolean eventEnabled = preferences.getBoolean(PREF_EVENT_ENABLED_TMP, false);
+		String notificationSound = preferences.getString(PREF_EVENT_NOTIFICATION_SOUND_TMP, "");
     	Editor editor = preferences.edit();
    		editor.putString(PREF_EVENT_NAME, eventName);
    		editor.putString(PREF_EVENT_PROFILE, fkProfile);
    		editor.putBoolean(PREF_EVENT_ENABLED, eventEnabled);
+   		editor.putString(PREF_EVENT_NOTIFICATION_SOUND, notificationSound);
 		editor.commit();
 		this._name = eventName;
 		this._fkProfile = Long.parseLong(fkProfile);
@@ -191,10 +209,12 @@ public class Event {
 		String eventName = preferences.getString(PREF_EVENT_NAME, "");
 		String fkProfile = preferences.getString(PREF_EVENT_PROFILE, "0");
 		boolean eventEnabled = preferences.getBoolean(PREF_EVENT_ENABLED, false);
+		String notificationSound = preferences.getString(PREF_EVENT_NOTIFICATION_SOUND, "");
     	Editor editor = preferences.edit();
    		editor.putString(PREF_EVENT_NAME_TMP, eventName);
    		editor.putString(PREF_EVENT_PROFILE_TMP, fkProfile);
    		editor.putBoolean(PREF_EVENT_ENABLED_TMP, eventEnabled);
+   		editor.putString(PREF_EVENT_NOTIFICATION_SOUND_TMP, notificationSound);
 		editor.commit();
 	}
 	
@@ -242,13 +262,31 @@ public class Event {
     	        prefMng.findPreference(key).setSummary(context.getResources().getString(R.string.event_preferences_profile_not_set));
 		    }
 		}
+		if (key.equals(PREF_EVENT_NOTIFICATION_SOUND))
+		{
+			String ringtoneUri = value.toString();
+			if (ringtoneUri.isEmpty())
+		        prefMng.findPreference(key).setSummary(R.string.event_preferences_notificationSound_None);
+			else
+			{
+				Uri uri = Uri.parse(ringtoneUri);
+				Ringtone ringtone = RingtoneManager.getRingtone(context, uri);
+				String ringtoneName;
+				if (ringtone == null)
+					ringtoneName = "";
+				else
+					ringtoneName = ringtone.getTitle(context);
+				prefMng.findPreference(key).setSummary(ringtoneName);
+			}
+		}
 	}
 
 	public void setSummary(PreferenceManager prefMng, String key, SharedPreferences preferences, Context context)
 	{
 		if (key.equals(PREF_EVENT_NAME) ||
 			key.equals(PREF_EVENT_TYPE) ||
-			key.equals(PREF_EVENT_PROFILE))
+			key.equals(PREF_EVENT_PROFILE) ||
+			key.equals(PREF_EVENT_NOTIFICATION_SOUND))
 			setSummary(prefMng, key, preferences.getString(key, ""), context);
 		_eventPreferences.setSummary(prefMng, key, preferences, context);
 	}
@@ -258,6 +296,7 @@ public class Event {
 		setSummary(prefMng, PREF_EVENT_NAME, _name, context);
 		setSummary(prefMng, PREF_EVENT_TYPE, Integer.toString(_type), context);
 		setSummary(prefMng, PREF_EVENT_PROFILE, Long.toString(_fkProfile), context);
+		setSummary(prefMng, PREF_EVENT_NOTIFICATION_SOUND, _notificationSound, context);
 		_eventPreferences.setAllSummary(prefMng, context);
 	}
 	
@@ -361,7 +400,7 @@ public class Event {
 		
 		if (this._fkProfile != eventTimeline._fkProfileReturn)
 			// no activate profile, when is already activated
-			dataWrapper.activateProfileFromEvent(this._fkProfile);
+			dataWrapper.activateProfileFromEvent(this._fkProfile, _notificationSound);
 
 		setSystemEvent(dataWrapper.context, ESTATUS_RUNNING);
 		
@@ -436,7 +475,7 @@ public class Event {
 					&& (_eventPreferences.activateReturnProfile()))
 				{
 					GlobalData.logE("Event.pauseEvent","activate return profile");
-					dataWrapper.activateProfileFromEvent(eventTimeline._fkProfileReturn);
+					dataWrapper.activateProfileFromEvent(eventTimeline._fkProfileReturn, _notificationSound);
 				}
 			}
 			else

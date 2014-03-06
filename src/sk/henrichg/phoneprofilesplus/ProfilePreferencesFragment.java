@@ -524,7 +524,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 			Ringtone ringtone = RingtoneManager.getRingtone(context, uri);
 			String ringtoneName;
 			if (ringtone == null)
-				ringtoneName = "[no ringtones]";
+				ringtoneName = "";
 			else
 				ringtoneName = ringtone.getTitle(context);
 			

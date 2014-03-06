@@ -504,7 +504,7 @@ public class ActivateProfileActivity extends ActionBarActivity {
 			startActivityForResult(intent, GlobalData.REQUEST_CODE_ACTIVATE_PROFILE);
 		*/
 		
-		dataWrapper.activateProfile(profile._id, startupSource, this);
+		dataWrapper.activateProfile(profile._id, startupSource, this, "");
 		
 	}
 	

@@ -21,6 +21,13 @@
             android:defaultValue="0"
             android:key="eventProfile"
             android:title="@string/event_preferences_eventProfile" />
+        <RingtonePreference
+            android:key="eventNotificationSound"
+            android:summary="@string/array_pref_no_change"
+            android:title="@string/event_preferences_notificationSound"
+            android:ringtoneType="notification" 
+            android:showSilent="true"
+            android:showDefault="true" />
     </PreferenceCategory>
     <PreferenceCategory
         android:summary="@string/event_preferences_category_eventParameters"

@@ -325,7 +325,7 @@ public class ActivateProfileHelper {
 		}
 	}
 	
-	public void execute(Profile _profile, boolean _interactive)
+	public void execute(Profile _profile, boolean _interactive, String eventNotificationSound)
 	{
 		// regrant root, maybe application is deleted from Superuser.apk
 		GlobalData.rootGranted = false;
@@ -345,6 +345,7 @@ public class ActivateProfileHelper {
 		Intent volumeServiceIntent = new Intent(context, ExecuteVolumeProfilePrefsService.class);
 		volumeServiceIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
 		volumeServiceIntent.putExtra(GlobalData.EXTRA_SECOND_SET_VOLUMES, true);
+		volumeServiceIntent.putExtra(GlobalData.EXTRA_EVENT_NOTIFICATION_SOUND, eventNotificationSound);
 		//WakefulIntentService.sendWakefulWork(context, radioServiceIntent);
 		context.startService(volumeServiceIntent);
 

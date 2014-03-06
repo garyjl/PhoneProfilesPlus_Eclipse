@@ -324,13 +324,14 @@ public class DataWrapper {
 		} */
 	}
 	
-	public void activateProfileFromEvent(long profile_id)
+	public void activateProfileFromEvent(long profile_id, String eventNotificationSound)
 	{
 		//Log.d("PhoneProfilesService.activateProfile",profile_id+"");
 		Intent intent = new Intent(context, BackgroundActivateProfileActivity.class);
 	    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     	intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_SERVICE);
 		intent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile_id);
+		intent.putExtra(GlobalData.EXTRA_EVENT_NOTIFICATION_SOUND, eventNotificationSound);
 	    context.startActivity(intent);		
 	}
 	
@@ -670,7 +671,8 @@ public class DataWrapper {
 
 //----- Activate profile ---------------------------------------------------------------------------------------------
 
-	private void _activateProfile(Profile _profile, int startupSource, boolean _interactive, Activity _activity)
+	private void _activateProfile(Profile _profile, int startupSource, boolean _interactive, 
+									Activity _activity, String eventNotificationSound)
 	{
 		Profile profile = GlobalData.getMappedProfile(_profile, context);
 		profile = filterProfileWithBatteryEvents(profile);
@@ -688,7 +690,7 @@ public class DataWrapper {
 			pauseAllEvents(false, true);
 		}
 		
-		activateProfileHelper.execute(profile, interactive);
+		activateProfileHelper.execute(profile, interactive, eventNotificationSound);
 		
 		activateProfileHelper.showNotification(profile);
 		activateProfileHelper.updateWidget();
@@ -712,7 +714,8 @@ public class DataWrapper {
 		finishActivity(startupSource, true, activity);
 	}
 	
-	private void activateProfileWithAlert(Profile profile, int startupSource, boolean interactive, Activity activity)
+	private void activateProfileWithAlert(Profile profile, int startupSource, boolean interactive, 
+											Activity activity, String eventNotificationSound)
 	{
 		// set theme and language for dialog alert ;-)
 		// not working on Android 2.3.x
@@ -726,6 +729,7 @@ public class DataWrapper {
 			final boolean _interactive = interactive;
 			final int _startupSource = startupSource;
 			final Activity _activity = activity;
+			final String _eventNotificationSound = eventNotificationSound;
 
 			AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
 			dialogBuilder.setTitle(activity.getResources().getString(R.string.profile_string_0) + ": " + profile._name);
@@ -734,7 +738,7 @@ public class DataWrapper {
 			dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
 				
 				public void onClick(DialogInterface dialog, int which) {
-					_activateProfile(_profile, _startupSource, _interactive, _activity);
+					_activateProfile(_profile, _startupSource, _interactive, _activity, _eventNotificationSound);
 				}
 			});
 			dialogBuilder.setNegativeButton(R.string.alert_button_no, new DialogInterface.OnClickListener() {
@@ -762,7 +766,7 @@ public class DataWrapper {
 		}
 		else
 		{
-			_activateProfile(profile, startupSource, interactive, activity);
+			_activateProfile(profile, startupSource, interactive, activity, eventNotificationSound);
 		}
 	}
 
@@ -812,7 +816,7 @@ public class DataWrapper {
 		}
 	}
 	
-	public void activateProfile(long profile_id, int startupSource, Activity activity)
+	public void activateProfile(long profile_id, int startupSource, Activity activity, String eventNotificationSound)
 	{
 		Profile profile;
 		
@@ -910,7 +914,7 @@ public class DataWrapper {
 		if (actProfile && (profile != null))
 		{
 			// aktivacia profilu
-			activateProfileWithAlert(profile, startupSource, interactive, activity);
+			activateProfileWithAlert(profile, startupSource, interactive, activity, eventNotificationSound);
 		}
 		else
 		{

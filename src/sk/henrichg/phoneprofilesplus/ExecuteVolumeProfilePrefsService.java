@@ -4,6 +4,8 @@ import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
 
 public class ExecuteVolumeProfilePrefsService extends IntentService //WakefulIntentService 
 {
@@ -22,9 +24,13 @@ public class ExecuteVolumeProfilePrefsService extends IntentService //WakefulInt
 		aph.initialize(dataWrapper, null, context);
 		
 		long profile_id = intent.getLongExtra(GlobalData.EXTRA_PROFILE_ID, 0);
+		String eventNotificationSound = intent.getStringExtra(GlobalData.EXTRA_EVENT_NOTIFICATION_SOUND);
+		if (eventNotificationSound == null) eventNotificationSound = "";
+
 		Profile profile = dataWrapper.getProfileById(profile_id);
 		profile = GlobalData.getMappedProfile(profile, context);
 		profile = dataWrapper.filterProfileWithBatteryEvents(profile);
+		
 		if (profile != null)
 		{
 			AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
@@ -43,8 +49,33 @@ public class ExecuteVolumeProfilePrefsService extends IntentService //WakefulInt
 				Intent volumeServiceIntent = new Intent(context, ExecuteVolumeProfilePrefsService.class);
 				volumeServiceIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
 				volumeServiceIntent.putExtra(GlobalData.EXTRA_SECOND_SET_VOLUMES, false);
+				volumeServiceIntent.putExtra(GlobalData.EXTRA_EVENT_NOTIFICATION_SOUND, eventNotificationSound);
 				//WakefulIntentService.sendWakefulWork(context, radioServiceIntent);
 				context.startService(volumeServiceIntent);
+			}
+			else
+			{
+				// play notification sound
+				if (!eventNotificationSound.isEmpty())
+				{
+					audioManager.setMode(AudioManager.MODE_NORMAL);
+					MediaPlayer mp=new MediaPlayer();
+					Uri ringtoneUri=Uri.parse(eventNotificationSound);
+					try
+					{
+					    mp.setDataSource(dataWrapper.context, ringtoneUri);
+					    mp.setAudioStreamType(AudioManager.STREAM_NOTIFICATION);
+					    mp.prepare();
+					    mp.start();
+
+			        	Thread.sleep(200);
+					    
+					}
+					catch(Exception e)
+					{
+					    e.printStackTrace();
+					}				
+				}
 			}
 		}
 		dataWrapper.invalidateDataWrapper();
