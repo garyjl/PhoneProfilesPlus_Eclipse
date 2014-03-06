@@ -574,18 +574,17 @@ public class DataWrapper {
 			if (event.getStatusFromDB(this) == Event.ESTATUS_RUNNING)
 			{
 				event.pauseEvent(this, eventTimelineList, false, true, noSetSystemEvent);
-				
-				if (blockBatteryEvents)
+			}
+			if (blockBatteryEvents)
+			{
+				if (event._type == Event.ETYPE_BATTERY)
 				{
-					if (event._type == Event.ETYPE_BATTERY)
+					EventPreferencesBattery eventPreferences = (EventPreferencesBattery)event._eventPreferences;
+					if ((eventPreferences._detectorType == EventPreferencesBattery.DETECTOR_TYPE_LOW_LEVEL) ||
+						(eventPreferences._detectorType == EventPreferencesBattery.DETECTOR_TYPE_HIGHT_LEVEL))
 					{
-						EventPreferencesBattery eventPreferences = (EventPreferencesBattery)event._eventPreferences;
-						if ((eventPreferences._detectorType == EventPreferencesBattery.DETECTOR_TYPE_LOW_LEVEL) ||
-							(eventPreferences._detectorType == EventPreferencesBattery.DETECTOR_TYPE_HIGHT_LEVEL))
-						{
-							eventPreferences._blocked = true;
-							databaseHandler.updateEventPreferencesBatteryBlocked(event);
-						}
+						eventPreferences._blocked = true;
+						databaseHandler.updateEventPreferencesBatteryBlocked(event);
 					}
 				}
 			}

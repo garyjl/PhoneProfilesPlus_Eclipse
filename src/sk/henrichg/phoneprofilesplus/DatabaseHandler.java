@@ -1834,7 +1834,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		EventPreferencesBattery eventPreferences = (EventPreferencesBattery)event._eventPreferences; 
 		
 		ContentValues values = new ContentValues();
-		values.put(KEY_E_BATTERY_BLOCKED, eventPreferences._blocked);
+		values.put(KEY_E_BATTERY_BLOCKED, eventPreferences._blocked ? 1 : 0);
 
 		int r = 0;
 		
