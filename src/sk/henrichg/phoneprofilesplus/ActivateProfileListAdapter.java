@@ -2,7 +2,7 @@ package sk.henrichg.phoneprofilesplus;
 
 import java.util.List;
 
-import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,15 +15,19 @@ public class ActivateProfileListAdapter extends BaseAdapter
 {
 
 	private List<Profile> profileList;
+	private Fragment fragment;
 	
-	private Context context;
-	
-	public ActivateProfileListAdapter(Context c, List<Profile> pl)
+	public ActivateProfileListAdapter(Fragment f, List<Profile> pl)
 	{
+		fragment = f;
 		profileList = pl;
-		
-		context = c;
 	}   
+	
+	public void release()
+	{
+		fragment = null;
+		profileList = null;
+	}
 	
 	public int getCount()
 	{
@@ -127,7 +131,7 @@ public class ActivateProfileListAdapter extends BaseAdapter
 		View vi = convertView;
       if (convertView == null)
       {
-  		LayoutInflater inflater = LayoutInflater.from(context);
+  		LayoutInflater inflater = LayoutInflater.from(fragment.getActivity());
       	if (GlobalData.applicationActivatorPrefIndicator)
       		vi = inflater.inflate(R.layout.activate_profile_list_item, parent, false);
       	else
