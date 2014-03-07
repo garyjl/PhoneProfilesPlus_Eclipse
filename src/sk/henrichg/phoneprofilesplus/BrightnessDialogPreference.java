@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.WindowManager.LayoutParams;
 
 import android.widget.CheckBox;
 import android.widget.SeekBar;
@@ -52,6 +53,8 @@ public class BrightnessDialogPreference extends
 	private String sValue = "";
 	private int value = 0;
 
+	Profile _defaultProfile;
+	
 	/**
 	 * The SeekBarDialogPreference constructor.
 	 * @param context of this preference.
@@ -75,6 +78,9 @@ public class BrightnessDialogPreference extends
 				R.styleable.BrightnessDialogPreference_bDisableDefaultProfile, 0);
 
 		typedArray.recycle();
+		
+		_defaultProfile = GlobalData.getDefaultProfile(_context);
+		
 	}
 	/**
 	 * {@inheritDoc}
@@ -120,6 +126,15 @@ public class BrightnessDialogPreference extends
 		
 		return view;
 	}
+
+	protected void onDialogClosed (boolean positiveResult)
+	{
+		Window win = ProfilePreferencesFragment.getPreferencesActivity().getWindow();
+		WindowManager.LayoutParams layoutParams = win.getAttributes();
+		layoutParams.screenBrightness = LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
+		win.setAttributes(layoutParams);
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -178,6 +193,31 @@ public class BrightnessDialogPreference extends
 			seekBar.setEnabled((noChange == 0) && (defaultProfile == 0) && (automatic == 0));
 		}
 		
+		int _automatic = automatic;
+		int _noChange = noChange;
+		int _value = value;
+		if (defaultProfile == 1)
+		{
+			_automatic = (_defaultProfile.getDeviceBrightnessAutomatic()) ? 1 : 0;
+			_noChange = (_defaultProfile.getDeviceBrightnessChange()) ? 0 : 1;
+			_value = _defaultProfile.getDeviceBrightnessValue();
+		}
+		
+		if ((_automatic == 1) || (_noChange == 1)) 
+		{
+			Window win = ProfilePreferencesFragment.getPreferencesActivity().getWindow();
+			WindowManager.LayoutParams layoutParams = win.getAttributes();
+			layoutParams.screenBrightness = LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
+			win.setAttributes(layoutParams);
+		}
+		else
+		{
+			Window win = ProfilePreferencesFragment.getPreferencesActivity().getWindow();
+			WindowManager.LayoutParams layoutParams = win.getAttributes();
+			layoutParams.screenBrightness = (float)(_value + minimumValue) / maximumValue;;
+			win.setAttributes(layoutParams);
+		}
+		
 		callChangeListener(noChange);
 	}
 	
@@ -203,11 +243,6 @@ public class BrightnessDialogPreference extends
 						+ "|" + Integer.toString(automatic)
 						+ "|" + Integer.toString(defaultProfile));
 				setSummaryBDP();
-				
-				Window win = ProfilePreferencesFragment.getPreferencesActivity().getWindow();
-				WindowManager.LayoutParams layoutParams = win.getAttributes();
-				layoutParams.screenBrightness = -1.0f;
-				win.setAttributes(layoutParams);
 			}
 		}
 
