@@ -59,7 +59,6 @@
             android:name=".LauncherActivity"
             android:label="@string/title_activity_phone_profiles"
             android:taskAffinity="sk.henrichg.phoneprofilesplus"
-            android:excludeFromRecents="true"
             android:theme="@style/EmptyActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
