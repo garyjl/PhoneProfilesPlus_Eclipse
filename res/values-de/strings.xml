@@ -267,6 +267,6 @@
     <string name="profile_preferences_volumeSpeakerPhone">Lautsprechertelefon</string>
 
     <string name="event_preferences_notificationSound">Benachrichtigungston</string>
-    <string name="event_preferences_notificationSound_None">Keine</string>
+    <string name="preferences_notificationSound_None">Keine</string>
     					
 </resources>

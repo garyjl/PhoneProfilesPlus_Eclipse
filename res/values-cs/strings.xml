@@ -268,6 +268,6 @@
     <string name="profile_preferences_volumeSpeakerPhone">Hlasitý odposlech</string>
 
     <string name="event_preferences_notificationSound">Tón notifikace</string>
-    <string name="event_preferences_notificationSound_None">Žádné</string>
+    <string name="preferences_notificationSound_None">Žádné</string>
     		
 </resources>

@@ -79,7 +79,7 @@
             android:summary="@string/array_pref_no_change"
             android:title="@string/profile_preferences_soundRingtone"
             android:ringtoneType="ringtone" 
-            android:showSilent="false"
+            android:showSilent="true"
             android:showDefault="true"
             android:dependency="prf_pref_soundRingtoneChange" />
 		<ListPreference android:title="@string/profile_preferences_soundNotificationChange"
@@ -93,7 +93,7 @@
             android:summary="@string/array_pref_no_change"
             android:title="@string/profile_preferences_soundNotification"
             android:ringtoneType="notification" 
-            android:showSilent="false"
+            android:showSilent="true"
             android:showDefault="true"
             android:dependency="prf_pref_soundNotificationChange" />
 		<ListPreference android:title="@string/profile_preferences_soundAlarmChange"
@@ -107,7 +107,7 @@
             android:summary="@string/array_pref_no_change"
             android:title="@string/profile_preferences_soundAlarm"
             android:ringtoneType="alarm" 
-            android:showSilent="false"
+            android:showSilent="true"
             android:showDefault="true"
             android:dependency="prf_pref_soundAlarmChange" />
     </PreferenceCategory>

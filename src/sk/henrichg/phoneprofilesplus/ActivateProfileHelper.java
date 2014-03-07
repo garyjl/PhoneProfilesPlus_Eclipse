@@ -351,11 +351,26 @@ public class ActivateProfileHelper {
 
 		// nahodenie ringtone
 		if (profile._soundRingtoneChange == 1)
-			Settings.System.putString(context.getContentResolver(), Settings.System.RINGTONE, profile._soundRingtone);
+		{
+			if (profile._soundRingtone.isEmpty())
+				Settings.System.putString(context.getContentResolver(), Settings.System.RINGTONE, null);
+			else
+				Settings.System.putString(context.getContentResolver(), Settings.System.RINGTONE, profile._soundRingtone);
+		}
 		if (profile._soundNotificationChange == 1)
-			Settings.System.putString(context.getContentResolver(), Settings.System.NOTIFICATION_SOUND, profile._soundNotification);
+		{
+			if (profile._soundNotification.isEmpty())
+				Settings.System.putString(context.getContentResolver(), Settings.System.NOTIFICATION_SOUND, null);
+			else
+				Settings.System.putString(context.getContentResolver(), Settings.System.NOTIFICATION_SOUND, profile._soundNotification);
+		}
 		if (profile._soundAlarmChange == 1)
-			Settings.System.putString(context.getContentResolver(), Settings.System.ALARM_ALERT, profile._soundAlarm);
+		{
+			if (profile._soundAlarm.isEmpty())
+				Settings.System.putString(context.getContentResolver(), Settings.System.ALARM_ALERT, null);
+			else
+				Settings.System.putString(context.getContentResolver(), Settings.System.ALARM_ALERT, profile._soundAlarm);
+		}
 
 		// nahodenie radio preferences
 		// run service for execute radios
@@ -823,7 +838,6 @@ public class ActivateProfileHelper {
 	    			{
 							@Override
 							public void commandCompleted(int arg0, int arg1) {
-								// TODO Auto-generated method stub
 								
 							}
 
@@ -834,7 +848,6 @@ public class ActivateProfileHelper {
 
 							@Override
 							public void commandTerminated(int arg0, String arg1) {
-								// TODO Auto-generated method stub
 								
 							}
 	    			};*/	    			
@@ -928,7 +941,6 @@ public class ActivateProfileHelper {
 	    			{
 							@Override
 							public void commandCompleted(int arg0, int arg1) {
-								// TODO Auto-generated method stub
 								
 							}
 
@@ -939,7 +951,6 @@ public class ActivateProfileHelper {
 
 							@Override
 							public void commandTerminated(int arg0, String arg1) {
-								// TODO Auto-generated method stub
 								
 							}
 	    			};	*/    			

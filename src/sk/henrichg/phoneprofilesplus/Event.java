@@ -264,7 +264,7 @@ public class Event {
 		{
 			String ringtoneUri = value.toString();
 			if (ringtoneUri.isEmpty())
-		        prefMng.findPreference(key).setSummary(R.string.event_preferences_notificationSound_None);
+		        prefMng.findPreference(key).setSummary(R.string.preferences_notificationSound_None);
 			else
 			{
 				Uri uri = Uri.parse(ringtoneUri);

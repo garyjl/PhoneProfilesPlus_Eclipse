@@ -520,15 +520,19 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 			
 			//Log.d("ProfilePreferencesFragment.setSummary", ringtoneUri);
 			
-			Uri uri = Uri.parse(ringtoneUri);
-			Ringtone ringtone = RingtoneManager.getRingtone(context, uri);
-			String ringtoneName;
-			if (ringtone == null)
-				ringtoneName = "";
+			if (ringtoneUri.isEmpty())
+		        prefMng.findPreference(key).setSummary(R.string.preferences_notificationSound_None);
 			else
-				ringtoneName = ringtone.getTitle(context);
-			
-	        prefMng.findPreference(key).setSummary(ringtoneName);
+			{
+				Uri uri = Uri.parse(ringtoneUri);
+				Ringtone ringtone = RingtoneManager.getRingtone(context, uri);
+				String ringtoneName;
+				if (ringtone == null)
+					ringtoneName = "";
+				else
+					ringtoneName = ringtone.getTitle(context);
+		        prefMng.findPreference(key).setSummary(ringtoneName);
+			}
 		}
 		if (key.equals(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE) || 
 			key.equals(GlobalData.PREF_PROFILE_DEVICE_AUTOSYNC) ||
