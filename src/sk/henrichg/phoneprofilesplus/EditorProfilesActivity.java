@@ -31,6 +31,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -394,6 +395,16 @@ public class EditorProfilesActivity extends ActionBarActivity
 		//Log.d("EditorProfilesActivity.onStart", "xxxx");
 		
 	}
+
+	@Override
+	protected void onStop()
+	{
+		super.onStop();
+		
+		instance = null;
+
+		//Log.e("EditorProfilesActivity.onStop","xxx");
+	}
 	
 	@Override
 	protected void onDestroy()
@@ -410,8 +421,6 @@ public class EditorProfilesActivity extends ActionBarActivity
 		//	dataWrapper.invalidateDataWrapper();
 		//dataWrapper = null;
 
-		instance = null;
-		
 		super.onDestroy();
 
 		//Log.e("EditorProfilesActivity.onDestroy","xxx");
