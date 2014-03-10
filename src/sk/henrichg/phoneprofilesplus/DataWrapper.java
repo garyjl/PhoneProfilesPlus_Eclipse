@@ -327,12 +327,16 @@ public class DataWrapper {
 	public void activateProfileFromEvent(long profile_id, String eventNotificationSound)
 	{
 		//Log.d("PhoneProfilesService.activateProfile",profile_id+"");
+		/*
 		Intent intent = new Intent(context, BackgroundActivateProfileActivity.class);
 	    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     	intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_SERVICE);
 		intent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile_id);
 		intent.putExtra(GlobalData.EXTRA_EVENT_NOTIFICATION_SOUND, eventNotificationSound);
-	    context.startActivity(intent);		
+	    context.startActivity(intent);
+	    */
+		getActivateProfileHelper().initialize(this, null, context);
+		_activateProfile(getProfileById(profile_id), GlobalData.STARTUP_SOURCE_SERVICE, false, null, eventNotificationSound);
 	}
 	
 	
@@ -664,7 +668,7 @@ public class DataWrapper {
 
 //----- Activate profile ---------------------------------------------------------------------------------------------
 
-	private void _activateProfile(Profile _profile, int startupSource, boolean _interactive, 
+	public void _activateProfile(Profile _profile, int startupSource, boolean _interactive, 
 									Activity _activity, String eventNotificationSound)
 	{
 		Profile profile = GlobalData.getMappedProfile(_profile, context);
@@ -691,18 +695,24 @@ public class DataWrapper {
 		if (GlobalData.notificationsToast)
 		{	
 			// toast notification
-			Toast msg = Toast.makeText(activity, 
-					activity.getResources().getString(R.string.toast_profile_activated_0) + ": " + profile._name + " " +
-					activity.getResources().getString(R.string.toast_profile_activated_1), 
+			Context _context = activity;
+			if (_context == null)
+				_context = context.getApplicationContext();
+			Toast msg = Toast.makeText(_context, 
+					_context.getResources().getString(R.string.toast_profile_activated_0) + ": " + profile._name + " " +
+					_context.getResources().getString(R.string.toast_profile_activated_1), 
 					Toast.LENGTH_SHORT);
 			msg.show();
 		}
 		
 		// for startActivityForResult
-		Intent returnIntent = new Intent();
-		returnIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
-		returnIntent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, startupSource);
-		activity.setResult(Activity.RESULT_OK,returnIntent);
+		if (activity != null)
+		{
+			Intent returnIntent = new Intent();
+			returnIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
+			returnIntent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, startupSource);
+			activity.setResult(Activity.RESULT_OK,returnIntent);
+		}
 		
 		finishActivity(startupSource, true, activity);
 	}
@@ -710,14 +720,14 @@ public class DataWrapper {
 	private void activateProfileWithAlert(Profile profile, int startupSource, boolean interactive, 
 											Activity activity, String eventNotificationSound)
 	{
-		// set theme and language for dialog alert ;-)
-		// not working on Android 2.3.x
-		GUIData.setTheme(activity, true);
-		GUIData.setLanguage(activity.getBaseContext());
-
 		if ((GlobalData.applicationActivateWithAlert && interactive) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_EDITOR))	
 		{	
+			// set theme and language for dialog alert ;-)
+			// not working on Android 2.3.x
+			GUIData.setTheme(activity, true);
+			GUIData.setLanguage(activity.getBaseContext());
+			
 			final Profile _profile = profile;
 			final boolean _interactive = interactive;
 			final int _startupSource = startupSource;
@@ -769,7 +779,7 @@ public class DataWrapper {
 		
 		boolean finish = true;
 		boolean sleep = true;
-		
+
 		if (startupSource == GlobalData.STARTUP_SOURCE_ACTIVATOR)
 		{
 			finish = false;
@@ -777,7 +787,7 @@ public class DataWrapper {
 			{	
 				// ma sa zatvarat aktivita po aktivacii
 				
-				if (GlobalData.getApplicationStarted(activity.getBaseContext()))
+				if (GlobalData.getApplicationStarted(context))
 					// aplikacia je uz spustena, mozeme aktivitu zavriet
 					// tymto je vyriesene, ze pri spusteni aplikacie z launchera
 					// sa hned nezavrie
@@ -799,13 +809,17 @@ public class DataWrapper {
 		                } catch (InterruptedException e) {
 		                    System.out.println(e);
 		                }
-		                activity.finish();
+		                if (activity != null)
+		                	activity.finish();
 		            }
 		        });
 				t.start();
 			}
 			else
-                activity.finish();
+			{
+                if (activity != null)
+                	activity.finish();
+			}
 		}
 	}
 	

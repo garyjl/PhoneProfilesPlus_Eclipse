@@ -34,8 +34,10 @@ import android.provider.Settings.Global;
 import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.Surface;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.RemoteViews;
 
@@ -429,6 +431,7 @@ public class ActivateProfileHelper {
 		// nahodenie podsvietenia
 		if (profile.getDeviceBrightnessChange())
 		{
+			/*
 			Window window = activity.getWindow();
 			LayoutParams layoutParams = window.getAttributes();
 			
@@ -437,6 +440,7 @@ public class ActivateProfileHelper {
 			else
 				layoutParams.screenBrightness = profile.getDeviceBrightnessValue() / 255.0f;
 			window.setAttributes(layoutParams);
+			*/
 
 			if (profile.getDeviceBrightnessAutomatic())
 				Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
@@ -485,7 +489,9 @@ public class ActivateProfileHelper {
 		{
 			//Log.d("ActivateProfileHelper.execute","set wallpaper");
 			DisplayMetrics displayMetrics = new DisplayMetrics();
-			activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+			WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+			Display display = wm.getDefaultDisplay();
+			display.getMetrics(displayMetrics);
 			int height = displayMetrics.heightPixels;
 			int width = displayMetrics.widthPixels << 1; // best wallpaper width is twice screen width
 			Bitmap decodedSampleBitmap = BitmapManipulator.resampleBitmap(profile.getDeviceWallpaperIdentifier(), width, height);
@@ -657,21 +663,21 @@ public class ActivateProfileHelper {
 		// icon widget
 		Intent intent = new Intent(context, IconWidgetProvider.class);
 		intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
-		int ids[] = AppWidgetManager.getInstance(activity.getApplication()).getAppWidgetIds(new ComponentName(activity.getApplication(), IconWidgetProvider.class));
+		int ids[] = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, IconWidgetProvider.class));
 		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
 		context.sendBroadcast(intent);
 
 		// one row widget
 		Intent intent4 = new Intent(context, OneRowWidgetProvider.class);
 		intent4.setAction("android.appwidget.action.APPWIDGET_UPDATE");
-		int ids4[] = AppWidgetManager.getInstance(activity.getApplication()).getAppWidgetIds(new ComponentName(activity.getApplication(), OneRowWidgetProvider.class));
+		int ids4[] = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, OneRowWidgetProvider.class));
 		intent4.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids4);
 		context.sendBroadcast(intent4);
 		
 		// list widget
 		Intent intent2 = new Intent(context, ProfileListWidgetProvider.class);
 		intent2.setAction(ProfileListWidgetProvider.INTENT_REFRESH_LISTWIDGET);
-		int ids2[] = AppWidgetManager.getInstance(activity.getApplication()).getAppWidgetIds(new ComponentName(activity.getApplication(), ProfileListWidgetProvider.class));
+		int ids2[] = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, ProfileListWidgetProvider.class));
 		intent2.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids2);
 		context.sendBroadcast(intent2);
 
@@ -679,7 +685,7 @@ public class ActivateProfileHelper {
 		Intent intent3 = new Intent();
 	    intent3.setAction(DashClockBroadcastReceiver.INTENT_REFRESH_DASHCLOCK);
 		context.sendBroadcast(intent3);
-		
+
 		// activities
 		Intent intent5 = new Intent();
 	    intent5.setAction(RefreshGUIBroadcastReceiver.INTENT_REFRESH_GUI);

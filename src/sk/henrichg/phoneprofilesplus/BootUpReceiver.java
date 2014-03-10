@@ -17,18 +17,24 @@ public class BootUpReceiver extends BroadcastReceiver {
 			
 			GlobalData.grantRoot();
 
+			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
+			dataWrapper.getActivateProfileHelper().initialize(dataWrapper, null, context);
+			
 			// startneme eventy
 			if (GlobalData.getGlobalEventsRuning(context))
 			{
-				DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
 				dataWrapper.firstStartEvents(true, false);
-				dataWrapper.invalidateDataWrapper();
 			}
-			
+
+			dataWrapper.activateProfile(0, GlobalData.STARTUP_SOURCE_BOOT, null, "");
+			dataWrapper.invalidateDataWrapper();
+
+			/*
 			Intent i = new Intent(context, BackgroundActivateProfileActivity.class);
 			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			i.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_BOOT);
 			context.startActivity(i);
+			*/
 		}
 
 	}

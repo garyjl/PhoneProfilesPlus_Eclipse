@@ -58,8 +58,8 @@
         <activity
             android:name=".LauncherActivity"
             android:label="@string/title_activity_phone_profiles"
-            android:taskAffinity="sk.henrichg.phoneprofilesplus"
-            android:theme="@style/EmptyActivity" >
+            android:theme="@style/EmptyActivity" 
+            android:taskAffinity="sk.henrichg.phoneprofilesplus" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

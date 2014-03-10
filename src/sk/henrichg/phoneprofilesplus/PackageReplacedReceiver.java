@@ -14,6 +14,7 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 		if (intentUid == myUid)
 		{
 			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
+			dataWrapper.getActivateProfileHelper().initialize(dataWrapper, null, context);
 			
 			if (GlobalData.getApplicationStarted(context))
 			{
@@ -23,7 +24,6 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 				dataWrapper.stopAllEvents(false);
 				
 				// zrusenie notifikacie
-				dataWrapper.getActivateProfileHelper().initialize(dataWrapper, null, context);
 				dataWrapper.getActivateProfileHelper().removeNotification();
 			}
 
@@ -37,12 +37,15 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 				dataWrapper.firstStartEvents(true, false);
 			}
 
+			dataWrapper.activateProfile(0, GlobalData.STARTUP_SOURCE_BOOT, null, "");
 			dataWrapper.invalidateDataWrapper();
-			
+
+			/*
 			Intent i = new Intent(context, BackgroundActivateProfileActivity.class);
 			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			i.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_BOOT);
 			context.startActivity(i);
+			*/
 		}		
 	}
 

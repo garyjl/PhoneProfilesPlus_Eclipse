@@ -404,7 +404,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 		if (!GlobalData.getBackgroundActivityStarted(getBaseContext()))
 			instance = null;
 
-		//Log.e("EditorProfilesActivity.onStop","xxx");
+		Log.e("EditorProfilesActivity.onStop","xxx");
 	}
 	
 	@Override

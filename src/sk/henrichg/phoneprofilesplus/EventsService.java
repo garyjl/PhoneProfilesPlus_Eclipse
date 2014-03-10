@@ -128,6 +128,9 @@ public class EventsService extends IntentService
 		if (powerChangeReceived)
 		{
 			GlobalData.logE("EventService.doBatteryEvent","powerChangeReceived");
+			// unblock starting battery event
+			eventPreferences._blocked = false;
+			dataWrapper.getDatabaseHandler().updateEventPreferencesBatteryBlocked(event);
 		}
 		
 		if (isCharging != eventPreferences._charging)

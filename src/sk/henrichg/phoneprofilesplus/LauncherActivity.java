@@ -112,6 +112,8 @@ public class LauncherActivity extends Activity {
 					intentLaunch = new Intent(getBaseContext(), EditorProfilesActivity.class);
 				break;
 		}
+
+		finish();
 		
 		intentLaunch.putExtra(GlobalData.EXTRA_START_APP_SOURCE, startupSource);
 		startActivity(intentLaunch);
@@ -119,7 +121,6 @@ public class LauncherActivity extends Activity {
 		// reset, aby sa to dalej chovalo ako normalne spustenie z lauchera
 		startupSource = 0;
 		
-		finish();
 	}
 	
 	@Override

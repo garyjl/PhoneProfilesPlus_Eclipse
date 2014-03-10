@@ -73,7 +73,6 @@ public class EventPreferencesBattery extends EventPreferences {
 		if ((iLevel < 0) || (iLevel > 100)) iLevel = 100;
 		this._levelHight= iLevel;
 		
-		sLevel = preferences.getString(PREF_EVENT_BATTERY_CHARGING, "0");
 		this._charging = preferences.getBoolean(PREF_EVENT_BATTERY_CHARGING, false);
 		
 		this._blocked = false;

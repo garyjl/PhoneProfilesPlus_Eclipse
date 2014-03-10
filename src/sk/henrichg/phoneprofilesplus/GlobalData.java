@@ -33,7 +33,8 @@ public class GlobalData extends Application {
 	public static String logFilterTags = "EventPreferencesBattery|"+
 	                                     "BatteryEventsAlarmBroadcastReceiver|"+
 			                             "EventService.doBatteryEven|"+
-	                                     "PowerConnectionReceiver";
+	                                     "PowerConnectionReceiver|"+
+			                             "RefreshGUIBroadcastReceiver";
 	
 	public static final String EXPORT_PATH = "/PhoneProfilesPlus";
 	public static final String LOG_FILENAME = "log.txt";
@@ -213,6 +214,10 @@ public class GlobalData extends Application {
 	static private void resetLog()
 	{
 		File sd = Environment.getExternalStorageDirectory();
+		File exportDir = new File(sd, GlobalData.EXPORT_PATH);
+		if (!(exportDir.exists() && exportDir.isDirectory()))
+			exportDir.mkdirs();
+		
 		File logFile = new File(sd, EXPORT_PATH + "/" + LOG_FILENAME);
 		logFile.delete();
 	}
@@ -222,8 +227,12 @@ public class GlobalData extends Application {
 	{
 		if (!logIntoFile)
 			return;
-		
+
 		File sd = Environment.getExternalStorageDirectory();
+		File exportDir = new File(sd, GlobalData.EXPORT_PATH);
+		if (!(exportDir.exists() && exportDir.isDirectory()))
+			exportDir.mkdirs();
+		
 		File logFile = new File(sd, EXPORT_PATH + "/" + LOG_FILENAME);
 
 		if (logFile.length() > 1024 * 10000)

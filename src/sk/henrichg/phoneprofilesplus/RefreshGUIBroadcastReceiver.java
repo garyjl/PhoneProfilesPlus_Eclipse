@@ -3,6 +3,7 @@ package sk.henrichg.phoneprofilesplus;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 public class RefreshGUIBroadcastReceiver extends BroadcastReceiver {
 
@@ -10,13 +11,22 @@ public class RefreshGUIBroadcastReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		
+		GlobalData.logE("RefreshGUIBroadcastReceiver","xxx");
+		
 		ActivateProfileActivity activateProfileActivity = ActivateProfileActivity.getInstance();
 		if (activateProfileActivity != null)
+		{
+			GlobalData.logE("RefreshGUIBroadcastReceiver","ActivateProfileActivity");
 			activateProfileActivity.refreshGUI();
+		}
 
 		EditorProfilesActivity editorProfilesActivity = EditorProfilesActivity.getInstance();
 		if (editorProfilesActivity != null)
+		{
+			GlobalData.logE("RefreshGUIBroadcastReceiver","EditorProfilesActivity");
 			editorProfilesActivity.refreshGUI();
+		}
 		
 		GlobalData.setBackgroundActivityStarted(context, false);
 		
