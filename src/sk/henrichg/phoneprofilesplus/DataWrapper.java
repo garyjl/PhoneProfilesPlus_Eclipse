@@ -581,12 +581,8 @@ public class DataWrapper {
 				if (event._type == Event.ETYPE_BATTERY)
 				{
 					EventPreferencesBattery eventPreferences = (EventPreferencesBattery)event._eventPreferences;
-					if ((eventPreferences._detectorType == EventPreferencesBattery.DETECTOR_TYPE_LOW_LEVEL) ||
-						(eventPreferences._detectorType == EventPreferencesBattery.DETECTOR_TYPE_HIGHT_LEVEL))
-					{
-						eventPreferences._blocked = true;
-						databaseHandler.updateEventPreferencesBatteryBlocked(event);
-					}
+					eventPreferences._blocked = true;
+					databaseHandler.updateEventPreferencesBatteryBlocked(event);
 				}
 			}
 		}
@@ -599,12 +595,8 @@ public class DataWrapper {
 			if (event._type == Event.ETYPE_BATTERY)
 			{
 				EventPreferencesBattery eventPreferences = (EventPreferencesBattery)event._eventPreferences;
-				if ((eventPreferences._detectorType == EventPreferencesBattery.DETECTOR_TYPE_LOW_LEVEL) ||
-					(eventPreferences._detectorType == EventPreferencesBattery.DETECTOR_TYPE_HIGHT_LEVEL))
-				{
-					eventPreferences._blocked = block;
-					databaseHandler.updateEventPreferencesBatteryBlocked(event);
-				}
+				eventPreferences._blocked = block;
+				databaseHandler.updateEventPreferencesBatteryBlocked(event);
 			}
 		}
 	}
@@ -986,7 +978,7 @@ public class DataWrapper {
 				if ((event != null) && (event._type == Event.ETYPE_BATTERY))
 				{
 					EventPreferencesBattery eventPreferences = (EventPreferencesBattery)event._eventPreferences;
-					if (eventPreferences._detectorType == EventPreferencesBattery.DETECTOR_TYPE_LOW_LEVEL)
+					if (!eventPreferences._charging)
 					{
 						Profile eventProfile = getProfileById(event._fkProfile);
 						

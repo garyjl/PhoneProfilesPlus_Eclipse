@@ -1,264 +1,34 @@
 Events:
-1. gui - hotove
-2. eventy
-   - budeme si pamatat poradie spustania eventov a ktore profily vtedy boli zrovna aktivovane
-   - spustenie eventu:
-     - zapamatat si evnet a aktivny profil - hotovo
-     - nastavit status eventu na running - hotovo
-     - aktivovat profil priradeny eventu - hotovo
-   - pause:
-     - aktivovat pri starte pamatany aktivny profil - hotovo
-     - zahodit pamatany event a aktivny profil - hotovo
-     - nastavit status eventu na pause - hotovo
-   - stop:
-     - spravit pause eventu, ake je v statuse running - hotovo
-     - nastavit status eventu na stop - hotovo     
-3. manualna aktivacia profilu (Aktivator, Editor, witget, shortcut, ...)
-   - manualna aktivacia musi pauznut vsetky eventy v statuse running - hotovo
-4. uprava eventu v Editore
-   - ak upravovany event je v statuse running, musi sa pauznut, akoby prave skoncil, to zaisti
-     jeho znovuspustenie az na dalsiu iteraciu - hotovo
-   - ak upravovany event uzivatel zakaze, event sa musi stopnut - hotovo
-5. mazanie eventu
-   - vymazanie eventu uzivatelom musi vyvolat jeho stopnutie a az potom sa moze vymazat - hotovo
-6. mazanie vsetkych eventov
-   - vsetky eventy sa stopnu - hotovo
-7. uprava profilu asociovaneho z dakym beziacim eventom
-   - tu netreba robit nic, profil je uz aktivovany, takze jeho parametre sa pouziju az pri
-     nasledujucej iteracii
-8. mazanie profilu asocionvaneho z dakym beziacim eventom
-   - stopnut event, nie je mozne, aby bezal v dalsej iteracii, lebo nema prideleny profil - hotovo
-9. mazanie vsetkych profilov
-   - vid mazanie vsetkych eventov, cize stopnut - hotovo
-10. pridanie a duplikovanie eventu
-   - nastavit spustenie pauznuteho eventu - alarmy - hotovo
-11. import dat
-   - vid mazanie vsetkych eventov, cize stopnut - hotovo
-   - znovunacitanie vsetkcyh dat - hotovo
-   - nastavit spustanie eventov - alarmy - hotovo
-12. start aplikacie (na boot alebo na spustenie launchera)
-   - nacitanie vsetkych dat - hotovo
-   - nastavit spustanie eventov - alarmy - hotovo
-13. exit aplikacie
-   - stopnut vsetky eventy - neaktivovat profily - hotovo   
-
-Callflow eventov:
-
--- vnorene
-P1a |               -> timeline:
-P1a | E1s, P2s, P1e -> timeline: E1
-P2a | E2s, P3s, P2e -> timeline: E1, E2
-P3a | E3s, P4s, P3e -> timeline: E1, E2, E3
-P4a |               -> timeline: E1, E2, E3
-P4a |*E3e, P4s, P3e -> timeline: E1, E2, E3 - ak som na konci, vyhodim sa
-P4a |*              -> timeline: E1, E2     - a potom ak PXa nie je moj PXe, aktivujem moj PXe
-P3a |               -> timeline: E1, E2
-P3a |*E2e, P3s, P2e -> timeline: E1         - ak som na konci, vyhodim sa
-P3a |*              -> timeline: E1         - a potom ak PXa nie je moj PXe, aktivujem moj PXe
-P2a |               -> timeline: E1
-P2a |*E1s, P2s, P1e -> timeline: E1         - ak som na konci, vyhodim sa
-P2a |               -> timeline:            - a potom ak PXa nie je moj PXe, aktivujem moj PXe
-P1a |               -> timeline:
-
--- prekrizene
-P1a |               -> timeline:
-P1a | E1s, P2s, P1e -> timeline: E1
-P2a | E2s, P3s, P2e -> timeline: E1, E2
-P3a | E3s, P4s, P3e -> timeline: E1, E2, E3
-P4a |               -> timeline: E1, E2, E3
-P4a |*E1e, P2s, P1e -> timeline: E1, E2, E3 - ak nie som na konci, vyhodim sa
-P4a |*              -> timeline: E2, E3     - bol som na zaciatku, poposuvam profili u zostanych
-P4a |*E2s, P3s, P1e -> timeline: E2, E3     - eventoch, pricom prvy dostane moj PXe, ostane 
-P4a |*E3s, P4s, P2e -> timeline: E2, E3     - postupne PXe eventu nad nim
-P4a |               -> timeline: E2, E3     
-P4a |*E2e, P3s, P1e -> timeline: E2, E3     - ak nie som na konci, vyhodim sa
-P4a |*              -> timeline: E3         - bol som na zaciatku, poposuvam profili u zostanych
-P4a |*E3s, P4s, P1e -> timeline: E3         - eventoch pricom prvy dostane moj PXe, ostane ...
-P4a |               -> timeline: E3     
-P4a |*E3e, P4s, P1e -> timeline: E3         - ak som na konci, vyhodim sa
-P4a |*              -> timeline:            - a potom ak PXa nie je moj PXe, aktivujem moj PXe
-P1a |               -> timeline: 
-
--- prekrizene 2
-P1a |               -> timeline:
-P1a | E1s, P2s, P1e -> timeline: E1
-P2a | E2s, P3s, P2e -> timeline: E1, E2
-P3a | E3s, P4s, P3e -> timeline: E1, E2, E3
-P4a |               -> timeline: E1, E2, E3
-P4a |*E2s, P3s, P2e -> timeline: E1, E2, E3 - ak nie som na konci, vyhodim sa
-P4a |*              -> timeline: E1, E3     - nebol som na zaciatku, neposuvam PXe
-P4a |*E1s, P2s, P1e -> timeline: E1, E3
-P4a |*E3s, P4s, P3e -> timeline: E1, E3
-P4a |               -> timeline: E2, E3     
-P4a |*E1e, P2s, P1e -> timeline: E1, E3     - ak nie som na konci, vyhodim sa
-P4a |*              -> timeline: E3         - bol som na zaciatku, poposuvam profili u zostanych
-P4a |*E3s, P4s, P1e -> timeline: E3         - eventoch pricom prvy dostane moj PXe, ostane ...
-P4a |               -> timeline: E3     
-P4a |*E3e, P4s, P1e -> timeline: E3         - ak som na konci, vyhodim sa
-P4a |*              -> timeline:            - a potom ak PXa nie je moj PXe, aktivujem moj PXe
-P1a |               -> timeline: 
-
-Posvanie PXe profilov pri prekrizeni robit odkonca hore, pre aktualny event zobrat profil 
-predchadzajuceho eventu, pre prvy event zobrat profil z odmazaneho eventu.
-
-Cize su 3 situacie, ked pride pauzovaci system event:
-1. event je na zaciatku timeline:
-   a) vyhodim event z timeline
-   b) poposuvam PXe profily v eventoch od spodu smerom hore po timeline, prvy event v timeline
-      dostene PXe z vyhodeneho eventu
-2. event je v strede timeline:
-   a) vyhodim event z timeline
-3. event je na konci timeline
-   a) vyhodim event z timeline
-   b) aktivujem PXe vyhodeneho eventu, ak aktualne aktivovany event nie je rovny PXe vyhodeneho
-      eventu 
-PXs -> profil, ktory event aktivuje na start system event - field _fkProfile
-PXe -> profil, ktory bol aktualne aktivovany pred staet system eventu - field _fkProfileReturn
-
-Bacha na to, ze _fkProfileReturn moze byt null, co znamena, ze sa ma odaktivovat aktualne
-aktivovany profil.
-
-Dalej bahcha na to, ze event nemusi byt v timeline, v takom pripade na pause/stop nerobime vobec nic
-
-14. kedy aktivovat _fkProfileReturn:
-Na pause a stop system event sa spravi to iste, co na pause, ale su pripady, kedy sa nema (de)aktivovat
-_fkProfilePause event. Su to tieto pripady:
-- manualna aktivacia profilu - eventy sa vsetky pauzuju, ale nic z timeline sa neaktivuje
-- mazanie vsetkych eventov - vsetky sa stopnu, ale ziaden z timeline sa neaktivuje
-- mazanie vsetkych profilov - vsetky eventy sa stopnu, ale ziaden z timeline sa neaktivuje
-- import dat - vsetky eventy sa stopnu, ale ziaden z timeline sa neaktivuje, manualne sa aktivuje
-  ten, co ma v importnutej db _checked = true
-
+- spojime vsetky typy do jedneho typu
+- event teda bude mat preferences:
+  - enable/dislable
+  - name
+  - activated profile
+  - notification sound
+  --------------------------
+  - use time preferences
+  - days of week
+  - start time
+  - use end time
+  - end time
+  --------------------------
+  - use battery preferences
+  - charging
+  - low level
+  - hight level
+- ak sa maju pouzit parametre casu
+  - nastavia sa alarmy ako doteraz
+- ak sa maju pouzit parametre baterie
+  - nahodi sa alarm na bateriu ako doteraz
+- ak sa prijime start alarm time parametrov
+  - ak sa maju pouzit parametre baterie, zisti sa stav baterie a ak stav sedi s parametrami, startne sa event
+  - ak sa nemaju pouzit parametre baterie, startne sa event
+- ak sa prijime end alarm time parametrov
+  - pauzne sa event
+- ak sa prijime alarm na bateriu alebo plug/unplug nabijacky, zisti sa stav baterie
+  - ak stav sedi s parametrami a maju sa pouzit parametre casu a tie tiez sedia, startne sa event
+  - ak stav sedi s parametrami a nemaju sa pouzit parametre casu, startne sa event
+  - ak stav sedi s parametrami a maju sa pouzit parametre casu a tie nesedia, pauzne sa event
+  - ak stav nesedi s parametrami, pauzne sa event
   
--------------------------------------------
-
-Rotacia, ak mam iny layout editora nastojato/na lezato:
-1. ked nerotujem, vsetko funguje ok
-2. na lezato - zmenim ikonu - zobrazi sa actionmode
-             - otocim layout - mam jednopanelovy, actionmode zostava
-             - dam save - ikona sa nezmeni
-             - otocim na lezato - ikona sa zmeni
-3. na lezato - zmenim ikonu - zobrazi sa actionmode
-             - otocim layout - mam jednopanelovy, actionmode zostava
-             - kliknem na iny profil - otvori sa preferences aktivita
-             - zavriem preferences - zostava actionmode
-             - dam save - ikona sa nezmeni
-             - otocim na lezato - prepisalo to profil kliknuty prvotne na lezato udajmi z profilu
-                                - editovaneho na stojato !!!!!!!!!
-             - toto nastalo preto, lebo boli zmenene shared preferences a save zobral
-               tie zmeny z preferences aktivity
-             - riesenie: rozne shared preferences pre kazdu orientaciu???
-3. na stojato - zmenim ikonu - zobrazi sa actionmode
-             - otocim layout - zostava preferences aktivita aj actionmode
-             - dam save - ikona sa zmeni - ziadne preferences na lezato nie je otvorene (prve spustrenie editora)
-4. na stojato - zmenim ikonu - zobrazi sa actionmode
-             - otocim layout - zostava preferences aktivita aj actionmode
-             - dam save - ikona sa zmeni - preferences na lezato sa tiez zmeni
-5. na stojato - mam na lezato iny profil 
-             - zmenim ikonu - zobrazi sa actionmode
-             - otocim layout - zostava preferences aktivita aj actionmode
-             - dam save - ikona sa zmeni - preferences na lezato sa tiez zmeni
-
-Ako by to mohlo fungovat:
-1. na kazdy layout ine shared preferences
-2. ak nezmenim orientaciu vsetko bude fungovat
-3. ak zmenim orientaciu a nie je actionmode, vsetko bude fungovat ok
-4. ak zmenim orientaciu a je actionmode - zrusit actionmode (reset)? 
-             
-------------------------------------
-
-Default profile:
-
-Upravy profile preferences pre normalne profily
-- profile name - ok
-- profile icon - ok
-- show in activator - ok
-- ringer mode - pridat - default profile
-- * volume - pridat do dialogu checkbox default profile
-- Sounds - Change * - zmenit na ListPreference - No change, Default profile, Change
-                    - na No change a default profile disablovat Sounds - * sound        
-- airplane mode - pridat default profile
-- autosync - pridat default profile
-- mobile data - pridat default profile
-- mobile data preferences - zmenit na ListPreference - No show, Default profile, Show
-- wifi - pridat default profile
-- bluetooth - pridat default profile
-- gps - pridat default profile
-- screen timeout - prodat default profile
-- screen brightnees - pridat do dialogu checkbox default profile
-- display rotation - pridat default profile
-- run application - zmenit na ListPreference - No run, Default profile, Run
-                  - na default profile disablovat Application
-- application - ok
-- change wallpaper - zmenit na ListPreference - No change, Default profile, Change
-                   - na default profile disablovat Wallpaper
-- wallpapper - ok
-                                
-Upravy profile preferences pre default profile
-- profile name - disablovat
-- profile icon - disablovat
-- show in activator - false - disablovat
-- ringer mode - vyhodit No change a default profile
-- * volume - disablovat v dialogu checkbox no change a default profile
-- Sounds - Change * - true - disablovat        
-- airplane mode - vyhodit No change a default profile
-- autosync - vyhodit No change a default profile
-- mobile data - vyhodit No change a default profile
-- mobile data preferences - vyhodit default profile
-- wifi - vyhodit No change a default profile
-- bluetooth -vyhodit No change a default profile
-- gps - vyhodit No change a default profile
-- screen timeout - vyhodit No change a default profile
-- screen brightnees - disablovat v dialogu checkbox no change default profile
-- display rotation - vyhodit No change a default profile
-- run application - vyhodit default profile
-- application - ok
-- change wallpaper - vyhodit default profile
-- wallpapper - ok
-
-indicator -> kedy kukat do default profile na hodnoty
-- _volumeRingerMode == 99
-- getVolume*DefaultProfile() == true
-- _sound*Change == 99
-- _deviceAirplaneMode == 99
-- _deviceAutosync == 99
-- _deviceMobileData == 99
-- _deviceMobileDataPrefs == 99
-- _deviceWiFi == 99
-- _deviceBluetooth == 99
-- _deviceGPS == 99
-- _deviceScreenTimeout == 99
-- getDeviceBrightnessDefaultProfile() == true
-- _deviceAutoRotate == 99
-- _deviceRunApplicationChange == 99
-- _deviceWallpaperChange == 99
-
-------------------------------------------------------------------
-
-Ako sa maju nastavovat alarmy pre event TIME:
-
-1. firstStartEvents() nastavi:
-   a) ak ma event status PAUSE -> nastavi alarm pre nasledujuci RUNNING
-   b) ak ma event status RUNNING -> nastavi alarm pre PAUSE
-2. alarm na nasledujuci RUNNING
-   a) vypocita nasledujuci cas, kedy sa ma nastavit alarm a nastavi ho
-   b) alarm manager vygeneruje broadcast
-   c) broadcat receiver zavola EventsService s parametrom, ze ide o start eventu
-   d) EventsService zavola event.startEvent()
-   e) event.startEvent() aktivuje profil a vygeneruje alarm pre PAUSE
-3. alarm pre PAUSE
-   a) vypocita cas pre koniec eventu a nastavi alarm
-   b) alarm manager vygeneruje broadcast
-   c) broadcast receiver zavola EventsService s parametrom, ze ide o pause eventu
-   d) EventsService zavola event.pauseEvent()
-   e) event.pauseEvent() aktivuje povodny profil a vygeneruje alarm pre nasledujuci RUNNING     
-4. takto to pojde dokolecka az kim uzivatel nenastavi stop eventu
-   a) sposobi to vyhodenie alarmov z alarm managera
-5. ak uzivatel nastavi zasa pause eventu
-   a) sposobi to zavolanie event.pauseEvent()
-   b) event.pauseEvent() vygeneruje alarm pre nasledujuci RUNNING     
-   
--------------------------------------------------------------------------
-
-Check root treba na zaciatku pri spusteni aplikacie
-   
+    

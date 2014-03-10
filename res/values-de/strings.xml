@@ -258,15 +258,16 @@
     <string name="array_pref_launcher_activator">Starter</string>
     <string name="array_pref_launcher_editor">Editor</string>
     <string name="profile_preferences_deviceLocationServicePrefs">(I) Standort-Einstellungen</string>
-    <string name="event_preferences_battery_level">Akkustatus</string>
-    <string name="event_preferences_battery_detectorType">Was verzeichnen</string>
-    <string name="array_pref_event_battery_detector_type_low_level">Niedriger Stand</string>
-	<string name="array_pref_event_battery_detector_type_hight_level">Hoher Stand</string>
-    <string name="array_pref_event_battery_detector_type_plug">Aufladen</string>
 	<string name="event_type_battery">Akku</string>
     <string name="profile_preferences_volumeSpeakerPhone">Lautsprechertelefon</string>
 
     <string name="event_preferences_notificationSound">Benachrichtigungston</string>
     <string name="preferences_notificationSound_None">Keine</string>
+
+    <string name="event_preferences_battery_level_low">Niedriger Stand</string>
+	<string name="event_preferences_battery_level_hight">Hoher Stand</string>
+	<string name="event_preferences_battery_charging">Aufladen</string>
+    <string name="pref_event_battery_level">Stand</string>
+    <string name="pref_event_battery_charging">Aufladen</string>
     					
 </resources>

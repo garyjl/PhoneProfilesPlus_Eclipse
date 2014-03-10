@@ -102,7 +102,7 @@ public class Event {
         	this._eventPreferences = new EventPreferencesTime(this, false, false, false, false, false, false, false, 0, 0, false);
         	break;
         case ETYPE_BATTERY:
-        	this._eventPreferences = new EventPreferencesBattery(this, 15, 0);
+        	this._eventPreferences = new EventPreferencesBattery(this, 0, 100, false);
         	break;
         }
 	}

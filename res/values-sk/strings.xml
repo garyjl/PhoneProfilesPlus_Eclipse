@@ -259,15 +259,16 @@
     <string name="array_pref_launcher_activator">Aktivátor</string>
     <string name="array_pref_launcher_editor">Editor</string>
     <string name="profile_preferences_deviceLocationServicePrefs">(I) Nastavenia polohy</string>
-    <string name="event_preferences_battery_level">Úroveň batérie</string>
-    <string name="event_preferences_battery_detectorType">Čo detegovať</string>
-    <string name="array_pref_event_battery_detector_type_low_level">Nízka úroveň</string>
-	<string name="array_pref_event_battery_detector_type_hight_level">Vysoká úroveň</string>
-    <string name="array_pref_event_battery_detector_type_plug">Nabíjanie</string>
 	<string name="event_type_battery">Batéria</string>
     <string name="profile_preferences_volumeSpeakerPhone">Hlasitý odposluch</string>
 
     <string name="event_preferences_notificationSound">Tón notifikácie</string>
     <string name="preferences_notificationSound_None">Žiadny</string>
+
+    <string name="event_preferences_battery_level_low">Nízka úroveň</string>
+	<string name="event_preferences_battery_level_hight">Vysoká úroveň</string>
+	<string name="event_preferences_battery_charging">Nabíjanie</string>
+    <string name="pref_event_battery_level">Úroveň</string>
+    <string name="pref_event_battery_charging">Nabíjanie</string>
     	
 </resources>

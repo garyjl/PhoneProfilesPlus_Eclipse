@@ -32,18 +32,23 @@
     <PreferenceCategory
         android:summary="@string/event_preferences_category_eventParameters"
         android:title="@string/event_preferences_category_eventParameters" >
-		<ListPreference android:title="@string/event_preferences_battery_detectorType"
-	           android:summary="@string/array_pref_event_battery_detector_type_low_level"
-	           android:key="eventBatteryDetectorType"
-	           android:defaultValue="0"
-	           android:entries="@array/batteryDetectorTypeArray"
-	           android:entryValues="@array/batteryDetectorTypeValues" />        
         <EditTextPreference
-            android:key="eventBatteryLevel"
-            android:summary="@string/event_preferences_battery_level"
-            android:title="@string/event_preferences_battery_level" 
+            android:key="eventBatteryLevelLow"
+            android:summary="@string/event_preferences_battery_level_low"
+            android:title="@string/event_preferences_battery_level_low" 
 			android:inputType="number"
-            android:defaultValue="15"
+            android:defaultValue="0"
             android:selectAllOnFocus="true" /> 
+        <EditTextPreference
+            android:key="eventBatteryLevelHight"
+            android:summary="@string/event_preferences_battery_level_hight"
+            android:title="@string/event_preferences_battery_level_hight" 
+			android:inputType="number"
+            android:defaultValue="100"
+            android:selectAllOnFocus="true" /> 
+		<CheckBoxPreference 
+		    android:key="eventBatteryCharging"
+		    android:title="@string/event_preferences_battery_charging"
+		    android:defaultValue="false" />
     </PreferenceCategory>
 </PreferenceScreen>    

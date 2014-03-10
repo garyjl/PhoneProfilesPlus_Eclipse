@@ -130,77 +130,38 @@ public class EventsService extends IntentService
 			GlobalData.logE("EventService.doBatteryEvent","powerChangeReceived");
 		}
 		
-		if (eventPreferences._detectorType == EventPreferencesBattery.DETECTOR_TYPE_PLUG)
+		if (isCharging && (!eventPreferences._charging))
 		{
-			GlobalData.logE("EventService.doBatteryEvent","plug event");
-
-			// unblock starting battery events
-			dataWrapper.blockAllBatteryEvents(false);
-			
-			if (isCharging)
-				event.startEvent(dataWrapper, eventTimelineList, false);
-			else
-				event.pauseEvent(dataWrapper, eventTimelineList, true, false, false);
+			event.pauseEvent(dataWrapper, eventTimelineList, true, false, false);
 		}
 		else
 		{
-			GlobalData.logE("EventService.doBatteryEvent","not plug event");
-			if (isCharging)
+			int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+			int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+			
+			float batteryPct = level / (float)scale;		
+			
+			GlobalData.logE("EventService.doBatteryEvent","batteryPct="+batteryPct);
+			
+			if ((batteryPct >= (eventPreferences._levelLow / (float)100)) && 
+			    (batteryPct <= (eventPreferences._levelHight / (float)100))) 
 			{
-				event.pauseEvent(dataWrapper, eventTimelineList, true, false, false);
+				GlobalData.logE("EventService.doBatteryEvent","inlevel blocked="+eventPreferences._blocked);
+				if (!eventPreferences._blocked)
+				{
+					// starting battery level unblocked
+					if (event.getStatus() != Event.ESTATUS_RUNNING)
+						event.startEvent(dataWrapper, eventTimelineList, false);
+				}
 			}
 			else
 			{
-				int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-				int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-			
-				float batteryPct = level / (float)scale;		
-			
-				GlobalData.logE("EventService.doBatteryEvent","batteryPct="+batteryPct);
-	
-				if (eventPreferences._detectorType == EventPreferencesBattery.DETECTOR_TYPE_LOW_LEVEL)
-				{
-					if (batteryPct <= (eventPreferences._level / (float)100))
-					{
-						GlobalData.logE("EventService.doBatteryEvent","low-inlevel blocked="+eventPreferences._blocked);
-						if (!eventPreferences._blocked)
-						{
-							// starting battery level unblocked
-							if (event.getStatus() != Event.ESTATUS_RUNNING)
-								event.startEvent(dataWrapper, eventTimelineList, false);
-						}
-					}
-					else
-					{
-						GlobalData.logE("EventService.doBatteryEvent","low-outlevel blocked="+eventPreferences._blocked);
-						// unblock starting battery event
-						eventPreferences._blocked = false;
-						dataWrapper.getDatabaseHandler().updateEventPreferencesBatteryBlocked(event);
-	
-						event.pauseEvent(dataWrapper, eventTimelineList, true, false, false);
-					}
-				}
-				else
-				if (eventPreferences._detectorType == EventPreferencesBattery.DETECTOR_TYPE_HIGHT_LEVEL)
-				{
-					if (batteryPct >= (eventPreferences._level / (float)100))
-					{
-						if (!eventPreferences._blocked)
-						{
-							// starting battery level unblocked
-							if (event.getStatus() != Event.ESTATUS_RUNNING)
-								event.startEvent(dataWrapper, eventTimelineList, false);
-						}
-					}
-					else
-					{
-						// unblock starting battery event
-						eventPreferences._blocked = false;
-						dataWrapper.getDatabaseHandler().updateEventPreferencesBatteryBlocked(event);
-	
-						event.pauseEvent(dataWrapper, eventTimelineList, true, false, false);
-					}
-				}
+				GlobalData.logE("EventService.doBatteryEvent","outlevel blocked="+eventPreferences._blocked);
+				// unblock starting battery event
+				eventPreferences._blocked = false;
+				dataWrapper.getDatabaseHandler().updateEventPreferencesBatteryBlocked(event);
+
+				event.pauseEvent(dataWrapper, eventTimelineList, true, false, false);
 			}
 		}
 	}
