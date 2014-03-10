@@ -130,7 +130,7 @@ public class EventsService extends IntentService
 			GlobalData.logE("EventService.doBatteryEvent","powerChangeReceived");
 		}
 		
-		if (isCharging && (!eventPreferences._charging))
+		if (isCharging != eventPreferences._charging)
 		{
 			event.pauseEvent(dataWrapper, eventTimelineList, true, false, false);
 		}

@@ -21,6 +21,8 @@ public class BackgroundActivateProfileActivity extends Activity {
 		
 		GlobalData.loadPreferences(getBaseContext());
 		
+		GlobalData.setBackgroundActivityStarted(getBaseContext(), true);
+		
 		dataWrapper = new DataWrapper(getBaseContext(), true, false, 0);
 		
 		intent = getIntent();
@@ -49,7 +51,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 	protected void onDestroy()
 	{
 		super.onDestroy();
-		
+
 		dataWrapper.invalidateDataWrapper();
 		dataWrapper = null;
 	}

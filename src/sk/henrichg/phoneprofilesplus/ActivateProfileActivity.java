@@ -160,7 +160,8 @@ public class ActivateProfileActivity extends ActionBarActivity {
 	protected void onStop()
 	{
 		super.onStop();
-		instance = null;
+		if (!GlobalData.getBackgroundActivityStarted(getBaseContext()))
+			instance = null;
 	}
 	
 	@Override
