@@ -629,24 +629,25 @@ public class DataWrapper {
 		if (invalidateList)
 			invalidateEventList();  // force load form db
 
-		List<EventTimeline> eventTimelineList = getEventTimelineList();
+		BatteryEventsAlarmBroadcastReceiver.removeAlarm(context);
 		
+		//List<EventTimeline> eventTimelineList = getEventTimelineList();
+
 		for (Event event : getEventList())
 		{
 			int status = event.getStatus();
 
 			
 			// remove all system events
-			//event.setSystemEvent(context, Event.ESTATUS_STOP);
-			event.stopEvent(this, eventTimelineList, false, ignoreGlobalPref, false);
+			event.setSystemEvent(context, Event.ESTATUS_STOP);
 			
 			// reset system event
-			//if (status != Event.ESTATUS_STOP)
-			//	event.setSystemEvent(context, status);
 			if (status != Event.ESTATUS_STOP)
 			{
-				if (!event.invokeBroadcastReceiver(context))
-					event.pauseEvent(this, eventTimelineList, false, ignoreGlobalPref, false);
+				//if (!event.invokeBroadcastReceiver(context))
+				//{
+					event.setSystemEvent(context, status);
+				//}
 			}
 		}
 
@@ -831,14 +832,14 @@ public class DataWrapper {
 			(startupSource == GlobalData.STARTUP_SOURCE_EDITOR) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_SERVICE))
 		{
-			// aktivita spustena z shortcutu alebo zo service, profil aktivujeme
+			// aktivacia spustena z shortcutu, widgetu, aktivatora, editora, zo service, profil aktivujeme
 			actProfile = true;
 			interactive = ((startupSource != GlobalData.STARTUP_SOURCE_SERVICE));
 		}
 		else
 		if (startupSource == GlobalData.STARTUP_SOURCE_BOOT)	
 		{
-			// aktivita bola spustena po boote telefonu
+			// aktivacia bola spustena po boote telefonu
 			
 			if (GlobalData.applicationActivate)
 			{
@@ -874,7 +875,7 @@ public class DataWrapper {
 		else
 		if (startupSource == GlobalData.STARTUP_SOURCE_LAUNCHER_START)	
 		{
-			// aktivita bola spustena po boote telefonu
+			// aktivacia bola spustena z lauchera 
 			
 			if (GlobalData.applicationActivate)
 			{

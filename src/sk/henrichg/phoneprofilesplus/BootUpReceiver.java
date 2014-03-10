@@ -17,8 +17,6 @@ public class BootUpReceiver extends BroadcastReceiver {
 			
 			GlobalData.grantRoot();
 
-			BatteryEventsAlarmBroadcastReceiver.removeAlarm(context);
-			
 			// startneme eventy
 			if (GlobalData.getGlobalEventsRuning(context))
 			{
