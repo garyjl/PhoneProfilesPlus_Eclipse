@@ -47,7 +47,7 @@ public class BrightnessDialogPreference extends
 	private int disableDefaultProfile = 0;
 	
 	private int maximumValue = 255;
-	private int minimumValue = 0;
+	private int minimumValue = 1;
 	private int stepSize = 1;
 
 	private String sValue = "";
