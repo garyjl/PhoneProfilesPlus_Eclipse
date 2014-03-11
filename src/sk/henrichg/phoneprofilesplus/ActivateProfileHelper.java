@@ -431,23 +431,30 @@ public class ActivateProfileHelper {
 		// nahodenie podsvietenia
 		if (profile.getDeviceBrightnessChange())
 		{
-			/*
-			Window window = activity.getWindow();
-			LayoutParams layoutParams = window.getAttributes();
-			
-			if (profile.getDeviceBrightnessAutomatic())
-				layoutParams.screenBrightness = LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
-			else
-				layoutParams.screenBrightness = profile.getDeviceBrightnessValue() / 255.0f;
-			window.setAttributes(layoutParams);
-			*/
-
 			if (profile.getDeviceBrightnessAutomatic())
 				Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
 			else
 			{
 				Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
 				Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, profile.getDeviceBrightnessValue());
+			}
+			
+			if (activity != null)
+			{
+				Window window = activity.getWindow();
+				LayoutParams layoutParams = window.getAttributes();
+				
+				if (profile.getDeviceBrightnessAutomatic())
+					layoutParams.screenBrightness = LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
+				else
+					layoutParams.screenBrightness = profile.getDeviceBrightnessValue() / 255.0f;
+				window.setAttributes(layoutParams);
+			}
+			else
+			{
+				Intent i = new Intent(context, SetBrightnessWindowAttributesActivity.class);
+			    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			    context.startActivity(i);   				
 			}
 		}
 		

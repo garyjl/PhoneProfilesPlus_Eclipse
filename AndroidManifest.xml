@@ -120,7 +120,17 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
+        <activity
+            android:name=".SetBrightnessWindowAttributesActivity"
+            android:label="@string/empty_string" 
+            android:taskAffinity="sk.henrichg.phoneprofilesplus"
+            android:excludeFromRecents="true"
+            android:theme="@style/EmptyActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         
         <activity android:name=".RemoteExportDataActivity"
             android:label="@string/empty_string" 

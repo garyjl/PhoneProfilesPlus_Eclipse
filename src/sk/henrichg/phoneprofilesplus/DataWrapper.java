@@ -778,7 +778,10 @@ public class DataWrapper {
 		final Activity activity = _activity;
 		
 		boolean finish = true;
-		boolean sleep = true;
+		
+		// kvoli nastaveniu brightness
+		// ak je activity == null, sleep sa uz vykonal v ActivateProfileHelper.execute()
+		boolean sleep = true;  
 
 		if (startupSource == GlobalData.STARTUP_SOURCE_ACTIVATOR)
 		{
@@ -792,9 +795,11 @@ public class DataWrapper {
 					// tymto je vyriesene, ze pri spusteni aplikacie z launchera
 					// sa hned nezavrie
 					finish = activate;
+				
+				if (activity == null)
+					sleep = false;
 			}
 			else
-				// nerobit sleep, lebo aktivita zostane otvorena 
 				sleep = false;
 		}
 		
@@ -805,7 +810,7 @@ public class DataWrapper {
 				Thread t = new Thread(new Runnable() {
 		            public void run() {
 		                try {
-		                    Thread.sleep(500);
+		                    Thread.sleep(10);
 		                } catch (InterruptedException e) {
 		                    System.out.println(e);
 		                }
