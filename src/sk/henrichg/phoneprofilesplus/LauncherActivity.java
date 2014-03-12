@@ -1,6 +1,7 @@
 package sk.henrichg.phoneprofilesplus;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.app.Activity;
 import android.content.Intent;
 
@@ -15,7 +16,7 @@ public class LauncherActivity extends Activity {
 
 		GlobalData.grantRoot();
 		
-		dataWrapper = new DataWrapper(getBaseContext(), false, false, 0);
+		dataWrapper = new DataWrapper(getBaseContext(), true, false, 0);
 		dataWrapper.getActivateProfileHelper().initialize(dataWrapper, this, getBaseContext());
 		
 		Intent intent = getIntent();

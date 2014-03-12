@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Handler;
 import android.provider.Settings;
+import android.util.Log;
 import android.widget.Toast;
 
 public class DataWrapper {
@@ -679,6 +680,7 @@ public class DataWrapper {
 	{
 		Profile profile = GlobalData.getMappedProfile(_profile, context);
 		profile = filterProfileWithBatteryEvents(profile);
+		
 		boolean interactive = _interactive;
 		Activity activity = _activity;
 		
@@ -1085,6 +1087,9 @@ public class DataWrapper {
 					}
 				}
 			}
+			
+			filteredProfile._iconBitmap = profile._iconBitmap;
+			filteredProfile._preferencesIndicator = profile._preferencesIndicator;
 			
 			return filteredProfile;
 		}

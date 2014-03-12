@@ -17,7 +17,7 @@ public class BootUpReceiver extends BroadcastReceiver {
 			
 			GlobalData.grantRoot();
 
-			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
+			DataWrapper dataWrapper = new DataWrapper(context, true, false, 0);
 			dataWrapper.getActivateProfileHelper().initialize(dataWrapper, null, context);
 			
 			// startneme eventy

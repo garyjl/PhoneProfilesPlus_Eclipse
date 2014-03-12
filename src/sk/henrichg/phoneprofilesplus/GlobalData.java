@@ -520,6 +520,9 @@ public class GlobalData extends Application {
 			if (profile._volumeSpeakerPhone == 99)
 				mappedProfile._volumeSpeakerPhone = defaultProfile._volumeSpeakerPhone;
 			
+			mappedProfile._iconBitmap = profile._iconBitmap;
+			mappedProfile._preferencesIndicator = profile._preferencesIndicator;
+			
 			return mappedProfile;
 		}
 		else 
