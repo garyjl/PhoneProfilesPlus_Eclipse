@@ -37,7 +37,7 @@
     <string name="empty_string"></string> 
     <string name="brightness_pref_dialog_no_change_chb">Nicht ändern</string> 
     <string name="brightness_pref_dialog_automatic_chb">Automatisch</string> 
-    <string name="imageview_resource_file_pref_dialog_gallery_btn">Custom&#8230;</string> 
+    <string name="imageview_resource_file_pref_dialog_gallery_btn">Eigenes&#8230;</string> 
     <string name="volume_pref_dialog_no_change_chb">Nicht ändern</string>
     <string name="imageview_preference_profile_icon_label">Profil-Symbol</string> 
     <string name="applications_preference_profile_icon_label">App starten</string> 
@@ -246,7 +246,7 @@
   	<string name="profile_list_item_menu_activate">Aktivieren</string>
     <string name="profile_list_item_menu_duplicate">Kopieren</string>
     <string name="profile_list_item_menu_delete">Löschen</string>    
-    <string name="event_list_item_menu_run">Laufende Ereignis aktivieren</string>
+    <string name="event_list_item_menu_run">Aktivieren</string>
     <string name="event_list_item_menu_stop">Ereignis anhalten</string>
     <string name="event_list_item_menu_duplicate">Kopieren</string>
     <string name="event_list_item_menu_delete">Löschen</string>
