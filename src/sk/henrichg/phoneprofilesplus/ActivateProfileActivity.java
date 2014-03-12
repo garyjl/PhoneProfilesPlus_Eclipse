@@ -149,17 +149,22 @@ public class ActivateProfileActivity extends ActionBarActivity {
 	}
 	
 	@Override
-	protected void onResume()
-	{
-		//Debug.stopMethodTracing();
-
-		super.onResume();
-	}
-	
-	@Override
 	protected void onStop()
 	{
 		super.onStop();
+		instance = null;
+	}
+	
+	@Override 
+	protected void onResume()
+	{
+		//Debug.stopMethodTracing();
+		super.onResume();
+		if (instance == null)
+		{
+			instance = this;
+			refreshGUI();
+		}
 	}
 	
 	@Override
@@ -169,9 +174,6 @@ public class ActivateProfileActivity extends ActionBarActivity {
 		
 		dataWrapper.invalidateDataWrapper();
 		dataWrapper = null;
-
-		instance = null;
-		
 		super.onDestroy();
 	}
 

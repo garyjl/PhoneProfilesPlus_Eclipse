@@ -400,7 +400,21 @@ public class EditorProfilesActivity extends ActionBarActivity
 	protected void onStop()
 	{
 		super.onStop();
+		instance = null;
 	}
+	
+	@Override 
+	protected void onResume()
+	{
+		//Debug.stopMethodTracing();
+		super.onResume();
+		if (instance == null)
+		{
+			instance = this;
+			refreshGUI();
+		}
+	}
+	
 	
 	@Override
 	protected void onDestroy()
@@ -413,8 +427,6 @@ public class EditorProfilesActivity extends ActionBarActivity
 			applicationsCache = null;
 		}
 
-		instance = null;
-		
 		super.onDestroy();
 
 		//Log.e("EditorProfilesActivity.onDestroy","xxx");
