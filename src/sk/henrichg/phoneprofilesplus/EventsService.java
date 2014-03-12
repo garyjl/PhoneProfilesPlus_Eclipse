@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.BatteryManager;
+import android.os.Handler;
 
 public class EventsService extends IntentService
 {
@@ -40,6 +41,11 @@ public class EventsService extends IntentService
 			return;
 		
 		dataWrapper = new DataWrapper(context, false, false, 0);
+		
+		// create a handler to post messages to the main thread
+	    Handler handler = new Handler(getMainLooper());
+	    dataWrapper.setToastHandler(handler);
+		
 		eventTimelineList = dataWrapper.getEventTimelineList();
 
 		GlobalData.logE("EventsService.onHandleIntent","eventTimelineList.size()="+eventTimelineList.size());

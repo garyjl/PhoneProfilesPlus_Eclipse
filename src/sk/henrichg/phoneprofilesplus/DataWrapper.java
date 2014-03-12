@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioManager;
+import android.os.Handler;
 import android.provider.Settings;
 import android.widget.Toast;
 
@@ -17,7 +18,7 @@ public class DataWrapper {
 	private boolean forGUI = false;
 	private boolean monochrome = false;
 	private int monochromeValue = 0xFF;
-	
+	private Handler toastHandler;
 
 	private DatabaseHandler databaseHandler = null;
 	private ActivateProfileHelper activateProfileHelper = null;
@@ -45,6 +46,11 @@ public class DataWrapper {
 		forGUI = fgui;
 		monochrome = mono;
 		monochromeValue = monoVal; 
+	}
+	
+	public void setToastHandler(Handler handler)
+	{
+		toastHandler = handler;
 	}
 	
 	public DatabaseHandler getDatabaseHandler()
@@ -695,14 +701,21 @@ public class DataWrapper {
 		if (GlobalData.notificationsToast)
 		{	
 			// toast notification
-			Context _context = activity;
-			if (_context == null)
-				_context = context.getApplicationContext();
-			Toast msg = Toast.makeText(_context, 
-					_context.getResources().getString(R.string.toast_profile_activated_0) + ": " + profile._name + " " +
-					_context.getResources().getString(R.string.toast_profile_activated_1), 
-					Toast.LENGTH_SHORT);
-			msg.show();
+			//Context _context = activity;
+			//if (_context == null)
+			//	_context = context.getApplicationContext();
+			// create a handler to post messages to the main thread
+			if (toastHandler != null)
+			{
+				final Profile __profile = profile;
+				toastHandler.post(new Runnable() {
+					public void run() {
+						showToastAfterActivation(__profile);
+					}
+				});
+			}
+			else
+				showToastAfterActivation(profile);
 		}
 		
 		// for startActivityForResult
@@ -715,6 +728,15 @@ public class DataWrapper {
 		}
 		
 		finishActivity(startupSource, true, activity);
+	}
+	
+	private void showToastAfterActivation(Profile profile)
+	{
+		Toast msg = Toast.makeText(context, 
+				context.getResources().getString(R.string.toast_profile_activated_0) + ": " + profile._name + " " +
+				context.getResources().getString(R.string.toast_profile_activated_1), 
+				Toast.LENGTH_SHORT);
+		msg.show();
 	}
 	
 	private void activateProfileWithAlert(Profile profile, int startupSource, boolean interactive, 

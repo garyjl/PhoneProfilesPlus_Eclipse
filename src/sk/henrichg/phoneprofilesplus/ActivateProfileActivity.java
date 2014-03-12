@@ -160,8 +160,6 @@ public class ActivateProfileActivity extends ActionBarActivity {
 	protected void onStop()
 	{
 		super.onStop();
-		if (!GlobalData.getBackgroundActivityStarted(getBaseContext()))
-			instance = null;
 	}
 	
 	@Override
@@ -172,6 +170,8 @@ public class ActivateProfileActivity extends ActionBarActivity {
 		dataWrapper.invalidateDataWrapper();
 		dataWrapper = null;
 
+		instance = null;
+		
 		super.onDestroy();
 	}
 

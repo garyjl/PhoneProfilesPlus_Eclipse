@@ -28,8 +28,6 @@ public class RefreshGUIBroadcastReceiver extends BroadcastReceiver {
 			editorProfilesActivity.refreshGUI();
 		}
 		
-		GlobalData.setBackgroundActivityStarted(context, false);
-		
 	}
 
 }

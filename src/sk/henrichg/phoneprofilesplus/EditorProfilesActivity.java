@@ -400,11 +400,6 @@ public class EditorProfilesActivity extends ActionBarActivity
 	protected void onStop()
 	{
 		super.onStop();
-		
-		if (!GlobalData.getBackgroundActivityStarted(getBaseContext()))
-			instance = null;
-
-		Log.e("EditorProfilesActivity.onStop","xxx");
 	}
 	
 	@Override
@@ -417,11 +412,9 @@ public class EditorProfilesActivity extends ActionBarActivity
 				applicationsCache.clearCache();
 			applicationsCache = null;
 		}
-		
-		//if (dataWrapper != null)
-		//	dataWrapper.invalidateDataWrapper();
-		//dataWrapper = null;
 
+		instance = null;
+		
 		super.onDestroy();
 
 		//Log.e("EditorProfilesActivity.onDestroy","xxx");
