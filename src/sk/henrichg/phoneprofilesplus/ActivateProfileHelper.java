@@ -424,7 +424,10 @@ public class ActivateProfileHelper {
 				Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, 600000);
 				break;
 			case 6:
-				Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, -1);
+		    	if (android.os.Build.VERSION.SDK_INT < 19)
+		    		Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, -1);
+		    	else
+		    		Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, 18000000);
 				break;
 		}
 		
