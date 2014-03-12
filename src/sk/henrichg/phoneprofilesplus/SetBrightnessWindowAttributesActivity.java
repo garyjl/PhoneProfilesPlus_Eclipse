@@ -17,7 +17,7 @@ public class SetBrightnessWindowAttributesActivity extends Activity
 	    Thread t = new Thread() {
 	        public void run() {
 	            try {
-	                sleep(10);
+	                sleep(100);
 	            } catch (InterruptedException e) {
 	            }
 	            finish();

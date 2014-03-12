@@ -834,7 +834,7 @@ public class DataWrapper {
 				Thread t = new Thread(new Runnable() {
 		            public void run() {
 		                try {
-		                    Thread.sleep(10);
+		                    Thread.sleep(100);
 		                } catch (InterruptedException e) {
 		                    System.out.println(e);
 		                }
