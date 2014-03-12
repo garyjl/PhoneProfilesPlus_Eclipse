@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Handler;
 
 public class ExecuteVolumeProfilePrefsService extends IntentService //WakefulIntentService 
 {
@@ -59,22 +60,26 @@ public class ExecuteVolumeProfilePrefsService extends IntentService //WakefulInt
 				if (!eventNotificationSound.isEmpty())
 				{
 					audioManager.setMode(AudioManager.MODE_NORMAL);
-					MediaPlayer mp=new MediaPlayer();
-					Uri ringtoneUri=Uri.parse(eventNotificationSound);
-					try
-					{
-					    mp.setDataSource(dataWrapper.context, ringtoneUri);
-					    mp.setAudioStreamType(AudioManager.STREAM_NOTIFICATION);
-					    mp.prepare();
-					    mp.start();
-
-			        	Thread.sleep(200);
-					    
-					}
-					catch(Exception e)
-					{
-					    e.printStackTrace();
-					}				
+					final String _eventNotificationSound = eventNotificationSound;
+					final DataWrapper _dataWrapper = dataWrapper;
+				    Handler handler = new Handler(getMainLooper());
+					handler.post(new Runnable() {
+						public void run() {
+							MediaPlayer mp=new MediaPlayer();
+							Uri ringtoneUri=Uri.parse(_eventNotificationSound);
+							try {
+								mp.setDataSource(_dataWrapper.context, ringtoneUri);
+							    mp.setAudioStreamType(AudioManager.STREAM_NOTIFICATION);
+							    mp.prepare();
+							    mp.start();
+					        	Thread.sleep(200);
+							}
+							catch(Exception e)
+							{
+							    e.printStackTrace();
+							}				
+						}
+					});
 				}
 			}
 		}

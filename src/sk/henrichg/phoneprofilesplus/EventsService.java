@@ -31,6 +31,7 @@ public class EventsService extends IntentService
 	protected void onHandleIntent(Intent intent) {
 
 		context = getBaseContext();
+
 		
 		if (!GlobalData.getApplicationStarted(context))
 			// application is not started
@@ -124,16 +125,16 @@ public class EventsService extends IntentService
 		Intent batteryStatus = context.registerReceiver(null, ifilter);
 		
 		int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
-		GlobalData.logE("EventService.doBatteryEvent","status="+status);
+		GlobalData.logE("EventsService.doBatteryEvent","status="+status);
 		boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
 		                     status == BatteryManager.BATTERY_STATUS_FULL;
-		GlobalData.logE("EventService.doBatteryEvent","isCharging="+isCharging);
+		GlobalData.logE("EventsService.doBatteryEvent","isCharging="+isCharging);
 
 		EventPreferencesBattery eventPreferences = (EventPreferencesBattery)event._eventPreferences;
 
 		if (powerChangeReceived)
 		{
-			GlobalData.logE("EventService.doBatteryEvent","powerChangeReceived");
+			GlobalData.logE("EventsService.doBatteryEvent","powerChangeReceived");
 			// unblock starting battery event
 			eventPreferences._blocked = false;
 			dataWrapper.getDatabaseHandler().updateEventPreferencesBatteryBlocked(event);
@@ -150,12 +151,12 @@ public class EventsService extends IntentService
 			
 			float batteryPct = level / (float)scale;		
 			
-			GlobalData.logE("EventService.doBatteryEvent","batteryPct="+batteryPct);
+			GlobalData.logE("EventsService.doBatteryEvent","batteryPct="+batteryPct);
 			
 			if ((batteryPct >= (eventPreferences._levelLow / (float)100)) && 
 			    (batteryPct <= (eventPreferences._levelHight / (float)100))) 
 			{
-				GlobalData.logE("EventService.doBatteryEvent","inlevel blocked="+eventPreferences._blocked);
+				GlobalData.logE("EventsService.doBatteryEvent","inlevel blocked="+eventPreferences._blocked);
 				if (!eventPreferences._blocked)
 				{
 					// starting battery level unblocked
@@ -165,7 +166,7 @@ public class EventsService extends IntentService
 			}
 			else
 			{
-				GlobalData.logE("EventService.doBatteryEvent","outlevel blocked="+eventPreferences._blocked);
+				GlobalData.logE("EventsService.doBatteryEvent","outlevel blocked="+eventPreferences._blocked);
 				// unblock starting battery event
 				eventPreferences._blocked = false;
 				dataWrapper.getDatabaseHandler().updateEventPreferencesBatteryBlocked(event);
@@ -185,8 +186,8 @@ public class EventsService extends IntentService
 		{
 			for (Event _event : eventList)
 			{
-				GlobalData.logE("EventService.doBatteryEvent","event._type="+_event._type);
-				GlobalData.logE("EventService.doBatteryEvent","event.getStatus()="+_event.getStatus());
+				GlobalData.logE("EventsService.doBatteryEvent","event._type="+_event._type);
+				GlobalData.logE("EventsService.doBatteryEvent","event.getStatus()="+_event.getStatus());
 				
 				if ((_event._type == Event.ETYPE_BATTERY) && (_event.getStatus() != Event.ESTATUS_STOP))
 				{

@@ -28,11 +28,13 @@ public class EventsAlarmBroadcastReceiver extends WakefulBroadcastReceiver {
 		{
 			event._eventPreferences.removeSystemEvent(context);
 			
+			
 			Intent eventsServiceIntent = new Intent(context, EventsService.class);
 			eventsServiceIntent.putExtra(GlobalData.EXTRA_EVENT_TYPE, event._type);
 			eventsServiceIntent.putExtra(GlobalData.EXTRA_EVENT_ID, eventId);
 			eventsServiceIntent.putExtra(GlobalData.EXTRA_EVENTS_SERVICE_PROCEDURE, eventsServiceProcedure);
 			startWakefulService(context, eventsServiceIntent);
+			
 		}
 		
 		dataWrapper.invalidateDataWrapper();

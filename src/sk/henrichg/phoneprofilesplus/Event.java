@@ -396,9 +396,11 @@ public class Event {
 		dataWrapper.getDatabaseHandler().addEventTimeline(eventTimeline);
 		eventTimelineList.add(eventTimeline);
 		
+		
 		if (this._fkProfile != eventTimeline._fkProfileReturn)
 			// no activate profile, when is already activated
 			dataWrapper.activateProfileFromEvent(this._fkProfile, _notificationSound);
+		
 
 		setSystemEvent(dataWrapper.context, ESTATUS_RUNNING);
 		
