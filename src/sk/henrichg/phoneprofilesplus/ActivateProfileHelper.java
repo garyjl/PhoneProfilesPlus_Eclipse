@@ -439,7 +439,7 @@ public class ActivateProfileHelper {
 				Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, profile.getDeviceBrightnessValue());
 			}
 			
-			if (activity != null)
+			if ((activity != null) && (activity instanceof BackgroundActivateProfileActivity))
 			{
 				Window window = activity.getWindow();
 				LayoutParams layoutParams = window.getAttributes();

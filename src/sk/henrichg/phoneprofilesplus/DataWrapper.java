@@ -773,15 +773,16 @@ public class DataWrapper {
 		}
 	}
 
-	private void finishActivity(int startupSource, boolean activate, Activity _activity)
+	private void finishActivity(int startupSource, boolean afterActivation, Activity _activity)
 	{
 		final Activity activity = _activity;
 		
 		boolean finish = true;
 		
 		// kvoli nastaveniu brightness
-		// ak je activity == null, sleep sa uz vykonal v ActivateProfileHelper.execute()
-		boolean sleep = true;  
+		// pre BackgroundActivateProfileActivity nie je volana SetBrightnessWindowAttributesActivity
+		// kde sa aj sleepuje
+		boolean sleep = ((activity != null) && (activity instanceof BackgroundActivateProfileActivity));  
 
 		if (startupSource == GlobalData.STARTUP_SOURCE_ACTIVATOR)
 		{
@@ -789,18 +790,17 @@ public class DataWrapper {
 			if (GlobalData.applicationClose)
 			{	
 				// ma sa zatvarat aktivita po aktivacii
-				
 				if (GlobalData.getApplicationStarted(context))
 					// aplikacia je uz spustena, mozeme aktivitu zavriet
 					// tymto je vyriesene, ze pri spusteni aplikacie z launchera
 					// sa hned nezavrie
-					finish = activate;
-				
-				if (activity == null)
-					sleep = false;
+					finish = afterActivation;
 			}
-			else
-				sleep = false;
+		}
+		else
+		if (startupSource == GlobalData.STARTUP_SOURCE_EDITOR)
+		{
+			finish = false;
 		}
 		
 		if (finish)
@@ -934,10 +934,13 @@ public class DataWrapper {
 			activateProfileHelper.updateWidget();
 
 			// for startActivityForResult
-			Intent returnIntent = new Intent();
-			returnIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile_id);
-			returnIntent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, startupSource);
-			activity.setResult(Activity.RESULT_OK,returnIntent);
+			if (activity != null)
+			{
+				Intent returnIntent = new Intent();
+				returnIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile_id);
+				returnIntent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, startupSource);
+				activity.setResult(Activity.RESULT_OK,returnIntent);
+			}
 			
 			finishActivity(startupSource, true, activity);
 		}
