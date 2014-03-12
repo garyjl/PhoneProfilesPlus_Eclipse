@@ -453,7 +453,7 @@ public class ActivateProfileHelper {
 			else
 			{
 				Intent i = new Intent(context, SetBrightnessWindowAttributesActivity.class);
-			    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_NO_HISTORY|Intent.FLAG_FROM_BACKGROUND|Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
 			    context.startActivity(i);   				
 			}
 		}
