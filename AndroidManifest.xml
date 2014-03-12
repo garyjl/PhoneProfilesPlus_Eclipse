@@ -112,7 +112,7 @@
         <activity
             android:name=".BackgroundActivateProfileActivity"
             android:label="@string/empty_string" 
-            android:taskAffinity="sk.henrichg.phoneprofilesplus"
+            android:taskAffinity="sk.henrichg.phoneprofilesplus.empty"
             android:excludeFromRecents="true"
             android:theme="@style/EmptyActivity" >
             <intent-filter>
@@ -123,7 +123,7 @@
         <activity
             android:name=".SetBrightnessWindowAttributesActivity"
             android:label="@string/empty_string" 
-            android:taskAffinity="sk.henrichg.phoneprofilesplus"
+            android:taskAffinity="sk.henrichg.phoneprofilesplus.empty"
             android:excludeFromRecents="true"
             android:theme="@style/EmptyActivity" >
             <intent-filter>
