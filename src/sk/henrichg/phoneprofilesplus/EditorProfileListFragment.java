@@ -28,6 +28,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +38,7 @@ public class EditorProfileListFragment extends Fragment {
 	public DataWrapper dataWrapper;
 	private ActivateProfileHelper activateProfileHelper;
 	private List<Profile> profileList;
+	private LinearLayout eventsRunStopIndicator;
 	private EditorProfileListAdapter profileListAdapter;
 	private DragSortListView listView;
 	private TextView activeProfileName;
@@ -194,6 +196,7 @@ public class EditorProfileListFragment extends Fragment {
 		activeProfileIcon = (ImageView)view.findViewById(R.id.activated_profile_icon);
 		listView = (DragSortListView)view.findViewById(R.id.editor_profiles_list);
 		listView.setEmptyView(view.findViewById(R.id.editor_profiles_list_empty));
+		eventsRunStopIndicator = (LinearLayout)getActivity().findViewById(R.id.editor_events_list_run_stop_indicator);
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -239,6 +242,8 @@ public class EditorProfileListFragment extends Fragment {
 		else
 		{
 			listView.setAdapter(profileListAdapter);
+			
+			setEventsRunStopIndicator();
         
 			// pre profil, ktory je prave aktivny, treba aktualizovat aktivitu
 			Profile profile;
@@ -249,89 +254,6 @@ public class EditorProfileListFragment extends Fragment {
 		//Log.e("EditorProfileListFragment.doOnViewCreated", "xxx");
         
 	}
-
-	/*
-	private static class LoadProfilesTask extends AsyncTask<Void, Integer, Void> 
-	{
-		EditorProfileListFragment fragment;
-		boolean defaultProfilesGenerated = false;
-		
-		private WeakReference<List<Profile>> profileListReference;
-		private List<Profile> lProfileList;
-		
-		
-		LoadProfilesTask(EditorProfileListFragment fragment)
-		{
-			this.fragment = fragment;
-		}
-		
-		@Override
-		protected void onPreExecute()
-		{
-			super.onPreExecute();
-
-			//Log.e("EditorProfileListFragment.doOnViewCreated.onPreExecute",fragment.dataWrapper+"");
-
-			fragment.profileList = new ArrayList<Profile>();
-			profileListReference = new WeakReference<List<Profile>>(fragment.profileList);
-		}
-		
-		@Override
-		protected Void doInBackground(Void... params) {
-			//Log.e("EditorProfileListFragment.doOnViewCreated.doInBackground",fragment.dataWrapper+"");
-
-			lProfileList = fragment.dataWrapper.getProfileList();
-			if (lProfileList.size() == 0)
-			{
-				// no profiles in DB, generate default profiles
-				lProfileList = fragment.dataWrapper.getDefaultProfileList();
-				defaultProfilesGenerated = true;
-			}
-			// sort list
-			if (fragment.filterType != EditorProfileListFragment.FILTER_TYPE_SHOW_IN_ACTIVATOR)
-				fragment.sortAlphabetically(lProfileList);
-			else
-				fragment.sortByPOrder(lProfileList);
-			
-			return null;
-		}
-		
-		@Override
-		protected void onPostExecute(Void result)
-		{
-			super.onPostExecute(result);
-			
-			//Log.e("EditorProfileListFragment.doOnViewCreated.onPostExecute",fragment.dataWrapper+"");
-
-			final List<Profile> profileList = profileListReference.get();
-			
-		    if (profileListReference != null && lProfileList != null) {
-		    	profileList.clear();
-		    	for (Profile origProfile : lProfileList)
-		    	{
-					//Profile newProfile = new Profile();
-		    		//newProfile.copyProfile(origProfile);
-					//profileList.add(newProfile);
-		    		profileList.add(origProfile);
-		    	}
-		    	lProfileList.clear();
-		    	fragment.dataWrapper.setProfileList(profileList, false);
-		    }				
-			
-			fragment.profileListAdapter = new EditorProfileListAdapter(fragment, fragment.dataWrapper, fragment.filterType);
-			fragment.listView.setAdapter(fragment.profileListAdapter);
-
-			if (defaultProfilesGenerated)
-			{
-				fragment.activateProfileHelper.updateWidget();
-				Toast msg = Toast.makeText(fragment.getActivity(), 
-						fragment.getResources().getString(R.string.toast_default_profiles_generated), 
-						Toast.LENGTH_SHORT);
-				msg.show();
-			}
-		}
-	}
-	*/
 	
 	private static class LoadProfileListAsyncTask extends AsyncTask<Void, Void, Void> {
 
@@ -382,6 +304,8 @@ public class EditorProfileListFragment extends Fragment {
 
     	        fragment.profileListAdapter = new EditorProfileListAdapter(fragment, fragment.dataWrapper, fragment.filterType); 
     	        fragment.listView.setAdapter(fragment.profileListAdapter);
+
+    	        fragment.setEventsRunStopIndicator();
     	        
     			// pre profil, ktory je prave aktivny, treba aktualizovat aktivitu
     			Profile profile;
@@ -900,6 +824,15 @@ public class EditorProfileListFragment extends Fragment {
 		Collections.sort(profileList, new ByPOrderComparator());
 	}
 
+    public void setEventsRunStopIndicator()
+    {
+		if (GlobalData.getGlobalEventsRuning(getActivity().getBaseContext()))
+			eventsRunStopIndicator.setBackgroundColor(0xFF00FF00);
+		else
+			eventsRunStopIndicator.setBackgroundColor(0xFFFF0000);
+		updateListView(null, false);
+    }
+	
 	public void refreshGUI()
 	{
 		if ((dataWrapper == null) || (profileListAdapter == null))

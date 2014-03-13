@@ -490,6 +490,8 @@ public class EditorProfilesActivity extends ActionBarActivity
 			{
 				if (drawerSelectedItem > COUNT_DRAWER_PROFILE_ITEMS)
 					((EditorEventListFragment)fragment).setEventsRunStopIndicator();
+				else
+					((EditorProfileListFragment)fragment).setEventsRunStopIndicator();
 			}
 			return true;
 		case R.id.menu_default_profile:
