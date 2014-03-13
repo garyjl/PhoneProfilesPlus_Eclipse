@@ -45,7 +45,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 		
 	static final String PREFS_NAME_ACTIVITY = "profile_preferences_activity";
 	static final String PREFS_NAME_FRAGMENT = "profile_preferences_fragment";
-	static final String PREFS_NAME_DEFAULT_PROFILE = GlobalData.APPLICATION_PREFS_NAME;
+	static final String PREFS_NAME_DEFAULT_PROFILE = GlobalData.DEFAULT_PROFILE_PREFS_NAME;
 	private String PREFS_NAME;
 
 	static final String SP_ACTION_MODE_SHOWED = "action_mode_showed";

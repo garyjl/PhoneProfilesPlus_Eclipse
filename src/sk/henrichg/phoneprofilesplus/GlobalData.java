@@ -6,6 +6,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import com.stericson.RootTools.RootTools;
 
@@ -118,6 +120,7 @@ public class GlobalData extends Application {
 	static final String PROFILE_ICON_DEFAULT = "ic_profile_default";
 	
 	static final String APPLICATION_PREFS_NAME = "phone_profile_preferences";
+	static final String DEFAULT_PROFILE_PREFS_NAME = "profile_preferences_default_profile"; //GlobalData.APPLICATION_PREFS_NAME;
 	
     public static final String PREF_APPLICATION_START_ON_BOOT = "applicationStartOnBoot";
     public static final String PREF_APPLICATION_ACTIVATE = "applicationActivate";
@@ -362,8 +365,68 @@ public class GlobalData extends Application {
 		return String.valueOf(dValue.intValue());
 	}
 	
+	private static void moveDefaultProfilesPreference(Context context)
+	{
+		SharedPreferences oldPreferences = context.getSharedPreferences(APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+		SharedPreferences newPreferences = context.getSharedPreferences(DEFAULT_PROFILE_PREFS_NAME, Context.MODE_PRIVATE);
+		
+		SharedPreferences.Editor editorNew = newPreferences.edit();
+		SharedPreferences.Editor editorOld = oldPreferences.edit();
+		Map<String, ?> all = oldPreferences.getAll();
+		for (Entry<String, ?> x : all.entrySet()) {
+			
+			if (x.getKey().equals(PREF_PROFILE_NAME) ||
+				x.getKey().equals(PREF_PROFILE_NAME) ||
+				x.getKey().equals(PREF_PROFILE_ICON) ||
+				x.getKey().equals(PREF_PROFILE_VOLUME_RINGER_MODE) ||
+				x.getKey().equals(PREF_PROFILE_VOLUME_RINGTONE) ||
+				x.getKey().equals(PREF_PROFILE_VOLUME_NOTIFICATION) ||
+				x.getKey().equals(PREF_PROFILE_VOLUME_MEDIA) ||
+				x.getKey().equals(PREF_PROFILE_VOLUME_ALARM) ||
+				x.getKey().equals(PREF_PROFILE_VOLUME_SYSTEM) ||
+				x.getKey().equals(PREF_PROFILE_VOLUME_VOICE) ||
+				x.getKey().equals(PREF_PROFILE_SOUND_RINGTONE_CHANGE) ||
+				x.getKey().equals(PREF_PROFILE_SOUND_RINGTONE) ||
+				x.getKey().equals(PREF_PROFILE_SOUND_NOTIFICATION_CHANGE) ||
+				x.getKey().equals(PREF_PROFILE_SOUND_NOTIFICATION) ||
+				x.getKey().equals(PREF_PROFILE_SOUND_ALARM_CHANGE) ||
+				x.getKey().equals(PREF_PROFILE_SOUND_ALARM) ||
+				x.getKey().equals(PREF_PROFILE_DEVICE_AIRPLANE_MODE) ||
+				x.getKey().equals(PREF_PROFILE_DEVICE_WIFI) ||
+				x.getKey().equals(PREF_PROFILE_DEVICE_BLUETOOTH) ||
+				x.getKey().equals(PREF_PROFILE_DEVICE_SCREEN_TIMEOUT) ||
+				x.getKey().equals(PREF_PROFILE_DEVICE_BRIGHTNESS) ||
+				x.getKey().equals(PREF_PROFILE_DEVICE_WALLPAPER_CHANGE) ||
+				x.getKey().equals(PREF_PROFILE_DEVICE_WALLPAPER) ||
+				x.getKey().equals(PREF_PROFILE_DEVICE_MOBILE_DATA) ||
+				x.getKey().equals(PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS) ||
+				x.getKey().equals(PREF_PROFILE_DEVICE_GPS) ||
+				x.getKey().equals(PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE) ||
+				x.getKey().equals(PREF_PROFILE_DEVICE_RUN_APPLICATION_PACKAGE_NAME) ||
+				x.getKey().equals(PREF_PROFILE_DEVICE_AUTOSYNC) ||
+				x.getKey().equals(PREF_PROFILE_SHOW_IN_ACTIVATOR) ||
+				x.getKey().equals(PREF_PROFILE_DEVICE_AUTOROTATE) ||
+				x.getKey().equals(PREF_PROFILE_DEVICE_LOCATION_SERVICE_PREFS) ||
+				x.getKey().equals(PREF_PROFILE_VOLUME_SPEAKER_PHONE))
+			{
+			    if      (x.getValue().getClass().equals(Boolean.class)) editorNew.putBoolean(x.getKey(), (Boolean)x.getValue());
+			    else if (x.getValue().getClass().equals(Float.class))   editorNew.putFloat(x.getKey(),   (Float)x.getValue());
+			    else if (x.getValue().getClass().equals(Integer.class)) editorNew.putInt(x.getKey(),     (Integer)x.getValue());
+			    else if (x.getValue().getClass().equals(Long.class))    editorNew.putLong(x.getKey(),    (Long)x.getValue());
+			    else if (x.getValue().getClass().equals(String.class))  editorNew.putString(x.getKey(),  (String)x.getValue());
+
+				editorOld.remove(x.getKey());
+			}
+		}
+		editorNew.commit();
+		editorOld.commit(); 		
+	}
+	
 	static public Profile getDefaultProfile(Context context)
 	{
+		// move default profile preferences into new file
+		moveDefaultProfilesPreference(context);
+		
 		AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
 		int	maximumValueRing = audioManager.getStreamMaxVolume(AudioManager.STREAM_RING);
 		int	maximumValueNotification = audioManager.getStreamMaxVolume(AudioManager.STREAM_NOTIFICATION);
@@ -372,7 +435,7 @@ public class GlobalData extends Application {
 		int	maximumValueSystem = audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM);
 		int	maximumValueVoicecall = audioManager.getStreamMaxVolume(AudioManager.STREAM_VOICE_CALL);
 		
-		SharedPreferences preferences = context.getSharedPreferences(APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+		SharedPreferences preferences = context.getSharedPreferences(DEFAULT_PROFILE_PREFS_NAME, Context.MODE_PRIVATE);
 		
 		Profile profile = new Profile();
 		profile._id = DEFAULT_PROFILE_ID;

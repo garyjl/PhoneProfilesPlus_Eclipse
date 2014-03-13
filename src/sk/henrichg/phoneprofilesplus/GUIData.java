@@ -17,6 +17,7 @@ public class GUIData {
 	public static final String DB_FILEPATH = "/data/" + GlobalData.PACKAGE_NAME + "/databases";
 	public static final String REMOTE_EXPORT_PATH = "/PhoneProfiles";
 	public static final String EXPORT_APP_PREF_FILENAME = "ApplicationPreferences.backup";
+	public static final String EXPORT_DEF_PROFILE_PREF_FILENAME = "DefaultProfilePreferences.backup";
 
 	public static void setLanguage(Context context)//, boolean restart)
 	{

@@ -863,12 +863,16 @@ public class EditorProfilesActivity extends ActionBarActivity
 	}
 	
 	@SuppressWarnings({ "unchecked" })
-	private boolean importApplicationPreferences(File src) {
+	private boolean importApplicationPreferences(File src, int what) {
 	    boolean res = false;
 	    ObjectInputStream input = null;
 	    try {
 	        	input = new ObjectInputStream(new FileInputStream(src));
-	            Editor prefEdit = getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, MODE_PRIVATE).edit();
+	            Editor prefEdit;
+		        if (what == 1)
+		        	prefEdit = getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Activity.MODE_PRIVATE).edit();
+		        else
+		        	prefEdit = getSharedPreferences(GlobalData.DEFAULT_PROFILE_PREFS_NAME, Activity.MODE_PRIVATE).edit();
 	            prefEdit.clear();
 	            Map<String, ?> entries = (Map<String, ?>) input.readObject();
 	            for (Entry<String, ?> entry : entries.entrySet()) {
@@ -952,8 +956,14 @@ public class EditorProfilesActivity extends ActionBarActivity
 				{
 					File sd = Environment.getExternalStorageDirectory();
 					File exportFile = new File(sd, _applicationDataPath + "/" + GUIData.EXPORT_APP_PREF_FILENAME);
-					if (!importApplicationPreferences(exportFile))
+					if (!importApplicationPreferences(exportFile, 1))
 						ret = 0;
+					else
+					{
+						exportFile = new File(sd, _applicationDataPath + "/" + GUIData.EXPORT_DEF_PROFILE_PREF_FILENAME);
+						if (!importApplicationPreferences(exportFile, 2))
+							ret = 0;
+					}
 				}
 				
 				// startneme eventy
@@ -1078,13 +1088,16 @@ public class EditorProfilesActivity extends ActionBarActivity
 			importDataAlert(false);
 	}
 	
-	private boolean exportApplicationPreferences(File dst) {
+	private boolean exportApplicationPreferences(File dst, int what) {
 	    boolean res = false;
 	    ObjectOutputStream output = null;
 	    try {
 	        output = new ObjectOutputStream(new FileOutputStream(dst));
-	        SharedPreferences pref = 
-	                            getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, MODE_PRIVATE);
+	        SharedPreferences pref;
+	        if (what == 1)
+	        	pref = getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Activity.MODE_PRIVATE);
+	        else
+	        	pref = getSharedPreferences(GlobalData.DEFAULT_PROFILE_PREFS_NAME, Activity.MODE_PRIVATE);
 	        output.writeObject(pref.getAll());
 
 	        res = true;
@@ -1148,8 +1161,14 @@ public class EditorProfilesActivity extends ActionBarActivity
 						{
 							File sd = Environment.getExternalStorageDirectory();
 							File exportFile = new File(sd, GlobalData.EXPORT_PATH + "/" + GUIData.EXPORT_APP_PREF_FILENAME);
-							if (!exportApplicationPreferences(exportFile))
+							if (!exportApplicationPreferences(exportFile, 1))
 								ret = 0;
+							else
+							{
+								exportFile = new File(sd, GlobalData.EXPORT_PATH + "/" + GUIData.EXPORT_DEF_PROFILE_PREF_FILENAME);
+								if (!exportApplicationPreferences(exportFile, 2))
+									ret = 0;
+							}
 						}
 
 						return ret;
