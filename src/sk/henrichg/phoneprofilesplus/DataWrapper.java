@@ -689,10 +689,14 @@ public class DataWrapper {
 		
 		if ((startupSource != GlobalData.STARTUP_SOURCE_SERVICE) && (startupSource != GlobalData.STARTUP_SOURCE_BOOT))
 		{
-			// for manual activation pause all running events
-			// and setup for next start
-			// block battery events
-			pauseAllEvents(false, true);
+			if (GlobalData.applicationPauseEventsOnPofileActivation)
+				// for manual activation pause all running events
+				// and setup for next start
+				// block battery events
+				pauseAllEvents(false, true);
+			else
+				// only block battery events
+				blockAllBatteryEvents(true);
 		}
 		
 		activateProfileHelper.execute(profile, interactive, eventNotificationSound);
