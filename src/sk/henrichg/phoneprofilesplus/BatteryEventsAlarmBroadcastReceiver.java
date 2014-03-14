@@ -11,6 +11,8 @@ import android.support.v4.content.WakefulBroadcastReceiver;
 
 public class BatteryEventsAlarmBroadcastReceiver extends WakefulBroadcastReceiver {
 
+	public static final String BROADCAST_RECEIVER_TYPE = "batteryEventAlarm";
+	
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		GlobalData.logE("##### BatteryEventsAlarmBroadcastReceiver.onReceive","xxx");
@@ -47,6 +49,7 @@ public class BatteryEventsAlarmBroadcastReceiver extends WakefulBroadcastReceive
 				Intent eventsServiceIntent = new Intent(context, EventsService.class);
 				eventsServiceIntent.putExtra(GlobalData.EXTRA_EVENT_ID, event_id);
 				eventsServiceIntent.putExtra(GlobalData.EXTRA_POWER_CHANGE_RECEIVED, false);
+				eventsServiceIntent.putExtra(GlobalData.EXTRA_BROADCAST_RECEIVER_TYPE, BROADCAST_RECEIVER_TYPE);
 				startWakefulService(context, eventsServiceIntent);
 			}
 			

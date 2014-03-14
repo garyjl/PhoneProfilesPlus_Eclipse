@@ -8,6 +8,8 @@ import android.support.v4.content.WakefulBroadcastReceiver;
 
 public class PowerConnectionReceiver extends WakefulBroadcastReceiver {
 
+	public static final String BROADCAST_RECEIVER_TYPE = "powerConnection";
+	
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		GlobalData.logE("#### PowerConnectionReceiver.onReceive","xxx");
@@ -44,6 +46,7 @@ public class PowerConnectionReceiver extends WakefulBroadcastReceiver {
 				Intent eventsServiceIntent = new Intent(context, EventsService.class);
 				eventsServiceIntent.putExtra(GlobalData.EXTRA_EVENT_ID, event_id);
 				eventsServiceIntent.putExtra(GlobalData.EXTRA_POWER_CHANGE_RECEIVED, true);
+				eventsServiceIntent.putExtra(GlobalData.EXTRA_BROADCAST_RECEIVER_TYPE, BROADCAST_RECEIVER_TYPE);
 				startWakefulService(context, eventsServiceIntent);
 			}
 			

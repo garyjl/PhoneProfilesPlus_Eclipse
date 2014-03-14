@@ -15,6 +15,7 @@ public class EventsService extends IntentService
 	DataWrapper dataWrapper;
 	List<EventTimeline> eventTimelineList;
 	int procedure;
+	String broadcastReceiverType;
 	
 	public static final int ESP_START_EVENT = 1;
 	public static final int ESP_PAUSE_EVENT = 2;
@@ -51,6 +52,7 @@ public class EventsService extends IntentService
 		GlobalData.logE("EventsService.onHandleIntent","eventTimelineList.size()="+eventTimelineList.size());
 		
 		procedure = intent.getIntExtra(GlobalData.EXTRA_EVENTS_SERVICE_PROCEDURE, 0);
+		broadcastReceiverType = intent.getStringExtra(GlobalData.EXTRA_BROADCAST_RECEIVER_TYPE);
 		
 		GlobalData.logE("EventsService.onHandleIntent","procedure="+procedure);
 		
@@ -198,18 +200,13 @@ public class EventsService extends IntentService
 		context.sendBroadcast(refreshIntent);
 
 		// completting wake
-		switch (eventType)
-		{
-			case Event.ETYPE_TIME:
-				EventsAlarmBroadcastReceiver.completeWakefulIntent(intent);
-				
-				break;
-			case Event.ETYPE_BATTERY:
-				BatteryEventsAlarmBroadcastReceiver.completeWakefulIntent(intent);
-				
-				break;
-			default:
-				break;
-		}
+		if (broadcastReceiverType.equals(EventsAlarmBroadcastReceiver.BROADCAST_RECEIVER_TYPE))
+			EventsAlarmBroadcastReceiver.completeWakefulIntent(intent);
+		else
+		if (broadcastReceiverType.equals(BatteryEventsAlarmBroadcastReceiver.BROADCAST_RECEIVER_TYPE))
+			BatteryEventsAlarmBroadcastReceiver.completeWakefulIntent(intent);
+		else
+		if (broadcastReceiverType.equals(PowerConnectionReceiver.BROADCAST_RECEIVER_TYPE))
+			PowerConnectionReceiver.completeWakefulIntent(intent);
 	}
 }

@@ -53,6 +53,7 @@ public class GlobalData extends Application {
 	static final String EXTRA_SECOND_SET_VOLUMES = "second_set_volumes";
 	static final String EXTRA_POWER_CHANGE_RECEIVED = "power_change_received";
 	static final String EXTRA_EVENT_NOTIFICATION_SOUND = "event_notification_sound";
+	static final String EXTRA_BROADCAST_RECEIVER_TYPE = "broadcast_receiver_type";
 
 	static final int STARTUP_SOURCE_NOTIFICATION = 1;
 	static final int STARTUP_SOURCE_WIDGET = 2;

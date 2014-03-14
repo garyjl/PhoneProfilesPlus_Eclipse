@@ -270,5 +270,10 @@
 
 	<string name="phone_profiles_pref_applicationPauseEventsOnProfileActivation">Pause events</string>
 	<string name="event_preferences_not_enabled">Not enabled</string>
+    <string name="event_preferences_category_eventTimeParameters">Time parameters</string>
+    <string name="event_preferences_category_eventBatteryParameters">Battery parameters</string>
+    <string name="event_preferences_time_enabled">Enable time</string>
+    <string name="event_preferences_battery_enabled">Enable battery</string>
+    		
 	    			
 </resources>
