@@ -213,9 +213,9 @@ public class Event {
 		
 		description = "";
 		
-		description = description + _eventPreferencesTime.getPreferencesDescription(description, context);
+		description = _eventPreferencesTime.getPreferencesDescription(description, context);
 		description = description + "\n";
-		description = description + _eventPreferencesBattery.getPreferencesDescription(description, context);
+		description = _eventPreferencesBattery.getPreferencesDescription(description, context);
 		
 		return description;
 	}

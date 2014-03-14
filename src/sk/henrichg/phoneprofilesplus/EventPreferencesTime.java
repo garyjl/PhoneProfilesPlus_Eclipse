@@ -143,10 +143,10 @@ public class EventPreferencesTime extends EventPreferences {
 	@Override
 	public String getPreferencesDescription(String description, Context context)
 	{
-		String descr = description;
+		String descr = description + context.getString(R.string.event_type_time) + ": ";
 
 		if (!this._enabled)
-			descr = context.getString(R.string.event_preferences_not_enabled);
+			descr = descr + context.getString(R.string.event_preferences_not_enabled);
 		else
 		{
 	    	boolean[] daySet = new boolean[7];

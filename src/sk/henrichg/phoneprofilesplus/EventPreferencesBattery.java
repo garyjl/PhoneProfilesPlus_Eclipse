@@ -85,10 +85,10 @@ public class EventPreferencesBattery extends EventPreferences {
 	@Override
 	public String getPreferencesDescription(String description, Context context)
 	{
-		String descr = description;
+		String descr = description + context.getString(R.string.event_type_battery) + ": ";
 		
 		if (!this._enabled)
-			descr = context.getString(R.string.event_preferences_not_enabled);
+			descr = descr + context.getString(R.string.event_preferences_not_enabled);
 		else
 		{
 			descr = descr + context.getString(R.string.pref_event_battery_level);

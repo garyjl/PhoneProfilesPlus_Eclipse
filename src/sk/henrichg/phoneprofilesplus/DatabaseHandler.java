@@ -569,6 +569,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_BATTERY_ENABLED + "=0");
 				db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_TIME_ENABLED + "=1 WHERE " + KEY_E_TYPE + "=1");
 				db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_BATTERY_ENABLED + "=1 WHERE " + KEY_E_TYPE + "=2");
+
+				db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_START_TIME + "=0 WHERE " + KEY_E_TYPE + "=2");
+				db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_END_TIME + "=0 WHERE " + KEY_E_TYPE + "=2");
+				db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_DAYS_OF_WEEK + "=\"#ALL#\" WHERE " + KEY_E_TYPE + "=2");
+				db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_USE_END_TIME + "=0 WHERE " + KEY_E_TYPE + "=2");
+				
+				db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_BATTERY_LEVEL_LOW + "=0 WHERE " + KEY_E_TYPE + "=1");
+				db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_BATTERY_LEVEL_HIGHT + "=100 WHERE " + KEY_E_TYPE + "=1");
+				db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_BATTERY_CHARGING + "=0 WHERE " + KEY_E_TYPE + "=1");
+				db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_BATTERY_BLOCKED + "=0 WHERE " + KEY_E_TYPE + "=1");
+				
 				db.setTransactionSuccessful();
 		     } catch (Exception e){
 		         //Error in between database transaction 
@@ -2359,17 +2370,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 														values.put(columnNamesExportedDB[i], 0);
 												}
 												else
-												{
-													if (columnNamesExportedDB[i].equals(KEY_E_BATTERY_LEVEL))
-														batteryLevel = cursorExportedDB.getInt(i);
-													if (columnNamesExportedDB[i].equals(KEY_E_BATTERY_DETECTOR_TYPE))
-														batteryDetectorType = cursorExportedDB.getInt(i);
-													if (columnNamesExportedDB[i].equals(KEY_E_TYPE))
-														eventType = cursorExportedDB.getInt(i);
-													
 													values.put(columnNamesExportedDB[i], cursorExportedDB.getString(i));
-												}
 											}
+
+											if (columnNamesExportedDB[i].equals(KEY_E_BATTERY_LEVEL))
+												batteryLevel = cursorExportedDB.getInt(i);
+											if (columnNamesExportedDB[i].equals(KEY_E_BATTERY_DETECTOR_TYPE))
+												batteryDetectorType = cursorExportedDB.getInt(i);
+											if (columnNamesExportedDB[i].equals(KEY_E_TYPE))
+												eventType = cursorExportedDB.getInt(i);
+											
 											//Log.d("DatabaseHandler.importDB", "cn="+columnNames[i]+" val="+cursor.getString(i));
 										}
 										
@@ -2416,9 +2426,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 											values.put(KEY_E_TIME_ENABLED, 0);
 											values.put(KEY_E_BATTERY_ENABLED, 0);
 											if (eventType == 1)
+											{
 												values.put(KEY_E_TIME_ENABLED, 1);
+												values.put(KEY_E_BATTERY_LEVEL_LOW, 0);
+												values.put(KEY_E_BATTERY_LEVEL_HIGHT, 100);
+												values.put(KEY_E_BATTERY_CHARGING, 0);
+												values.put(KEY_E_BATTERY_BLOCKED, 0);
+											}
 											if (eventType == 2)
+											{
 												values.put(KEY_E_BATTERY_ENABLED, 1);
+												values.put(KEY_E_START_TIME, 0);
+												values.put(KEY_E_END_TIME, 0);
+												values.put(KEY_E_DAYS_OF_WEEK, "#ALL#");
+												values.put(KEY_E_USE_END_TIME, 0);
+											}
+
 										}
 										
 										// Inserting Row do db z SQLiteOpenHelper
