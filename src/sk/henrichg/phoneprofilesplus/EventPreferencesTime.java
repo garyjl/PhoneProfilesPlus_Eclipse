@@ -481,10 +481,4 @@ public class EventPreferencesTime extends EventPreferences {
         
 	}
 	
-	@Override
-	public boolean invokeBroadcastReceiver(Context context)
-	{
-		return false;
-	}
-
 }

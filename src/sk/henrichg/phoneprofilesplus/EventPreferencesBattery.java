@@ -183,13 +183,4 @@ public class EventPreferencesBattery extends EventPreferences {
 		}
 	}
 
-	@Override
-	public boolean invokeBroadcastReceiver(Context context)
-	{
-		BatteryEventsAlarmBroadcastReceiver.doOnReceive(context, _event._id);
-		
-		return true;
-	}
-	
-	
 }

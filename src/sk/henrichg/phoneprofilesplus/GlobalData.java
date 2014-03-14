@@ -36,7 +36,8 @@ public class GlobalData extends Application {
 	                                     "BatteryEventsAlarmBroadcastReceiver|"+
 			                             "EventsService|"+
 	                                     "PowerConnectionReceiver|"+
-			                             "RefreshGUIBroadcastReceiver";
+			                             "RefreshGUIBroadcastReceiver|"+
+	                                     "DataWrapper.doEventService";
 	
 	public static final String EXPORT_PATH = "/PhoneProfilesPlus";
 	public static final String LOG_FILENAME = "log.txt";
@@ -51,7 +52,6 @@ public class GlobalData extends Application {
 	static final String EXTRA_EVENTS_SERVICE_PROCEDURE = "events_service_procedure";
 	static final String EXTRA_START_SYSTEM_EVENT = "start_system_event";
 	static final String EXTRA_SECOND_SET_VOLUMES = "second_set_volumes";
-	static final String EXTRA_POWER_CHANGE_RECEIVED = "power_change_received";
 	static final String EXTRA_EVENT_NOTIFICATION_SOUND = "event_notification_sound";
 	static final String EXTRA_BROADCAST_RECEIVER_TYPE = "broadcast_receiver_type";
 

@@ -48,7 +48,6 @@ public class BatteryEventsAlarmBroadcastReceiver extends WakefulBroadcastReceive
 				// start service
 				Intent eventsServiceIntent = new Intent(context, EventsService.class);
 				eventsServiceIntent.putExtra(GlobalData.EXTRA_EVENT_ID, event_id);
-				eventsServiceIntent.putExtra(GlobalData.EXTRA_POWER_CHANGE_RECEIVED, false);
 				eventsServiceIntent.putExtra(GlobalData.EXTRA_BROADCAST_RECEIVER_TYPE, BROADCAST_RECEIVER_TYPE);
 				startWakefulService(context, eventsServiceIntent);
 			}

@@ -1,5 +1,6 @@
 package sk.henrichg.phoneprofilesplus;
 
+import java.util.Calendar;
 import java.util.List;
 
 import android.app.Activity;
@@ -7,7 +8,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.AudioManager;
+import android.os.BatteryManager;
 import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
@@ -959,6 +962,118 @@ public class DataWrapper {
 		
 	}
 
+	public boolean doEventService(Event event, boolean startEvent, boolean unblockEvent)
+	{
+		int newEventStatus = Event.ESTATUS_PAUSE;
+				
+		boolean timePassed = true;
+		boolean batteryPassed = true;
+		
+		boolean isCharging = false;
+		float batteryPct = 100.0f;
+		
+		if (event._eventPreferencesTime._enabled)
+		{
+			// compute start datetime
+   			long startAlarmTime;
+   			long endAlarmTime;
+			int daysToAdd;
+			
+			daysToAdd = event._eventPreferencesTime.computeDaysForAdd(true);
+			startAlarmTime = event._eventPreferencesTime.computeAlarm(true, daysToAdd);
+			
+			daysToAdd = event._eventPreferencesTime.computeDaysForAdd(false);
+			endAlarmTime = event._eventPreferencesTime.computeAlarm(false, daysToAdd);
+			
+			Calendar now = Calendar.getInstance();
+			
+			timePassed = ((now.getTimeInMillis() >= startAlarmTime) && (now.getTimeInMillis() <= endAlarmTime));
+		}
+		
+		if (event._eventPreferencesBattery._enabled)
+		{
+			// get battery status
+			IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+			Intent batteryStatus = context.registerReceiver(null, ifilter);
+			
+			int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+			GlobalData.logE("DataWrapper.doEventService","status="+status);
+			isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
+			             status == BatteryManager.BATTERY_STATUS_FULL;
+			GlobalData.logE("DataWrapper.doEventService","isCharging="+isCharging);
+			
+			int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+			int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+			
+			batteryPct = level / (float)scale;	
+			GlobalData.logE("DataWrapper.doEventService","batteryPct="+batteryPct);
+			
+			if ((batteryPct >= (event._eventPreferencesBattery._levelLow / (float)100)) && 
+			    (batteryPct <= (event._eventPreferencesBattery._levelHight / (float)100))) 
+			{
+				batteryPassed = event._eventPreferencesBattery._charging;
+			}
+			else
+				batteryPassed = false;
+		}
+		
+		if (timePassed && batteryPassed)
+		{
+			List<EventTimeline> eventTimelineList = getEventTimelineList();
+			
+			// podmienky sedia, vykoname, co treba
+
+			if (startEvent)
+				newEventStatus = Event.ESTATUS_RUNNING;
+			else
+				newEventStatus = Event.ESTATUS_PAUSE;
+
+			if (unblockEvent)
+			{
+				GlobalData.logE("DataWrapper.doEventService","PowerConnectionReceiver");
+				// unblock starting battery event
+				event._eventPreferencesBattery._blocked = false;
+				getDatabaseHandler().updateEventPreferencesBatteryBlocked(event);
+			}
+				
+			if (isCharging != event._eventPreferencesBattery._charging)
+			{
+				newEventStatus = Event.ESTATUS_PAUSE;
+			}
+			else
+			{
+				if ((batteryPct >= (event._eventPreferencesBattery._levelLow / (float)100)) && 
+				    (batteryPct <= (event._eventPreferencesBattery._levelHight / (float)100))) 
+				{
+					GlobalData.logE("DataWrapper.doEventService","inlevel blocked="+event._eventPreferencesBattery._blocked);
+					if (!event._eventPreferencesBattery._blocked)
+					{
+						// starting battery level unblocked
+						if (event.getStatus() != Event.ESTATUS_RUNNING)
+							newEventStatus = Event.ESTATUS_RUNNING;
+					}
+				}
+				else
+				{
+					GlobalData.logE("DataWrapper.doEventService","outlevel blocked="+event._eventPreferencesBattery._blocked);
+					// unblock starting battery event
+					event._eventPreferencesBattery._blocked = false;
+					getDatabaseHandler().updateEventPreferencesBatteryBlocked(event);
+
+					newEventStatus = Event.ESTATUS_PAUSE;
+				}
+			}
+		
+			if (newEventStatus == Event.ESTATUS_RUNNING)
+				event.startEvent(this, eventTimelineList, false);
+			else
+			if (newEventStatus == Event.ESTATUS_PAUSE)
+				event.pauseEvent(this, eventTimelineList, true, false, false);
+		}
+		
+		return (timePassed && batteryPassed);
+	}
+	
 	public Profile filterProfileWithBatteryEvents(Profile profile)
 	{
 		if (profile != null)

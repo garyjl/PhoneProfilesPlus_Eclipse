@@ -292,7 +292,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 			event_id = event._id;
 
 			// setup event for next start
-			if (!event.invokeBroadcastReceiver(context))
+			if (!dataWrapper.doEventService(event, false, true))
 				event.pauseEvent(dataWrapper, eventTimelineList, false, false, false);
 				
 			
@@ -317,7 +317,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 			else
 			{
 				// setup event for next start
-				if (!event.invokeBroadcastReceiver(context))
+				if (!dataWrapper.doEventService(event, false, true))
 					event.pauseEvent(dataWrapper, eventTimelineList, false, false, false);
 			}
 			

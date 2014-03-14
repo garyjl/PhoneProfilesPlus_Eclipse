@@ -483,12 +483,5 @@ public class Event {
 		}
 	}
 	
-	public boolean invokeBroadcastReceiver(Context context)
-	{
-		// kazdy broadcast receiver musi obsluzit vsetky preferences
-		return _eventPreferencesTime.invokeBroadcastReceiver(context) ||
-			   _eventPreferencesBattery.invokeBroadcastReceiver(context); 
-	}
-
 }
 
