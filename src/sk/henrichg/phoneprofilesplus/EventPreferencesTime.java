@@ -207,7 +207,7 @@ public class EventPreferencesTime extends EventPreferences {
 	   	   		    alarmTimeS = "(st) " + DateFormat.getDateFormat(context).format(alarmTime) +
 	   	   		    			 " " + DateFormat.getTimeFormat(context).format(alarmTime);
 	   	   		    descr = descr + '\n';
-	   	   		    descr = descr + alarmTimeS;
+	   	   		    descr = descr + "-> " + alarmTimeS;
 	   			}
 	   			else
 	   			if ((_event.getStatus() == Event.ESTATUS_RUNNING) && _useEndTime)
@@ -218,7 +218,7 @@ public class EventPreferencesTime extends EventPreferences {
 	   	   		    alarmTimeS = "(et) " + DateFormat.getDateFormat(context).format(alarmTime) +
 	   	   		    			 " " + DateFormat.getTimeFormat(context).format(alarmTime);
 	   	   		    descr = descr + '\n';
-	   	   		    descr = descr + alarmTimeS;
+	   	   		    descr = descr + "-> " + alarmTimeS;
 	   			}
 	   		}
 		}

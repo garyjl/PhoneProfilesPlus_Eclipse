@@ -205,7 +205,6 @@ public class EditorEventListAdapter extends BaseAdapter
 	
 	static class ViewHolder {
 		  RelativeLayout listItemRoot;
-		  ImageView eventIcon;
 		  TextView eventName;
 		  ImageView profileIcon;
 		  TextView profileName;
@@ -232,7 +231,6 @@ public class EditorEventListAdapter extends BaseAdapter
             holder = new ViewHolder();
             holder.listItemRoot = (RelativeLayout)vi.findViewById(R.id.event_list_item_root);
             holder.eventName = (TextView)vi.findViewById(R.id.event_list_item_event_name);
-            holder.eventIcon = (ImageView)vi.findViewById(R.id.event_list_item_event_icon);
             holder.profileName = (TextView)vi.findViewById(R.id.event_list_item_profile_name);
             holder.profileIcon = (ImageView)vi.findViewById(R.id.event_list_item_profile_icon);
             holder.eventStatus = (ImageView)vi.findViewById(R.id.event_list_item_status);
@@ -279,8 +277,6 @@ public class EditorEventListAdapter extends BaseAdapter
 
 		holder.eventName.setText(event._name);
    		
-       	holder.eventIcon.setImageResource(R.drawable.ic_empty);
-        
 	    if (GlobalData.applicationEditorPrefIndicator)
 	    {
 	    	String eventPrefDescription = event.getPreferecesDescription(vi.getContext());

@@ -112,8 +112,10 @@ public class Event {
 	public boolean isRunnable()
 	{
 		boolean runnable = (this._fkProfile != 0);
-		runnable = runnable && this._eventPreferencesTime.isRunable();
-		runnable = runnable && this._eventPreferencesBattery.isRunable();
+		if (this._eventPreferencesTime._enabled)
+			runnable = runnable && this._eventPreferencesTime.isRunable();
+		if (this._eventPreferencesTime._enabled)
+			runnable = runnable && this._eventPreferencesBattery.isRunable();
 		return runnable;
 	}
 	

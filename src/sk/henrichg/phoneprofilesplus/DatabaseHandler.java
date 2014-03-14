@@ -1879,7 +1879,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 		//Log.e("DatabaseHandler.updateEventPreferencesBattery","type="+event._type);
 		
-		values.put(KEY_E_TIME_ENABLED, (eventPreferences._enabled) ? 1 : 0);
+		values.put(KEY_E_BATTERY_ENABLED, (eventPreferences._enabled) ? 1 : 0);
 		values.put(KEY_E_BATTERY_LEVEL_LOW, eventPreferences._levelLow);
 		values.put(KEY_E_BATTERY_LEVEL_HIGHT, eventPreferences._levelHight);
 		values.put(KEY_E_BATTERY_CHARGING, eventPreferences._charging ? 1 : 0);

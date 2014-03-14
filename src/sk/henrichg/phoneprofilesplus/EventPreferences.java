@@ -26,7 +26,7 @@ public class EventPreferences {
 	
 	public boolean isRunable()
 	{
-		return _enabled;
+		return true;
 	}
 	
 	public boolean activateReturnProfile()

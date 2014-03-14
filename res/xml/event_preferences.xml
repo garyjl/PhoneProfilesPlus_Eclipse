@@ -37,15 +37,18 @@
             android:key="eventTimeDays"
             android:title="@string/event_preferences_time_timeDays"
             android:entries="@array/daysOfWeekArray"
-            android:entryValues="@array/daysOfWeekValues"/>
+            android:entryValues="@array/daysOfWeekValues"
+            android:dependency="eventTimeEnabled" />
         <sk.henrichg.phoneprofilesplus.TimePreference
             android:key="eventTimeStartTime"
             android:defaultValue="0"
-            android:title="@string/event_preferences_time_startTime" />
+            android:title="@string/event_preferences_time_startTime"
+            android:dependency="eventTimeEnabled" />
 		<CheckBoxPreference 
 		    android:key="eventTimeUseEndTime"
 		    android:title="@string/event_preferences_time_useEndTime"
-		    android:defaultValue="false" />
+		    android:defaultValue="false"
+            android:dependency="eventTimeEnabled" />
         <sk.henrichg.phoneprofilesplus.TimePreference
             android:key="eventTimeEndTime"
             android:defaultValue="0"
@@ -65,17 +68,20 @@
             android:title="@string/event_preferences_battery_level_low" 
 			android:inputType="number"
             android:defaultValue="0"
-            android:selectAllOnFocus="true" /> 
+            android:selectAllOnFocus="true"
+            android:dependency="eventBatteryEnabled" /> 
         <EditTextPreference
             android:key="eventBatteryLevelHight"
             android:summary="@string/event_preferences_battery_level_hight"
             android:title="@string/event_preferences_battery_level_hight" 
 			android:inputType="number"
             android:defaultValue="100"
-            android:selectAllOnFocus="true" /> 
+            android:selectAllOnFocus="true"
+            android:dependency="eventBatteryEnabled" /> 
 		<CheckBoxPreference 
 		    android:key="eventBatteryCharging"
 		    android:title="@string/event_preferences_battery_charging"
-		    android:defaultValue="false" />
+		    android:defaultValue="false"
+            android:dependency="eventBatteryEnabled" />
     </PreferenceCategory>
 </PreferenceScreen>    
