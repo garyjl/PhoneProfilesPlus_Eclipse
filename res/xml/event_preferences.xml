@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:henrichg="http://schemas.android.com/apk/res/sk.henrichg.phoneprofilesplus" >
+    <PreferenceCategory
+        android:summary="@string/event_preferences_category_eventidentification"
+        android:title="@string/event_preferences_category_eventidentification" >
+		<CheckBoxPreference 
+		    android:key="eventEnabled"
+		    android:title="@string/event_preferences_eventEnabled"
+		    android:defaultValue="false" />
+        <EditTextPreference
+            android:key="eventName"
+            android:summary="@string/event_preferences_eventName"
+            android:title="@string/event_preferences_eventName"
+            android:selectAllOnFocus="true" /> 
+        <sk.henrichg.phoneprofilesplus.ProfilePreference
+            android:defaultValue="0"
+            android:key="eventProfile"
+            android:title="@string/event_preferences_eventProfile" />
+        <RingtonePreference
+            android:key="eventNotificationSound"
+            android:summary="@string/array_pref_no_change"
+            android:title="@string/event_preferences_notificationSound"
+            android:ringtoneType="notification" 
+            android:showSilent="true"
+            android:showDefault="true" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:summary="@string/event_preferences_category_eventTimeParameters"
+        android:title="@string/event_preferences_category_eventTimeParameters" >
+		<CheckBoxPreference 
+		    android:key="eventTimeEnabled"
+		    android:title="@string/event_preferences_time_enabled"
+		    android:defaultValue="false" />
+        <sk.henrichg.phoneprofilesplus.DaysOfWeekPreference
+            android:defaultValue="#ALL#"
+            android:key="eventTimeDays"
+            android:title="@string/event_preferences_time_timeDays"
+            android:entries="@array/daysOfWeekArray"
+            android:entryValues="@array/daysOfWeekValues"/>
+        <sk.henrichg.phoneprofilesplus.TimePreference
+            android:key="eventTimeStartTime"
+            android:defaultValue="0"
+            android:title="@string/event_preferences_time_startTime" />
+		<CheckBoxPreference 
+		    android:key="eventTimeUseEndTime"
+		    android:title="@string/event_preferences_time_useEndTime"
+		    android:defaultValue="false" />
+        <sk.henrichg.phoneprofilesplus.TimePreference
+            android:key="eventTimeEndTime"
+            android:defaultValue="0"
+            android:title="@string/event_preferences_time_endTime"
+            android:dependency="eventTimeUseEndTime" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:summary="@string/event_preferences_category_eventBatteryParameters"
+        android:title="@string/event_preferences_category_eventBatteryParameters" >
+		<CheckBoxPreference 
+		    android:key="eventBatteryEnabled"
+		    android:title="@string/event_preferences_battery_enabled"
+		    android:defaultValue="false" />
+        <EditTextPreference
+            android:key="eventBatteryLevelLow"
+            android:summary="@string/event_preferences_battery_level_low"
+            android:title="@string/event_preferences_battery_level_low" 
+			android:inputType="number"
+            android:defaultValue="0"
+            android:selectAllOnFocus="true" /> 
+        <EditTextPreference
+            android:key="eventBatteryLevelHight"
+            android:summary="@string/event_preferences_battery_level_hight"
+            android:title="@string/event_preferences_battery_level_hight" 
+			android:inputType="number"
+            android:defaultValue="100"
+            android:selectAllOnFocus="true" /> 
+		<CheckBoxPreference 
+		    android:key="eventBatteryCharging"
+		    android:title="@string/event_preferences_battery_charging"
+		    android:defaultValue="false" />
+    </PreferenceCategory>
+</PreferenceScreen>    
