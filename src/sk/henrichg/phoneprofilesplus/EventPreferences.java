@@ -7,27 +7,26 @@ import android.preference.PreferenceManager;
 public class EventPreferences {
 	
 	public Event _event;
-	public int _preferencesResourceID;
-	public int _iconResourceID;
+	public boolean _enabled;
 	
 	public EventPreferences()
 	{
-		
+		_enabled = false;
 	}
 	
-	public EventPreferences(Event event)
+	public EventPreferences(Event event, boolean enabled)
 	{
 		_event = event;
+		_enabled = enabled;
 	}
 	
 	public void copyPreferences(Event fromEvent)
 	{
-		
 	}
 	
 	public boolean isRunable()
 	{
-		return true;
+		return _enabled;
 	}
 	
 	public boolean activateReturnProfile()

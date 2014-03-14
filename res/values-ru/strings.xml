@@ -200,8 +200,6 @@
     <string name="editor_drawer_order_label">Сортировать события по:</string>
     <string name="editor_drawer_order_event_name">названию события</string>
     <string name="editor_drawer_order_profile_name">названию профиля</string>
-    <string name="editor_drawer_order_event_type_event_name">типу события и названию события</string>
-    <string name="editor_drawer_order_event_type_profile_name">типу события и названию профиля</string>
     <string name="toast_default_profiles_generated">Профили по умолчанию сгенерированы</string>
     <string name="default_profile_name_home">Дом</string>
     <string name="default_profile_name_outdoor">Улица</string>

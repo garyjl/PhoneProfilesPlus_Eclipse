@@ -27,24 +27,26 @@ public class EventPreferencesTime extends EventPreferences {
 	public long _endTime;
 	public boolean _useEndTime;
 	
+	static final String PREF_EVENT_TIME_ENABLED = "eventTimeEnabled";
 	static final String PREF_EVENT_TIME_DAYS = "eventTimeDays";
 	static final String PREF_EVENT_TIME_START_TIME = "eventTimeStartTime";
 	static final String PREF_EVENT_TIME_END_TIME = "eventTimeEndTime";
 	static final String PREF_EVENT_TIME_USE_END_TIME = "eventTimeUseEndTime";
 	
 	public EventPreferencesTime(Event event,
-										boolean sunday,
-										boolean monday,
-										boolean tuesday,
-										boolean wendesday,
-										boolean thursday,
-										boolean friday,
-										boolean saturday,
-										long startTime,
-										long endTime,
-										boolean useEndTime)
+			                    boolean enabled,
+								boolean sunday,
+								boolean monday,
+								boolean tuesday,
+								boolean wendesday,
+								boolean thursday,
+								boolean friday,
+								boolean saturday,
+								long startTime,
+								long endTime,
+								boolean useEndTime)
 	{
-		super(event);
+		super(event, enabled);
 
 		this._sunday = sunday;
 		this._monday = monday;
@@ -56,30 +58,29 @@ public class EventPreferencesTime extends EventPreferences {
 		this._startTime = startTime;
 		this._endTime = endTime;
 		this._useEndTime = useEndTime;
-		
-		_preferencesResourceID = R.xml.event_preferences_time;
-		_iconResourceID = R.drawable.ic_event_time; 
 	}
 	
 	@Override
 	public void copyPreferences(Event fromEvent)
 	{
-		this._sunday = ((EventPreferencesTime)fromEvent._eventPreferences)._sunday;
-		this._monday = ((EventPreferencesTime)fromEvent._eventPreferences)._monday;
-		this._tuesday = ((EventPreferencesTime)fromEvent._eventPreferences)._tuesday;
-		this._wendesday = ((EventPreferencesTime)fromEvent._eventPreferences)._wendesday;
-		this._thursday = ((EventPreferencesTime)fromEvent._eventPreferences)._thursday;
-		this._friday = ((EventPreferencesTime)fromEvent._eventPreferences)._friday;
-		this._saturday = ((EventPreferencesTime)fromEvent._eventPreferences)._saturday;
-		this._startTime = ((EventPreferencesTime)fromEvent._eventPreferences)._startTime;
-		this._endTime = ((EventPreferencesTime)fromEvent._eventPreferences)._endTime;
-		this._useEndTime = ((EventPreferencesTime)fromEvent._eventPreferences)._useEndTime;
+		this._enabled = ((EventPreferencesTime)fromEvent._eventPreferencesTime)._enabled;
+		this._sunday = ((EventPreferencesTime)fromEvent._eventPreferencesTime)._sunday;
+		this._monday = ((EventPreferencesTime)fromEvent._eventPreferencesTime)._monday;
+		this._tuesday = ((EventPreferencesTime)fromEvent._eventPreferencesTime)._tuesday;
+		this._wendesday = ((EventPreferencesTime)fromEvent._eventPreferencesTime)._wendesday;
+		this._thursday = ((EventPreferencesTime)fromEvent._eventPreferencesTime)._thursday;
+		this._friday = ((EventPreferencesTime)fromEvent._eventPreferencesTime)._friday;
+		this._saturday = ((EventPreferencesTime)fromEvent._eventPreferencesTime)._saturday;
+		this._startTime = ((EventPreferencesTime)fromEvent._eventPreferencesTime)._startTime;
+		this._endTime = ((EventPreferencesTime)fromEvent._eventPreferencesTime)._endTime;
+		this._useEndTime = ((EventPreferencesTime)fromEvent._eventPreferencesTime)._useEndTime;
 	}
 	
 	@Override
 	public void loadSharedPrefereces(SharedPreferences preferences)
 	{
     	Editor editor = preferences.edit();
+        editor.putBoolean(PREF_EVENT_TIME_ENABLED, _enabled);
     	String sValue = "";
     	if (this._sunday) sValue = sValue + "0|";
     	if (this._monday) sValue = sValue + "1|";
@@ -99,6 +100,8 @@ public class EventPreferencesTime extends EventPreferences {
 	@Override
 	public void saveSharedPrefereces(SharedPreferences preferences)
 	{
+		this._enabled = preferences.getBoolean(PREF_EVENT_TIME_ENABLED, false);
+		
 		String sDays = preferences.getString(PREF_EVENT_TIME_DAYS, DaysOfWeekPreference.allValue);
 		//Log.e("EventPreferencesTime.saveSharedPreferences",sDays);
 		String[] splits = sDays.split("\\|");
@@ -142,78 +145,83 @@ public class EventPreferencesTime extends EventPreferences {
 	{
 		String descr = description;
 
-    	boolean[] daySet = new boolean[7];
-		daySet[0] = this._sunday;
-		daySet[1] = this._monday;
-		daySet[2] = this._tuesday;
-		daySet[3] = this._wendesday;
-		daySet[4] = this._thursday;
-		daySet[5] = this._friday;
-		daySet[6] = this._saturday;
-    	
-		boolean allDays = true;
-    	for (int i = 0; i < 7; i++)
-    		allDays = allDays && daySet[i]; 
-		
-    	if (allDays)
-    	{
-    		descr = descr + context.getString(R.string.array_pref_event_all);
-    		descr = descr + " ";
-    	}
-    	else
-    	{
-	    	String[] namesOfDay = DateFormatSymbols.getInstance().getShortWeekdays();
-	    	
-	    	int dayOfWeek;
-	    	for (int i = 0; i < 7; i++)
-	    	{
-	    		dayOfWeek = getDayOfWeekByLocale(i);
-	    		
-	    		if (daySet[dayOfWeek])
-	    			descr = descr + namesOfDay[dayOfWeek+1] + " ";
-	    	}
-    	}
-    	
-        Calendar calendar = Calendar.getInstance();
-
-        calendar.setTimeInMillis(this._startTime);
-		descr = descr + "- ";
-		descr = descr + DateFormat.getTimeFormat(context).format(new Date(calendar.getTimeInMillis()));
-		if (this._useEndTime)
+		if (!this._enabled)
+			descr = context.getString(R.string.event_preferences_not_enabled);
+		else
 		{
-	        calendar.setTimeInMillis(this._endTime);
-			descr = descr + "-";
+	    	boolean[] daySet = new boolean[7];
+			daySet[0] = this._sunday;
+			daySet[1] = this._monday;
+			daySet[2] = this._tuesday;
+			daySet[3] = this._wendesday;
+			daySet[4] = this._thursday;
+			daySet[5] = this._friday;
+			daySet[6] = this._saturday;
+	    	
+			boolean allDays = true;
+	    	for (int i = 0; i < 7; i++)
+	    		allDays = allDays && daySet[i]; 
+			
+	    	if (allDays)
+	    	{
+	    		descr = descr + context.getString(R.string.array_pref_event_all);
+	    		descr = descr + " ";
+	    	}
+	    	else
+	    	{
+		    	String[] namesOfDay = DateFormatSymbols.getInstance().getShortWeekdays();
+		    	
+		    	int dayOfWeek;
+		    	for (int i = 0; i < 7; i++)
+		    	{
+		    		dayOfWeek = getDayOfWeekByLocale(i);
+		    		
+		    		if (daySet[dayOfWeek])
+		    			descr = descr + namesOfDay[dayOfWeek+1] + " ";
+		    	}
+	    	}
+	    	
+	        Calendar calendar = Calendar.getInstance();
+	
+	        calendar.setTimeInMillis(this._startTime);
+			descr = descr + "- ";
 			descr = descr + DateFormat.getTimeFormat(context).format(new Date(calendar.getTimeInMillis()));
+			if (this._useEndTime)
+			{
+		        calendar.setTimeInMillis(this._endTime);
+				descr = descr + "-";
+				descr = descr + DateFormat.getTimeFormat(context).format(new Date(calendar.getTimeInMillis()));
+			}
+			
+			
+	   		if (GlobalData.getGlobalEventsRuning(context))
+	   		{
+	   			long alarmTime;
+	   		    //SimpleDateFormat sdf = new SimpleDateFormat("EEd/MM/yy HH:mm");
+	   		    String alarmTimeS = "";
+	   			if (_event.getStatus() == Event.ESTATUS_PAUSE)
+	   			{
+	   				int daysToAdd = computeDaysForAdd(true);
+	   				alarmTime = computeAlarm(true, daysToAdd);
+	   				// date and time format by user system settings configuration
+	   	   		    alarmTimeS = "(st) " + DateFormat.getDateFormat(context).format(alarmTime) +
+	   	   		    			 " " + DateFormat.getTimeFormat(context).format(alarmTime);
+	   	   		    descr = descr + '\n';
+	   	   		    descr = descr + alarmTimeS;
+	   			}
+	   			else
+	   			if ((_event.getStatus() == Event.ESTATUS_RUNNING) && _useEndTime)
+	   			{
+	   				int daysToAdd = computeDaysForAdd(false);
+	   				alarmTime = computeAlarm(false, daysToAdd);
+	   				// date and time format by user system settings configuration
+	   	   		    alarmTimeS = "(et) " + DateFormat.getDateFormat(context).format(alarmTime) +
+	   	   		    			 " " + DateFormat.getTimeFormat(context).format(alarmTime);
+	   	   		    descr = descr + '\n';
+	   	   		    descr = descr + alarmTimeS;
+	   			}
+	   		}
 		}
-		
-		
-   		if (GlobalData.getGlobalEventsRuning(context))
-   		{
-   			long alarmTime;
-   		    //SimpleDateFormat sdf = new SimpleDateFormat("EEd/MM/yy HH:mm");
-   		    String alarmTimeS = "";
-   			if (_event.getStatus() == Event.ESTATUS_PAUSE)
-   			{
-   				int daysToAdd = computeDaysForAdd(true);
-   				alarmTime = computeAlarm(true, daysToAdd);
-   				// date and time format by user system settings configuration
-   	   		    alarmTimeS = "(st) " + DateFormat.getDateFormat(context).format(alarmTime) +
-   	   		    			 " " + DateFormat.getTimeFormat(context).format(alarmTime);
-   	   		    descr = descr + '\n';
-   	   		    descr = descr + alarmTimeS;
-   			}
-   			else
-   			if ((_event.getStatus() == Event.ESTATUS_RUNNING) && _useEndTime)
-   			{
-   				int daysToAdd = computeDaysForAdd(false);
-   				alarmTime = computeAlarm(false, daysToAdd);
-   				// date and time format by user system settings configuration
-   	   		    alarmTimeS = "(et) " + DateFormat.getDateFormat(context).format(alarmTime) +
-   	   		    			 " " + DateFormat.getTimeFormat(context).format(alarmTime);
-   	   		    descr = descr + '\n';
-   	   		    descr = descr + alarmTimeS;
-   			}
-   		}
    		
 		return descr;
 	}

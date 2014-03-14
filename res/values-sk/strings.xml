@@ -201,8 +201,6 @@
     <string name="editor_drawer_order_label">Usporiadať udalosti podľa:</string>
     <string name="editor_drawer_order_event_name">Názov udalosti</string>
     <string name="editor_drawer_order_profile_name">Názov profilu</string>
-    <string name="editor_drawer_order_event_type_event_name">Typ udulosti a názov udalosti</string>
-    <string name="editor_drawer_order_event_type_profile_name">Typ udalosti a názov profilu</string>
     <string name="toast_default_profiles_generated">Prednastavené profily vygenerované</string>
     <string name="default_profile_name_home">Doma</string>
     <string name="default_profile_name_outdoor">Vonku</string>

@@ -15,7 +15,6 @@ public class EventsService extends IntentService
 	DataWrapper dataWrapper;
 	List<EventTimeline> eventTimelineList;
 	int procedure;
-	int eventType;
 	
 	public static final int ESP_START_EVENT = 1;
 	public static final int ESP_PAUSE_EVENT = 2;
@@ -52,10 +51,8 @@ public class EventsService extends IntentService
 		GlobalData.logE("EventsService.onHandleIntent","eventTimelineList.size()="+eventTimelineList.size());
 		
 		procedure = intent.getIntExtra(GlobalData.EXTRA_EVENTS_SERVICE_PROCEDURE, 0);
-		eventType = intent.getIntExtra(GlobalData.EXTRA_EVENT_TYPE, 0);
 		
 		GlobalData.logE("EventsService.onHandleIntent","procedure="+procedure);
-		GlobalData.logE("EventsService.onHandleIntent","eventType="+eventType);
 		
 		if (procedure == ESP_RESTART_EVENTS)
 		{
@@ -75,18 +72,11 @@ public class EventsService extends IntentService
 			}
 			else
 			{
-				switch (eventType)
-				{
-					case Event.ETYPE_TIME:
-						doEvent(dataWrapper, eventTimelineList, event, procedure);
-						break;
-					case Event.ETYPE_BATTERY:
-						boolean powerChangeReceived = intent.getBooleanExtra(GlobalData.EXTRA_POWER_CHANGE_RECEIVED, false);
-						doBatteryEvent(dataWrapper, eventTimelineList, event, powerChangeReceived);
-						break;
-					default:
-						break;
-				}
+				if (event._eventPreferencesTime._enabled)
+					doEvent(dataWrapper, eventTimelineList, event, procedure);
+				
+				boolean powerChangeReceived = intent.getBooleanExtra(GlobalData.EXTRA_POWER_CHANGE_RECEIVED, false);
+				doBatteryEvent(dataWrapper, eventTimelineList, event, powerChangeReceived);
 			}
 		}
 
@@ -130,7 +120,7 @@ public class EventsService extends IntentService
 		                     status == BatteryManager.BATTERY_STATUS_FULL;
 		GlobalData.logE("EventsService.doBatteryEvent","isCharging="+isCharging);
 
-		EventPreferencesBattery eventPreferences = (EventPreferencesBattery)event._eventPreferences;
+		EventPreferencesBattery eventPreferences = (EventPreferencesBattery)event._eventPreferencesBattery;
 
 		if (powerChangeReceived)
 		{
@@ -186,10 +176,9 @@ public class EventsService extends IntentService
 		{
 			for (Event _event : eventList)
 			{
-				GlobalData.logE("EventsService.doBatteryEvent","event._type="+_event._type);
 				GlobalData.logE("EventsService.doBatteryEvent","event.getStatus()="+_event.getStatus());
 				
-				if ((_event._type == Event.ETYPE_BATTERY) && (_event.getStatus() != Event.ESTATUS_STOP))
+				if (_event._eventPreferencesBattery._enabled && (_event.getStatus() != Event.ESTATUS_STOP))
 				{
 					_doBatteryEvent(dataWrapper, eventTimelineList, _event, powerChangeReceived);
 				}

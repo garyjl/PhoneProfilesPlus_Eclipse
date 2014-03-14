@@ -200,8 +200,6 @@
     <string name="editor_drawer_order_label">Order events by:</string>
     <string name="editor_drawer_order_event_name">Event name</string>
     <string name="editor_drawer_order_profile_name">Profile name</string>
-    <string name="editor_drawer_order_event_type_event_name">Event type and event name</string>
-    <string name="editor_drawer_order_event_type_profile_name">Event type and profile name</string>
     <string name="toast_default_profiles_generated">Default profiles generated</string>
     <string name="default_profile_name_home">Home</string>
     <string name="default_profile_name_outdoor">Outdoor</string>
@@ -271,5 +269,6 @@
     <string name="pref_event_battery_charging">Charging</string>
 
 	<string name="phone_profiles_pref_applicationPauseEventsOnProfileActivation">Pause events</string>
+	<string name="event_preferences_not_enabled">Not enabled</string>
 	    			
 </resources>

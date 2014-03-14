@@ -125,16 +125,14 @@ public class EventPreferencesFragmentActivity extends ActionBarActivity
 	    return super.dispatchKeyEvent(event);
 	}
 
-	public void onRestartEventPreferences(Event event, int newEventMode, int newType) {
-		if (((newEventMode != EditorEventListFragment.EDIT_MODE_INSERT) &&
-		     (newEventMode != EditorEventListFragment.EDIT_MODE_DUPLICATE)) ||
-		     (newType != 0))
+	public void onRestartEventPreferences(Event event, int newEventMode) {
+		if ((newEventMode != EditorEventListFragment.EDIT_MODE_INSERT) &&
+		     (newEventMode != EditorEventListFragment.EDIT_MODE_DUPLICATE))
 		{
 			Bundle arguments = new Bundle();
 			arguments.putLong(GlobalData.EXTRA_EVENT_ID, event._id);
 			arguments.putInt(GlobalData.EXTRA_NEW_EVENT_MODE, newEventMode);
 			arguments.putInt(GlobalData.EXTRA_PREFERENCES_STARTUP_SOURCE, GlobalData.PREFERENCES_STARTUP_SOURCE_ACTIVITY);
-			arguments.putInt(GlobalData.EXTRA_EVENT_TYPE_NEW, newType);
 			EventPreferencesFragment fragment = new EventPreferencesFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()

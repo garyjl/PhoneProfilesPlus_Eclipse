@@ -526,21 +526,7 @@ public class DataWrapper {
 		if (event != null)
 		{
 			Event origEvent = getEventById(event._id);
-			if (origEvent._type != event._type)
-			{
-				for (int i = 0; i < eventList.size(); i++)
-				{
-					if (eventList.get(i)._id == event._id)
-					{
-						Event newEvent = new Event();
-						newEvent.copyEvent(event);
-						eventList.set(i, newEvent);
-						break;
-					}
-				}				
-			}
-			else
-				origEvent.copyEvent(event);
+			origEvent.copyEvent(event);
 		}
 	}
 	
@@ -589,10 +575,9 @@ public class DataWrapper {
 			}
 			if (blockBatteryEvents)
 			{
-				if (event._type == Event.ETYPE_BATTERY)
+				if (event._eventPreferencesBattery._enabled)
 				{
-					EventPreferencesBattery eventPreferences = (EventPreferencesBattery)event._eventPreferences;
-					eventPreferences._blocked = true;
+					event._eventPreferencesBattery._blocked = true;
 					databaseHandler.updateEventPreferencesBatteryBlocked(event);
 				}
 			}
@@ -603,10 +588,9 @@ public class DataWrapper {
 	{
 		for (Event event : getEventList())
 		{
-			if (event._type == Event.ETYPE_BATTERY)
+			if (event._eventPreferencesBattery._enabled)
 			{
-				EventPreferencesBattery eventPreferences = (EventPreferencesBattery)event._eventPreferences;
-				eventPreferences._blocked = block;
+				event._eventPreferencesBattery._blocked = block;
 				databaseHandler.updateEventPreferencesBatteryBlocked(event);
 			}
 		}
@@ -1025,9 +1009,9 @@ public class DataWrapper {
 				
 				Event event = getEventById(eventTimeline._fkEvent);
 
-				if ((event != null) && (event._type == Event.ETYPE_BATTERY))
+				if ((event != null) && event._eventPreferencesBattery._enabled)
 				{
-					EventPreferencesBattery eventPreferences = (EventPreferencesBattery)event._eventPreferences;
+					EventPreferencesBattery eventPreferences = event._eventPreferencesBattery;
 					if (!eventPreferences._charging)
 					{
 						Profile eventProfile = getProfileById(event._fkProfile);

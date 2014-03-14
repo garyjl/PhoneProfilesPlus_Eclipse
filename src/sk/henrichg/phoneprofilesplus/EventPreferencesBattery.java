@@ -16,32 +16,32 @@ public class EventPreferencesBattery extends EventPreferences {
 	
 	public boolean _blocked;
 	
+	static final String PREF_EVENT_BATTERY_ENABLED = "eventBatteryEnabled";
 	static final String PREF_EVENT_BATTERY_LEVEL_LOW = "eventBatteryLevelLow";
 	static final String PREF_EVENT_BATTERY_LEVEL_HIGHT = "eventBatteryLevelHight";
 	static final String PREF_EVENT_BATTERY_CHARGING = "eventBatteryCharging";
 	
 	public EventPreferencesBattery(Event event, 
+									boolean enabled,
 									int levelLow,
 									int levelHight,
 									boolean charging)
 	{
-		super(event);
+		super(event, enabled);
 		
 		this._levelLow = levelLow;
 		this._levelHight = levelHight;
 		this._charging = charging;
 		this._blocked = false;
-		
-		_preferencesResourceID = R.xml.event_preferences_battery;
-		_iconResourceID = R.drawable.ic_event_battery; 
 	}
 	
 	@Override
 	public void copyPreferences(Event fromEvent)
 	{
-		this._levelLow = ((EventPreferencesBattery)fromEvent._eventPreferences)._levelLow;
-		this._levelHight = ((EventPreferencesBattery)fromEvent._eventPreferences)._levelHight;
-		this._charging = ((EventPreferencesBattery)fromEvent._eventPreferences)._charging;
+		this._enabled = ((EventPreferencesBattery)fromEvent._eventPreferencesBattery)._enabled;
+		this._levelLow = ((EventPreferencesBattery)fromEvent._eventPreferencesBattery)._levelLow;
+		this._levelHight = ((EventPreferencesBattery)fromEvent._eventPreferencesBattery)._levelHight;
+		this._charging = ((EventPreferencesBattery)fromEvent._eventPreferencesBattery)._charging;
 		this._blocked = false;
 	}
 	
@@ -49,6 +49,7 @@ public class EventPreferencesBattery extends EventPreferences {
 	public void loadSharedPrefereces(SharedPreferences preferences)
 	{
 		Editor editor = preferences.edit();
+        editor.putBoolean(PREF_EVENT_BATTERY_ENABLED, _enabled);
 		editor.putString(PREF_EVENT_BATTERY_LEVEL_LOW, String.valueOf(this._levelLow));
 		editor.putString(PREF_EVENT_BATTERY_LEVEL_HIGHT, String.valueOf(this._levelHight));
 		editor.putBoolean(PREF_EVENT_BATTERY_CHARGING, this._charging);
@@ -58,6 +59,8 @@ public class EventPreferencesBattery extends EventPreferences {
 	@Override
 	public void saveSharedPrefereces(SharedPreferences preferences)
 	{
+		this._enabled = preferences.getBoolean(PREF_EVENT_BATTERY_ENABLED, false);
+		
 		String sLevel;
 		int iLevel;
 		
@@ -84,10 +87,15 @@ public class EventPreferencesBattery extends EventPreferences {
 	{
 		String descr = description;
 		
-		descr = descr + context.getString(R.string.pref_event_battery_level);
-		descr = descr + ": " + this._levelLow + "% - " + this._levelHight + "%";
-		if (this._charging)
-			descr = descr + ", " + context.getString(R.string.pref_event_battery_charging);
+		if (!this._enabled)
+			descr = context.getString(R.string.event_preferences_not_enabled);
+		else
+		{
+			descr = descr + context.getString(R.string.pref_event_battery_level);
+			descr = descr + ": " + this._levelLow + "% - " + this._levelHight + "%";
+			if (this._charging)
+				descr = descr + ", " + context.getString(R.string.pref_event_battery_charging);
+		}
 		
 		return descr;
 	}

@@ -279,10 +279,7 @@ public class EditorEventListAdapter extends BaseAdapter
 
 		holder.eventName.setText(event._name);
    		
-        if (event._eventPreferences != null)
-        	holder.eventIcon.setImageResource(event._eventPreferences._iconResourceID); // resource na ikonu
-        else
-        	holder.eventIcon.setImageResource(R.drawable.ic_empty);
+       	holder.eventIcon.setImageResource(R.drawable.ic_empty);
         
 	    if (GlobalData.applicationEditorPrefIndicator)
 	    {

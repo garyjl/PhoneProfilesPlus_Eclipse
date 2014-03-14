@@ -25,7 +25,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static SQLiteDatabase writableDb;	
     
 	// Database Version
-	private static final int DATABASE_VERSION = 1023;
+	private static final int DATABASE_VERSION = 1030;
 
 	// Database Name
 	private static final String DATABASE_NAME = "phoneProfilesManager";
@@ -91,6 +91,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_E_BATTERY_LEVEL_LOW = "batteryLevelLow";
 	private static final String KEY_E_BATTERY_LEVEL_HIGHT = "batteryLevelHight";
 	private static final String KEY_E_BATTERY_CHARGING = "batteryCharging";
+	private static final String KEY_E_TIME_ENABLED = "timeEnabled";
+	private static final String KEY_E_BATTERY_ENABLED = "batteryEnabled";
 	
 	private static final String KEY_ET_ID = "id";
 	private static final String KEY_ET_EORDER = "eorder";
@@ -203,20 +205,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		final String CREATE_EVENTS_TABLE = "CREATE TABLE " + TABLE_EVENTS + "("
 				+ KEY_E_ID + " INTEGER PRIMARY KEY,"
 				+ KEY_E_NAME + " TEXT,"
-				+ KEY_E_TYPE + " INTEGER,"
 				+ KEY_E_FK_PROFILE + " INTEGER,"
 				+ KEY_E_START_TIME + " INTEGER,"
 				+ KEY_E_END_TIME + " INTEGER,"
 				+ KEY_E_DAYS_OF_WEEK + " TEXT,"
 				+ KEY_E_USE_END_TIME + " INTEGER,"
 				+ KEY_E_STATUS + " INTEGER,"
-				+ KEY_E_BATTERY_LEVEL + " INTEGER,"
-				+ KEY_E_BATTERY_DETECTOR_TYPE + " INTEGER,"
 				+ KEY_E_BATTERY_BLOCKED + " INTEGER,"
 				+ KEY_E_NOTIFICATION_SOUND + " TEXT,"
 				+ KEY_E_BATTERY_LEVEL_LOW + " INTEGER,"
 				+ KEY_E_BATTERY_LEVEL_HIGHT + " INTEGER,"
-				+ KEY_E_BATTERY_CHARGING + " INTEGER"
+				+ KEY_E_BATTERY_CHARGING + " INTEGER,"
+				+ KEY_E_TIME_ENABLED + " INTEGER,"
+				+ KEY_E_BATTERY_ENABLED + " INTEGER"
 				+ ")";
 		db.execSQL(CREATE_EVENTS_TABLE);
 
@@ -553,6 +554,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		     } finally {
 		    	db.endTransaction();
 	         }	
+		}
+
+		if (oldVersion < 1030)
+		{
+			// pridame nove stlpce
+			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_TIME_ENABLED + " INTEGER");
+			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_BATTERY_ENABLED + " INTEGER");
+			
+			// updatneme zaznamy
+			db.beginTransaction();
+			try {
+				db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_TIME_ENABLED + "=0");
+				db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_BATTERY_ENABLED + "=0");
+				db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_TIME_ENABLED + "=1 WHERE " + KEY_E_TYPE + "=1");
+				db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_BATTERY_ENABLED + "=1 WHERE " + KEY_E_TYPE + "=2");
+				db.setTransactionSuccessful();
+		     } catch (Exception e){
+		         //Error in between database transaction 
+		     } finally {
+		    	db.endTransaction();
+	         }	
+			
 		}
 		
 	}
@@ -1416,7 +1439,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 		ContentValues values = new ContentValues();
 		values.put(KEY_E_NAME, event._name); // Event Name
-		values.put(KEY_E_TYPE, event._type); // Event type
 		values.put(KEY_E_FK_PROFILE, event._fkProfile); // profile
 		values.put(KEY_E_STATUS, event.getStatus()); // event status
 		values.put(KEY_E_NOTIFICATION_SOUND, event._notificationSound); // Event Name
@@ -1447,7 +1469,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		Cursor cursor = db.query(TABLE_EVENTS, 
 				                 new String[] { KEY_E_ID, 
 												KEY_E_NAME, 
-												KEY_E_TYPE, 
 												KEY_E_FK_PROFILE, 
 												KEY_E_STATUS,
 												KEY_E_NOTIFICATION_SOUND
@@ -1464,10 +1485,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 			event = new Event(Long.parseLong(cursor.getString(0)),
 				                      cursor.getString(1), 
-				                      Integer.parseInt(cursor.getString(2)),
-				                      Long.parseLong(cursor.getString(3)),
-				                      Integer.parseInt(cursor.getString(4)),
-				                      cursor.getString(5)
+				                      Long.parseLong(cursor.getString(2)),
+				                      Integer.parseInt(cursor.getString(3)),
+				                      cursor.getString(4)
 				                      );
 		}
 
@@ -1491,7 +1511,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		// Select All Query
 		final String selectQuery = "SELECT " + KEY_E_ID + "," +
 				                         KEY_E_NAME + "," +
-				                         KEY_E_TYPE + "," +
 				                         KEY_E_FK_PROFILE + "," +
 				                         KEY_E_STATUS + "," +
 						                 KEY_E_NOTIFICATION_SOUND +
@@ -1508,11 +1527,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				Event event = new Event();
 				event._id = Long.parseLong(cursor.getString(0));
 				event._name = cursor.getString(1);
-				event._type = Integer.parseInt(cursor.getString(2));
-				//Log.e("DatabaseHandler.getAllEvents","type="+event._type);
-				event._fkProfile = Long.parseLong(cursor.getString(3));
-				event.setStatus(Integer.parseInt(cursor.getString(4)));
-				event._notificationSound = cursor.getString(5);
+				event._fkProfile = Long.parseLong(cursor.getString(2));
+				event.setStatus(Integer.parseInt(cursor.getString(3)));
+				event._notificationSound = cursor.getString(4);
 				event.createEventPreferences();
 				getEventPreferences(event, db);
 				// Adding contact to list
@@ -1534,7 +1551,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 		ContentValues values = new ContentValues();
 		values.put(KEY_E_NAME, event._name);
-		values.put(KEY_E_TYPE, event._type);
 		values.put(KEY_E_FK_PROFILE, event._fkProfile);
 		values.put(KEY_E_STATUS, event.getStatus());
 		values.put(KEY_E_NOTIFICATION_SOUND, event._notificationSound);
@@ -1636,7 +1652,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	{
 		final String selectQuery = "SELECT " + KEY_E_ID + "," +
 						                 KEY_E_NAME + "," +
-						                 KEY_E_TYPE + "," +
 						                 KEY_E_FK_PROFILE + "," +
 						                 KEY_E_STATUS + "," +
 						                 KEY_E_NOTIFICATION_SOUND +
@@ -1655,10 +1670,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			event = new Event();
 			event._id = Long.parseLong(cursor.getString(0));
 			event._name = cursor.getString(1);
-			event._type = Integer.parseInt(cursor.getString(2));
-			event._fkProfile = Long.parseLong(cursor.getString(3));
-			event.setStatus(Integer.parseInt(cursor.getString(4)));
-			event._notificationSound = cursor.getString(5);
+			event._fkProfile = Long.parseLong(cursor.getString(2));
+			event.setStatus(Integer.parseInt(cursor.getString(3)));
+			event._notificationSound = cursor.getString(4);
 		}
 		
 		cursor.close();
@@ -1708,20 +1722,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 
 	public void getEventPreferences(Event event, SQLiteDatabase db) {
-		switch (event._type)
-        {
-        case Event.ETYPE_TIME:
-        	getEventPreferencesTime(event, db);
-        	break;
-        case Event.ETYPE_BATTERY:
-        	getEventPreferencesBattery(event, db);
-        	break;
-        }
+       	getEventPreferencesTime(event, db);
+       	getEventPreferencesBattery(event, db);
 	}
 	
 	private void getEventPreferencesTime(Event event, SQLiteDatabase db) {
 		Cursor cursor = db.query(TABLE_EVENTS, 
-				                 new String[] { KEY_E_DAYS_OF_WEEK,
+				                 new String[] { KEY_E_TIME_ENABLED,
+												KEY_E_DAYS_OF_WEEK,
 				         						KEY_E_START_TIME,
 				         						KEY_E_END_TIME,
 				         						KEY_E_USE_END_TIME
@@ -1731,9 +1739,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		if (cursor != null)
 			cursor.moveToFirst();
 
-		EventPreferencesTime eventPreferences = (EventPreferencesTime)event._eventPreferences;
+		EventPreferencesTime eventPreferences = (EventPreferencesTime)event._eventPreferencesTime;
 		
-		String daysOfWeek = cursor.getString(0);
+		eventPreferences._enabled = (Integer.parseInt(cursor.getString(0)) == 1) ? true : false; 
+				
+		String daysOfWeek = cursor.getString(1);
 		//Log.e("DatabaseHandler.getEventPreferencesTime","daysOfWeek="+daysOfWeek);
 
 		if (daysOfWeek != null)
@@ -1770,16 +1780,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			}
 		}
 		}
-		eventPreferences._startTime = Long.parseLong(cursor.getString(1));
-		eventPreferences._endTime = Long.parseLong(cursor.getString(2));
-		eventPreferences._useEndTime = (Integer.parseInt(cursor.getString(3)) == 1) ? true : false;
+		eventPreferences._startTime = Long.parseLong(cursor.getString(2));
+		eventPreferences._endTime = Long.parseLong(cursor.getString(3));
+		eventPreferences._useEndTime = (Integer.parseInt(cursor.getString(4)) == 1) ? true : false;
 		
 		cursor.close();
 	}
 
 	private void getEventPreferencesBattery(Event event, SQLiteDatabase db) {
 		Cursor cursor = db.query(TABLE_EVENTS, 
-				                 new String[] { KEY_E_BATTERY_LEVEL_LOW, 
+				                 new String[] { KEY_E_BATTERY_ENABLED,
+												KEY_E_BATTERY_LEVEL_LOW, 
 												KEY_E_BATTERY_LEVEL_HIGHT,
 												KEY_E_BATTERY_CHARGING,
 												KEY_E_BATTERY_BLOCKED
@@ -1789,12 +1800,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		if (cursor != null)
 			cursor.moveToFirst();
 
-		EventPreferencesBattery eventPreferences = (EventPreferencesBattery)event._eventPreferences;
+		EventPreferencesBattery eventPreferences = (EventPreferencesBattery)event._eventPreferencesBattery;
 
-		eventPreferences._levelLow = Integer.parseInt(cursor.getString(0));
-		eventPreferences._levelHight = Integer.parseInt(cursor.getString(1));
-		eventPreferences._charging = (Integer.parseInt(cursor.getString(2)) == 1);
-		eventPreferences._blocked = (Integer.parseInt(cursor.getString(3)) == 1);
+		eventPreferences._enabled = (Integer.parseInt(cursor.getString(0)) == 1);
+		eventPreferences._levelLow = Integer.parseInt(cursor.getString(1));
+		eventPreferences._levelHight = Integer.parseInt(cursor.getString(2));
+		eventPreferences._charging = (Integer.parseInt(cursor.getString(3)) == 1);
+		eventPreferences._blocked = (Integer.parseInt(cursor.getString(4)) == 1);
 		
 		cursor.close();
 	}
@@ -1811,24 +1823,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		int r;
 		//Log.e("DatabaseHandler.updateEventPreferences","type="+event._type);
 		
-		switch (event._type)
-        {
-        case Event.ETYPE_TIME:
-        	r = updateEventPreferencesTime(event, db);
-        	break;
-        case Event.ETYPE_BATTERY:
-        	r = updateEventPreferencesBattery(event, db);
-        	break;
-        default:
-        	r = 0;
-        }
-		return r;
+       	r = updateEventPreferencesTime(event, db);
+       	if (r != 0)
+       		r = updateEventPreferencesBattery(event, db);
+
+       	return r;
 	}
 	
 	private int updateEventPreferencesTime(Event event, SQLiteDatabase db) {
 		ContentValues values = new ContentValues();
 		
-		EventPreferencesTime eventPreferences = (EventPreferencesTime)event._eventPreferences; 
+		EventPreferencesTime eventPreferences = (EventPreferencesTime)event._eventPreferencesTime; 
 
 		//Log.e("DatabaseHandler.updateEventPreferencesTime","type="+event._type);
 		
@@ -1843,7 +1848,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 		//Log.e("DatabaseHandler.updateEventPreferencesTime","daysOfWeek="+daysOfWeek);
     	
-		values.put(KEY_E_TYPE, event._type);
+		values.put(KEY_E_TIME_ENABLED, (eventPreferences._enabled) ? 1 : 0);
 		values.put(KEY_E_DAYS_OF_WEEK, daysOfWeek);
 		values.put(KEY_E_START_TIME, eventPreferences._startTime);
 		values.put(KEY_E_END_TIME, eventPreferences._endTime);
@@ -1859,11 +1864,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private int updateEventPreferencesBattery(Event event, SQLiteDatabase db) {
 		ContentValues values = new ContentValues();
 		
-		EventPreferencesBattery eventPreferences = (EventPreferencesBattery)event._eventPreferences; 
+		EventPreferencesBattery eventPreferences = (EventPreferencesBattery)event._eventPreferencesBattery; 
 
 		//Log.e("DatabaseHandler.updateEventPreferencesBattery","type="+event._type);
 		
-		values.put(KEY_E_TYPE, event._type);
+		values.put(KEY_E_TIME_ENABLED, (eventPreferences._enabled) ? 1 : 0);
 		values.put(KEY_E_BATTERY_LEVEL_LOW, eventPreferences._levelLow);
 		values.put(KEY_E_BATTERY_LEVEL_HIGHT, eventPreferences._levelHight);
 		values.put(KEY_E_BATTERY_CHARGING, eventPreferences._charging ? 1 : 0);
@@ -1881,7 +1886,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		//SQLiteDatabase db = this.getWritableDatabase();
 		SQLiteDatabase db = getMyWritableDatabase();
 
-		EventPreferencesBattery eventPreferences = (EventPreferencesBattery)event._eventPreferences; 
+		EventPreferencesBattery eventPreferences = (EventPreferencesBattery)event._eventPreferencesBattery; 
 		
 		ContentValues values = new ContentValues();
 		values.put(KEY_E_BATTERY_BLOCKED, eventPreferences._blocked ? 1 : 0);
@@ -2332,6 +2337,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 							
 							int batteryLevel = 15;
 							int batteryDetectorType = 0;
+							int eventType = 0;
 							
 							if (cursorExportedDB.moveToFirst()) {
 								do {
@@ -2358,6 +2364,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 														batteryLevel = cursorExportedDB.getInt(i);
 													if (columnNamesExportedDB[i].equals(KEY_E_BATTERY_DETECTOR_TYPE))
 														batteryDetectorType = cursorExportedDB.getInt(i);
+													if (columnNamesExportedDB[i].equals(KEY_E_TYPE))
+														eventType = cursorExportedDB.getInt(i);
 													
 													values.put(columnNamesExportedDB[i], cursorExportedDB.getString(i));
 												}
@@ -2401,6 +2409,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 												values.put(KEY_E_BATTERY_LEVEL_LOW, batteryLevel);
 											if (batteryDetectorType == 2)
 												values.put(KEY_E_BATTERY_CHARGING, 1);
+										}
+
+										if (exportedDBObj.getVersion() < 1030)
+										{
+											values.put(KEY_E_TIME_ENABLED, 0);
+											values.put(KEY_E_BATTERY_ENABLED, 0);
+											if (eventType == 1)
+												values.put(KEY_E_TIME_ENABLED, 1);
+											if (eventType == 2)
+												values.put(KEY_E_BATTERY_ENABLED, 1);
 										}
 										
 										// Inserting Row do db z SQLiteOpenHelper

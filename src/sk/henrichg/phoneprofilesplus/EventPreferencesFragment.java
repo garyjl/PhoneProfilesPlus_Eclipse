@@ -26,8 +26,6 @@ public class EventPreferencesFragment extends PreferenceListFragment
 	public long event_id;
 	//private boolean first_start_activity;
 	private int new_event_mode;
-	private int event_type_new;
-	private boolean eventTypeChanged;
 	private int startupSource;
 	public boolean eventNonEdited = true;
 	private PreferenceManager prefMng;
@@ -58,11 +56,11 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		/**
 		 * Callback for restart fragment.
 		 */
-		public void onRestartEventPreferences(Event event, int newEventMode, int newType);
+		public void onRestartEventPreferences(Event event, int newEventMode);
 	}
 
 	private static OnRestartEventPreferences sDummyOnRestartEventPreferencesCallback = new OnRestartEventPreferences() {
-		public void onRestartEventPreferences(Event event, int newEventMode, int newType) {
+		public void onRestartEventPreferences(Event event, int newEventMode) {
 		}
 	};
 	
@@ -138,14 +136,11 @@ public class EventPreferencesFragment extends PreferenceListFragment
 			new_event_mode = getArguments().getInt(GlobalData.EXTRA_NEW_EVENT_MODE);
 		if (getArguments().containsKey(GlobalData.EXTRA_EVENT_ID))
 			event_id = getArguments().getLong(GlobalData.EXTRA_EVENT_ID);
-		event_type_new = getArguments().getInt(GlobalData.EXTRA_EVENT_TYPE_NEW, 0);
-    	eventTypeChanged = (event_type_new != 0); 
     	//Log.e("EventPreferencesFragment.onCreate", "event_position=" + event_position);
 		if (new_event_mode == EditorEventListFragment.EDIT_MODE_INSERT)
 		{
 			// create new event - default is TIME
 			event = new Event(getResources().getString(R.string.event_name_default), 
-						Event.ETYPE_TIME, 
 						0,
 						Event.ESTATUS_STOP,
 						""
@@ -158,7 +153,6 @@ public class EventPreferencesFragment extends PreferenceListFragment
 			Event origEvent = dataWrapper.getEventById(event_id);
 			event = new Event(
 						   origEvent._name+"_d", 
-						   origEvent._type, 
 						   origEvent._fkProfile, 
 						   origEvent.getStatus(),
 						   origEvent._notificationSound
@@ -170,23 +164,16 @@ public class EventPreferencesFragment extends PreferenceListFragment
 
     	//Log.e("EventPreferencesFragment.onCreate", "event_type_new="+event_type_new);
     	
-		if ((event_type_new != 0) && (event_type_new != event._type))
-			event.changeEventType(event_type_new);
-		else
-			event_type_new = 0;
-		
         preferences = prefMng.getSharedPreferences();
         
 		if (savedInstanceState == null)
 		{
         	loadPreferences();
         	// load temporary saved event preferences 
-        	if (eventTypeChanged)
-        		event.loadSharedPreferecesTmp(preferences);
 		}
    	
     	// get preference resource id from EventPreference
-		addPreferencesFromResource(event._eventPreferences._preferencesResourceID);
+		addPreferencesFromResource(R.xml.event_preferences);
 
         preferences.registerOnSharedPreferenceChangeListener(this);  
         
@@ -218,9 +205,6 @@ public class EventPreferencesFragment extends PreferenceListFragment
             (new_event_mode == EditorEventListFragment.EDIT_MODE_DUPLICATE))
         	&& (actionModeShowed == 0))
         	showActionMode();
-        else
-   		if (eventTypeChanged)
-   			showActionMode();
 
 		//Log.e("EventPreferencesFragment.onStart","typeOld="+String.valueOf(event._typeOld));
 		
@@ -298,9 +282,6 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		
 		List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
 
-		Event oldEvent = event.getOldEvent();
-		oldEvent.stopEvent(dataWrapper, eventTimelineList, false, false, false);
-		
 		if ((new_event_mode == EditorEventListFragment.EDIT_MODE_INSERT) ||
 		    (new_event_mode == EditorEventListFragment.EDIT_MODE_DUPLICATE))
 		{
@@ -367,29 +348,11 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		
 		event.setSummary(prefMng, key, sharedPreferences, context);
 		
-		if (key.equals(Event.PREF_EVENT_TYPE))
-		{
-			// event type changed
-			// change event._eventpreferences
-			String sEventType = sharedPreferences.getString(key, "");
-			int iEventType;
-			try {
-				iEventType = Integer.parseInt(sEventType);
-			} catch (Exception e) {
-				iEventType = 1;
-			}
-			event.saveSharedPreferecesTmp(sharedPreferences);
-			event._id = event_id; // set original id for reset when duplicate event mode
-     	    onRestartEventPreferencesCallback.onRestartEventPreferences(event, new_event_mode, iEventType);
-		}
-		else
-		{
-	    	Activity activity = getActivity();
-	    	boolean canShow = (EditorProfilesActivity.mTwoPane) && (activity instanceof EditorProfilesActivity);
-	    	canShow = canShow || ((!EditorProfilesActivity.mTwoPane) && (activity instanceof EventPreferencesFragmentActivity));
-	    	if (canShow)
-	    		showActionMode();
-		}
+    	Activity activity = getActivity();
+    	boolean canShow = (EditorProfilesActivity.mTwoPane) && (activity instanceof EditorProfilesActivity);
+    	canShow = canShow || ((!EditorProfilesActivity.mTwoPane) && (activity instanceof EventPreferencesFragmentActivity));
+    	if (canShow)
+    		showActionMode();
 	}
 	
 	private void createActionModeCallback()
@@ -407,7 +370,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
                  if (actionModeButtonClicked == BUTTON_CANCEL)
             	     // cancel button clicked
                  {
-            	     onRestartEventPreferencesCallback.onRestartEventPreferences(event, new_event_mode, 0);
+            	     onRestartEventPreferencesCallback.onRestartEventPreferences(event, new_event_mode);
                  } 
             }
  

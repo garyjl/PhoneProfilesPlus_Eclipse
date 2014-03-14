@@ -28,7 +28,7 @@ public class PowerConnectionReceiver extends WakefulBroadcastReceiver {
 				List<Event> eventList = dataWrapper.getEventList();
 				for (Event event : eventList)
 				{
-					if ((event._type == Event.ETYPE_BATTERY) && (event.getStatus() != Event.ESTATUS_STOP))
+					if (event._eventPreferencesBattery._enabled && (event.getStatus() != Event.ESTATUS_STOP))
 					{
 						batteryEventsExists = true;
 					}
@@ -42,7 +42,6 @@ public class PowerConnectionReceiver extends WakefulBroadcastReceiver {
 			{
 				// start service
 				Intent eventsServiceIntent = new Intent(context, EventsService.class);
-				eventsServiceIntent.putExtra(GlobalData.EXTRA_EVENT_TYPE, Event.ETYPE_BATTERY);
 				eventsServiceIntent.putExtra(GlobalData.EXTRA_EVENT_ID, event_id);
 				eventsServiceIntent.putExtra(GlobalData.EXTRA_POWER_CHANGE_RECEIVED, true);
 				startWakefulService(context, eventsServiceIntent);

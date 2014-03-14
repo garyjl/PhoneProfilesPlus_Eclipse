@@ -698,8 +698,6 @@ public class EditorProfilesActivity extends ActionBarActivity
 			{
 				case 0: eventsOrderType = EditorEventListFragment.ORDER_TYPE_EVENT_NAME; break;
 				case 1: eventsOrderType = EditorEventListFragment.ORDER_TYPE_PROFILE_NAME; break;
-				case 2: eventsOrderType = EditorEventListFragment.ORDER_TYPE_EVENT_TYPE_EVENT_NAME; break;
-				case 3: eventsOrderType = EditorEventListFragment.ORDER_TYPE_EVENT_TYPE_PROFILE_NAME; break;
 			}
 			((EditorEventListFragment)fragment).changeListOrder(eventsOrderType);
 			
@@ -1555,21 +1553,19 @@ public class EditorProfilesActivity extends ActionBarActivity
          			            (newEventMode == EditorEventListFragment.EDIT_MODE_DUPLICATE));
 			fragment.updateListView(event, newEvent);
 		}
-		onRestartEventPreferences(event, newEventMode, 0);
+		onRestartEventPreferences(event, newEventMode);
 	}
 
-	public void onRestartEventPreferences(Event event, int newEventMode, int newType) {
+	public void onRestartEventPreferences(Event event, int newEventMode) {
 		if (mTwoPane) {
-			if (((newEventMode != EditorEventListFragment.EDIT_MODE_INSERT) &&
-			    (newEventMode != EditorEventListFragment.EDIT_MODE_DUPLICATE)) ||
-			     (newType != 0))
+			if ((newEventMode != EditorEventListFragment.EDIT_MODE_INSERT) &&
+			    (newEventMode != EditorEventListFragment.EDIT_MODE_DUPLICATE))
 			{
 				// restart event preferences fragmentu
 				Bundle arguments = new Bundle();
 				arguments.putLong(GlobalData.EXTRA_EVENT_ID, event._id);
 				arguments.putInt(GlobalData.EXTRA_NEW_EVENT_MODE, editModeEvent);
 				arguments.putInt(GlobalData.EXTRA_PREFERENCES_STARTUP_SOURCE, GlobalData.PREFERENCES_STARTUP_SOURCE_FRAGMENT);
-				arguments.putInt(GlobalData.EXTRA_EVENT_TYPE_NEW, newType);
 				EventPreferencesFragment fragment = new EventPreferencesFragment();
 				fragment.setArguments(arguments);
 				getSupportFragmentManager().beginTransaction()

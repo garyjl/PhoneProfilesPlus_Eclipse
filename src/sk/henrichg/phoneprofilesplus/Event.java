@@ -14,17 +14,12 @@ public class Event {
 	
 	public long _id;
 	public String _name;
-	public int _type;
 	public long _fkProfile;
 	private int _status;  
 	public String _notificationSound;
 
-	public EventPreferences _eventPreferences;
-	public int _typeOld;
-	public EventPreferences _eventPreferencesOld;
-	
-	public static final int ETYPE_TIME = 1;
-	public static final int ETYPE_BATTERY = 2;
+	public EventPreferencesTime _eventPreferencesTime;
+	public EventPreferencesBattery _eventPreferencesBattery;
 	
 	public static final int ESTATUS_STOP = 0;
 	public static final int ESTATUS_PAUSE = 1;
@@ -32,7 +27,6 @@ public class Event {
 	
     static final String PREF_EVENT_ENABLED = "eventEnabled";
     static final String PREF_EVENT_NAME = "eventName";
-    static final String PREF_EVENT_TYPE = "eventType";
     static final String PREF_EVENT_PROFILE = "eventProfile";
     static final String PREF_EVENT_NOTIFICATION_SOUND = "eventNotificationSound";
 	
@@ -50,14 +44,12 @@ public class Event {
 	// constructor
 	public Event(long id, 
 		         String name,
-		         int type,
 		         long fkProfile,
 		         int status,
 		         String notificationSound)
 	{
 		this._id = id;
 		this._name = name;
-        this._type = type;
         this._fkProfile = fkProfile;
         this._status = status;
         this._notificationSound = notificationSound;
@@ -67,13 +59,11 @@ public class Event {
 	
 	// constructor
 	public Event(String name,
-	         	 int type,
 	         	 long fkProfile,
 	         	 int status,
 	         	 String notificationSound)
 	{
 		this._name = name;
-	    this._type = type;
 	    this._fkProfile = fkProfile;
         this._status = status;
         this._notificationSound = notificationSound;
@@ -85,7 +75,6 @@ public class Event {
 	{
 		this._id = event._id;
 		this._name = event._name;
-        this._type = event._type;
         this._fkProfile = event._fkProfile;
         this._status = event._status;
         this._notificationSound = event._notificationSound;
@@ -93,152 +82,72 @@ public class Event {
         copyEventPreferences(event);
 	}
 	
+	private void createEventPreferencesTime()
+	{
+       	this._eventPreferencesTime = new EventPreferencesTime(this, false, false, false, false, false, false, false, false, 0, 0, false);
+	}
+	
+	private void createEventPreferencesBattery()
+	{
+       	this._eventPreferencesBattery = new EventPreferencesBattery(this, false, 0, 100, false);
+	}
+	
 	public void createEventPreferences()
 	{
 		//Log.e("Event.createEventPreferences","type="+_type);
-        switch (this._type)
-        {
-        case ETYPE_TIME:
-        	this._eventPreferences = new EventPreferencesTime(this, false, false, false, false, false, false, false, 0, 0, false);
-        	break;
-        case ETYPE_BATTERY:
-        	this._eventPreferences = new EventPreferencesBattery(this, 0, 100, false);
-        	break;
-        }
+		createEventPreferencesTime();
+		createEventPreferencesBattery();
 	}
 	
 	public void copyEventPreferences(Event fromEvent)
 	{
-		if (this._eventPreferences == null)
-			createEventPreferences();
-		this._eventPreferences.copyPreferences(fromEvent);
-	}
-	
-	public void changeEventType(int type)
-	{
-		this._typeOld = this._type;
-		this._eventPreferencesOld = this._eventPreferences;
-		
-		this._type = type;
-		createEventPreferences();
-	}
-	
-	public void undoEventType()
-	{
-		if (this._typeOld != 0)
-		{
-			this._type = this._typeOld;
-			this._eventPreferences = this._eventPreferencesOld;
-		}
-		
-		this._typeOld = 0;
-		this._eventPreferencesOld = null;
-	}
-	
-	public Event getOldEvent()
-	{
-		Event event = new Event();
-		event.copyEvent(this);
-		if (this._typeOld != 0)
-		{
-			event._eventPreferences = this._eventPreferencesOld;
-			event._typeOld = 0;
-			event._eventPreferencesOld = null;
-		}
-		
-		return event;
+		if (this._eventPreferencesTime == null)
+			createEventPreferencesTime();
+		if (this._eventPreferencesBattery == null)
+			createEventPreferencesBattery();
+		this._eventPreferencesTime.copyPreferences(fromEvent);
+		this._eventPreferencesBattery.copyPreferences(fromEvent);
 	}
 	
 	public boolean isRunnable()
 	{
-		return  (this._fkProfile != 0) &&
-				(this._eventPreferences != null) &&
-				(this._eventPreferences.isRunable());
+		boolean runnable = (this._fkProfile != 0);
+		runnable = runnable && this._eventPreferencesTime.isRunable();
+		runnable = runnable && this._eventPreferencesBattery.isRunable();
+		return runnable;
 	}
 	
 	public void loadSharedPrefereces(SharedPreferences preferences)
 	{
     	Editor editor = preferences.edit();
    		editor.putString(PREF_EVENT_NAME, this._name);
-   		editor.putString(PREF_EVENT_TYPE, Integer.toString(this._type));
    		editor.putString(PREF_EVENT_PROFILE, Long.toString(this._fkProfile));
    		editor.putBoolean(PREF_EVENT_ENABLED, this._status != ESTATUS_STOP);
    		editor.putString(PREF_EVENT_NOTIFICATION_SOUND, this._notificationSound);
-        this._eventPreferences.loadSharedPrefereces(preferences);
+        this._eventPreferencesTime.loadSharedPrefereces(preferences);
+        this._eventPreferencesBattery.loadSharedPrefereces(preferences);
 		editor.commit();
 	}
 
 	public void saveSharedPrefereces(SharedPreferences preferences)
 	{
     	this._name = preferences.getString(PREF_EVENT_NAME, "");
-		this._type = Integer.parseInt(preferences.getString(PREF_EVENT_TYPE, "0"));
 		this._fkProfile = Long.parseLong(preferences.getString(PREF_EVENT_PROFILE, "0"));
 		this._status = (preferences.getBoolean(PREF_EVENT_ENABLED, false)) ? ESTATUS_PAUSE : ESTATUS_STOP;
 		this._notificationSound = preferences.getString(PREF_EVENT_NOTIFICATION_SOUND, ""); 
 		//Log.e("Event.saveSharedPrefereces","notificationSound="+this._notificationSound);
-		this._eventPreferences.saveSharedPrefereces(preferences);
+		this._eventPreferencesTime.saveSharedPrefereces(preferences);
+		this._eventPreferencesBattery.saveSharedPrefereces(preferences);
 		
 		if (!this.isRunnable())
 			this._status = ESTATUS_STOP;
-		
-		this._typeOld = 0;
-		this._eventPreferencesOld = null;
 	}
 
-	public void loadSharedPreferecesTmp(SharedPreferences preferences)
-	{
-		String eventName = preferences.getString(PREF_EVENT_NAME_TMP, "");
-		String fkProfile = preferences.getString(PREF_EVENT_PROFILE_TMP, "0");
-		boolean eventEnabled = preferences.getBoolean(PREF_EVENT_ENABLED_TMP, false);
-		String notificationSound = preferences.getString(PREF_EVENT_NOTIFICATION_SOUND_TMP, "");
-    	Editor editor = preferences.edit();
-   		editor.putString(PREF_EVENT_NAME, eventName);
-   		editor.putString(PREF_EVENT_PROFILE, fkProfile);
-   		editor.putBoolean(PREF_EVENT_ENABLED, eventEnabled);
-   		editor.putString(PREF_EVENT_NOTIFICATION_SOUND, notificationSound);
-		editor.commit();
-		this._name = eventName;
-		this._fkProfile = Long.parseLong(fkProfile);
-		this._status = (eventEnabled) ? ESTATUS_PAUSE : ESTATUS_STOP;
-	}
-
-	public void saveSharedPreferecesTmp(SharedPreferences preferences)
-	{
-		String eventName = preferences.getString(PREF_EVENT_NAME, "");
-		String fkProfile = preferences.getString(PREF_EVENT_PROFILE, "0");
-		boolean eventEnabled = preferences.getBoolean(PREF_EVENT_ENABLED, false);
-		String notificationSound = preferences.getString(PREF_EVENT_NOTIFICATION_SOUND, "");
-    	Editor editor = preferences.edit();
-   		editor.putString(PREF_EVENT_NAME_TMP, eventName);
-   		editor.putString(PREF_EVENT_PROFILE_TMP, fkProfile);
-   		editor.putBoolean(PREF_EVENT_ENABLED_TMP, eventEnabled);
-   		editor.putString(PREF_EVENT_NOTIFICATION_SOUND_TMP, notificationSound);
-		editor.commit();
-	}
-	
 	public void setSummary(PreferenceManager prefMng, String key, String value, Context context)
 	{
 		if (key.equals(PREF_EVENT_NAME))
 		{	
 	        prefMng.findPreference(key).setSummary(value);
-		}
-		if (key.equals(PREF_EVENT_TYPE))
-		{	
-			String sEventType = value;
-			int iEventType;
-			try {
-				iEventType = Integer.parseInt(sEventType);
-			} catch (Exception e) {
-				iEventType = 1;
-			}
-			
-	    	for (int pos = 0; pos < EventTypePreferenceAdapter.eventTypes.length; pos++)
-	    	{
-	    		if (iEventType == EventTypePreferenceAdapter.eventTypes[pos])
-	    		{
-	    	        prefMng.findPreference(key).setSummary(EventTypePreferenceAdapter.eventTypeNameIds[pos]);
-	    		}
-	    	}
 		}
 		if (key.equals(PREF_EVENT_PROFILE))
 		{
@@ -282,20 +191,20 @@ public class Event {
 	public void setSummary(PreferenceManager prefMng, String key, SharedPreferences preferences, Context context)
 	{
 		if (key.equals(PREF_EVENT_NAME) ||
-			key.equals(PREF_EVENT_TYPE) ||
 			key.equals(PREF_EVENT_PROFILE) ||
 			key.equals(PREF_EVENT_NOTIFICATION_SOUND))
 			setSummary(prefMng, key, preferences.getString(key, ""), context);
-		_eventPreferences.setSummary(prefMng, key, preferences, context);
+		_eventPreferencesTime.setSummary(prefMng, key, preferences, context);
+		_eventPreferencesBattery.setSummary(prefMng, key, preferences, context);
 	}
 	
 	public void setAllSummary(PreferenceManager prefMng, Context context)
 	{
 		setSummary(prefMng, PREF_EVENT_NAME, _name, context);
-		setSummary(prefMng, PREF_EVENT_TYPE, Integer.toString(_type), context);
 		setSummary(prefMng, PREF_EVENT_PROFILE, Long.toString(_fkProfile), context);
 		setSummary(prefMng, PREF_EVENT_NOTIFICATION_SOUND, _notificationSound, context);
-		_eventPreferences.setAllSummary(prefMng, context);
+		_eventPreferencesTime.setAllSummary(prefMng, context);
+		_eventPreferencesBattery.setAllSummary(prefMng, context);
 	}
 	
 	public String getPreferecesDescription(Context context)
@@ -304,12 +213,18 @@ public class Event {
 		
 		description = "";
 		
-		if (_eventPreferences != null)
-			description = _eventPreferences.getPreferencesDescription(description, context);
+		description = description + _eventPreferencesTime.getPreferencesDescription(description, context);
+		description = description + "\n";
+		description = description + _eventPreferencesBattery.getPreferencesDescription(description, context);
 		
 		return description;
 	}
 	
+	private boolean canActivateReturnProfile()
+	{
+		return _eventPreferencesTime.activateReturnProfile() ||
+			   _eventPreferencesBattery.activateReturnProfile();
+	}
 	
 	public void startEvent(DataWrapper dataWrapper,
 							List<EventTimeline> eventTimelineList,
@@ -472,7 +387,7 @@ public class Event {
 				// activate profile only when profile not already activated 
 				if ((eventTimeline._fkProfileReturn != dataWrapper.getActivatedProfile()._id)
 					&& (activateReturnProfile)
-					&& (_eventPreferences.activateReturnProfile()))
+					&& (canActivateReturnProfile()))
 				{
 					GlobalData.logE("Event.pauseEvent","activate return profile");
 					dataWrapper.activateProfileFromEvent(eventTimeline._fkProfileReturn, _notificationSound);
@@ -545,28 +460,32 @@ public class Event {
 		{
 			// event paused
 			// setup system event for next running status
-			_eventPreferences.setSystemRunningEvent(context);
+			_eventPreferencesTime.setSystemRunningEvent(context);
+			_eventPreferencesBattery.setSystemRunningEvent(context);
 		}
 		else
 		if (forStatus == ESTATUS_RUNNING)
 		{
 			// event started
 			// setup system event for pause status
-			_eventPreferences.setSystemPauseEvent(context);
+			_eventPreferencesTime.setSystemPauseEvent(context);
+			_eventPreferencesBattery.setSystemPauseEvent(context);
 		}
 		else
 		if (forStatus == ESTATUS_STOP)
 		{
 			// event stopped
 			// remove all system events
-			_eventPreferences.removeSystemEvent(context);
+			_eventPreferencesTime.removeSystemEvent(context);
+			_eventPreferencesBattery.removeSystemEvent(context);
 		}
 	}
 	
 	public boolean invokeBroadcastReceiver(Context context)
 	{
-		boolean started = _eventPreferences.invokeBroadcastReceiver(context); 
-		return started;
+		// kazdy broadcast receiver musi obsluzit vsetky preferences
+		return _eventPreferencesTime.invokeBroadcastReceiver(context) ||
+			   _eventPreferencesBattery.invokeBroadcastReceiver(context); 
 	}
 
 }

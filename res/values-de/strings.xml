@@ -200,8 +200,6 @@
     <string name="editor_drawer_order_label">Ereignisse sortieren nach:</string> 
     <string name="editor_drawer_order_event_name">Ereignis-Name</string> 
     <string name="editor_drawer_order_profile_name">Profil-Name</string>
-    <string name="editor_drawer_order_event_type_event_name">Ereignis-Typ und Ereignis-Name</string> 
-    <string name="editor_drawer_order_event_type_profile_name">Ereignis-Typ und Profil-Name</string> 
     <string name="toast_default_profiles_generated">Standard-Profile erstellt</string> 
     <string name="default_profile_name_home">Zuhause</string> 
     <string name="default_profile_name_outdoor">Draußen</string> 

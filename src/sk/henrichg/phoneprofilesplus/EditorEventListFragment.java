@@ -53,8 +53,6 @@ public class EditorEventListFragment extends Fragment {
 	
 	public static final int ORDER_TYPE_EVENT_NAME = 0;
 	public static final int ORDER_TYPE_PROFILE_NAME = 1;
-	public static final int ORDER_TYPE_EVENT_TYPE_EVENT_NAME = 2;
-	public static final int ORDER_TYPE_EVENT_TYPE_PROFILE_NAME = 3;
 	
 	private int filterType = FILTER_TYPE_ALL; 
 	private int orderType = ORDER_TYPE_EVENT_NAME;
@@ -599,32 +597,6 @@ public class EditorEventListFragment extends Fragment {
 		    }
 		}
 		
-		class EventTypeEventNameComparator implements Comparator<Event> {
-			public int compare(Event lhs, Event rhs) {
-			    int res = lhs._type - rhs._type;
-			    if (res == 0)
-			    	res = GUIData.collator.compare(lhs._name, rhs._name);
-		        return res;
-		    }
-		}
-		
-		class EventTypeProfileNameComparator implements Comparator<Event> {
-			public int compare(Event lhs, Event rhs) {
-			    int res = lhs._type - rhs._type;
-			    if (res == 0)
-			    {
-					Profile profileLhs = dataWrapper.getProfileById(lhs._fkProfile);
-					Profile profileRhs = dataWrapper.getProfileById(rhs._fkProfile);
-					String nameLhs = "";
-					if (profileLhs != null) nameLhs = profileLhs._name;
-					String nameRhs = "";
-					if (profileRhs != null) nameRhs = profileRhs._name;
-				    res = GUIData.collator.compare(nameLhs, nameRhs);
-			    }
-			    return res;
-		    }
-		}
-		
 		switch (orderType)
 		{
 			case ORDER_TYPE_EVENT_NAME: 
@@ -633,12 +605,6 @@ public class EditorEventListFragment extends Fragment {
 			case ORDER_TYPE_PROFILE_NAME:
 			    Collections.sort(eventList, new ProfileNameComparator());
 			    break;
-			case ORDER_TYPE_EVENT_TYPE_EVENT_NAME:
-				Collections.sort(eventList, new EventTypeEventNameComparator());
-				break;
-			case ORDER_TYPE_EVENT_TYPE_PROFILE_NAME:
-				Collections.sort(eventList, new EventTypeProfileNameComparator());
-				break;
 		}
 	}
 	
