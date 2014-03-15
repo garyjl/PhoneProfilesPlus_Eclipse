@@ -135,6 +135,10 @@ public class EventPreferencesBattery extends EventPreferences {
 	public void setSystemRunningEvent(Context context)
 	{
 		// set alarm for state PAUSE
+		
+		if (!(isRunable() && _enabled)) 
+			return;
+		
 		setAlarm(context);
 	}
 
@@ -142,6 +146,10 @@ public class EventPreferencesBattery extends EventPreferences {
 	public void setSystemPauseEvent(Context context)
 	{
 		// set alarm for state RUNNING
+
+		if (!(isRunable() && _enabled)) 
+			return;
+		
 		setAlarm(context);
 	}
 	

@@ -24,6 +24,7 @@ public class Event {
 	public static final int ESTATUS_STOP = 0;
 	public static final int ESTATUS_PAUSE = 1;
 	public static final int ESTATUS_RUNNING = 2;
+	public static final int ESTATUS_NONE = 99;
 	
     static final String PREF_EVENT_ENABLED = "eventEnabled";
     static final String PREF_EVENT_NAME = "eventName";
@@ -392,7 +393,8 @@ public class Event {
 					&& (canActivateReturnProfile()))
 				{
 					GlobalData.logE("Event.pauseEvent","activate return profile");
-					dataWrapper.activateProfileFromEvent(eventTimeline._fkProfileReturn, _notificationSound);
+					if (eventTimeline._fkProfileReturn != 0)
+						dataWrapper.activateProfileFromEvent(eventTimeline._fkProfileReturn, _notificationSound);
 				}
 			}
 			else

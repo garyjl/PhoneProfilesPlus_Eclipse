@@ -13,6 +13,7 @@ import android.media.AudioManager;
 import android.os.BatteryManager;
 import android.os.Handler;
 import android.provider.Settings;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -979,15 +980,27 @@ public class DataWrapper {
    			long endAlarmTime;
 			int daysToAdd;
 			
-			daysToAdd = event._eventPreferencesTime.computeDaysForAdd(true);
+			daysToAdd = event._eventPreferencesTime.computeDaysForAdd(true, true);
 			startAlarmTime = event._eventPreferencesTime.computeAlarm(true, daysToAdd);
 			
-			daysToAdd = event._eventPreferencesTime.computeDaysForAdd(false);
+   		    String alarmTimeS = DateFormat.getDateFormat(context).format(startAlarmTime) +
+	   		    	  		    " " + DateFormat.getTimeFormat(context).format(startAlarmTime);
+			GlobalData.logE("DataWrapper.doEventService","startAlarmTime="+alarmTimeS);
+			
+			daysToAdd = event._eventPreferencesTime.computeDaysForAdd(false, true);
 			endAlarmTime = event._eventPreferencesTime.computeAlarm(false, daysToAdd);
+
+   		    alarmTimeS = DateFormat.getDateFormat(context).format(endAlarmTime) +
+	    	  		     " " + DateFormat.getTimeFormat(context).format(endAlarmTime);
+   		    GlobalData.logE("DataWrapper.doEventService","endAlarmTime="+alarmTimeS);
 			
 			Calendar now = Calendar.getInstance();
-			
-			timePassed = ((now.getTimeInMillis() >= startAlarmTime) && (now.getTimeInMillis() <= endAlarmTime));
+			long nowAlarmTime = now.getTimeInMillis();
+   		    alarmTimeS = DateFormat.getDateFormat(context).format(nowAlarmTime) +
+   	  		     " " + DateFormat.getTimeFormat(context).format(nowAlarmTime);
+		    GlobalData.logE("DataWrapper.doEventService","nowAlarmTime="+alarmTimeS);
+
+			timePassed = ((nowAlarmTime >= startAlarmTime) && (nowAlarmTime <= endAlarmTime));
 		}
 		
 		if (event._eventPreferencesBattery._enabled)
@@ -1011,65 +1024,86 @@ public class DataWrapper {
 			if ((batteryPct >= (event._eventPreferencesBattery._levelLow / (float)100)) && 
 			    (batteryPct <= (event._eventPreferencesBattery._levelHight / (float)100))) 
 			{
-				batteryPassed = event._eventPreferencesBattery._charging;
+				batteryPassed = (isCharging == event._eventPreferencesBattery._charging);
 			}
 			else
 				batteryPassed = false;
 		}
+
+		GlobalData.logE("DataWrapper.doEventService","timePassed="+timePassed);
+		GlobalData.logE("DataWrapper.doEventService","batteryPassed="+batteryPassed);
+
+		List<EventTimeline> eventTimelineList = getEventTimelineList();
 		
 		if (timePassed && batteryPassed)
 		{
-			List<EventTimeline> eventTimelineList = getEventTimelineList();
-			
 			// podmienky sedia, vykoname, co treba
 
-			if (startEvent)
-				newEventStatus = Event.ESTATUS_RUNNING;
-			else
-				newEventStatus = Event.ESTATUS_PAUSE;
-
-			if (unblockEvent)
+			if (event._eventPreferencesTime._enabled)
 			{
-				GlobalData.logE("DataWrapper.doEventService","PowerConnectionReceiver");
-				// unblock starting battery event
-				event._eventPreferencesBattery._blocked = false;
-				getDatabaseHandler().updateEventPreferencesBatteryBlocked(event);
-			}
-				
-			if (isCharging != event._eventPreferencesBattery._charging)
-			{
-				newEventStatus = Event.ESTATUS_PAUSE;
-			}
-			else
-			{
-				if ((batteryPct >= (event._eventPreferencesBattery._levelLow / (float)100)) && 
-				    (batteryPct <= (event._eventPreferencesBattery._levelHight / (float)100))) 
-				{
-					GlobalData.logE("DataWrapper.doEventService","inlevel blocked="+event._eventPreferencesBattery._blocked);
-					if (!event._eventPreferencesBattery._blocked)
-					{
-						// starting battery level unblocked
-						if (event.getStatus() != Event.ESTATUS_RUNNING)
-							newEventStatus = Event.ESTATUS_RUNNING;
-					}
-				}
+				if (startEvent)
+					newEventStatus = Event.ESTATUS_RUNNING;
 				else
+					newEventStatus = Event.ESTATUS_PAUSE;
+			}
+
+			if (event._eventPreferencesBattery._enabled)
+			{
+				if (unblockEvent)
 				{
-					GlobalData.logE("DataWrapper.doEventService","outlevel blocked="+event._eventPreferencesBattery._blocked);
+					GlobalData.logE("DataWrapper.doEventService","unblockEvent");
 					// unblock starting battery event
 					event._eventPreferencesBattery._blocked = false;
 					getDatabaseHandler().updateEventPreferencesBatteryBlocked(event);
-
+					newEventStatus = Event.ESTATUS_NONE;
+				}
+					
+				if (isCharging != event._eventPreferencesBattery._charging)
+				{
 					newEventStatus = Event.ESTATUS_PAUSE;
 				}
+				else
+				{
+					if ((batteryPct >= (event._eventPreferencesBattery._levelLow / (float)100)) && 
+					    (batteryPct <= (event._eventPreferencesBattery._levelHight / (float)100))) 
+					{
+						GlobalData.logE("DataWrapper.doEventService","inlevel blocked="+event._eventPreferencesBattery._blocked);
+						if (!event._eventPreferencesBattery._blocked)
+						{
+							// starting battery level unblocked
+							if (event.getStatus() != Event.ESTATUS_RUNNING)
+								newEventStatus = Event.ESTATUS_RUNNING;
+						}
+					}
+					else
+					{
+						GlobalData.logE("DataWrapper.doEventService","outlevel blocked="+event._eventPreferencesBattery._blocked);
+						// unblock starting battery event
+						event._eventPreferencesBattery._blocked = false;
+						getDatabaseHandler().updateEventPreferencesBatteryBlocked(event);
+	
+						newEventStatus = Event.ESTATUS_PAUSE;
+					}
+				}
 			}
-		
-			if (newEventStatus == Event.ESTATUS_RUNNING)
-				event.startEvent(this, eventTimelineList, false);
-			else
-			if (newEventStatus == Event.ESTATUS_PAUSE)
-				event.pauseEvent(this, eventTimelineList, true, false, false);
 		}
+		else
+			newEventStatus = Event.ESTATUS_PAUSE;
+
+		if (newEventStatus == Event.ESTATUS_RUNNING)
+		{
+			event.startEvent(this, eventTimelineList, false);
+		}
+		else
+		if (newEventStatus == Event.ESTATUS_PAUSE)
+		{
+			event.pauseEvent(this, eventTimelineList, true, false, false);
+		}
+		
+		// refresh GUI
+		Intent refreshIntent = new Intent();
+		refreshIntent.setAction(RefreshGUIBroadcastReceiver.INTENT_REFRESH_GUI);
+		context.sendBroadcast(refreshIntent);
 		
 		return (timePassed && batteryPassed);
 	}

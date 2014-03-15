@@ -29,6 +29,8 @@ public class EventsService extends IntentService
 
 		context = getBaseContext();
 
+		GlobalData.logE("EventsService.onHandleIntent","-- start --------------------------------");
+
 		
 		if (!GlobalData.getApplicationStarted(context))
 			// application is not started
@@ -69,27 +71,24 @@ public class EventsService extends IntentService
 				
 				if (_event.getStatus() != Event.ESTATUS_STOP)
 				{
-					dataWrapper.doEventService(_event, broadcastReceiverType.equals(PowerConnectionReceiver.BROADCAST_RECEIVER_TYPE), (procedure == ESP_START_EVENT));
+					dataWrapper.doEventService(_event, !broadcastReceiverType.equals(PowerConnectionReceiver.BROADCAST_RECEIVER_TYPE), (procedure == ESP_START_EVENT));
 				}
 			}
 		}
 		else
 		if (event.getStatus() != Event.ESTATUS_STOP)
-			dataWrapper.doEventService(event, broadcastReceiverType.equals(PowerConnectionReceiver.BROADCAST_RECEIVER_TYPE), (procedure == ESP_START_EVENT));
+			dataWrapper.doEventService(event, !broadcastReceiverType.equals(PowerConnectionReceiver.BROADCAST_RECEIVER_TYPE), (procedure == ESP_START_EVENT));
 
 		doEndService(intent);
-		
+
 		dataWrapper.invalidateDataWrapper();
+
+		GlobalData.logE("EventsService.onHandleIntent","-- end --------------------------------");
 		
 	}
 
 	private void doEndService(Intent intent)
 	{
-		// refresh GUI
-		Intent refreshIntent = new Intent();
-		refreshIntent.setAction(RefreshGUIBroadcastReceiver.INTENT_REFRESH_GUI);
-		context.sendBroadcast(refreshIntent);
-
 		// completting wake
 		if (broadcastReceiverType.equals(EventsAlarmBroadcastReceiver.BROADCAST_RECEIVER_TYPE))
 			EventsAlarmBroadcastReceiver.completeWakefulIntent(intent);
