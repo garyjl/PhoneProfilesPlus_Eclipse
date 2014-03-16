@@ -453,9 +453,29 @@ public class EditorProfilesActivity extends ActionBarActivity
 		if (menuItem != null)
 		{
 			if (GlobalData.getGlobalEventsRuning(getBaseContext()))
+			{
 				menuItem.setTitle(R.string.menu_stop_events);
+	      	    if (GlobalData.applicationTheme.equals("light"))
+	      	    	menuItem.setIcon(R.drawable.ic_action_events_stop);
+	      	    else
+	         	if (GlobalData.applicationTheme.equals("dark"))
+	      	    	menuItem.setIcon(R.drawable.ic_action_events_stop_dark);
+	         	else
+	         	if (GlobalData.applicationTheme.equals("dlight"))
+	      	    	menuItem.setIcon(R.drawable.ic_action_events_stop_dark);
+			}
 			else
+			{
 				menuItem.setTitle(R.string.menu_run_events);
+	      	    if (GlobalData.applicationTheme.equals("light"))
+	      	    	menuItem.setIcon(R.drawable.ic_action_events_run);
+	      	    else
+	         	if (GlobalData.applicationTheme.equals("dark"))
+	      	    	menuItem.setIcon(R.drawable.ic_action_events_run_dark);
+	         	else
+	         	if (GlobalData.applicationTheme.equals("dlight"))
+	      	    	menuItem.setIcon(R.drawable.ic_action_events_run_dark);
+			}
 		}
 		
 		return super.onPrepareOptionsMenu(menu);
@@ -497,6 +517,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 				else
 					((EditorProfileListFragment)fragment).setEventsRunStopIndicator();
 			}
+			invalidateOptionsMenu();
 			return true;
 		case R.id.menu_default_profile:
 			// start preferences activity for default profile

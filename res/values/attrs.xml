@@ -62,5 +62,7 @@
     <attr name="preferenceDialogBackground" format="reference" />
     <attr name="editItemMenuIcon" format="reference" />
     <attr name="applicationSettingsLanguageIcon" format="reference" />
+    <attr name="actionEventsRunIcon" format="reference" />
+    <attr name="actionEventsStopIcon" format="reference" />
     
 </resources>

@@ -60,6 +60,8 @@
         <item name="preferenceDialogBackground">@color/preferenceDialogBackgroud</item>
         <item name="editItemMenuIcon">@drawable/ic_profile_item_edit_menu</item> 
         <item name="applicationSettingsLanguageIcon">@drawable/ic_settings_language</item> 
+	    <item name="actionEventsRunIcon">@drawable/ic_action_events_run</item>
+	    <item name="actionEventsStopIcon">@drawable/ic_action_events_stop</item>
         	    
         <item name="actionModeCloseButtonStyle">@style/NoCloseButton</item>
         <item name="android:actionModeCloseButtonStyle">@style/NoCloseButton</item>
