@@ -86,6 +86,7 @@
 		<ListPreference android:title="@string/phone_profiles_pref_applicationLanguage"
 	           android:summary="@string/phone_profiles_pref_applicationLanguage_system"
 	           android:key="applicationLanguage"
+	           android:icon="?attr/applicationSettingsLanguageIcon"
 	           android:defaultValue="system"
 	           android:entries="@array/languageArray"
 	           android:entryValues="@array/languageValues" />        

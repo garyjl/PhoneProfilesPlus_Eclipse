@@ -99,10 +99,10 @@
     <string name="phone_profiles_pref_applicationLanguage">Language</string>
     <string name="phone_profiles_pref_applicationLanguage_system">System</string>
     <string name="phone_profiles_pref_applicationLanguage_en">English</string>
-    <string name="phone_profiles_pref_applicationLanguage_sk">Slovak</string>
-    <string name="phone_profiles_pref_applicationLanguage_cs">Czech</string>
-    <string name="phone_profiles_pref_applicationLanguage_de">German</string>
-    <string name="phone_profiles_pref_applicationLanguage_ru">Russian</string>
+    <string name="phone_profiles_pref_applicationLanguage_sk">Slovenčina</string>
+    <string name="phone_profiles_pref_applicationLanguage_cs">Čeština</string>
+    <string name="phone_profiles_pref_applicationLanguage_de">Deutsch</string>
+    <string name="phone_profiles_pref_applicationLanguage_ru">Русский</string>
     <string name="title_activity_shortcut_creator">Shortcut into profile</string>
     <string name="phone_profiles_pref_applicationStartOnBoot">Start on phone boot</string>
     <string name="array_pref_value_system">system</string>

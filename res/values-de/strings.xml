@@ -98,11 +98,6 @@
     <string name="array_pref_screenTimeoutArray_never_timeout">Nie aus</string> 
     <string name="phone_profiles_pref_applicationLanguage">Sprache</string> 
     <string name="phone_profiles_pref_applicationLanguage_system">Nach Systemeinstellung</string> 
-    <string name="phone_profiles_pref_applicationLanguage_en">Englisch</string> 
-    <string name="phone_profiles_pref_applicationLanguage_sk">Slowakisch</string> 
-    <string name="phone_profiles_pref_applicationLanguage_cs">Tschechisch</string> 
-    <string name="phone_profiles_pref_applicationLanguage_de">Deutsch</string>
-    <string name="phone_profiles_pref_applicationLanguage_ru">Russisch</string>
     <string name="title_activity_shortcut_creator">Schnellstarter erstellen</string>
     <string name="phone_profiles_pref_applicationStartOnBoot">Beim Hochfahren starten</string> 
     <string name="array_pref_value_system">system</string> 

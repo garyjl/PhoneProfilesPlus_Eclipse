@@ -61,5 +61,6 @@
     <attr name="actionDefaultProfileIcon" format="reference" />
     <attr name="preferenceDialogBackground" format="reference" />
     <attr name="editItemMenuIcon" format="reference" />
+    <attr name="applicationSettingsLanguageIcon" format="reference" />
     
 </resources>

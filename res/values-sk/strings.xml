@@ -98,11 +98,6 @@
     <string name="array_pref_screenTimeoutArray_never_timeout">Nikdy nevypnúť</string>
     <string name="phone_profiles_pref_applicationLanguage">Jazyk</string>
     <string name="phone_profiles_pref_applicationLanguage_system">Systémový</string>
-    <string name="phone_profiles_pref_applicationLanguage_en">Angličtina</string>
-    <string name="phone_profiles_pref_applicationLanguage_sk">Slovenčina</string>
-    <string name="phone_profiles_pref_applicationLanguage_cs">Čestina</string>
-    <string name="phone_profiles_pref_applicationLanguage_de">Nemčina</string>
-    <string name="phone_profiles_pref_applicationLanguage_ru">Ruština</string>
     <string name="title_activity_shortcut_creator">Odkaz na profil</string>
     <string name="phone_profiles_pref_applicationStartOnBoot">Spusti pri štarte telefónu</string>
     <string name="array_pref_value_system">system</string>

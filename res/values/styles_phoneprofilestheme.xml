@@ -20,16 +20,16 @@
 <resources>
 
     <style name="Theme.Phoneprofilestheme" parent="@style/Theme.AppCompat.Light">
-<!--         <item name="actionBarItemBackground">@drawable/selectable_background_phoneprofilestheme</item>
-        <item name="popupMenuStyle">@style/PopupMenu.Phoneprofilestheme</item>
-        <item name="dropDownListViewStyle">@style/DropDownListView.Phoneprofilestheme</item>
-        <item name="actionBarTabStyle">@style/ActionBarTabStyle.Phoneprofilestheme</item>
-        <item name="actionDropDownStyle">@style/DropDownNav.Phoneprofilestheme</item>
-        <item name="actionBarStyle">@style/ActionBar.Solid.Phoneprofilestheme</item>
-        <item name="actionModeBackground">@drawable/cab_background_top_phoneprofilestheme</item>
-        <item name="actionModeSplitBackground">@drawable/cab_background_bottom_phoneprofilestheme</item>
-        <item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Phoneprofilestheme</item>
- --> 
+<!--         <item name="android:actionBarItemBackground">@drawable/selectable_background_phoneprofilestheme</item>
+        <item name="android:popupMenuStyle">@style/PopupMenu.Phoneprofilestheme</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.Phoneprofilestheme</item>
+        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Phoneprofilestheme</item>
+        <item name="android:actionDropDownStyle">@style/DropDownNav.Phoneprofilestheme</item>
+        <item name="android:actionBarStyle">@style/ActionBar.Solid.Phoneprofilestheme</item>
+        <item name="android:actionModeBackground">@drawable/cab_background_top_phoneprofilestheme</item>
+        <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_phoneprofilestheme</item>
+        <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Phoneprofilestheme</item>
+ -->        
         <item name="actionNewProfileIcon">@drawable/ic_action_new_profile</item>
         <item name="actionDeleteAllIcon">@drawable/ic_action_delete_all</item>
         <item name="actionSettingsIcon">@drawable/ic_action_settings</item>
@@ -47,8 +47,8 @@
         <item name="actionProfilePrefSave">@drawable/ic_action_profile_pref_save</item>
         <item name="actionProfilePrefCancel">@drawable/ic_action_profile_pref_cancel</item>
         <item name="actionProfileToolBackground">@drawable/abc_item_background_holo_light</item>
-        <item name="actionProfileButtonTextStyle">@style/TextAppearance.AppCompat.Widget.ActionBar.Title</item>
-        <item name="navigationDrawerBackground">@drawable/abc_ab_solid_light_holo</item>
+        <item name="actionProfileButtonTextStyle">@style/TextAppearance.AppCompat.Widget.ActionMode.Title</item> 
+        <item name="navigationDrawerBackground">@drawable/abc_ab_solid_light_holo</item> 
         <item name="navigationDrawerText">@color/navigationDrawerTextColor_phoneprofiletheme</item>
         <item name="filterStatusBarBackground">@color/filterStatusBarBackground_phoneprofilestheme</item> 
         <item name="editorDrawerSpinner">@style/editorDrawerSpinnerStyle</item> 
@@ -59,53 +59,30 @@
         <item name="actionDefaultProfileIcon">@drawable/ic_action_default_profile</item> 
         <item name="preferenceDialogBackground">@color/preferenceDialogBackgroud</item>
         <item name="editItemMenuIcon">@drawable/ic_profile_item_edit_menu</item> 
+        <item name="applicationSettingsLanguageIcon">@drawable/ic_settings_language</item> 
         	    
         <item name="actionModeCloseButtonStyle">@style/NoCloseButton</item>
+        <item name="android:actionModeCloseButtonStyle">@style/NoCloseButton</item>
         
     </style>
-<!--     
+    
+<!-- 
     <style name="ActionBar.Solid.Phoneprofilestheme" parent="@style/Widget.Sherlock.Light.ActionBar.Solid">
-        <item name="background">@drawable/ab_solid_phoneprofilestheme</item>
-        <item name="backgroundStacked">@drawable/ab_stacked_solid_phoneprofilestheme</item>
-        <item name="backgroundSplit">@drawable/ab_bottom_solid_phoneprofilestheme</item>
-        <item name="progressBarStyle">@style/ProgressBar.Phoneprofilestheme</item>
+        <item name="android:background">@drawable/ab_solid_phoneprofilestheme</item>
+        <item name="android:backgroundStacked">@drawable/ab_stacked_solid_phoneprofilestheme</item>
+        <item name="android:backgroundSplit">@drawable/ab_bottom_solid_phoneprofilestheme</item>
+        <item name="android:progressBarStyle">@style/ProgressBar.Phoneprofilestheme</item>
     </style>
 
     <style name="ActionBar.Transparent.Phoneprofilestheme" parent="@style/Widget.Sherlock.Light.ActionBar">
-        <item name="background">@drawable/ab_transparent_phoneprofilestheme</item>
-        <item name="progressBarStyle">@style/ProgressBar.Phoneprofilestheme</item>
-    </style>
-	
-    <style name="PopupMenu.Phoneprofilestheme" parent="@style/Widget.Sherlock.Light.ListPopupWindow">	
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_phoneprofilestheme</item>	
-    </style>
-	
-    <style name="DropDownListView.Phoneprofilestheme" parent="@style/Widget.Sherlock.Light.ListView.DropDown">
-        <item name="android:listSelector">@drawable/selectable_background_phoneprofilestheme</item>
-    </style>
-
-    <style name="ActionBarTabStyle.Phoneprofilestheme" parent="@style/Widget.Sherlock.Light.ActionBar.TabView">
-        <item name="android:background">@drawable/tab_indicator_ab_phoneprofilestheme</item>
-    </style>
-	
-    <style name="DropDownNav.Phoneprofilestheme" parent="@style/Widget.Sherlock.Light.Spinner.DropDown.ActionBar">
-        <item name="android:background">@drawable/spinner_background_ab_phoneprofilestheme</item>
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_phoneprofilestheme</item>
-        <item name="android:dropDownSelector">@drawable/selectable_background_phoneprofilestheme</item>
-    </style>
-    
-    <style name="ProgressBar.Phoneprofilestheme" parent="@style/Widget.Sherlock.Light.ProgressBar.Horizontal">
-        <item name="android:progressDrawable">@drawable/progress_horizontal_phoneprofilestheme</item>
-    </style>
-    
-    <style name="ActionButton.CloseMode.Phoneprofilestheme" parent="@style/Widget.Sherlock.Light.ActionButton.CloseMode">
-        <item name="android:background">@drawable/btn_cab_done_phoneprofilestheme</item>
+        <item name="android:background">@drawable/ab_transparent_phoneprofilestheme</item>
+        <item name="android:progressBarStyle">@style/ProgressBar.Phoneprofilestheme</item>
     </style>
  -->    
     <!-- this style is only referenced in a Light.DarkActionBar based theme -->
 <!--     <style name="Theme.Phoneprofilestheme.Widget" parent="@style/Theme.Sherlock">
-        <item name="popupMenuStyle">@style/PopupMenu.Phoneprofilestheme</item>
-        <item name="dropDownListViewStyle">@style/DropDownListView.Phoneprofilestheme</item>
+        <item name="android:popupMenuStyle">@style/PopupMenu.Phoneprofilestheme</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.Phoneprofilestheme</item>
     </style>
  -->
 </resources>
