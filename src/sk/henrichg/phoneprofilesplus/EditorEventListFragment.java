@@ -176,9 +176,9 @@ public class EditorEventListFragment extends Fragment {
 		//super.onActivityCreated(savedInstanceState);
 		
 		// az tu mame layout, tak mozeme ziskat view-y
-		listView = (ListView)getActivity().findViewById(R.id.editor_events_list);
-		listView.setEmptyView(getActivity().findViewById(R.id.editor_events_list_empty));
-		eventsRunStopIndicator = (LinearLayout)getActivity().findViewById(R.id.editor_events_list_run_stop_indicator);
+		listView = (ListView)view.findViewById(R.id.editor_events_list);
+		listView.setEmptyView(view.findViewById(R.id.editor_events_list_empty));
+		eventsRunStopIndicator = (LinearLayout)view.findViewById(R.id.editor_list_run_stop_indicator);
 		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -611,7 +611,7 @@ public class EditorEventListFragment extends Fragment {
     public void setEventsRunStopIndicator()
     {
 		if (GlobalData.getGlobalEventsRuning(getActivity().getBaseContext()))
-			eventsRunStopIndicator.setBackgroundColor(0xFF00FF00);
+			eventsRunStopIndicator.setBackgroundColor(0x99009900);
 		else
 			eventsRunStopIndicator.setBackgroundColor(0xFFFF0000);
 		updateListView(null, false);

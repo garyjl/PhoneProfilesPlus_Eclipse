@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -30,6 +31,7 @@ public class ActivateProfileListFragment extends Fragment {
 	private TextView activeProfileName;
 	private ImageView activeProfileIcon;
 	private ImageView profilePrefIndicatorImageView;
+	private LinearLayout eventsRunStopIndicator;
 	
 	private WeakReference<LoadProfileListAsyncTask> asyncTaskContext;
 	
@@ -80,6 +82,7 @@ public class ActivateProfileListFragment extends Fragment {
 		{
 			profilePrefIndicatorImageView = (ImageView)view.findViewById(R.id.act_prof_activated_profile_pref_indicator);
 		}
+		eventsRunStopIndicator = (LinearLayout)view.findViewById(R.id.act_prof_run_stop_indicator);
 		
 		//listView.setLongClickable(false);
 
@@ -123,6 +126,7 @@ public class ActivateProfileListFragment extends Fragment {
 		else
 		{
 			listView.setAdapter(profileListAdapter);
+			setEventsRunStopIndicator();
 		}
 		
 		//Log.d("EditorProfileListFragment.onActivityCreated", "xxx");
@@ -183,6 +187,7 @@ public class ActivateProfileListFragment extends Fragment {
     	        
     	        fragment.profileListAdapter = new ActivateProfileListAdapter(fragment, fragment.profileList);
     	        fragment.listView.setAdapter(fragment.profileListAdapter);
+    			fragment.setEventsRunStopIndicator();
     	        
 				fragment.doOnStart();
             }
@@ -291,6 +296,14 @@ public class ActivateProfileListFragment extends Fragment {
 	{
 		dataWrapper.activateProfile(profile._id, startupSource, getActivity(), "");
 	}
+
+    public void setEventsRunStopIndicator()
+    {
+		if (GlobalData.getGlobalEventsRuning(getActivity().getBaseContext()))
+			eventsRunStopIndicator.setBackgroundColor(0x99009900);
+		else
+			eventsRunStopIndicator.setBackgroundColor(0xFFFF0000);
+    }
 	
 	public void refreshGUI()
 	{

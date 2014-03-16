@@ -7,6 +7,14 @@
     android:orientation="vertical"
     tools:context=".ShortcutCreatorActivity" >
 
+    <LinearLayout 
+        android:id="@+id/act_prof_run_stop_indicator"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#00FFFFFF"
+        />
+    
     <ListView
         android:id="@+id/act_prof_profiles_list"
         android:layout_width="match_parent"

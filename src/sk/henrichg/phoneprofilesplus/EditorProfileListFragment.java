@@ -196,7 +196,7 @@ public class EditorProfileListFragment extends Fragment {
 		activeProfileIcon = (ImageView)view.findViewById(R.id.activated_profile_icon);
 		listView = (DragSortListView)view.findViewById(R.id.editor_profiles_list);
 		listView.setEmptyView(view.findViewById(R.id.editor_profiles_list_empty));
-		eventsRunStopIndicator = (LinearLayout)getActivity().findViewById(R.id.editor_events_list_run_stop_indicator);
+		eventsRunStopIndicator = (LinearLayout)view.findViewById(R.id.editor_list_run_stop_indicator);
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -827,7 +827,7 @@ public class EditorProfileListFragment extends Fragment {
     public void setEventsRunStopIndicator()
     {
 		if (GlobalData.getGlobalEventsRuning(getActivity().getBaseContext()))
-			eventsRunStopIndicator.setBackgroundColor(0xFF00FF00);
+			eventsRunStopIndicator.setBackgroundColor(0x99009900);
 		else
 			eventsRunStopIndicator.setBackgroundColor(0xFFFF0000);
 		updateListView(null, false);
