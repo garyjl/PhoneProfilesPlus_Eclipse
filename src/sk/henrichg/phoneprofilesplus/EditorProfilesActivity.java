@@ -374,6 +374,10 @@ public class EditorProfilesActivity extends ActionBarActivity
         	drawerSelectedItem = preferences.getInt(SP_EDITOR_DRAWER_SELECTED_ITEM, 2);
         	orderSelectedItem = preferences.getInt(SP_EDITOR_ORDER_SELECTED_ITEM, 0);
         }
+        // replace removed orders
+        if (orderSelectedItem == 2) orderSelectedItem = 0;
+        if (orderSelectedItem == 3) orderSelectedItem = 1;
+        
     	selectDrawerItem(drawerSelectedItem, false);
     	changeEventOrder(orderSelectedItem);
 
