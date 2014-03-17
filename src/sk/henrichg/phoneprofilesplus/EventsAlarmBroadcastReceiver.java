@@ -13,6 +13,8 @@ public class EventsAlarmBroadcastReceiver extends WakefulBroadcastReceiver {
 		
 		GlobalData.logE("#### EventsAlarmBroadcastReceiver.onReceive","xxx");
 		
+		GlobalData.loadPreferences(context);
+		
 		long eventId = intent.getLongExtra(GlobalData.EXTRA_EVENT_ID, 0);
 		boolean startEvent = intent.getBooleanExtra(GlobalData.EXTRA_START_SYSTEM_EVENT, true);
 		

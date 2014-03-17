@@ -17,6 +17,8 @@ public class BatteryEventsAlarmBroadcastReceiver extends WakefulBroadcastReceive
 	public void onReceive(Context context, Intent intent) {
 		GlobalData.logE("##### BatteryEventsAlarmBroadcastReceiver.onReceive","xxx");
 
+		GlobalData.loadPreferences(context);
+		
 		boolean batteryEventsExists = false;
 
 		if (GlobalData.getGlobalEventsRuning(context))

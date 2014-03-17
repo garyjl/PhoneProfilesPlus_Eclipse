@@ -31,7 +31,6 @@ public class EventsService extends IntentService
 
 		GlobalData.logE("EventsService.onHandleIntent","-- start --------------------------------");
 
-		
 		if (!GlobalData.getApplicationStarted(context))
 			// application is not started
 			return;
@@ -39,6 +38,8 @@ public class EventsService extends IntentService
 		if (!GlobalData.getGlobalEventsRuning(context))
 			// events are globally stopped
 			return;
+
+		GlobalData.loadPreferences(context);
 		
 		dataWrapper = new DataWrapper(context, false, false, 0);
 		

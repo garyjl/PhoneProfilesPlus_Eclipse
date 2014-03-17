@@ -14,6 +14,8 @@ public class IncomingCallBroadcastReceiver extends BroadcastReceiver {
 		if (!GlobalData.getApplicationStarted(context))
 			return;
 		
+		GlobalData.loadPreferences(context);
+		
 		DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
 		Profile profile = dataWrapper.getActivatedProfile();
 		

@@ -10,6 +10,8 @@ public class LocaleChangedReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 
+		GlobalData.loadPreferences(context);
+		
 		if (GlobalData.applicationLanguage.equals("system"))
 		{	
 			NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);

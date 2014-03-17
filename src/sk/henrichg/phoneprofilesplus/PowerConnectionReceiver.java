@@ -14,6 +14,8 @@ public class PowerConnectionReceiver extends WakefulBroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		GlobalData.logE("#### PowerConnectionReceiver.onReceive","xxx");
 		
+		GlobalData.loadPreferences(context);
+		
 		boolean batteryEventsExists = false;
 		
 		if (GlobalData.getGlobalEventsRuning(context))

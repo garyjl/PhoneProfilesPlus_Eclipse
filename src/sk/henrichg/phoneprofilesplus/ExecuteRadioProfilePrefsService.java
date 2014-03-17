@@ -15,6 +15,9 @@ public class ExecuteRadioProfilePrefsService extends IntentService
 	protected void onHandleIntent(Intent intent) {
 		
 		Context context = getBaseContext();
+		
+		GlobalData.loadPreferences(context);
+		
 		DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
 		ActivateProfileHelper aph = dataWrapper.getActivateProfileHelper();
 		aph.initialize(dataWrapper, null, context);

@@ -10,6 +10,9 @@ public class BootUpReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		
 		GlobalData.logE("## BootUpReceiver.onReceive", "xxxx");
+		
+		GlobalData.loadPreferences(context);
+		
 		GlobalData.logE("BootUpReceiver.onReceive", "applicationStartOnBoot="+GlobalData.applicationStartOnBoot);
 		GlobalData.logE("BootUpReceiver.onReceive", "globalEventsRunning="+GlobalData.getGlobalEventsRuning(context));
 		

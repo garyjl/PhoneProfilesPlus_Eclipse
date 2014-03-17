@@ -13,6 +13,8 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 		int myUid = android.os.Process.myUid();
 		if (intentUid == myUid)
 		{
+			GlobalData.loadPreferences(context);
+			
 			DataWrapper dataWrapper = new DataWrapper(context, true, false, 0);
 			dataWrapper.getActivateProfileHelper().initialize(dataWrapper, null, context);
 			
