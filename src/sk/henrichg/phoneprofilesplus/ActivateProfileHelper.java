@@ -879,6 +879,8 @@ public class ActivateProfileHelper {
 	    	{
 				GlobalData.logE("ActivateProfileHelper.setGPS", "system app.");
 
+		    	if (android.os.Build.VERSION.SDK_INT >= 17)
+				
 			/*	String newSet;
 	    		if (provider == "")
 	    			newSet = LocationManager.GPS_PROVIDER;
