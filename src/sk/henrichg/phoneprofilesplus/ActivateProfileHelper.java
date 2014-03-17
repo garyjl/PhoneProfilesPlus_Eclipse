@@ -107,7 +107,15 @@ public class ActivateProfileHelper {
 					break;
 			}
 			if (_setMobileData)
+			{
 				setMobileData(context, _isMobileData);
+
+				try {
+		        	Thread.sleep(200);
+			    } catch (InterruptedException e) {
+			        System.out.println(e);
+			    }
+			}
 		}
 
 		// nahodenie WiFi
