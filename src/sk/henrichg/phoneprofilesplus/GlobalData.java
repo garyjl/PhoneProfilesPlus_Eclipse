@@ -4,6 +4,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Map;
@@ -22,6 +24,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.media.AudioManager;
+import android.net.ConnectivityManager;
 import android.os.Environment;
 import android.provider.Settings;
 import android.util.Log;
@@ -672,8 +675,11 @@ public class GlobalData extends Application {
 		if (preferenceKey.equals(PREF_PROFILE_DEVICE_MOBILE_DATA))
 		{	
 			if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY))
+			{
 				// device ma mobilne data
-				featurePresented = true;
+				if (canSetMobileData(context))
+					featurePresented = true;
+			}
 		}
 		else
 		if (preferenceKey.equals(PREF_PROFILE_DEVICE_GPS))
@@ -728,6 +734,27 @@ public class GlobalData extends Application {
 	        return false; //package not found
 	    }   
 	    return false;
+	}
+	
+	static boolean canSetMobileData(Context context)
+	{
+		final ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		
+		try {
+			final Class<?> connectivityManagerClass = Class.forName(connectivityManager.getClass().getName());
+			final Method getMobileDataEnabledMethod = connectivityManagerClass.getDeclaredMethod("getMobileDataEnabled");
+			getMobileDataEnabledMethod.setAccessible(true);
+			return true;
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			return false;
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+			return false;
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	static boolean isSystemApp(Context context)

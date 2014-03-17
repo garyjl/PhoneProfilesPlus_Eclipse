@@ -29,6 +29,7 @@ import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
+import android.nfc.NfcAdapter;
 import android.provider.Settings;
 import android.provider.Settings.Global;
 import android.support.v4.app.NotificationCompat;
@@ -1098,6 +1099,61 @@ public class ActivateProfileHelper {
 			context.sendBroadcast(intent);
 		}
 	}
+	
+	public void setNfc(Context context, boolean enable)
+	{
+		if(GlobalData.isSystemApp(context))
+		{
+			Class<?> NfcClass;
+			NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(context);
+			
+			if(nfcAdapter != null)
+			{
+				if(enable && !nfcAdapter.isEnabled())
+				{
+					try {
+						Method enableNfc;
+						NfcClass = Class.forName(nfcAdapter.getClass().getName());
+						enableNfc   = NfcClass.getDeclaredMethod("enable");
+						enableNfc.setAccessible(true);
+						enableNfc.invoke(nfcAdapter);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					} catch (NoSuchMethodException e) {
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						e.printStackTrace();
+					} catch (IllegalArgumentException e) {
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						e.printStackTrace();
+					}
+				}
+				
+				if(!enable && nfcAdapter.isEnabled())
+				{
+					try {
+						Method disableNfc;
+						NfcClass = Class.forName(nfcAdapter.getClass().getName());
+						disableNfc   = NfcClass.getDeclaredMethod("disable");
+						disableNfc.setAccessible(true);
+						disableNfc.invoke(nfcAdapter);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					} catch (NoSuchMethodException e) {
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						e.printStackTrace();
+					} catch (IllegalArgumentException e) {
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						e.printStackTrace();
+					}
+				}
+			}		
+		}
+	}
+		
 
 	private void commandWait(Command cmd) throws Exception {
         int waitTill = 50;
