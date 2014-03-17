@@ -121,6 +121,7 @@ public class GlobalData extends Application {
 	static final String PREF_PROFILE_DEVICE_AUTOROTATE = "prf_pref_deviceAutoRotation";
 	static final String PREF_PROFILE_DEVICE_LOCATION_SERVICE_PREFS = "prf_pref_deviceLocationServicePrefs";
 	static final String PREF_PROFILE_VOLUME_SPEAKER_PHONE = "prf_pref_volumeSpeakerPhone";
+	static final String PREF_PROFILE_DEVICE_NFC = "prf_pref_deviceNFC";
 	
 	static final String PROFILE_ICON_DEFAULT = "ic_profile_default";
 	
@@ -705,6 +706,20 @@ public class GlobalData extends Application {
 					// aplikacia je nainstalovana ako systemova
 					featurePresented = true;
 					logE("GlobalData.hardwareCheck - GPS","system app.");
+			    }
+			}
+		}
+		else
+		if (preferenceKey.equals(PREF_PROFILE_DEVICE_NFC))
+		{
+			if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_NFC))
+			{
+				// device ma nfc
+				//if (isSystemApp(context) && isAdminUser(context))
+				if (isSystemApp(context))
+				{
+					// aplikacia je nainstalovana ako systemova
+					featurePresented = true;
 			    }
 			}
 		}

@@ -42,6 +42,7 @@ public class Profile {
 	public boolean _showInActivator;
 	public int _deviceAutoRotate;
 	public int _volumeSpeakerPhone;
+	public int _deviceNFC;
 	
 	public Bitmap _iconBitmap;
 	public Bitmap _preferencesIndicator;

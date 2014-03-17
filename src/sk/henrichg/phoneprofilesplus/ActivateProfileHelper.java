@@ -206,6 +206,36 @@ public class ActivateProfileHelper {
 					break;
 			}
 		}
+		
+		// nahodenie NFC
+		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_NFC, context))
+		{
+			NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(context);
+			
+			if(nfcAdapter != null)
+			{
+				switch (profile._deviceNFC) {
+					case 1 :
+						setNFC(context, true);
+						break;
+					case 2 : 
+						setNFC(context, false);
+						break;
+					case 3 :
+					    if (!nfcAdapter.isEnabled())
+						{
+							setNFC(context, true);
+						}
+						else
+					    if (nfcAdapter.isEnabled())
+						{
+							setNFC(context, false);
+						}
+						break;
+				}
+			}
+		}
+		
 	}
 	
 	public void executeForRadios(Profile profile)
@@ -1108,7 +1138,7 @@ public class ActivateProfileHelper {
 		}
 	}
 	
-	public void setNfc(Context context, boolean enable)
+	public void setNFC(Context context, boolean enable)
 	{
 		if(GlobalData.isSystemApp(context))
 		{
