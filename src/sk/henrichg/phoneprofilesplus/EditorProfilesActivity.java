@@ -40,6 +40,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -70,6 +71,8 @@ public class EditorProfilesActivity extends ActionBarActivity
 
 	private static EditorProfilesActivity instance;
 
+	private LinearLayout eventsRunStopIndicator;
+	
 	private static boolean savedInstanceStateChanged; 
 	
 	//private DataWrapper dataWrapper;
@@ -366,6 +369,9 @@ public class EditorProfilesActivity extends ActionBarActivity
 	    navigationAdapter.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
 	*/	
 
+		eventsRunStopIndicator = (LinearLayout)findViewById(R.id.editor_list_run_stop_indicator);
+		setEventsRunStopIndicator();
+        
 		// set drawer item and order
         //Log.e("EditorProfilesActivity.onCreate","applicationEditorSaveEditorState="+GlobalData.applicationEditorSaveEditorState);
         if ((savedInstanceState != null) || (GlobalData.applicationEditorSaveEditorState))
@@ -509,15 +515,8 @@ public class EditorProfilesActivity extends ActionBarActivity
 				// setup for next start
 				dataWrapper.firstStartEvents(false, false);
 			}
-			Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
-			if (fragment != null)
-			{
-				if (drawerSelectedItem > COUNT_DRAWER_PROFILE_ITEMS)
-					((EditorEventListFragment)fragment).setEventsRunStopIndicator();
-				else
-					((EditorProfileListFragment)fragment).setEventsRunStopIndicator();
-			}
 			invalidateOptionsMenu();
+			setEventsRunStopIndicator();
 			return true;
 		case R.id.menu_default_profile:
 			// start preferences activity for default profile
@@ -1661,6 +1660,16 @@ public class EditorProfilesActivity extends ActionBarActivity
 		else
 			return null;
 	}
+
+    public void setEventsRunStopIndicator()
+    {
+		if (GlobalData.getGlobalEventsRuning(getBaseContext()))
+			eventsRunStopIndicator.setBackgroundColor(0x99009900);
+		else
+			eventsRunStopIndicator.setBackgroundColor(0xFFFF0000);
+		refreshGUI();
+    }
+
 	
 	public void refreshGUI()
 	{

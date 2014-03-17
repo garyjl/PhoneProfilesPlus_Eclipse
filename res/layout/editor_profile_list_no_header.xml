@@ -7,14 +7,6 @@
     android:orientation="vertical"
     android:background="?attr/activityPopupBackground" >
 
-    <LinearLayout 
-        android:id="@+id/editor_list_run_stop_indicator"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:background="#00FFFFFF"
-        />
-    
     <com.mobeta.android.dslv.DragSortListView
         android:id="@+id/editor_profiles_list"
         android:layout_width="match_parent"

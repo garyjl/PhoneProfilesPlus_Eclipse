@@ -32,7 +32,6 @@ public class EditorEventListFragment extends Fragment {
 	private List<Event> eventList;
 	private EditorEventListAdapter eventListAdapter;
 	private ListView listView;
-	private LinearLayout eventsRunStopIndicator;
 	private DatabaseHandler databaseHandler;
 	
 	private WeakReference<LoadEventListAsyncTask> asyncTaskContext;
@@ -178,7 +177,6 @@ public class EditorEventListFragment extends Fragment {
 		// az tu mame layout, tak mozeme ziskat view-y
 		listView = (ListView)view.findViewById(R.id.editor_events_list);
 		listView.setEmptyView(view.findViewById(R.id.editor_events_list_empty));
-		eventsRunStopIndicator = (LinearLayout)view.findViewById(R.id.editor_list_run_stop_indicator);
 		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -201,7 +199,6 @@ public class EditorEventListFragment extends Fragment {
 		else
 		{
 			listView.setAdapter(eventListAdapter);
-			setEventsRunStopIndicator();
 		}
 		
 		//Log.d("EditorEventListFragment.onActivityCreated", "xxx");
@@ -245,7 +242,6 @@ public class EditorEventListFragment extends Fragment {
 
     			fragment.eventListAdapter = new EditorEventListAdapter(fragment, fragment.dataWrapper, fragment.filterType);
     			fragment.listView.setAdapter(fragment.eventListAdapter);
-    			fragment.setEventsRunStopIndicator();
             }
         }
     }
@@ -608,15 +604,6 @@ public class EditorEventListFragment extends Fragment {
 		}
 	}
 	
-    public void setEventsRunStopIndicator()
-    {
-		if (GlobalData.getGlobalEventsRuning(getActivity().getBaseContext()))
-			eventsRunStopIndicator.setBackgroundColor(0x99009900);
-		else
-			eventsRunStopIndicator.setBackgroundColor(0xFFFF0000);
-		updateListView(null, false);
-    }
-
 	public void refreshGUI()
 	{
 		if ((dataWrapper == null) || (eventList == null))

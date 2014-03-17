@@ -25,10 +25,18 @@
 	        android:singleLine="true"
 	        android:textAppearance="?android:attr/textAppearanceSmall" />    
 
+	    <LinearLayout 
+	        android:id="@+id/editor_list_run_stop_indicator"
+	        android:orientation="vertical"
+	        android:layout_width="match_parent"
+	        android:layout_height="3dp"
+	        android:layout_below="@+id/editor_filter_title"
+	        />
+	 		 	
 		<LinearLayout
 		    android:layout_width="match_parent"
 		    android:layout_height="match_parent"
-	        android:layout_below="@+id/editor_filter_title"
+	        android:layout_below="@+id/editor_list_run_stop_indicator"
 		    android:baselineAligned="false"
 		    android:orientation="horizontal"
 	        android:background="?attr/activityPopupBackground"

@@ -38,7 +38,6 @@ public class EditorProfileListFragment extends Fragment {
 	public DataWrapper dataWrapper;
 	private ActivateProfileHelper activateProfileHelper;
 	private List<Profile> profileList;
-	private LinearLayout eventsRunStopIndicator;
 	private EditorProfileListAdapter profileListAdapter;
 	private DragSortListView listView;
 	private TextView activeProfileName;
@@ -196,7 +195,6 @@ public class EditorProfileListFragment extends Fragment {
 		activeProfileIcon = (ImageView)view.findViewById(R.id.activated_profile_icon);
 		listView = (DragSortListView)view.findViewById(R.id.editor_profiles_list);
 		listView.setEmptyView(view.findViewById(R.id.editor_profiles_list_empty));
-		eventsRunStopIndicator = (LinearLayout)view.findViewById(R.id.editor_list_run_stop_indicator);
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -242,8 +240,6 @@ public class EditorProfileListFragment extends Fragment {
 		else
 		{
 			listView.setAdapter(profileListAdapter);
-			
-			setEventsRunStopIndicator();
         
 			// pre profil, ktory je prave aktivny, treba aktualizovat aktivitu
 			Profile profile;
@@ -305,8 +301,6 @@ public class EditorProfileListFragment extends Fragment {
     	        fragment.profileListAdapter = new EditorProfileListAdapter(fragment, fragment.dataWrapper, fragment.filterType); 
     	        fragment.listView.setAdapter(fragment.profileListAdapter);
 
-    	        fragment.setEventsRunStopIndicator();
-    	        
     			// pre profil, ktory je prave aktivny, treba aktualizovat aktivitu
     			Profile profile;
     			profile = fragment.dataWrapper.getActivatedProfile();
@@ -824,15 +818,6 @@ public class EditorProfileListFragment extends Fragment {
 		Collections.sort(profileList, new ByPOrderComparator());
 	}
 
-    public void setEventsRunStopIndicator()
-    {
-		if (GlobalData.getGlobalEventsRuning(getActivity().getBaseContext()))
-			eventsRunStopIndicator.setBackgroundColor(0x99009900);
-		else
-			eventsRunStopIndicator.setBackgroundColor(0xFFFF0000);
-		updateListView(null, false);
-    }
-	
 	public void refreshGUI()
 	{
 		if ((dataWrapper == null) || (profileListAdapter == null))
