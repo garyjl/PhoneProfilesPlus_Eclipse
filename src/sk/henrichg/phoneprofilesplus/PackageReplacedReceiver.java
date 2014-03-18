@@ -27,27 +27,27 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 				
 				// zrusenie notifikacie
 				dataWrapper.getActivateProfileHelper().removeNotification();
+
+				GlobalData.setApplicationStarted(context, true);
+				
+				GlobalData.grantRoot();
+
+				// startneme eventy
+				if (GlobalData.getGlobalEventsRuning(context))
+				{
+					dataWrapper.firstStartEvents(true, false);
+				}
+
+				dataWrapper.activateProfile(0, GlobalData.STARTUP_SOURCE_BOOT, null, "");
+				dataWrapper.invalidateDataWrapper();
+
+				/*
+				Intent i = new Intent(context, BackgroundActivateProfileActivity.class);
+				i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				i.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_BOOT);
+				context.startActivity(i);
+				*/
 			}
-
-			GlobalData.setApplicationStarted(context, true);
-			
-			GlobalData.grantRoot();
-
-			// startneme eventy
-			if (GlobalData.getGlobalEventsRuning(context))
-			{
-				dataWrapper.firstStartEvents(true, false);
-			}
-
-			dataWrapper.activateProfile(0, GlobalData.STARTUP_SOURCE_BOOT, null, "");
-			dataWrapper.invalidateDataWrapper();
-
-			/*
-			Intent i = new Intent(context, BackgroundActivateProfileActivity.class);
-			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			i.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_BOOT);
-			context.startActivity(i);
-			*/
 		}		
 	}
 
