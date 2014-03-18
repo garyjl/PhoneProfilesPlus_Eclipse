@@ -19,8 +19,6 @@ public class ActivateProfileActivity extends ActionBarActivity {
 
 	private static ActivateProfileActivity instance;
 	
-	private DataWrapper dataWrapper;
-	
 	private float popupWidth;
 	private float popupMaxHeight;
 	private float popupHeight;
@@ -38,8 +36,6 @@ public class ActivateProfileActivity extends ActionBarActivity {
 		GUIData.setTheme(this, true);
 		GUIData.setLanguage(getBaseContext());
 		
-		dataWrapper = new DataWrapper(getBaseContext(), false, false, 0);
-
 	// set window dimensions ----------------------------------------------------------
 		
 		Display display = getWindowManager().getDefaultDisplay();
@@ -95,7 +91,10 @@ public class ActivateProfileActivity extends ActionBarActivity {
 			popupHeight = popupHeight + 64f * scale;
 		
 		// add list items height
+		DataWrapper dataWrapper = new DataWrapper(getBaseContext(), false, false, 0);
 		int profileCount = dataWrapper.getDatabaseHandler().getProfilesCount(true);
+		dataWrapper.invalidateDataWrapper();
+		
 		popupHeight = popupHeight + (50f * scale * profileCount); // item
 		popupHeight = popupHeight + (5f * scale * (profileCount-1)); // divider
 
@@ -172,8 +171,6 @@ public class ActivateProfileActivity extends ActionBarActivity {
 	{
 	//	Debug.stopMethodTracing();
 		
-		dataWrapper.invalidateDataWrapper();
-		dataWrapper = null;
 		super.onDestroy();
 	}
 

@@ -56,8 +56,8 @@ public class ShortcutCreatorListFragment extends Fragment {
 	
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
-		doOnViewCreated(view, savedInstanceState);
 		super.onViewCreated(view, savedInstanceState);
+		doOnViewCreated(view, savedInstanceState);
 	}
 	
 	//@Override
@@ -129,7 +129,6 @@ public class ShortcutCreatorListFragment extends Fragment {
         }
     }
 	
-	@SuppressWarnings("unused")
 	private boolean isAsyncTaskPendingOrRunning() {
 	    return this.asyncTaskContext != null &&
 	          this.asyncTaskContext.get() != null && 
@@ -148,16 +147,19 @@ public class ShortcutCreatorListFragment extends Fragment {
 	@Override
 	public void onDestroy()
 	{
-		if (listView != null)
-			listView.setAdapter(null);
-		if (profileListAdapter != null)
-			profileListAdapter.release();
-		
-		profileList = null;
-
-		if (dataWrapper != null)
-			dataWrapper.invalidateDataWrapper();
-		dataWrapper = null;
+		if (!isAsyncTaskPendingOrRunning())
+		{
+			if (listView != null)
+				listView.setAdapter(null);
+			if (profileListAdapter != null)
+				profileListAdapter.release();
+			
+			profileList = null;
+	
+			if (dataWrapper != null)
+				dataWrapper.invalidateDataWrapper();
+			dataWrapper = null;
+		}
 		
 		super.onDestroy();
 	}

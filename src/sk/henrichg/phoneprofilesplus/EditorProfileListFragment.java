@@ -172,11 +172,9 @@ public class EditorProfileListFragment extends Fragment {
 	
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
-		doOnViewCreated(view, savedInstanceState);
-
-		//Log.e("EditorProfileListFragment.onViewCreated", "xxxx");
-
 		super.onViewCreated(view, savedInstanceState);
+		doOnViewCreated(view, savedInstanceState);
+		//Log.e("EditorProfileListFragment.onViewCreated", "xxxx");
 	}
 
 	//@Override
@@ -319,7 +317,6 @@ public class EditorProfileListFragment extends Fragment {
         }
     }
 
-	@SuppressWarnings("unused")
 	private boolean isAsyncTaskPendingOrRunning() {
 	    return this.asyncTaskContext != null &&
 	          this.asyncTaskContext.get() != null && 
@@ -338,18 +335,21 @@ public class EditorProfileListFragment extends Fragment {
 	@Override
 	public void onDestroy()
 	{
-		if (listView != null)
-			listView.setAdapter(null);
-		if (profileListAdapter != null)
-			profileListAdapter.release();
-		
-		activateProfileHelper = null;
-		profileList = null;
-		databaseHandler = null;
-		
-		if (dataWrapper != null)
-			dataWrapper.invalidateDataWrapper();
-		dataWrapper = null;
+		if (!isAsyncTaskPendingOrRunning())
+		{
+			if (listView != null)
+				listView.setAdapter(null);
+			if (profileListAdapter != null)
+				profileListAdapter.release();
+			
+			activateProfileHelper = null;
+			profileList = null;
+			databaseHandler = null;
+			
+			if (dataWrapper != null)
+				dataWrapper.invalidateDataWrapper();
+			dataWrapper = null;
+		}
 		
 		super.onDestroy();
 		

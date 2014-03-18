@@ -75,7 +75,6 @@ public class EditorProfilesActivity extends ActionBarActivity
 	
 	private static boolean savedInstanceStateChanged; 
 	
-	//private DataWrapper dataWrapper;
 	private static ApplicationsCache applicationsCache;
 	private int editModeProfile;
 	private int editModeEvent;
@@ -129,8 +128,6 @@ public class EditorProfilesActivity extends ActionBarActivity
 
 		savedInstanceStateChanged = (savedInstanceState != null);
 		
-		//dataWrapper = new DataWrapper(getBaseContext(), true, false, 0);
-		//dataWrapper.getActivateProfileHelper().initialize(this, getBaseContext());
 		createApplicationsCache();
 		
 		setContentView(R.layout.activity_editor_list_onepane);

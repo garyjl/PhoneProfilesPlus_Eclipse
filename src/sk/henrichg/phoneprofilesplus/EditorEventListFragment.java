@@ -163,9 +163,9 @@ public class EditorEventListFragment extends Fragment {
 	
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
 		doOnViewCreated(view, savedInstanceState);
 		//Log.e("EditorEventListFragment.onViewCreated", "xxxx");
-		super.onViewCreated(view, savedInstanceState);
 	}
 
 	//@Override
@@ -246,7 +246,6 @@ public class EditorEventListFragment extends Fragment {
         }
     }
 
-	@SuppressWarnings("unused")
 	private boolean isAsyncTaskPendingOrRunning() {
 	    return this.asyncTaskContext != null &&
 	          this.asyncTaskContext.get() != null && 
@@ -265,17 +264,20 @@ public class EditorEventListFragment extends Fragment {
 	@Override
 	public void onDestroy()
 	{
-		if (listView != null)
-			listView.setAdapter(null);
-		if (eventListAdapter != null)
-			eventListAdapter.release();
-
-		eventList = null;
-		databaseHandler = null;
-		
-		if (dataWrapper != null)
-			dataWrapper.invalidateDataWrapper();
-		dataWrapper = null;
+		if (!isAsyncTaskPendingOrRunning())
+		{
+			if (listView != null)
+				listView.setAdapter(null);
+			if (eventListAdapter != null)
+				eventListAdapter.release();
+	
+			eventList = null;
+			databaseHandler = null;
+			
+			if (dataWrapper != null)
+				dataWrapper.invalidateDataWrapper();
+			dataWrapper = null;
+		}
 		
 		super.onDestroy();
 
