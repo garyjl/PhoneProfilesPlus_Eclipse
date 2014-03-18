@@ -25,7 +25,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static SQLiteDatabase writableDb;	
     
 	// Database Version
-	private static final int DATABASE_VERSION = 1030;
+	private static final int DATABASE_VERSION = 1035;
 
 	// Database Name
 	private static final String DATABASE_NAME = "phoneProfilesManager";
@@ -74,6 +74,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_DEVICE_AUTOROTATE = "deviceAutoRotate";
 	private static final String KEY_DEVICE_LOCATION_SERVICE_PREFS = "deviceLocationServicePrefs";
 	private static final String KEY_VOLUME_SPEAKER_PHONE = "volumeSpeakerPhone";
+	private static final String KEY_DEVICE_NFC = "deviceNFC";
 
 	private static final String KEY_E_ID = "id";
 	private static final String KEY_E_NAME = "name";
@@ -194,7 +195,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_SHOW_IN_ACTIVATOR + " INTEGER,"
 				+ KEY_DEVICE_AUTOROTATE + " INTEGER,"
 				+ KEY_DEVICE_LOCATION_SERVICE_PREFS + " INTEGER,"
-				+ KEY_VOLUME_SPEAKER_PHONE + " INTEGER"
+				+ KEY_VOLUME_SPEAKER_PHONE + " INTEGER,"
+				+ KEY_DEVICE_NFC + " INTEGER"
 				+ ")";
 		db.execSQL(CREATE_PROFILES_TABLE);
 		
@@ -588,6 +590,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	         }	
 			
 		}
+
+		if (oldVersion < 1035)
+		{
+			// pridame nove stlpce
+			db.execSQL("ALTER TABLE " + TABLE_PROFILES + " ADD COLUMN " + KEY_DEVICE_NFC + " INTEGER");
+			
+			// updatneme zaznamy
+			db.beginTransaction();
+			try {
+				db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_DEVICE_NFC + "=0");
+				db.setTransactionSuccessful();
+		     } catch (Exception e){
+		         //Error in between database transaction 
+		     } finally {
+		    	db.endTransaction();
+	         }	
+		}
 		
 	}
 	
@@ -638,7 +657,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_DEVICE_AUTOROTATE, profile._deviceAutoRotate);
 		values.put(KEY_DEVICE_LOCATION_SERVICE_PREFS, profile._deviceLocationServicePrefs);
 		values.put(KEY_VOLUME_SPEAKER_PHONE, profile._volumeSpeakerPhone);
-		
+		values.put(KEY_DEVICE_NFC, profile._deviceNFC);
 
 		// Inserting Row
 		long id = db.insert(TABLE_PROFILES, null, values);
@@ -688,7 +707,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 								         		KEY_SHOW_IN_ACTIVATOR,
 								         		KEY_DEVICE_AUTOROTATE,
 								         		KEY_DEVICE_LOCATION_SERVICE_PREFS,
-								         		KEY_VOLUME_SPEAKER_PHONE
+								         		KEY_VOLUME_SPEAKER_PHONE,
+								         		KEY_DEVICE_NFC
 												}, 
 				                 KEY_ID + "=?",
 				                 new String[] { String.valueOf(profile_id) }, null, null, null, null);
@@ -733,7 +753,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					                      (Integer.parseInt(cursor.getString(31)) == 1) ? true : false,
 					                      Integer.parseInt(cursor.getString(32)),
 					                      Integer.parseInt(cursor.getString(33)),
-					                      Integer.parseInt(cursor.getString(34))
+					                      Integer.parseInt(cursor.getString(34)),
+					                      Integer.parseInt(cursor.getString(35))
 					                      );
 		}
 
@@ -783,7 +804,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						         		 KEY_SHOW_IN_ACTIVATOR + "," +
 						         		 KEY_DEVICE_AUTOROTATE + "," +
 						         		 KEY_DEVICE_LOCATION_SERVICE_PREFS + "," +
-										 KEY_VOLUME_SPEAKER_PHONE +
+										 KEY_VOLUME_SPEAKER_PHONE + "," +
+						         		 KEY_DEVICE_NFC +
 		                     " FROM " + TABLE_PROFILES;
 
 		//SQLiteDatabase db = this.getReadableDatabase();
@@ -830,6 +852,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 profile._deviceAutoRotate = Integer.parseInt(cursor.getString(32));
                 profile._deviceLocationServicePrefs = Integer.parseInt(cursor.getString(33));
                 profile._volumeSpeakerPhone = Integer.parseInt(cursor.getString(34));
+                profile._deviceNFC = Integer.parseInt(cursor.getString(35));
 				// Adding contact to list
 				profileList.add(profile);
 			} while (cursor.moveToNext());
@@ -882,6 +905,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_DEVICE_AUTOROTATE, profile._deviceAutoRotate);
 		values.put(KEY_DEVICE_LOCATION_SERVICE_PREFS, profile._deviceLocationServicePrefs);
 		values.put(KEY_VOLUME_SPEAKER_PHONE, profile._volumeSpeakerPhone);
+		values.put(KEY_DEVICE_NFC, profile._deviceNFC);
 
 		// updating row
 		int r = db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
@@ -1094,7 +1118,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 								         		KEY_SHOW_IN_ACTIVATOR,
 								         		KEY_DEVICE_AUTOROTATE,
 								         		KEY_DEVICE_LOCATION_SERVICE_PREFS,
-								         		KEY_VOLUME_SPEAKER_PHONE
+								         		KEY_VOLUME_SPEAKER_PHONE,
+								         		KEY_DEVICE_NFC
 												}, 
 				                 KEY_CHECKED + "=?",
 				                 new String[] { "1" }, null, null, null, null);
@@ -1140,7 +1165,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					                      (Integer.parseInt(cursor.getString(31)) == 1) ? true : false,
 					                      Integer.parseInt(cursor.getString(32)),
 					                      Integer.parseInt(cursor.getString(33)),
-					                      Integer.parseInt(cursor.getString(34))
+					                      Integer.parseInt(cursor.getString(34)),
+					                      Integer.parseInt(cursor.getString(35))
 					                      );
 		}
 		else
@@ -1190,7 +1216,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						        		 KEY_SHOW_IN_ACTIVATOR + "," +
 						        		 KEY_DEVICE_AUTOROTATE + "," +
 						        		 KEY_DEVICE_LOCATION_SERVICE_PREFS + "," +
-						        		 KEY_VOLUME_SPEAKER_PHONE +
+						        		 KEY_VOLUME_SPEAKER_PHONE + "," +
+						        		 KEY_DEVICE_NFC +
 						    " FROM " + TABLE_PROFILES;
 
 		//SQLiteDatabase db = this.getReadableDatabase();
@@ -1238,6 +1265,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			profile._deviceAutoRotate = Integer.parseInt(cursor.getString(32));
 			profile._deviceLocationServicePrefs = Integer.parseInt(cursor.getString(33));
 			profile._speakerPhone = Integer.parseInt(cursor.getString(34));
+			profile._deviceNFC = Integer.parseInt(cursor.getString(35));
 		}
 		
 		cursor.close();
@@ -1349,7 +1377,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 										KEY_DEVICE_MOBILE_DATA + "," +
 										KEY_DEVICE_MOBILE_DATA_PREFS + "," +
 										KEY_DEVICE_GPS + "," + 
-										KEY_DEVICE_LOCATION_SERVICE_PREFS + 
+										KEY_DEVICE_LOCATION_SERVICE_PREFS + "," + 
+										KEY_DEVICE_NFC + 
 							" FROM " + TABLE_PROFILES;
 
 		//SQLiteDatabase db = this.getWritableDatabase();
@@ -1416,6 +1445,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 							(!GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_LOCATION_SERVICE_PREFS, context)))
 						{
 							values.put(KEY_DEVICE_LOCATION_SERVICE_PREFS, 0);
+							db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
+							   new String[] { String.valueOf(Integer.parseInt(cursor.getString(0))) });							
+						}
+
+						if ((Integer.parseInt(cursor.getString(8)) != 0) &&
+							(!GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_NFC, context)))
+						{
+							values.put(KEY_DEVICE_NFC, 0);
 							db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
 							   new String[] { String.valueOf(Integer.parseInt(cursor.getString(0))) });							
 						}
@@ -2320,6 +2357,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 									if (exportedDBObj.getVersion() < 1020)
 									{
 										values.put(KEY_VOLUME_SPEAKER_PHONE, 0);
+									}
+									if (exportedDBObj.getVersion() < 1035)
+									{
+										values.put(KEY_DEVICE_NFC, 0);
 									}
 									
 									///////////////////////////////////////////////////////

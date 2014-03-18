@@ -101,6 +101,11 @@ public class ProfilePreferencesIndicator {
 			// location settings preferences
 			if (profile._deviceLocationServicePrefs == 1)
 				drawables[countDrawables++] = R.drawable.ic_profile_pref_locationsettings_pref;
+			// nfc
+			if ((profile._deviceNFC == 1) || (profile._deviceNFC == 3))
+				drawables[countDrawables++] = R.drawable.ic_profile_pref_nfc;
+			if (profile._deviceNFC == 2)
+				drawables[countDrawables++] = R.drawable.ic_profile_pref_nfc_off;
 			// screen timeout
 			if (profile._deviceScreenTimeout != 0)
 				drawables[countDrawables++] = R.drawable.ic_profile_pref_screen_timeout;

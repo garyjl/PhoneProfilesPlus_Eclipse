@@ -153,6 +153,11 @@ public class PhoneProfilesDashClockExtension extends DashClockExtension {
 			// location settings preferences
 			if (profile._deviceLocationServicePrefs == 1)
 				indicator1 = addIntoIndicator(indicator1, "lsP");
+			// nfc
+			if ((profile._deviceNFC == 1) || (profile._deviceNFC == 3))
+				indicator1 = addIntoIndicator(indicator1, "nf1");
+			if (profile._deviceNFC == 2)
+				indicator1 = addIntoIndicator(indicator1, "nf0");
 			// screen timeout
 			if (profile._deviceScreenTimeout != 0)
 				indicator1 = addIntoIndicator(indicator1, "stm");

@@ -88,7 +88,8 @@ public class Profile {
 			   	   boolean showInActivator,
 			   	   int deviceAutoRotate,
 			   	   int deviceLocationServicePrefs,
-			   	   int volumeSpeakerPhone)
+			   	   int volumeSpeakerPhone,
+			   	   int deviceNFC)
 	{
 		this._id = id;
 		this._name = name;
@@ -125,6 +126,7 @@ public class Profile {
 		this._deviceAutoRotate = deviceAutoRotate;
 		this._deviceLocationServicePrefs = deviceLocationServicePrefs;
 		this._volumeSpeakerPhone = volumeSpeakerPhone;
+		this._deviceNFC = deviceNFC;
 		
 		this._iconBitmap = null;
 		this._preferencesIndicator = null;
@@ -164,7 +166,8 @@ public class Profile {
 			   	   boolean showInActivator,
 			   	   int deviceAutoRotate,
 			   	   int deviceLocationServicePrefs,
-			   	   int volumeSpeakerPhone)
+			   	   int volumeSpeakerPhone,
+			   	   int deviceNFC)
 	{
 		this._name = name;
 		this._icon = icon;
@@ -200,6 +203,7 @@ public class Profile {
 		this._deviceAutoRotate = deviceAutoRotate;
 		this._deviceLocationServicePrefs = deviceLocationServicePrefs;
 		this._volumeSpeakerPhone = volumeSpeakerPhone;
+		this._deviceNFC = deviceNFC;
 		
 		this._iconBitmap = null;
 		this._preferencesIndicator = null;
@@ -242,6 +246,7 @@ public class Profile {
 		this._deviceAutoRotate = profile._deviceAutoRotate;
 		this._deviceLocationServicePrefs = profile._deviceLocationServicePrefs;
 		this._volumeSpeakerPhone = profile._volumeSpeakerPhone;
+		this._deviceNFC = profile._deviceNFC;
 		
 		this._iconBitmap = profile._iconBitmap;
 		this._preferencesIndicator = profile._preferencesIndicator;

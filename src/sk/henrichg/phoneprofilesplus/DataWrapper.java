@@ -141,6 +141,7 @@ public class DataWrapper {
 				  false,
 				  0,
 				  0,
+				  0,
 				  0
 			);
 	}
@@ -1147,7 +1148,8 @@ public class DataWrapper {
 							   profile._showInActivator,
 							   profile._deviceAutoRotate,
 							   profile._deviceLocationServicePrefs,
-							   profile._volumeSpeakerPhone);
+							   profile._volumeSpeakerPhone,
+							   profile._deviceNFC);
 		
 			List<EventTimeline> eventTimelineList = getEventTimelineList();
 			
@@ -1218,6 +1220,8 @@ public class DataWrapper {
 							filteredProfile._deviceWallpaperChange = 0;
 						if (profile._volumeSpeakerPhone != 0)
 							filteredProfile._volumeSpeakerPhone = 0;
+						if (profile._deviceNFC != 0)
+							filteredProfile._deviceNFC = 0;
 						
 						// last event finded
 						break;

@@ -78,6 +78,7 @@
     <string name="profile_preferences_deviceWiFi">Wi-Fi</string>
     <string name="profile_preferences_deviceBluetooth">Bluetooth</string>
     <string name="profile_preferences_deviceGPS">GPS</string>
+    <string name="profile_preferences_deviceNFC">NFC</string>
     <string name="profile_preferences_deviceScreenTimeout">Screen timeout</string>
     <string name="profile_preferences_deviceBrightness">Screen brightness</string>
     <string name="profile_preferences_deviceWallpaper">Wallpaper</string>

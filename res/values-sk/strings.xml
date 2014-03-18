@@ -78,6 +78,7 @@
     <string name="profile_preferences_deviceWiFi">Wi-Fi</string>
     <string name="profile_preferences_deviceBluetooth">Bluetooth</string>
     <string name="profile_preferences_deviceGPS">GPS</string>
+    <string name="profile_preferences_deviceNFC">NFC</string>
     <string name="profile_preferences_deviceScreenTimeout">Čas do vypnutia obrazovky</string>
     <string name="profile_preferences_deviceBrightness">Jas podsvietenia obrazovky</string>
     <string name="profile_preferences_deviceWallpaper">Obrázok pozadia</string>

@@ -415,7 +415,8 @@ public class GlobalData extends Application {
 				x.getKey().equals(PREF_PROFILE_SHOW_IN_ACTIVATOR) ||
 				x.getKey().equals(PREF_PROFILE_DEVICE_AUTOROTATE) ||
 				x.getKey().equals(PREF_PROFILE_DEVICE_LOCATION_SERVICE_PREFS) ||
-				x.getKey().equals(PREF_PROFILE_VOLUME_SPEAKER_PHONE))
+				x.getKey().equals(PREF_PROFILE_VOLUME_SPEAKER_PHONE) ||
+				x.getKey().equals(PREF_PROFILE_DEVICE_NFC))
 			{
 			    if      (x.getValue().getClass().equals(Boolean.class)) editorNew.putBoolean(x.getKey(), (Boolean)x.getValue());
 			    else if (x.getValue().getClass().equals(Float.class))   editorNew.putFloat(x.getKey(),   (Float)x.getValue());
@@ -480,6 +481,7 @@ public class GlobalData extends Application {
     	profile._deviceAutoRotate = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_AUTOROTATE, "1")); // ON
     	profile._deviceLocationServicePrefs = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_LOCATION_SERVICE_PREFS, "0"));
     	profile._volumeSpeakerPhone = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_VOLUME_SPEAKER_PHONE, "0"));
+    	profile._deviceNFC = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_NFC, "0"));
     	
     	return profile;
 	}
@@ -525,7 +527,8 @@ public class GlobalData extends Application {
 							   profile._showInActivator,
 							   profile._deviceAutoRotate,
 							   profile._deviceLocationServicePrefs,
-							   profile._volumeSpeakerPhone);
+							   profile._volumeSpeakerPhone,
+							   profile._deviceNFC);
 		
 			if (profile._volumeRingerMode == 99)
 				mappedProfile._volumeRingerMode = defaultProfile._volumeRingerMode;
@@ -590,6 +593,8 @@ public class GlobalData extends Application {
 			}
 			if (profile._volumeSpeakerPhone == 99)
 				mappedProfile._volumeSpeakerPhone = defaultProfile._volumeSpeakerPhone;
+			if (profile._deviceNFC == 99)
+				mappedProfile._deviceNFC = defaultProfile._deviceNFC;
 			
 			mappedProfile._iconBitmap = profile._iconBitmap;
 			mappedProfile._preferencesIndicator = profile._preferencesIndicator;

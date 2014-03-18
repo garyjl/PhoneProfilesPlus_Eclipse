@@ -201,7 +201,8 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 						   origProfile._showInActivator,
 						   origProfile._deviceAutoRotate,
 						   origProfile._deviceLocationServicePrefs,
-						   origProfile._volumeSpeakerPhone);
+						   origProfile._volumeSpeakerPhone,
+						   origProfile._deviceNFC);
 			profile_id = 0;
 		}
 		else
@@ -376,6 +377,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	        editor.remove(GlobalData.PREF_PROFILE_DEVICE_AUTOROTATE).putString(GlobalData.PREF_PROFILE_DEVICE_AUTOROTATE, Integer.toString(profile._deviceAutoRotate));
 	        editor.remove(GlobalData.PREF_PROFILE_DEVICE_LOCATION_SERVICE_PREFS).editor.putString(GlobalData.PREF_PROFILE_DEVICE_LOCATION_SERVICE_PREFS, Integer.toString(profile._deviceLocationServicePrefs));
 	        editor.remove(GlobalData.PREF_PROFILE_VOLUME_SPEAKER_PHONE).editor.putString(GlobalData.PREF_PROFILE_VOLUME_SPEAKER_PHONE, Integer.toString(profile._speakerPhone));
+	        editor.remove(GlobalData.PREF_PROFILE_DEVICE_NFC).editor.putString(GlobalData.PREF_PROFILE_VOLUME_SPEAKER_PHONE, Integer.toString(profile._deviceNFC));
 	        */
 	        editor.putString(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE, Integer.toString(profile._volumeRingerMode));
 	        editor.putString(GlobalData.PREF_PROFILE_VOLUME_RINGTONE, profile._volumeRingtone);
@@ -406,6 +408,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	        editor.putString(GlobalData.PREF_PROFILE_DEVICE_AUTOROTATE, Integer.toString(profile._deviceAutoRotate));
 	        editor.putString(GlobalData.PREF_PROFILE_DEVICE_LOCATION_SERVICE_PREFS, Integer.toString(profile._deviceLocationServicePrefs));
 	        editor.putString(GlobalData.PREF_PROFILE_VOLUME_SPEAKER_PHONE, Integer.toString(profile._volumeSpeakerPhone));
+	        editor.putString(GlobalData.PREF_PROFILE_DEVICE_NFC, Integer.toString(profile._deviceNFC));
 			editor.commit();
     	}
 		
@@ -454,6 +457,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
     	profile._deviceAutoRotate = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_AUTOROTATE, ""));
     	profile._deviceLocationServicePrefs = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_LOCATION_SERVICE_PREFS, ""));
     	profile._volumeSpeakerPhone = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_VOLUME_SPEAKER_PHONE, ""));
+    	profile._deviceNFC = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_NFC, ""));
 
     	//Log.d("ProfilePreferencesFragment.onPause", "profile activated="+profile.getChecked());
     	
@@ -539,7 +543,8 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 			key.equals(GlobalData.PREF_PROFILE_DEVICE_WIFI) ||
 			key.equals(GlobalData.PREF_PROFILE_DEVICE_BLUETOOTH) ||
 			key.equals(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA) ||
-			key.equals(GlobalData.PREF_PROFILE_DEVICE_GPS))
+			key.equals(GlobalData.PREF_PROFILE_DEVICE_GPS) ||
+			key.equals(GlobalData.PREF_PROFILE_DEVICE_NFC))
 		{
 			boolean canChange = GlobalData.hardwareCheck(key, context);
 			if (!canChange)
@@ -659,6 +664,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	        setSummary(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE, profile._deviceRunApplicationChange); 
 	        setSummary(GlobalData.PREF_PROFILE_DEVICE_LOCATION_SERVICE_PREFS, profile._deviceLocationServicePrefs); 
 	        setSummary(GlobalData.PREF_PROFILE_VOLUME_SPEAKER_PHONE, profile._volumeSpeakerPhone); 
+	        setSummary(GlobalData.PREF_PROFILE_DEVICE_NFC, profile._deviceNFC); 
 			
 		    // disable depended preferences
 		    disableDependedPref(GlobalData.PREF_PROFILE_SOUND_RINGTONE_CHANGE, profile._soundRingtoneChange);
