@@ -168,8 +168,7 @@
         <receiver
             android:name=".ProfileListWidgetProvider"
             android:icon="@drawable/ic_launcher"
-            android:label="@string/widget_label_list"
-            android:enabled="@bool/widget_post_api_11" >
+            android:label="@string/widget_label_list" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

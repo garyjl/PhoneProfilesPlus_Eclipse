@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<resources>
-    <bool name="widget_pre_api_11">true</bool>
-    <bool name="widget_post_api_11">false</bool>
-</resources>
