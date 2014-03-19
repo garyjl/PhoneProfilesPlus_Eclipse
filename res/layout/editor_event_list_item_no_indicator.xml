@@ -4,7 +4,7 @@
     android:id="@+id/event_list_item_root"
     android:layout_width="match_parent"
     android:layout_height="68dp"
-    android:padding="5dp"
+    android:padding="1dp"
     android:orientation="horizontal"
     android:background="?attr/cardShape" >
 
@@ -34,7 +34,8 @@
 		    android:layout_height="wrap_content"
 		    android:layout_toLeftOf="@+id/event_list_item_buttons_root"
         	android:layout_alignParentLeft="true"  
-	        android:layout_centerVertical="true" >
+	        android:layout_centerVertical="true" 
+	        android:padding="5dp" >
     
 	    <ImageView
 	        android:id="@+id/event_list_item_status"
