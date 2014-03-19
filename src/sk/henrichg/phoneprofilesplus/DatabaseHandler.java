@@ -1366,6 +1366,35 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         //db.close();
 	}
 
+	public int getActiveProfileSpeakerphone()
+	{
+		//SQLiteDatabase db = this.getReadableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+		
+		Cursor cursor = db.query(TABLE_PROFILES, 
+				                 new String[] { KEY_VOLUME_SPEAKER_PHONE }, 
+				                 KEY_CHECKED + "=?",
+				                 new String[] { "1" }, null, null, null, null);
+		if (cursor != null)
+			cursor.moveToFirst();
+		
+		int rc = cursor.getCount();
+		
+		int speakerPhone;
+		
+		if (rc == 1)
+		{
+			speakerPhone = Integer.parseInt(cursor.getString(0)); 
+		}
+		else
+			speakerPhone = 0;
+
+		cursor.close();
+		//db.close();
+
+		return speakerPhone;
+	}
+	
 	public int updateForHardware(Context context)
 	{
 		int ret = 0;
