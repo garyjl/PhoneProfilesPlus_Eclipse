@@ -7,7 +7,7 @@ import android.util.Log;
 
 public class RefreshGUIBroadcastReceiver extends BroadcastReceiver {
 
-	public static final String INTENT_REFRESH_GUI = "sk.henrichg.phoneprofiles.REFRESH_GUI";
+	public static final String INTENT_REFRESH_GUI = "sk.henrichg.phoneprofilesplus.REFRESH_GUI";
 
 	@Override
 	public void onReceive(Context context, Intent intent) {

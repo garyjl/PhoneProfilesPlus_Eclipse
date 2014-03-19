@@ -251,7 +251,7 @@
 	        android:enabled="true"
 	        android:exported="false" >
 	        <intent-filter>
-	         	<action android:name="sk.henrichg.phoneprofiles.REFRESH_GUI" />
+	         	<action android:name="sk.henrichg.phoneprofilesplus.REFRESH_GUI" />
                 <category android:name="android.intent.category.DEFAULT" />
    	      	</intent-filter>
 	   	</receiver>
