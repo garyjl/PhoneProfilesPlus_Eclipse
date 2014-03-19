@@ -152,7 +152,7 @@
     <string name="delete_profile_progress_title">Deleting profile</string>
     <string name="delete_profiles_progress_title">Deleting profiles</string>
     <string name="event_preferences_category_eventidentification">Event identification</string>
-    <string name="event_preferences_eventEnabled">Enable running</string>
+    <string name="event_preferences_eventEnabled">Enable run</string>
     <string name="event_preferences_eventName">Event name</string>
     <string name="event_preferences_eventType">Event type</string>
     <string name="event_preferences_eventProfile">Activate profile</string>
@@ -216,7 +216,7 @@
     <string name="profile_preferences_deviceAutoRotation">Display rotation</string>
     <string name="title_activity_activator">Activator</string>
     <string name="title_activity_editor">Editor</string>
-    <string name="menu_run_events">Enable running events</string>
+    <string name="menu_run_events">Enable run events</string>
     <string name="menu_stop_events">Stop events</string>
     <string name="array_pref_value_0_percent" formatted="false">0 %</string>
     <string name="array_pref_value_25_percent" formatted="false">25 %</string>
@@ -247,7 +247,7 @@
     <string name="profile_list_item_menu_activate">Activate</string>
     <string name="profile_list_item_menu_duplicate">Duplicate</string>
     <string name="profile_list_item_menu_delete">Delete</string>
-    <string name="event_list_item_menu_run">Enable running event</string>
+    <string name="event_list_item_menu_run">Enable run</string>
     <string name="event_list_item_menu_stop">Stop event</string>
     <string name="event_list_item_menu_duplicate">Duplicate</string>
     <string name="event_list_item_menu_delete">Delete</string>

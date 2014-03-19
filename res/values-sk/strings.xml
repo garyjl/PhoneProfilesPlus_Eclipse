@@ -212,7 +212,7 @@
     <string name="profile_preferences_deviceAutoRotation">Rotácia displeja</string>
     <string name="title_activity_activator">Aktivátor</string>
     <string name="title_activity_editor">Editor</string>
-    <string name="menu_run_events">Povol beh udalostí</string>
+    <string name="menu_run_events">Povoľ beh udalostí</string>
     <string name="menu_stop_events">Zastav udalosti</string>
     <string name="array_pref_value_0_percent" formatted="false">0 %</string>
     <string name="array_pref_value_25_percent" formatted="false">25 %</string>
@@ -243,8 +243,8 @@
     <string name="profile_list_item_menu_activate">Aktivuj</string>
     <string name="profile_list_item_menu_duplicate">Duplikuj</string>
     <string name="profile_list_item_menu_delete">Zmaž</string>
-    <string name="event_list_item_menu_run">Povoľ beh udalosti</string>
-    <string name="event_list_item_menu_stop">Zastav udalosť</string>
+    <string name="event_list_item_menu_run">Povoľ beh</string>
+    <string name="event_list_item_menu_stop">Zastav</string>
     <string name="event_list_item_menu_duplicate">Duplikuj</string>
     <string name="event_list_item_menu_delete">Zmaž</string>
     <string name="phone_profiles_pref_applicationEditorSaveEditorState">Ulož stav editora</string>
