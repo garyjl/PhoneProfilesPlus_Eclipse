@@ -641,6 +641,14 @@ public class DataWrapper {
 					event.setSystemEvent(context, status);
 				//}
 			}
+			
+			if (event._eventPreferencesBattery._enabled)
+			{
+				// unblock event
+				event._eventPreferencesBattery._blocked = false;
+				databaseHandler.updateEventPreferencesBatteryBlocked(event);
+			}
+			
 		}
 
 	}
