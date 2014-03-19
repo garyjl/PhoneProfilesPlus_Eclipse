@@ -50,7 +50,7 @@
     <string name="phone_profiles_pref_applicationActivate">Aktivovať profil pri štarte</string>
     <string name="phone_profiles_pref_applicationClose">Po aktivácii profilu zavrieť</string>
     <string name="phone_profiles_pref_applicationAlert">Pýtať sa na aktiváciu profilu</string>
-    <string name="phone_profiles_pref_applicationPrefIndicator">Indikátor parametrov profilu</string>
+    <string name="phone_profiles_pref_applicationPrefIndicator">Indikátor parametrov</string>
     <string name="phone_profiles_pref_applicationHeader">Zobraz aktivovaný profil</string>
     <string name="phone_profiles_pref_notificationsToast">Notifikovať bublinou</string>
     <string name="phone_profiles_pref_notificationStatusBar">Notifikovať v stavovej lište</string>
@@ -248,7 +248,7 @@
     <string name="event_list_item_menu_duplicate">Duplikuj</string>
     <string name="event_list_item_menu_delete">Zmaž</string>
     <string name="phone_profiles_pref_applicationEditorSaveEditorState">Ulož stav editora</string>
-    <string name="phone_profiles_pref_notificationPrefIndicator">Indikátor parametrov profilu</string>
+    <string name="phone_profiles_pref_notificationPrefIndicator">Indikátor parametrov</string>
     <string name="phone_profiles_pref_applicationHomeLauncher">Spustiť z domácej obrazovky</string>
     <string name="phone_profiles_pref_applicationWidgetLauncher">Spustiť z miniaplikácie</string>
     <string name="phone_profiles_pref_notificationLauncher">Spustiť z notifikácií</string>
