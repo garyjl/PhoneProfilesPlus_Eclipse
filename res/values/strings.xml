@@ -152,7 +152,7 @@
     <string name="delete_profile_progress_title">Deleting profile</string>
     <string name="delete_profiles_progress_title">Deleting profiles</string>
     <string name="event_preferences_category_eventidentification">Event identification</string>
-    <string name="event_preferences_eventEnabled">Enabled</string>
+    <string name="event_preferences_eventEnabled">Enable running</string>
     <string name="event_preferences_eventName">Event name</string>
     <string name="event_preferences_eventType">Event type</string>
     <string name="event_preferences_eventProfile">Activate profile</string>

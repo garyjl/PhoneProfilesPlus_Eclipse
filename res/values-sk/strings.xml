@@ -148,7 +148,7 @@
     <string name="delete_profile_progress_title">Vymazáva sa profil</string>
     <string name="delete_profiles_progress_title">Vymazávajú sa profily</string>
     <string name="event_preferences_category_eventidentification">Identifikácia udalosti</string>
-    <string name="event_preferences_eventEnabled">Zapnutá udalosť</string>
+    <string name="event_preferences_eventEnabled">Povoľ beh</string>
     <string name="event_preferences_eventName">Názov udalosti</string>
     <string name="event_preferences_eventType">Typ udalosti</string>
     <string name="event_preferences_eventProfile">Aktivovaný profil</string>
@@ -243,7 +243,7 @@
     <string name="profile_list_item_menu_activate">Aktivuj</string>
     <string name="profile_list_item_menu_duplicate">Duplikuj</string>
     <string name="profile_list_item_menu_delete">Zmaž</string>
-    <string name="event_list_item_menu_run">Povol beh udalosti</string>
+    <string name="event_list_item_menu_run">Povoľ beh udalosti</string>
     <string name="event_list_item_menu_stop">Zastav udalosť</string>
     <string name="event_list_item_menu_duplicate">Duplikuj</string>
     <string name="event_list_item_menu_delete">Zmaž</string>

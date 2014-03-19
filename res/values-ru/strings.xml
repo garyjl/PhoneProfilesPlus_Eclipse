@@ -147,7 +147,7 @@
     <string name="delete_profile_progress_title">Удаление профиля</string>
     <string name="delete_profiles_progress_title">Удаление профилей</string>
     <string name="event_preferences_category_eventidentification">Идентификация события</string>
-    <string name="event_preferences_eventEnabled">Включено</string>
+    <string name="event_preferences_eventEnabled">Активировать</string>
     <string name="event_preferences_eventName">Название события</string>
     <string name="event_preferences_eventType">Тип события</string>
     <string name="event_preferences_eventProfile">Активировать профиль</string>
