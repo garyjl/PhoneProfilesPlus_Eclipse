@@ -684,7 +684,9 @@ public class DataWrapper {
 		databaseHandler.activateProfile(profile);
 		setProfileActive(profile);
 		
-		if ((startupSource != GlobalData.STARTUP_SOURCE_SERVICE) && (startupSource != GlobalData.STARTUP_SOURCE_BOOT))
+		if ((startupSource != GlobalData.STARTUP_SOURCE_SERVICE) && 
+			(startupSource != GlobalData.STARTUP_SOURCE_BOOT) &&
+			(startupSource != GlobalData.STARTUP_SOURCE_LAUNCHER_START))
 		{
 			if (GlobalData.applicationPauseEventsOnPofileActivation)
 				// for manual activation pause all running events
@@ -974,7 +976,7 @@ public class DataWrapper {
 
 	public boolean doEventService(Event event, boolean startEvent, boolean unblockEvent)
 	{
-		int newEventStatus = Event.ESTATUS_PAUSE;
+		int newEventStatus = Event.ESTATUS_NONE;
 				
 		boolean timePassed = true;
 		boolean batteryPassed = true;
@@ -1101,11 +1103,13 @@ public class DataWrapper {
 
 		if (newEventStatus == Event.ESTATUS_RUNNING)
 		{
+			GlobalData.logE("DataWrapper.doEventService","start event");
 			event.startEvent(this, eventTimelineList, false);
 		}
 		else
 		if (newEventStatus == Event.ESTATUS_PAUSE)
 		{
+			GlobalData.logE("DataWrapper.doEventService","pause event");
 			event.pauseEvent(this, eventTimelineList, true, false, false);
 		}
 		

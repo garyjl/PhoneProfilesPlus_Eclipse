@@ -115,7 +115,7 @@ public class Event {
 		boolean runnable = (this._fkProfile != 0);
 		if (this._eventPreferencesTime._enabled)
 			runnable = runnable && this._eventPreferencesTime.isRunable();
-		if (this._eventPreferencesTime._enabled)
+		if (this._eventPreferencesBattery._enabled)
 			runnable = runnable && this._eventPreferencesBattery.isRunable();
 		return runnable;
 	}
@@ -225,8 +225,14 @@ public class Event {
 	
 	private boolean canActivateReturnProfile()
 	{
-		return _eventPreferencesTime.activateReturnProfile() ||
-			   _eventPreferencesBattery.activateReturnProfile();
+		boolean canActivate = false;
+		
+		if (this._eventPreferencesTime._enabled)
+			canActivate = canActivate || this._eventPreferencesTime.activateReturnProfile();
+		if (this._eventPreferencesBattery._enabled)
+			canActivate = canActivate || this._eventPreferencesBattery.activateReturnProfile();
+		
+		return canActivate;
 	}
 	
 	public void startEvent(DataWrapper dataWrapper,
@@ -394,7 +400,7 @@ public class Event {
 				{
 					GlobalData.logE("Event.pauseEvent","activate return profile");
 					if (eventTimeline._fkProfileReturn != 0)
-						dataWrapper.activateProfileFromEvent(eventTimeline._fkProfileReturn, _notificationSound);
+						dataWrapper.activateProfileFromEvent(eventTimeline._fkProfileReturn, "");
 				}
 			}
 			else

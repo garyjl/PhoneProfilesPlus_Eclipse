@@ -55,9 +55,10 @@ public class EventsService extends IntentService
 		broadcastReceiverType = intent.getStringExtra(GlobalData.EXTRA_BROADCAST_RECEIVER_TYPE);
 		
 		GlobalData.logE("EventsService.onHandleIntent","procedure="+procedure);
+		GlobalData.logE("EventsService.onHandleIntent","broadcastReceiverType="+broadcastReceiverType);
 		
 		// in intent is event_id
-		long event_id = intent.getLongExtra(GlobalData.EXTRA_EVENT_ID, 0);
+		long event_id = intent.getLongExtra(GlobalData.EXTRA_EVENT_ID, 0L);
 		GlobalData.logE("EventsService.onHandleIntent","event_id="+event_id);
 		Event event = dataWrapper.getEventById(event_id);
 		
@@ -72,13 +73,13 @@ public class EventsService extends IntentService
 				
 				if (_event.getStatus() != Event.ESTATUS_STOP)
 				{
-					dataWrapper.doEventService(_event, !broadcastReceiverType.equals(PowerConnectionReceiver.BROADCAST_RECEIVER_TYPE), (procedure == ESP_START_EVENT));
+					dataWrapper.doEventService(_event, (procedure == ESP_START_EVENT), broadcastReceiverType.equals(PowerConnectionReceiver.BROADCAST_RECEIVER_TYPE));
 				}
 			}
 		}
 		else
 		if (event.getStatus() != Event.ESTATUS_STOP)
-			dataWrapper.doEventService(event, !broadcastReceiverType.equals(PowerConnectionReceiver.BROADCAST_RECEIVER_TYPE), (procedure == ESP_START_EVENT));
+			dataWrapper.doEventService(event, (procedure == ESP_START_EVENT), broadcastReceiverType.equals(PowerConnectionReceiver.BROADCAST_RECEIVER_TYPE));
 
 		doEndService(intent);
 
