@@ -15,11 +15,11 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 		{
 			GlobalData.loadPreferences(context);
 			
-			DataWrapper dataWrapper = new DataWrapper(context, true, false, 0);
-			dataWrapper.getActivateProfileHelper().initialize(dataWrapper, null, context);
-			
 			if (GlobalData.getApplicationStarted(context))
 			{
+				DataWrapper dataWrapper = new DataWrapper(context, true, false, 0);
+				dataWrapper.getActivateProfileHelper().initialize(dataWrapper, null, context);
+
 				GlobalData.setApplicationStarted(context, false);
 				
 				// stop all events
