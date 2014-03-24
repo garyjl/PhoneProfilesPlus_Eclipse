@@ -207,6 +207,7 @@ public class ActivateProfileHelper {
 			}
 		}
 		
+		/*
 		// nahodenie NFC
 		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_NFC, context))
 		{
@@ -235,6 +236,7 @@ public class ActivateProfileHelper {
 				}
 			}
 		}
+		*/
 		
 	}
 	

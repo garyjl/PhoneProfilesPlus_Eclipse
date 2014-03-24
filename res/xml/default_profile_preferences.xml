@@ -162,12 +162,14 @@
             android:defaultValue="0"
             android:entries="@array/locationServicePrefsDPArray"
             android:entryValues="@array/locationServicePrefsDPValues" />        
+<!-- 
 		<ListPreference android:title="@string/profile_preferences_deviceNFC"
             android:summary="@string/array_pref_no_change"
             android:key="prf_pref_deviceNFC"
             android:defaultValue="0"
             android:entries="@array/hardwareModeDPArray"
-            android:entryValues="@array/hardwareModeDPValues" />        
+            android:entryValues="@array/hardwareModeDPValues" />
+ -->        
 		<ListPreference android:title="@string/profile_preferences_deviceScreenTimeout"
             android:summary="@string/array_pref_no_change"
             android:key="prf_pref_deviceScreenTimeout"

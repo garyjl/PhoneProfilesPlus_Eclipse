@@ -90,6 +90,9 @@ public class ActivateProfileActivity extends ActionBarActivity {
 		if (GlobalData.applicationActivatorHeader)
 			popupHeight = popupHeight + 64f * scale;
 		
+		// add global events on/off indicator
+		popupHeight = popupHeight + 3f * scale;
+		
 		// add list items height
 		DataWrapper dataWrapper = new DataWrapper(getBaseContext(), false, false, 0);
 		int profileCount = dataWrapper.getDatabaseHandler().getProfilesCount(true);

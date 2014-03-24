@@ -664,7 +664,7 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	        setSummary(GlobalData.PREF_PROFILE_DEVICE_RUN_APPLICATION_CHANGE, profile._deviceRunApplicationChange); 
 	        setSummary(GlobalData.PREF_PROFILE_DEVICE_LOCATION_SERVICE_PREFS, profile._deviceLocationServicePrefs); 
 	        setSummary(GlobalData.PREF_PROFILE_VOLUME_SPEAKER_PHONE, profile._volumeSpeakerPhone); 
-	        setSummary(GlobalData.PREF_PROFILE_DEVICE_NFC, profile._deviceNFC); 
+	        //setSummary(GlobalData.PREF_PROFILE_DEVICE_NFC, profile._deviceNFC); 
 			
 		    // disable depended preferences
 		    disableDependedPref(GlobalData.PREF_PROFILE_SOUND_RINGTONE_CHANGE, profile._soundRingtoneChange);
