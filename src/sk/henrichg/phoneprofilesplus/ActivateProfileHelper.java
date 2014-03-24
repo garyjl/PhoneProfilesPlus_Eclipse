@@ -1121,13 +1121,13 @@ public class ActivateProfileHelper {
 	}
 	
 	@SuppressWarnings("deprecation")
-	static boolean getAirplaneMode_SDK8(Context context)
+	private boolean getAirplaneMode_SDK8(Context context)
 	{
 		return Settings.System.getInt(context.getContentResolver(), Settings.System.AIRPLANE_MODE_ON, 0) != 0;
 	}
 	
 	@SuppressWarnings("deprecation")
-	static void setAirplaneMode_SDK8(Context context, boolean mode)
+	private void setAirplaneMode_SDK8(Context context, boolean mode)
 	{
 		if (mode != getAirplaneMode_SDK8(context))
 		{
