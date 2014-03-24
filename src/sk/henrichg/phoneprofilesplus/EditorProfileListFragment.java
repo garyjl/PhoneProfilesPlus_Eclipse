@@ -287,7 +287,7 @@ public class EditorProfileListFragment extends Fragment {
             
             EditorProfileListFragment fragment = this.fragmentWeakRef.get(); 
             
-            if (fragment != null) {
+            if ((fragment != null) && (fragment.isAdded())) {
             	
     	        // get local profileList
     	    	List<Profile> profileList = dataWrapper.getProfileList();

@@ -232,7 +232,7 @@ public class EditorEventListFragment extends Fragment {
             
             EditorEventListFragment fragment = this.fragmentWeakRef.get(); 
             
-            if (fragment != null) {
+            if ((fragment != null) && (fragment.isAdded())) {
     	        // get local eventList
     	    	List<Event> eventList = dataWrapper.getEventList();
     	    	// set local event list into activity dataWrapper
