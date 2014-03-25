@@ -2,9 +2,11 @@ package sk.henrichg.phoneprofilesplus;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -13,6 +15,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.stericson.RootTools.RootTools;
+import com.stericson.RootTools.execution.Command;
+import com.stericson.RootTools.execution.CommandCapture;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
@@ -21,13 +25,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.ActivityInfo;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.AssetManager;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
 import android.util.Log;
@@ -839,27 +844,159 @@ public class GlobalData extends Application {
 	
 	static public void startPPHelper(Context context)
 	{
-		// get package version
-		if (isPPHelperInstalled(context))
+		/*
+		if (!isPPHelperInstalled(context)) 		// check whether PPHelper is installed
 		{
+			if (!installPPHelper(context))		// PPHeper installation
+				return;
+		}
+		*/
+		
+		if (isPPHelperInstalled(context))		// check PPHelper version
+		{
+			// start PPHelper 
+			
         	Log.e("GlobalData.startPPHelper","version OK");
 			
 			// start StartActivity
 			Intent intent = new Intent("phoneprofileshelper.intent.action.START");
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			
 			final PackageManager packageManager = context.getPackageManager();
 		    List<ResolveInfo> list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
 		    if (list.size() > 0)			
 		    {
 		    	context.startActivity(intent);
 		    }
+		    else
+		    {
+	        	Log.e("GlobalData.startPPHelper","intent not found!");
+		    }
+		    
 		}
 		else
 		{
         	Log.e("GlobalData.startPPHelper","version BAD");
         }
 	}
+	
+	static public boolean installPPHelper(Context context)
+	{
+		boolean OK = true;
+		
+	    AssetManager assetManager = context.getAssets();
+	    String[] files = null;
+	    try {
+	        files = assetManager.list("PhoneProfilesHelper.apk");
+	    } catch (IOException e) {
+	        Log.e("GlobalData.installPPHelper", "Failed to get asset file list.", e);
+	        OK = false;
+	    }
+
+  		File sd = Environment.getExternalStorageDirectory();
+		File exportDir = new File(sd, GlobalData.EXPORT_PATH);
+		if (!(exportDir.exists() && exportDir.isDirectory()))
+			exportDir.mkdirs();
+	    
+    	//// copy PhoneProfilesHelper.apk into sdcard
+	    OK = false;
+	    for(String filename : files) 
+	    {
+	        InputStream in = null;
+	        OutputStream out = null;
+	        try {
+				File outFile = new File(sd, EXPORT_PATH + "/" + filename);
+
+	        	in = assetManager.open(filename);
+				out = new FileOutputStream(outFile);
+				copyFile(in, out);
+				in.close();
+				in = null;
+				out.flush();
+				out.close();
+				out = null;
+				
+				OK = true;
+	        } catch(IOException e) {
+	            Log.e("GlobalData.installPPHelper", "Failed to copy asset file: " + filename, e);
+	            OK = false;
+	        }
+	    }
+	    
+	    if (OK)
+	    {
+			//// copy PhoneProfilesHelper.apk from apk into system partition
+		    OK = false;
+			CommandCapture command;
+			if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
+				command = new CommandCapture(1,"mount -o remount,rw /system", 						//mounts the system partition to be writeable
+						"rm /system/priv-app/PhoneProfilesHelper.apk",								//removes the old systemapp
+						"cp " + exportDir.getPath() + "PhoneProfilesHelper.apk /system/priv-app/",	//copies the apk of the app to the system-apps folder
+						"chmod 644 /system/priv-app/PhoneProfilesHelper.apk",						//fixes the permissions
+						"mount -o remount,r /system");												//mounts the system partition to be read-only again
+			} else{
+				command = new CommandCapture(1,"mount -o remount,rw /system", 
+						"rm /system/app/PhoneProfilesHelper.apk",
+						"cp " + exportDir.getPath() + "PhoneProfilesHelper.apk /system/app/",
+						"chmod 644 /system/app/PhoneProfilesHelper.apk",		
+						"mount -o remount,r /system");									
+			}
+			
+			try {
+				RootTools.getShell(true).add(command);
+				OK = commandWait(command);
+				RootTools.closeAllShells();
+				if (OK)
+					Log.e("GlobalData.installPPHelper", "PhoneProfilesHelper installed");
+				else
+					Log.e("GlobalData.installPPHelper", "PhoneProfilesHelper installation failed!");
+			} catch (Exception e) {
+				e.printStackTrace();
+				Log.e("GlobalData.installPPHelper", "PhoneProfilesHelper installation failed!");
+				OK = false;
+			}
+	    }
+      
+	    
+		return OK;
+	}
+	static private void copyFile(InputStream in, OutputStream out) throws IOException
+	{
+	    byte[] buffer = new byte[1024];
+	    int read;
+	    while((read = in.read(buffer)) != -1){
+	      out.write(buffer, 0, read);
+	    }
+	}
+	static private boolean commandWait(Command cmd) throws Exception {
+		boolean OK;
+		
+        int waitTill = 50;
+        int waitTillMultiplier = 2;
+        int waitTillLimit = 6400; //7 tries, 12750 msec
+        //50+100+200+400+800+1600+3200+6400
+
+        OK = true;
+        
+        while (!cmd.isFinished() && waitTill<=waitTillLimit) {
+            synchronized (cmd) {
+                try {
+                    if (!cmd.isFinished()) {
+                        cmd.wait(waitTill);
+                        waitTill *= waitTillMultiplier;
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    OK = false;
+                }
+            }
+        }
+        if (!cmd.isFinished()){
+            Log.e("ActivateProfileHelper", "Could not finish root command in " + (waitTill/waitTillMultiplier));
+            OK = false;
+        }
+        
+        return OK;
+    }	
 	
 	//------------------------------------------------------------
 	

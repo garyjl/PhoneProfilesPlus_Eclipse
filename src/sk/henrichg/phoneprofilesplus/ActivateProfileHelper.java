@@ -916,6 +916,7 @@ public class ActivateProfileHelper {
 	    			};*/	    			
 					RootTools.getShell(true).add(command);
 					commandWait(command);
+					RootTools.closeAllShells();
 				} catch (Exception e) {
 					Log.e("ActivateProfileHelper.setGPS", "Error on run su: "+e.toString());
 				} 
@@ -1011,6 +1012,7 @@ public class ActivateProfileHelper {
 	    			};	*/    			
 					RootTools.getShell(true).add(command);
 					commandWait(command);
+					RootTools.closeAllShells();
 				} catch (Exception e) {
 					Log.e("ActivateProfileHelper.setGPS", "Error on run su: "+e.toString());
 				}
@@ -1070,6 +1072,7 @@ public class ActivateProfileHelper {
 				try {
 					RootTools.getShell(true).add(command);
 					commandWait(command);
+					RootTools.closeAllShells();
 				} catch (Exception e) {
 					Log.e("AirPlaneMode_SDK17.setAirplaneMode", "Error on run su");
 				}
