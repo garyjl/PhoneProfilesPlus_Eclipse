@@ -834,7 +834,7 @@ public class GlobalData extends Application {
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}
-		return PPHelperVersion == PPHELPER_VERSION;
+		return PPHelperVersion >= PPHELPER_VERSION;
 	}
 	
 	static public void startPPHelper(Context context)
