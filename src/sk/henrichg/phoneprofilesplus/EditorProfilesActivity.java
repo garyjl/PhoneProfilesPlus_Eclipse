@@ -367,7 +367,6 @@ public class EditorProfilesActivity extends ActionBarActivity
 	*/	
 
 		eventsRunStopIndicator = (LinearLayout)findViewById(R.id.editor_list_run_stop_indicator);
-		setEventsRunStopIndicator();
         
 		// set drawer item and order
         //Log.e("EditorProfilesActivity.onCreate","applicationEditorSaveEditorState="+GlobalData.applicationEditorSaveEditorState);
@@ -380,10 +379,12 @@ public class EditorProfilesActivity extends ActionBarActivity
         // replace removed orders
         if (orderSelectedItem == 2) orderSelectedItem = 0;
         if (orderSelectedItem == 3) orderSelectedItem = 1;
-        
+
     	selectDrawerItem(drawerSelectedItem, false);
     	changeEventOrder(orderSelectedItem);
 
+		setEventsRunStopIndicator();
+    	
         //Log.e("EditorProfilesActivity.onCreate", "drawerSelectedItem="+drawerSelectedItem);
 		
 		
