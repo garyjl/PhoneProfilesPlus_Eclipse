@@ -259,6 +259,7 @@
     <string name="event_preferences_notificationSound">Benachrichtigungston</string>
     <string name="preferences_notificationSound_None">Keine</string>
 
+	<string name="phone_profiles_pref_applicationPauseEventsOnProfileActivation">Pause Ereignisse</string>
     <string name="event_preferences_battery_level_low">Niedriger Stand</string>
 	<string name="event_preferences_battery_level_hight">Hoher Stand</string>
 	<string name="event_preferences_battery_charging">Aufladen</string>

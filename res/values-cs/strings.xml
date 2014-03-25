@@ -257,10 +257,10 @@
     <string name="profile_preferences_deviceLocationServicePrefs">(I) Nastavení polohy</string>
 	<string name="event_type_battery">Baterie</string>
     <string name="profile_preferences_volumeSpeakerPhone">Hlasitý odposlech</string>
-
     <string name="event_preferences_notificationSound">Tón notifikace</string>
     <string name="preferences_notificationSound_None">Žádné</string>
     
+	<string name="phone_profiles_pref_applicationPauseEventsOnProfileActivation">Pozastavit události</string>
     <string name="event_preferences_battery_level_low">Nízká úroveň</string>
 	<string name="event_preferences_battery_level_hight">Vysoká úroveň</string>
 	<string name="event_preferences_battery_charging">Nabíjení</string>
