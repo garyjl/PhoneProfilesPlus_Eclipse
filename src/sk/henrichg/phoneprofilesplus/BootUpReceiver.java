@@ -36,12 +36,8 @@ public class BootUpReceiver extends BroadcastReceiver {
 			dataWrapper.activateProfile(0, GlobalData.STARTUP_SOURCE_BOOT, null, "");
 			dataWrapper.invalidateDataWrapper();
 
-			/*
-			Intent i = new Intent(context, BackgroundActivateProfileActivity.class);
-			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			i.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_BOOT);
-			context.startActivity(i);
-			*/
+			// start PPHelper
+			GlobalData.startPPHelper(context);
 		}
 
 	}

@@ -868,6 +868,12 @@ public class ActivateProfileHelper {
 		        poke.setData(Uri.parse("3")); 
 		        context.sendBroadcast(poke);
 	    	}
+			else
+	    	if (GlobalData.isPPHelperInstalled(context))
+	    	{
+	    		//Log.e("ActivateProfileHelper.setGPS", "pphelper");
+	    		activatePreferenceInPPHelper(GlobalData.PREF_PROFILE_DEVICE_GPS, true);
+	    	}
 	    	else
 	    	if ((android.os.Build.VERSION.SDK_INT >= 17) && GlobalData.grantRoot())
 			{
@@ -914,22 +920,6 @@ public class ActivateProfileHelper {
 					Log.e("ActivateProfileHelper.setGPS", "Error on run su: "+e.toString());
 				} 
 			}	    	
-	    	else
-			//if (CheckHardwareFeatures.isSystemApp(context) && CheckHardwareFeatures.isAdminUser(context))
-			if (GlobalData.isSystemApp(context))
-	    	{
-				GlobalData.logE("ActivateProfileHelper.setGPS", "system app.");
-
-		    	if (android.os.Build.VERSION.SDK_INT >= 17)
-				
-			/*	String newSet;
-	    		if (provider == "")
-	    			newSet = LocationManager.GPS_PROVIDER;
-	    		else
-	    			newSet = String.format("%s,%s", provider, LocationManager.GPS_PROVIDER);
-				Settings.Secure.putString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED, newSet); */
-				Settings.Secure.setLocationProviderEnabled(context.getContentResolver(), LocationManager.GPS_PROVIDER, true);
-	    	}
 			else
 			{
 				/*GlobalData.logE("ActivateProfileHelper.setGPS", "old method");
@@ -962,6 +952,12 @@ public class ActivateProfileHelper {
 	            poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
 	            poke.setData(Uri.parse("3")); 
 	            context.sendBroadcast(poke);
+	    	}
+			else
+	    	if (GlobalData.isPPHelperInstalled(context))
+	    	{
+	    		//Log.e("ActivateProfileHelper.setGPS", "pphelper");
+	    		activatePreferenceInPPHelper(GlobalData.PREF_PROFILE_DEVICE_GPS, enable);
 	    	}
 	    	else
 	    	if ((android.os.Build.VERSION.SDK_INT >= 17) && GlobalData.grantRoot())
@@ -1019,31 +1015,6 @@ public class ActivateProfileHelper {
 					Log.e("ActivateProfileHelper.setGPS", "Error on run su: "+e.toString());
 				}
 			}	    	
-	    	else
-			//if (CheckHardwareFeatures.isSystemApp(context) && CheckHardwareFeatures.isAdminUser(context))
-			if (GlobalData.isSystemApp(context))
-			{
-				
-				GlobalData.logE("ActivateProfileHelper.setGPS", "system app.");
-				
-	    	/*	String[] list = provider.split(",");
-	    		
-	    		String newSet = "";
-	    		int j = 0;
-	    		for (int i = 0; i < list.length; i++)
-	    		{
-	    			
-	    			if  (!list[i].equals(LocationManager.GPS_PROVIDER))
-	    			{
-	    				if (j > 0)
-	    					newSet += ",";
-	    				newSet += list[i];
-	    				j++;
-	    			}
-	    		}
-				Settings.Secure.putString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED, newSet); */
-				Settings.Secure.setLocationProviderEnabled(context.getContentResolver(), LocationManager.GPS_PROVIDER, false);
-	    	}
 			else
 			{
 	    		//GlobalData.logE("ActivateProfileHelper.setGPS", "old method");
@@ -1075,19 +1046,11 @@ public class ActivateProfileHelper {
 	{
 		if (mode != getAirplaneMode_SDK17(context))
 		{
-			// it is only possible to set AIRPLANE_MODE programmatically for Android >= 4.2.x
-			// if app runs:
-			// - as system app (located on /system/app)
-			// - and if current user is the admin user (not sure about that...)
-			//if (CheckHardwareFeatures.isSystemApp(context) && CheckHardwareFeatures.isAdminUser(context))
-			if (GlobalData.isSystemApp(context))
-			{
-				Settings.Global.putInt(context.getContentResolver(), Settings.Global.AIRPLANE_MODE_ON, mode ? 1 : 0);
-				Intent intent = new Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED);
-				intent.putExtra("state", mode);
-				context.sendBroadcast(intent);
-			}
-			else
+	    	/*if (GlobalData.isPPHelperInstalled(context))
+	    	{
+	    		activatePreferenceInPPHelper(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE, mode);
+	    	}
+			else*/
 			if (GlobalData.grantRoot())
 			{
 				// zariadenie je rootnute
@@ -1142,56 +1105,10 @@ public class ActivateProfileHelper {
 	
 	public void setNFC(Context context, boolean enable)
 	{
-		if(GlobalData.isSystemApp(context))
-		{
-			Class<?> NfcClass;
-			NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(context);
-			
-			if(nfcAdapter != null)
-			{
-				if(enable && !nfcAdapter.isEnabled())
-				{
-					try {
-						Method enableNfc;
-						NfcClass = Class.forName(nfcAdapter.getClass().getName());
-						enableNfc   = NfcClass.getDeclaredMethod("enable");
-						enableNfc.setAccessible(true);
-						enableNfc.invoke(nfcAdapter);
-					} catch (ClassNotFoundException e) {
-						e.printStackTrace();
-					} catch (NoSuchMethodException e) {
-						e.printStackTrace();
-					} catch (IllegalAccessException e) {
-						e.printStackTrace();
-					} catch (IllegalArgumentException e) {
-						e.printStackTrace();
-					} catch (InvocationTargetException e) {
-						e.printStackTrace();
-					}
-				}
-				
-				if(!enable && nfcAdapter.isEnabled())
-				{
-					try {
-						Method disableNfc;
-						NfcClass = Class.forName(nfcAdapter.getClass().getName());
-						disableNfc   = NfcClass.getDeclaredMethod("disable");
-						disableNfc.setAccessible(true);
-						disableNfc.invoke(nfcAdapter);
-					} catch (ClassNotFoundException e) {
-						e.printStackTrace();
-					} catch (NoSuchMethodException e) {
-						e.printStackTrace();
-					} catch (IllegalAccessException e) {
-						e.printStackTrace();
-					} catch (IllegalArgumentException e) {
-						e.printStackTrace();
-					} catch (InvocationTargetException e) {
-						e.printStackTrace();
-					}
-				}
-			}		
-		}
+    	if (GlobalData.isPPHelperInstalled(context))
+    	{
+    		activatePreferenceInPPHelper(GlobalData.PREF_PROFILE_DEVICE_NFC, enable);
+    	}
 	}
 		
 
@@ -1216,5 +1133,14 @@ public class ActivateProfileHelper {
             Log.e("ActivateProfileHelper", "Could not finish root command in " + (waitTill/waitTillMultiplier));
         }
     }	
+
+	public void activatePreferenceInPPHelper(String preferenceName, boolean enable)
+	{
+		Intent intent = new Intent();
+	    intent.setAction("sk.henrichg.phoneprofileshelper.ACTION");
+	    intent.putExtra("profilePreferenceName", preferenceName);
+	    intent.putExtra("profilePreferenceEnable", enable);
+		context.sendBroadcast(intent);
+	}
 	
 }

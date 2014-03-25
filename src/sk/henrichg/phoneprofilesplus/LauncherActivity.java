@@ -60,6 +60,10 @@ public class LauncherActivity extends Activity {
 					dataWrapper.getDatabaseHandler().deactivateProfile();
 					profile = null;
 				}
+				
+				// start PPHelper
+				GlobalData.startPPHelper(getBaseContext());
+				
 			}
 		//}
 		//Log.e("LauncherActivity.onStart", "actProfile="+String.valueOf(actProfile));

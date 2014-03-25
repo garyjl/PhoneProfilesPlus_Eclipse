@@ -8,6 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -16,12 +17,14 @@ import com.stericson.RootTools.RootTools;
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
@@ -32,6 +35,9 @@ import android.util.Log;
 public class GlobalData extends Application {
 
 	static String PACKAGE_NAME;
+	
+	static int PPHELPER_VERSION = 5;
+	public static int PPHelperVersion = -1;
 	
 	public static boolean logIntoLogCat = false;
 	public static boolean logIntoFile = false;
@@ -652,10 +658,9 @@ public class GlobalData extends Application {
 					featurePresented = true;
 				}
 				else
-				//if (isSystemApp(context) && isAdminUser(context))
-				if (isSystemApp(context))
+				if (isPPHelperInstalled(context))
 				{
-					// aplikacia je nainstalovana ako systemova
+					// je nainstalovany PhonProfilesHelper
 					featurePresented = true;
 				}
 			}
@@ -697,20 +702,19 @@ public class GlobalData extends Application {
 					featurePresented = true;
 					logE("GlobalData.hardwareCheck - GPS","level 14, exploit");
 			    }
+				else 
+				if (isPPHelperInstalled(context))
+				{
+					// je nainstalovany PhonProfilesHelper
+					featurePresented = true;
+					//Log.e("GlobalData.hardwareCheck - GPS","system app.");
+			    }
 				else
 				if ((android.os.Build.VERSION.SDK_INT >= 17) && isRooted())
 				{
 					featurePresented = true;
 					logE("GlobalData.hardwareCheck - GPS","rooted");
 				}
-				else 
-				//if (isSystemApp(context) && isAdminUser(context))
-				if (isSystemApp(context))
-				{
-					// aplikacia je nainstalovana ako systemova
-					featurePresented = true;
-					logE("GlobalData.hardwareCheck - GPS","system app.");
-			    }
 			}
 		}
 		else
@@ -719,10 +723,9 @@ public class GlobalData extends Application {
 			if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_NFC))
 			{
 				// device ma nfc
-				//if (isSystemApp(context) && isAdminUser(context))
-				if (isSystemApp(context))
+				if (isPPHelperInstalled(context))
 				{
-					// aplikacia je nainstalovana ako systemova
+					// je nainstalovany PhonProfilesHelper
 					featurePresented = true;
 			    }
 			}
@@ -776,47 +779,6 @@ public class GlobalData extends Application {
 		}
 	}
 	
-	static boolean isSystemApp(Context context)
-	{
-		ApplicationInfo ai = context.getApplicationInfo();
-		
-		if ((ai.flags & ApplicationInfo.FLAG_SYSTEM) != 0)
-		{
-			//Log.d(TAG, "isSystemApp==true");
-			return true;
-		}
-		return false;
-	}
-	
-	static boolean isUpdatedSystemApp(Context context)
-	{
-		ApplicationInfo ai = context.getApplicationInfo();
-		
-		if ((ai.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0)
-		{
-			//Log.d(TAG, "isUpdatedSystemApp==true");
-			return true;
-		}
-		return false;
-		
-	}
-
-/*	
-	static boolean isAdminUser(Context context)
-	{
-		UserHandle uh = Process.myUserHandle();
-		UserManager um = (UserManager)context.getSystemService(Context.USER_SERVICE);
-		if (um != null)
-		{
-			long userSerialNumber = um.getSerialNumberForUser(uh);
-			//Log.d(TAG, "userSerialNumber="+userSerialNumber);
-			return userSerialNumber == 0;
-		}
-		else
-			return false;
-	}
-*/
-	
 	static boolean isRooted()
 	{
 		if (!rootChecked)
@@ -859,6 +821,44 @@ public class GlobalData extends Application {
 		}
 		else
 			return true;
+	}
+	
+	static public boolean isPPHelperInstalled(Context context)
+	{
+		// get package version
+		PPHelperVersion = -1;
+		PackageInfo pinfo = null;
+		try {
+			pinfo = context.getPackageManager().getPackageInfo("sk.henrichg.phoneprofileshelper", 0);
+			PPHelperVersion = pinfo.versionCode;
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
+		return PPHelperVersion == PPHELPER_VERSION;
+	}
+	
+	static public void startPPHelper(Context context)
+	{
+		// get package version
+		if (isPPHelperInstalled(context))
+		{
+        	Log.e("GlobalData.startPPHelper","version OK");
+			
+			// start StartActivity
+			Intent intent = new Intent("phoneprofileshelper.intent.action.START");
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			
+			final PackageManager packageManager = context.getPackageManager();
+		    List<ResolveInfo> list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+		    if (list.size() > 0)			
+		    {
+		    	context.startActivity(intent);
+		    }
+		}
+		else
+		{
+        	Log.e("GlobalData.startPPHelper","version BAD");
+        }
 	}
 	
 	//------------------------------------------------------------
