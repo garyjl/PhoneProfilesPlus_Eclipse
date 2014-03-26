@@ -29,7 +29,6 @@ import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
-import android.nfc.NfcAdapter;
 import android.provider.Settings;
 import android.provider.Settings.Global;
 import android.support.v4.app.NotificationCompat;
@@ -50,6 +49,15 @@ public class ActivateProfileHelper {
 	private Context context;
 	private NotificationManager notificationManager;
 	
+	private static final String PPHELPER = "sk.henrichg.phoneprofileshelper.ACTION";
+	private static final String PPHELPER_PROCEDURE = "procedure";
+	private static final String PPHELPER_PROCEDURE_RADIO_CHANGE = "radioChange";
+	private static final String PPHELPER_GPS_CHANGE = "GPSChange";
+	private static final String PPHELPER_AIRPLANE_MODE_CHANGE = "airplaneModeChange";
+	private static final String PPHELPER_NFC_CHANGE = "NFCChange";
+	private static final String PPHELPER_WIFI_CHANGE = "WiFiChange";
+	private static final String PPHELPER_BLUETOOTH_CHANGE = "bluetoothChange";
+	private static final String PPHELPER_MOBILE_DATA_CHANGE = "mobileDataChange";
 	
 	public ActivateProfileHelper()
 	{
@@ -207,36 +215,7 @@ public class ActivateProfileHelper {
 			}
 		}
 		
-		/*
-		// nahodenie NFC
-		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_NFC, context))
-		{
-			NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(context);
-			
-			if(nfcAdapter != null)
-			{
-				switch (profile._deviceNFC) {
-					case 1 :
-						setNFC(context, true);
-						break;
-					case 2 : 
-						setNFC(context, false);
-						break;
-					case 3 :
-					    if (!nfcAdapter.isEnabled())
-						{
-							setNFC(context, true);
-						}
-						else
-					    if (nfcAdapter.isEnabled())
-						{
-							setNFC(context, false);
-						}
-						break;
-				}
-			}
-		}
-		*/
+		// nahodenie NFC - len v PPHelper
 		
 	}
 	
@@ -416,10 +395,27 @@ public class ActivateProfileHelper {
 		}
 
 		// nahodenie radio preferences
-		// run service for execute radios
-		Intent radioServiceIntent = new Intent(context, ExecuteRadioProfilePrefsService.class);
-		radioServiceIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
-		context.startService(radioServiceIntent);
+		if (GlobalData.isPPHelperInstalled(context))
+		{
+			// broadcast PPHelper
+			Intent ppHelperIntent = new Intent();
+			ppHelperIntent.setAction(PPHELPER);
+			ppHelperIntent.putExtra(PPHELPER_PROCEDURE, PPHELPER_PROCEDURE_RADIO_CHANGE);
+			ppHelperIntent.putExtra(PPHELPER_GPS_CHANGE, profile._deviceGPS);
+			ppHelperIntent.putExtra(PPHELPER_AIRPLANE_MODE_CHANGE, profile._deviceAirplaneMode);
+			ppHelperIntent.putExtra(PPHELPER_NFC_CHANGE, profile._deviceNFC);
+			ppHelperIntent.putExtra(PPHELPER_WIFI_CHANGE, profile._deviceWiFi);
+			ppHelperIntent.putExtra(PPHELPER_BLUETOOTH_CHANGE, profile._deviceBluetooth);
+			ppHelperIntent.putExtra(PPHELPER_MOBILE_DATA_CHANGE, profile._deviceMobileData);
+		    context.sendBroadcast(ppHelperIntent);
+		}
+		else
+		{
+			// run service for execute radios
+			Intent radioServiceIntent = new Intent(context, ExecuteRadioProfilePrefsService.class);
+			radioServiceIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
+			context.startService(radioServiceIntent);
+		}
 		
 		// nahodenie auto-sync
 		boolean _isAutosync = ContentResolver.getMasterSyncAutomatically();
@@ -746,12 +742,14 @@ public class ActivateProfileHelper {
 	
 	
 
+	@SuppressLint("NewApi")
+	@SuppressWarnings("deprecation")
 	private boolean isAirplaneMode(Context context)
 	{
     	if (android.os.Build.VERSION.SDK_INT >= 17)
-    		return getAirplaneMode_SDK17(context);
+    		return Settings.Global.getInt(context.getContentResolver(), Global.AIRPLANE_MODE_ON, 0) != 0;
     	else
-    		return getAirplaneMode_SDK8(context);
+    		return Settings.System.getInt(context.getContentResolver(), Settings.System.AIRPLANE_MODE_ON, 0) != 0;
 	}
 	
 	private void setAirplaneMode(Context context, boolean mode)
@@ -868,12 +866,6 @@ public class ActivateProfileHelper {
 		        poke.setData(Uri.parse("3")); 
 		        context.sendBroadcast(poke);
 	    	}
-			else
-	    	if (GlobalData.isPPHelperInstalled(context))
-	    	{
-	    		//Log.e("ActivateProfileHelper.setGPS", "pphelper");
-	    		activatePreferenceInPPHelper(GlobalData.PREF_PROFILE_DEVICE_GPS, true);
-	    	}
 	    	else
 	    	if ((android.os.Build.VERSION.SDK_INT >= 17) && GlobalData.grantRoot())
 			{
@@ -954,12 +946,6 @@ public class ActivateProfileHelper {
 	            poke.setData(Uri.parse("3")); 
 	            context.sendBroadcast(poke);
 	    	}
-			else
-	    	if (GlobalData.isPPHelperInstalled(context))
-	    	{
-	    		//Log.e("ActivateProfileHelper.setGPS", "pphelper");
-	    		activatePreferenceInPPHelper(GlobalData.PREF_PROFILE_DEVICE_GPS, enable);
-	    	}
 	    	else
 	    	if ((android.os.Build.VERSION.SDK_INT >= 17) && GlobalData.grantRoot())
 			{
@@ -1037,83 +1023,51 @@ public class ActivateProfileHelper {
         }	    	
 	}
 	
-	@SuppressLint({ "NewApi", "InlinedApi" })
-	private boolean getAirplaneMode_SDK17(Context context)
-	{
-		return Settings.Global.getInt(context.getContentResolver(), Global.AIRPLANE_MODE_ON, 0) != 0;
-	}
-	
-	@SuppressLint({ "NewApi", "InlinedApi" })
 	private void setAirplaneMode_SDK17(Context context, boolean mode)
 	{
-		if (mode != getAirplaneMode_SDK17(context))
+		if (GlobalData.grantRoot())
 		{
-	    	/*if (GlobalData.isPPHelperInstalled(context))
-	    	{
-	    		activatePreferenceInPPHelper(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE, mode);
-	    	}
-			else*/
-			if (GlobalData.grantRoot())
+			// zariadenie je rootnute
+			String command1;
+			String command2;
+			if (mode)
 			{
-				// zariadenie je rootnute
-				String command1;
-				String command2;
-				if (mode)
-				{
-					command1 = "settings put global airplane_mode_on 1";
-					command2 = "am broadcast -a android.intent.action.AIRPLANE_MODE --ez state true";
-				}
-				else
-				{
-					command1 = "settings put global airplane_mode_on 0";
-					command2 = "am broadcast -a android.intent.action.AIRPLANE_MODE --ez state false";
-				}
-				CommandCapture command = new CommandCapture(0, command1, command2);
-				try {
-					RootTools.getShell(true).add(command);
-					commandWait(command);
-					RootTools.closeAllShells();
-				} catch (Exception e) {
-					Log.e("AirPlaneMode_SDK17.setAirplaneMode", "Error on run su");
-				}
+				command1 = "settings put global airplane_mode_on 1";
+				command2 = "am broadcast -a android.intent.action.AIRPLANE_MODE --ez state true";
 			}
 			else
 			{
-				// for normal apps it is only possible to open the system settings dialog
-			/*	Intent intent = new Intent(android.provider.Settings.ACTION_AIRPLANE_MODE_SETTINGS);
-				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				context.startActivity(intent); */
+				command1 = "settings put global airplane_mode_on 0";
+				command2 = "am broadcast -a android.intent.action.AIRPLANE_MODE --ez state false";
 			}
-			
+			CommandCapture command = new CommandCapture(0, command1, command2);
+			try {
+				RootTools.getShell(true).add(command);
+				commandWait(command);
+				RootTools.closeAllShells();
+			} catch (Exception e) {
+				Log.e("AirPlaneMode_SDK17.setAirplaneMode", "Error on run su");
+			}
 		}
-	}
-	
-	@SuppressWarnings("deprecation")
-	private boolean getAirplaneMode_SDK8(Context context)
-	{
-		return Settings.System.getInt(context.getContentResolver(), Settings.System.AIRPLANE_MODE_ON, 0) != 0;
+		else
+		{
+			// for normal apps it is only possible to open the system settings dialog
+		/*	Intent intent = new Intent(android.provider.Settings.ACTION_AIRPLANE_MODE_SETTINGS);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			context.startActivity(intent); */
+		}
+		
 	}
 	
 	@SuppressWarnings("deprecation")
 	private void setAirplaneMode_SDK8(Context context, boolean mode)
 	{
-		if (mode != getAirplaneMode_SDK8(context))
-		{
-			Settings.System.putInt(context.getContentResolver(), Settings.System.AIRPLANE_MODE_ON, mode ? 1 : 0);
-			Intent intent = new Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED);
-			intent.putExtra("state", mode);
-			context.sendBroadcast(intent);
-		}
+		Settings.System.putInt(context.getContentResolver(), Settings.System.AIRPLANE_MODE_ON, mode ? 1 : 0);
+		Intent intent = new Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED);
+		intent.putExtra("state", mode);
+		context.sendBroadcast(intent);
 	}
 	
-	public void setNFC(Context context, boolean enable)
-	{
-    	if (GlobalData.isPPHelperInstalled(context))
-    	{
-    		activatePreferenceInPPHelper(GlobalData.PREF_PROFILE_DEVICE_NFC, enable);
-    	}
-	}
-		
 
 	private void commandWait(Command cmd) throws Exception {
         int waitTill = 50;
@@ -1137,13 +1091,4 @@ public class ActivateProfileHelper {
         }
     }	
 
-	public void activatePreferenceInPPHelper(String preferenceName, boolean enable)
-	{
-		Intent intent = new Intent();
-	    intent.setAction("sk.henrichg.phoneprofileshelper.ACTION");
-	    intent.putExtra("profilePreferenceName", preferenceName);
-	    intent.putExtra("profilePreferenceEnable", enable);
-		context.sendBroadcast(intent);
-	}
-	
 }
