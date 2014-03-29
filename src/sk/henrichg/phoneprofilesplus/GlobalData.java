@@ -44,7 +44,7 @@ public class GlobalData extends Application {
 
 	static String PACKAGE_NAME;
 	
-	static int PPHELPER_VERSION = 5;
+	static int PPHELPER_VERSION = 7;
 	public static int PPHelperVersion = -1;
 	
 	public static boolean logIntoLogCat = false;

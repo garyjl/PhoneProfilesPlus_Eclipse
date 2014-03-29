@@ -266,6 +266,6 @@
     <string name="pref_event_battery_level">Úroveň</string>
     <string name="pref_event_battery_charging">Nabíjanie</string>
 
-    <string name="phoneprofilehepler_reboot_message">Pre funkčnosť PPHelper-a je vyžadovaný reštart zariadenia. Reštartovať teraz?</string>
+    <string name="phoneprofilehepler_reboot_message">Pre funkčnosť PPHelper-a, je vyžadovaný reštart zariadenia. Reštartovať teraz?</string>
     	
 </resources>
