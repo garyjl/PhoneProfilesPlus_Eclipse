@@ -19,8 +19,11 @@ import com.stericson.RootTools.execution.Command;
 import com.stericson.RootTools.execution.CommandCapture;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -844,14 +847,6 @@ public class GlobalData extends Application {
 	
 	static public void startPPHelper(Context context)
 	{
-		/*
-		if (!isPPHelperInstalled(context)) 		// check whether PPHelper is installed
-		{
-			if (!installPPHelper(context))		// PPHeper installation
-				return;
-		}
-		*/
-		
 		if (isPPHelperInstalled(context))		// check PPHelper version
 		{
 			// start PPHelper 
@@ -879,21 +874,23 @@ public class GlobalData extends Application {
         }
 	}
 	
-	static public boolean installPPHelper(Context context)
+	static public boolean installPPHelper(Activity activity)
 	{
 		boolean OK = true;
 		
-	    AssetManager assetManager = context.getAssets();
+	    AssetManager assetManager = activity.getBaseContext().getAssets();
 	    String[] files = null;
 	    try {
-	        files = assetManager.list("PhoneProfilesHelper.x");
+	        files = assetManager.list("");
 	    } catch (IOException e) {
 	        Log.e("GlobalData.installPPHelper", "Failed to get asset file list.", e);
 	        OK = false;
 	    }
+	    
+        Log.e("GlobalData.installPPHelper", "files.length="+files.length);
 
   		File sd = Environment.getExternalStorageDirectory();
-		File exportDir = new File(sd, GlobalData.EXPORT_PATH);
+		File exportDir = new File(sd, EXPORT_PATH);
 		if (!(exportDir.exists() && exportDir.isDirectory()))
 			exportDir.mkdirs();
 	    
@@ -901,24 +898,31 @@ public class GlobalData extends Application {
 	    OK = false;
 	    for(String filename : files) 
 	    {
-	        InputStream in = null;
-	        OutputStream out = null;
-	        try {
-				File outFile = new File(sd, EXPORT_PATH + "/" + filename);
-
-	        	in = assetManager.open(filename);
-				out = new FileOutputStream(outFile);
-				copyFile(in, out);
-				in.close();
-				in = null;
-				out.flush();
-				out.close();
-				out = null;
-				
-				OK = true;
-	        } catch(IOException e) {
-	            Log.e("GlobalData.installPPHelper", "Failed to copy asset file: " + filename, e);
-	            OK = false;
+	        Log.e("GlobalData.installPPHelper", "filename="+filename);
+	        
+	        if (filename.equals("PhoneProfilesHelper.x"))
+	        {
+		        InputStream in = null;
+		        OutputStream out = null;
+		        try {
+					File outFile = new File(sd, EXPORT_PATH + "/" + filename);
+	
+		        	in = assetManager.open(filename);
+					out = new FileOutputStream(outFile);
+					copyFile(in, out);
+					in.close();
+					in = null;
+					out.flush();
+					out.close();
+					out = null;
+					
+					OK = true;
+		        } catch(IOException e) {
+		            Log.e("GlobalData.installPPHelper", "Failed to copy asset file: " + filename, e);
+		            OK = false;
+		        }
+		        
+		        break;
 	        }
 	    }
 	    
@@ -930,15 +934,15 @@ public class GlobalData extends Application {
 			if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
 				command = new CommandCapture(1,"mount -o remount,rw /system", 						//mounts the system partition to be writeable
 						"rm /system/priv-app/PhoneProfilesHelper.apk",								//removes the old systemapp
-						"cp " + exportDir.getPath() + "PhoneProfilesHelper.x /system/priv-app/PhoneProfilesHelper.apk",	//copies the apk of the app to the system-apps folder
+						"cp $EXTERNAL_STORAGE/"+EXPORT_PATH+"/PhoneProfilesHelper.x /system/priv-app/PhoneProfilesHelper.apk",	//copies the apk of the app to the system-apps folder
 						"chmod 644 /system/priv-app/PhoneProfilesHelper.apk",						//fixes the permissions
-						"mount -o remount,r /system");												//mounts the system partition to be read-only again
+						"mount -o remount,ro /system");												//mounts the system partition to be read-only again
 			} else{
 				command = new CommandCapture(1,"mount -o remount,rw /system", 
 						"rm /system/app/PhoneProfilesHelper.apk",
-						"cp " + exportDir.getPath() + "PhoneProfilesHelper.x /system/app/PhoneProfilesHelper.apk",
+						"cp $EXTERNAL_STORAGE/"+EXPORT_PATH+"/PhoneProfilesHelper.x /system/app/PhoneProfilesHelper.apk",
 						"chmod 644 /system/app/PhoneProfilesHelper.apk",		
-						"mount -o remount,r /system");									
+						"mount -o remount,ro /system");									
 			}
 			
 			try {
@@ -955,7 +959,9 @@ public class GlobalData extends Application {
 				OK = false;
 			}
 	    }
-      
+	    
+	    if (OK)
+	    	restartAndroid(activity);
 	    
 		return OK;
 	}
@@ -967,6 +973,57 @@ public class GlobalData extends Application {
 	      out.write(buffer, 0, read);
 	    }
 	}
+	
+	static public boolean uninstallPPHelper(Context context)
+	{
+		boolean OK = false;
+
+		CommandCapture command;
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
+			command = new CommandCapture(1,"mount -o remount,rw /system", 						//mounts the system partition to be writeable
+					"rm /system/priv-app/PhoneProfilesHelper.apk",								//removes the old systemapp
+					"mount -o remount,ro /system");												//mounts the system partition to be read-only again
+		} else{
+			command = new CommandCapture(1,"mount -o remount,rw /system", 
+					"rm /system/app/PhoneProfilesHelper.apk",
+					"mount -o remount,ro /system");									
+		}
+		
+		try {
+			RootTools.getShell(true).add(command);
+			OK = commandWait(command);
+			RootTools.closeAllShells();
+			if (OK)
+				Log.e("GlobalData.uninstallPPHelper", "PhoneProfilesHelper uninstalled");
+			else
+				Log.e("GlobalData.uninstallPPHelper", "PhoneProfilesHelper uninstallation failed!");
+		} catch (Exception e) {
+			e.printStackTrace();
+			Log.e("GlobalData.uninstallPPHelper", "PhoneProfilesHelper uninstallation failed!");
+			OK = false;
+		}
+		
+		return OK;
+	}
+	
+	static private void restartAndroid(Activity activity)
+	{
+		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
+		dialogBuilder.setTitle(activity.getResources().getString(R.string.phoneprofilehepler_reboot_title));
+		dialogBuilder.setMessage(activity.getResources().getString(R.string.phoneprofilehepler_reboot_message));
+		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
+		
+		dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
+			
+			public void onClick(DialogInterface dialog, int which) {
+		    	// restart device
+		    	RootTools.restartAndroid();
+			}
+		});
+		dialogBuilder.setNegativeButton(R.string.alert_button_no, null);
+		dialogBuilder.show();
+	}
+	
 	static private boolean commandWait(Command cmd) throws Exception {
 		boolean OK;
 		

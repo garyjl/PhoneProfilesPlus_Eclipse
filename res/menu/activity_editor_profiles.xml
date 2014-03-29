@@ -15,7 +15,15 @@
         android:orderInCategory="220"
         henrichg:showAsAction="never"
 	    android:icon="?attr/actionSettingsIcon" />
-    <item android:id="@+id/menu_export"
+    <item android:id="@+id/menu_pphelper_install"
+        android:title="@string/menu_phoneprofilehepler_install"
+        android:orderInCategory="225"
+        henrichg:showAsAction="never" />
+    <item android:id="@+id/menu_pphelper_uninstall"
+        android:title="@string/menu_phoneprofilehepler_uninstall"
+        android:orderInCategory="226"
+        henrichg:showAsAction="never" />
+	<item android:id="@+id/menu_export"
         android:title="@string/menu_export"
         android:orderInCategory="230"
         henrichg:showAsAction="never"

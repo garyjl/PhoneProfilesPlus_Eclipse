@@ -482,6 +482,28 @@ public class EditorProfilesActivity extends ActionBarActivity
 			}
 		}
 		
+		boolean isPPHInstalled = GlobalData.isPPHelperInstalled(getBaseContext());
+		
+		menuItem = menu.findItem(R.id.menu_pphelper_install);
+		if (menuItem != null)
+		{
+			menuItem.setVisible(!isPPHInstalled);
+			
+			if (GlobalData.PPHelperVersion != -1)
+			{
+				menuItem.setTitle(R.string.menu_phoneprofilehepler_upgrade);
+			}
+			else
+			{
+				menuItem.setTitle(R.string.menu_phoneprofilehepler_install);
+			}
+		}
+		menuItem = menu.findItem(R.id.menu_pphelper_uninstall);
+		if (menuItem != null)
+		{
+			menuItem.setVisible(GlobalData.PPHelperVersion != -1);
+		}
+		
 		return super.onPrepareOptionsMenu(menu);
 	}	
 	
@@ -531,6 +553,12 @@ public class EditorProfilesActivity extends ActionBarActivity
 
 			startActivityForResult(intent, GlobalData.REQUEST_CODE_APPLICATION_PREFERENCES);
 
+			return true;
+		case R.id.menu_pphelper_install:
+			GlobalData.installPPHelper(this);
+			return true;
+		case R.id.menu_pphelper_uninstall:
+			GlobalData.uninstallPPHelper(getBaseContext());
 			return true;
 		case R.id.menu_export:
 			//Log.d("EditorProfilesActivity.onOptionsItemSelected", "menu_export");

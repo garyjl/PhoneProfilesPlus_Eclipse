@@ -268,7 +268,6 @@
 	<string name="event_preferences_battery_charging">Charging</string>
 	<string name="pref_event_battery_level">Level</string>
     <string name="pref_event_battery_charging">Charging</string>
-
 	<string name="phone_profiles_pref_applicationPauseEventsOnProfileActivation">Pause events</string>
 	<string name="event_preferences_not_enabled">Not enabled</string>
     <string name="event_preferences_category_eventTimeParameters">Time parameters</string>
@@ -276,5 +275,11 @@
     <string name="event_preferences_time_enabled">Enable time</string>
     <string name="event_preferences_battery_enabled">Enable battery</string>
     		
-	    			
+    <string name="menu_phoneprofilehepler_install">Install PPHelper</string>
+    <string name="menu_phoneprofilehepler_uninstall">Uninstall PPHelper</string>
+    <string name="menu_phoneprofilehepler_upgrade">Upgrade PPHelper</string>
+    <string name="phoneprofilehepler_reboot_title">PPHelper installation</string>
+    <string name="phoneprofilehepler_reboot_message">For PPHelper functionality is required to restart the device. Restart now?</string>
+    
+    	    			
 </resources>
