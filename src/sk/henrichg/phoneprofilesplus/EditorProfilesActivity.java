@@ -487,7 +487,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 		menuItem = menu.findItem(R.id.menu_pphelper_install);
 		if (menuItem != null)
 		{
-			menuItem.setVisible(!isPPHInstalled);
+			menuItem.setVisible(GlobalData.isRooted() && (!isPPHInstalled));
 			
 			if (GlobalData.PPHelperVersion != -1)
 			{
@@ -501,7 +501,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 		menuItem = menu.findItem(R.id.menu_pphelper_uninstall);
 		if (menuItem != null)
 		{
-			menuItem.setVisible(GlobalData.PPHelperVersion != -1);
+			menuItem.setVisible(GlobalData.isRooted() && (GlobalData.PPHelperVersion != -1));
 		}
 		
 		return super.onPrepareOptionsMenu(menu);
