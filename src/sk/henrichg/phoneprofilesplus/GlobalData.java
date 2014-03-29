@@ -886,7 +886,7 @@ public class GlobalData extends Application {
 	    AssetManager assetManager = context.getAssets();
 	    String[] files = null;
 	    try {
-	        files = assetManager.list("PhoneProfilesHelper.apk");
+	        files = assetManager.list("PhoneProfilesHelper.x");
 	    } catch (IOException e) {
 	        Log.e("GlobalData.installPPHelper", "Failed to get asset file list.", e);
 	        OK = false;
@@ -930,13 +930,13 @@ public class GlobalData extends Application {
 			if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
 				command = new CommandCapture(1,"mount -o remount,rw /system", 						//mounts the system partition to be writeable
 						"rm /system/priv-app/PhoneProfilesHelper.apk",								//removes the old systemapp
-						"cp " + exportDir.getPath() + "PhoneProfilesHelper.apk /system/priv-app/",	//copies the apk of the app to the system-apps folder
+						"cp " + exportDir.getPath() + "PhoneProfilesHelper.x /system/priv-app/PhoneProfilesHelper.apk",	//copies the apk of the app to the system-apps folder
 						"chmod 644 /system/priv-app/PhoneProfilesHelper.apk",						//fixes the permissions
 						"mount -o remount,r /system");												//mounts the system partition to be read-only again
 			} else{
 				command = new CommandCapture(1,"mount -o remount,rw /system", 
 						"rm /system/app/PhoneProfilesHelper.apk",
-						"cp " + exportDir.getPath() + "PhoneProfilesHelper.apk /system/app/",
+						"cp " + exportDir.getPath() + "PhoneProfilesHelper.x /system/app/PhoneProfilesHelper.apk",
 						"chmod 644 /system/app/PhoneProfilesHelper.apk",		
 						"mount -o remount,r /system");									
 			}
