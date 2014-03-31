@@ -663,7 +663,7 @@ public class GlobalData extends Application {
 					featurePresented = true;
 				}
 				else
-				if (PhoneProfilesHelper.isPPHelperInstalled(context))
+				if (PhoneProfilesHelper.isPPHelperInstalled(context, 7))
 				{
 					// je nainstalovany PhonProfilesHelper
 					featurePresented = true;
@@ -708,7 +708,7 @@ public class GlobalData extends Application {
 					logE("GlobalData.hardwareCheck - GPS","level 14, exploit");
 			    }
 				else 
-				if (PhoneProfilesHelper.isPPHelperInstalled(context))
+				if (PhoneProfilesHelper.isPPHelperInstalled(context, 7))
 				{
 					// je nainstalovany PhonProfilesHelper
 					featurePresented = true;
@@ -728,7 +728,7 @@ public class GlobalData extends Application {
 			if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_NFC))
 			{
 				// device ma nfc
-				if (PhoneProfilesHelper.isPPHelperInstalled(context))
+				if (PhoneProfilesHelper.isPPHelperInstalled(context, 7))
 				{
 					// je nainstalovany PhonProfilesHelper
 					featurePresented = true;

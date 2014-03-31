@@ -29,10 +29,9 @@ import com.stericson.RootTools.execution.CommandCapture;
 
 public class PhoneProfilesHelper {
 
-	public static int PPHELPER_VERSION = 7;
 	public static int PPHelperVersion = -1;
 	
-	static public boolean isPPHelperInstalled(Context context)
+	static public boolean isPPHelperInstalled(Context context, int minVersion)
 	{
 		// get package version
 		PPHelperVersion = -1;
@@ -43,12 +42,12 @@ public class PhoneProfilesHelper {
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}
-		return PPHelperVersion >= PPHELPER_VERSION;
+		return PPHelperVersion >= minVersion;
 	}
 	
 	static public void startPPHelper(Context context)
 	{
-		if (isPPHelperInstalled(context))		// check PPHelper version
+		if (isPPHelperInstalled(context, 0))		// check PPHelper version
 		{
 			// start PPHelper 
 			
