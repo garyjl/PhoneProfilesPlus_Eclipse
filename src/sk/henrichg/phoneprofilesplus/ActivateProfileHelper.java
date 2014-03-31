@@ -395,7 +395,7 @@ public class ActivateProfileHelper {
 		}
 
 		// nahodenie radio preferences
-		if (GlobalData.isPPHelperInstalled(context))
+		if (PhoneProfilesHelper.isPPHelperInstalled(context))
 		{
 			// broadcast PPHelper
 			Intent ppHelperIntent = new Intent();

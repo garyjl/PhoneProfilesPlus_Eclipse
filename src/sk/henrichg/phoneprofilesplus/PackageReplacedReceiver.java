@@ -42,7 +42,7 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 				dataWrapper.invalidateDataWrapper();
 
 				// start PPHelper
-				GlobalData.startPPHelper(context);
+				PhoneProfilesHelper.startPPHelper(context);
 			}
 		}		
 	}

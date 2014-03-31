@@ -482,14 +482,14 @@ public class EditorProfilesActivity extends ActionBarActivity
 			}
 		}
 		
-		boolean isPPHInstalled = GlobalData.isPPHelperInstalled(getBaseContext());
+		boolean isPPHInstalled = PhoneProfilesHelper.isPPHelperInstalled(getBaseContext());
 		
 		menuItem = menu.findItem(R.id.menu_pphelper_install);
 		if (menuItem != null)
 		{
 			menuItem.setVisible(GlobalData.isRooted() && (!isPPHInstalled));
 			
-			if (GlobalData.PPHelperVersion != -1)
+			if (PhoneProfilesHelper.PPHelperVersion != -1)
 			{
 				menuItem.setTitle(R.string.menu_phoneprofilehepler_upgrade);
 			}
@@ -501,7 +501,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 		menuItem = menu.findItem(R.id.menu_pphelper_uninstall);
 		if (menuItem != null)
 		{
-			menuItem.setVisible(GlobalData.isRooted() && (GlobalData.PPHelperVersion != -1));
+			menuItem.setVisible(GlobalData.isRooted() && (PhoneProfilesHelper.PPHelperVersion != -1));
 		}
 		
 		return super.onPrepareOptionsMenu(menu);
@@ -555,10 +555,10 @@ public class EditorProfilesActivity extends ActionBarActivity
 
 			return true;
 		case R.id.menu_pphelper_install:
-			GlobalData.installPPHelper(this);
+			PhoneProfilesHelper.installPPHelper(this);
 			return true;
 		case R.id.menu_pphelper_uninstall:
-			GlobalData.uninstallPPHelper(getBaseContext());
+			PhoneProfilesHelper.uninstallPPHelper(this);
 			return true;
 		case R.id.menu_export:
 			//Log.d("EditorProfilesActivity.onOptionsItemSelected", "menu_export");

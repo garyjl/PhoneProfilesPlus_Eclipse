@@ -278,8 +278,13 @@
     <string name="menu_phoneprofilehepler_install">Install PPHelper</string>
     <string name="menu_phoneprofilehepler_uninstall">Uninstall PPHelper</string>
     <string name="menu_phoneprofilehepler_upgrade">Upgrade PPHelper</string>
+    <string name="phoneprofilehepler_install_title">PPHelper installation</string>
+    <string name="phoneprofilehepler_install_message">Are you sure</string>
     <string name="phoneprofilehepler_reboot_title">PPHelper installation</string>
     <string name="phoneprofilehepler_reboot_message">For PPHelper functionality, is required to restart the device. Restart now?</string>
-    
+    <string name="phoneprofilehepler_uninstall_title">PPHelper uninstallation</string>
+    <string name="phoneprofilehepler_uninstall_message">Are you sure</string>
+    <string name="phoneprofilehepler_install_error">Error when installing PPHelper</string>
+    <string name="phoneprofilehepler_uninstall_error">Error when uninstallig PPhelper</string>
     	    			
 </resources>

@@ -62,7 +62,7 @@ public class LauncherActivity extends Activity {
 				}
 				
 				// start PPHelper
-				GlobalData.startPPHelper(getBaseContext());
+				PhoneProfilesHelper.startPPHelper(getBaseContext());
 				
 			}
 		//}
