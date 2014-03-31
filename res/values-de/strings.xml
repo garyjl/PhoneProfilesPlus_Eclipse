@@ -255,15 +255,27 @@
     <string name="profile_preferences_deviceLocationServicePrefs">(I) Standort-Einstellungen</string>
 	<string name="event_type_battery">Akku</string>
     <string name="profile_preferences_volumeSpeakerPhone">Lautsprechertelefon</string>
-
     <string name="event_preferences_notificationSound">Benachrichtigungston</string>
     <string name="preferences_notificationSound_None">Keine</string>
-
 	<string name="phone_profiles_pref_applicationPauseEventsOnProfileActivation">Pause Ereignisse</string>
     <string name="event_preferences_battery_level_low">Niedriger Stand</string>
 	<string name="event_preferences_battery_level_hight">Hoher Stand</string>
 	<string name="event_preferences_battery_charging">Aufladen</string>
     <string name="pref_event_battery_level">Stand</string>
     <string name="pref_event_battery_charging">Aufladen</string>
+
+    <string name="menu_phoneprofilehepler_install">Installieren PPHelper</string>
+    <string name="menu_phoneprofilehepler_uninstall">Deinstallieren PPHelper</string>
+    <string name="menu_phoneprofilehepler_upgrade">Aktualisieren PPHelper</string>
+    <string name="phoneprofilehepler_install_title">PPHelper Installation</string>
+    <string name="phoneprofilehepler_install_message">Sicher</string>
+    <string name="phoneprofilehepler_reboot_title">PPHelper Installation</string>
+    <string name="phoneprofilehepler_reboot_message">Für PPHelper Funktionalität ist erforderlich das Gerät neu zu starten. Neu zu starten jetzt?</string>
+    <string name="phoneprofilehepler_uninstall_title">PPHelper Deinstallation</string>
+    <string name="phoneprofilehepler_uninstall_message">Sicher</string>
+    <string name="phoneprofilehepler_install_error">Fehler bei der Installation PPHelper</string>
+    <string name="phoneprofilehepler_uninstall_error">Fehler bei der Deinstallation PPhelper</string>
+    <string name="profile_preferences_install_pphelper">Installieren PPHelper</string>
+    <string name="profile_preferences_upgrade_pphelper">Aktualisieren PPHelper</string>
     					
 </resources>

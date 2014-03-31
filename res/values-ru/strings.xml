@@ -263,12 +263,25 @@
     <string name="profile_preferences_volumeSpeakerPhone">Громкоговоритель</string>
     <string name="event_preferences_notificationSound">Звук уведомлений</string>
     <string name="preferences_notificationSound_None">Нет</string>
-    			
 	<string name="phone_profiles_pref_applicationPauseEventsOnProfileActivation">Пауза события</string>
 	<string name="event_preferences_not_enabled">Не включен</string>
     <string name="event_preferences_category_eventTimeParameters">Временные параметры</string>
     <string name="event_preferences_category_eventBatteryParameters">Параметры батареи</string>
     <string name="event_preferences_time_enabled">Включить время</string>
     <string name="event_preferences_battery_enabled">Включить батареи</string>
+
+    <string name="menu_phoneprofilehepler_install">Инсталляции PPHelper</string>
+    <string name="menu_phoneprofilehepler_uninstall">Деинсталяция PPHelper</string>
+    <string name="menu_phoneprofilehepler_upgrade">Модернизировать PPHelper</string>
+    <string name="phoneprofilehepler_install_title">Установка PPHelper</string>
+    <string name="phoneprofilehepler_install_message">Вы уверены</string>
+    <string name="phoneprofilehepler_reboot_title">Установка PPHelper</string>
+    <string name="phoneprofilehepler_reboot_message">For PPHelper functionality, is required to restart the device. Restart now?</string>
+    <string name="phoneprofilehepler_uninstall_title">PPHelper деинсталляции</string>
+    <string name="phoneprofilehepler_uninstall_message">Вы уверены</string>
+    <string name="phoneprofilehepler_install_error">Ошибка при установке PPHelper</string>
+    <string name="phoneprofilehepler_uninstall_error">Ошибка при деинсталляции PPhelper</string>
+    <string name="profile_preferences_install_pphelper">Инсталляции PPHelper</string>
+    <string name="profile_preferences_upgrade_pphelper">Модернизировать PPHelper</string>
     
 </resources>

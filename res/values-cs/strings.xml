@@ -259,13 +259,26 @@
     <string name="profile_preferences_volumeSpeakerPhone">Hlasitý odposlech</string>
     <string name="event_preferences_notificationSound">Tón notifikace</string>
     <string name="preferences_notificationSound_None">Žádné</string>
-    
 	<string name="phone_profiles_pref_applicationPauseEventsOnProfileActivation">Pozastavit události</string>
     <string name="event_preferences_battery_level_low">Nízká úroveň</string>
 	<string name="event_preferences_battery_level_hight">Vysoká úroveň</string>
 	<string name="event_preferences_battery_charging">Nabíjení</string>
     <string name="pref_event_battery_level">Úroveň</string>
     <string name="pref_event_battery_charging">Nabíjení</string>
+
+    <string name="menu_phoneprofilehepler_install">Nainstaluj PPHelper</string>
+    <string name="menu_phoneprofilehepler_uninstall">Odinstaluj PPHelper</string>
+    <string name="menu_phoneprofilehepler_upgrade">Aktualizuj PPHelper</string>
+    <string name="phoneprofilehepler_install_title">Instalace PPHelper-a</string>
+    <string name="phoneprofilehepler_install_message">Jste si jistý</string>
+    <string name="phoneprofilehepler_reboot_title">Instalace PPHelper-a</string>
+    <string name="phoneprofilehepler_reboot_message">Pro funkčnost PPHelper-a, je vyžadován restart zařízení. Restartovat nyní?</string>
+    <string name="phoneprofilehepler_uninstall_title">Odinstalace PPHelper-a</string>
+    <string name="phoneprofilehepler_uninstall_message">Jste si jistý</string>
+    <string name="phoneprofilehepler_install_error">Chyba při instalaci PPHelper-a</string>
+    <string name="phoneprofilehepler_uninstall_error">Chyba při odinstalaci PPHelper-a</string>
+    <string name="profile_preferences_install_pphelper">Nainstaluj PPHelper</string>
+    <string name="profile_preferences_upgrade_pphelper">Aktualizuj PPHelper</string>
     
     		
 </resources>

@@ -266,6 +266,18 @@
     <string name="pref_event_battery_level">Úroveň</string>
     <string name="pref_event_battery_charging">Nabíjanie</string>
 
+    <string name="menu_phoneprofilehepler_install">Nainštaluj PPHelper</string>
+    <string name="menu_phoneprofilehepler_uninstall">Odinštaluj PPHelper</string>
+    <string name="menu_phoneprofilehepler_upgrade">Aktualizuj PPHelper</string>
+    <string name="phoneprofilehepler_install_title">Inštalácia PPHelper-a</string>
+    <string name="phoneprofilehepler_install_message">Ste si istý</string>
+    <string name="phoneprofilehepler_reboot_title">Inštalácia PPHelper-a</string>
     <string name="phoneprofilehepler_reboot_message">Pre funkčnosť PPHelper-a, je vyžadovaný reštart zariadenia. Reštartovať teraz?</string>
+    <string name="phoneprofilehepler_uninstall_title">Odinštalácia PPHelper-a</string>
+    <string name="phoneprofilehepler_uninstall_message">Ste si istý</string>
+    <string name="phoneprofilehepler_install_error">Chyba pri inštalácii PPHelper-a</string>
+    <string name="phoneprofilehepler_uninstall_error">Chyba pri odinštalácii PPHelper-a</string>
+    <string name="profile_preferences_install_pphelper">Nainštaluj PPHelper</string>
+    <string name="profile_preferences_upgrade_pphelper">Aktualizuj PPHelper</string>
     	
 </resources>
