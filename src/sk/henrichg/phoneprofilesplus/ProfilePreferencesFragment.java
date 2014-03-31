@@ -546,11 +546,19 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 			key.equals(GlobalData.PREF_PROFILE_DEVICE_GPS) ||
 			key.equals(GlobalData.PREF_PROFILE_DEVICE_NFC))
 		{
-			boolean canChange = GlobalData.hardwareCheck(key, context);
-			if (!canChange)
+			int canChange = GlobalData.hardwareCheck(key, context);
+			if (canChange != GlobalData.HARDWARE_CHECK_ALLOWED)
 			{
 				prefMng.findPreference(key).setEnabled(false);
-				prefMng.findPreference(key).setSummary(getResources().getString(R.string.profile_preferences_device_not_allowed));
+				prefMng.findPreference(key).setEnabled(false);
+				if (canChange == GlobalData.HARDWARE_CHECK_NOT_ALLOWED)
+					prefMng.findPreference(key).setSummary(getResources().getString(R.string.profile_preferences_device_not_allowed));
+				else
+				if (canChange == GlobalData.HARDWARE_CHECK_INSTALL_PPHELPER)
+					prefMng.findPreference(key).setSummary(getResources().getString(R.string.profile_preferences_install_pphelper));
+				else
+				if (canChange == GlobalData.HARDWARE_CHECK_UPGRADE_PPHELPER)
+					prefMng.findPreference(key).setSummary(getResources().getString(R.string.profile_preferences_upgrade_pphelper));
 				if (key.equals(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA))
 				{
 					prefMng.findPreference(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS).setEnabled(false);

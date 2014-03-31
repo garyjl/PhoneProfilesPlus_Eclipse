@@ -2,40 +2,26 @@ package sk.henrichg.phoneprofilesplus;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import com.stericson.RootTools.RootTools;
-import com.stericson.RootTools.execution.Command;
-import com.stericson.RootTools.execution.CommandCapture;
-
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.content.res.AssetManager;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
-import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
 import android.util.Log;
@@ -169,6 +155,11 @@ public class GlobalData extends Application {
     public static final String PREF_APPLICATION_NOTIFICATION_LAUNCHER = "applicationNotificationLauncher";
     public static final String PREF_APPLICATION_PAUSE_EVENTS_ON_PROFILE_ACTIVATION = "applicationPauseEventsOnPofileActivation";
 
+    public static final int HARDWARE_CHECK_NOT_ALLOWED = 0;
+    public static final int HARDWARE_CHECK_ALLOWED = 1;
+    public static final int HARDWARE_CHECK_INSTALL_PPHELPER = 2;
+    public static final int HARDWARE_CHECK_UPGRADE_PPHELPER = 3;
+    
 	static final long DEFAULT_PROFILE_ID = -999;
 	
 	private static final String PREF_GLOBAL_EVENTS_RUN_STOP = "globalEventsRunStop";
@@ -649,42 +640,42 @@ public class GlobalData extends Application {
 	static public boolean rooted = false;
 	static public boolean rootGranted = false;
 
-	static boolean hardwareCheck(String preferenceKey, Context context)
+	static int hardwareCheck(String preferenceKey, Context context)
 	{
-		boolean featurePresented = false;
+		int featurePresented = HARDWARE_CHECK_NOT_ALLOWED;
 
 		if (preferenceKey.equals(PREF_PROFILE_DEVICE_AIRPLANE_MODE))
 		{	
 			if (android.os.Build.VERSION.SDK_INT >= 17)
 			{
-				if (isRooted())
-				{
-					// zariadenie je rootnute
-					featurePresented = true;
-				}
-				else
 				if (PhoneProfilesHelper.isPPHelperInstalled(context, 7))
 				{
 					// je nainstalovany PhonProfilesHelper
-					featurePresented = true;
+					featurePresented = HARDWARE_CHECK_ALLOWED;
+				}
+				else
+				if (isRooted())
+				{
+					// zariadenie je rootnute
+					featurePresented = HARDWARE_CHECK_ALLOWED;
 				}
 			}
 			else
-				featurePresented = true;
+				featurePresented = HARDWARE_CHECK_ALLOWED;
 		}
 		else
 		if (preferenceKey.equals(PREF_PROFILE_DEVICE_WIFI))
 		{	
 			if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_WIFI))
 				// device ma Wifi
-				featurePresented = true;
+				featurePresented = HARDWARE_CHECK_ALLOWED;
 		}
 		else
 		if (preferenceKey.equals(PREF_PROFILE_DEVICE_BLUETOOTH))
 		{	
 			if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH))
 				// device ma bluetooth
-				featurePresented = true;
+				featurePresented = HARDWARE_CHECK_ALLOWED;
 		}
 		else
 		if (preferenceKey.equals(PREF_PROFILE_DEVICE_MOBILE_DATA))
@@ -693,7 +684,7 @@ public class GlobalData extends Application {
 			{
 				// device ma mobilne data
 				if (canSetMobileData(context))
-					featurePresented = true;
+					featurePresented = HARDWARE_CHECK_ALLOWED;
 			}
 		}
 		else
@@ -704,21 +695,34 @@ public class GlobalData extends Application {
 				// device ma gps
 				if (canExploitGPS(context))
 				{
-					featurePresented = true;
-					logE("GlobalData.hardwareCheck - GPS","level 14, exploit");
-			    }
-				else 
-				if (PhoneProfilesHelper.isPPHelperInstalled(context, 7))
-				{
-					// je nainstalovany PhonProfilesHelper
-					featurePresented = true;
-					//Log.e("GlobalData.hardwareCheck - GPS","system app.");
+					featurePresented = HARDWARE_CHECK_ALLOWED;
+					//Log.e("GlobalData.hardwareCheck - GPS","exploit");
 			    }
 				else
-				if ((android.os.Build.VERSION.SDK_INT >= 17) && isRooted())
+				if (android.os.Build.VERSION.SDK_INT < 17)
 				{
-					featurePresented = true;
-					logE("GlobalData.hardwareCheck - GPS","rooted");
+					if (PhoneProfilesHelper.isPPHelperInstalled(context, 7))
+					{
+						// je nainstalovany PhonProfilesHelper
+						featurePresented = HARDWARE_CHECK_ALLOWED;
+						//Log.e("GlobalData.hardwareCheck - GPS","system app.");
+				    }
+					else
+					{
+						if (isRooted())
+						{
+							if (PhoneProfilesHelper.PPHelperVersion == -1)
+								featurePresented = HARDWARE_CHECK_INSTALL_PPHELPER;
+							else
+								featurePresented = HARDWARE_CHECK_UPGRADE_PPHELPER;
+						}
+					}
+				}
+				else
+				if (isRooted())
+				{
+					featurePresented = HARDWARE_CHECK_ALLOWED;
+					//Log.e("GlobalData.hardwareCheck - GPS","rooted");
 				}
 			}
 		}
@@ -731,12 +735,22 @@ public class GlobalData extends Application {
 				if (PhoneProfilesHelper.isPPHelperInstalled(context, 7))
 				{
 					// je nainstalovany PhonProfilesHelper
-					featurePresented = true;
+					featurePresented = HARDWARE_CHECK_ALLOWED;
 			    }
+				else
+				{
+					if (isRooted())
+					{
+						if (PhoneProfilesHelper.PPHelperVersion == -1)
+							featurePresented = HARDWARE_CHECK_INSTALL_PPHELPER;
+						else
+							featurePresented = HARDWARE_CHECK_UPGRADE_PPHELPER;
+					}
+				}
 			}
 		}
 		else
-			featurePresented = true;
+			featurePresented = HARDWARE_CHECK_ALLOWED;
 		
 		return featurePresented;
 	}

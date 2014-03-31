@@ -90,7 +90,7 @@ public class ActivateProfileHelper {
 	private void doExecuteForRadios(Profile profile)
 	{
 		// nahodenie mobilnych dat
-		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA, context))
+		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA, context) == GlobalData.HARDWARE_CHECK_ALLOWED)
 		{
 			boolean _isMobileData = isMobileData(context);
 			boolean _setMobileData = false;
@@ -127,7 +127,7 @@ public class ActivateProfileHelper {
 		}
 
 		// nahodenie WiFi
-		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_WIFI, context))
+		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_WIFI, context) == GlobalData.HARDWARE_CHECK_ALLOWED)
 		{
 			WifiManager wifiManager = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
 			boolean setWifiState = false;
@@ -163,7 +163,7 @@ public class ActivateProfileHelper {
 		}
 		
 		// nahodenie bluetooth
-		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_BLUETOOTH, context))
+		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_BLUETOOTH, context) == GlobalData.HARDWARE_CHECK_ALLOWED)
 		{
 			BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 			switch (profile._deviceBluetooth) {
@@ -188,7 +188,7 @@ public class ActivateProfileHelper {
 		}
 
 		// nahodenie GPS
-		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_GPS, context))
+		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_GPS, context) == GlobalData.HARDWARE_CHECK_ALLOWED)
 		{
 			String provider = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
 
@@ -223,7 +223,7 @@ public class ActivateProfileHelper {
 	{
 		boolean _isAirplaneMode = false;
 		boolean _setAirplaneMode = false;
-		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE, context))
+		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE, context) == GlobalData.HARDWARE_CHECK_ALLOWED)
 		{
 			_isAirplaneMode = isAirplaneMode(context);
 			switch (profile._deviceAirplaneMode) {
@@ -558,7 +558,7 @@ public class ActivateProfileHelper {
 		{
 			// preferences, ktore vyzaduju interakciu uzivatela
 			
-			if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA, context))
+			if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA, context) == GlobalData.HARDWARE_CHECK_ALLOWED)
 			{
 				if (profile._deviceMobileDataPrefs == 1)
 				{

@@ -286,5 +286,7 @@
     <string name="phoneprofilehepler_uninstall_message">Are you sure</string>
     <string name="phoneprofilehepler_install_error">Error when installing PPHelper</string>
     <string name="phoneprofilehepler_uninstall_error">Error when uninstallig PPhelper</string>
+    <string name="profile_preferences_install_pphelper">Install PPHelper</string>
+    <string name="profile_preferences_upgrade_pphelper">Upgrade PPHelper</string>
     	    			
 </resources>
