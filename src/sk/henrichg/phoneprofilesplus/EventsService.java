@@ -17,6 +17,7 @@ public class EventsService extends IntentService
 	int procedure;
 	String broadcastReceiverType;
 	
+	public static final int ESP_COMPUTE_STATUS = 0;
 	public static final int ESP_START_EVENT = 1;
 	public static final int ESP_PAUSE_EVENT = 2;
 	
@@ -51,7 +52,7 @@ public class EventsService extends IntentService
 
 		GlobalData.logE("EventsService.onHandleIntent","eventTimelineList.size()="+eventTimelineList.size());
 		
-		procedure = intent.getIntExtra(GlobalData.EXTRA_EVENTS_SERVICE_PROCEDURE, 0);
+		procedure = intent.getIntExtra(GlobalData.EXTRA_EVENTS_SERVICE_PROCEDURE, ESP_COMPUTE_STATUS);
 		broadcastReceiverType = intent.getStringExtra(GlobalData.EXTRA_BROADCAST_RECEIVER_TYPE);
 		
 		GlobalData.logE("EventsService.onHandleIntent","procedure="+procedure);
@@ -72,14 +73,12 @@ public class EventsService extends IntentService
 				GlobalData.logE("EventsService.onHandleIntent","event.getStatus()="+_event.getStatus());
 				
 				if (_event.getStatus() != Event.ESTATUS_STOP)
-				{
-					dataWrapper.doEventService(_event, (procedure == ESP_START_EVENT), broadcastReceiverType.equals(PowerConnectionReceiver.BROADCAST_RECEIVER_TYPE));
-				}
+					dataWrapper.doEventService(_event, procedure, broadcastReceiverType.equals(PowerConnectionReceiver.BROADCAST_RECEIVER_TYPE));
 			}
 		}
 		else
 		if (event.getStatus() != Event.ESTATUS_STOP)
-			dataWrapper.doEventService(event, (procedure == ESP_START_EVENT), broadcastReceiverType.equals(PowerConnectionReceiver.BROADCAST_RECEIVER_TYPE));
+			dataWrapper.doEventService(event, procedure, broadcastReceiverType.equals(PowerConnectionReceiver.BROADCAST_RECEIVER_TYPE));
 
 		doEndService(intent);
 

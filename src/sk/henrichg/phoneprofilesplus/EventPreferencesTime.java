@@ -269,7 +269,7 @@ public class EventPreferencesTime extends EventPreferences {
 		return _useEndTime;
 	}
 	
-	public int computeDaysForAdd(boolean startEvent, boolean roundCheck)
+	public int computeDaysForAdd(boolean startEvent, boolean noFutureTime)
 	{
 		boolean[] daysOfWeek =  new boolean[8];
 		daysOfWeek[Calendar.SUNDAY] = this._sunday;
@@ -322,6 +322,7 @@ public class EventPreferencesTime extends EventPreferences {
 		    Log.e("EventPreferencesTime.setSystemRunningEvent","calendar.Time="+result);	    
 			*/
 
+			/*
 			if (roundCheck)
 			{
 				calendar.clear(Calendar.MILLISECOND);
@@ -334,6 +335,10 @@ public class EventPreferencesTime extends EventPreferences {
 			    Log.e("EventPreferencesTime.computeDaysForAdd","now.Time="+result);	    
 			}
 			setNextDayOfWeek = (calendar.getTimeInMillis() < now.getTimeInMillis());
+			*/
+			
+			if (!noFutureTime)
+				setNextDayOfWeek = (calendar.getTimeInMillis() < now.getTimeInMillis());
 		}
 		else
 			setNextDayOfWeek = true;

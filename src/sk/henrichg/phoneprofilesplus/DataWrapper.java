@@ -974,7 +974,7 @@ public class DataWrapper {
 		
 	}
 
-	public boolean doEventService(Event event, boolean startEvent, boolean unblockEvent)
+	public boolean doEventService(Event event, int procedure, boolean unblockEvent)
 	{
 		int newEventStatus = Event.ESTATUS_NONE;
 				
@@ -1052,9 +1052,10 @@ public class DataWrapper {
 
 			if (event._eventPreferencesTime._enabled)
 			{
-				if (startEvent)
+				if (procedure == EventsService.ESP_START_EVENT)
 					newEventStatus = Event.ESTATUS_RUNNING;
 				else
+				if (procedure == EventsService.ESP_PAUSE_EVENT)
 					newEventStatus = Event.ESTATUS_PAUSE;
 			}
 
