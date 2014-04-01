@@ -253,7 +253,6 @@ public class Event {
 		
 	/////// delete duplicate from timeline
 		
-		// test whenever event exists in timeline
 		boolean exists = true;
 		while (exists)
 		{
@@ -261,6 +260,7 @@ public class Event {
 
 			int timeLineSize = eventTimelineList.size();
 			
+			// test whenever event exists in timeline
 			eventTimeline = null;
 			int eventPosition = -1;
 			for (EventTimeline _eventTimeline : eventTimelineList)
