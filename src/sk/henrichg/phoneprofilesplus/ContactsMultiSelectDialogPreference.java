@@ -1,15 +1,13 @@
 package sk.henrichg.phoneprofilesplus;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
 
 import android.preference.DialogPreference;
-import android.provider.ContactsContract.Contacts;
-
+import android.provider.ContactsContract;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +24,7 @@ public class ContactsMultiSelectDialogPreference extends DialogPreference
 	// Layout widgets.
 	private ListView listView = null;
 
-	private Contact[] contact_read;
+	private ArrayList<Contact> planetList;
 	private Cursor mCursor;
 	private ContactsMultiselectPreferenceAdapter listAdapter;
 	
@@ -50,43 +48,51 @@ public class ContactsMultiSelectDialogPreference extends DialogPreference
             {
                 Contact planet = listAdapter.getItem(position);
                 planet.toggleChecked();
-                ContactViewHolder viewHolder = (ContactViewHolder) item
-                        .getTag();
-                viewHolder.getCheckBox().setChecked(planet.isChecked());
+                ContactViewHolder viewHolder = (ContactViewHolder) item.getTag();
+                viewHolder.getCheckBox().setChecked(planet.checked);
             }
         });		
 		
 
-		String[] projection = new String[] { Contacts.HAS_PHONE_NUMBER, Contacts._ID, Contacts.DISPLAY_NAME };
+		String[] projection = new String[] { ContactsContract.Contacts.HAS_PHONE_NUMBER, 
+											 ContactsContract.Contacts._ID, 
+											 ContactsContract.Contacts.DISPLAY_NAME,
+										     ContactsContract.Contacts.PHOTO_ID };
+		String selection = ContactsContract.Contacts.HAS_PHONE_NUMBER + "='1'";
+		String order = ContactsContract.Contacts.DISPLAY_NAME + " ASC";
 
-		//TODO toto sa da len z aktivity, musis to prerobit - AsyncTask!!! :-D
-		/*
-	    mCursor = managedQuery(Contacts.CONTENT_URI, projection, 
-	            					Contacts.HAS_PHONE_NUMBER + "=?", new String[] { "1" },
-	            					Contacts.DISPLAY_NAME);
-		*/
-	    if (mCursor != null) {
-	        mCursor.moveToFirst();
-	        contact_read = new Contact[mCursor.getCount()];
-
-	        // Add Contacts to the Array
-
-	        int j = 0;
-	        do {
-
-	            contact_read[j] = new Contact(mCursor.getString(mCursor
-	                    .getColumnIndex(Contacts.DISPLAY_NAME)));
-	            j++;
-	        } while (mCursor.moveToNext());
-
-	    } else {
-	        System.out.println("Cursor is NULL");
-	    }
-
+		Cursor mCursor = _context.getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, projection, selection, null, order);
+		
+	    while (mCursor.moveToNext()) 
+	    {
+	        try{
+	        	Contact aContact = new Contact();
+	        	String contactId = mCursor.getString(mCursor.getColumnIndex(ContactsContract.Contacts._ID)); 
+	        	String name = mCursor.getString(mCursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+	        	//String hasPhone = mCursor.getString(mCursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
+	        	String photoId = mCursor.getString(mCursor.getColumnIndex(ContactsContract.Contacts.PHOTO_ID));
+	        	if (Integer.parseInt(mCursor.getString(mCursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) 
+	        	{
+	        		Cursor phones = _context.getContentResolver().query( ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = "+ contactId, null, null);
+	        		while (phones.moveToNext()) 
+	        		{ 
+	        			String phoneNumber = phones.getString(phones.getColumnIndex( ContactsContract.CommonDataKinds.Phone.NUMBER));
+	        			aContact.name = name;
+	        			aContact.phoneNumber = phoneNumber;
+	        			try {
+	        				aContact.photoId = Long.parseLong(photoId);
+	        			} catch (Exception e) {
+	        				aContact.photoId = 0;
+	        			}
+	        			
+	        			planetList.add(aContact);
+	        		} 
+	        		phones.close(); 
+	        	}
+	        }catch(Exception e){}
+	     }		
+		
 	    // Add Contact Class to the Arraylist
-
-	    ArrayList<Contact> planetList = new ArrayList<Contact>();
-	    planetList.addAll(Arrays.asList(contact_read));
 
 	    // Set our custom array adapter as the ListView's adapter.
 	    listAdapter = new ContactsMultiselectPreferenceAdapter(_context, planetList);
