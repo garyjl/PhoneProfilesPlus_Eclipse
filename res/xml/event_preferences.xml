@@ -84,4 +84,17 @@
 		    android:defaultValue="false"
             android:dependency="eventBatteryEnabled" />
     </PreferenceCategory>
+    <PreferenceCategory
+        android:summary="@string/event_preferences_category_eventCallParameters"
+        android:title="@string/event_preferences_category_eventCallParameters" >
+		<CheckBoxPreference 
+		    android:key="eventCallEnabled"
+		    android:title="@string/event_preferences_call_enabled"
+		    android:defaultValue="false" />
+        <sk.henrichg.phoneprofilesplus.ContactsMultiSelectDialogPreference
+            android:key="eventCallContacts"
+            android:defaultValue=""
+            android:title="@string/event_preferences_call_contacts"
+            android:dependency="eventCallEnabled" />
+	</PreferenceCategory>
 </PreferenceScreen>    

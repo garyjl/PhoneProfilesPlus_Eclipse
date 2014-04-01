@@ -290,6 +290,10 @@
     <string name="profile_preferences_upgrade_pphelper">Upgrade PPHelper</string>
 
     <string name="contacts_multiselect_summary_text_selected">Selected</string>	    			
-    <string name="contacts_multiselect_summary_text_not_selected">Not selected</string>	    			
+    <string name="contacts_multiselect_summary_text_not_selected">Not selected</string>
+    
+    <string name="event_preferences_category_eventCallParameters">Call parameters</string>
+    <string name="event_preferences_call_enabled">Enable call</string>
+    <string name="event_preferences_call_contacts">Contacts</string>
     
 </resources>
