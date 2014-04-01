@@ -288,5 +288,8 @@
     <string name="phoneprofilehepler_uninstall_error">Error when uninstalling PPhelper</string>
     <string name="profile_preferences_install_pphelper">Install PPHelper</string>
     <string name="profile_preferences_upgrade_pphelper">Upgrade PPHelper</string>
-    	    			
+
+    <string name="contacts_multiselect_summary_text_selected">Selected</string>	    			
+    <string name="contacts_multiselect_summary_text_not_selected">Not selected</string>	    			
+    
 </resources>

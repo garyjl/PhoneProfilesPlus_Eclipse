@@ -1,33 +1,25 @@
 package sk.henrichg.phoneprofilesplus;
 
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ContactViewHolder {
-    private CheckBox checkBox;
-    private TextView textView;
+	
+	public ImageView imageViewPhoto;
+    public TextView textViewDisplayName;
+    public TextView textViewPhoneNumber;
+    public CheckBox checkBox;
 
     public ContactViewHolder() {
     }
 
-    public ContactViewHolder(TextView textView, CheckBox checkBox) {
-        this.checkBox = checkBox;
-        this.textView = textView;
-    }
-
-    public CheckBox getCheckBox() {
-        return checkBox;
-    }
-
-    public void setCheckBox(CheckBox checkBox) {
+    public ContactViewHolder(ImageView imageViewPhoto, TextView textViewDisplayName, TextView textViewPhoneNumber, CheckBox checkBox) 
+    {
+        this.imageViewPhoto = imageViewPhoto;
+    	this.textViewDisplayName = textViewDisplayName;
+        this.textViewPhoneNumber = textViewPhoneNumber;
         this.checkBox = checkBox;
     }
 
-    public TextView getTextView() {
-        return textView;
-    }
-
-    public void setTextView(TextView textView) {
-        this.textView = textView;
-    }
 }

@@ -1,7 +1,5 @@
 package sk.henrichg.phoneprofilesplus;
 
-import java.util.List;
-
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
@@ -10,45 +8,64 @@ import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ContactsMultiselectPreferenceAdapter extends ArrayAdapter<Contact> 
+public class ContactsMultiselectPreferenceAdapter extends BaseAdapter 
 {
     private LayoutInflater inflater;
     private Context context;
 
-    public ContactsMultiselectPreferenceAdapter(Context context, List<Contact> planetList) 
+    public ContactsMultiselectPreferenceAdapter(Context context) 
     {
-        super(context, R.layout.contacts_multiselect_preference_list_item, R.id.contacts_multiselect_pref_dlg_item_label, planetList);
         // Cache the LayoutInflate to avoid asking for a new one each time.
         inflater = LayoutInflater.from(context);
         this.context = context; 
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+	public int getCount() {
+		return EditorProfilesActivity.getContactsCache().getLength();
+	}
+
+	public Object getItem(int position) {
+		return EditorProfilesActivity.getContactsCache().getContact(position);
+	}
+
+	public long getItemId(int position) {
+		return position;
+	}
+    
+    public View getView(int position, View convertView, ViewGroup parent)
+    {
+		ContactsCache contactsCahce = EditorProfilesActivity.getContactsCache();
+    	
         // Contact to display
-        Contact planet = (Contact) this.getItem(position);
-        System.out.println(String.valueOf(position));
+        Contact contact = contactsCahce.getContact(position);
+        //System.out.println(String.valueOf(position));
 
         // The child views in each row.
+        ImageView imageViewPhoto;
+        TextView textViewDisplayName;
+        TextView textViewPhoneNumber;
         CheckBox checkBox;
-        TextView textView;
 
         // Create a new row view
-        if (convertView == null) {
+        if (convertView == null)
+        {
             convertView = inflater.inflate(R.layout.contacts_multiselect_preference_list_item, null);
 
             // Find the child views.
-            textView = (TextView) convertView.findViewById(R.id.contacts_multiselect_pref_dlg_item_label);
+            imageViewPhoto = (ImageView) convertView.findViewById(R.id.contacts_multiselect_pref_dlg_item_icon);
+            textViewDisplayName = (TextView) convertView.findViewById(R.id.contacts_multiselect_pref_dlg_item_display_name);
+            textViewPhoneNumber = (TextView) convertView.findViewById(R.id.contacts_multiselect_pref_dlg_item_phone_number);
             checkBox = (CheckBox) convertView.findViewById(R.id.contacts_multiselect_pref_dlg_item_checkbox);
 
             // Optimization: Tag the row with it's child views, so we don't
             // have to
             // call findViewById() later when we reuse the row.
-            convertView.setTag(new ContactViewHolder(textView, checkBox));
+            convertView.setTag(new ContactViewHolder(imageViewPhoto, textViewDisplayName, textViewPhoneNumber, checkBox));
 
             // If CheckBox is toggled, update the Contact it is tagged with.
             checkBox.setOnClickListener(new View.OnClickListener() {
@@ -60,23 +77,31 @@ public class ContactsMultiselectPreferenceAdapter extends ArrayAdapter<Contact>
             });
         }
         // Reuse existing row view
-        else {
+        else
+        {
             // Because we use a ViewHolder, we avoid having to call
             // findViewById().
-            ContactViewHolder viewHolder = (ContactViewHolder) convertView
-                    .getTag();
-            checkBox = viewHolder.getCheckBox();
-            textView = viewHolder.getTextView();
+            ContactViewHolder viewHolder = (ContactViewHolder) convertView.getTag();
+            imageViewPhoto = viewHolder.imageViewPhoto;
+            textViewDisplayName = viewHolder.textViewDisplayName;
+            textViewPhoneNumber = viewHolder.textViewPhoneNumber;
+            checkBox = viewHolder.checkBox;
         }
 
         // Tag the CheckBox with the Contact it is displaying, so that we
         // can
         // access the Contact in onClick() when the CheckBox is toggled.
-        checkBox.setTag(planet);
+        checkBox.setTag(contact);
 
         // Display Contact data
-        checkBox.setChecked(planet.checked);
-        textView.setText(planet.name);
+        if (contact.photoId != 0)
+        	imageViewPhoto.setImageURI(getPhotoUri(contact.photoId));
+        else
+        	imageViewPhoto.setImageResource(R.drawable.ic_contacts_multiselect_dialog_preference_no_photo);
+        textViewDisplayName.setText(contact.name);
+        textViewPhoneNumber.setText(contact.phoneNumber);
+        
+        checkBox.setChecked(contact.checked);
 
         return convertView;
     }
@@ -108,6 +133,5 @@ public class ContactsMultiselectPreferenceAdapter extends ArrayAdapter<Contact>
 	    Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, photoId);
 	    return Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
 	}
-	
-    
+
 }

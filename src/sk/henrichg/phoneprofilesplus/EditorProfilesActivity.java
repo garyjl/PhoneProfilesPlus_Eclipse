@@ -76,6 +76,9 @@ public class EditorProfilesActivity extends ActionBarActivity
 	private static boolean savedInstanceStateChanged; 
 	
 	private static ApplicationsCache applicationsCache;
+	private static ContactsCache contactsCache;
+
+	
 	private int editModeProfile;
 	private int editModeEvent;
 
@@ -129,6 +132,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 		savedInstanceStateChanged = (savedInstanceState != null);
 		
 		createApplicationsCache();
+		createContactsCache();
 		
 		setContentView(R.layout.activity_editor_list_onepane);
 		
@@ -429,10 +433,13 @@ public class EditorProfilesActivity extends ActionBarActivity
 	{
 		if (!savedInstanceStateChanged)
 		{
-			// no destroy applicationsCache on orientation change
+			// no destroy caches on orientation change
 			if (applicationsCache != null)
 				applicationsCache.clearCache();
 			applicationsCache = null;
+			if (contactsCache != null)
+				contactsCache.clearCache();
+			contactsCache = null;
 		}
 
 		super.onDestroy();
@@ -1667,6 +1674,21 @@ public class EditorProfilesActivity extends ActionBarActivity
 			if (applicationsCache != null)
 				applicationsCache.clearCache();
 			applicationsCache =  new ApplicationsCache();
+		}
+	}
+
+	public static ContactsCache getContactsCache()
+	{
+		return contactsCache;
+	}
+
+	public static void createContactsCache()
+	{
+		if ((!savedInstanceStateChanged) || (contactsCache == null))
+		{
+			if (contactsCache != null)
+				contactsCache.clearCache();
+			contactsCache =  new ContactsCache();
 		}
 	}
 	
