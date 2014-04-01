@@ -257,13 +257,18 @@
     <string name="profile_preferences_volumeSpeakerPhone">Lautsprechertelefon</string>
     <string name="event_preferences_notificationSound">Benachrichtigungston</string>
     <string name="preferences_notificationSound_None">Keine</string>
-	<string name="phone_profiles_pref_applicationPauseEventsOnProfileActivation">Pause Ereignisse</string>
     <string name="event_preferences_battery_level_low">Niedriger Stand</string>
 	<string name="event_preferences_battery_level_hight">Hoher Stand</string>
 	<string name="event_preferences_battery_charging">Aufladen</string>
     <string name="pref_event_battery_level">Stand</string>
     <string name="pref_event_battery_charging">Aufladen</string>
-
+	<string name="phone_profiles_pref_applicationPauseEventsOnProfileActivation">Pause Ereignisse</string>
+    <string name="event_preferences_not_enabled">Nicht aktiviert</string>
+    <string name="event_preferences_category_eventTimeParameters">Time-Parameter</string>
+    <string name="event_preferences_category_eventBatteryParameters">Batterieparameter</string>
+    <string name="event_preferences_time_enabled">Aktivieren Zeitparameter</string>
+    <string name="event_preferences_battery_enabled">Aktivieren Batterieparameter</string>
+    
     <string name="menu_phoneprofilehepler_install">Installieren PPHelper</string>
     <string name="menu_phoneprofilehepler_uninstall">Deinstallieren PPHelper</string>
     <string name="menu_phoneprofilehepler_upgrade">Aktualisieren PPHelper</string>

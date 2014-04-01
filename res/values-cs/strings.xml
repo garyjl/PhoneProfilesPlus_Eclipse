@@ -259,13 +259,18 @@
     <string name="profile_preferences_volumeSpeakerPhone">Hlasitý odposlech</string>
     <string name="event_preferences_notificationSound">Tón notifikace</string>
     <string name="preferences_notificationSound_None">Žádné</string>
-	<string name="phone_profiles_pref_applicationPauseEventsOnProfileActivation">Pozastavit události</string>
     <string name="event_preferences_battery_level_low">Nízká úroveň</string>
 	<string name="event_preferences_battery_level_hight">Vysoká úroveň</string>
 	<string name="event_preferences_battery_charging">Nabíjení</string>
     <string name="pref_event_battery_level">Úroveň</string>
     <string name="pref_event_battery_charging">Nabíjení</string>
-
+	<string name="phone_profiles_pref_applicationPauseEventsOnProfileActivation">Pozastavit události</string>
+	<string name="event_preferences_not_enabled">Nepoužité</string>
+    <string name="event_preferences_category_eventTimeParameters">Parametry času</string>
+    <string name="event_preferences_category_eventBatteryParameters">Parametry baterie</string>
+    <string name="event_preferences_time_enabled">Použij čas</string>
+    <string name="event_preferences_battery_enabled">Použij baterii</string>
+    	
     <string name="menu_phoneprofilehepler_install">Nainstaluj PPHelper</string>
     <string name="menu_phoneprofilehepler_uninstall">Odinstaluj PPHelper</string>
     <string name="menu_phoneprofilehepler_upgrade">Aktualizuj PPHelper</string>
