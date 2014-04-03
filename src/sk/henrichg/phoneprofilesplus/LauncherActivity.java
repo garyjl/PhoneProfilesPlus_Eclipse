@@ -26,6 +26,9 @@ public class LauncherActivity extends Activity {
 	{
 		super.onStart();
 		
+		if (!GlobalData.getApplicationStarted(getBaseContext()))
+			GlobalData.grantRoot(true);
+		
 		Profile profile = dataWrapper.getActivatedProfile();
 		
 		boolean actProfile = false;
@@ -39,8 +42,6 @@ public class LauncherActivity extends Activity {
 			if (!GlobalData.getApplicationStarted(getBaseContext()))
 			{
 				// aplikacia este nie je nastartovana
-				
-				GlobalData.grantRoot(true);
 				
 				// startneme eventy
 				if (GlobalData.getGlobalEventsRuning(getBaseContext()))
