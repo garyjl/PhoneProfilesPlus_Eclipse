@@ -349,9 +349,6 @@ public class ActivateProfileHelper {
 	
 	public void execute(Profile _profile, boolean _interactive, String eventNotificationSound)
 	{
-		// regrant root, maybe application is deleted from Superuser.apk
-		GlobalData.rootGranted = false;
-		
 		// rozdelit zvonenie a notifikacie - zial je to oznacene ako @Hide :-(
 		//Settings.System.putInt(context.getContentResolver(), Settings.System.NOTIFICATIONS_USE_RING_VOLUME, 0);
 

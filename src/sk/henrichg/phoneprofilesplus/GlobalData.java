@@ -636,11 +636,6 @@ public class GlobalData extends Application {
 
 	// ----- Hardware check -------------------------------------
 	
-	static public boolean rootChecked = false;
-	static public boolean rooted = false;
-	static public boolean grantChecked = false;
-	static public boolean rootGranted = false;
-
 	static int hardwareCheck(String preferenceKey, Context context)
 	{
 		int featurePresented = HARDWARE_CHECK_NOT_ALLOWED;
@@ -799,6 +794,11 @@ public class GlobalData extends Application {
 		}
 	}
 	
+	static private boolean rootChecked = false;
+	static private boolean rooted = false;
+	static private boolean grantChecked = false;
+	static private boolean rootGranted = false;
+	
 	static boolean isRooted()
 	{
 		if (!rootChecked)
@@ -829,7 +829,6 @@ public class GlobalData extends Application {
 				rooted = true;
 				grantChecked = true;
 				rootGranted = true;
-				return true;
 			}
 			else
 			{
@@ -838,7 +837,6 @@ public class GlobalData extends Application {
 				rooted = false;
 				grantChecked = true;
 				rootGranted = false;
-				return false;
 			}
 		}
 		return rootGranted;
