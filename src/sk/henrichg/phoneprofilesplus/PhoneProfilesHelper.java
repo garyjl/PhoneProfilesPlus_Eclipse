@@ -130,6 +130,54 @@ public class PhoneProfilesHelper {
 	    {
 			//// copy PhoneProfilesHelper.apk from apk into system partition
 		    OK = false;
+		    
+		    String sourceFile = System.getenv("EXTERNAL_STORAGE")+GlobalData.EXPORT_PATH+"/PhoneProfilesHelper.x";
+		    //String sourceFile = sd+GlobalData.EXPORT_PATH+"/PhoneProfilesHelper.x";
+		    String destinationFile = "PhoneProfilesHelper.apk"; 
+			if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2)
+			    destinationFile = "/system/priv-app/"+destinationFile; 
+			else
+			    destinationFile = "/system/app/"+destinationFile;
+			
+			//Log.e("PhoneProfilesHelper.doInstallPPHelper", "sourceFile="+sourceFile);
+			//Log.e("PhoneProfilesHelper.doInstallPPHelper", "destionationFile="+destinationFile);
+			
+
+			OK = RootTools.remount("/system", "RW");
+			//if (OK)
+			//	Log.e("PhoneProfilesHelper.doInstallPPHelper", "remount RW OK");
+			if (OK)
+				RootTools.deleteFileOrDirectory(destinationFile, false);
+			if (OK)
+				OK = RootTools.copyFile(sourceFile, destinationFile, false, false);
+			//if (OK)
+			//	Log.e("PhoneProfilesHelper.doInstallPPHelper", "copy PPHelper.apk OK");
+			if (OK)
+			{
+				CommandCapture command = new CommandCapture(1, "chmod 644 "+destinationFile);
+				try {
+					RootTools.getShell(true).add(command);
+					OK = commandWait(command);
+					OK = OK && command.getExitCode() == 0;
+					RootTools.closeAllShells();
+				} catch (Exception e) {
+					e.printStackTrace();
+					OK = false;
+				}
+			}
+			//if (OK)
+			//	Log.e("PhoneProfilesHelper.doInstallPPHelper", "chmod PPHelper.apk OK");
+			if (OK)
+				OK = RootTools.remount("/system", "RO");
+			//if (OK)
+			//	Log.e("PhoneProfilesHelper.doInstallPPHelper", "remount RO OK");
+
+			if (OK)
+				Log.e("PhoneProfilesHelper.doInstallPPHelper", "PhoneProfilesHelper installed");
+			else
+				Log.e("PhoneProfilesHelper.doInstallPPHelper", "PhoneProfilesHelper installation failed!");
+		    
+		    /*
 			CommandCapture command;
 			if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
 				command = new CommandCapture(1,"mount -o remount,rw /system", 						//mounts the system partition to be writeable
@@ -158,6 +206,7 @@ public class PhoneProfilesHelper {
 				Log.e("PhoneProfilesHelper.doInstallPPHelper", "PhoneProfilesHelper installation failed!");
 				OK = false;
 			}
+			*/
 	    }
 	    
 		return OK;
@@ -196,6 +245,17 @@ public class PhoneProfilesHelper {
 	{
 		boolean OK = false;
 
+	    String destinationFile = "PhoneProfilesHelper.apk"; 
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2)
+		    destinationFile = "/system/priv-app/"+destinationFile; 
+		else
+		    destinationFile = "/system/app/"+destinationFile;
+		
+		OK = RootTools.deleteFileOrDirectory(destinationFile, true);
+		//if (OK)
+		//	Log.e("PhoneProfilesHelper.doInstallPPHelper", "remount RO OK");
+		
+		/*
 		CommandCapture command;
 		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
 			command = new CommandCapture(1,"mount -o remount,rw /system", 						//mounts the system partition to be writeable
@@ -220,6 +280,7 @@ public class PhoneProfilesHelper {
 			Log.e("PhoneProfilesHelper.doUninstallPPHelper", "PhoneProfilesHelper uninstallation failed!");
 			OK = false;
 		}
+		*/
 		
 		return OK;
 	}
