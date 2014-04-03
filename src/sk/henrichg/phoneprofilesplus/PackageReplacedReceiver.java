@@ -30,7 +30,7 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 
 				GlobalData.setApplicationStarted(context, true);
 				
-				GlobalData.grantRoot();
+				GlobalData.grantRoot(true);
 
 				// startneme eventy
 				if (GlobalData.getGlobalEventsRuning(context))

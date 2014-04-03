@@ -22,7 +22,7 @@ public class BootUpReceiver extends BroadcastReceiver {
 		{	
 			GlobalData.setApplicationStarted(context, true);
 			
-			GlobalData.grantRoot();
+			GlobalData.grantRoot(true);
 
 			DataWrapper dataWrapper = new DataWrapper(context, true, false, 0);
 			dataWrapper.getActivateProfileHelper().initialize(dataWrapper, null, context);

@@ -818,9 +818,9 @@ public class GlobalData extends Application {
 		return rooted;
 	}
 	
-	static boolean grantRoot()
+	static boolean grantRoot(boolean force)
 	{
-		if (!grantChecked)
+		if ((!grantChecked) || force)
 		{
 			if (RootTools.isAccessGiven())
 			{

@@ -867,7 +867,7 @@ public class ActivateProfileHelper {
 		        context.sendBroadcast(poke);
 	    	}
 	    	else
-	    	if ((android.os.Build.VERSION.SDK_INT >= 17) && GlobalData.grantRoot())
+	    	if ((android.os.Build.VERSION.SDK_INT >= 17) && GlobalData.grantRoot(false))
 			{
 				// zariadenie je rootnute
 				GlobalData.logE("ActivateProfileHelper.setGPS", "rooted");
@@ -947,7 +947,7 @@ public class ActivateProfileHelper {
 	            context.sendBroadcast(poke);
 	    	}
 	    	else
-	    	if ((android.os.Build.VERSION.SDK_INT >= 17) && GlobalData.grantRoot())
+	    	if ((android.os.Build.VERSION.SDK_INT >= 17) && GlobalData.grantRoot(false))
 			{
 				// zariadenie je rootnute
 				GlobalData.logE("ActivateProfileHelper.setGPS", "rooted");
@@ -1025,7 +1025,7 @@ public class ActivateProfileHelper {
 	
 	private void setAirplaneMode_SDK17(Context context, boolean mode)
 	{
-		if (GlobalData.grantRoot())
+		if (GlobalData.grantRoot(false))
 		{
 			// zariadenie je rootnute
 			String command1;

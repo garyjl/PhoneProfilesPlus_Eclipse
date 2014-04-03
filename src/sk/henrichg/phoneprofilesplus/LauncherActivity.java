@@ -14,8 +14,6 @@ public class LauncherActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		GlobalData.grantRoot();
-		
 		dataWrapper = new DataWrapper(getBaseContext(), true, false, 0);
 		dataWrapper.getActivateProfileHelper().initialize(dataWrapper, this, getBaseContext());
 		
@@ -41,6 +39,8 @@ public class LauncherActivity extends Activity {
 			if (!GlobalData.getApplicationStarted(getBaseContext()))
 			{
 				// aplikacia este nie je nastartovana
+				
+				GlobalData.grantRoot(true);
 				
 				// startneme eventy
 				if (GlobalData.getGlobalEventsRuning(getBaseContext()))
