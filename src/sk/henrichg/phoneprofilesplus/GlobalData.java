@@ -638,6 +638,7 @@ public class GlobalData extends Application {
 	
 	static public boolean rootChecked = false;
 	static public boolean rooted = false;
+	static public boolean grantChecked = false;
 	static public boolean rootGranted = false;
 
 	static int hardwareCheck(String preferenceKey, Context context)
@@ -819,27 +820,28 @@ public class GlobalData extends Application {
 	
 	static boolean grantRoot()
 	{
-		if (!rootGranted)
+		if (!grantChecked)
 		{
 			if (RootTools.isAccessGiven())
 			{
 				// root grantnuty
 				rootChecked = true;
 				rooted = true;
+				grantChecked = true;
 				rootGranted = true;
 				return true;
 			}
 			else
 			{
 				// grant odmietnuty
-				rootChecked = false;
+				rootChecked = true;
 				rooted = false;
+				grantChecked = true;
 				rootGranted = false;
 				return false;
 			}
 		}
-		else
-			return true;
+		return rootGranted;
 	}
 	
 	//------------------------------------------------------------
