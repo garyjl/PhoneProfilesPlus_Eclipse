@@ -36,7 +36,6 @@ public class ContactsCache {
 		while (mCursor.moveToNext()) 
 		{
 			try{
-				Contact aContact = new Contact();
 				long contactId = mCursor.getLong(mCursor.getColumnIndex(ContactsContract.Contacts._ID)); 
 				String name = mCursor.getString(mCursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
 				//String hasPhone = mCursor.getString(mCursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
@@ -47,6 +46,7 @@ public class ContactsCache {
 					while (phones.moveToNext()) 
 					{ 
 						String phoneNumber = phones.getString(phones.getColumnIndex( ContactsContract.CommonDataKinds.Phone.NUMBER));
+						Contact aContact = new Contact();
 						aContact.id = contactId;
 						aContact.name = name;
 						aContact.phoneNumber = phoneNumber;

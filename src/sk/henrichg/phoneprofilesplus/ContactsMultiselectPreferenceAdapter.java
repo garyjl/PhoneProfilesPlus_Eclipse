@@ -95,7 +95,7 @@ public class ContactsMultiselectPreferenceAdapter extends BaseAdapter
 
         // Display Contact data
         if (contact.photoId != 0)
-        	imageViewPhoto.setImageURI(getPhotoUri(contact.photoId));
+        	imageViewPhoto.setImageURI(getPhotoUri(contact.id));
         else
         	imageViewPhoto.setImageResource(R.drawable.ic_contacts_multiselect_dialog_preference_no_photo);
         textViewDisplayName.setText(contact.name);
@@ -109,9 +109,9 @@ public class ContactsMultiselectPreferenceAdapter extends BaseAdapter
 	/**
 	 * @return the photo URI
 	 */
-	private Uri getPhotoUri(long photoId)
+	private Uri getPhotoUri(long contactId)
 	{
-	    try {
+	/*    try {
 	        Cursor cur = context.getContentResolver().query(ContactsContract.Data.CONTENT_URI, null,
 	                		ContactsContract.Data.CONTACT_ID + "=" + photoId + " AND "
 	                        + ContactsContract.Data.MIMETYPE + "='"
@@ -130,7 +130,8 @@ public class ContactsMultiselectPreferenceAdapter extends BaseAdapter
 	        e.printStackTrace();
 	        return null;
 	    }
-	    Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, photoId);
+	    */
+	    Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
 	    return Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
 	}
 
