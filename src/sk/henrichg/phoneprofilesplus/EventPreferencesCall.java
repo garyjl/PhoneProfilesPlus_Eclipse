@@ -89,21 +89,13 @@ public class EventPreferencesCall extends EventPreferences {
 			CharSequence summary = (index >= 0) ? listPreference.getEntries()[index] : null;
 			listPreference.setSummary(summary);
 		}
-		if (key.equals(PREF_EVENT_CALL_CONTACTS))
-		{
-			if (value.isEmpty())
-				prefMng.findPreference(key).setSummary(R.string.pref_event_call_no_contacts_selected);
-			else
-				prefMng.findPreference(key).setSummary(R.string.pref_event_call_contacts_selected);
-		}
 	}
 	
 	@Override
 	public void setSummary(PreferenceManager prefMng, String key, SharedPreferences preferences, Context context)
 	{
 		if (key.equals(PREF_EVENT_CALL_EVENT) || 
-			key.equals(PREF_EVENT_CALL_CONTACT_LIST_TYPE) ||
-			key.equals(PREF_EVENT_CALL_CONTACTS))
+			key.equals(PREF_EVENT_CALL_CONTACT_LIST_TYPE))
 		{
 			setSummary(prefMng, key, preferences.getString(key, ""), context);
 		}
@@ -114,7 +106,6 @@ public class EventPreferencesCall extends EventPreferences {
 	{
 		setSummary(prefMng, PREF_EVENT_CALL_EVENT, Integer.toString(_callEvent), context);
 		setSummary(prefMng, PREF_EVENT_CALL_CONTACT_LIST_TYPE, Integer.toString(_contactListType), context);
-		setSummary(prefMng, PREF_EVENT_CALL_CONTACTS, _contacts, context);
 	}
 	
 	@Override

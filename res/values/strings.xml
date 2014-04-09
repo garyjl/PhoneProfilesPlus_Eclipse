@@ -291,7 +291,6 @@
 
     <string name="contacts_multiselect_summary_text_selected">Selected</string>	    			
     <string name="contacts_multiselect_summary_text_not_selected">Not selected</string>
-    
     <string name="event_preferences_category_eventCallParameters">Call parameters</string>
     <string name="event_preferences_call_enabled">Enable call</string>
     <string name="event_preferences_call_contacts">Contacts</string>
@@ -308,6 +307,6 @@
     <string name="pref_event_call_event">Call event</string>
     <string name="pref_event_call_contactListType">Contact list type</string> 
     <string name="pref_event_call_no_contacts_selected">No contacts selected</string>
-    <string name="pref_event_call_contacts_selected">Vontacts selected</string>
+    <string name="pref_event_call_contacts_selected">Contacts selected</string>
     
 </resources>

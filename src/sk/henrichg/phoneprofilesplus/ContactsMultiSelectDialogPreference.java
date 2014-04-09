@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -96,7 +97,7 @@ public class ContactsMultiSelectDialogPreference extends DialogPreference
 			if (shouldPersist()) 
 			{
 				// sem narvi stringy kontatkov oddelenych |
-				String value = "";
+				value = "";
 				List<Contact> contactList = EditorProfilesActivity.getContactsCache().getList();
 				if (contactList != null)
 				{
