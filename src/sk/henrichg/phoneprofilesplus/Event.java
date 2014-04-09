@@ -127,8 +127,8 @@ public class Event {
 			runnable = runnable && this._eventPreferencesTime.isRunable();
 		if (this._eventPreferencesBattery._enabled)
 			runnable = runnable && this._eventPreferencesBattery.isRunable();
-		if (this._eventPreferencesCall._enabled)
-			runnable = runnable && this._eventPreferencesCall.isRunable();
+		//if (this._eventPreferencesCall._enabled)
+		//	runnable = runnable && this._eventPreferencesCall.isRunable();
 		return runnable;
 	}
 	
@@ -141,7 +141,7 @@ public class Event {
    		editor.putString(PREF_EVENT_NOTIFICATION_SOUND, this._notificationSound);
         this._eventPreferencesTime.loadSharedPrefereces(preferences);
         this._eventPreferencesBattery.loadSharedPrefereces(preferences);
-        this._eventPreferencesCall.loadSharedPrefereces(preferences);
+        //this._eventPreferencesCall.loadSharedPrefereces(preferences);
 		editor.commit();
 	}
 
@@ -154,7 +154,7 @@ public class Event {
 		//Log.e("Event.saveSharedPrefereces","notificationSound="+this._notificationSound);
 		this._eventPreferencesTime.saveSharedPrefereces(preferences);
 		this._eventPreferencesBattery.saveSharedPrefereces(preferences);
-		this._eventPreferencesCall.saveSharedPrefereces(preferences);
+		//this._eventPreferencesCall.saveSharedPrefereces(preferences);
 		
 		if (!this.isRunnable())
 			this._status = ESTATUS_STOP;
@@ -213,7 +213,7 @@ public class Event {
 			setSummary(prefMng, key, preferences.getString(key, ""), context);
 		_eventPreferencesTime.setSummary(prefMng, key, preferences, context);
 		_eventPreferencesBattery.setSummary(prefMng, key, preferences, context);
-		_eventPreferencesCall.setSummary(prefMng, key, preferences, context);
+		//_eventPreferencesCall.setSummary(prefMng, key, preferences, context);
 	}
 	
 	public void setAllSummary(PreferenceManager prefMng, Context context)
@@ -223,7 +223,7 @@ public class Event {
 		setSummary(prefMng, PREF_EVENT_NOTIFICATION_SOUND, _notificationSound, context);
 		_eventPreferencesTime.setAllSummary(prefMng, context);
 		_eventPreferencesBattery.setAllSummary(prefMng, context);
-		_eventPreferencesCall.setAllSummary(prefMng, context);
+		//_eventPreferencesCall.setAllSummary(prefMng, context);
 	}
 	
 	public String getPreferecesDescription(Context context)
@@ -235,8 +235,8 @@ public class Event {
 		description = _eventPreferencesTime.getPreferencesDescription(description, context);
 		description = description + "\n";
 		description = _eventPreferencesBattery.getPreferencesDescription(description, context);
-		description = description + "\n";
-		description = _eventPreferencesCall.getPreferencesDescription(description, context);
+		//description = description + "\n";
+		//description = _eventPreferencesCall.getPreferencesDescription(description, context);
 		
 		return description;
 	}
@@ -249,8 +249,8 @@ public class Event {
 			canActivate = canActivate || this._eventPreferencesTime.activateReturnProfile();
 		if (this._eventPreferencesBattery._enabled)
 			canActivate = canActivate || this._eventPreferencesBattery.activateReturnProfile();
-		if (this._eventPreferencesCall._enabled)
-			canActivate = canActivate || this._eventPreferencesCall.activateReturnProfile();
+		//if (this._eventPreferencesCall._enabled)
+		//	canActivate = canActivate || this._eventPreferencesCall.activateReturnProfile();
 		
 		return canActivate;
 	}
@@ -492,7 +492,7 @@ public class Event {
 			// setup system event for next running status
 			_eventPreferencesTime.setSystemRunningEvent(context);
 			_eventPreferencesBattery.setSystemRunningEvent(context);
-			_eventPreferencesCall.setSystemRunningEvent(context);
+			//_eventPreferencesCall.setSystemRunningEvent(context);
 		}
 		else
 		if (forStatus == ESTATUS_RUNNING)
@@ -501,7 +501,7 @@ public class Event {
 			// setup system event for pause status
 			_eventPreferencesTime.setSystemPauseEvent(context);
 			_eventPreferencesBattery.setSystemPauseEvent(context);
-			_eventPreferencesCall.setSystemPauseEvent(context);
+			//_eventPreferencesCall.setSystemPauseEvent(context);
 		}
 		else
 		if (forStatus == ESTATUS_STOP)
@@ -510,7 +510,7 @@ public class Event {
 			// remove all system events
 			_eventPreferencesTime.removeSystemEvent(context);
 			_eventPreferencesBattery.removeSystemEvent(context);
-			_eventPreferencesCall.removeSystemEvent(context);
+			//_eventPreferencesCall.removeSystemEvent(context);
 		}
 	}
 	
