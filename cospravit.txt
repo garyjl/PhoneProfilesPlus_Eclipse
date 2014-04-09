@@ -1,34 +1,6 @@
-Events:
-- spojime vsetky typy do jedneho typu
-- event teda bude mat preferences:
-  - enable/dislable
-  - name
-  - activated profile
-  - notification sound
-  --------------------------
-  - use time preferences
-  - days of week
-  - start time
-  - use end time
-  - end time
-  --------------------------
-  - use battery preferences
-  - charging
-  - low level
-  - hight level
-- ak sa maju pouzit parametre casu
-  - nastavia sa alarmy ako doteraz
-- ak sa maju pouzit parametre baterie
-  - nahodi sa alarm na bateriu ako doteraz
-- ak sa prijime start alarm time parametrov
-  - ak sa maju pouzit parametre baterie, zisti sa stav baterie a ak stav sedi s parametrami, startne sa event
-  - ak sa nemaju pouzit parametre baterie, startne sa event
-- ak sa prijime end alarm time parametrov
-  - pauzne sa event
-- ak sa prijime alarm na bateriu alebo plug/unplug nabijacky, zisti sa stav baterie
-  - ak stav sedi s parametrami a maju sa pouzit parametre casu a tie tiez sedia, startne sa event
-  - ak stav sedi s parametrami a nemaju sa pouzit parametre casu, startne sa event
-  - ak stav sedi s parametrami a maju sa pouzit parametre casu a tie nesedia, pauzne sa event
-  - ak stav nesedi s parametrami, pauzne sa event
-  
-    
+Call event:
+DataWrapper.doEventService musi vediet stav hovoru. Toto je volane zo service EventsService a z gui.
+Pri volani z gui sa event pauzuje, a pochybujem, ze uzivatel bude nieco robit v gui, ked zrovna vola.
+Cize spravme v DataWrapper f., ktora nastavi stav hovoru. Tato bude volana len z EventsService.
+A potom  DataWrapper.doEventService bude vediet, v akom stave je hovor.
+Samozrejme do EventsService treba cez intent putExtra dat aj stav hovoru z receivera na hovor. 
