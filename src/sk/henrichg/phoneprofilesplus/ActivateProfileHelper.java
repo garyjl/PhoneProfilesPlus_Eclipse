@@ -810,23 +810,34 @@ public class ActivateProfileHelper {
 	
 	private void setMobileData(Context context, boolean enable)
 	{
-		final ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 		try {
+			/*
+			final ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+			
 			final Class<?> connectivityManagerClass = Class.forName(connectivityManager.getClass().getName());
 			final Field iConnectivityManagerField = connectivityManagerClass.getDeclaredField("mService");
 			iConnectivityManagerField.setAccessible(true);
 			final Object iConnectivityManager = iConnectivityManagerField.get(connectivityManager);
 			final Class<?> iConnectivityManagerClass = Class.forName(iConnectivityManager.getClass().getName());
-			final Method setMobileDataEnabledMethod = iConnectivityManagerClass.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
+			final Method setMobileDataEnabledMethod = iConnectivityManagerClass.getDeclaredMethod("setMobileDataEnabled", boolean.class);
 			setMobileDataEnabledMethod.setAccessible(true);
-			
+
 			setMobileDataEnabledMethod.invoke(iConnectivityManager, enable);
-		} catch (ClassNotFoundException e) {
+			*/
+			
+			ConnectivityManager conman = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+	        Method setMobileDataEnabledMethod = ConnectivityManager.class.getDeclaredMethod("setMobileDataEnabled", boolean.class);
+
+	        setMobileDataEnabledMethod.setAccessible(true);
+	        setMobileDataEnabledMethod.invoke(conman, enable);
+			
+/*		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			//Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
 		} catch (NoSuchFieldException e) {
 			e.printStackTrace();
-			//Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
+			//Log.e("ActivateProfileHelper.setMobileData", e.getMessage());*/
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 			//Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
