@@ -57,43 +57,35 @@ public class ContactsMultiSelectDialogPreference extends DialogPreference
 		if (EditorProfilesActivity.getContactsCache() == null)
 			EditorProfilesActivity.createContactsCache();
 		
-		if (!EditorProfilesActivity.getContactsCache().isCached())
-		{
-			new AsyncTask<Void, Integer, Void>() {
-	
-				@Override
-				protected void onPreExecute()
-				{
-					super.onPreExecute();
-					linlaProgress.setVisibility(View.VISIBLE);
-				}
-				
-				@Override
-				protected Void doInBackground(Void... params) {
+		new AsyncTask<Void, Integer, Void>() {
+
+			@Override
+			protected void onPreExecute()
+			{
+				super.onPreExecute();
+				linlaProgress.setVisibility(View.VISIBLE);
+			}
+			
+			@Override
+			protected Void doInBackground(Void... params) {
+				if (!EditorProfilesActivity.getContactsCache().isCached())
 					EditorProfilesActivity.getContactsCache().getContactList(_context);
-					return null;
-				}
-				
-				@Override
-				protected void onPostExecute(Void result)
-				{
-					super.onPostExecute(result);
-					
-				    listView.setAdapter(listAdapter);
-					linlaProgress.setVisibility(View.GONE);
-				}
-				
-			}.execute();
-		}
-		else
-		{
-			listView.setAdapter(listAdapter);
-		}
 
-		
-	    // Add Contact Class to the Arraylist
-
-		getValueCMSDP();
+				getValueCMSDP();
+				
+				return null;
+			}
+			
+			@Override
+			protected void onPostExecute(Void result)
+			{
+				super.onPostExecute(result);
+				
+			    listView.setAdapter(listAdapter);
+				linlaProgress.setVisibility(View.GONE);
+			}
+			
+		}.execute();
 		
 		return view;
 	}
