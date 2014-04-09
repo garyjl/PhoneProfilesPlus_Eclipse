@@ -60,6 +60,8 @@ public class PhoneProfilesPreferencesActivity extends ActionBarActivity
 	@Override
 	public void onConfigurationChanged(Configuration newConfig)
 	{
+		super.onConfigurationChanged(newConfig);
+		
 		getBaseContext().getResources().updateConfiguration(newConfig, getBaseContext().getResources().getDisplayMetrics());
 		GUIData.reloadActivity(this, false);
 	}

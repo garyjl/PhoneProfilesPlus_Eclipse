@@ -206,6 +206,8 @@ public class ActivateProfileActivity extends ActionBarActivity {
 	@Override
 	public void onConfigurationChanged(Configuration newConfig)
 	{
+		super.onConfigurationChanged(newConfig);
+		
 		getBaseContext().getResources().updateConfiguration(newConfig, getBaseContext().getResources().getDisplayMetrics());
 		//setContentView(R.layout.activity_phone_profiles);
 		GUIData.reloadActivity(this, false);

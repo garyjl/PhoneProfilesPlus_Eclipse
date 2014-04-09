@@ -1338,8 +1338,10 @@ public class EditorProfilesActivity extends ActionBarActivity
 	@Override
 	public void onConfigurationChanged(Configuration newConfig)
 	{
+		super.onConfigurationChanged(newConfig);
+		
+        /*
 		// activity will restarted
-        /*super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggles
         drawerToggle.onConfigurationChanged(newConfig); */
 		
