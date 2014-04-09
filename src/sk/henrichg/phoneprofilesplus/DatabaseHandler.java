@@ -25,7 +25,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static SQLiteDatabase writableDb;	
     
 	// Database Version
-	private static final int DATABASE_VERSION = 1035;
+	private static final int DATABASE_VERSION = 1040;
 
 	// Database Name
 	private static final String DATABASE_NAME = "phoneProfilesManager";
@@ -94,6 +94,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_E_BATTERY_CHARGING = "batteryCharging";
 	private static final String KEY_E_TIME_ENABLED = "timeEnabled";
 	private static final String KEY_E_BATTERY_ENABLED = "batteryEnabled";
+	private static final String KEY_E_CALL_ENABLED = "callEnabled";
+	private static final String KEY_E_CALL_EVENT = "callEvent";
+	private static final String KEY_E_CALL_CONTACTS = "callContacts";
+	private static final String KEY_E_CALL_CONTACT_LIST_TYPE = "contactListType";
 	
 	private static final String KEY_ET_ID = "id";
 	private static final String KEY_ET_EORDER = "eorder";
@@ -219,7 +223,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_E_BATTERY_LEVEL_HIGHT + " INTEGER,"
 				+ KEY_E_BATTERY_CHARGING + " INTEGER,"
 				+ KEY_E_TIME_ENABLED + " INTEGER,"
-				+ KEY_E_BATTERY_ENABLED + " INTEGER"
+				+ KEY_E_BATTERY_ENABLED + " INTEGER,"
+				+ KEY_E_CALL_ENABLED + " INTEGER,"
+	            + KEY_E_CALL_EVENT + " INTEGER,"
+	            + KEY_E_CALL_CONTACTS + " TEXT,"
+	            + KEY_E_CALL_CONTACT_LIST_TYPE + " INTEGER"
 				+ ")";
 		db.execSQL(CREATE_EVENTS_TABLE);
 
@@ -600,6 +608,29 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.beginTransaction();
 			try {
 				db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_DEVICE_NFC + "=0");
+				db.setTransactionSuccessful();
+		     } catch (Exception e){
+		         //Error in between database transaction 
+		     } finally {
+		    	db.endTransaction();
+	         }	
+		}
+		
+		if (oldVersion < 1040)
+		{
+			// pridame nove stlpce
+			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_CALL_ENABLED + " INTEGER");
+			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_CALL_EVENT + " INTEGER");
+			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_CALL_CONTACTS + " TEXT");
+			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_CALL_CONTACT_LIST_TYPE + " INTEGER");
+			
+			// updatneme zaznamy
+			db.beginTransaction();
+			try {
+				db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_CALL_ENABLED + "=0");
+				db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_CALL_EVENT + "=0");
+				db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_CALL_CONTACTS + "=\"\"");
+				db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_CALL_CONTACT_LIST_TYPE + "=0");
 				db.setTransactionSuccessful();
 		     } catch (Exception e){
 		         //Error in between database transaction 
@@ -1801,6 +1832,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public void getEventPreferences(Event event, SQLiteDatabase db) {
        	getEventPreferencesTime(event, db);
        	getEventPreferencesBattery(event, db);
+       	getEventPreferencesCall(event, db);
 	}
 	
 	private void getEventPreferencesTime(Event event, SQLiteDatabase db) {
@@ -1887,6 +1919,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 		cursor.close();
 	}
+
+	private void getEventPreferencesCall(Event event, SQLiteDatabase db) {
+		Cursor cursor = db.query(TABLE_EVENTS, 
+				                 new String[] { KEY_E_CALL_ENABLED,
+												KEY_E_CALL_EVENT, 
+												KEY_E_CALL_CONTACTS,
+												KEY_E_CALL_CONTACT_LIST_TYPE
+												}, 
+				                 KEY_ID + "=?",
+				                 new String[] { String.valueOf(event._id) }, null, null, null, null);
+		if (cursor != null)
+			cursor.moveToFirst();
+
+		EventPreferencesCall eventPreferences = (EventPreferencesCall)event._eventPreferencesCall;
+
+		eventPreferences._enabled = (Integer.parseInt(cursor.getString(0)) == 1);
+		eventPreferences._callEvent = Integer.parseInt(cursor.getString(1));
+		eventPreferences._contacts = cursor.getString(2);
+		eventPreferences._contactListType = Integer.parseInt(cursor.getString(3));
+		
+		cursor.close();
+	}
 	
 	public int updateEventPreferences(Event event) {
 		//SQLiteDatabase db = this.getReadableDatabase();
@@ -1903,6 +1957,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
        	r = updateEventPreferencesTime(event, db);
        	if (r != 0)
        		r = updateEventPreferencesBattery(event, db);
+       	if (r != 0)
+       		r = updateEventPreferencesCall(event, db);
 
        	return r;
 	}
@@ -1958,6 +2014,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		return r;
 	}
 
+	private int updateEventPreferencesCall(Event event, SQLiteDatabase db) {
+		ContentValues values = new ContentValues();
+		
+		EventPreferencesCall eventPreferences = (EventPreferencesCall)event._eventPreferencesCall; 
+
+		//Log.e("DatabaseHandler.updateEventPreferencesCall","type="+event._type);
+		
+		values.put(KEY_E_CALL_ENABLED, (eventPreferences._enabled) ? 1 : 0);
+		values.put(KEY_E_CALL_EVENT, eventPreferences._callEvent);
+		values.put(KEY_E_CALL_CONTACTS, eventPreferences._contacts);
+		values.put(KEY_E_CALL_CONTACT_LIST_TYPE, eventPreferences._contactListType);
+
+		// updating row
+		int r = db.update(TABLE_EVENTS, values, KEY_ID + " = ?",
+				        new String[] { String.valueOf(event._id) });
+        
+		return r;
+	}
+	
 	public int updateEventPreferencesBatteryBlocked(Event event)
 	{
 		//SQLiteDatabase db = this.getWritableDatabase();
