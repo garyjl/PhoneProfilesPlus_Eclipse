@@ -295,5 +295,19 @@
     <string name="event_preferences_category_eventCallParameters">Call parameters</string>
     <string name="event_preferences_call_enabled">Enable call</string>
     <string name="event_preferences_call_contacts">Contacts</string>
+    <string name="event_preferences_call_event">Call event</string>
+    <string name="array_event_pref_ringing">Ringing</string>
+    <string name="array_event_pref_outcall_start">Start calling</string>
+    <string name="array_event_pref_incall_answered">Incoming call answered</string>
+    <string name="array_event_pref_outcall_answered">Outgoing call answered</string>
+    <string name="event_preferences_ccontactListType">Contact list type</string>
+    <string name="array_event_pref_contact_list_type_white_list">White list</string>
+    <string name="array_event_pref_contact_list_type_black_list">Black list</string>
+    <string name="array_event_pref_contact_list_type_not_use">Not use</string>
+    <string name="event_type_call">Call</string>
+    <string name="pref_event_call_event">Call event</string>
+    <string name="pref_event_call_contactListType">Contact list type</string> 
+    <string name="pref_event_call_no_contacts_selected">No contacts selected</string>
+    <string name="pref_event_call_contacts_selected">Vontacts selected</string>
     
 </resources>

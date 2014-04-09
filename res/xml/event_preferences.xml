@@ -91,10 +91,24 @@
 		    android:key="eventCallEnabled"
 		    android:title="@string/event_preferences_call_enabled"
 		    android:defaultValue="false" />
-        <sk.henrichg.phoneprofilesplus.ContactsMultiSelectDialogPreference
+		<ListPreference android:title="@string/event_preferences_call_event"
+            android:summary="@string/array_event_pref_ringing"
+            android:key="eventCallEvent"
+            android:defaultValue="0"
+            android:entries="@array/eventCallEventsArray"
+            android:entryValues="@array/eventCallEventsValues"
+            android:dependency="eventCallEnabled" />        
+		<sk.henrichg.phoneprofilesplus.ContactsMultiSelectDialogPreference
             android:key="eventCallContacts"
             android:defaultValue=""
             android:title="@string/event_preferences_call_contacts"
             android:dependency="eventCallEnabled" />
+		<ListPreference android:title="@string/event_preferences_ccontactListType"
+            android:summary="@string/array_event_pref_contact_list_type_white_list"
+            android:key="eventCallContactListType"
+            android:defaultValue="0"
+            android:entries="@array/eventCallContactListTypeArray"
+            android:entryValues="@array/eventCallContactListTypeValues"
+            android:dependency="eventCallEnabled" />        
 	</PreferenceCategory>
 </PreferenceScreen>    
