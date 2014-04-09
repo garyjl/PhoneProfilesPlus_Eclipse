@@ -107,7 +107,7 @@ public class ContactsMultiSelectDialogPreference extends DialogPreference
 						{
 							if (!value.isEmpty())
 								value = value + "|";
-							value = value + contact.id;
+							value = value + contact.contactId + "#" + contact.phoneId;
 						}
 					}
 				}
@@ -152,8 +152,10 @@ public class ContactsMultiSelectDialogPreference extends DialogPreference
 				for (int i = 0; i < splits.length; i++)
 				{
 					try {
-						long id = Long.parseLong(splits[i]);
-						if (contact.id == id)
+						String [] splits2 = splits[i].split("#");
+						long contactId = Long.parseLong(splits2[0]);
+						long phoneId = Long.parseLong(splits2[1]);
+						if ((contact.contactId == contactId) && (contact.phoneId == phoneId))
 							contact.checked = true;
 					} catch (Exception e) {
 					}

@@ -95,7 +95,7 @@ public class ContactsMultiselectPreferenceAdapter extends BaseAdapter
 
         // Display Contact data
         if (contact.photoId != 0)
-        	imageViewPhoto.setImageURI(getPhotoUri(contact.id));
+        	imageViewPhoto.setImageURI(getPhotoUri(contact.contactId));
         else
         	imageViewPhoto.setImageResource(R.drawable.ic_contacts_multiselect_dialog_preference_no_photo);
         textViewDisplayName.setText(contact.name);

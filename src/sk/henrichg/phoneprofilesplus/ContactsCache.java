@@ -45,10 +45,12 @@ public class ContactsCache {
 					Cursor phones = context.getContentResolver().query( ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = "+ contactId, null, null);
 					while (phones.moveToNext()) 
 					{ 
+						long phoneId = phones.getLong(phones.getColumnIndex( ContactsContract.CommonDataKinds.Phone._ID));
 						String phoneNumber = phones.getString(phones.getColumnIndex( ContactsContract.CommonDataKinds.Phone.NUMBER));
 						Contact aContact = new Contact();
-						aContact.id = contactId;
+						aContact.contactId = contactId;
 						aContact.name = name;
+						aContact.phoneId = phoneId;
 						aContact.phoneNumber = phoneNumber;
 						try {
 							aContact.photoId = Long.parseLong(photoId);
@@ -92,7 +94,7 @@ public class ContactsCache {
 	public long getContactId(int position)
 	{
 		if (cached) 
-			return contactList.get(position).id;
+			return contactList.get(position).contactId;
 		else
 			return 0;
 	}
@@ -103,6 +105,14 @@ public class ContactsCache {
 			return contactList.get(position).name;
 		else
 			return "";
+	}
+
+	public long getPhoneId(int position)
+	{
+		if (cached) 
+			return contactList.get(position).phoneId;
+		else
+			return 0;
 	}
 
 	public String getContactPhoneNumber(int position)
