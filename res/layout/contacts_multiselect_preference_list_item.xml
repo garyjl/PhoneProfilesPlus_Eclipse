@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    android:padding="3dp" >
 
     <ImageView
         android:id="@+id/contacts_multiselect_pref_dlg_item_icon"
@@ -22,7 +23,6 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/contacts_multiselect_pref_dlg_item_icon"
-        android:paddingTop="5dp"
         android:text="@string/empty_string"
         android:textSize="13sp"
         android:textStyle="bold"
