@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -51,7 +50,7 @@ public class ContactsMultiSelectDialogPreference extends DialogPreference
                 ContactViewHolder viewHolder = (ContactViewHolder) item.getTag();
                 viewHolder.checkBox.setChecked(contact.checked);
             }
-        });		
+        });
 		
 	    listAdapter = new ContactsMultiselectPreferenceAdapter(_context);
 		
@@ -90,33 +89,35 @@ public class ContactsMultiSelectDialogPreference extends DialogPreference
 		
 		return view;
 	}
-	
+
 	public void onClick(DialogInterface dialog, int which) {
 		// if the positive button is clicked, we persist the value.
-		if (which == DialogInterface.BUTTON_POSITIVE) {
-			if (shouldPersist()) 
-			{
-				// sem narvi stringy kontatkov oddelenych |
-				value = "";
-				List<Contact> contactList = EditorProfilesActivity.getContactsCache().getList();
-				if (contactList != null)
+		if (EditorProfilesActivity.getContactsCache().isCached())
+		{
+			if (which == DialogInterface.BUTTON_POSITIVE) {
+				if (shouldPersist()) 
 				{
-					for (Contact contact : contactList)
+					// sem narvi stringy kontatkov oddelenych |
+					value = "";
+					List<Contact> contactList = EditorProfilesActivity.getContactsCache().getList();
+					if (contactList != null)
 					{
-						if (contact.checked)
+						for (Contact contact : contactList)
 						{
-							if (!value.isEmpty())
-								value = value + "|";
-							value = value + contact.contactId + "#" + contact.phoneId;
+							if (contact.checked)
+							{
+								if (!value.isEmpty())
+									value = value + "|";
+								value = value + contact.contactId + "#" + contact.phoneId;
+							}
 						}
 					}
+					persistString(value);
+					
+					setSummaryCMSDP();
 				}
-				persistString(value);
-				
-				setSummaryCMSDP();
 			}
 		}
-
 		super.onClick(dialog, which);
 	}
 
