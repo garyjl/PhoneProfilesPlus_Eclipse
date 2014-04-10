@@ -84,7 +84,6 @@
 		    android:defaultValue="false"
             android:dependency="eventBatteryEnabled" />
     </PreferenceCategory>
-<!--     
     <PreferenceCategory
         android:summary="@string/event_preferences_category_eventCallParameters"
         android:title="@string/event_preferences_category_eventCallParameters" >
@@ -112,5 +111,4 @@
             android:entryValues="@array/eventCallContactListTypeValues"
             android:dependency="eventCallEnabled" />        
 	</PreferenceCategory>
- -->
 </PreferenceScreen>    
