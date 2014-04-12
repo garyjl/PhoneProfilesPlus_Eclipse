@@ -31,6 +31,9 @@ public class ContactsMultiSelectDialogPreference extends DialogPreference
 		
 		_context = context;
 
+		if (EditorProfilesActivity.getContactsCache() == null)
+			EditorProfilesActivity.createContactsCache();
+		
 	}
 
 	protected View onCreateDialogView() {
@@ -53,9 +56,6 @@ public class ContactsMultiSelectDialogPreference extends DialogPreference
         });
 		
 	    listAdapter = new ContactsMultiselectPreferenceAdapter(_context);
-		
-		if (EditorProfilesActivity.getContactsCache() == null)
-			EditorProfilesActivity.createContactsCache();
 		
 		new AsyncTask<Void, Integer, Void>() {
 
