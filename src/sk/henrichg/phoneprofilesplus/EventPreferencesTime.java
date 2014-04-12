@@ -290,6 +290,7 @@ public class EventPreferencesTime extends EventPreferences {
 		GlobalData.logE("EventPreferencesTime.computeDaysForAdd","thisDayOfWeek="+thisDayOfWeek);
 		
 		boolean setNextDayOfWeek = false;
+		boolean testDaysOfWeekSelected = true;
 		
 		if (daysOfWeek[thisDayOfWeek])
 		{
@@ -312,40 +313,25 @@ public class EventPreferencesTime extends EventPreferences {
 		    calendar.set(Calendar.YEAR,  now.get(Calendar.YEAR));
 		    
 			if ((!startEvent) && _useEndTime && (_startTime >= computedEndTime))
-				calendar.add(Calendar.DAY_OF_YEAR, 1);
-		    
-			/*
-		    SimpleDateFormat sdf = new SimpleDateFormat("EE d.MM.yyyy HH:mm:ss:S");
-		    String result = sdf.format(thisTime);
-		    Log.e("EventPreferencesTime.setSystemRunningEvent","thisTime="+result);	    
-		    result = sdf.format(calendar.getTimeInMillis());
-		    Log.e("EventPreferencesTime.setSystemRunningEvent","calendar.Time="+result);	    
-			*/
-
-			/*
-			if (roundCheck)
 			{
-				calendar.clear(Calendar.MILLISECOND);
-				SimpleDateFormat sdf = new SimpleDateFormat("EE d.MM.yyyy HH:mm:ss:S");
-			    String result = sdf.format(calendar.getTimeInMillis());
-			    Log.e("EventPreferencesTime.computeDaysForAdd","calendar.Time="+result);	    
-
-				now.clear(Calendar.MILLISECOND);
-			    result = sdf.format(now.getTimeInMillis());
-			    Log.e("EventPreferencesTime.computeDaysForAdd","now.Time="+result);	    
+				// endTime is over midnight
+				GlobalData.logE("EventPreferencesTime.computeDaysForAdd","startTime > endTime");
+				calendar.add(Calendar.DAY_OF_YEAR, 1);
+				setDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+				setNextDayOfWeek = true;
+				// to search for selected day of week
+				testDaysOfWeekSelected = false;
 			}
-			setNextDayOfWeek = (calendar.getTimeInMillis() < now.getTimeInMillis());
-			*/
-			
+			else
 			if (!noFutureTime)
 				setNextDayOfWeek = (calendar.getTimeInMillis() < now.getTimeInMillis());
 		}
 		else
 			setNextDayOfWeek = true;
 		
-		if (setNextDayOfWeek)
+		if (setNextDayOfWeek && testDaysOfWeekSelected)
 		{
-			// find next day of week 
+			// find next selected day of week 
 
 			GlobalData.logE("EventPreferencesTime.computeDaysForAdd","setNextDayOfWeek=true");
 			

@@ -32,14 +32,14 @@ public class GlobalData extends Application {
 	
 	public static boolean logIntoLogCat = false;
 	public static boolean logIntoFile = false;
-	public static String logFilterTags = "EventPreferencesBattery|"+
-	                                     "BatteryEventsAlarmBroadcastReceiver|"+
+	public static String logFilterTags = //"EventPreferencesBattery|"+
+	                                     //"BatteryEventsAlarmBroadcastReceiver|"+
 			                             "EventsService|"+
-	                                     "PowerConnectionReceiver|"+
-			                             "RefreshGUIBroadcastReceiver|"+
+	                                     //"PowerConnectionReceiver|"+
+			                             //"RefreshGUIBroadcastReceiver|"+
 	                                     "DataWrapper.doEventService|"+
 			                             "EventsAlarmBroadcastReceiver|"+
-	                                     "EventPreferencesTime.setAlarm";
+	                                     "EventPreferencesTime";
 	
 	public static final String EXPORT_PATH = "/PhoneProfilesPlus";
 	public static final String LOG_FILENAME = "log.txt";
