@@ -145,6 +145,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 						Event.ESTATUS_STOP,
 						""
 		         );
+			event_id = 0;
 		}
 		else
 		if (new_event_mode == EditorEventListFragment.EDIT_MODE_DUPLICATE)
@@ -158,6 +159,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 						   origEvent._notificationSound
 							);
 			event.copyEventPreferences(origEvent);
+			event_id = 0;
 		}
 		else
 			event = dataWrapper.getEventById(event_id);

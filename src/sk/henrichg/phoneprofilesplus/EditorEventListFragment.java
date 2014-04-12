@@ -422,13 +422,13 @@ public class EditorEventListFragment extends Fragment {
 		PopupMenu popup = new PopupMenu(context, view);
 		Menu menu = popup.getMenu();
 		getActivity().getMenuInflater().inflate(R.menu.event_list_item_edit, menu);
+
+		final Event event = (Event)view.getTag();
 		
 		MenuItem menuItem = menu.findItem(R.id.event_list_item_menu_run_stop);
         if (GlobalData.getGlobalEventsRuning(dataWrapper.context))
         {
         	menuItem.setVisible(true);
-        	
-        	Event event = (Event)view.getTag();
         	
 	        if (event.getStatusFromDB(dataWrapper) == Event.ESTATUS_STOP)
 	        {
@@ -449,8 +449,6 @@ public class EditorEventListFragment extends Fragment {
         }
         else
         	menuItem.setVisible(false);
-		
-		final Event event = (Event)view.getTag();
 		
 		popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
 

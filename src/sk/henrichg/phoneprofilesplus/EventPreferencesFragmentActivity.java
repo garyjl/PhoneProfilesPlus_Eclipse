@@ -92,6 +92,7 @@ public class EventPreferencesFragmentActivity extends ActionBarActivity
 		}
 	}
 	
+	/*
 	@Override
 	public void onConfigurationChanged(Configuration newConfig)
 	{
@@ -100,6 +101,7 @@ public class EventPreferencesFragmentActivity extends ActionBarActivity
 		getBaseContext().getResources().updateConfiguration(newConfig, getBaseContext().getResources().getDisplayMetrics());
 		GUIData.reloadActivity(this, false);
 	}
+	*/
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data)
