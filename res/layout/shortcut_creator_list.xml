@@ -17,8 +17,6 @@
         android:listSelector="?attr/cardSelector"
         android:drawSelectorOnTop="true"
 	    android:clipToPadding="false"
-    	android:scrollbarStyle="outsideOverlay" >
-
-    </ListView>
+    	android:scrollbarStyle="outsideOverlay" />
 
 </LinearLayout>

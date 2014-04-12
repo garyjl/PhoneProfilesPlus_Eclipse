@@ -17,10 +17,8 @@
         android:drawSelectorOnTop="true"
         android:choiceMode="singleChoice"
 	    android:clipToPadding="false"
-    	android:scrollbarStyle="outsideOverlay" >
+    	android:scrollbarStyle="outsideOverlay" />
 
-    </ListView>
-    
 	<TextView
 	    android:id="@+id/editor_events_list_empty"
 	    android:layout_width="fill_parent"
