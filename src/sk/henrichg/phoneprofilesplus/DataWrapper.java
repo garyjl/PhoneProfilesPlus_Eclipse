@@ -1052,44 +1052,51 @@ public class DataWrapper {
 		{
 			if (EventsService.callEventType != PhoneCallBroadcastReceiver.CALL_EVENT_UNDEFINED)
 			{
-				// find phone number
-				String[] splits = event._eventPreferencesCall._contacts.split("\\|");
-				for (int i = 0; i < splits.length; i++)
+				if (event._eventPreferencesCall._contactListType != EventPreferencesCall.CONTACT_LIST_TYPE_NOT_USE)
 				{
-					String [] splits2 = splits[i].split("#");
-
-					// get phone number from contacts
-					String[] projection = new String[] { ContactsContract.Contacts._ID };
-					String selection = ContactsContract.Contacts.HAS_PHONE_NUMBER + "='1' and " + ContactsContract.Contacts._ID + "=?";
-					String[] selectionArgs = new String[] { splits2[0] };
-					Cursor mCursor = context.getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, projection, selection, selectionArgs, null);
-					while (mCursor.moveToNext()) 
+					// find phone number
+					String[] splits = event._eventPreferencesCall._contacts.split("\\|");
+					for (int i = 0; i < splits.length; i++)
 					{
-						if (Integer.parseInt(mCursor.getString(mCursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) 
+						String [] splits2 = splits[i].split("#");
+	
+						// get phone number from contacts
+						String[] projection = new String[] { ContactsContract.Contacts._ID };
+						String selection = ContactsContract.Contacts.HAS_PHONE_NUMBER + "='1' and " + ContactsContract.Contacts._ID + "=?";
+						String[] selectionArgs = new String[] { splits2[0] };
+						Cursor mCursor = context.getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, projection, selection, selectionArgs, null);
+						while (mCursor.moveToNext()) 
 						{
-							String[] projection2 = new String[] { ContactsContract.CommonDataKinds.Phone._ID, ContactsContract.CommonDataKinds.Phone.NUMBER };
-							String selection2 = ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=?" + " and " + ContactsContract.CommonDataKinds.Phone._ID + "=?";
-							String[] selection2Args = new String[] { splits2[0],splits2[1] };
-							Cursor phones = context.getContentResolver().query( ContactsContract.CommonDataKinds.Phone.CONTENT_URI, projection2, selection2, selection2Args, null);
-							while (phones.moveToNext()) 
+							if (Integer.parseInt(mCursor.getString(mCursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) 
 							{
-								String phoneNumber = phones.getString(phones.getColumnIndex( ContactsContract.CommonDataKinds.Phone.NUMBER));
-								if (PhoneNumberUtils.compare(phoneNumber, EventsService.phoneNumber))
+								String[] projection2 = new String[] { ContactsContract.CommonDataKinds.Phone._ID, ContactsContract.CommonDataKinds.Phone.NUMBER };
+								String selection2 = ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=?" + " and " + ContactsContract.CommonDataKinds.Phone._ID + "=?";
+								String[] selection2Args = new String[] { splits2[0],splits2[1] };
+								Cursor phones = context.getContentResolver().query( ContactsContract.CommonDataKinds.Phone.CONTENT_URI, projection2, selection2, selection2Args, null);
+								while (phones.moveToNext()) 
 								{
-									phoneNumberFinded = true;
-									break;
+									String phoneNumber = phones.getString(phones.getColumnIndex( ContactsContract.CommonDataKinds.Phone.NUMBER));
+									if (PhoneNumberUtils.compare(phoneNumber, EventsService.phoneNumber))
+									{
+										phoneNumberFinded = true;
+										break;
+									}
 								}
+								phones.close();
 							}
-							phones.close();
+							if (phoneNumberFinded)
+								break;
 						}
+						mCursor.close();
 						if (phoneNumberFinded)
 							break;
 					}
-					mCursor.close();
-					if (phoneNumberFinded)
-						break;
+					if (event._eventPreferencesCall._contactListType == EventPreferencesCall.CONTACT_LIST_TYPE_BLACK_LIST)
+						phoneNumberFinded = !phoneNumberFinded;
 				}
-				
+				else
+					phoneNumberFinded = true;
+					
 				if (phoneNumberFinded)
 				{
 					if ((event._eventPreferencesCall._callEvent == EventPreferencesCall.CALL_EVENT_RINGING) &&

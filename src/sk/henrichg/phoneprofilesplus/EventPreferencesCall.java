@@ -21,6 +21,10 @@ public class EventPreferencesCall extends EventPreferences {
 	static final int CALL_EVENT_INCOMING_CALL_ANSWERED = 1;
 	static final int CALL_EVENT_OUTGOING_CALL_ANSWERED = 2;
 	
+	static final int CONTACT_LIST_TYPE_WHITE_LIST = 0;
+	static final int CONTACT_LIST_TYPE_BLACK_LIST = 1;
+	static final int CONTACT_LIST_TYPE_NOT_USE = 2;
+	
 	public EventPreferencesCall(Event event, 
 									boolean enabled,
 									int callEvent,
@@ -110,6 +114,17 @@ public class EventPreferencesCall extends EventPreferences {
 	{
 		setSummary(prefMng, PREF_EVENT_CALL_EVENT, Integer.toString(_callEvent), context);
 		setSummary(prefMng, PREF_EVENT_CALL_CONTACT_LIST_TYPE, Integer.toString(_contactListType), context);
+	}
+	
+	@Override
+	public boolean isRunable()
+	{
+		
+		boolean runable = super.isRunable();
+
+		runable = runable && (_contactListType == CONTACT_LIST_TYPE_NOT_USE || (!_contacts.isEmpty()));
+
+		return runable;
 	}
 	
 	@Override
