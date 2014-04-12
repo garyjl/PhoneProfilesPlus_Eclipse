@@ -50,6 +50,7 @@
         <item name="actionProfileButtonTextStyle">@style/TextAppearance.AppCompat.Widget.ActionMode.Title</item> 
         <item name="navigationDrawerBackground">@drawable/abc_ab_solid_dark_holo</item> 
         <item name="navigationDrawerText">@color/navigationDrawerTextColor_phoneprofiletheme_dark</item>
+        <item name="navigationDrawerSelector">@drawable/editor_drawer_selector_dark</item>
         <item name="filterStatusBarBackground">@color/filterStatusBarBackground_phoneprofilestheme_dark</item> 
         <item name="editorDrawerSpinner">@style/editorDrawerSpinnerStyle</item> 
 	    <item name="actionEventRunIcon">@drawable/ic_action_event_run_dark</item>
