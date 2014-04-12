@@ -17,6 +17,9 @@ public class EventsService extends IntentService
 	int procedure;
 	String broadcastReceiverType;
 	
+	public static int callEventType = PhoneCallBroadcastReceiver.CALL_EVENT_UNDEFINED;
+	public static String phoneNumber = "";
+	
 	public static final int ESP_COMPUTE_STATUS = 0;
 	public static final int ESP_START_EVENT = 1;
 	public static final int ESP_PAUSE_EVENT = 2;
@@ -63,6 +66,10 @@ public class EventsService extends IntentService
 		GlobalData.logE("EventsService.onHandleIntent","event_id="+event_id);
 		Event event = dataWrapper.getEventById(event_id);
 		
+		// in intnet are phone call parameters
+		callEventType = intent.getIntExtra(GlobalData.EXTRA_EVENT_CALL_EVENT_TYPE, PhoneCallBroadcastReceiver.CALL_EVENT_UNDEFINED);
+		phoneNumber = intent.getStringExtra(GlobalData.EXTRA_EVENT_CALL_PHONE_NUMBER);
+		
 		List<Event> eventList = dataWrapper.getEventList();
 		
 		if (event == null)
@@ -99,5 +106,8 @@ public class EventsService extends IntentService
 		else
 		if (broadcastReceiverType.equals(PowerConnectionReceiver.BROADCAST_RECEIVER_TYPE))
 			PowerConnectionReceiver.completeWakefulIntent(intent);
+		else
+		if (broadcastReceiverType.equals(PhoneCallBroadcastReceiver.BROADCAST_RECEIVER_TYPE))
+			PhoneCallBroadcastReceiver.completeWakefulIntent(intent);
 	}
 }

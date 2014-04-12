@@ -371,7 +371,6 @@
 </string-array>
 <string-array name="eventCallEventsArray">
 	<item>@string/array_event_pref_ringing</item>    
-	<item>@string/array_event_pref_outcall_start</item>    
 	<item>@string/array_event_pref_incall_answered</item>    
 	<item>@string/array_event_pref_outcall_answered</item>    
 </string-array>
@@ -379,7 +378,6 @@
     <item>0</item>
     <item>1</item>
     <item>2</item>
-    <item>3</item>
 </string-array>
 <string-array name="eventCallContactListTypeArray">
 	<item>@string/array_event_pref_contact_list_type_white_list</item>    

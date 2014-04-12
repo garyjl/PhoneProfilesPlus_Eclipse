@@ -35,7 +35,7 @@ public class ContactsCache {
 		
 		while (mCursor.moveToNext()) 
 		{
-			try{
+			//try{
 				long contactId = mCursor.getLong(mCursor.getColumnIndex(ContactsContract.Contacts._ID)); 
 				String name = mCursor.getString(mCursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
 				//String hasPhone = mCursor.getString(mCursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
@@ -61,8 +61,9 @@ public class ContactsCache {
 					} 
 					phones.close(); 
 				}
-			}catch(Exception e){}
-		}		
+			//}catch(Exception e){}
+		}
+		mCursor.close();
 		
 		cached = true;
 	}

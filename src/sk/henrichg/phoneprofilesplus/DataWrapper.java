@@ -9,10 +9,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
 import android.media.AudioManager;
 import android.os.BatteryManager;
 import android.os.Handler;
+import android.provider.ContactsContract;
 import android.provider.Settings;
+import android.telephony.PhoneNumberUtils;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.widget.Toast;
@@ -980,9 +983,13 @@ public class DataWrapper {
 				
 		boolean timePassed = true;
 		boolean batteryPassed = true;
+		boolean callPassed = true;
 		
 		boolean isCharging = false;
 		float batteryPct = 100.0f;
+		
+		boolean callEventStart = true;
+		boolean phoneNumberFinded = false;
 		
 		if (event._eventPreferencesTime._enabled)
 		{
@@ -1041,12 +1048,88 @@ public class DataWrapper {
 				batteryPassed = false;
 		}
 
+		if (event._eventPreferencesCall._enabled)
+		{
+			if (EventsService.callEventType != PhoneCallBroadcastReceiver.CALL_EVENT_UNDEFINED)
+			{
+				// find phone number
+				String[] splits = event._eventPreferencesCall._contacts.split("\\|");
+				for (int i = 0; i < splits.length; i++)
+				{
+					String [] splits2 = splits[i].split("#");
+
+					// get phone number from contacts
+					String[] projection = new String[] { ContactsContract.Contacts._ID };
+					String selection = ContactsContract.Contacts.HAS_PHONE_NUMBER + "='1' and " + ContactsContract.Contacts._ID + "=?";
+					String[] selectionArgs = new String[] { splits2[0] };
+					Cursor mCursor = context.getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, projection, selection, selectionArgs, null);
+					while (mCursor.moveToNext()) 
+					{
+						if (Integer.parseInt(mCursor.getString(mCursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) 
+						{
+							String[] projection2 = new String[] { ContactsContract.CommonDataKinds.Phone._ID, ContactsContract.CommonDataKinds.Phone.NUMBER };
+							String selection2 = ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=?" + " and " + ContactsContract.CommonDataKinds.Phone._ID + "=?";
+							String[] selection2Args = new String[] { splits2[0],splits2[1] };
+							Cursor phones = context.getContentResolver().query( ContactsContract.CommonDataKinds.Phone.CONTENT_URI, projection2, selection2, selection2Args, null);
+							while (phones.moveToNext()) 
+							{
+								String phoneNumber = phones.getString(phones.getColumnIndex( ContactsContract.CommonDataKinds.Phone.NUMBER));
+								if (PhoneNumberUtils.compare(phoneNumber, EventsService.phoneNumber))
+								{
+									phoneNumberFinded = true;
+									break;
+								}
+							}
+							phones.close();
+						}
+						if (phoneNumberFinded)
+							break;
+					}
+					mCursor.close();
+					if (phoneNumberFinded)
+						break;
+				}
+				
+				if (phoneNumberFinded)
+				{
+					if ((event._eventPreferencesCall._callEvent == EventPreferencesCall.CALL_EVENT_RINGING) &&
+						(EventsService.callEventType == PhoneCallBroadcastReceiver.CALL_EVENT_INCOMING_CALL_RINGING))
+						callEventStart = true;
+					else
+						callPassed = false;
+	
+					if ((event._eventPreferencesCall._callEvent == EventPreferencesCall.CALL_EVENT_INCOMING_CALL_ANSWERED) &&
+						(EventsService.callEventType == PhoneCallBroadcastReceiver.CALL_EVENT_INCOMING_CALL_ANSWERED))
+						callEventStart = true;
+					else	
+						callPassed = false;
+	
+					if ((event._eventPreferencesCall._callEvent == EventPreferencesCall.CALL_EVENT_OUTGOING_CALL_ANSWERED) &&
+						(EventsService.callEventType == PhoneCallBroadcastReceiver.CALL_EVENT_OUTGOING_CALL_ANSWERED))
+						callEventStart = true;
+					else
+						callPassed = false;
+					
+					if ((EventsService.callEventType == PhoneCallBroadcastReceiver.CALL_EVENT_INCOMING_CALL_ENDED) ||
+						(EventsService.callEventType == PhoneCallBroadcastReceiver.CALL_EVENT_OUTGOING_CALL_ENDED))
+					{
+						callEventStart = false;
+						EventsService.callEventType = PhoneCallBroadcastReceiver.CALL_EVENT_UNDEFINED;
+						EventsService.phoneNumber = "";
+					}
+				}
+				else
+					callPassed = false;
+				
+			}
+		}
+		
 		GlobalData.logE("DataWrapper.doEventService","timePassed="+timePassed);
 		GlobalData.logE("DataWrapper.doEventService","batteryPassed="+batteryPassed);
 
 		List<EventTimeline> eventTimelineList = getEventTimelineList();
 		
-		if (timePassed && batteryPassed)
+		if (timePassed && batteryPassed && callPassed)
 		{
 			// podmienky sedia, vykoname, co treba
 
@@ -1098,6 +1181,15 @@ public class DataWrapper {
 					}
 				}
 			}
+			
+			if (event._eventPreferencesCall._enabled)
+			{
+				if (callEventStart)
+					newEventStatus = Event.ESTATUS_RUNNING;
+				else
+					newEventStatus = Event.ESTATUS_PAUSE;
+			}
+			
 		}
 		else
 			newEventStatus = Event.ESTATUS_PAUSE;

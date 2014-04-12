@@ -1,15 +1,26 @@
 package sk.henrichg.phoneprofilesplus;
 
 import java.util.Date;
+import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 
 public class PhoneCallBroadcastReceiver extends PhoneCallReceiver {
 
+	public static final String BROADCAST_RECEIVER_TYPE = "phoneCall";
+	
+	public static final int CALL_EVENT_UNDEFINED = 0; 
+	public static final int CALL_EVENT_INCOMING_CALL_RINGING = 1; 
+	public static final int CALL_EVENT_INCOMING_CALL_ANSWERED = 2; 
+	public static final int CALL_EVENT_OUTGOING_CALL_ANSWERED = 3;
+	public static final int CALL_EVENT_INCOMING_CALL_ENDED = 4; 
+	public static final int CALL_EVENT_OUTGOING_CALL_ENDED = 5;
+	
 	protected boolean onStartReceive()
 	{
-		if (!GlobalData.getApplicationStarted(super.savedContext))
+		if (!GlobalData.getApplicationStarted(savedContext))
 			return false;
 		
 		GlobalData.loadPreferences(savedContext);
@@ -21,12 +32,51 @@ public class PhoneCallBroadcastReceiver extends PhoneCallReceiver {
 	{
 	}
 	
-	private void callAnswered(boolean incoming)
+	private void doCallEvent(int eventType, String phoneNumber, DataWrapper dataWrapper)
+	{
+		if (GlobalData.getGlobalEventsRuning(savedContext))
+		{
+			boolean callEventsExists = false;
+			List<Event> eventList = dataWrapper.getEventList();
+			for (Event event : eventList)
+			{
+				if (event._eventPreferencesCall._enabled && (event.getStatus() != Event.ESTATUS_STOP))
+				{
+					callEventsExists = true;
+				}
+			}
+			
+			if (callEventsExists)
+			{
+				// start service
+				Intent eventsServiceIntent = new Intent(savedContext, EventsService.class);
+				eventsServiceIntent.putExtra(GlobalData.EXTRA_EVENT_ID, 0L);
+				eventsServiceIntent.putExtra(GlobalData.EXTRA_EVENT_CALL_EVENT_TYPE, eventType);
+				eventsServiceIntent.putExtra(GlobalData.EXTRA_EVENT_CALL_PHONE_NUMBER, phoneNumber);
+				eventsServiceIntent.putExtra(GlobalData.EXTRA_BROADCAST_RECEIVER_TYPE, BROADCAST_RECEIVER_TYPE);
+				startWakefulService(savedContext, eventsServiceIntent);
+			}
+			
+		}
+	}
+	
+	private void callStarted(String phoneNumber)
 	{
 		DataWrapper dataWrapper = new DataWrapper(savedContext, false, false, 0);
-		int speakerPhone = dataWrapper.getDatabaseHandler().getActiveProfileSpeakerphone();
+		doCallEvent(CALL_EVENT_INCOMING_CALL_RINGING, phoneNumber, dataWrapper);
 		dataWrapper.invalidateDataWrapper();
+	}
+	
+	private void callAnswered(boolean incoming, String phoneNumber)
+	{
+		DataWrapper dataWrapper = new DataWrapper(savedContext, false, false, 0);
 
+		if (incoming)
+			doCallEvent(CALL_EVENT_INCOMING_CALL_ANSWERED, phoneNumber, dataWrapper);
+		else
+			doCallEvent(CALL_EVENT_OUTGOING_CALL_ANSWERED, phoneNumber, dataWrapper);
+		
+		int speakerPhone = dataWrapper.getDatabaseHandler().getActiveProfileSpeakerphone();
 		if (speakerPhone != 0)
 		{
 	        try {
@@ -39,9 +89,11 @@ public class PhoneCallBroadcastReceiver extends PhoneCallReceiver {
 	        audioManager.setMode(AudioManager.MODE_IN_CALL);
 	        audioManager.setSpeakerphoneOn(speakerPhone == 1);
 		}
+		
+		dataWrapper.invalidateDataWrapper();
 	}
 	
-	private void callEnded(boolean incoming)
+	private void callEnded(boolean incoming, String phoneNumber)
 	{
     	//Deactivate loudspeaker
         AudioManager audioManager = (AudioManager)savedContext.getSystemService(Context.AUDIO_SERVICE);
@@ -50,25 +102,34 @@ public class PhoneCallBroadcastReceiver extends PhoneCallReceiver {
     	    audioManager.setSpeakerphoneOn(false);
     		audioManager.setMode(AudioManager.MODE_NORMAL); 
         }
+    	
+		DataWrapper dataWrapper = new DataWrapper(savedContext, false, false, 0);
+		if (incoming)
+			doCallEvent(CALL_EVENT_INCOMING_CALL_ENDED, phoneNumber, dataWrapper);
+		else
+			doCallEvent(CALL_EVENT_OUTGOING_CALL_ENDED, phoneNumber, dataWrapper);
+		dataWrapper.invalidateDataWrapper();
 	}
 	
-    protected void onIncomingCallStarted(String number, Date start) {
+    protected void onIncomingCallStarted(String number, Date start) 
+    {
+    	callStarted(number);
     }
 
     protected void onIncomingCallAnswered(String number, Date start) {
-    	callAnswered(false);
+    	callAnswered(true, number);
     }
 
     protected void onOutgoingCallAnswered(String number, Date start) {
-    	callAnswered(false);
+    	callAnswered(false, number);
     }
 
     protected void onIncomingCallEnded(String number, Date start, Date end) {
-    	callEnded(true);
+    	callEnded(true, number);
     }
 
     protected void onOutgoingCallEnded(String number, Date start, Date end) {
-    	callEnded(false);
+    	callEnded(false, number);
     }
 
     protected void onMissedCall(String number, Date start) {

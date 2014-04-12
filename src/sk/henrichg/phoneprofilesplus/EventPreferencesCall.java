@@ -17,6 +17,10 @@ public class EventPreferencesCall extends EventPreferences {
 	static final String PREF_EVENT_CALL_CONTACTS = "eventCallContacts";
 	static final String PREF_EVENT_CALL_CONTACT_LIST_TYPE = "eventCallContactListType";
 	
+	static final int CALL_EVENT_RINGING = 0;
+	static final int CALL_EVENT_INCOMING_CALL_ANSWERED = 1;
+	static final int CALL_EVENT_OUTGOING_CALL_ANSWERED = 2;
+	
 	public EventPreferencesCall(Event event, 
 									boolean enabled,
 									int callEvent,

@@ -1,15 +1,15 @@
 package sk.henrichg.phoneprofilesplus;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
 import java.util.Date;
 
+import android.support.v4.content.WakefulBroadcastReceiver;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 
-public abstract class PhoneCallReceiver extends BroadcastReceiver {
+public abstract class PhoneCallReceiver extends WakefulBroadcastReceiver {
 
     //The receiver will be recreated whenever android feels like it.  We need a static variable to remember data between instantiations
     static PhonecallStartEndDetector listener;

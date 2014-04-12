@@ -296,7 +296,6 @@
     <string name="event_preferences_call_contacts">Contacts</string>
     <string name="event_preferences_call_event">Call event</string>
     <string name="array_event_pref_ringing">Ringing</string>
-    <string name="array_event_pref_outcall_start">Start calling</string>
     <string name="array_event_pref_incall_answered">Incoming call answered</string>
     <string name="array_event_pref_outcall_answered">Outgoing call answered</string>
     <string name="event_preferences_ccontactListType">Contact list type</string>
