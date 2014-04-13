@@ -134,14 +134,16 @@ public class ProfilePreferenceAdapter extends BaseAdapter {
 		    	holder.radioBtn.setChecked((profileId == Event.PROFILE_END_ACTIVATED));
 		    	holder.profileLabel.setText(vi.getResources().getString(R.string.event_preferences_profile_end_activated));
 		    	holder.profileIcon.setImageResource(R.drawable.ic_profile_default);
-				holder.profileIndicator.setImageDrawable(null);
+				if (GlobalData.applicationEditorPrefIndicator)
+					holder.profileIndicator.setImageResource(R.drawable.ic_empty);
 	    	}
 	    	else
 	    	{
 		    	holder.radioBtn.setChecked(false);
 		    	holder.profileLabel.setText("");
-		    	holder.profileIcon.setImageDrawable(null);
-				holder.profileIndicator.setImageDrawable(null);
+		    	holder.profileIcon.setImageResource(R.drawable.ic_empty);
+				if (GlobalData.applicationEditorPrefIndicator)
+					holder.profileIndicator.setImageResource(R.drawable.ic_empty);
 	    	}
 	    }
 	    

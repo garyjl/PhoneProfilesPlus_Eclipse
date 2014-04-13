@@ -21,7 +21,7 @@
         android:id="@+id/profile_pref_dlg_item_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="3dp"
         android:layout_toRightOf="@+id/profile_pref_dlg_item_icon"
         android:paddingLeft="10dp"

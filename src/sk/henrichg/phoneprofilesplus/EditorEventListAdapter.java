@@ -206,11 +206,14 @@ public class EditorEventListAdapter extends BaseAdapter
 	static class ViewHolder {
 		  RelativeLayout listItemRoot;
 		  TextView eventName;
-		  ImageView profileIcon;
-		  TextView profileName;
 		  TextView eventPreferencesDescription;
-		  ImageView profileIndicator;
 		  ImageView eventStatus;
+		  ImageView profileStartIcon;
+		  TextView profileStartName;
+		  ImageView profileStartIndicator;
+		  ImageView profileEndIcon;
+		  TextView profileEndName;
+		  ImageView profileEndIndicator;
 		  ImageView eventItemEditMenu;
 		  int position;
 		}
@@ -231,14 +234,17 @@ public class EditorEventListAdapter extends BaseAdapter
             holder = new ViewHolder();
             holder.listItemRoot = (RelativeLayout)vi.findViewById(R.id.event_list_item_root);
             holder.eventName = (TextView)vi.findViewById(R.id.event_list_item_event_name);
-            holder.profileName = (TextView)vi.findViewById(R.id.event_list_item_profile_name);
-            holder.profileIcon = (ImageView)vi.findViewById(R.id.event_list_item_profile_icon);
             holder.eventStatus = (ImageView)vi.findViewById(R.id.event_list_item_status);
     		holder.eventItemEditMenu = (ImageView)vi.findViewById(R.id.event_list_item_edit_menu);
+            holder.profileStartName = (TextView)vi.findViewById(R.id.event_list_item_profile_start_name);
+            holder.profileStartIcon = (ImageView)vi.findViewById(R.id.event_list_item_profile_start_icon);
+            holder.profileEndName = (TextView)vi.findViewById(R.id.event_list_item_profile_end_name);
+            holder.profileEndIcon = (ImageView)vi.findViewById(R.id.event_list_item_profile_end_icon);
   		    if (GlobalData.applicationEditorPrefIndicator)
   		    {
   		    	holder.eventPreferencesDescription  = (TextView)vi.findViewById(R.id.event_list_item_preferences_description);
-  		    	holder.profileIndicator = (ImageView)vi.findViewById(R.id.event_list_item_profile_pref_indicator);
+  		    	holder.profileStartIndicator = (ImageView)vi.findViewById(R.id.event_list_item_profile_start_pref_indicator);
+  		    	holder.profileEndIndicator = (ImageView)vi.findViewById(R.id.event_list_item_profile_end_pref_indicator);
   		    }
             vi.setTag(holder);        
         }
@@ -283,20 +289,21 @@ public class EditorEventListAdapter extends BaseAdapter
 	    	holder.eventPreferencesDescription.setText(eventPrefDescription);
 	    }
 
+	    // profile start
         Profile profile =  dataWrapper.getProfileById(event._fkProfileStart);
         if (profile != null)
         {
-        	holder.profileName.setText(profile._name);
+        	holder.profileStartName.setText(profile._name);
 		    if (profile.getIsIconResourceID())
 		    {
-		    	holder.profileIcon.setImageResource(0);
+		    	holder.profileStartIcon.setImageResource(0);
 		      	int res = vi.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", 
 		      				vi.getContext().getPackageName());
-		      	holder.profileIcon.setImageResource(res); // resource na ikonu
+		      	holder.profileStartIcon.setImageResource(res); // resource na ikonu
 		    }
 		    else
 		    {
-		      	holder.profileIcon.setImageBitmap(profile._iconBitmap);
+		      	holder.profileStartIcon.setImageBitmap(profile._iconBitmap);
 		    }
 		    
 			if (GlobalData.applicationEditorPrefIndicator)
@@ -304,22 +311,63 @@ public class EditorEventListAdapter extends BaseAdapter
 				//profilePrefIndicatorImageView.setImageBitmap(null);
 				//Bitmap bitmap = ProfilePreferencesIndicator.paint(profile, vi.getContext());
 				//profilePrefIndicatorImageView.setImageBitmap(bitmap);
-				holder.profileIndicator.setImageBitmap(profile._preferencesIndicator);
+				holder.profileStartIndicator.setImageBitmap(profile._preferencesIndicator);
 			}
         }
         else
         {
-        	holder.profileName.setText(R.string.event_preferences_profile_not_set);
-        	holder.profileIcon.setImageResource(R.drawable.ic_profile_default);
+        	holder.profileStartName.setText(R.string.event_preferences_profile_not_set);
+        	holder.profileStartIcon.setImageResource(R.drawable.ic_profile_default);
 			if (GlobalData.applicationEditorPrefIndicator)
 			{
 				//profilePrefIndicatorImageView.setImageBitmap(null);
 				//Bitmap bitmap = ProfilePreferencesIndicator.paint(profile, vi.getContext());
 				//profilePrefIndicatorImageView.setImageBitmap(bitmap);
-				holder.profileIndicator.setImageResource(R.drawable.ic_empty);
+				holder.profileStartIndicator.setImageResource(R.drawable.ic_empty);
 			}
         }
 
+	    // profile end
+        profile =  dataWrapper.getProfileById(event._fkProfileEnd);
+        if (profile != null)
+        {
+        	holder.profileEndName.setText(profile._name);
+		    if (profile.getIsIconResourceID())
+		    {
+		    	holder.profileEndIcon.setImageResource(0);
+		      	int res = vi.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", 
+		      				vi.getContext().getPackageName());
+		      	holder.profileEndIcon.setImageResource(res); // resource na ikonu
+		    }
+		    else
+		    {
+		      	holder.profileEndIcon.setImageBitmap(profile._iconBitmap);
+		    }
+		    
+			if (GlobalData.applicationEditorPrefIndicator)
+			{
+				//profilePrefIndicatorImageView.setImageBitmap(null);
+				//Bitmap bitmap = ProfilePreferencesIndicator.paint(profile, vi.getContext());
+				//profilePrefIndicatorImageView.setImageBitmap(bitmap);
+				holder.profileEndIndicator.setImageBitmap(profile._preferencesIndicator);
+			}
+        }
+        else
+        {
+        	if (event._fkProfileEnd == Event.PROFILE_END_ACTIVATED)
+        		holder.profileEndName.setText(R.string.event_preferences_profile_end_activated);
+        	else
+        		holder.profileEndName.setText(R.string.event_preferences_profile_not_set);
+        	holder.profileEndIcon.setImageResource(R.drawable.ic_profile_default);
+			if (GlobalData.applicationEditorPrefIndicator)
+			{
+				//profilePrefIndicatorImageView.setImageBitmap(null);
+				//Bitmap bitmap = ProfilePreferencesIndicator.paint(profile, vi.getContext());
+				//profilePrefIndicatorImageView.setImageBitmap(bitmap);
+				holder.profileEndIndicator.setImageResource(R.drawable.ic_empty);
+			}
+        }
+        
         /*
         holder.eventItemRunStop.setTag(R.id.event_list_item_run_stop_event);
         // change button icon by event status

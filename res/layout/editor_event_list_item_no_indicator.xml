@@ -3,7 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/event_list_item_root"
     android:layout_width="match_parent"
-    android:layout_height="68dp"
+    android:layout_height="wrap_content"
     android:padding="1dp"
     android:orientation="horizontal"
     android:background="?attr/cardShape" >
@@ -48,7 +48,8 @@
 	        android:scaleType="fitStart"
 	        android:src="@drawable/ic_event_status_stop"
 	        android:paddingLeft="2dp"
-	        android:paddingTop="2dp" />
+	        android:paddingTop="2dp"
+	        android:layout_marginLeft="3dp" />
 	    
 	    <TextView
 	        android:id="@+id/event_list_item_event_name"
@@ -63,7 +64,7 @@
 	        android:singleLine="true" />
 	    
 	    <ImageView
-	        android:id="@+id/event_list_item_profile_icon"
+	        android:id="@+id/event_list_item_profile_start_icon"
 	        android:layout_width="30dp"
 	        android:layout_height="30dp"
 	        android:layout_alignParentLeft="true"
@@ -72,20 +73,46 @@
 	        android:scaleType="centerCrop"
 	        android:paddingTop="10dp"
 	        android:paddingBottom="10dp"
-	        android:layout_marginTop="5dp"
+	        android:layout_marginTop="3dp"
 	        android:src="@drawable/ic_profile_default" />
 	    
 	    <TextView
-	        android:id="@+id/event_list_item_profile_name"
+	        android:id="@+id/event_list_item_profile_start_name"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_alignTop="@+id/event_list_item_profile_icon"
-	        android:layout_toRightOf="@+id/event_list_item_profile_icon"
+	        android:layout_alignTop="@+id/event_list_item_profile_start_icon"
+	        android:layout_toRightOf="@+id/event_list_item_profile_start_icon"
 	        android:paddingLeft="10dp"
+	        android:paddingTop="5dp"
 	        android:text="@string/event_preferences_profile_not_set"
 	        android:textSize="15sp"
 	        android:singleLine="true" />
+
+	    <ImageView
+	        android:id="@+id/event_list_item_profile_end_icon"
+	        android:layout_width="30dp"
+	        android:layout_height="30dp"
+	        android:layout_alignParentLeft="true"
+	        android:layout_below="@+id/event_list_item_profile_start_icon"
+	        android:contentDescription="@string/empty_string"
+	        android:scaleType="centerCrop"
+	        android:paddingTop="10dp"
+	        android:paddingBottom="10dp"
+	        android:layout_marginTop="0dp"
+	        android:src="@drawable/ic_profile_default" />
 	    
+	    <TextView
+	        android:id="@+id/event_list_item_profile_end_name"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignTop="@+id/event_list_item_profile_end_icon"
+	        android:layout_toRightOf="@+id/event_list_item_profile_end_icon"
+	        android:paddingLeft="10dp"
+	        android:paddingTop="5dp"
+	        android:text="@string/event_preferences_profile_not_set"
+	        android:textSize="15sp"
+	        android:singleLine="true" />
+	    	    	    
 	</RelativeLayout>
 	
 </RelativeLayout>
