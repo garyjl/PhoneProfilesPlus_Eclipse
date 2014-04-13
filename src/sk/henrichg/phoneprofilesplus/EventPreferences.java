@@ -59,6 +59,10 @@ public class EventPreferences {
 	{
 	}
 	
+	public void checkPreferences(PreferenceManager prefMng, Context context)
+	{
+	}
+	
 	public void setSystemRunningEvent(Context context)
 	{
 		

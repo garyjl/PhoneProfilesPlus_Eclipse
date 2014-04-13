@@ -6,7 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.preference.Preference;
+import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceManager;
+import android.util.Log;
+import android.widget.Toast;
 
 public class EventPreferencesBattery extends EventPreferences {
 
@@ -130,6 +134,90 @@ public class EventPreferencesBattery extends EventPreferences {
 	{
 		return true;
 	}
+
+	@Override
+	public void checkPreferences(PreferenceManager prefMng, Context context)
+	{
+		final Preference lowLevelPreference = prefMng.findPreference(PREF_EVENT_BATTERY_LEVEL_LOW);
+		final Preference hightLevelPreference = prefMng.findPreference(PREF_EVENT_BATTERY_LEVEL_HIGHT);
+		final PreferenceManager _prefMng = prefMng;
+		final Context _context = context;
+		
+		lowLevelPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                String sNewValue = (String)newValue;
+                int iNewValue;
+                if (sNewValue.isEmpty())
+                	iNewValue = 0;
+                else
+                	iNewValue = Integer.parseInt(sNewValue);
+                
+                Log.e("EventPreferencesBattery.checkPreferences.lowLevelPreference","iNewValue="+iNewValue);
+                
+                String sHightLevelValue = _prefMng.getSharedPreferences().getString(PREF_EVENT_BATTERY_LEVEL_HIGHT, "100");
+                int iHightLevelValue;
+                if (sHightLevelValue.isEmpty())
+                	iHightLevelValue = 100;
+                else
+                	iHightLevelValue = Integer.parseInt(sHightLevelValue);
+
+                Log.e("EventPreferencesBattery.checkPreferences.lowLevelPreference","iHightLevelValue="+iHightLevelValue);
+                
+                boolean OK = ((iNewValue >= 0) && (iNewValue <= iHightLevelValue));
+                
+                if (!OK)
+                {
+            		Toast msg = Toast.makeText(_context, 
+            				_context.getResources().getString(R.string.event_preferences_battery_level_low) + ": " +
+            				_context.getResources().getString(R.string.event_preferences_battery_level_bad_value), 
+            				Toast.LENGTH_SHORT);
+            		msg.show();
+                }
+                
+                return OK;
+            }
+        });
+
+		hightLevelPreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                String sNewValue = (String)newValue;
+                int iNewValue;
+                if (sNewValue.isEmpty())
+                	iNewValue = 100;
+                else
+                	iNewValue = Integer.parseInt(sNewValue);
+                
+                Log.e("EventPreferencesBattery.checkPreferences.hightLevelPreference","iNewValue="+iNewValue);
+
+                String sLowLevelValue = _prefMng.getSharedPreferences().getString(PREF_EVENT_BATTERY_LEVEL_LOW, "0");
+                int iLowLevelValue;
+                if (sLowLevelValue.isEmpty())
+                	iLowLevelValue = 0;
+                else
+                	iLowLevelValue = Integer.parseInt(sLowLevelValue);
+
+                Log.e("EventPreferencesBattery.checkPreferences.hightLevelPreference","iLowLevelValue="+iLowLevelValue);
+                
+                boolean OK = ((iNewValue >= iLowLevelValue) && (iNewValue <= 100));
+                
+                if (!OK)
+                {
+            		Toast msg = Toast.makeText(_context, 
+            				_context.getResources().getString(R.string.event_preferences_battery_level_hight) + ": " +
+            				_context.getResources().getString(R.string.event_preferences_battery_level_bad_value), 
+            				Toast.LENGTH_SHORT);
+            		msg.show();
+                }
+                
+                return OK;
+            }
+        });
+		
+	}
+	
+	
 	
 	@Override
 	public void setSystemRunningEvent(Context context)

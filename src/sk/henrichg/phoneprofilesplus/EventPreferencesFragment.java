@@ -176,6 +176,10 @@ public class EventPreferencesFragment extends PreferenceListFragment
    	
     	// get preference resource id from EventPreference
 		addPreferencesFromResource(R.xml.event_preferences);
+		
+		event._eventPreferencesTime.checkPreferences(prefMng, context);
+		event._eventPreferencesBattery.checkPreferences(prefMng, context);
+		event._eventPreferencesCall.checkPreferences(prefMng, context);
 
         preferences.registerOnSharedPreferenceChangeListener(this);  
         
