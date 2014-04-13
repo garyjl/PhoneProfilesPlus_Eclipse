@@ -150,7 +150,7 @@
     <string name="event_preferences_eventEnabled">Активировать</string>
     <string name="event_preferences_eventName">Название события</string>
     <string name="event_preferences_eventType">Тип события</string>
-    <string name="event_preferences_eventProfileStart">Активировать профиль</string>
+    <string name="event_preferences_eventProfileStart">Активировать профиль (старт)</string>
     <string name="widget_label_icon">PhoneProfiles (иконка)</string>
     <string name="widget_label_one_row">PhoneProfiles (один ряд)</string>
     <string name="widget_label_list">PhoneProfiles (список)</string>

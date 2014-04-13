@@ -155,7 +155,7 @@
     <string name="event_preferences_eventEnabled">Enable run</string>
     <string name="event_preferences_eventName">Event name</string>
     <string name="event_preferences_eventType">Event type</string>
-    <string name="event_preferences_eventProfileStart">Activate profile</string>
+    <string name="event_preferences_eventProfileStart">Activate profile (start)</string>
     <string name="widget_label_icon">PhoneProfiles-icon</string>
     <string name="widget_label_one_row">PhoneProfiles-single row</string>
     <string name="widget_label_list">PhoneProfiles-list</string>
@@ -309,5 +309,6 @@
     <string name="pref_event_call_contacts_selected">Contacts selected</string>
     <string name="event_preferences_battery_level_bad_value">Bad value</string>
     <string name="event_preferences_profile_end_activated">Last activated profile</string>
+    <string name="event_preferences_eventProfileEnd">Activate profile (end)</string>
     
 </resources>

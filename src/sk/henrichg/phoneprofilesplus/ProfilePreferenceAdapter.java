@@ -42,11 +42,24 @@ public class ProfilePreferenceAdapter extends BaseAdapter {
 	}
 	
 	public int getCount() {
-		return profileList.size();
+		int count = profileList.size();
+		if (dialog.addActivatedItem == 1)
+			count++;
+		return count;
 	}
 
 	public Object getItem(int position) {
-		return profileList.get(position);
+		Profile profile;
+		if (dialog.addActivatedItem == 1)
+		{
+			if (position == 0)
+				profile = null;
+			else
+				profile = profileList.get(position-1);
+		}
+		else
+			profile = profileList.get(position);
+		return profile;
 	}
 
 	public long getItemId(int position) {
@@ -85,8 +98,18 @@ public class ProfilePreferenceAdapter extends BaseAdapter {
 	    {
 	      	holder = (ViewHolder)vi.getTag();
 	    }
-		
-	    Profile profile = profileList.get(position);
+	    
+	    Profile profile;
+	    if (dialog.addActivatedItem == 1)
+	    {
+	    	if (position == 0)
+	    		profile = null;
+	    	else
+		    	profile = profileList.get(position-1);
+	    }
+	    else
+	    	profile = profileList.get(position);
+	    
 	    if (profile != null)
 	    {
 	    	holder.radioBtn.setChecked(profileId == profile._id);
@@ -106,10 +129,20 @@ public class ProfilePreferenceAdapter extends BaseAdapter {
 	    }
 	    else
 	    {
-	    	holder.radioBtn.setChecked(false);
-	    	holder.profileLabel.setText("");
-	    	holder.profileIcon.setImageResource(0);
-			holder.profileIndicator.setImageResource(0);
+	    	if ((dialog.addActivatedItem == 1) && (position == 0))
+	    	{
+		    	holder.radioBtn.setChecked((profileId == Event.PROFILE_END_ACTIVATED));
+		    	holder.profileLabel.setText(vi.getResources().getString(R.string.event_preferences_profile_end_activated));
+		    	holder.profileIcon.setImageResource(R.drawable.ic_profile_default);
+				holder.profileIndicator.setImageDrawable(null);
+	    	}
+	    	else
+	    	{
+		    	holder.radioBtn.setChecked(false);
+		    	holder.profileLabel.setText("");
+		    	holder.profileIcon.setImageDrawable(null);
+				holder.profileIndicator.setImageDrawable(null);
+	    	}
 	    }
 	    
 		return vi;

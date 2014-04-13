@@ -229,7 +229,7 @@ public class Event {
 	{
 		setSummary(prefMng, PREF_EVENT_NAME, _name, context);
 		setSummary(prefMng, PREF_EVENT_PROFILE_START, Long.toString(_fkProfileStart), context);
-		//setSummary(prefMng, PREF_EVENT_PROFILE_END, Long.toString(_fkProfileEnd), context);
+		setSummary(prefMng, PREF_EVENT_PROFILE_END, Long.toString(_fkProfileEnd), context);
 		setSummary(prefMng, PREF_EVENT_NOTIFICATION_SOUND, _notificationSound, context);
 		_eventPreferencesTime.setAllSummary(prefMng, context);
 		_eventPreferencesBattery.setAllSummary(prefMng, context);

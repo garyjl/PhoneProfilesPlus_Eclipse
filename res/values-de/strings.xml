@@ -149,7 +149,7 @@
 	<string name="event_preferences_eventEnabled">Aktivieren</string> 
     <string name="event_preferences_eventName">Ereignis-Name</string> 
     <string name="event_preferences_eventType">Ereignis-Typ</string> 
-    <string name="event_preferences_eventProfileStart">Profil</string> 
+    <string name="event_preferences_eventProfileStart">Profil aktivieren (start)</string> 
     <string name="widget_label_icon">PhoneProfiles-Icon</string> 
     <string name="widget_label_one_row">PhoneProfiles-Reihe</string>
 	<string name="widget_label_list">PhoneProfiles-Liste</string> 

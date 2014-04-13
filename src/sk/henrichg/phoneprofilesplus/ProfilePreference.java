@@ -13,7 +13,8 @@ public class ProfilePreference extends Preference {
 	
 	private String profileId;
 	private ImageView profileIcon;
-	CharSequence preferenceTitle;
+	//private CharSequence preferenceTitle;
+	public int addActivatedItem;
 
 	private Context prefContext;
 	
@@ -24,19 +25,13 @@ public class ProfilePreference extends Preference {
 	{
 		super(context, attrs);
 		
-		/*
-		TypedArray typedArray = context.obtainStyledAttributes(attrs,
-				R.styleable.ApplicationsPreference);
+		TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ProfilePreference);
 
-		// resource, resource_file, file
-		imageSource = typedArray.getString(
-			R.styleable.ImageViewPreference_imageSource);
-		*/
-		
+		addActivatedItem = typedArray.getInt(R.styleable.ProfilePreference_addActivatedItem, 0);
 
 		profileId = "0";
 		prefContext = context;
-		preferenceTitle = getTitle();
+		//preferenceTitle = getTitle();
 		
 		dataWrapper = new DataWrapper(context, true, false, 0);
 		
@@ -45,7 +40,7 @@ public class ProfilePreference extends Preference {
 		
 		setWidgetLayoutResource(R.layout.profile_preference); // resource na layout custom preference - TextView-ImageView
 		
-		//pedArray.recycle();
+		typedArray.recycle();
 		
 	}
 	
@@ -77,13 +72,15 @@ public class ProfilePreference extends Preference {
 			    {
 			      	profileIcon.setImageBitmap(profile._iconBitmap);
 			    }
-		    	setSummary(profile._name);
 		    }
 		    else
 		    {
-		      	profileIcon.setImageResource(0); // resource na ikonu
-		    	setSummary(prefContext.getResources().getString(R.string.event_preferences_profile_not_set));
+		    	if ((addActivatedItem == 1) && (Long.parseLong(profileId) == Event.PROFILE_END_ACTIVATED))
+		    		profileIcon.setImageResource(R.drawable.ic_profile_default); // resource na ikonu
+		    	else
+		    		profileIcon.setImageResource(0); // resource na ikonu
 		    }
+		    setSummary(Long.parseLong(profileId));
 	    }
 	}
 	
@@ -188,15 +185,7 @@ public class ProfilePreference extends Preference {
 		profileId = newValue;
 
 		// set summary
-	    Profile profile = dataWrapper.getProfileById(Long.parseLong(profileId));
-	    if (profile != null)
-	    {
-	    	setSummary(profile._name);
-	    }
-	    else
-	    {
-	    	setSummary(prefContext.getResources().getString(R.string.event_preferences_profile_not_set));
-	    }
+		setSummary(profileId);
 
 		// zapis do preferences
 		persistString(newValue);
@@ -204,6 +193,22 @@ public class ProfilePreference extends Preference {
 		// Data sa zmenili,notifikujeme
 		notifyChanged();
 		
+	}
+	
+	private void setSummary(long profileId)
+	{
+	    Profile profile = dataWrapper.getProfileById(profileId);
+	    if (profile != null)
+	    {
+	    	setSummary(profile._name);
+	    }
+	    else
+	    {
+	    	if ((addActivatedItem == 1) && (profileId == Event.PROFILE_END_ACTIVATED))
+	    		setSummary(prefContext.getResources().getString(R.string.event_preferences_profile_end_activated));
+	    	else
+	    		setSummary(prefContext.getResources().getString(R.string.event_preferences_profile_not_set));
+	    }
 	}
 	
 	// SavedState class

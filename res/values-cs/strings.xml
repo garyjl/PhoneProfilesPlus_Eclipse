@@ -151,7 +151,7 @@
     <string name="event_preferences_eventEnabled">Povol běh</string>
     <string name="event_preferences_eventName">Název události</string>
     <string name="event_preferences_eventType">Typ události</string>
-    <string name="event_preferences_eventProfileStart">Aktivovanej profil</string>
+    <string name="event_preferences_eventProfileStart">Aktivovanej profil (start)</string>
     <string name="widget_label_icon">PhoneProfiles-ikona</string>
     <string name="widget_label_one_row">PhoneProfiles-jednořádkový</string>
     <string name="widget_label_list">PhoneProfiles-seznam</string>

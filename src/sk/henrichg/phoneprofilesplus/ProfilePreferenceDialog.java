@@ -14,6 +14,7 @@ public class ProfilePreferenceDialog extends Dialog
 {
 
 	public ProfilePreference profilePreference;
+	public int addActivatedItem;
 	private ProfilePreferenceAdapter profilePreferenceAdapter;
 	
 	private Context _context;
@@ -29,6 +30,9 @@ public class ProfilePreferenceDialog extends Dialog
 		super(context);
 		
 		profilePreference = preference;
+		
+		addActivatedItem = profilePreference.addActivatedItem;
+
 
 		_context = context;
 		
@@ -41,7 +45,17 @@ public class ProfilePreferenceDialog extends Dialog
 		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				profilePreference.setProfileId(profilePreferenceAdapter.profileList.get(position)._id);
+				if (addActivatedItem == 1)
+				{
+					long profileId;
+					if (position == 0)
+						profileId = Event.PROFILE_END_ACTIVATED;
+					else
+						profileId = profilePreferenceAdapter.profileList.get(position-1)._id;
+					profilePreference.setProfileId(profileId);	
+				}
+				else
+					profilePreference.setProfileId(profilePreferenceAdapter.profileList.get(position)._id);
 				ProfilePreferenceDialog.this.dismiss();
 			}
 

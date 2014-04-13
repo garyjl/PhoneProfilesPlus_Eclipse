@@ -16,7 +16,13 @@
         <sk.henrichg.phoneprofilesplus.ProfilePreference
             android:defaultValue="0"
             android:key="eventProfileStart"
-            android:title="@string/event_preferences_eventProfileStart" />
+            android:title="@string/event_preferences_eventProfileStart"
+            henrichg:addActivatedItem="0" />
+        <sk.henrichg.phoneprofilesplus.ProfilePreference
+            android:defaultValue="-999"
+            android:key="eventProfileEnd"
+            android:title="@string/event_preferences_eventProfileEnd"
+            henrichg:addActivatedItem="1" />
         <RingtonePreference
             android:key="eventNotificationSound"
             android:summary="@string/array_pref_no_change"
