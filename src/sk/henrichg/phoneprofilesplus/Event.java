@@ -341,11 +341,22 @@ public class Event {
 		eventTimeline = new EventTimeline();
 		eventTimeline._fkEvent = this._id;
 		eventTimeline._eorder = 0;
-		Profile profile = dataWrapper.getActivatedProfile();
-		if (profile != null)
-			eventTimeline._fkProfileReturn = profile._id;
+		if (this._fkProfileEnd == PROFILE_END_ACTIVATED)
+		{
+			Profile profile = dataWrapper.getActivatedProfile();
+			if (profile != null)
+				eventTimeline._fkProfileReturn = profile._id;
+			else
+				eventTimeline._fkProfileReturn = 0;
+		}
 		else
-			eventTimeline._fkProfileReturn = 0;
+		{
+			Profile profile = dataWrapper.getProfileById(this._fkProfileEnd);
+			if (profile != null)
+				eventTimeline._fkProfileReturn = profile._id;
+			else
+				eventTimeline._fkProfileReturn = 0;
+		}
 		
 		dataWrapper.getDatabaseHandler().addEventTimeline(eventTimeline);
 		eventTimelineList.add(eventTimeline);
