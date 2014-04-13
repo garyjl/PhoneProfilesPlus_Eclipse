@@ -308,5 +308,6 @@
     <string name="pref_event_call_no_contacts_selected">No contacts selected</string>
     <string name="pref_event_call_contacts_selected">Contacts selected</string>
     <string name="event_preferences_battery_level_bad_value">Bad value</string>
+    <string name="event_preferences_profile_end_activated">Last activated profile</string>
     
 </resources>

@@ -25,7 +25,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static SQLiteDatabase writableDb;	
     
 	// Database Version
-	private static final int DATABASE_VERSION = 1040;
+	private static final int DATABASE_VERSION = 1045;
 
 	// Database Name
 	private static final String DATABASE_NAME = "phoneProfilesManager";
@@ -79,7 +79,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_E_ID = "id";
 	private static final String KEY_E_NAME = "name";
 	private static final String KEY_E_TYPE = "type";
-	private static final String KEY_E_FK_PROFILE = "fkProfile";
+	private static final String KEY_E_FK_PROFILE_START = "fkProfile";
 	private static final String KEY_E_STATUS = "status";
 	private static final String KEY_E_START_TIME = "startTime";
 	private static final String KEY_E_END_TIME = "endTime";
@@ -98,6 +98,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_E_CALL_EVENT = "callEvent";
 	private static final String KEY_E_CALL_CONTACTS = "callContacts";
 	private static final String KEY_E_CALL_CONTACT_LIST_TYPE = "contactListType";
+	private static final String KEY_E_FK_PROFILE_END = "fkProfileEnd";
 	
 	private static final String KEY_ET_ID = "id";
 	private static final String KEY_ET_EORDER = "eorder";
@@ -211,7 +212,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		final String CREATE_EVENTS_TABLE = "CREATE TABLE " + TABLE_EVENTS + "("
 				+ KEY_E_ID + " INTEGER PRIMARY KEY,"
 				+ KEY_E_NAME + " TEXT,"
-				+ KEY_E_FK_PROFILE + " INTEGER,"
+				+ KEY_E_FK_PROFILE_START + " INTEGER,"
 				+ KEY_E_START_TIME + " INTEGER,"
 				+ KEY_E_END_TIME + " INTEGER,"
 				+ KEY_E_DAYS_OF_WEEK + " TEXT,"
@@ -227,12 +228,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_E_CALL_ENABLED + " INTEGER,"
 	            + KEY_E_CALL_EVENT + " INTEGER,"
 	            + KEY_E_CALL_CONTACTS + " TEXT,"
-	            + KEY_E_CALL_CONTACT_LIST_TYPE + " INTEGER"
+	            + KEY_E_CALL_CONTACT_LIST_TYPE + " INTEGER,"
+				+ KEY_E_FK_PROFILE_END + " INTEGER"
 				+ ")";
 		db.execSQL(CREATE_EVENTS_TABLE);
 
-		db.execSQL("CREATE INDEX IDX_FK_PROFILE ON " + TABLE_EVENTS + " (" + KEY_E_FK_PROFILE + ")");
+		db.execSQL("CREATE INDEX IDX_FK_PROFILE ON " + TABLE_EVENTS + " (" + KEY_E_FK_PROFILE_START + ")");
 		db.execSQL("CREATE INDEX IDX_E_NAME ON " + TABLE_EVENTS + " (" + KEY_E_NAME + ")");
+		db.execSQL("CREATE INDEX IDX_FK_PROFILE_END ON " + TABLE_EVENTS + " (" + KEY_E_FK_PROFILE_END + ")");
 
 		final String CREATE_EVENTTIME_TABLE = "CREATE TABLE " + TABLE_EVENT_TIMELINE + "("
 				+ KEY_ET_ID + " INTEGER PRIMARY KEY,"
@@ -370,7 +373,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					+ KEY_E_ID + " INTEGER PRIMARY KEY,"
 					+ KEY_E_NAME + " TEXT,"
 					+ KEY_E_TYPE + " INTEGER,"
-					+ KEY_E_FK_PROFILE + " INTEGER"
+					+ KEY_E_FK_PROFILE_START + " INTEGER"
 					+ ")";
 			db.execSQL(CREATE_EVENTS_TABLE);
 		}
@@ -403,7 +406,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_DAYS_OF_WEEK + "=\"#ALL#\"");
 
 			// pridame index
-			db.execSQL("CREATE INDEX IDX_FK_PROFILE ON " + TABLE_EVENTS + " (" + KEY_E_FK_PROFILE + ")");
+			db.execSQL("CREATE INDEX IDX_FK_PROFILE ON " + TABLE_EVENTS + " (" + KEY_E_FK_PROFILE_START + ")");
 		}
 
 		if (oldVersion < 30)
@@ -637,6 +640,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		     } finally {
 		    	db.endTransaction();
 	         }	
+		}
+
+		if (oldVersion < 1045)
+		{
+			// pridame nove stlpce
+			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_FK_PROFILE_END + " INTEGER");
+			
+			// updatneme zaznamy
+			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_FK_PROFILE_END + "=" + Event.PROFILE_END_ACTIVATED);
+			
+			// pridame index
+			db.execSQL("CREATE INDEX IDX_FK_PROFILE_END ON " + TABLE_EVENTS + " (" + KEY_E_FK_PROFILE_END + ")");
+			
 		}
 		
 	}
@@ -958,10 +974,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	
 			// unlink profile from events
 			ContentValues values = new ContentValues();
-			values.put(KEY_E_FK_PROFILE, 0);
-			db.update(TABLE_EVENTS, values, KEY_E_FK_PROFILE + " = ?",
+			values.put(KEY_E_FK_PROFILE_START, 0);
+			db.update(TABLE_EVENTS, values, KEY_E_FK_PROFILE_START + " = ?",
 			        new String[] { String.valueOf(profile._id) });
 
+			ContentValues values2 = new ContentValues();
+			values2.put(KEY_E_FK_PROFILE_END, Event.PROFILE_END_ACTIVATED);
+			db.update(TABLE_EVENTS, values2, KEY_E_FK_PROFILE_END + " = ?",
+			        new String[] { String.valueOf(profile._id) });
+			
 			db.setTransactionSuccessful();
 	    } catch (Exception e){
 	        //Error in between database transaction 
@@ -984,7 +1005,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			
 			// unlink profiles from events
 			ContentValues values = new ContentValues();
-			values.put(KEY_E_FK_PROFILE, 0);
+			values.put(KEY_E_FK_PROFILE_START, 0);
+			values.put(KEY_E_FK_PROFILE_END, Event.PROFILE_END_ACTIVATED);
 			db.update(TABLE_EVENTS, values, null, null);
 			
 			db.setTransactionSuccessful();
@@ -1547,7 +1569,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 		ContentValues values = new ContentValues();
 		values.put(KEY_E_NAME, event._name); // Event Name
-		values.put(KEY_E_FK_PROFILE, event._fkProfile); // profile
+		values.put(KEY_E_FK_PROFILE_START, event._fkProfileStart); // profile start
+		values.put(KEY_E_FK_PROFILE_END, event._fkProfileEnd); // profile end
 		values.put(KEY_E_STATUS, event.getStatus()); // event status
 		values.put(KEY_E_NOTIFICATION_SOUND, event._notificationSound); // Event Name
 		
@@ -1577,7 +1600,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		Cursor cursor = db.query(TABLE_EVENTS, 
 				                 new String[] { KEY_E_ID, 
 												KEY_E_NAME, 
-												KEY_E_FK_PROFILE, 
+												KEY_E_FK_PROFILE_START, 
+												KEY_E_FK_PROFILE_END, 
 												KEY_E_STATUS,
 												KEY_E_NOTIFICATION_SOUND
 												}, 
@@ -1594,8 +1618,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			event = new Event(Long.parseLong(cursor.getString(0)),
 				                      cursor.getString(1), 
 				                      Long.parseLong(cursor.getString(2)),
-				                      Integer.parseInt(cursor.getString(3)),
-				                      cursor.getString(4)
+				                      Long.parseLong(cursor.getString(3)),
+				                      Integer.parseInt(cursor.getString(4)),
+				                      cursor.getString(5)
 				                      );
 		}
 
@@ -1619,7 +1644,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		// Select All Query
 		final String selectQuery = "SELECT " + KEY_E_ID + "," +
 				                         KEY_E_NAME + "," +
-				                         KEY_E_FK_PROFILE + "," +
+				                         KEY_E_FK_PROFILE_START + "," +
+				                         KEY_E_FK_PROFILE_END + "," +
 				                         KEY_E_STATUS + "," +
 						                 KEY_E_NOTIFICATION_SOUND +
 		                     " FROM " + TABLE_EVENTS;
@@ -1635,9 +1661,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				Event event = new Event();
 				event._id = Long.parseLong(cursor.getString(0));
 				event._name = cursor.getString(1);
-				event._fkProfile = Long.parseLong(cursor.getString(2));
-				event.setStatus(Integer.parseInt(cursor.getString(3)));
-				event._notificationSound = cursor.getString(4);
+				event._fkProfileStart = Long.parseLong(cursor.getString(2));
+				event._fkProfileEnd = Long.parseLong(cursor.getString(3));
+				event.setStatus(Integer.parseInt(cursor.getString(4)));
+				event._notificationSound = cursor.getString(5);
 				event.createEventPreferences();
 				getEventPreferences(event, db);
 				// Adding contact to list
@@ -1659,7 +1686,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 		ContentValues values = new ContentValues();
 		values.put(KEY_E_NAME, event._name);
-		values.put(KEY_E_FK_PROFILE, event._fkProfile);
+		values.put(KEY_E_FK_PROFILE_START, event._fkProfileStart);
+		values.put(KEY_E_FK_PROFILE_END, event._fkProfileEnd);
 		values.put(KEY_E_STATUS, event.getStatus());
 		values.put(KEY_E_NOTIFICATION_SOUND, event._notificationSound);
 
@@ -1733,12 +1761,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	{
 		SQLiteDatabase db = getMyWritableDatabase();
 
-		ContentValues values = new ContentValues();
-		values.put(KEY_E_FK_PROFILE, 0);
+		db.beginTransaction();
+		
+		try {
+			ContentValues values = new ContentValues();
+			values.put(KEY_E_FK_PROFILE_START, 0);
+			// updating row
+			db.update(TABLE_EVENTS, values, KEY_E_FK_PROFILE_START + " = ?",
+						new String[] { String.valueOf(profile._id) });
 
-		// updating row
-		db.update(TABLE_EVENTS, values, KEY_E_FK_PROFILE + " = ?",
-				new String[] { String.valueOf(profile._id) });
+			ContentValues values2 = new ContentValues();
+			values2.put(KEY_E_FK_PROFILE_END, Event.PROFILE_END_ACTIVATED);
+			// updating row
+			db.update(TABLE_EVENTS, values2, KEY_E_FK_PROFILE_END + " = ?",
+						new String[] { String.valueOf(profile._id) });
+			
+			db.setTransactionSuccessful();
+
+		} catch (Exception e){
+			//Error in between database transaction
+		} finally {
+			db.endTransaction();
+		}	
 		
         //db.close();
 	}
@@ -1748,7 +1792,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		SQLiteDatabase db = getMyWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(KEY_E_FK_PROFILE, 0);
+		values.put(KEY_E_FK_PROFILE_START, 0);
+		values.put(KEY_E_FK_PROFILE_END, Event.PROFILE_END_ACTIVATED);
 
 		// updating row
 		db.update(TABLE_EVENTS, values, null, null);
@@ -1760,7 +1805,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	{
 		final String selectQuery = "SELECT " + KEY_E_ID + "," +
 						                 KEY_E_NAME + "," +
-						                 KEY_E_FK_PROFILE + "," +
+						                 KEY_E_FK_PROFILE_START + "," +
+						                 KEY_E_FK_PROFILE_END + "," +
 						                 KEY_E_STATUS + "," +
 						                 KEY_E_NOTIFICATION_SOUND +
 						    " FROM " + TABLE_EVENTS;
@@ -1778,9 +1824,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			event = new Event();
 			event._id = Long.parseLong(cursor.getString(0));
 			event._name = cursor.getString(1);
-			event._fkProfile = Long.parseLong(cursor.getString(2));
-			event.setStatus(Integer.parseInt(cursor.getString(3)));
-			event._notificationSound = cursor.getString(4);
+			event._fkProfileStart = Long.parseLong(cursor.getString(2));
+			event._fkProfileEnd = Long.parseLong(cursor.getString(3));
+			event.setStatus(Integer.parseInt(cursor.getString(4)));
+			event._notificationSound = cursor.getString(5);
 		}
 		
 		cursor.close();
@@ -2503,7 +2550,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 											// put only when columnNamesExportedDB[i] exists in cursorImportDB
 											if (cursorImportDB.getColumnIndex(columnNamesExportedDB[i]) != -1)
 											{
-												if (columnNamesExportedDB[i].equals(KEY_E_FK_PROFILE))
+												if (columnNamesExportedDB[i].equals(KEY_E_FK_PROFILE_START) ||
+													columnNamesExportedDB[i].equals(KEY_E_FK_PROFILE_END))
 												{
 													// importnuty profil ma nove id
 													// ale mame mapovacie polia, z ktorych vieme
@@ -2587,6 +2635,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 												values.put(KEY_E_USE_END_TIME, 0);
 											}
 
+										}
+										
+										if (exportedDBObj.getVersion() < 1045)
+										{
+											values.put(KEY_E_FK_PROFILE_END, Event.PROFILE_END_ACTIVATED);
 										}
 										
 										// Inserting Row do db z SQLiteOpenHelper

@@ -584,8 +584,8 @@ public class EditorEventListFragment extends Fragment {
 		
 		class ProfileNameComparator implements Comparator<Event> {
 			public int compare(Event lhs, Event rhs) {
-				Profile profileLhs = dataWrapper.getProfileById(lhs._fkProfile);
-				Profile profileRhs = dataWrapper.getProfileById(rhs._fkProfile);
+				Profile profileLhs = dataWrapper.getProfileById(lhs._fkProfileStart);
+				Profile profileRhs = dataWrapper.getProfileById(rhs._fkProfileStart);
 				String nameLhs = "";
 				if (profileLhs != null) nameLhs = profileLhs._name;
 				String nameRhs = "";

@@ -142,6 +142,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 			// create new event - default is TIME
 			event = new Event(getResources().getString(R.string.event_name_default), 
 						0,
+						Event.PROFILE_END_ACTIVATED,
 						Event.ESTATUS_STOP,
 						""
 		         );
@@ -154,7 +155,8 @@ public class EventPreferencesFragment extends PreferenceListFragment
 			Event origEvent = dataWrapper.getEventById(event_id);
 			event = new Event(
 						   origEvent._name+"_d", 
-						   origEvent._fkProfile, 
+						   origEvent._fkProfileStart, 
+						   origEvent._fkProfileEnd, 
 						   origEvent.getStatus(),
 						   origEvent._notificationSound
 							);

@@ -14,13 +14,16 @@ public class Event {
 	
 	public long _id;
 	public String _name;
-	public long _fkProfile;
+	public long _fkProfileStart;
+	public long _fkProfileEnd;
 	private int _status;  
 	public String _notificationSound;
 
 	public EventPreferencesTime _eventPreferencesTime;
 	public EventPreferencesBattery _eventPreferencesBattery;
 	public EventPreferencesCall _eventPreferencesCall;
+
+	public static final long PROFILE_END_ACTIVATED = -999;
 	
 	public static final int ESTATUS_STOP = 0;
 	public static final int ESTATUS_PAUSE = 1;
@@ -29,15 +32,10 @@ public class Event {
 	
     static final String PREF_EVENT_ENABLED = "eventEnabled";
     static final String PREF_EVENT_NAME = "eventName";
-    static final String PREF_EVENT_PROFILE = "eventProfile";
+    static final String PREF_EVENT_PROFILE_START = "eventProfileStart";
+    static final String PREF_EVENT_PROFILE_END = "eventProfileEnd";
     static final String PREF_EVENT_NOTIFICATION_SOUND = "eventNotificationSound";
 	
-    static final String PREF_EVENT_ENABLED_TMP = "eventEnabledTmp";
-    static final String PREF_EVENT_NAME_TMP = "eventNameTmp";
-    static final String PREF_EVENT_PROFILE_TMP = "eventProfileTmp";
-    static final String PREF_EVENT_NOTIFICATION_SOUND_TMP = "eventNotificationSoundTmp";
-	
-
 	// Empty constructor
 	public Event(){
 		
@@ -46,13 +44,15 @@ public class Event {
 	// constructor
 	public Event(long id, 
 		         String name,
-		         long fkProfile,
+		         long fkProfileStart,
+		         long fkProfileEnd,
 		         int status,
 		         String notificationSound)
 	{
 		this._id = id;
 		this._name = name;
-        this._fkProfile = fkProfile;
+        this._fkProfileStart = fkProfileStart;
+        this._fkProfileEnd = fkProfileEnd;
         this._status = status;
         this._notificationSound = notificationSound;
         
@@ -61,12 +61,14 @@ public class Event {
 	
 	// constructor
 	public Event(String name,
-	         	 long fkProfile,
+	         	 long fkProfileStart,
+	         	 long fkProfileEnd,
 	         	 int status,
 	         	 String notificationSound)
 	{
 		this._name = name;
-	    this._fkProfile = fkProfile;
+	    this._fkProfileStart = fkProfileStart;
+	    this._fkProfileEnd = fkProfileEnd;
         this._status = status;
         this._notificationSound = notificationSound;
 	    
@@ -77,7 +79,8 @@ public class Event {
 	{
 		this._id = event._id;
 		this._name = event._name;
-        this._fkProfile = event._fkProfile;
+        this._fkProfileStart = event._fkProfileStart;
+        this._fkProfileEnd = event._fkProfileEnd;
         this._status = event._status;
         this._notificationSound = event._notificationSound;
         
@@ -122,7 +125,7 @@ public class Event {
 	
 	public boolean isRunnable()
 	{
-		boolean runnable = (this._fkProfile != 0);
+		boolean runnable = (this._fkProfileStart != 0);
 		if (this._eventPreferencesTime._enabled)
 			runnable = runnable && this._eventPreferencesTime.isRunable();
 		if (this._eventPreferencesBattery._enabled)
@@ -136,7 +139,8 @@ public class Event {
 	{
     	Editor editor = preferences.edit();
    		editor.putString(PREF_EVENT_NAME, this._name);
-   		editor.putString(PREF_EVENT_PROFILE, Long.toString(this._fkProfile));
+   		editor.putString(PREF_EVENT_PROFILE_START, Long.toString(this._fkProfileStart));
+   		editor.putString(PREF_EVENT_PROFILE_END, Long.toString(this._fkProfileEnd));
    		editor.putBoolean(PREF_EVENT_ENABLED, this._status != ESTATUS_STOP);
    		editor.putString(PREF_EVENT_NOTIFICATION_SOUND, this._notificationSound);
         this._eventPreferencesTime.loadSharedPrefereces(preferences);
@@ -148,7 +152,8 @@ public class Event {
 	public void saveSharedPrefereces(SharedPreferences preferences)
 	{
     	this._name = preferences.getString(PREF_EVENT_NAME, "");
-		this._fkProfile = Long.parseLong(preferences.getString(PREF_EVENT_PROFILE, "0"));
+		this._fkProfileStart = Long.parseLong(preferences.getString(PREF_EVENT_PROFILE_START, "0"));
+		this._fkProfileEnd = Long.parseLong(preferences.getString(PREF_EVENT_PROFILE_END, Long.toString(PROFILE_END_ACTIVATED)));
 		this._status = (preferences.getBoolean(PREF_EVENT_ENABLED, false)) ? ESTATUS_PAUSE : ESTATUS_STOP;
 		this._notificationSound = preferences.getString(PREF_EVENT_NOTIFICATION_SOUND, ""); 
 		//Log.e("Event.saveSharedPrefereces","notificationSound="+this._notificationSound);
@@ -166,7 +171,7 @@ public class Event {
 		{	
 	        prefMng.findPreference(key).setSummary(value);
 		}
-		if (key.equals(PREF_EVENT_PROFILE))
+		if (key.equals(PREF_EVENT_PROFILE_START)||key.equals(PREF_EVENT_PROFILE_END))
 		{
 			String sProfileId = value;
 			long lProfileId;
@@ -183,7 +188,10 @@ public class Event {
 		    }
 		    else
 		    {
-    	        prefMng.findPreference(key).setSummary(context.getResources().getString(R.string.event_preferences_profile_not_set));
+		    	if (lProfileId == PROFILE_END_ACTIVATED)
+		    		prefMng.findPreference(key).setSummary(context.getResources().getString(R.string.event_preferences_profile_end_activated));
+		    	else
+		    		prefMng.findPreference(key).setSummary(context.getResources().getString(R.string.event_preferences_profile_not_set));
 		    }
 		}
 		if (key.equals(PREF_EVENT_NOTIFICATION_SOUND))
@@ -208,7 +216,8 @@ public class Event {
 	public void setSummary(PreferenceManager prefMng, String key, SharedPreferences preferences, Context context)
 	{
 		if (key.equals(PREF_EVENT_NAME) ||
-			key.equals(PREF_EVENT_PROFILE) ||
+			key.equals(PREF_EVENT_PROFILE_START) ||
+			key.equals(PREF_EVENT_PROFILE_END) ||
 			key.equals(PREF_EVENT_NOTIFICATION_SOUND))
 			setSummary(prefMng, key, preferences.getString(key, ""), context);
 		_eventPreferencesTime.setSummary(prefMng, key, preferences, context);
@@ -219,7 +228,8 @@ public class Event {
 	public void setAllSummary(PreferenceManager prefMng, Context context)
 	{
 		setSummary(prefMng, PREF_EVENT_NAME, _name, context);
-		setSummary(prefMng, PREF_EVENT_PROFILE, Long.toString(_fkProfile), context);
+		setSummary(prefMng, PREF_EVENT_PROFILE_START, Long.toString(_fkProfileStart), context);
+		setSummary(prefMng, PREF_EVENT_PROFILE_END, Long.toString(_fkProfileEnd), context);
 		setSummary(prefMng, PREF_EVENT_NOTIFICATION_SOUND, _notificationSound, context);
 		_eventPreferencesTime.setAllSummary(prefMng, context);
 		_eventPreferencesBattery.setAllSummary(prefMng, context);
@@ -341,9 +351,9 @@ public class Event {
 		eventTimelineList.add(eventTimeline);
 		
 		
-		if (this._fkProfile != eventTimeline._fkProfileReturn)
+		if (this._fkProfileStart != eventTimeline._fkProfileReturn)
 			// no activate profile, when is already activated
-			dataWrapper.activateProfileFromEvent(this._fkProfile, _notificationSound);
+			dataWrapper.activateProfileFromEvent(this._fkProfileStart, _notificationSound);
 		
 
 		setSystemEvent(dataWrapper.context, ESTATUS_RUNNING);

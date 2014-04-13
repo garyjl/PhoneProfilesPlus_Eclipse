@@ -283,7 +283,7 @@ public class EditorEventListAdapter extends BaseAdapter
 	    	holder.eventPreferencesDescription.setText(eventPrefDescription);
 	    }
 
-        Profile profile =  dataWrapper.getProfileById(event._fkProfile);
+        Profile profile =  dataWrapper.getProfileById(event._fkProfileStart);
         if (profile != null)
         {
         	holder.profileName.setText(profile._name);

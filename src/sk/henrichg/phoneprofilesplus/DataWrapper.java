@@ -425,8 +425,10 @@ public class DataWrapper {
 		// unlink profile from events
 		for (Event event : eventList)
 		{
-			if (event._fkProfile == profile._id) 
-				event._fkProfile = 0;
+			if (event._fkProfileStart == profile._id) 
+				event._fkProfileStart = 0;
+			if (event._fkProfileEnd == profile._id) 
+				event._fkProfileEnd = Event.PROFILE_END_ACTIVATED;
 		}
 	}
 	
@@ -438,7 +440,8 @@ public class DataWrapper {
 		// unlink profiles from events
 		for (Event event : eventList)
 		{
-			event._fkProfile = 0;
+			event._fkProfileStart = 0;
+			event._fkProfileEnd = Event.PROFILE_END_ACTIVATED;
 		}
 	}
 	
@@ -552,7 +555,7 @@ public class DataWrapper {
 		for (Event event : getEventList())
 		{
 			if ((event.getStatusFromDB(this) == Event.ESTATUS_RUNNING) &&
-				(event._fkProfile == profile._id))
+				(event._fkProfileStart == profile._id))
 				event.pauseEvent(this, eventTimelineList, false, true, noSetSystemEvent);
 		}
 	}
@@ -565,7 +568,7 @@ public class DataWrapper {
 		for (Event event : getEventList())
 		{
 			if ((event.getStatusFromDB(this) == Event.ESTATUS_RUNNING) &&
-				(event._fkProfile == profile._id))
+				(event._fkProfileStart == profile._id))
 				event.stopEvent(this, eventTimelineList, false, true, saveEventStatus);
 		}
 	}
@@ -900,7 +903,7 @@ public class DataWrapper {
 					EventTimeline eventTimeline = eventTimelineList.get(eventTimelineList.size()-1);
 					
 					Event event = getEventById(eventTimeline._fkEvent);
-					profile = getProfileById(event._fkProfile);
+					profile = getProfileById(event._fkProfileStart);
 					actProfile = true;
 				}
 
@@ -1277,7 +1280,7 @@ public class DataWrapper {
 					EventPreferencesBattery eventPreferences = event._eventPreferencesBattery;
 					if (!eventPreferences._charging)
 					{
-						Profile eventProfile = getProfileById(event._fkProfile);
+						Profile eventProfile = getProfileById(event._fkProfileStart);
 						
 						if (filteredProfile._id == eventProfile._id)
 							break;
