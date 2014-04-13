@@ -15,8 +15,8 @@
             android:selectAllOnFocus="true" /> 
         <sk.henrichg.phoneprofilesplus.ProfilePreference
             android:defaultValue="0"
-            android:key="eventProfile"
-            android:title="@string/event_preferences_eventProfile" />
+            android:key="eventProfileStart"
+            android:title="@string/event_preferences_eventProfileStart" />
         <RingtonePreference
             android:key="eventNotificationSound"
             android:summary="@string/array_pref_no_change"

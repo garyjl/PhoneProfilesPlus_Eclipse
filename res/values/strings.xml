@@ -155,7 +155,7 @@
     <string name="event_preferences_eventEnabled">Enable run</string>
     <string name="event_preferences_eventName">Event name</string>
     <string name="event_preferences_eventType">Event type</string>
-    <string name="event_preferences_eventProfile">Activate profile</string>
+    <string name="event_preferences_eventProfileStart">Activate profile</string>
     <string name="widget_label_icon">PhoneProfiles-icon</string>
     <string name="widget_label_one_row">PhoneProfiles-single row</string>
     <string name="widget_label_list">PhoneProfiles-list</string>
