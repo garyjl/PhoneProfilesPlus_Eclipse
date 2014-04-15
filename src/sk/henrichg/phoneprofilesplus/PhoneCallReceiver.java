@@ -8,7 +8,6 @@ import java.util.Date;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 
 public abstract class PhoneCallReceiver extends WakefulBroadcastReceiver {
 
@@ -71,22 +70,22 @@ public abstract class PhoneCallReceiver extends WakefulBroadcastReceiver {
         @Override
         public void onCallStateChanged(int state, String incomingNumber) {
             super.onCallStateChanged(state, incomingNumber);
-			Log.e("PhoneCallReceiver.onCallStateChanged","state="+state);
-			Log.e("PhoneCallReceiver.onCallStateChanged","lastState="+lastState);
+			//Log.e("PhoneCallReceiver.onCallStateChanged","state="+state);
+			//Log.e("PhoneCallReceiver.onCallStateChanged","lastState="+lastState);
             if(lastState == state){
                 //No change, debounce extras
                 return;
             }
             switch (state) {
                 case TelephonyManager.CALL_STATE_RINGING:
-    				Log.e("PhoneCallReceiver.onCallStateChanged","CALL_STATE_RINGING");
+    				//Log.e("PhoneCallReceiver.onCallStateChanged","CALL_STATE_RINGING");
                     isIncoming = true;
                     callStartTime = new Date();
                     savedNumber = incomingNumber;
                     onIncomingCallStarted(incomingNumber, callStartTime);
                     break;
                 case TelephonyManager.CALL_STATE_OFFHOOK:
-    				Log.e("PhoneCallReceiver.onCallStateChanged","CALL_STATE_OFFHOOK");
+    				//Log.e("PhoneCallReceiver.onCallStateChanged","CALL_STATE_OFFHOOK");
                     //Transition of ringing->offhook are pickups of incoming calls.  Nothing donw on them
                     if(lastState != TelephonyManager.CALL_STATE_RINGING){
                         isIncoming = false;
@@ -100,7 +99,7 @@ public abstract class PhoneCallReceiver extends WakefulBroadcastReceiver {
                     }
                     break;
                 case TelephonyManager.CALL_STATE_IDLE:
-    				Log.e("PhoneCallReceiver.onCallStateChanged","CALL_STATE_IDLE");
+    				//Log.e("PhoneCallReceiver.onCallStateChanged","CALL_STATE_IDLE");
                     //Went to idle-  this is the end of a call.  What type depends on previous state(s)
                     if(lastState == TelephonyManager.CALL_STATE_RINGING){
                         //Ring but no pickup-  a miss

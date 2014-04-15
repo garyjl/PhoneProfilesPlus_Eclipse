@@ -2,7 +2,6 @@ package sk.henrichg.phoneprofilesplus;
 
 import android.content.ContentUris;
 import android.content.Context;
-import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.view.LayoutInflater;
@@ -16,13 +15,13 @@ import android.widget.TextView;
 public class ContactsMultiselectPreferenceAdapter extends BaseAdapter 
 {
     private LayoutInflater inflater;
-    private Context context;
+    //private Context context;
 
     public ContactsMultiselectPreferenceAdapter(Context context) 
     {
         // Cache the LayoutInflate to avoid asking for a new one each time.
         inflater = LayoutInflater.from(context);
-        this.context = context; 
+        //this.context = context; 
     }
 
 	public int getCount() {

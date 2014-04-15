@@ -5,7 +5,6 @@ import sk.henrichg.phoneprofilesplus.EventPreferencesFragment.OnRedrawEventListF
 import sk.henrichg.phoneprofilesplus.EventPreferencesFragment.OnRestartEventPreferences;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceScreen;
 import android.support.v4.app.Fragment;

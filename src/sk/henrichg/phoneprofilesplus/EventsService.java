@@ -5,8 +5,6 @@ import java.util.List;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.BatteryManager;
 import android.os.Handler;
 
 public class EventsService extends IntentService

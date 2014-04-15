@@ -51,7 +51,7 @@ public class PhoneProfilesHelper {
 		{
 			// start PPHelper 
 			
-        	Log.e("PhoneProfilesHelper.startPPHelper","version OK");
+        	//Log.e("PhoneProfilesHelper.startPPHelper","version OK");
 			
 			// start StartActivity
 			Intent intent = new Intent("phoneprofileshelper.intent.action.START");
@@ -64,13 +64,13 @@ public class PhoneProfilesHelper {
 		    }
 		    else
 		    {
-	        	Log.e("PhoneProfilesHelper.startPPHelper","intent not found!");
+	        	//Log.e("PhoneProfilesHelper.startPPHelper","intent not found!");
 		    }
 		    
 		}
 		else
 		{
-        	Log.e("PhoneProfilesHelper.startPPHelper","version BAD");
+        	//Log.e("PhoneProfilesHelper.startPPHelper","version BAD");
         }
 	}
 	
@@ -87,7 +87,7 @@ public class PhoneProfilesHelper {
 	        OK = false;
 	    }
 	    
-        Log.e("PhoneProfilesHelper.doInstallPPHelper", "files.length="+files.length);
+        //Log.e("PhoneProfilesHelper.doInstallPPHelper", "files.length="+files.length);
 
   		File sd = Environment.getExternalStorageDirectory();
 		File exportDir = new File(sd, GlobalData.EXPORT_PATH);
@@ -98,7 +98,7 @@ public class PhoneProfilesHelper {
 	    OK = false;
 	    for(String filename : files) 
 	    {
-	        Log.e("PhoneProfilesHelper.doInstallPPHelper", "filename="+filename);
+	        //Log.e("PhoneProfilesHelper.doInstallPPHelper", "filename="+filename);
 	        
 	        if (filename.equals("PhoneProfilesHelper.x"))
 	        {
@@ -172,10 +172,12 @@ public class PhoneProfilesHelper {
 			//if (OK)
 			//	Log.e("PhoneProfilesHelper.doInstallPPHelper", "remount RO OK");
 
+			/*
 			if (OK)
 				Log.e("PhoneProfilesHelper.doInstallPPHelper", "PhoneProfilesHelper installed");
 			else
 				Log.e("PhoneProfilesHelper.doInstallPPHelper", "PhoneProfilesHelper installation failed!");
+		    */
 		    
 		    /*
 			CommandCapture command;
@@ -345,7 +347,7 @@ public class PhoneProfilesHelper {
             }
         }
         if (!cmd.isFinished()){
-            Log.e("PhoneProfilesHelper.commandWaid", "Could not finish root command in " + (waitTill/waitTillMultiplier));
+            //Log.e("PhoneProfilesHelper.commandWaid", "Could not finish root command in " + (waitTill/waitTillMultiplier));
             OK = false;
         }
         

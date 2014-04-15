@@ -17,7 +17,6 @@ import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.telephony.PhoneNumberUtils;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.widget.Toast;
 
 public class DataWrapper {
@@ -1079,8 +1078,8 @@ public class DataWrapper {
 								while (phones.moveToNext()) 
 								{
 									String phoneNumber = phones.getString(phones.getColumnIndex( ContactsContract.CommonDataKinds.Phone.NUMBER));
-									Log.e("DataWrapper.doEventService","phoneNumber="+phoneNumber);
-									Log.e("DataWrapper.doEventService","EventsService.phoneNumber="+EventsService.phoneNumber);
+									//Log.e("DataWrapper.doEventService","phoneNumber="+phoneNumber);
+									//Log.e("DataWrapper.doEventService","EventsService.phoneNumber="+EventsService.phoneNumber);
 									if (PhoneNumberUtils.compare(phoneNumber, EventsService.phoneNumber))
 									{
 										phoneNumberFinded = true;
@@ -1102,8 +1101,8 @@ public class DataWrapper {
 				else
 					phoneNumberFinded = true;
 
-				Log.e("DataWrapper.doEventService","phoneNumberFinded="+phoneNumberFinded);
-				Log.e("DataWrapper.doEventService","EventsService.callEventType="+EventsService.callEventType);
+				//Log.e("DataWrapper.doEventService","phoneNumberFinded="+phoneNumberFinded);
+				//Log.e("DataWrapper.doEventService","EventsService.callEventType="+EventsService.callEventType);
 				
 				if (phoneNumberFinded)
 				{
