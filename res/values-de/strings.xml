@@ -268,7 +268,6 @@
     <string name="event_preferences_category_eventBatteryParameters">Batterieparameter</string>
     <string name="event_preferences_time_enabled">Aktivieren Zeitparameter</string>
     <string name="event_preferences_battery_enabled">Aktivieren Batterieparameter</string>
-    
     <string name="menu_phoneprofilehepler_install">Installieren PPHelper</string>
     <string name="menu_phoneprofilehepler_uninstall">Deinstallieren PPHelper</string>
     <string name="menu_phoneprofilehepler_upgrade">Aktualisieren PPHelper</string>
@@ -282,5 +281,27 @@
     <string name="phoneprofilehepler_uninstall_error">Fehler bei der Deinstallation PPhelper</string>
     <string name="profile_preferences_install_pphelper">Installieren PPHelper</string>
     <string name="profile_preferences_upgrade_pphelper">Aktualisieren PPHelper</string>
+
+    <string name="contacts_multiselect_summary_text_selected">Ausgewählt</string>	    			
+    <string name="contacts_multiselect_summary_text_not_selected">Nicht ausgewählt</string>
+    <string name="event_preferences_category_eventCallParameters">Aufrufparameter</string>
+    <string name="event_preferences_call_enabled">Anruf aktivieren</string>
+    <string name="event_preferences_call_contacts">Kontakte</string>
+    <string name="event_preferences_call_event">Anruf Ereignis</string>
+    <string name="array_event_pref_ringing">Anruf Klingeln</string>
+    <string name="array_event_pref_incall_started">Eingehender Anruf beantwortet</string>
+    <string name="array_event_pref_outcall_answered">Ausgehender Anruf gestartet</string>
+    <string name="event_preferences_ccontactListType">Kontakt Listentyp</string>
+    <string name="array_event_pref_contact_list_type_white_list">Weiße Liste</string>
+    <string name="array_event_pref_contact_list_type_black_list">Schwarze Liste</string>
+    <string name="array_event_pref_contact_list_type_not_use">Nicht verwenden</string>
+    <string name="event_type_call">Anruf</string>
+    <string name="pref_event_call_event">Ereignis</string>
+    <string name="pref_event_call_contactListType">Listentyp</string> 
+    <string name="pref_event_call_no_contacts_selected">Keine Kontakte ausgewählt</string>
+    <string name="pref_event_call_contacts_selected">Kontakte ausgewählt</string>
+    <string name="event_preferences_battery_level_bad_value">Schlechte Wert</string>
+    <string name="event_preferences_profile_end_activated">Letzte aktivierten Profil</string>
+    <string name="event_preferences_eventProfileEnd">Profil aktivieren (ende)</string>
     					
 </resources>

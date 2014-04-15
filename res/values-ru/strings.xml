@@ -269,7 +269,6 @@
     <string name="event_preferences_category_eventBatteryParameters">Параметры батареи</string>
     <string name="event_preferences_time_enabled">Включить время</string>
     <string name="event_preferences_battery_enabled">Включить батареи</string>
-
     <string name="menu_phoneprofilehepler_install">Инсталляции PPHelper</string>
     <string name="menu_phoneprofilehepler_uninstall">Деинсталяция PPHelper</string>
     <string name="menu_phoneprofilehepler_upgrade">Модернизировать PPHelper</string>
@@ -283,5 +282,27 @@
     <string name="phoneprofilehepler_uninstall_error">Ошибка при деинсталляции PPhelper</string>
     <string name="profile_preferences_install_pphelper">Инсталляции PPHelper</string>
     <string name="profile_preferences_upgrade_pphelper">Модернизировать PPHelper</string>
+    
+    <string name="contacts_multiselect_summary_text_selected">Выбрано</string>	    			
+    <string name="contacts_multiselect_summary_text_not_selected">Не выбрано</string>
+    <string name="event_preferences_category_eventCallParameters">Параметры вызова</string>
+    <string name="event_preferences_call_enabled">Активировать вызов</string>
+    <string name="event_preferences_call_contacts">Контакты</string>
+    <string name="event_preferences_call_event">Событие вызова</string>
+    <string name="array_event_pref_ringing">Звон</string>
+    <string name="array_event_pref_incall_started">Входящий вызов ответил</string>
+    <string name="array_event_pref_outcall_answered">Исходящий вызов начал</string>
+    <string name="event_preferences_ccontactListType">Тип списка контактов</string>
+    <string name="array_event_pref_contact_list_type_white_list">Белый список</string>
+    <string name="array_event_pref_contact_list_type_black_list">Черный список</string>
+    <string name="array_event_pref_contact_list_type_not_use">Не использовать</string>
+    <string name="event_type_call">Вызов</string>
+    <string name="pref_event_call_event">Событие</string>
+    <string name="pref_event_call_contactListType">Тип списка</string> 
+    <string name="pref_event_call_no_contacts_selected">Нет контактов выбранных</string>
+    <string name="pref_event_call_contacts_selected">Контакты выбранные</string>
+    <string name="event_preferences_battery_level_bad_value">Плохое соотношение</string>
+    <string name="event_preferences_profile_end_activated">Последний активирован профил</string>
+    <string name="event_preferences_eventProfileEnd">Активируйте профиля (конец)</string>
     
 </resources>

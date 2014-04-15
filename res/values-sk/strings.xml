@@ -270,7 +270,6 @@
     <string name="event_preferences_category_eventBatteryParameters">Parametre batérie</string>
     <string name="event_preferences_time_enabled">Použi čas</string>
     <string name="event_preferences_battery_enabled">Použi batériu</string>
-
     <string name="menu_phoneprofilehepler_install">Nainštaluj PPHelper</string>
     <string name="menu_phoneprofilehepler_uninstall">Odinštaluj PPHelper</string>
     <string name="menu_phoneprofilehepler_upgrade">Aktualizuj PPHelper</string>
@@ -284,5 +283,27 @@
     <string name="phoneprofilehepler_uninstall_error">Chyba pri odinštalácii PPHelper-a</string>
     <string name="profile_preferences_install_pphelper">Nainštaluj PPHelper</string>
     <string name="profile_preferences_upgrade_pphelper">Aktualizuj PPHelper</string>
+
+    <string name="contacts_multiselect_summary_text_selected">Vybraté</string>	    			
+    <string name="contacts_multiselect_summary_text_not_selected">Nevybraté</string>
+    <string name="event_preferences_category_eventCallParameters">Parametre hovoru</string>
+    <string name="event_preferences_call_enabled">Použi hovor</string>
+    <string name="event_preferences_call_contacts">Kontakty</string>
+    <string name="event_preferences_call_event">Udalosti hovoru</string>
+    <string name="array_event_pref_ringing">Zvoní</string>
+    <string name="array_event_pref_incall_started">Príchodzí hovor zdvihnutý</string>
+    <string name="array_event_pref_outcall_answered">Odchodzí hovor začatý</string>
+    <string name="event_preferences_ccontactListType">Typ zoznamu kontaktov</string>
+    <string name="array_event_pref_contact_list_type_white_list">Biela listina</string>
+    <string name="array_event_pref_contact_list_type_black_list">Čierna listina</string>
+    <string name="array_event_pref_contact_list_type_not_use">Nepouži</string>
+    <string name="event_type_call">Hovor</string>
+    <string name="pref_event_call_event">Udalosť</string>
+    <string name="pref_event_call_contactListType">Typ zoznamu</string> 
+    <string name="pref_event_call_no_contacts_selected">Nevybraté kontakty</string>
+    <string name="pref_event_call_contacts_selected">Vybraté kontakty</string>
+    <string name="event_preferences_battery_level_bad_value">Zlá hodnota</string>
+    <string name="event_preferences_profile_end_activated">Posledne aktivovaný profil</string>
+    <string name="event_preferences_eventProfileEnd">Aktivovaný profil (koniec)</string>
     	
 </resources>
