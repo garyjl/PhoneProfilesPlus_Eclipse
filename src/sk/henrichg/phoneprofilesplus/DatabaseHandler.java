@@ -2560,7 +2560,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 													if (profileIdx != -1)
 														values.put(columnNamesExportedDB[i], importDBEventProfileIds.get(profileIdx));
 													else
-														values.put(columnNamesExportedDB[i], 0);
+													{
+														if (columnNamesExportedDB[i].equals(KEY_E_FK_PROFILE_END) && (cursorExportedDB.getLong(i) == Event.PROFILE_END_ACTIVATED))
+															values.put(columnNamesExportedDB[i], Event.PROFILE_END_ACTIVATED);
+														else
+															values.put(columnNamesExportedDB[i], 0);
+													}
 												}
 												else
 													values.put(columnNamesExportedDB[i], cursorExportedDB.getString(i));

@@ -991,7 +991,7 @@ public class DataWrapper {
 		boolean isCharging = false;
 		float batteryPct = 100.0f;
 		
-		boolean callEventStart = true;
+		boolean callEventStart = false;
 		boolean phoneNumberFinded = false;
 		
 		if (event._eventPreferencesTime._enabled)
@@ -1064,7 +1064,7 @@ public class DataWrapper {
 						String [] splits2 = splits[i].split("#");
 	
 						// get phone number from contacts
-						String[] projection = new String[] { ContactsContract.Contacts._ID };
+						String[] projection = new String[] { ContactsContract.Contacts._ID, ContactsContract.Contacts.HAS_PHONE_NUMBER };
 						String selection = ContactsContract.Contacts.HAS_PHONE_NUMBER + "='1' and " + ContactsContract.Contacts._ID + "=?";
 						String[] selectionArgs = new String[] { splits2[0] };
 						Cursor mCursor = context.getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, projection, selection, selectionArgs, null);
@@ -1221,7 +1221,7 @@ public class DataWrapper {
 		refreshIntent.setAction(RefreshGUIBroadcastReceiver.INTENT_REFRESH_GUI);
 		context.sendBroadcast(refreshIntent);
 		
-		return (timePassed && batteryPassed);
+		return (timePassed && batteryPassed && callPassed);
 	}
 	
 	public Profile filterProfileWithBatteryEvents(Profile profile)
