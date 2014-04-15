@@ -371,7 +371,7 @@
 </string-array>
 <string-array name="eventCallEventsArray">
 	<item>@string/array_event_pref_ringing</item>    
-	<item>@string/array_event_pref_incall_answered</item>    
+	<item>@string/array_event_pref_incall_started</item>    
 	<item>@string/array_event_pref_outcall_answered</item>    
 </string-array>
 <string-array name="eventCallEventsValues">

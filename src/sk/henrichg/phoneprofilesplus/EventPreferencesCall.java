@@ -19,7 +19,7 @@ public class EventPreferencesCall extends EventPreferences {
 	
 	static final int CALL_EVENT_RINGING = 0;
 	static final int CALL_EVENT_INCOMING_CALL_ANSWERED = 1;
-	static final int CALL_EVENT_OUTGOING_CALL_ANSWERED = 2;
+	static final int CALL_EVENT_OUTGOING_CALL_STARTED = 2;
 	
 	static final int CONTACT_LIST_TYPE_WHITE_LIST = 0;
 	static final int CONTACT_LIST_TYPE_BLACK_LIST = 1;

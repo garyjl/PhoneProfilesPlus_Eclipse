@@ -1079,6 +1079,8 @@ public class DataWrapper {
 								while (phones.moveToNext()) 
 								{
 									String phoneNumber = phones.getString(phones.getColumnIndex( ContactsContract.CommonDataKinds.Phone.NUMBER));
+									Log.e("DataWrapper.doEventService","phoneNumber="+phoneNumber);
+									Log.e("DataWrapper.doEventService","EventsService.phoneNumber="+EventsService.phoneNumber);
 									if (PhoneNumberUtils.compare(phoneNumber, EventsService.phoneNumber))
 									{
 										phoneNumberFinded = true;
@@ -1099,30 +1101,40 @@ public class DataWrapper {
 				}
 				else
 					phoneNumberFinded = true;
-					
+
+				Log.e("DataWrapper.doEventService","phoneNumberFinded="+phoneNumberFinded);
+				Log.e("DataWrapper.doEventService","EventsService.callEventType="+EventsService.callEventType);
+				
 				if (phoneNumberFinded)
 				{
-					if ((event._eventPreferencesCall._callEvent == EventPreferencesCall.CALL_EVENT_RINGING) &&
-						(EventsService.callEventType == PhoneCallBroadcastReceiver.CALL_EVENT_INCOMING_CALL_RINGING))
-						callEventStart = true;
+					if (event._eventPreferencesCall._callEvent == EventPreferencesCall.CALL_EVENT_RINGING)
+					{
+						if (EventsService.callEventType == PhoneCallBroadcastReceiver.CALL_EVENT_INCOMING_CALL_RINGING)
+							callEventStart = true;
+						else
+							callPassed = false;
+					}
 					else
-						callPassed = false;
-	
-					if ((event._eventPreferencesCall._callEvent == EventPreferencesCall.CALL_EVENT_INCOMING_CALL_ANSWERED) &&
-						(EventsService.callEventType == PhoneCallBroadcastReceiver.CALL_EVENT_INCOMING_CALL_ANSWERED))
-						callEventStart = true;
-					else	
-						callPassed = false;
-	
-					if ((event._eventPreferencesCall._callEvent == EventPreferencesCall.CALL_EVENT_OUTGOING_CALL_ANSWERED) &&
-						(EventsService.callEventType == PhoneCallBroadcastReceiver.CALL_EVENT_OUTGOING_CALL_ANSWERED))
-						callEventStart = true;
+					if (event._eventPreferencesCall._callEvent == EventPreferencesCall.CALL_EVENT_INCOMING_CALL_ANSWERED)
+					{
+						if (EventsService.callEventType == PhoneCallBroadcastReceiver.CALL_EVENT_INCOMING_CALL_ANSWERED)
+							callEventStart = true;
+						else	
+							callPassed = false;
+					}
 					else
-						callPassed = false;
+					if (event._eventPreferencesCall._callEvent == EventPreferencesCall.CALL_EVENT_OUTGOING_CALL_STARTED)
+					{
+						if (EventsService.callEventType == PhoneCallBroadcastReceiver.CALL_EVENT_OUTGOING_CALL_STARTED)
+							callEventStart = true;
+						else
+							callPassed = false;
+					}
 					
 					if ((EventsService.callEventType == PhoneCallBroadcastReceiver.CALL_EVENT_INCOMING_CALL_ENDED) ||
 						(EventsService.callEventType == PhoneCallBroadcastReceiver.CALL_EVENT_OUTGOING_CALL_ENDED))
 					{
+						callPassed = true;
 						callEventStart = false;
 						EventsService.callEventType = PhoneCallBroadcastReceiver.CALL_EVENT_UNDEFINED;
 						EventsService.phoneNumber = "";

@@ -13,10 +13,11 @@ public class PhoneCallBroadcastReceiver extends PhoneCallReceiver {
 	
 	public static final int CALL_EVENT_UNDEFINED = 0; 
 	public static final int CALL_EVENT_INCOMING_CALL_RINGING = 1; 
-	public static final int CALL_EVENT_INCOMING_CALL_ANSWERED = 2; 
-	public static final int CALL_EVENT_OUTGOING_CALL_ANSWERED = 3;
-	public static final int CALL_EVENT_INCOMING_CALL_ENDED = 4; 
-	public static final int CALL_EVENT_OUTGOING_CALL_ENDED = 5;
+	public static final int CALL_EVENT_OUTGOING_CALL_STARTED = 2;
+	public static final int CALL_EVENT_INCOMING_CALL_ANSWERED = 3; 
+	public static final int CALL_EVENT_OUTGOING_CALL_ANSWERED = 4;
+	public static final int CALL_EVENT_INCOMING_CALL_ENDED = 5; 
+	public static final int CALL_EVENT_OUTGOING_CALL_ENDED = 6;
 	
 	protected boolean onStartReceive()
 	{
@@ -60,10 +61,13 @@ public class PhoneCallBroadcastReceiver extends PhoneCallReceiver {
 		}
 	}
 	
-	private void callStarted(String phoneNumber)
+	private void callStarted(boolean incoming, String phoneNumber)
 	{
 		DataWrapper dataWrapper = new DataWrapper(savedContext, false, false, 0);
-		doCallEvent(CALL_EVENT_INCOMING_CALL_RINGING, phoneNumber, dataWrapper);
+		if (incoming)
+			doCallEvent(CALL_EVENT_INCOMING_CALL_RINGING, phoneNumber, dataWrapper);
+		else
+			doCallEvent(CALL_EVENT_OUTGOING_CALL_STARTED, phoneNumber, dataWrapper);
 		dataWrapper.invalidateDataWrapper();
 	}
 	
@@ -113,26 +117,32 @@ public class PhoneCallBroadcastReceiver extends PhoneCallReceiver {
 	
     protected void onIncomingCallStarted(String number, Date start) 
     {
-    	callStarted(number);
+    	callStarted(true, number);
     }
 
-    protected void onIncomingCallAnswered(String number, Date start) {
+    protected void onIncomingCallAnswered(String number, Date start)
+    {
     	callAnswered(true, number);
     }
 
-    protected void onOutgoingCallAnswered(String number, Date start) {
-    	callAnswered(false, number);
+    protected void onOutgoingCallStarted(String number, Date start)
+    {
+    	callStarted(false, number);
     }
 
-    protected void onIncomingCallEnded(String number, Date start, Date end) {
+    protected void onIncomingCallEnded(String number, Date start, Date end)
+    {
     	callEnded(true, number);
     }
 
-    protected void onOutgoingCallEnded(String number, Date start, Date end) {
+    protected void onOutgoingCallEnded(String number, Date start, Date end)
+    {
     	callEnded(false, number);
     }
 
-    protected void onMissedCall(String number, Date start) {
+    protected void onMissedCall(String number, Date start)
+    {
+    	callEnded(true, number);
     }
     
 }

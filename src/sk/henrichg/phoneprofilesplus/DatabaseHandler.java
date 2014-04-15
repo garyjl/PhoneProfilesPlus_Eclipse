@@ -2642,6 +2642,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 										}
 										
+										if (exportedDBObj.getVersion() < 1040)
+										{
+											values.put(KEY_E_CALL_ENABLED, 0);
+											values.put(KEY_E_CALL_EVENT, 0);
+											values.put(KEY_E_CALL_CONTACTS, "");
+											values.put(KEY_E_CALL_CONTACT_LIST_TYPE, 0);
+										}
+
 										if (exportedDBObj.getVersion() < 1045)
 										{
 											values.put(KEY_E_FK_PROFILE_END, Event.PROFILE_END_ACTIVATED);
