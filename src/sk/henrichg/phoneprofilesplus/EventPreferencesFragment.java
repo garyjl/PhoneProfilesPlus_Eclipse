@@ -299,9 +299,9 @@ public class EventPreferencesFragment extends PreferenceListFragment
 			dataWrapper.getDatabaseHandler().addEvent(event);
 			event_id = event._id;
 
-			// setup event for next start
-			if (!dataWrapper.doEventService(event, true))
-				event.pauseEvent(dataWrapper, eventTimelineList, false, false, false);
+			// setup event for next start (reset)
+			event.pauseEvent(dataWrapper, eventTimelineList, false, false, false);
+			dataWrapper.doEventService(event, true);
 				
 			
         	//Log.d("ProfilePreferencesFragment.savePreferences", "addEvent");
@@ -324,9 +324,9 @@ public class EventPreferencesFragment extends PreferenceListFragment
 				event.stopEvent(dataWrapper, eventTimelineList, false, false, true);
 			else
 			{
-				// setup event for next start
-				if (!dataWrapper.doEventService(event, true))
-					event.pauseEvent(dataWrapper, eventTimelineList, false, false, false);
+				// setup event for next start (reset)
+				event.pauseEvent(dataWrapper, eventTimelineList, false, false, false);
+				dataWrapper.doEventService(event, true);
 			}
 			
         	//Log.d("EventPreferencesFragment.savePreferences", "updateEvent");
