@@ -468,6 +468,9 @@ public class ActivateProfileHelper {
 		// nahodenie podsvietenia
 		if (profile.getDeviceBrightnessChange())
 		{
+			GlobalData.logE("ActivateProfileHelper.execute", "set brightness: profile="+profile._name);
+			GlobalData.logE("ActivateProfileHelper.execute", "set brightness: _deviceBrightness="+profile._deviceBrightness);
+			
 			if (profile.getDeviceBrightnessAutomatic())
 				Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
 			else

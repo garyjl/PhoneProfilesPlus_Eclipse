@@ -1276,52 +1276,52 @@ public class DataWrapper {
 						if (eventProfile._volumeRingerMode != 0)
 							filteredProfile._volumeRingerMode = 0;
 						if (eventProfile.getVolumeRingtoneChange())
-							filteredProfile._volumeRingtone = "0|0|0";
-						if (profile.getVolumeNotificationChange())
-							filteredProfile._volumeNotification = "0|0|0";
-						if (profile.getVolumeAlarmChange())
-							filteredProfile._volumeAlarm = "0|0|0";
-						if (profile.getVolumeMediaChange())
-							filteredProfile._volumeMedia = "0|0|0";
-						if (profile.getVolumeSystemChange())
-							filteredProfile._volumeSystem = "0|0|0";
-						if (profile.getVolumeVoiceChange())
-							filteredProfile._volumeVoice = "0|0|";
-						if (profile._soundRingtoneChange != 0)
+							filteredProfile._volumeRingtone = "0|1|0";
+						if (eventProfile.getVolumeNotificationChange())
+							filteredProfile._volumeNotification = "0|1|0";
+						if (eventProfile.getVolumeAlarmChange())
+							filteredProfile._volumeAlarm = "0|1|0";
+						if (eventProfile.getVolumeMediaChange())
+							filteredProfile._volumeMedia = "0|1|0";
+						if (eventProfile.getVolumeSystemChange())
+							filteredProfile._volumeSystem = "0|1|0";
+						if (eventProfile.getVolumeVoiceChange())
+							filteredProfile._volumeVoice = "0|1|0";
+						if (eventProfile._soundRingtoneChange != 0)
 							filteredProfile._soundRingtoneChange = 0;
-						if (profile._soundNotificationChange != 0)
+						if (eventProfile._soundNotificationChange != 0)
 							filteredProfile._soundNotificationChange = 0;
-						if (profile._soundAlarmChange != 0)
+						if (eventProfile._soundAlarmChange != 0)
 							filteredProfile._soundAlarmChange = 0;
-						if (profile._deviceAirplaneMode != 0)
+						if (eventProfile._deviceAirplaneMode != 0)
 							filteredProfile._deviceAirplaneMode = 0;
-						if (profile._deviceAutosync != 0)
+						if (eventProfile._deviceAutosync != 0)
 							filteredProfile._deviceAutosync = 0;
-						if (profile._deviceMobileData != 0)
+						if (eventProfile._deviceMobileData != 0)
 							filteredProfile._deviceMobileData = 0;
-						if (profile._deviceMobileDataPrefs != 0)
+						if (eventProfile._deviceMobileDataPrefs != 0)
 							filteredProfile._deviceMobileDataPrefs = 0;
-						if (profile._deviceWiFi != 0)
+						if (eventProfile._deviceWiFi != 0)
 							filteredProfile._deviceWiFi = 0;
-						if (profile._deviceBluetooth != 0)
+						if (eventProfile._deviceBluetooth != 0)
 							filteredProfile._deviceBluetooth = 0;
-						if (profile._deviceGPS != 0)
+						if (eventProfile._deviceGPS != 0)
 							filteredProfile._deviceGPS = 0;
-						if (profile._deviceLocationServicePrefs != 0)
+						if (eventProfile._deviceLocationServicePrefs != 0)
 							filteredProfile._deviceLocationServicePrefs = 0;
-						if (profile._deviceScreenTimeout != 0)
+						if (eventProfile._deviceScreenTimeout != 0)
 							filteredProfile._deviceScreenTimeout = 0;
-						if (profile.getDeviceBrightnessChange() || profile.getDeviceBrightnessAutomatic())
-							filteredProfile._deviceBrightness = "0|0|0|0";
-						if (profile._deviceAutoRotate != 0)
+						if (eventProfile.getDeviceBrightnessChange() || eventProfile.getDeviceBrightnessAutomatic())
+							filteredProfile._deviceBrightness = "0|1|0|0";
+						if (eventProfile._deviceAutoRotate != 0)
 							filteredProfile._deviceAutoRotate = 0;
-						if (profile._deviceRunApplicationChange != 0)
+						if (eventProfile._deviceRunApplicationChange != 0)
 							filteredProfile._deviceRunApplicationChange = 0;
-						if (profile._deviceWallpaperChange != 0)
+						if (eventProfile._deviceWallpaperChange != 0)
 							filteredProfile._deviceWallpaperChange = 0;
-						if (profile._volumeSpeakerPhone != 0)
+						if (eventProfile._volumeSpeakerPhone != 0)
 							filteredProfile._volumeSpeakerPhone = 0;
-						if (profile._deviceNFC != 0)
+						if (eventProfile._deviceNFC != 0)
 							filteredProfile._deviceNFC = 0;
 						
 						// last event finded
