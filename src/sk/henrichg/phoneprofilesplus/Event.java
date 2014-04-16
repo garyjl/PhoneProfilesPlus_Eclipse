@@ -347,19 +347,7 @@ public class Event {
 		eventTimeline._eorder = 0;
 		if (this._fkProfileEnd == PROFILE_END_ACTIVATED)
 		{
-			Profile profile;
-			if (eventTimelineList.size() > 0)
-			{	
-				// get last activated profile from timeline list
-				EventTimeline lastEventTimeLine = eventTimelineList.get(eventTimelineList.size()-1);
-				Event event = dataWrapper.getEventById(lastEventTimeLine._fkEvent);
-				if (event != null)
-					profile = dataWrapper.getProfileById(event._fkProfileStart);
-				else
-					profile = dataWrapper.getActivatedProfile();
-			}
-			else
-				profile = dataWrapper.getActivatedProfile();
+			Profile profile = dataWrapper.getActivatedProfile();
 			if (profile != null)
 				eventTimeline._fkProfileReturn = profile._id;
 			else
