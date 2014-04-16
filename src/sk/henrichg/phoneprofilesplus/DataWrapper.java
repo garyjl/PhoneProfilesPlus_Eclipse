@@ -555,7 +555,7 @@ public class DataWrapper {
 		{
 			if ((event.getStatusFromDB(this) == Event.ESTATUS_RUNNING) &&
 				(event._fkProfileStart == profile._id))
-				event.pauseEvent(this, eventTimelineList, false, false, true, noSetSystemEvent);
+				event.pauseEvent(this, eventTimelineList, false, true, noSetSystemEvent);
 		}
 	}
 
@@ -581,7 +581,7 @@ public class DataWrapper {
 		{
 			if (event.getStatusFromDB(this) == Event.ESTATUS_RUNNING)
 			{
-				event.pauseEvent(this, eventTimelineList, false, false, true, noSetSystemEvent);
+				event.pauseEvent(this, eventTimelineList, false, true, noSetSystemEvent);
 			}
 			if (blockBatteryEvents)
 			{
@@ -1198,7 +1198,7 @@ public class DataWrapper {
 			if (newEventStatus == Event.ESTATUS_PAUSE)
 			{
 				GlobalData.logE("DataWrapper.doEventService","pause event");
-				event.pauseEvent(this, eventTimelineList, restartEvent, true, false, false);
+				event.pauseEvent(this, eventTimelineList, true, false, false);
 			}
 		
 			// refresh GUI
