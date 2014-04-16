@@ -388,8 +388,13 @@ public class Event {
 	//////////////////////////////////
 
 			eventTimeline = addEventTimeline(dataWrapper, eventTimelineList);
+
+			if (this._fkProfileStart != eventTimeline._fkProfileReturn)
+				// no activate profile, when is already activated
+				dataWrapper.activateProfileFromEvent(this._fkProfileStart, _notificationSound);
+			
 		}
-		else
+/*		else
 		{
 			int eventPosition = getEventTimelinePosition(eventTimelineList);
 			if (eventPosition != -1)
@@ -397,12 +402,7 @@ public class Event {
 			else
 				eventTimeline = addEventTimeline(dataWrapper, eventTimelineList);
 		}
-		
-		if (this._fkProfileStart != eventTimeline._fkProfileReturn)
-			// no activate profile, when is already activated
-			dataWrapper.activateProfileFromEvent(this._fkProfileStart, _notificationSound);
-		
-
+*/		
 		setSystemEvent(dataWrapper.context, ESTATUS_RUNNING);
 		
 		this._status = ESTATUS_RUNNING;
