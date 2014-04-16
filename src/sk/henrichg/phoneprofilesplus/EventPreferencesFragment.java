@@ -309,10 +309,6 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		else
     	if (event_id > 0) 
         {
-    		// stop event
-			//event.pauseEvent(dataWrapper, eventTimelineList, false, true, true);
-			event.stopEvent(dataWrapper, eventTimelineList, false, false, false);
-    		
 	    	event.saveSharedPrefereces(preferences);
 	    	
     		// udate event in DB
