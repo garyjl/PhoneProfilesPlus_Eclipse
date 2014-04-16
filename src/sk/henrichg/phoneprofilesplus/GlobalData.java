@@ -51,7 +51,6 @@ public class GlobalData extends Application {
 	static final String EXTRA_NEW_PROFILE_MODE = "new_profile_mode";
 	static final String EXTRA_NEW_EVENT_MODE = "new_event_mode";
 	static final String EXTRA_PREFERENCES_STARTUP_SOURCE = "preferences_startup_source";
-	static final String EXTRA_EVENTS_SERVICE_PROCEDURE = "events_service_procedure";
 	static final String EXTRA_START_SYSTEM_EVENT = "start_system_event";
 	static final String EXTRA_SECOND_SET_VOLUMES = "second_set_volumes";
 	static final String EXTRA_EVENT_NOTIFICATION_SOUND = "event_notification_sound";

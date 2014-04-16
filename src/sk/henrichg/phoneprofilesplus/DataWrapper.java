@@ -979,10 +979,12 @@ public class DataWrapper {
 		
 	}
 
-	public boolean doEventService(Event event, int procedure, boolean unblockEvent)
+	public boolean doEventService(Event event, boolean unblockEvent)
 	{
 		int newEventStatus = Event.ESTATUS_NONE;
-				
+
+		boolean eventStart = true;
+		
 		boolean timePassed = true;
 		boolean batteryPassed = true;
 		boolean callPassed = true;
@@ -990,7 +992,6 @@ public class DataWrapper {
 		boolean isCharging = false;
 		float batteryPct = 100.0f;
 		
-		boolean callEventStart = false;
 		boolean phoneNumberFinded = false;
 		
 		if (event._eventPreferencesTime._enabled)
@@ -1021,6 +1022,8 @@ public class DataWrapper {
 		    GlobalData.logE("DataWrapper.doEventService","nowAlarmTime="+alarmTimeS);
 
 			timePassed = ((nowAlarmTime >= startAlarmTime) && (nowAlarmTime <= endAlarmTime));
+			
+			eventStart = eventStart && timePassed;
 		}
 		
 		if (event._eventPreferencesBattery._enabled)
@@ -1041,13 +1044,31 @@ public class DataWrapper {
 			batteryPct = level / (float)scale;	
 			GlobalData.logE("DataWrapper.doEventService","batteryPct="+batteryPct);
 			
-			if ((batteryPct >= (event._eventPreferencesBattery._levelLow / (float)100)) && 
-			    (batteryPct <= (event._eventPreferencesBattery._levelHight / (float)100))) 
+			batteryPassed = (isCharging == event._eventPreferencesBattery._charging);
+			
+			if (batteryPassed)
 			{
-				batteryPassed = (isCharging == event._eventPreferencesBattery._charging);
+				if ((batteryPct >= (event._eventPreferencesBattery._levelLow / (float)100)) && 
+				    (batteryPct <= (event._eventPreferencesBattery._levelHight / (float)100))) 
+				{
+					eventStart = eventStart && (!event._eventPreferencesBattery._blocked);
+				}
+				else
+				{
+					batteryPassed = false;
+					eventStart = eventStart && false;
+					
+					unblockEvent = true;
+				}
 			}
-			else
-				batteryPassed = false;
+			
+			if (unblockEvent)
+			{
+				GlobalData.logE("DataWrapper.doEventService","unblockEvent");
+				// unblock starting battery event
+				event._eventPreferencesBattery._blocked = false;
+				getDatabaseHandler().updateEventPreferencesBatteryBlocked(event);
+			}
 		}
 
 		if (event._eventPreferencesCall._enabled)
@@ -1109,7 +1130,7 @@ public class DataWrapper {
 					if (event._eventPreferencesCall._callEvent == EventPreferencesCall.CALL_EVENT_RINGING)
 					{
 						if (EventsService.callEventType == PhoneCallBroadcastReceiver.CALL_EVENT_INCOMING_CALL_RINGING)
-							callEventStart = true;
+							eventStart = eventStart && true;
 						else
 							callPassed = false;
 					}
@@ -1117,7 +1138,7 @@ public class DataWrapper {
 					if (event._eventPreferencesCall._callEvent == EventPreferencesCall.CALL_EVENT_INCOMING_CALL_ANSWERED)
 					{
 						if (EventsService.callEventType == PhoneCallBroadcastReceiver.CALL_EVENT_INCOMING_CALL_ANSWERED)
-							callEventStart = true;
+							eventStart = eventStart && true;
 						else	
 							callPassed = false;
 					}
@@ -1125,7 +1146,7 @@ public class DataWrapper {
 					if (event._eventPreferencesCall._callEvent == EventPreferencesCall.CALL_EVENT_OUTGOING_CALL_STARTED)
 					{
 						if (EventsService.callEventType == PhoneCallBroadcastReceiver.CALL_EVENT_OUTGOING_CALL_STARTED)
-							callEventStart = true;
+							eventStart = eventStart && true;
 						else
 							callPassed = false;
 					}
@@ -1134,7 +1155,7 @@ public class DataWrapper {
 						(EventsService.callEventType == PhoneCallBroadcastReceiver.CALL_EVENT_OUTGOING_CALL_ENDED))
 					{
 						callPassed = true;
-						callEventStart = false;
+						eventStart = eventStart && false;
 						EventsService.callEventType = PhoneCallBroadcastReceiver.CALL_EVENT_UNDEFINED;
 						EventsService.phoneNumber = "";
 					}
@@ -1147,90 +1168,44 @@ public class DataWrapper {
 		
 		GlobalData.logE("DataWrapper.doEventService","timePassed="+timePassed);
 		GlobalData.logE("DataWrapper.doEventService","batteryPassed="+batteryPassed);
+		GlobalData.logE("DataWrapper.doEventService","callPassed="+callPassed);
 
+		GlobalData.logE("DataWrapper.doEventService","eventStart="+eventStart);
+		
 		List<EventTimeline> eventTimelineList = getEventTimelineList();
 		
 		if (timePassed && batteryPassed && callPassed)
 		{
 			// podmienky sedia, vykoname, co treba
 
-			if (event._eventPreferencesTime._enabled)
-			{
-				if (procedure == EventsService.ESP_START_EVENT)
-					newEventStatus = Event.ESTATUS_RUNNING;
-				else
-				if (procedure == EventsService.ESP_PAUSE_EVENT)
-					newEventStatus = Event.ESTATUS_PAUSE;
-			}
-
-			if (event._eventPreferencesBattery._enabled)
-			{
-				if (unblockEvent)
-				{
-					GlobalData.logE("DataWrapper.doEventService","unblockEvent");
-					// unblock starting battery event
-					event._eventPreferencesBattery._blocked = false;
-					getDatabaseHandler().updateEventPreferencesBatteryBlocked(event);
-					newEventStatus = Event.ESTATUS_NONE;
-				}
-					
-				if (isCharging != event._eventPreferencesBattery._charging)
-				{
-					newEventStatus = Event.ESTATUS_PAUSE;
-				}
-				else
-				{
-					if ((batteryPct >= (event._eventPreferencesBattery._levelLow / (float)100)) && 
-					    (batteryPct <= (event._eventPreferencesBattery._levelHight / (float)100))) 
-					{
-						GlobalData.logE("DataWrapper.doEventService","inlevel blocked="+event._eventPreferencesBattery._blocked);
-						if (!event._eventPreferencesBattery._blocked)
-						{
-							// starting battery level unblocked
-							if (event.getStatus() != Event.ESTATUS_RUNNING)
-								newEventStatus = Event.ESTATUS_RUNNING;
-						}
-					}
-					else
-					{
-						GlobalData.logE("DataWrapper.doEventService","outlevel blocked="+event._eventPreferencesBattery._blocked);
-						// unblock starting battery event
-						event._eventPreferencesBattery._blocked = false;
-						getDatabaseHandler().updateEventPreferencesBatteryBlocked(event);
-	
-						newEventStatus = Event.ESTATUS_PAUSE;
-					}
-				}
-			}
-			
-			if (event._eventPreferencesCall._enabled)
-			{
-				if (callEventStart)
-					newEventStatus = Event.ESTATUS_RUNNING;
-				else
-					newEventStatus = Event.ESTATUS_PAUSE;
-			}
+			if (eventStart)
+				newEventStatus = Event.ESTATUS_RUNNING;
+			else
+				newEventStatus = Event.ESTATUS_PAUSE;
 			
 		}
 		else
 			newEventStatus = Event.ESTATUS_PAUSE;
 
-		if (newEventStatus == Event.ESTATUS_RUNNING)
+		if (event.getStatus() != newEventStatus)
 		{
-			GlobalData.logE("DataWrapper.doEventService","start event");
-			event.startEvent(this, eventTimelineList, false);
-		}
-		else
-		if (newEventStatus == Event.ESTATUS_PAUSE)
-		{
-			GlobalData.logE("DataWrapper.doEventService","pause event");
-			event.pauseEvent(this, eventTimelineList, true, false, false);
-		}
+			if (newEventStatus == Event.ESTATUS_RUNNING)
+			{
+				GlobalData.logE("DataWrapper.doEventService","start event");
+				event.startEvent(this, eventTimelineList, false);
+			}
+			else
+			if (newEventStatus == Event.ESTATUS_PAUSE)
+			{
+				GlobalData.logE("DataWrapper.doEventService","pause event");
+				event.pauseEvent(this, eventTimelineList, true, false, false);
+			}
 		
-		// refresh GUI
-		Intent refreshIntent = new Intent();
-		refreshIntent.setAction(RefreshGUIBroadcastReceiver.INTENT_REFRESH_GUI);
-		context.sendBroadcast(refreshIntent);
+			// refresh GUI
+			Intent refreshIntent = new Intent();
+			refreshIntent.setAction(RefreshGUIBroadcastReceiver.INTENT_REFRESH_GUI);
+			context.sendBroadcast(refreshIntent);
+		}
 		
 		return (timePassed && batteryPassed && callPassed);
 	}

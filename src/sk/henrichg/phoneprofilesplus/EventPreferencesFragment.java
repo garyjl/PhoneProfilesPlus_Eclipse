@@ -300,7 +300,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 			event_id = event._id;
 
 			// setup event for next start
-			if (!dataWrapper.doEventService(event, EventsService.ESP_PAUSE_EVENT, true))
+			if (!dataWrapper.doEventService(event, true))
 				event.pauseEvent(dataWrapper, eventTimelineList, false, false, false);
 				
 			
@@ -325,7 +325,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 			else
 			{
 				// setup event for next start
-				if (!dataWrapper.doEventService(event, EventsService.ESP_PAUSE_EVENT, true))
+				if (!dataWrapper.doEventService(event, true))
 					event.pauseEvent(dataWrapper, eventTimelineList, false, false, false);
 			}
 			
