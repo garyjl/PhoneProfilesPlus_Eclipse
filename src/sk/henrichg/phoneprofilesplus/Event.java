@@ -269,80 +269,24 @@ public class Event {
 		return canActivate;
 	}
 	
-	public void startEvent(DataWrapper dataWrapper,
-							List<EventTimeline> eventTimelineList,
-							boolean ignoreGlobalPref)
+	private int getEventTimelinePosition(List<EventTimeline> eventTimelineList)
 	{
-		if ((!GlobalData.getGlobalEventsRuning(dataWrapper.context)) && (!ignoreGlobalPref))
-			// events are globally stopped
-			return;
-		
-		if (!this.isRunnable())
-			// event is not runnable, no pause it
-			return;
-		
-		GlobalData.logE("Event.startEvent","event_id="+this._id+"-----------------------------------");
-		
-		EventTimeline eventTimeline;		
-		
-	/////// delete duplicate from timeline
-		
-		boolean exists = true;
-		while (exists)
+		int eventPosition = -1;
+		for (EventTimeline eventTimeline : eventTimelineList)
 		{
-			exists = false;
-
-			int timeLineSize = eventTimelineList.size();
-			
-			// test whenever event exists in timeline
-			eventTimeline = null;
-			int eventPosition = -1;
-			for (EventTimeline _eventTimeline : eventTimelineList)
+			eventPosition++;
+			if (eventTimeline._fkEvent == this._id)
 			{
-				eventPosition++;
-				if (_eventTimeline._fkEvent == this._id)
-				{
-					eventTimeline = _eventTimeline;
-					exists = true;
-					break;
-				}
-			}
-			
-			if (exists)
-			{
-				// remove event from timeline
-				eventTimelineList.remove(eventTimeline);
-				dataWrapper.getDatabaseHandler().deleteEventTimeline(eventTimeline);
-				
-				if ((eventPosition == 0) && (timeLineSize > 1))
-				{
-					// event is in start of timeline
-					
-					// move _fkProfileReturn up
-					for (int i = eventTimelineList.size()-1; i > 0; i--)
-					{
-						eventTimelineList.get(i)._fkProfileReturn = 
-								eventTimelineList.get(i-1)._fkProfileReturn;
-					}
-					eventTimelineList.get(0)._fkProfileReturn = eventTimeline._fkProfileReturn;
-					dataWrapper.getDatabaseHandler().updateProfileReturnET(eventTimelineList);
-				}
-				else
-				if (eventPosition == (timeLineSize-1))
-				{
-					// event is in end of timeline 
-					// do nothing
-				}
-				else
-				{
-					// event is in middle of timeline 
-					// do nothing
-				}
+				break;
 			}
 		}
-	//////////////////////////////////
-
-		eventTimeline = new EventTimeline();
+		return eventPosition;
+	}
+	
+	private EventTimeline addEventTimeline(DataWrapper dataWrapper, 
+											List<EventTimeline> eventTimelineList)
+	{
+		EventTimeline eventTimeline = new EventTimeline();
 		eventTimeline._fkEvent = this._id;
 		eventTimeline._eorder = 0;
 		if (this._fkProfileEnd == PROFILE_END_ACTIVATED)
@@ -365,6 +309,89 @@ public class Event {
 		dataWrapper.getDatabaseHandler().addEventTimeline(eventTimeline);
 		eventTimelineList.add(eventTimeline);
 		
+		return eventTimeline;
+	}
+	
+	public void startEvent(DataWrapper dataWrapper,
+							List<EventTimeline> eventTimelineList,
+							boolean restart, 
+							boolean ignoreGlobalPref)
+	{
+		if ((!GlobalData.getGlobalEventsRuning(dataWrapper.context)) && (!ignoreGlobalPref))
+			// events are globally stopped
+			return;
+		
+		if (!this.isRunnable())
+			// event is not runnable, no pause it
+			return;
+		
+		GlobalData.logE("Event.startEvent","event_id="+this._id+"-----------------------------------");
+		
+		EventTimeline eventTimeline;		
+		
+		if (!restart)
+		{
+	/////// delete duplicate from timeline
+		
+			boolean exists = true;
+			while (exists)
+			{
+				exists = false;
+	
+				int timeLineSize = eventTimelineList.size();
+				
+				// test whenever event exists in timeline
+				eventTimeline = null;
+				int eventPosition = getEventTimelinePosition(eventTimelineList);
+				if (eventPosition != -1)
+					eventTimeline = eventTimelineList.get(eventPosition);
+				
+				exists = eventPosition != -1;
+				
+				if (exists)
+				{
+					// remove event from timeline
+					eventTimelineList.remove(eventTimeline);
+					dataWrapper.getDatabaseHandler().deleteEventTimeline(eventTimeline);
+					
+					if ((eventPosition == 0) && (timeLineSize > 1))
+					{
+						// event is in start of timeline
+						
+						// move _fkProfileReturn up
+						for (int i = eventTimelineList.size()-1; i > 0; i--)
+						{
+							eventTimelineList.get(i)._fkProfileReturn = 
+									eventTimelineList.get(i-1)._fkProfileReturn;
+						}
+						eventTimelineList.get(0)._fkProfileReturn = eventTimeline._fkProfileReturn;
+						dataWrapper.getDatabaseHandler().updateProfileReturnET(eventTimelineList);
+					}
+					else
+					if (eventPosition == (timeLineSize-1))
+					{
+						// event is in end of timeline 
+						// do nothing
+					}
+					else
+					{
+						// event is in middle of timeline 
+						// do nothing
+					}
+				}
+			}
+	//////////////////////////////////
+
+			eventTimeline = addEventTimeline(dataWrapper, eventTimelineList);
+		}
+		else
+		{
+			int eventPosition = getEventTimelinePosition(eventTimelineList);
+			if (eventPosition != -1)
+				eventTimeline = eventTimelineList.get(eventPosition);
+			else
+				eventTimeline = addEventTimeline(dataWrapper, eventTimelineList);
+		}
 		
 		if (this._fkProfileStart != eventTimeline._fkProfileReturn)
 			// no activate profile, when is already activated
@@ -382,6 +409,7 @@ public class Event {
 	
 	public void pauseEvent(DataWrapper dataWrapper, 
 							List<EventTimeline> eventTimelineList,
+							boolean restart,
 							boolean activateReturnProfile, 
 							boolean ignoreGlobalPref,
 							boolean noSetSystemEvent)
@@ -396,63 +424,59 @@ public class Event {
 
 		GlobalData.logE("Event.pauseEvent","event_id="+this._id+"-----------------------------------");
 		
-		int timeLineSize = eventTimelineList.size();
-		
-		// test whenever event exists in timeline
-		boolean exists = false;
-		int eventPosition = -1;
-		for (EventTimeline eventTimeline : eventTimelineList)
+		if (!restart)
 		{
-			eventPosition++;
-			if (eventTimeline._fkEvent == this._id)
-			{
-				exists = true;
-				break;
-			}
-		}
-		
-		if (exists)
-		{
-			EventTimeline eventTimeline = eventTimelineList.get(eventPosition);
+			int timeLineSize = eventTimelineList.size();
 			
-			// remove event from timeline
-			eventTimelineList.remove(eventTimeline);
-			dataWrapper.getDatabaseHandler().deleteEventTimeline(eventTimeline);
+			// test whenever event exists in timeline
+			boolean exists = false;
+			int eventPosition = getEventTimelinePosition(eventTimelineList);
 	
+			exists = eventPosition != -1;
 			
-			if ((eventPosition == 0) && (timeLineSize > 1))
+			if (exists)
 			{
-				// event is in start of timeline
-
-				// move _fkProfileReturn up
-				for (int i = eventTimelineList.size()-1; i > 0; i--)
-				{
-					eventTimelineList.get(i)._fkProfileReturn = 
-							eventTimelineList.get(i-1)._fkProfileReturn;
-				}
-				eventTimelineList.get(0)._fkProfileReturn = eventTimeline._fkProfileReturn;
-				dataWrapper.getDatabaseHandler().updateProfileReturnET(eventTimelineList);
-			}
-			else
-			if (eventPosition == (timeLineSize-1))
-			{
-				// event is in end of timeline 
+				EventTimeline eventTimeline = eventTimelineList.get(eventPosition);
 				
-				// activate profile only when profile not already activated 
-				if ((eventTimeline._fkProfileReturn != dataWrapper.getActivatedProfile()._id)
-					&& (activateReturnProfile)
-					&& (canActivateReturnProfile()))
+				// remove event from timeline
+				eventTimelineList.remove(eventTimeline);
+				dataWrapper.getDatabaseHandler().deleteEventTimeline(eventTimeline);
+		
+				
+				if ((eventPosition == 0) && (timeLineSize > 1))
 				{
-					GlobalData.logE("Event.pauseEvent","activate return profile");
-					if (eventTimeline._fkProfileReturn != 0)
-						dataWrapper.activateProfileFromEvent(eventTimeline._fkProfileReturn, "");
+					// event is in start of timeline
+	
+					// move _fkProfileReturn up
+					for (int i = eventTimelineList.size()-1; i > 0; i--)
+					{
+						eventTimelineList.get(i)._fkProfileReturn = 
+								eventTimelineList.get(i-1)._fkProfileReturn;
+					}
+					eventTimelineList.get(0)._fkProfileReturn = eventTimeline._fkProfileReturn;
+					dataWrapper.getDatabaseHandler().updateProfileReturnET(eventTimelineList);
 				}
-			}
-			else
-			{
-				// event is in middle of timeline 
-
-				// do nothing
+				else
+				if (eventPosition == (timeLineSize-1))
+				{
+					// event is in end of timeline 
+					
+					// activate profile only when profile not already activated 
+					if ((eventTimeline._fkProfileReturn != dataWrapper.getActivatedProfile()._id)
+						&& (activateReturnProfile)
+						&& (canActivateReturnProfile()))
+					{
+						GlobalData.logE("Event.pauseEvent","activate return profile");
+						if (eventTimeline._fkProfileReturn != 0)
+							dataWrapper.activateProfileFromEvent(eventTimeline._fkProfileReturn, "");
+					}
+				}
+				else
+				{
+					// event is in middle of timeline 
+	
+					// do nothing
+				}
 			}
 		}
 
@@ -481,7 +505,7 @@ public class Event {
 		if (this._status == ESTATUS_RUNNING)
 		{
 			// event zrovna bezi, zapauzujeme ho
-			pauseEvent(dataWrapper, eventTimelineList, activateReturnProfile, ignoreGlobalPref, true);
+			pauseEvent(dataWrapper, eventTimelineList, false, activateReturnProfile, ignoreGlobalPref, true);
 		}
 	
 		setSystemEvent(dataWrapper.context, ESTATUS_STOP);

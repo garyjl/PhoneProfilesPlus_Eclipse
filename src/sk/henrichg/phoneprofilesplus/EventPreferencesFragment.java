@@ -300,8 +300,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 			event_id = event._id;
 
 			// setup event for next start (reset)
-			event.pauseEvent(dataWrapper, eventTimelineList, false, false, false);
-			dataWrapper.doEventService(event, true);
+			dataWrapper.doEventService(event, true, true);
 				
 			
         	//Log.d("ProfilePreferencesFragment.savePreferences", "addEvent");
@@ -325,8 +324,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 			else
 			{
 				// setup event for next start (reset)
-				event.pauseEvent(dataWrapper, eventTimelineList, false, false, false);
-				dataWrapper.doEventService(event, true);
+				dataWrapper.doEventService(event, true, true);
 			}
 			
         	//Log.d("EventPreferencesFragment.savePreferences", "updateEvent");
