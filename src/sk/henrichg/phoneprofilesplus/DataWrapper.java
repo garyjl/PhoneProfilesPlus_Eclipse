@@ -1164,6 +1164,8 @@ public class DataWrapper {
 					callPassed = false;
 				
 			}
+			else
+				callPassed = false;
 		}
 		
 		GlobalData.logE("DataWrapper.doEventService","timePassed="+timePassed);
