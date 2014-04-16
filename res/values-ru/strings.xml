@@ -304,5 +304,6 @@
     <string name="event_preferences_battery_level_bad_value">Плохое соотношение</string>
     <string name="event_preferences_profile_end_activated">Последний активирован профил</string>
     <string name="event_preferences_eventProfileEnd">Активируйте профиля (конец)</string>
+    <string name="menu_restart_events">Перезапуск событий</string>
     
 </resources>

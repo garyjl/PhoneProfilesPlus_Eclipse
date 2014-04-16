@@ -305,5 +305,6 @@
     <string name="event_preferences_battery_level_bad_value">Zlá hodnota</string>
     <string name="event_preferences_profile_end_activated">Posledne aktivovaný profil</string>
     <string name="event_preferences_eventProfileEnd">Aktivovať profil (koniec)</string>
+    <string name="menu_restart_events">Reštart udalostí</string>
     	
 </resources>

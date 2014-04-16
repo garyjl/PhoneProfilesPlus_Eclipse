@@ -198,6 +198,11 @@ public class ActivateProfileActivity extends ActionBarActivity {
 			finish();
 
 			return true;
+		case R.id.menu_restart_events:
+			DataWrapper dataWrapper = new DataWrapper(getBaseContext(), false, false, 0);
+			dataWrapper.restartEvents();
+			dataWrapper.invalidateDataWrapper();
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}

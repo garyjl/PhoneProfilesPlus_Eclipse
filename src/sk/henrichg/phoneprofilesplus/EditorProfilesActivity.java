@@ -526,6 +526,9 @@ public class EditorProfilesActivity extends ActionBarActivity
                 drawerLayout.openDrawer(drawerRoot);
             }	
 			return super.onOptionsItemSelected(item);
+		case R.id.menu_restart_events:
+			getDataWrapper().restartEvents();
+			return true;
 		case R.id.menu_run_stop_events:
 			DataWrapper dataWrapper = getDataWrapper();
 			if (GlobalData.getGlobalEventsRuning(getBaseContext()))

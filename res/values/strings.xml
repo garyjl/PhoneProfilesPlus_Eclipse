@@ -310,5 +310,6 @@
     <string name="event_preferences_battery_level_bad_value">Bad value</string>
     <string name="event_preferences_profile_end_activated">Last activated profile</string>
     <string name="event_preferences_eventProfileEnd">Activate profile (end)</string>
+    <string name="menu_restart_events">Restart events</string>
     
 </resources>

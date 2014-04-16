@@ -979,6 +979,14 @@ public class DataWrapper {
 		
 	}
 
+	private void unblockEvent(Event event)
+	{
+		GlobalData.logE("DataWrapper.doEventService","unblockEvent");
+		// unblock starting battery event
+		event._eventPreferencesBattery._blocked = false;
+		getDatabaseHandler().updateEventPreferencesBatteryBlocked(event);
+	}
+	
 	public boolean doEventService(Event event, boolean restartEvent, boolean unblockEvent)
 	{
 		int newEventStatus = Event.ESTATUS_NONE;
@@ -1043,6 +1051,9 @@ public class DataWrapper {
 			
 			batteryPct = level / (float)scale;	
 			GlobalData.logE("DataWrapper.doEventService","batteryPct="+batteryPct);
+
+			if (unblockEvent)
+				unblockEvent(event);
 			
 			batteryPassed = (isCharging == event._eventPreferencesBattery._charging);
 			
@@ -1058,16 +1069,8 @@ public class DataWrapper {
 					batteryPassed = false;
 					eventStart = eventStart && false;
 					
-					unblockEvent = true;
+					unblockEvent(event);
 				}
-			}
-			
-			if (unblockEvent)
-			{
-				GlobalData.logE("DataWrapper.doEventService","unblockEvent");
-				// unblock starting battery event
-				event._eventPreferencesBattery._blocked = false;
-				getDatabaseHandler().updateEventPreferencesBatteryBlocked(event);
 			}
 		}
 
@@ -1341,5 +1344,18 @@ public class DataWrapper {
 			return profile;
 		
 	}
-	
+
+	public void restartEvents()
+	{
+		if (!GlobalData.getGlobalEventsRuning(context))
+			// events are globally stopped
+			return;
+		
+		getEventList();
+		for (Event event : eventList)
+		{
+			if (event.getStatus() != Event.ESTATUS_STOP)
+				doEventService(event, false, true);
+		}
+	}
 }
