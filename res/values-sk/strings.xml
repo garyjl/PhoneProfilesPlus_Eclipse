@@ -151,7 +151,7 @@
     <string name="event_preferences_eventEnabled">Povoľ beh</string>
     <string name="event_preferences_eventName">Názov udalosti</string>
     <string name="event_preferences_eventType">Typ udalosti</string>
-    <string name="event_preferences_eventProfileStart">Aktivovaný profil (štart)</string>
+    <string name="event_preferences_eventProfileStart">Aktivovať profil (štart)</string>
     <string name="widget_label_icon">PhoneProfiles-ikona</string>
     <string name="widget_label_one_row">PhoneProfiles-jednoriadkový</string>
     <string name="widget_label_list">PhoneProfiles-zoznam</string>
@@ -304,6 +304,6 @@
     <string name="pref_event_call_contacts_selected">Vybraté kontakty</string>
     <string name="event_preferences_battery_level_bad_value">Zlá hodnota</string>
     <string name="event_preferences_profile_end_activated">Posledne aktivovaný profil</string>
-    <string name="event_preferences_eventProfileEnd">Aktivovaný profil (koniec)</string>
+    <string name="event_preferences_eventProfileEnd">Aktivovať profil (koniec)</string>
     	
 </resources>
