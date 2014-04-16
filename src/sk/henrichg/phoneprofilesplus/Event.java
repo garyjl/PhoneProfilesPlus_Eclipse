@@ -271,16 +271,21 @@ public class Event {
 	
 	private int getEventTimelinePosition(List<EventTimeline> eventTimelineList)
 	{
+		boolean exists = false;
 		int eventPosition = -1;
 		for (EventTimeline eventTimeline : eventTimelineList)
 		{
 			eventPosition++;
 			if (eventTimeline._fkEvent == this._id)
 			{
+				exists = true;
 				break;
 			}
 		}
-		return eventPosition;
+		if (exists)
+			return eventPosition;
+		else
+			return -1;
 	}
 	
 	private EventTimeline addEventTimeline(DataWrapper dataWrapper, 
