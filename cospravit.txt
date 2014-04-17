@@ -1,9 +1,3 @@
-Manual profile actiovation
-- pridat parameter "Vzdy spusti" do eventu
-- takyto sa spusti ak pri manualej aktivacii profilu
-- ak bude bezat a dam manualnu apktivaciu, zobrazi sa o tom alert s otazkou, ci naozaj aktivovat
-
-
 Event s battery parametrami
 - checkbox na Block other events
   - ak bude zakrtnuty, nespustia sa ziadne eventy, kim takyto battery event bezi
