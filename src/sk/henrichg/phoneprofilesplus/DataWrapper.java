@@ -654,17 +654,46 @@ public class DataWrapper {
 		profile = filterProfileWithBatteryEvents(profile);
 		
 		boolean interactive = _interactive;
-		Activity activity = _activity;
-		
-		databaseHandler.activateProfile(profile);
-		setProfileActive(profile);
-		
+		final Activity activity = _activity;
+		final int _startupSource = startupSource;
+
 		if ((startupSource != GlobalData.STARTUP_SOURCE_SERVICE) && 
 			(startupSource != GlobalData.STARTUP_SOURCE_BOOT) &&
 			(startupSource != GlobalData.STARTUP_SOURCE_LAUNCHER_START))
 		{
+			// search for forceRun events
+			List<EventTimeline> eventTimelineList = getEventTimelineList();
+			for (EventTimeline eventTimeline : eventTimelineList)
+			{
+				Event event = getEventById(eventTimeline._fkEvent);
+				if (event != null)
+				{
+					if (event._forceRun)
+					{
+						AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
+						dialogBuilder.setTitle(R.string.manual_profile_activation_forceRun_title);
+						dialogBuilder.setMessage(R.string.manual_profile_activation_forceRun_message);
+						dialogBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int which) {
+								// for startActivityForResult
+								Intent returnIntent = new Intent();
+								activity.setResult(Activity.RESULT_CANCELED,returnIntent);
+								
+								finishActivity(_startupSource, false, activity);
+							}
+						});
+						dialogBuilder.show();
+						
+						return;
+					}
+				}
+			}
+			
 			pauseAllEvents(false, true);
 		}
+		
+		databaseHandler.activateProfile(profile);
+		setProfileActive(profile);
 		
 		activateProfileHelper.execute(profile, interactive, eventNotificationSound);
 		
@@ -690,7 +719,7 @@ public class DataWrapper {
 			else
 				showToastAfterActivation(profile);
 		}
-		
+			
 		// for startActivityForResult
 		if (activity != null)
 		{

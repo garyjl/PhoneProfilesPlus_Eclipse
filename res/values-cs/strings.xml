@@ -283,7 +283,6 @@
     <string name="phoneprofilehepler_uninstall_error">Chyba při odinstalaci PPHelper-a</string>
     <string name="profile_preferences_install_pphelper">Nainstaluj PPHelper</string>
     <string name="profile_preferences_upgrade_pphelper">Aktualizuj PPHelper</string>
-    
     <string name="contacts_multiselect_summary_text_selected">Vybrané</string>	    			
     <string name="contacts_multiselect_summary_text_not_selected">Nevybrané</string>
     <string name="event_preferences_category_eventCallParameters">Parametry hovoru</string>

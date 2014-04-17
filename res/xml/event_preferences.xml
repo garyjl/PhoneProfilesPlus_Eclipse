@@ -23,6 +23,10 @@
             android:key="eventProfileEnd"
             android:title="@string/event_preferences_eventProfileEnd"
             henrichg:addActivatedItem="1" />
+		<CheckBoxPreference 
+		    android:key="eventForceRun"
+		    android:title="@string/event_preferences_ForceRun"
+		    android:defaultValue="false" />
         <RingtonePreference
             android:key="eventNotificationSound"
             android:summary="@string/array_pref_no_change"

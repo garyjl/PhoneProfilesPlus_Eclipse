@@ -18,6 +18,7 @@ public class Event {
 	public long _fkProfileEnd;
 	private int _status;  
 	public String _notificationSound;
+	public boolean _forceRun;
 
 	public EventPreferencesTime _eventPreferencesTime;
 	public EventPreferencesBattery _eventPreferencesBattery;
@@ -35,6 +36,7 @@ public class Event {
     static final String PREF_EVENT_PROFILE_START = "eventProfileStart";
     static final String PREF_EVENT_PROFILE_END = "eventProfileEnd";
     static final String PREF_EVENT_NOTIFICATION_SOUND = "eventNotificationSound";
+    static final String PREF_EVENT_FORCE_RUN = "eventForceRun";
 	
 	// Empty constructor
 	public Event(){
@@ -47,7 +49,8 @@ public class Event {
 		         long fkProfileStart,
 		         long fkProfileEnd,
 		         int status,
-		         String notificationSound)
+		         String notificationSound,
+		         boolean forceRun)
 	{
 		this._id = id;
 		this._name = name;
@@ -55,6 +58,7 @@ public class Event {
         this._fkProfileEnd = fkProfileEnd;
         this._status = status;
         this._notificationSound = notificationSound;
+        this._forceRun = forceRun;
         
         createEventPreferences();
 	}
@@ -64,13 +68,15 @@ public class Event {
 	         	 long fkProfileStart,
 	         	 long fkProfileEnd,
 	         	 int status,
-	         	 String notificationSound)
+	         	 String notificationSound,
+	         	 boolean forceRun)
 	{
 		this._name = name;
 	    this._fkProfileStart = fkProfileStart;
 	    this._fkProfileEnd = fkProfileEnd;
         this._status = status;
         this._notificationSound = notificationSound;
+        this._forceRun = forceRun;
 	    
 	    createEventPreferences();
 	}
@@ -83,6 +89,7 @@ public class Event {
         this._fkProfileEnd = event._fkProfileEnd;
         this._status = event._status;
         this._notificationSound = event._notificationSound;
+        this._forceRun = event._forceRun;
         
         copyEventPreferences(event);
 	}
@@ -147,6 +154,7 @@ public class Event {
    		editor.putString(PREF_EVENT_PROFILE_END, Long.toString(this._fkProfileEnd));
    		editor.putBoolean(PREF_EVENT_ENABLED, this._status != ESTATUS_STOP);
    		editor.putString(PREF_EVENT_NOTIFICATION_SOUND, this._notificationSound);
+   		editor.putBoolean(PREF_EVENT_FORCE_RUN, _forceRun);
         this._eventPreferencesTime.loadSharedPrefereces(preferences);
         this._eventPreferencesBattery.loadSharedPrefereces(preferences);
         this._eventPreferencesCall.loadSharedPrefereces(preferences);
@@ -159,7 +167,8 @@ public class Event {
 		this._fkProfileStart = Long.parseLong(preferences.getString(PREF_EVENT_PROFILE_START, "0"));
 		this._fkProfileEnd = Long.parseLong(preferences.getString(PREF_EVENT_PROFILE_END, Long.toString(PROFILE_END_ACTIVATED)));
 		this._status = (preferences.getBoolean(PREF_EVENT_ENABLED, false)) ? ESTATUS_PAUSE : ESTATUS_STOP;
-		this._notificationSound = preferences.getString(PREF_EVENT_NOTIFICATION_SOUND, ""); 
+		this._notificationSound = preferences.getString(PREF_EVENT_NOTIFICATION_SOUND, "");
+		this._forceRun = preferences.getBoolean(PREF_EVENT_FORCE_RUN, false);
 		//Log.e("Event.saveSharedPrefereces","notificationSound="+this._notificationSound);
 		this._eventPreferencesTime.saveSharedPrefereces(preferences);
 		this._eventPreferencesBattery.saveSharedPrefereces(preferences);
@@ -330,7 +339,7 @@ public class Event {
 			// event is not runnable, no pause it
 			return;
 
-		if (GlobalData.getEventsBlocked(dataWrapper.context))
+		if (GlobalData.getEventsBlocked(dataWrapper.context) && (!_forceRun))
 			// events bloked by manual profile activation
 			return;
 		

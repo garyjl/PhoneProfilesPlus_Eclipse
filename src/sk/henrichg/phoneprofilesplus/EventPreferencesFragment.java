@@ -144,7 +144,8 @@ public class EventPreferencesFragment extends PreferenceListFragment
 						0,
 						Event.PROFILE_END_ACTIVATED,
 						Event.ESTATUS_STOP,
-						""
+						"",
+						false
 		         );
 			event_id = 0;
 		}
@@ -158,7 +159,8 @@ public class EventPreferencesFragment extends PreferenceListFragment
 						   origEvent._fkProfileStart, 
 						   origEvent._fkProfileEnd, 
 						   origEvent.getStatus(),
-						   origEvent._notificationSound
+						   origEvent._notificationSound,
+						   origEvent._forceRun
 							);
 			event.copyEventPreferences(origEvent);
 			event_id = 0;

@@ -288,7 +288,6 @@
     <string name="phoneprofilehepler_uninstall_error">Error when uninstalling PPhelper</string>
     <string name="profile_preferences_install_pphelper">Install PPHelper</string>
     <string name="profile_preferences_upgrade_pphelper">Upgrade PPHelper</string>
-
     <string name="contacts_multiselect_summary_text_selected">Selected</string>	    			
     <string name="contacts_multiselect_summary_text_not_selected">Not selected</string>
     <string name="event_preferences_category_eventCallParameters">Call parameters</string>
@@ -311,5 +310,9 @@
     <string name="event_preferences_profile_end_activated">Last activated profile</string>
     <string name="event_preferences_eventProfileEnd">Activate profile (end)</string>
     <string name="menu_restart_events">Restart events</string>
+    
+    <string name="event_preferences_ForceRun">Force Run</string>
+    <string name="manual_profile_activation_forceRun_title">Activate profile</string>
+    <string name="manual_profile_activation_forceRun_message">Event with option \"Force run\" is running.</string>
     
 </resources>
