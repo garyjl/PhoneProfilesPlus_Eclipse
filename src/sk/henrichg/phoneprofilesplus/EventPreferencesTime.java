@@ -201,7 +201,7 @@ public class EventPreferencesTime extends EventPreferences {
 	   		    String alarmTimeS = "";
 	   			if (_event.getStatus() == Event.ESTATUS_PAUSE)
 	   			{
-	   				int daysToAdd = computeDaysForAdd(true, false);
+	   				int daysToAdd = computeDaysForAdd(true, true);
 	   				alarmTime = computeAlarm(true, daysToAdd);
 	   				// date and time format by user system settings configuration
 	   	   		    alarmTimeS = "(st) " + DateFormat.getDateFormat(context).format(alarmTime) +
@@ -212,7 +212,7 @@ public class EventPreferencesTime extends EventPreferences {
 	   			else
 	   			if ((_event.getStatus() == Event.ESTATUS_RUNNING) && _useEndTime)
 	   			{
-	   				int daysToAdd = computeDaysForAdd(false, false);
+	   				int daysToAdd = computeDaysForAdd(false, true);
 	   				alarmTime = computeAlarm(false, daysToAdd);
 	   				// date and time format by user system settings configuration
 	   	   		    alarmTimeS = "(et) " + DateFormat.getDateFormat(context).format(alarmTime) +
