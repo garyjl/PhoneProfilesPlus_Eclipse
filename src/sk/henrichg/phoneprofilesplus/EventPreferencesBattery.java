@@ -17,8 +17,6 @@ public class EventPreferencesBattery extends EventPreferences {
 	public int _levelHight;
 	public boolean _charging;
 	
-	public boolean _blocked;
-	
 	static final String PREF_EVENT_BATTERY_ENABLED = "eventBatteryEnabled";
 	static final String PREF_EVENT_BATTERY_LEVEL_LOW = "eventBatteryLevelLow";
 	static final String PREF_EVENT_BATTERY_LEVEL_HIGHT = "eventBatteryLevelHight";
@@ -35,7 +33,6 @@ public class EventPreferencesBattery extends EventPreferences {
 		this._levelLow = levelLow;
 		this._levelHight = levelHight;
 		this._charging = charging;
-		this._blocked = false;
 	}
 	
 	@Override
@@ -45,7 +42,6 @@ public class EventPreferencesBattery extends EventPreferences {
 		this._levelLow = ((EventPreferencesBattery)fromEvent._eventPreferencesBattery)._levelLow;
 		this._levelHight = ((EventPreferencesBattery)fromEvent._eventPreferencesBattery)._levelHight;
 		this._charging = ((EventPreferencesBattery)fromEvent._eventPreferencesBattery)._charging;
-		this._blocked = false;
 	}
 	
 	@Override
@@ -80,9 +76,6 @@ public class EventPreferencesBattery extends EventPreferences {
 		this._levelHight= iLevel;
 		
 		this._charging = preferences.getBoolean(PREF_EVENT_BATTERY_CHARGING, false);
-		
-		this._blocked = false;
-	
 	}
 	
 	@Override

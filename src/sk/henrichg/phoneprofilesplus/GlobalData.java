@@ -155,7 +155,6 @@ public class GlobalData extends Application {
     public static final String PREF_APPLICATION_HOME_LAUNCHER = "applicationHomeLauncher";
     public static final String PREF_APPLICATION_WIDGET_LAUNCHER = "applicationWidgetLauncher";
     public static final String PREF_APPLICATION_NOTIFICATION_LAUNCHER = "applicationNotificationLauncher";
-    public static final String PREF_APPLICATION_PAUSE_EVENTS_ON_PROFILE_ACTIVATION = "applicationPauseEventsOnPofileActivation";
 
     public static final int HARDWARE_CHECK_NOT_ALLOWED = 0;
     public static final int HARDWARE_CHECK_ALLOWED = 1;
@@ -166,6 +165,7 @@ public class GlobalData extends Application {
 	
 	private static final String PREF_GLOBAL_EVENTS_RUN_STOP = "globalEventsRunStop";
 	private static final String PREF_APPLICATION_STARTED = "applicationStarted";
+	private static final String PREF_EVENTS_BLOCKED = "eventsBlocked";
 	
     public static boolean applicationStartOnBoot;
     public static boolean applicationActivate;
@@ -196,7 +196,6 @@ public class GlobalData extends Application {
     public static String applicationHomeLauncher;
     public static String applicationWidgetLauncher;
     public static String applicationNotificationLauncher;
-    public static boolean applicationPauseEventsOnPofileActivation;
     
 	public void onCreate()
 	{
@@ -367,7 +366,6 @@ public class GlobalData extends Application {
 	    applicationHomeLauncher = preferences.getString(PREF_APPLICATION_HOME_LAUNCHER, "activator");
 	    applicationWidgetLauncher = preferences.getString(PREF_APPLICATION_WIDGET_LAUNCHER, "activator");
 	    applicationNotificationLauncher = preferences.getString(PREF_APPLICATION_NOTIFICATION_LAUNCHER, "activator");
-	    applicationPauseEventsOnPofileActivation = preferences.getBoolean(PREF_APPLICATION_PAUSE_EVENTS_ON_PROFILE_ACTIVATION, true);
 	}
 	
 	private static String getVolumeLevelString(int percentage, int maxValue)
@@ -636,6 +634,20 @@ public class GlobalData extends Application {
 		editor.commit();
 	}
 
+	static public boolean getEventsBlocked(Context context)
+	{
+		SharedPreferences preferences = context.getSharedPreferences(APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+		return preferences.getBoolean(PREF_EVENTS_BLOCKED, false);
+	}
+
+	static public void setEventsBlocked(Context context, boolean eventsBlocked)
+	{
+		SharedPreferences preferences = context.getSharedPreferences(APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+		Editor editor = preferences.edit();
+		editor.putBoolean(PREF_EVENTS_BLOCKED, eventsBlocked);
+		editor.commit();
+	}
+	
 	// ----- Hardware check -------------------------------------
 	
 	static int hardwareCheck(String preferenceKey, Context context)

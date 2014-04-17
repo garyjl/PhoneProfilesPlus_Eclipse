@@ -573,7 +573,7 @@ public class DataWrapper {
 	}
 	
 	// pauses all events without activating profiles from Timeline
-	public void pauseAllEvents(boolean noSetSystemEvent, boolean blockBatteryEvents)
+	public void pauseAllEvents(boolean noSetSystemEvent, boolean blockEvents)
 	{
 		List<EventTimeline> eventTimelineList = getEventTimelineList();
 		
@@ -583,29 +583,10 @@ public class DataWrapper {
 			{
 				event.pauseEvent(this, eventTimelineList, false, true, noSetSystemEvent);
 			}
-			if (blockBatteryEvents)
-			{
-				if (event._eventPreferencesBattery._enabled)
-				{
-					event._eventPreferencesBattery._blocked = true;
-					databaseHandler.updateEventPreferencesBatteryBlocked(event);
-				}
-			}
+			GlobalData.setEventsBlocked(context, blockEvents);
 		}
 	}
 	
-	public void blockAllBatteryEvents(boolean block)
-	{
-		for (Event event : getEventList())
-		{
-			if (event._eventPreferencesBattery._enabled)
-			{
-				event._eventPreferencesBattery._blocked = block;
-				databaseHandler.updateEventPreferencesBatteryBlocked(event);
-			}
-		}
-	}
-
 	// stops all events without activating profiles from Timeline
 	public void stopAllEvents(boolean saveEventStatus)
 	{
@@ -626,10 +607,10 @@ public class DataWrapper {
 		if (invalidateList)
 			invalidateEventList();  // force load form db
 
+		GlobalData.setEventsBlocked(context, false);
+		
 		BatteryEventsAlarmBroadcastReceiver.removeAlarm(context);
 		
-		//List<EventTimeline> eventTimelineList = getEventTimelineList();
-
 		for (Event event : getEventList())
 		{
 			int status = event.getStatus();
@@ -641,19 +622,8 @@ public class DataWrapper {
 			// reset system event
 			if (status != Event.ESTATUS_STOP)
 			{
-				//if (!event.invokeBroadcastReceiver(context))
-				//{
-					event.setSystemEvent(context, status);
-				//}
+				event.setSystemEvent(context, status);
 			}
-			
-			if (event._eventPreferencesBattery._enabled)
-			{
-				// unblock event
-				event._eventPreferencesBattery._blocked = false;
-				databaseHandler.updateEventPreferencesBatteryBlocked(event);
-			}
-			
 		}
 
 	}
@@ -693,14 +663,7 @@ public class DataWrapper {
 			(startupSource != GlobalData.STARTUP_SOURCE_BOOT) &&
 			(startupSource != GlobalData.STARTUP_SOURCE_LAUNCHER_START))
 		{
-			if (GlobalData.applicationPauseEventsOnPofileActivation)
-				// for manual activation pause all running events
-				// and setup for next start
-				// block battery events
-				pauseAllEvents(false, true);
-			else
-				// only block battery events
-				blockAllBatteryEvents(true);
+			pauseAllEvents(false, true);
 		}
 		
 		activateProfileHelper.execute(profile, interactive, eventNotificationSound);
@@ -979,15 +942,7 @@ public class DataWrapper {
 		
 	}
 
-	private void unblockEvent(Event event)
-	{
-		GlobalData.logE("DataWrapper.doEventService","unblockEvent");
-		// unblock starting battery event
-		event._eventPreferencesBattery._blocked = false;
-		getDatabaseHandler().updateEventPreferencesBatteryBlocked(event);
-	}
-	
-	public boolean doEventService(Event event, boolean restartEvent, boolean unblockEvent)
+	public boolean doEventService(Event event, boolean restartEvent)
 	{
 		int newEventStatus = Event.ESTATUS_NONE;
 
@@ -1052,9 +1007,6 @@ public class DataWrapper {
 			batteryPct = level / (float)scale;	
 			GlobalData.logE("DataWrapper.doEventService","batteryPct="+batteryPct);
 
-			if (unblockEvent)
-				unblockEvent(event);
-			
 			batteryPassed = (isCharging == event._eventPreferencesBattery._charging);
 			
 			if (batteryPassed)
@@ -1062,14 +1014,12 @@ public class DataWrapper {
 				if ((batteryPct >= (event._eventPreferencesBattery._levelLow / (float)100)) && 
 				    (batteryPct <= (event._eventPreferencesBattery._levelHight / (float)100))) 
 				{
-					eventStart = eventStart && (!event._eventPreferencesBattery._blocked);
+					eventStart = eventStart && true;
 				}
 				else
 				{
 					batteryPassed = false;
 					eventStart = eventStart && false;
-					
-					unblockEvent(event);
 				}
 			}
 		}
@@ -1351,11 +1301,13 @@ public class DataWrapper {
 			// events are globally stopped
 			return;
 		
+		GlobalData.setEventsBlocked(context, false);
+		
 		getEventList();
 		for (Event event : eventList)
 		{
 			if (event.getStatus() != Event.ESTATUS_STOP)
-				doEventService(event, false, true);
+				doEventService(event, false);
 		}
 	}
 }

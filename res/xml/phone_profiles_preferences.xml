@@ -29,10 +29,6 @@
 		    android:key="applicationAlert"
 		    android:title="@string/phone_profiles_pref_applicationAlert"
 		    android:defaultValue="true" />
-		<CheckBoxPreference 
-		    android:key="applicationPauseEventsOnPofileActivation"
-		    android:title="@string/phone_profiles_pref_applicationPauseEventsOnProfileActivation"
-		    android:defaultValue="true" />
 	</PreferenceCategory>
     
     <PreferenceCategory

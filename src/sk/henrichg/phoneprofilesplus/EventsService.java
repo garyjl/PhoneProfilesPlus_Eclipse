@@ -71,12 +71,12 @@ public class EventsService extends IntentService
 				GlobalData.logE("EventsService.onHandleIntent","event.getStatus()="+_event.getStatus());
 				
 				if (_event.getStatus() != Event.ESTATUS_STOP)
-					dataWrapper.doEventService(_event, false, broadcastReceiverType.equals(PowerConnectionReceiver.BROADCAST_RECEIVER_TYPE));
+					dataWrapper.doEventService(_event, false);
 			}
 		}
 		else
 		if (event.getStatus() != Event.ESTATUS_STOP)
-			dataWrapper.doEventService(event, false, broadcastReceiverType.equals(PowerConnectionReceiver.BROADCAST_RECEIVER_TYPE));
+			dataWrapper.doEventService(event, false);
 
 		doEndService(intent);
 

@@ -329,6 +329,10 @@ public class Event {
 		if (!this.isRunnable())
 			// event is not runnable, no pause it
 			return;
+
+		if (GlobalData.getEventsBlocked(dataWrapper.context))
+			// events bloked by manual profile activation
+			return;
 		
 		GlobalData.logE("Event.startEvent","event_id="+this._id+"-----------------------------------");
 		
