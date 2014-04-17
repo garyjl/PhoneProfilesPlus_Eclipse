@@ -1,10 +1,5 @@
 Manualna aktivacia profilu:
-- shared preferences, ktore blkne spustenie eventov
-- indikator behu udalosti - oranzovy
-- odblokuje sa na:
-  - prve spusteni aplikacie
-  - boot
-  - restart eventov
+- dat ku nazvu profilu v headeroch, notifikacii, vo widgetoch, (M), indikujuce manualnu aktivaciu
 
 Event s battery parametrami
 - checkbox na Block other events
