@@ -282,7 +282,7 @@ public class EditorEventListAdapter extends BaseAdapter
    		holder.eventStatus.setImageResource(statusRes);
 
    		if (event._forceRun)
-   			holder.eventName.setText("F - " + event._name);
+   			holder.eventName.setText("\u23E9 " + event._name);
    		else
    			holder.eventName.setText(event._name);
    		
