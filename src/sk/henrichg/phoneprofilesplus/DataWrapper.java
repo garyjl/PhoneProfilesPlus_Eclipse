@@ -660,23 +660,20 @@ public class DataWrapper {
 			(startupSource != GlobalData.STARTUP_SOURCE_BOOT) &&
 			(startupSource != GlobalData.STARTUP_SOURCE_LAUNCHER_START))
 		{
-
+			pauseAllEvents(false, true);
 			// search for forceRun events
-			List<EventTimeline> eventTimelineList = getEventTimelineList();
-			for (EventTimeline eventTimeline : eventTimelineList)
+			getEventList();
+			for (Event event : eventList)
 			{
-				Event event = getEventById(eventTimeline._fkEvent);
 				if (event != null)
 				{
 					if (event._forceRun)
 					{
 						// temporary block forceRun event
-						event._blocked = true;
+						setEventBlocked(event, true);
 					}
 				}
 			}
-			
-			pauseAllEvents(false, true);
 		}
 		
 		databaseHandler.activateProfile(profile);
@@ -737,10 +734,9 @@ public class DataWrapper {
 		if (interactive)
 		{
 			// search for forceRun events
-			List<EventTimeline> eventTimelineList = getEventTimelineList();
-			for (EventTimeline eventTimeline : eventTimelineList)
+			getEventList();
+			for (Event event : eventList)
 			{
-				Event event = getEventById(eventTimeline._fkEvent);
 				if (event != null)
 				{
 					if (event._forceRun)
@@ -903,8 +899,8 @@ public class DataWrapper {
 					
 					EventTimeline eventTimeline = eventTimelineList.get(eventTimelineList.size()-1);
 					
-					Event event = getEventById(eventTimeline._fkEvent);
-					profile = getProfileById(event._fkProfileStart);
+					Event _event = getEventById(eventTimeline._fkEvent);
+					profile = getProfileById(_event._fkProfileStart);
 					actProfile = true;
 				}
 

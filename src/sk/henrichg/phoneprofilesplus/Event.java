@@ -351,15 +351,22 @@ public class Event {
 			dataWrapper.setEventBlocked(this, false);
 		}
 			
-		if (GlobalData.getEventsBlocked(dataWrapper.context) && (!(_forceRun && _blocked)))
-			// events full or temporary blocked by manual profile activation
-			return;
+		if (GlobalData.getEventsBlocked(dataWrapper.context))
+		{
+			// blocked by manual profile activation
+			if (_blocked)
+				// event is temporary blocked
+				return;
+			if (!_forceRun)
+				// ebent is not forceRun
+				return;
+		}
 		
 		GlobalData.logE("Event.startEvent","event_id="+this._id+"-----------------------------------");
 		
 		EventTimeline eventTimeline;		
 		
-		if (!restart)
+		if ((!restart) || (getStatus() != ESTATUS_RUNNING))
 		{
 	/////// delete duplicate from timeline
 		
@@ -417,6 +424,13 @@ public class Event {
 			if (this._fkProfileStart != eventTimeline._fkProfileReturn)
 				// no activate profile, when is already activated
 				dataWrapper.activateProfileFromEvent(this._fkProfileStart, _notificationSound);
+			else
+			{
+				ActivateProfileHelper activateProfileHelper = dataWrapper.getActivateProfileHelper();
+				activateProfileHelper.initialize(dataWrapper, null, dataWrapper.context);
+				activateProfileHelper.showNotification(dataWrapper.getActivatedProfile());
+				activateProfileHelper.updateWidget();
+			}
 			
 		}
 /*		else

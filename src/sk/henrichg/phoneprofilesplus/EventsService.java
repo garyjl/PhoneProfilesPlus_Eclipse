@@ -38,7 +38,7 @@ public class EventsService extends IntentService
 
 		GlobalData.loadPreferences(context);
 		
-		dataWrapper = new DataWrapper(context, false, false, 0);
+		dataWrapper = new DataWrapper(context, true, false, 0);
 		
 		// create a handler to post messages to the main thread
 	    Handler handler = new Handler(getMainLooper());
