@@ -1,5 +1,8 @@
-Manualna aktivacia profilu:
-- dat ku nazvu profilu v headeroch, notifikacii, vo widgetoch, (M), indikujuce manualnu aktivaciu
+Manual profile actiovation
+- pridat parameter "Vzdy spusti" do eventu
+- takyto sa spusti ak pri manualej aktivacii profilu
+- ak bude bezat a dam manualnu apktivaciu, zobrazi sa o tom alert s otazkou, ci naozaj aktivovat
+
 
 Event s battery parametrami
 - checkbox na Block other events
