@@ -19,6 +19,7 @@ public class Event {
 	private int _status;  
 	public String _notificationSound;
 	public boolean _forceRun;
+	public boolean _blocked;
 
 	public EventPreferencesTime _eventPreferencesTime;
 	public EventPreferencesBattery _eventPreferencesBattery;
@@ -50,7 +51,8 @@ public class Event {
 		         long fkProfileEnd,
 		         int status,
 		         String notificationSound,
-		         boolean forceRun)
+		         boolean forceRun,
+		         boolean blocked)
 	{
 		this._id = id;
 		this._name = name;
@@ -59,6 +61,7 @@ public class Event {
         this._status = status;
         this._notificationSound = notificationSound;
         this._forceRun = forceRun;
+        this._blocked = blocked;
         
         createEventPreferences();
 	}
@@ -69,7 +72,8 @@ public class Event {
 	         	 long fkProfileEnd,
 	         	 int status,
 	         	 String notificationSound,
-	         	 boolean forceRun)
+	         	 boolean forceRun,
+	         	 boolean blocked)
 	{
 		this._name = name;
 	    this._fkProfileStart = fkProfileStart;
@@ -77,7 +81,8 @@ public class Event {
         this._status = status;
         this._notificationSound = notificationSound;
         this._forceRun = forceRun;
-	    
+        this._blocked = blocked;
+        
 	    createEventPreferences();
 	}
 	
@@ -90,6 +95,7 @@ public class Event {
         this._status = event._status;
         this._notificationSound = event._notificationSound;
         this._forceRun = event._forceRun;
+        this._blocked = event._blocked;
         
         copyEventPreferences(event);
 	}
@@ -339,8 +345,14 @@ public class Event {
 			// event is not runnable, no pause it
 			return;
 
-		if (GlobalData.getEventsBlocked(dataWrapper.context) && (!_forceRun))
-			// events bloked by manual profile activation
+		if (restart)
+		{
+			// ublock temporary blocked event on restart
+			dataWrapper.setEventBlocked(this, false);
+		}
+			
+		if (GlobalData.getEventsBlocked(dataWrapper.context) && (!(_forceRun && _blocked)))
+			// events full or temporary blocked by manual profile activation
 			return;
 		
 		GlobalData.logE("Event.startEvent","event_id="+this._id+"-----------------------------------");
@@ -439,6 +451,9 @@ public class Event {
 			// event is not runnable, no pause it
 			return;
 
+		// unblock temporary paused event
+		dataWrapper.setEventBlocked(this, false);
+		
 		GlobalData.logE("Event.pauseEvent","event_id="+this._id+"-----------------------------------");
 		
 		int timeLineSize = eventTimelineList.size();

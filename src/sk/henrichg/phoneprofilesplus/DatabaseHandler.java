@@ -25,7 +25,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static SQLiteDatabase writableDb;	
     
 	// Database Version
-	private static final int DATABASE_VERSION = 1050;
+	private static final int DATABASE_VERSION = 1051;
 
 	// Database Name
 	private static final String DATABASE_NAME = "phoneProfilesManager";
@@ -99,6 +99,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_E_CALL_CONTACT_LIST_TYPE = "contactListType";
 	private static final String KEY_E_FK_PROFILE_END = "fkProfileEnd";
 	private static final String KEY_E_FORCE_RUN = "forceRun";
+	private static final String KEY_E_BLOCKED = "blocked";
 	
 	private static final String KEY_ET_ID = "id";
 	private static final String KEY_ET_EORDER = "eorder";
@@ -229,7 +230,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	            + KEY_E_CALL_CONTACTS + " TEXT,"
 	            + KEY_E_CALL_CONTACT_LIST_TYPE + " INTEGER,"
 				+ KEY_E_FK_PROFILE_END + " INTEGER,"
-				+ KEY_E_FORCE_RUN + " INTEGER"
+				+ KEY_E_FORCE_RUN + " INTEGER,"
+				+ KEY_E_BLOCKED + " INTEGER"
 				+ ")";
 		db.execSQL(CREATE_EVENTS_TABLE);
 
@@ -651,6 +653,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			
 			// updatneme zaznamy
 			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_FORCE_RUN + "=0");
+		}
+
+		if (oldVersion < 1051)
+		{
+			// pridame nove stlpce
+			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_BLOCKED + " INTEGER");
+			
+			// updatneme zaznamy
+			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_BLOCKED + "=0");
 		}
 		
 	}
@@ -1572,6 +1583,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_E_STATUS, event.getStatus()); // event status
 		values.put(KEY_E_NOTIFICATION_SOUND, event._notificationSound); // Event Name
 		values.put(KEY_E_FORCE_RUN, event._forceRun ? 1 : 0); // force run when manual profile activation
+		values.put(KEY_E_BLOCKED, event._blocked ? 1 : 0); // temporary blocked
 		
 		db.beginTransaction();
 		
@@ -1603,7 +1615,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 												KEY_E_FK_PROFILE_END, 
 												KEY_E_STATUS,
 												KEY_E_NOTIFICATION_SOUND,
-												KEY_E_FORCE_RUN
+												KEY_E_FORCE_RUN,
+												KEY_E_BLOCKED
 												}, 
 				                 KEY_ID + "=?",
 				                 new String[] { String.valueOf(event_id) }, null, null, null, null);
@@ -1621,7 +1634,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				                      Long.parseLong(cursor.getString(3)),
 				                      Integer.parseInt(cursor.getString(4)),
 				                      cursor.getString(5),
-				                      Integer.parseInt(cursor.getString(6)) == 1
+				                      Integer.parseInt(cursor.getString(6)) == 1,
+				                      Integer.parseInt(cursor.getString(7)) == 1
 				                      );
 		}
 
@@ -1649,7 +1663,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				                         KEY_E_FK_PROFILE_END + "," +
 				                         KEY_E_STATUS + "," +
 						                 KEY_E_NOTIFICATION_SOUND + "," +
-				                         KEY_E_FORCE_RUN +
+				                         KEY_E_FORCE_RUN + "," +
+						                 KEY_E_BLOCKED +
 		                     " FROM " + TABLE_EVENTS;
 
 		//SQLiteDatabase db = this.getReadableDatabase();
@@ -1668,6 +1683,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				event.setStatus(Integer.parseInt(cursor.getString(4)));
 				event._notificationSound = cursor.getString(5);
 				event._forceRun = Integer.parseInt(cursor.getString(6)) == 1;
+				event._blocked = Integer.parseInt(cursor.getString(7)) == 1;
 				event.createEventPreferences();
 				getEventPreferences(event, db);
 				// Adding contact to list
@@ -1694,6 +1710,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_E_STATUS, event.getStatus());
 		values.put(KEY_E_NOTIFICATION_SOUND, event._notificationSound);
 		values.put(KEY_E_FORCE_RUN, event._forceRun ? 1 : 0);
+		values.put(KEY_E_BLOCKED, event._blocked ? 1 : 0);
 
 		int r = 0;
 		
@@ -1813,7 +1830,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						                 KEY_E_FK_PROFILE_END + "," +
 						                 KEY_E_STATUS + "," +
 						                 KEY_E_NOTIFICATION_SOUND + "," +
-						                 KEY_E_FORCE_RUN +
+						                 KEY_E_FORCE_RUN + "," +
+						                 KEY_E_BLOCKED +
 						    " FROM " + TABLE_EVENTS;
 						    
 
@@ -1834,6 +1852,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			event.setStatus(Integer.parseInt(cursor.getString(4)));
 			event._notificationSound = cursor.getString(5);
 			event._forceRun = Integer.parseInt(cursor.getString(6)) == 1;
+			event._blocked = Integer.parseInt(cursor.getString(7)) == 1;
 		}
 		
 		cursor.close();
@@ -2134,6 +2153,71 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		} catch (Exception e){
 			//Error in between database transaction
 			Log.e("DatabaseHandler.updateEventStatus", e.toString());
+			r = 0;
+		} finally {
+			db.endTransaction();
+		}	
+		
+        //db.close();
+        
+		return r;
+		
+	}
+
+	public int updateEventBlocked(Event event)
+	{
+		//SQLiteDatabase db = this.getWritableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put(KEY_E_BLOCKED, event._blocked ? 1 : 0);
+
+		int r = 0;
+		
+		db.beginTransaction();
+		
+		try {
+			// updating row
+			r = db.update(TABLE_EVENTS, values, KEY_ID + " = ?",
+				new String[] { String.valueOf(event._id) });
+		
+			db.setTransactionSuccessful();
+
+		} catch (Exception e){
+			//Error in between database transaction
+			Log.e("DatabaseHandler.updateEventBlocked", e.toString());
+			r = 0;
+		} finally {
+			db.endTransaction();
+		}	
+		
+        //db.close();
+        
+		return r;
+		
+	}
+
+	public int unblockAllEvents()
+	{
+		//SQLiteDatabase db = this.getWritableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put(KEY_E_BLOCKED, 0);
+
+		int r = 0;
+		
+		db.beginTransaction();
+		
+		try {
+			// updating row
+			r = db.update(TABLE_EVENTS, values, null, null);
+		
+			db.setTransactionSuccessful();
+
+		} catch (Exception e){
+			//Error in between database transaction
+			Log.e("DatabaseHandler.unblockAllEvents", e.toString());
 			r = 0;
 		} finally {
 			db.endTransaction();

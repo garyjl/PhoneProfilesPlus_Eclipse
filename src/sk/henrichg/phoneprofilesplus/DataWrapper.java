@@ -608,13 +608,13 @@ public class DataWrapper {
 			invalidateEventList();  // force load form db
 
 		GlobalData.setEventsBlocked(context, false);
+		getDatabaseHandler().unblockAllEvents();
 		
 		BatteryEventsAlarmBroadcastReceiver.removeAlarm(context);
 		
 		for (Event event : getEventList())
 		{
 			int status = event.getStatus();
-
 			
 			// remove all system events
 			event.setSystemEvent(context, Event.ESTATUS_STOP);
@@ -647,7 +647,7 @@ public class DataWrapper {
 
 //----- Activate profile ---------------------------------------------------------------------------------------------
 
-	public void _activateProfile(Profile _profile, int startupSource, boolean _interactive, 
+	private void _activateProfile(Profile _profile, int startupSource, boolean _interactive, 
 									Activity _activity, String eventNotificationSound)
 	{
 		Profile profile = GlobalData.getMappedProfile(_profile, context);
@@ -655,12 +655,12 @@ public class DataWrapper {
 		
 		boolean interactive = _interactive;
 		final Activity activity = _activity;
-		final int _startupSource = startupSource;
 
 		if ((startupSource != GlobalData.STARTUP_SOURCE_SERVICE) && 
 			(startupSource != GlobalData.STARTUP_SOURCE_BOOT) &&
 			(startupSource != GlobalData.STARTUP_SOURCE_LAUNCHER_START))
 		{
+
 			// search for forceRun events
 			List<EventTimeline> eventTimelineList = getEventTimelineList();
 			for (EventTimeline eventTimeline : eventTimelineList)
@@ -670,21 +670,8 @@ public class DataWrapper {
 				{
 					if (event._forceRun)
 					{
-						AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
-						dialogBuilder.setTitle(R.string.manual_profile_activation_forceRun_title);
-						dialogBuilder.setMessage(R.string.manual_profile_activation_forceRun_message);
-						dialogBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int which) {
-								// for startActivityForResult
-								Intent returnIntent = new Intent();
-								activity.setResult(Activity.RESULT_CANCELED,returnIntent);
-								
-								finishActivity(_startupSource, false, activity);
-							}
-						});
-						dialogBuilder.show();
-						
-						return;
+						// temporary block forceRun event
+						event._blocked = true;
 					}
 				}
 			}
@@ -744,8 +731,30 @@ public class DataWrapper {
 	private void activateProfileWithAlert(Profile profile, int startupSource, boolean interactive, 
 											Activity activity, String eventNotificationSound)
 	{
-		if ((GlobalData.applicationActivateWithAlert && interactive) ||
-			(startupSource == GlobalData.STARTUP_SOURCE_EDITOR))	
+		boolean isforceRunEvent = false;
+		
+		//if (interactive || (startupSource == GlobalData.STARTUP_SOURCE_EDITOR))
+		if (interactive)
+		{
+			// search for forceRun events
+			List<EventTimeline> eventTimelineList = getEventTimelineList();
+			for (EventTimeline eventTimeline : eventTimelineList)
+			{
+				Event event = getEventById(eventTimeline._fkEvent);
+				if (event != null)
+				{
+					if (event._forceRun)
+					{
+						isforceRunEvent = true;
+						break;
+					}
+				}
+			}
+		}
+		
+		if ((interactive) && (GlobalData.applicationActivateWithAlert || 
+							 (startupSource == GlobalData.STARTUP_SOURCE_EDITOR) || 
+							 (isforceRunEvent)))	
 		{	
 			// set theme and language for dialog alert ;-)
 			// not working on Android 2.3.x
@@ -760,18 +769,18 @@ public class DataWrapper {
 
 			AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
 			dialogBuilder.setTitle(activity.getResources().getString(R.string.profile_string_0) + ": " + profile._name);
-			dialogBuilder.setMessage(activity.getResources().getString(R.string.activate_profile_alert_message) + "?");
+			if (isforceRunEvent)
+				dialogBuilder.setMessage(activity.getResources().getString(R.string.manual_profile_activation_forceRun_message) + "?");
+			else
+				dialogBuilder.setMessage(activity.getResources().getString(R.string.activate_profile_alert_message) + "?");
 			//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
 			dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
-				
 				public void onClick(DialogInterface dialog, int which) {
 					_activateProfile(_profile, _startupSource, _interactive, _activity, _eventNotificationSound);
 				}
 			});
 			dialogBuilder.setNegativeButton(R.string.alert_button_no, new DialogInterface.OnClickListener() {
-				
 				public void onClick(DialogInterface dialog, int which) {
-
 					// for startActivityForResult
 					Intent returnIntent = new Intent();
 					_activity.setResult(Activity.RESULT_CANCELED,returnIntent);
@@ -865,7 +874,8 @@ public class DataWrapper {
 			(startupSource == GlobalData.STARTUP_SOURCE_WIDGET) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_ACTIVATOR) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_EDITOR) ||
-			(startupSource == GlobalData.STARTUP_SOURCE_SERVICE))
+			(startupSource == GlobalData.STARTUP_SOURCE_SERVICE) ||
+			(startupSource == GlobalData.STARTUP_SOURCE_LAUNCHER))
 		{
 			// aktivacia spustena z shortcutu, widgetu, aktivatora, editora, zo service, profil aktivujeme
 			actProfile = true;
@@ -935,7 +945,8 @@ public class DataWrapper {
 			(startupSource == GlobalData.STARTUP_SOURCE_ACTIVATOR) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_EDITOR) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_SERVICE) ||
-			(startupSource == GlobalData.STARTUP_SOURCE_LAUNCHER_START))	
+			(startupSource == GlobalData.STARTUP_SOURCE_LAUNCHER_START) ||
+			(startupSource == GlobalData.STARTUP_SOURCE_LAUNCHER))	
 		{
 			if (profile_id == 0)
 				profile = null;
@@ -1331,6 +1342,7 @@ public class DataWrapper {
 			return;
 		
 		GlobalData.setEventsBlocked(context, false);
+		getDatabaseHandler().unblockAllEvents();
 		
 		getEventList();
 		for (Event event : eventList)
@@ -1338,5 +1350,11 @@ public class DataWrapper {
 			if (event.getStatus() != Event.ESTATUS_STOP)
 				doEventService(event, false);
 		}
+	}
+	
+	public void setEventBlocked(Event event, boolean blocked)
+	{
+		event._blocked = blocked;
+		getDatabaseHandler().updateEventBlocked(event);
 	}
 }
