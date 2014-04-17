@@ -1,6 +1,15 @@
-Call event:
-DataWrapper.doEventService musi vediet stav hovoru. Toto je volane zo service EventsService a z gui.
-Pri volani z gui sa event pauzuje, a pochybujem, ze uzivatel bude nieco robit v gui, ked zrovna vola.
-Cize spravme v DataWrapper f., ktora nastavi stav hovoru. Tato bude volana len z EventsService.
-A potom  DataWrapper.doEventService bude vediet, v akom stave je hovor.
-Samozrejme do EventsService treba cez intent putExtra dat aj stav hovoru z receivera na hovor. 
+Manualna aktivacia profilu:
+- shared preferences, ktore blkne spustenie eventov
+- indikator behu udalosti - oranzovy
+- odblokuje sa na:
+  - prve spusteni aplikacie
+  - boot
+  - restart eventov
+
+Event s battery parametrami
+- checkbox na Block other events
+  - ak bude zakrtnuty, nespustia sa ziadne eventy, kim takyto battery event bezi
+  - ak skonci bez - okamzite znovuspustenie eventov aka retart eventov
+- ine ako battery event
+  - pribudne checkobx - block by battery event
+    - ak bude zaskrtnute, bude blokovatelny battery eventom
