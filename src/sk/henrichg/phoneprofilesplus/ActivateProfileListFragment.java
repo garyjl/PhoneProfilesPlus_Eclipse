@@ -301,7 +301,12 @@ public class ActivateProfileListFragment extends Fragment {
     public void setEventsRunStopIndicator()
     {
 		if (GlobalData.getGlobalEventsRuning(getActivity().getBaseContext()))
-			eventsRunStopIndicator.setBackgroundColor(0x99009900);
+		{
+			if (GlobalData.getEventsBlocked(getActivity().getBaseContext()))
+				eventsRunStopIndicator.setBackgroundColor(0xFFffb000);
+			else
+				eventsRunStopIndicator.setBackgroundColor(0x99009900);
+		}
 		else
 			eventsRunStopIndicator.setBackgroundColor(0xFFFF0000);
     }
@@ -310,6 +315,8 @@ public class ActivateProfileListFragment extends Fragment {
 	{
 		if ((dataWrapper == null) || (profileListAdapter == null))
 			return;
+		
+		setEventsRunStopIndicator();
 		
 		Profile profileFromAdapter = profileListAdapter.getActivatedProfile();
 		if (profileFromAdapter != null)

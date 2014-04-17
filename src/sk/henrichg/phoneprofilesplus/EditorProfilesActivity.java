@@ -386,7 +386,7 @@ public class EditorProfilesActivity extends ActionBarActivity
     	selectDrawerItem(drawerSelectedItem, false);
     	changeEventOrder(orderSelectedItem);
 
-		setEventsRunStopIndicator();
+		refreshGUI();
     	
         //Log.e("EditorProfilesActivity.onCreate", "drawerSelectedItem="+drawerSelectedItem);
 		
@@ -545,7 +545,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 				dataWrapper.firstStartEvents(false, false);
 			}
 			invalidateOptionsMenu();
-			setEventsRunStopIndicator();
+			refreshGUI();
 			return true;
 		case R.id.menu_default_profile:
 			// start preferences activity for default profile
@@ -1716,15 +1716,20 @@ public class EditorProfilesActivity extends ActionBarActivity
     public void setEventsRunStopIndicator()
     {
 		if (GlobalData.getGlobalEventsRuning(getBaseContext()))
-			eventsRunStopIndicator.setBackgroundColor(0x99009900);
+		{
+			if (GlobalData.getEventsBlocked(getBaseContext()))
+				eventsRunStopIndicator.setBackgroundColor(0xFFffb000);
+			else
+				eventsRunStopIndicator.setBackgroundColor(0x99009900);
+		}
 		else
 			eventsRunStopIndicator.setBackgroundColor(0xFFFF0000);
-		refreshGUI();
     }
-
 	
 	public void refreshGUI()
 	{
+		setEventsRunStopIndicator();
+		
 		Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
 		if (fragment != null)
 		{
