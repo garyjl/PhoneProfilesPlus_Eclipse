@@ -614,6 +614,8 @@ public class DataWrapper {
 		
 		for (Event event : getEventList())
 		{
+			event._blocked = false;
+			
 			int status = event.getStatus();
 			
 			// remove all system events
