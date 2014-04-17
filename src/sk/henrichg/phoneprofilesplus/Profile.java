@@ -629,4 +629,12 @@ public class Profile {
     	}
 	}
 	
+	public String getNameWithManualIndicator(Context context)
+	{
+		if (GlobalData.getEventsBlocked(context))
+			return "M - " + _name;
+		else
+			return _name;
+	}
+	
 }

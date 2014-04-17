@@ -619,7 +619,7 @@ public class ActivateProfileHelper {
 				{
 					isIconResourceID = profile.getIsIconResourceID();
 					iconIdentifier = profile.getIconIdentifier();
-					profileName = profile._name;
+					profileName = profile.getNameWithManualIndicator(context);
 					iconBitmap = profile._iconBitmap;
 					preferencesIndicator = profile._preferencesIndicator;
 				}

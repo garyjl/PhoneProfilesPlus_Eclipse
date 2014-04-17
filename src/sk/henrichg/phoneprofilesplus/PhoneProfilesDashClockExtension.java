@@ -71,7 +71,7 @@ public class PhoneProfilesDashClockExtension extends DashClockExtension {
 		{
 			isIconResourceID = profile.getIsIconResourceID();
 			iconIdentifier = profile.getIconIdentifier();
-			profileName = profile._name;
+			profileName = profile.getNameWithManualIndicator(getBaseContext());
 		}
 		else
 		{
@@ -188,11 +188,15 @@ public class PhoneProfilesDashClockExtension extends DashClockExtension {
 		Intent intent = new Intent(this, LauncherActivity.class);
 		intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_WIDGET);
 		
+		String status = "";
+		if (GlobalData.getEventsBlocked(getBaseContext()))
+			status = "M";
+		
 	    // Publish the extension data update.
         publishUpdate(new ExtensionData()
                 .visible(true)
                 .icon(iconResource)
-                .status("")
+                .status(status)
                 .expandedTitle(profileName)
                 .expandedBody(indicator1)
                 .contentDescription("PhoneProfiles - "+profileName)
