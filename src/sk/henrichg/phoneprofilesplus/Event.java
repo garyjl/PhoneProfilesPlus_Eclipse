@@ -345,11 +345,13 @@ public class Event {
 			// event is not runnable, no pause it
 			return;
 
+		/*
 		if (restart)
 		{
 			// ublock temporary blocked event on restart
 			dataWrapper.setEventBlocked(this, false);
 		}
+		*/
 			
 		if (GlobalData.getEventsBlocked(dataWrapper.context))
 		{
