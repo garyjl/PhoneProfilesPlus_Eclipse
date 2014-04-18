@@ -1,4 +1,10 @@
 Event s battery parametrami
+- pridat parameter, ci filtrovat profile parametre podla battery eventu, lebo teraz filtruje pre vsetky eventy, 
+  co nie su charging bez ohladu na levely
+- start profil nastavi veci a po skonceni eventu to, co nastavil nech opacne nastavi (togle?)
+  toto by mal byt "interny" profil, ktory to na ukoncenie spravi.  
+  
+  
 - checkbox na Block other events
   - ak bude zakrtnuty, nespustia sa ziadne eventy, kim takyto battery event bezi
   - ak skonci bez - okamzite znovuspustenie eventov aka retart eventov

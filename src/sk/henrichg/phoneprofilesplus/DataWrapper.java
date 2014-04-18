@@ -1345,8 +1345,9 @@ public class DataWrapper {
 		getEventList();
 		for (Event event : eventList)
 		{
+			event._blocked = false;
 			if (event.getStatus() != Event.ESTATUS_STOP)
-				doEventService(event, false);
+				doEventService(event, true);
 		}
 	}
 	
