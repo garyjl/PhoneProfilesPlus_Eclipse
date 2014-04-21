@@ -582,6 +582,8 @@ public class DataWrapper {
 			if (event.getStatusFromDB(this) == Event.ESTATUS_RUNNING)
 			{
 				event.pauseEvent(this, eventTimelineList, false, true, noSetSystemEvent);
+				if (event._forceRun)
+					setEventBlocked(event, blockEvents);
 			}
 			GlobalData.setEventsBlocked(context, blockEvents);
 		}
@@ -663,19 +665,6 @@ public class DataWrapper {
 			(startupSource != GlobalData.STARTUP_SOURCE_LAUNCHER_START))
 		{
 			pauseAllEvents(false, true);
-			// search for forceRun events
-			getEventList();
-			for (Event event : eventList)
-			{
-				if (event != null)
-				{
-					if (event._forceRun)
-					{
-						// temporary block forceRun event
-						setEventBlocked(event, true);
-					}
-				}
-			}
 		}
 		
 		databaseHandler.activateProfile(profile);
@@ -741,7 +730,7 @@ public class DataWrapper {
 			{
 				if (event != null)
 				{
-					if (event._forceRun)
+					if ((event.getStatus() == Event.ESTATUS_RUNNING) && (event._forceRun))
 					{
 						isforceRunEvent = true;
 						break;
