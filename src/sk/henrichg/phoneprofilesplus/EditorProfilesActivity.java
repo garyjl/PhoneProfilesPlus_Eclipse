@@ -783,60 +783,69 @@ public class EditorProfilesActivity extends ActionBarActivity
 		else
 		if (requestCode == GlobalData.REQUEST_CODE_PROFILE_PREFERENCES)
 		{
-			// redraw list fragment after finish ProfilePreferencesFragmentActivity
-			long profile_id = data.getLongExtra(GlobalData.EXTRA_PROFILE_ID, 0);
-			int newProfileMode = data.getIntExtra(GlobalData.EXTRA_NEW_PROFILE_MODE, EditorProfileListFragment.EDIT_MODE_UNDEFINED);
-			
-			if (profile_id > 0)
+			if ((resultCode == RESULT_OK) && (data != null))
 			{
-				Profile profile = getDataWrapper().getDatabaseHandler().getProfile(profile_id);
-				// generate bitmaps
-				profile.generateIconBitmap(getBaseContext(), false, 0);
-				profile.generatePreferencesIndicator(getBaseContext(), false, 0);
+				// redraw list fragment after finish ProfilePreferencesFragmentActivity
+				long profile_id = data.getLongExtra(GlobalData.EXTRA_PROFILE_ID, 0);
+				int newProfileMode = data.getIntExtra(GlobalData.EXTRA_NEW_PROFILE_MODE, EditorProfileListFragment.EDIT_MODE_UNDEFINED);
 				
-				// redraw list fragment , notifications, widgets after finish ProfilePreferencesFragmentActivity
-				onRedrawProfileListFragment(profile, newProfileMode);
-			}
-			else
-			if (profile_id == GlobalData.DEFAULT_PROFILE_ID)
-			{
-				// refresh activity for changes of default profile
-				GUIData.reloadActivity(this, false);
+				if (profile_id > 0)
+				{
+					Profile profile = getDataWrapper().getDatabaseHandler().getProfile(profile_id);
+					// generate bitmaps
+					profile.generateIconBitmap(getBaseContext(), false, 0);
+					profile.generatePreferencesIndicator(getBaseContext(), false, 0);
+					
+					// redraw list fragment , notifications, widgets after finish ProfilePreferencesFragmentActivity
+					onRedrawProfileListFragment(profile, newProfileMode);
+				}
+				else
+				if (profile_id == GlobalData.DEFAULT_PROFILE_ID)
+				{
+					// refresh activity for changes of default profile
+					GUIData.reloadActivity(this, false);
+				}
 			}
 		}
 		else
 		if (requestCode == GlobalData.REQUEST_CODE_EVENT_PREFERENCES)
 		{
-			// redraw list fragment after finish EventPreferencesFragmentActivity
-			long event_id = data.getLongExtra(GlobalData.EXTRA_EVENT_ID, 0);
-			int newEventMode = data.getIntExtra(GlobalData.EXTRA_NEW_EVENT_MODE, EditorEventListFragment.EDIT_MODE_UNDEFINED);
-			
-			//Log.e("EditorProfilesActivity.onActivityResult","event_id="+event_id);
-			//Log.e("EditorProfilesActivity.onActivityResult","newEventMode="+newEventMode);
-			
-			if (event_id > 0)
+			if ((resultCode == RESULT_OK) && (data != null))
 			{
-				Event event = getDataWrapper().getDatabaseHandler().getEvent(event_id);
-
-				//Log.e("EditorProfilesActivity.onActivityResult","event._id="+event._id);
+				// redraw list fragment after finish EventPreferencesFragmentActivity
+				long event_id = data.getLongExtra(GlobalData.EXTRA_EVENT_ID, 0);
+				int newEventMode = data.getIntExtra(GlobalData.EXTRA_NEW_EVENT_MODE, EditorEventListFragment.EDIT_MODE_UNDEFINED);
+				
+				//Log.e("EditorProfilesActivity.onActivityResult","event_id="+event_id);
+				//Log.e("EditorProfilesActivity.onActivityResult","newEventMode="+newEventMode);
+				
+				if (event_id > 0)
+				{
+					Event event = getDataWrapper().getDatabaseHandler().getEvent(event_id);
 	
-				// redraw list fragment , notifications, widgets after finish ProfilePreferencesFragmentActivity
-				onRedrawEventListFragment(event, newEventMode);
+					//Log.e("EditorProfilesActivity.onActivityResult","event._id="+event._id);
+		
+					// redraw list fragment , notifications, widgets after finish ProfilePreferencesFragmentActivity
+					onRedrawEventListFragment(event, newEventMode);
+				}
 			}
 		}
 		else
 		if (requestCode == GlobalData.REQUEST_CODE_APPLICATION_PREFERENCES)
 		{
-			boolean restart = data.getBooleanExtra(GlobalData.EXTRA_RESET_EDITOR, false); 
-
-			DataWrapper dataWrapper = getDataWrapper();
-			dataWrapper.getActivateProfileHelper().showNotification(dataWrapper.getActivatedProfile());
-			dataWrapper.getActivateProfileHelper().updateWidget();
-			
-			if (restart)
+			if (resultCode == RESULT_OK)
 			{
-				// refresh activity for special changes
-				GUIData.reloadActivity(this, true);
+				boolean restart = data.getBooleanExtra(GlobalData.EXTRA_RESET_EDITOR, false); 
+	
+				DataWrapper dataWrapper = getDataWrapper();
+				dataWrapper.getActivateProfileHelper().showNotification(dataWrapper.getActivatedProfile());
+				dataWrapper.getActivateProfileHelper().updateWidget();
+				
+				if (restart)
+				{
+					// refresh activity for special changes
+					GUIData.reloadActivity(this, true);
+				}
 			}
 		}
 		else
