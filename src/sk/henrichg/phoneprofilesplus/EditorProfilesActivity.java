@@ -1072,6 +1072,10 @@ public class EditorProfilesActivity extends ActionBarActivity
 			    	editor.putInt(SP_EDITOR_ORDER_SELECTED_ITEM, 0);
 					editor.commit();
 			    	
+					// restart events
+					GlobalData.setEventsBlocked(getBaseContext(), false);
+					dataWrapper.restartEvents();
+					
 					// refresh activity
 					GUIData.reloadActivity(activity, true);
 				

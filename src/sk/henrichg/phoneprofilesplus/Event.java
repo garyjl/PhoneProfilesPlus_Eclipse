@@ -423,7 +423,12 @@ public class Event {
 
 			eventTimeline = addEventTimeline(dataWrapper, eventTimelineList);
 
-			if (this._fkProfileStart != eventTimeline._fkProfileReturn)
+			long activatedProfileId = 0;
+			Profile activatedProfile = dataWrapper.getActivatedProfile();
+			if (activatedProfile != null)
+				activatedProfileId = activatedProfile._id;
+			
+			if (this._fkProfileStart != activatedProfileId)
 				// no activate profile, when is already activated
 				dataWrapper.activateProfileFromEvent(this._fkProfileStart, _notificationSound);
 			else
