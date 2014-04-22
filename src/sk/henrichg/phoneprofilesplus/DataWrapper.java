@@ -585,8 +585,9 @@ public class DataWrapper {
 				if (event._forceRun)
 					setEventBlocked(event, blockEvents);
 			}
-			GlobalData.setEventsBlocked(context, blockEvents);
 		}
+
+		GlobalData.setEventsBlocked(context, blockEvents);
 	}
 	
 	// stops all events without activating profiles from Timeline
@@ -1328,18 +1329,53 @@ public class DataWrapper {
 			// events are globally stopped
 			return;
 		
-		if (GlobalData.getEventsBlocked(context))
+		if (!GlobalData.getEventsBlocked(context))
+			return;
+
+		GlobalData.setEventsBlocked(context, false);
+		getDatabaseHandler().unblockAllEvents();
+		
+		getEventList();
+		for (Event event : eventList)
 		{
-			GlobalData.setEventsBlocked(context, false);
-			getDatabaseHandler().unblockAllEvents();
+			event._blocked = false;
+			if (event.getStatus() != Event.ESTATUS_STOP)
+				doEventService(event, true);
+		}
+	}
+	
+	public void restartEventsWithAlert(Activity activity)
+	{
+		if (!GlobalData.getGlobalEventsRuning(context))
+			// events are globally stopped
+			return;
+		
+		if (!GlobalData.getEventsBlocked(context))
+			return;
+
+		if (GlobalData.applicationActivateWithAlert || (activity instanceof EditorProfilesActivity))
+		{
+			final Activity _activity = activity;
 			
-			getEventList();
-			for (Event event : eventList)
-			{
-				event._blocked = false;
-				if (event.getStatus() != Event.ESTATUS_STOP)
-					doEventService(event, true);
-			}
+			AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
+			dialogBuilder.setTitle(activity.getResources().getString(R.string.restart_events_alert_title));
+			dialogBuilder.setMessage(activity.getResources().getString(R.string.restart_events_alert_message) + "?");
+			//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
+			dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					restartEvents();
+					if (GlobalData.applicationClose && (!(_activity instanceof EditorProfilesActivity)))
+						_activity.finish();
+				}
+			});
+			dialogBuilder.setNegativeButton(R.string.alert_button_no, null);
+			dialogBuilder.show();
+		}
+		else
+		{
+			restartEvents();
+			if (GlobalData.applicationClose)
+				activity.finish();
 		}
 	}
 	

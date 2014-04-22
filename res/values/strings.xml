@@ -313,5 +313,7 @@
     <string name="event_preferences_ForceRun">Force Run</string>
     <string name="manual_profile_activation_forceRun_title">Activate profile</string>
     <string name="manual_profile_activation_forceRun_message">Event with option \"Force run\" is running. Activate anyway</string>
+    <string name="restart_events_alert_title">Restart events</string>
+    <string name="restart_events_alert_message">Are you sure</string>
     
 </resources>

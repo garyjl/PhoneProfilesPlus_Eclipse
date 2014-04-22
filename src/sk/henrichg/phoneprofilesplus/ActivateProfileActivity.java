@@ -200,7 +200,7 @@ public class ActivateProfileActivity extends ActionBarActivity {
 			return true;
 		case R.id.menu_restart_events:
 			DataWrapper dataWrapper = new DataWrapper(getBaseContext(), false, false, 0);
-			dataWrapper.restartEvents();
+			dataWrapper.restartEventsWithAlert(this);
 			dataWrapper.invalidateDataWrapper();
 			return true;
 		default:

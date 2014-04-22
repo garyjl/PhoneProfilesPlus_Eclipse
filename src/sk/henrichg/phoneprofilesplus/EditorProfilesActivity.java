@@ -527,7 +527,7 @@ public class EditorProfilesActivity extends ActionBarActivity
             }	
 			return super.onOptionsItemSelected(item);
 		case R.id.menu_restart_events:
-			getDataWrapper().restartEvents();
+			getDataWrapper().restartEventsWithAlert(this);
 			return true;
 		case R.id.menu_run_stop_events:
 			DataWrapper dataWrapper = getDataWrapper();
