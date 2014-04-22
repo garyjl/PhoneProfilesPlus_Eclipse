@@ -259,29 +259,28 @@
     <string name="array_pref_launcher_activator">Activator</string>
     <string name="array_pref_launcher_editor">Editor</string>
     <string name="profile_preferences_deviceLocationServicePrefs">(I) Location preferences</string>
-	<string name="event_type_battery">Battery</string>
+    <string name="event_type_battery">Battery</string>
     <string name="profile_preferences_volumeSpeakerPhone">Speakerphone</string>
     <string name="event_preferences_notificationSound">Notification sound</string>
     <string name="preferences_notificationSound_None">None</string>
     <string name="event_preferences_battery_level_low">Low level</string>
-	<string name="event_preferences_battery_level_hight">Hight level</string>
-	<string name="event_preferences_battery_charging">Charging</string>
-	<string name="pref_event_battery_level">Level</string>
+    <string name="event_preferences_battery_level_hight">High level</string>
+    <string name="event_preferences_battery_charging">Charging</string>
+    <string name="pref_event_battery_level">Level</string>
     <string name="pref_event_battery_charging">Charging</string>
-	<string name="phone_profiles_pref_applicationPauseEventsOnProfileActivation">Pause events</string>
-	<string name="event_preferences_not_enabled">Not enabled</string>
+    <string name="phone_profiles_pref_applicationPauseEventsOnProfileActivation">Pause events</string>
+    <string name="event_preferences_not_enabled">Not enabled</string>
     <string name="event_preferences_category_eventTimeParameters">Time parameters</string>
     <string name="event_preferences_category_eventBatteryParameters">Battery parameters</string>
     <string name="event_preferences_time_enabled">Enable time</string>
-    <string name="event_preferences_battery_enabled">Enable battery</string>
-    		
+    <string name="event_preferences_battery_enabled">Enable battery</string>    		
     <string name="menu_phoneprofilehepler_install">Install PPHelper</string>
     <string name="menu_phoneprofilehepler_uninstall">Uninstall PPHelper</string>
     <string name="menu_phoneprofilehepler_upgrade">Upgrade PPHelper</string>
     <string name="phoneprofilehepler_install_title">PPHelper installation</string>
     <string name="phoneprofilehepler_install_message">Are you sure</string>
     <string name="phoneprofilehepler_reboot_title">PPHelper installation</string>
-    <string name="phoneprofilehepler_reboot_message">For PPHelper functionality, is required to restart the device. Restart now?</string>
+    <string name="phoneprofilehepler_reboot_message">For PPHelper functionality, it is required to restart the device. Restart now?</string>
     <string name="phoneprofilehepler_uninstall_title">PPHelper uninstallation</string>
     <string name="phoneprofilehepler_uninstall_message">Are you sure</string>
     <string name="phoneprofilehepler_install_error">Error when installing PPHelper</string>
@@ -300,7 +299,7 @@
     <string name="event_preferences_ccontactListType">Contact list type</string>
     <string name="array_event_pref_contact_list_type_white_list">White list</string>
     <string name="array_event_pref_contact_list_type_black_list">Black list</string>
-    <string name="array_event_pref_contact_list_type_not_use">Not use</string>
+    <string name="array_event_pref_contact_list_type_not_use">Don't use</string>
     <string name="event_type_call">Call</string>
     <string name="pref_event_call_event">Event</string>
     <string name="pref_event_call_contactListType">List type</string> 
@@ -309,8 +308,7 @@
     <string name="event_preferences_battery_level_bad_value">Bad value</string>
     <string name="event_preferences_profile_end_activated">Last activated profile</string>
     <string name="event_preferences_eventProfileEnd">Activate profile (end)</string>
-    <string name="menu_restart_events">Restart events</string>
-    
+    <string name="menu_restart_events">Restart events</string>    
     <string name="event_preferences_ForceRun">Force Run</string>
     <string name="manual_profile_activation_forceRun_title">Activate profile</string>
     <string name="manual_profile_activation_forceRun_message">Event with option \"Force run\" is running. Activate anyway</string>
