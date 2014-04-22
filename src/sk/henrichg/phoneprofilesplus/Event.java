@@ -348,23 +348,25 @@ public class Event {
 		if (GlobalData.getEventsBlocked(dataWrapper.context))
 		{
 			// blocked by manual profile activation
-			if (_blocked)
-				// event is temporary blocked
-				return;
 			if (!_forceRun)
 				// event is not forceRun
 				return;
-			
+			if (_blocked)
+				// forceRun event is temporary blocked
+				return;
+
+			/*
 			// unblock events run when forceRun is starting
 			for (EventTimeline eventTimeline : eventTimelineList)
 			{
 				Event event = dataWrapper.getEventById(eventTimeline._fkEvent);
-				if (event != null)
+				if ((event != null) && (event._blocked))
 					dataWrapper.setEventBlocked(event, false);
 			}
 			GlobalData.setEventsBlocked(dataWrapper.context, false);
+			*/
 		}
-		else
+	/*	else
 		{
 			// when forceRun events are running, no start no-forceRun event
 			if (!_forceRun)
@@ -377,7 +379,10 @@ public class Event {
 						return;
 				}
 			}
-		}
+		}  */
+		
+		if (_forceRun)
+			GlobalData.setForceRunEventRunning(dataWrapper.context, true);
 		
 		GlobalData.logE("Event.startEvent","event_id="+this._id+"-----------------------------------");
 		
@@ -551,6 +556,24 @@ public class Event {
 		this._status = ESTATUS_PAUSE;
 		
 		dataWrapper.getDatabaseHandler().updateEventStatus(this);
+
+		if (_forceRun)
+		{
+			boolean forceRunRunning = false;
+			for (EventTimeline eventTimeline : eventTimelineList)
+			{
+				Event event = dataWrapper.getEventById(eventTimeline._fkEvent);
+				if (event._forceRun)
+				{
+					forceRunRunning = true;
+					break;
+				}
+			}
+				
+			if (!forceRunRunning)
+				GlobalData.setForceRunEventRunning(dataWrapper.context, false);
+		}
+		
 		
 		return;
 	}

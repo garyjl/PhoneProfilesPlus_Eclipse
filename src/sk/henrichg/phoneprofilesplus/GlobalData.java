@@ -167,6 +167,7 @@ public class GlobalData extends Application {
 	private static final String PREF_GLOBAL_EVENTS_RUN_STOP = "globalEventsRunStop";
 	private static final String PREF_APPLICATION_STARTED = "applicationStarted";
 	private static final String PREF_EVENTS_BLOCKED = "eventsBlocked";
+	private static final String PREF_FORCE_RUN_EVENT_RUNNING = "forceRunEventRunning";
 	
     public static boolean applicationStartOnBoot;
     public static boolean applicationActivate;
@@ -646,6 +647,20 @@ public class GlobalData extends Application {
 		SharedPreferences preferences = context.getSharedPreferences(APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
 		Editor editor = preferences.edit();
 		editor.putBoolean(PREF_EVENTS_BLOCKED, eventsBlocked);
+		editor.commit();
+	}
+
+	static public boolean getForceRunEventRunning(Context context)
+	{
+		SharedPreferences preferences = context.getSharedPreferences(APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+		return preferences.getBoolean(PREF_FORCE_RUN_EVENT_RUNNING, false);
+	}
+
+	static public void setForceRunEventRunning(Context context, boolean forceRunEventRunning)
+	{
+		SharedPreferences preferences = context.getSharedPreferences(APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+		Editor editor = preferences.edit();
+		editor.putBoolean(PREF_FORCE_RUN_EVENT_RUNNING, forceRunEventRunning);
 		editor.commit();
 	}
 	

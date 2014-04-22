@@ -612,6 +612,7 @@ public class DataWrapper {
 
 		GlobalData.setEventsBlocked(context, false);
 		getDatabaseHandler().unblockAllEvents();
+		GlobalData.setForceRunEventRunning(context, false);
 		
 		BatteryEventsAlarmBroadcastReceiver.removeAlarm(context);
 		
@@ -1384,4 +1385,21 @@ public class DataWrapper {
 		event._blocked = blocked;
 		getDatabaseHandler().updateEventBlocked(event);
 	}
+	
+	public String getProfileNameWithManualIndicator(Profile profile)
+	{
+		if (profile == null)
+			return "";
+		
+		if (!GlobalData.getEventsBlocked(context))
+			return profile._name;
+		else
+		{
+			if (GlobalData.getForceRunEventRunning(context))
+				return "F - " + profile._name;
+			else
+				return "M - " + profile._name;
+		}
+	}
+	
 }

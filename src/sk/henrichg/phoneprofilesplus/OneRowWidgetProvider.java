@@ -28,9 +28,7 @@ public class OneRowWidgetProvider extends AppWidgetProvider {
 		if (GlobalData.applicationWidgetListIconLightness.equals("75")) monochromeValue = 0xC0;
 		if (GlobalData.applicationWidgetListIconLightness.equals("100")) monochromeValue = 0xFF;
 
-		dataWrapper = new DataWrapper(context, true, 
-														GlobalData.applicationWidgetListIconColor.equals("1"), 
-														monochromeValue);
+		dataWrapper = new DataWrapper(context, true, GlobalData.applicationWidgetListIconColor.equals("1"), monochromeValue);
 		
 		Profile profile = dataWrapper.getActivatedProfile();
 
@@ -48,7 +46,7 @@ public class OneRowWidgetProvider extends AppWidgetProvider {
 			{
 				isIconResourceID = profile.getIsIconResourceID();
 				iconIdentifier = profile.getIconIdentifier();
-				profileName = profile.getNameWithManualIndicator(context);
+				profileName = dataWrapper.getProfileNameWithManualIndicator(profile); 
 			}
 			else
 			{
