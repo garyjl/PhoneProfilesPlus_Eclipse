@@ -186,6 +186,20 @@ public class ActivateProfileActivity extends ActionBarActivity {
 	}
 	
 	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+
+		// change global events run/stop menu item title 
+		MenuItem menuItem = menu.findItem(R.id.menu_restart_events);
+		if (menuItem != null)
+		{
+			menuItem.setVisible(GlobalData.getGlobalEventsRuning(getBaseContext()));
+		}
+		
+		return super.onPrepareOptionsMenu(menu);
+	}	
+	
+	
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_edit_profiles:

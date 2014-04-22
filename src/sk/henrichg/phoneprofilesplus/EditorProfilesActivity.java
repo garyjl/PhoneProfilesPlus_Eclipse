@@ -509,6 +509,12 @@ public class EditorProfilesActivity extends ActionBarActivity
 		{
 			menuItem.setVisible(GlobalData.isRooted() && (PhoneProfilesHelper.PPHelperVersion != -1));
 		}
+
+		menuItem = menu.findItem(R.id.menu_restart_events);
+		if (menuItem != null)
+		{
+			menuItem.setVisible(GlobalData.getGlobalEventsRuning(getBaseContext()));
+		}
 		
 		return super.onPrepareOptionsMenu(menu);
 	}	
@@ -1075,6 +1081,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 					// restart events
 					GlobalData.setEventsBlocked(getBaseContext(), false);
 					dataWrapper.restartEvents();
+					invalidateOptionsMenu();
 					
 					// refresh activity
 					GUIData.reloadActivity(activity, true);

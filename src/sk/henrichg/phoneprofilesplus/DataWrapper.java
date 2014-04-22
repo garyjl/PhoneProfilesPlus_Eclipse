@@ -1350,9 +1350,11 @@ public class DataWrapper {
 		if (!GlobalData.getGlobalEventsRuning(context))
 			// events are globally stopped
 			return;
-		
+	
+		/*
 		if (!GlobalData.getEventsBlocked(context))
 			return;
+		*/
 
 		if (GlobalData.applicationActivateWithAlert || (activity instanceof EditorProfilesActivity))
 		{
