@@ -616,6 +616,7 @@ public class DataWrapper {
 		
 		BatteryEventsAlarmBroadcastReceiver.removeAlarm(context);
 		
+		/*
 		for (Event event : getEventList())
 		{
 			event._blocked = false;
@@ -631,6 +632,9 @@ public class DataWrapper {
 				event.setSystemEvent(context, status);
 			}
 		}
+		*/
+		
+		restartEvents();
 
 	}
 	
