@@ -1328,15 +1328,18 @@ public class DataWrapper {
 			// events are globally stopped
 			return;
 		
-		GlobalData.setEventsBlocked(context, false);
-		getDatabaseHandler().unblockAllEvents();
-		
-		getEventList();
-		for (Event event : eventList)
+		if (GlobalData.getEventsBlocked(context))
 		{
-			event._blocked = false;
-			if (event.getStatus() != Event.ESTATUS_STOP)
-				doEventService(event, true);
+			GlobalData.setEventsBlocked(context, false);
+			getDatabaseHandler().unblockAllEvents();
+			
+			getEventList();
+			for (Event event : eventList)
+			{
+				event._blocked = false;
+				if (event.getStatus() != Event.ESTATUS_STOP)
+					doEventService(event, true);
+			}
 		}
 	}
 	
