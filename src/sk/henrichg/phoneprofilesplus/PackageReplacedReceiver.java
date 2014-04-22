@@ -17,32 +17,24 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 			
 			if (GlobalData.getApplicationStarted(context))
 			{
+				GlobalData.grantRoot(true);
+
+				// start PPHelper
+				PhoneProfilesHelper.startPPHelper(context);
+				
 				DataWrapper dataWrapper = new DataWrapper(context, true, false, 0);
 				dataWrapper.getActivateProfileHelper().initialize(dataWrapper, null, context);
-
-				GlobalData.setApplicationStarted(context, false);
-				
-				// stop all events
-				dataWrapper.stopAllEvents(false);
 				
 				// zrusenie notifikacie
 				dataWrapper.getActivateProfileHelper().removeNotification();
 
-				GlobalData.setApplicationStarted(context, true);
-				
-				GlobalData.grantRoot(true);
-
 				// startneme eventy
 				if (GlobalData.getGlobalEventsRuning(context))
-				{
-					dataWrapper.firstStartEvents(true, false);
-				}
-
-				dataWrapper.activateProfile(0, GlobalData.STARTUP_SOURCE_BOOT, null, "");
+					dataWrapper.firstStartEvents(true);
+				else
+					dataWrapper.activateProfile(0, GlobalData.STARTUP_SOURCE_BOOT, null, "");
+				
 				dataWrapper.invalidateDataWrapper();
-
-				// start PPHelper
-				PhoneProfilesHelper.startPPHelper(context);
 			}
 		}		
 	}

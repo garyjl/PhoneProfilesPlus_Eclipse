@@ -24,20 +24,19 @@ public class BootUpReceiver extends BroadcastReceiver {
 			
 			GlobalData.grantRoot(true);
 
+			// start PPHelper
+			PhoneProfilesHelper.startPPHelper(context);
+			
 			DataWrapper dataWrapper = new DataWrapper(context, true, false, 0);
 			dataWrapper.getActivateProfileHelper().initialize(dataWrapper, null, context);
 			
 			// startneme eventy
 			if (GlobalData.getGlobalEventsRuning(context))
-			{
-				dataWrapper.firstStartEvents(true, false);
-			}
+				dataWrapper.firstStartEvents(true);
+			else
+				dataWrapper.activateProfile(0, GlobalData.STARTUP_SOURCE_BOOT, null, "");
 
-			dataWrapper.activateProfile(0, GlobalData.STARTUP_SOURCE_BOOT, null, "");
 			dataWrapper.invalidateDataWrapper();
-
-			// start PPHelper
-			PhoneProfilesHelper.startPPHelper(context);
 		}
 
 	}

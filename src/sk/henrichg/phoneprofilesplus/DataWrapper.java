@@ -605,13 +605,15 @@ public class DataWrapper {
 	
 	// this is called in boot or start application
 	// or when restart alarm triggered (?)
-	public void firstStartEvents(boolean invalidateList, boolean ignoreGlobalPref)
+	public void firstStartEvents(boolean invalidateList)
 	{
 		if (invalidateList)
 			invalidateEventList();  // force load form db
 
-		GlobalData.setEventsBlocked(context, false);
-		getDatabaseHandler().unblockAllEvents();
+		// this is called from restartEvents()
+		//GlobalData.setEventsBlocked(context, false);
+		//getDatabaseHandler().unblockAllEvents();
+		
 		GlobalData.setForceRunEventRunning(context, false);
 		
 		BatteryEventsAlarmBroadcastReceiver.removeAlarm(context);
