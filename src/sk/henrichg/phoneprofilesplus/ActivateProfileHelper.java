@@ -353,7 +353,7 @@ public class ActivateProfileHelper {
 		//Settings.System.putInt(context.getContentResolver(), Settings.System.NOTIFICATIONS_USE_RING_VOLUME, 0);
 
 		Profile profile = GlobalData.getMappedProfile(_profile, context);
-		profile = dataWrapper.filterProfileWithBatteryEvents(profile);
+		//profile = dataWrapper.filterProfileWithBatteryEvents(profile);
 		
 		boolean interactive = _interactive;
 		

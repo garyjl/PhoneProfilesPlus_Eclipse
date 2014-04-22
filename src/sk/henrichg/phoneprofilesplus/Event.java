@@ -345,14 +345,6 @@ public class Event {
 			// event is not runnable, no pause it
 			return;
 
-		/*
-		if (restart)
-		{
-			// ublock temporary blocked event on restart
-			dataWrapper.setEventBlocked(this, false);
-		}
-		*/
-			
 		if (GlobalData.getEventsBlocked(dataWrapper.context))
 		{
 			// blocked by manual profile activation
@@ -360,8 +352,31 @@ public class Event {
 				// event is temporary blocked
 				return;
 			if (!_forceRun)
-				// ebent is not forceRun
+				// event is not forceRun
 				return;
+			
+			// unblock events run when forceRun is starting
+			for (EventTimeline eventTimeline : eventTimelineList)
+			{
+				Event event = dataWrapper.getEventById(eventTimeline._fkEvent);
+				if (event != null)
+					dataWrapper.setEventBlocked(event, false);
+			}
+			GlobalData.setEventsBlocked(dataWrapper.context, false);
+		}
+		else
+		{
+			// when forceRun events are running, no start no-forceRun event
+			if (!_forceRun)
+			{
+				for (EventTimeline eventTimeline : eventTimelineList)
+				{
+					Event event = dataWrapper.getEventById(eventTimeline._fkEvent);
+					if ((event != null) && event._forceRun)
+						// forceRun event is running	
+						return;
+				}
+			}
 		}
 		
 		GlobalData.logE("Event.startEvent","event_id="+this._id+"-----------------------------------");

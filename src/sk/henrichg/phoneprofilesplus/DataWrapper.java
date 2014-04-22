@@ -656,7 +656,7 @@ public class DataWrapper {
 									Activity _activity, String eventNotificationSound)
 	{
 		Profile profile = GlobalData.getMappedProfile(_profile, context);
-		profile = filterProfileWithBatteryEvents(profile);
+		//profile = filterProfileWithBatteryEvents(profile);
 		
 		boolean interactive = _interactive;
 		final Activity activity = _activity;

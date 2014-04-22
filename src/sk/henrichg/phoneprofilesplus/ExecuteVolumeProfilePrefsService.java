@@ -33,7 +33,7 @@ public class ExecuteVolumeProfilePrefsService extends IntentService //WakefulInt
 
 		Profile profile = dataWrapper.getProfileById(profile_id);
 		profile = GlobalData.getMappedProfile(profile, context);
-		profile = dataWrapper.filterProfileWithBatteryEvents(profile);
+		//profile = dataWrapper.filterProfileWithBatteryEvents(profile);
 		
 		if (profile != null)
 		{
