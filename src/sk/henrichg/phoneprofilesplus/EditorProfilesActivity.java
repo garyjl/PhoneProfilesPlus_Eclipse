@@ -1040,12 +1040,6 @@ public class EditorProfilesActivity extends ActionBarActivity
 					}
 				}
 				
-				// startneme eventy
-				if (GlobalData.getGlobalEventsRuning(getBaseContext()))
-					this.dataWrapper.firstStartEvents(true);
-				else
-					BatteryEventsAlarmBroadcastReceiver.removeAlarm(getBaseContext());
-				
 				return ret;
 			}
 			
@@ -1056,7 +1050,8 @@ public class EditorProfilesActivity extends ActionBarActivity
 				
 			    if (this.dialog.isShowing())
 		            this.dialog.dismiss();
-				
+			    
+			    
 				if (result == 1)
 				{
 					GlobalData.loadPreferences(getBaseContext());
@@ -1066,11 +1061,13 @@ public class EditorProfilesActivity extends ActionBarActivity
 					dataWrapper.getActivateProfileHelper().showNotification(null);
 					dataWrapper.getActivateProfileHelper().updateWidget();
 
+					
 					// toast notification
 					Toast msg = Toast.makeText(getBaseContext(), 
 							getResources().getString(R.string.toast_import_ok), 
 							Toast.LENGTH_SHORT);
 					msg.show();
+					
 
 			    	SharedPreferences preferences = getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Activity.MODE_PRIVATE);
 			    	Editor editor = preferences.edit();
@@ -1079,8 +1076,14 @@ public class EditorProfilesActivity extends ActionBarActivity
 					editor.commit();
 			    	
 					// restart events
-					GlobalData.setEventsBlocked(getBaseContext(), false);
-					dataWrapper.restartEvents();
+					// startneme eventy
+					if (GlobalData.getGlobalEventsRuning(getBaseContext()))
+					{
+						GlobalData.setEventsBlocked(getBaseContext(), false);
+						dataWrapper.restartEvents();
+					}
+					else
+						BatteryEventsAlarmBroadcastReceiver.removeAlarm(getBaseContext());
 					
 					// refresh activity
 					GUIData.reloadActivity(activity, true);
@@ -1090,6 +1093,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 				{
 					importExportErrorDialog(1);
 				}
+				
 			}
 			
 		}

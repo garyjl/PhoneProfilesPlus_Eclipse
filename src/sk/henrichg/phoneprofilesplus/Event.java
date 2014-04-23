@@ -532,8 +532,12 @@ public class Event {
 			{
 				// event is in end of timeline 
 				
-				// activate profile only when profile not already activated 
-				if ((eventTimeline._fkProfileReturn != dataWrapper.getActivatedProfile()._id)
+				// activate profile only when profile not already activated
+				Profile profile = dataWrapper.getActivatedProfile();
+				long activateDprofileId = 0;
+				if (profile != null)
+					activateDprofileId = profile._id;
+				if ((eventTimeline._fkProfileReturn != activateDprofileId)
 					&& (activateReturnProfile)
 					&& (canActivateReturnProfile()))
 				{
