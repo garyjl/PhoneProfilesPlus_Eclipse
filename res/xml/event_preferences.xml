@@ -26,7 +26,8 @@
 		<CheckBoxPreference 
 		    android:key="eventForceRun"
 		    android:title="@string/event_preferences_ForceRun"
-		    android:defaultValue="false" />
+		    android:defaultValue="false"
+		    android:summary="@string/event_preferences_ForceRun_summary" />
         <RingtonePreference
             android:key="eventNotificationSound"
             android:summary="@string/array_pref_no_change"

@@ -1017,14 +1017,14 @@ public class EditorProfilesActivity extends ActionBarActivity
 			@Override
 			protected Integer doInBackground(Void... params) {
 				
-				dataWrapper.stopAllEvents(true);
+				this.dataWrapper.stopAllEvents(true);
 				
-				int ret = dataWrapper.getDatabaseHandler().importDB(_applicationDataPath);
+				int ret = this.dataWrapper.getDatabaseHandler().importDB(_applicationDataPath);
 				
 				if (ret == 1)
 				{
 					// check for hardware capability and update data
-					ret = dataWrapper.getDatabaseHandler().updateForHardware(getBaseContext());
+					ret = this.dataWrapper.getDatabaseHandler().updateForHardware(getBaseContext());
 				}
 				if (ret == 1)
 				{
@@ -1042,7 +1042,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 				
 				// startneme eventy
 				if (GlobalData.getGlobalEventsRuning(getBaseContext()))
-					dataWrapper.firstStartEvents(true);
+					this.dataWrapper.firstStartEvents(true);
 				else
 					BatteryEventsAlarmBroadcastReceiver.removeAlarm(getBaseContext());
 				
@@ -1054,8 +1054,8 @@ public class EditorProfilesActivity extends ActionBarActivity
 			{
 				super.onPostExecute(result);
 				
-			    if (dialog.isShowing())
-		            dialog.dismiss();
+			    if (this.dialog.isShowing())
+		            this.dialog.dismiss();
 				
 				if (result == 1)
 				{
@@ -1081,7 +1081,6 @@ public class EditorProfilesActivity extends ActionBarActivity
 					// restart events
 					GlobalData.setEventsBlocked(getBaseContext(), false);
 					dataWrapper.restartEvents();
-					invalidateOptionsMenu();
 					
 					// refresh activity
 					GUIData.reloadActivity(activity, true);

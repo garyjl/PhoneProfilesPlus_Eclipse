@@ -315,5 +315,6 @@
     <string name="manual_profile_activation_forceRun_message">Event with option \"Force run\" is running. Activate anyway</string>
     <string name="restart_events_alert_title">Restart events</string>
     <string name="restart_events_alert_message">Are you sure</string>
+    <string name="event_preferences_ForceRun_summary">Start event even if manual profile activation block start</string>
     
 </resources>
