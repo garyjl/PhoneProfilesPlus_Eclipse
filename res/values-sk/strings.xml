@@ -303,7 +303,7 @@
     <string name="pref_event_call_no_contacts_selected">Nevybraté kontakty</string>
     <string name="pref_event_call_contacts_selected">Vybraté kontakty</string>
     <string name="event_preferences_battery_level_bad_value">Zlá hodnota</string>
-    <string name="event_preferences_profile_end_activated">Posledne aktivovaný profil</string>
+    <string name="event_preferences_profile_end_activated">Aktivovaný pred štartom</string>
     <string name="event_preferences_eventProfileEnd">Aktivovať profil (koniec)</string>
     <string name="menu_restart_events">Reštart udalostí</string>
     	

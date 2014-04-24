@@ -306,7 +306,7 @@
     <string name="pref_event_call_no_contacts_selected">No contacts selected</string>
     <string name="pref_event_call_contacts_selected">Contacts selected</string>
     <string name="event_preferences_battery_level_bad_value">Bad value</string>
-    <string name="event_preferences_profile_end_activated">Last activated profile</string>
+    <string name="event_preferences_profile_end_activated">Activated before start</string>
     <string name="event_preferences_eventProfileEnd">Activate profile (end)</string>
     <string name="menu_restart_events">Restart events</string>  
       
