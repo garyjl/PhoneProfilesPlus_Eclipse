@@ -933,7 +933,7 @@ public class DataWrapper {
 			}
 		}
 			
-		//Log.d("BackgroundActivateProfileActivity.onStart", "actProfile="+String.valueOf(actProfile));
+		//Log.d("DataWrapper.activateProfile", "actProfile="+String.valueOf(actProfile));
 
 		if ((startupSource == GlobalData.STARTUP_SOURCE_SHORTCUT) ||
 			(startupSource == GlobalData.STARTUP_SOURCE_WIDGET) ||
@@ -948,8 +948,8 @@ public class DataWrapper {
 			else
 				profile = getProfileById(profile_id);
 
-			//Log.d("BackgroundActivateProfileActivity.onStart","_iconBitmap="+String.valueOf(profile._iconBitmap));
-			//Log.d("BackgroundActivateProfileActivity.onStart","_preferencesIndicator="+String.valueOf(profile._preferencesIndicator));
+			//Log.d("DataWrapper.activateProfile","_iconBitmap="+String.valueOf(profile._iconBitmap));
+			//Log.d("DataWrapper.activateProfile","_preferencesIndicator="+String.valueOf(profile._preferencesIndicator));
 		}
 
 		

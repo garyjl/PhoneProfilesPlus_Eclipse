@@ -494,6 +494,7 @@ public class ActivateProfileHelper {
 			{
 				Intent i = new Intent(context, SetBrightnessWindowAttributesActivity.class);
 			    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			    i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 			    context.startActivity(i);   				
 			}
 		}
