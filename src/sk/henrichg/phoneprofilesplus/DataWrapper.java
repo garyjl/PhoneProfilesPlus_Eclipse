@@ -999,14 +999,14 @@ public class DataWrapper {
    			long endAlarmTime;
 			int daysToAdd;
 			
-			daysToAdd = event._eventPreferencesTime.computeDaysForAdd(true, true);
+			daysToAdd = event._eventPreferencesTime.computeDaysForAdd(true);
 			startAlarmTime = event._eventPreferencesTime.computeAlarm(true, daysToAdd);
 			
    		    String alarmTimeS = DateFormat.getDateFormat(context).format(startAlarmTime) +
 	   		    	  		    " " + DateFormat.getTimeFormat(context).format(startAlarmTime);
 			GlobalData.logE("DataWrapper.doEventService","startAlarmTime="+alarmTimeS);
 			
-			daysToAdd = event._eventPreferencesTime.computeDaysForAdd(false, true);
+			daysToAdd = event._eventPreferencesTime.computeDaysForAdd(false);
 			endAlarmTime = event._eventPreferencesTime.computeAlarm(false, daysToAdd);
 
    		    alarmTimeS = DateFormat.getDateFormat(context).format(endAlarmTime) +

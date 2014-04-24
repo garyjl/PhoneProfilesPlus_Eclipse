@@ -201,7 +201,7 @@ public class EventPreferencesTime extends EventPreferences {
 	   		    String alarmTimeS = "";
 	   			if (_event.getStatus() == Event.ESTATUS_PAUSE)
 	   			{
-	   				int daysToAdd = computeDaysForAdd(true, true);
+	   				int daysToAdd = computeDaysForAdd(true);
 	   				alarmTime = computeAlarm(true, daysToAdd);
 	   				// date and time format by user system settings configuration
 	   	   		    alarmTimeS = "(st) " + DateFormat.getDateFormat(context).format(alarmTime) +
@@ -212,7 +212,7 @@ public class EventPreferencesTime extends EventPreferences {
 	   			else
 	   			if ((_event.getStatus() == Event.ESTATUS_RUNNING) && _useEndTime)
 	   			{
-	   				int daysToAdd = computeDaysForAdd(false, true);
+	   				int daysToAdd = computeDaysForAdd(false);
 	   				alarmTime = computeAlarm(false, daysToAdd);
 	   				// date and time format by user system settings configuration
 	   	   		    alarmTimeS = "(et) " + DateFormat.getDateFormat(context).format(alarmTime) +
@@ -268,7 +268,7 @@ public class EventPreferencesTime extends EventPreferences {
 		return _useEndTime;
 	}
 	
-	public int computeDaysForAdd(boolean startEvent, boolean noFutureTime)
+	public int computeDaysForAdd(boolean startEvent)
 	{
 		boolean[] daysOfWeek =  new boolean[8];
 		daysOfWeek[Calendar.SUNDAY] = this._sunday;
@@ -279,11 +279,13 @@ public class EventPreferencesTime extends EventPreferences {
 		daysOfWeek[Calendar.FRIDAY] = this._friday;
 		daysOfWeek[Calendar.SATURDAY] = this._saturday;
 		
-		Calendar calendar = Calendar.getInstance();
+		Calendar calStartTime = Calendar.getInstance();
+		Calendar calEndTime = Calendar.getInstance();
+		Calendar calendar;
 		
 		int daysToAdd;
 		
-		int thisDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+		int thisDayOfWeek = calStartTime.get(Calendar.DAY_OF_WEEK);
 		int setDayOfWeek = thisDayOfWeek;
 
 		GlobalData.logE("EventPreferencesTime.computeDaysForAdd","thisDayOfWeek="+thisDayOfWeek);
@@ -296,33 +298,56 @@ public class EventPreferencesTime extends EventPreferences {
 			// current day of week is set in event preferences
 			GlobalData.logE("EventPreferencesTime.computeDaysForAdd","thisDayOfWeek=true");
 
-			long computedEndTime = _endTime;
-			
 			Calendar now = Calendar.getInstance();
-			if (startEvent)
-				calendar.setTimeInMillis(_startTime);
-			else
-			{
-				if (!_useEndTime)
-					computedEndTime = _startTime + (5 * 1000);
-				calendar.setTimeInMillis(computedEndTime);
-			}
-		    calendar.set(Calendar.DAY_OF_MONTH, now.get(Calendar.DAY_OF_MONTH));
-		    calendar.set(Calendar.MONTH, now.get(Calendar.MONTH)); 
-		    calendar.set(Calendar.YEAR,  now.get(Calendar.YEAR));
-		    
-			if ((!startEvent) && _useEndTime && (_startTime >= computedEndTime))
-			{
+			
+			calStartTime.setTimeInMillis(_startTime);
+			calStartTime.set(Calendar.DAY_OF_MONTH, now.get(Calendar.DAY_OF_MONTH));
+			calStartTime.set(Calendar.MONTH, now.get(Calendar.MONTH)); 
+			calStartTime.set(Calendar.YEAR,  now.get(Calendar.YEAR));
+
+			long computedEndTime = _endTime;
+			if (!_useEndTime)
+				computedEndTime = _startTime + (5 * 1000);
+			calEndTime.setTimeInMillis(computedEndTime);
+			calEndTime.set(Calendar.DAY_OF_MONTH, now.get(Calendar.DAY_OF_MONTH));
+			calEndTime.set(Calendar.MONTH, now.get(Calendar.MONTH)); 
+			calEndTime.set(Calendar.YEAR,  now.get(Calendar.YEAR));
+
+			if (_startTime >= computedEndTime)
+		    {
 				// endTime is over midnight
-				GlobalData.logE("EventPreferencesTime.computeDaysForAdd","startTime > endTime");
-				calendar.add(Calendar.DAY_OF_YEAR, 1);
+				GlobalData.logE("EventPreferencesTime.computeDaysForAdd","startTime >= endTime");
+				calEndTime.add(Calendar.DAY_OF_YEAR, 1);
+		    }
+		    
+		    if (startEvent)
+		    	calendar = calStartTime;
+		    else
+		    	calendar = calEndTime;
+		   
+			
+		    if ((!startEvent) && (_startTime >= computedEndTime))
+		    {
+				// not search for selected day of week
+				testDaysOfWeekSelected = false;
+		    }
+		    
+		    boolean futureTime = false;
+    		if (calStartTime.getTimeInMillis() > now.getTimeInMillis())
+    			// startTime is after actual time, compute for future
+    			futureTime = true;
+    		else
+    		if (calEndTime.getTimeInMillis() < now.getTimeInMillis())
+    			// endTime is before actual time, compute for future
+    			futureTime = true;
+		    
+			if (!testDaysOfWeekSelected)
+			{
 				setDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
 				setNextDayOfWeek = true;
-				// to search for selected day of week
-				testDaysOfWeekSelected = false;
 			}
 			else
-			if (!noFutureTime)
+			if (futureTime)
 				setNextDayOfWeek = (calendar.getTimeInMillis() < now.getTimeInMillis());
 		}
 		else
@@ -382,7 +407,7 @@ public class EventPreferencesTime extends EventPreferences {
 		if (!(isRunable() && _enabled)) 
 			return;
 
-		int daysToAdd = computeDaysForAdd(true, false);
+		int daysToAdd = computeDaysForAdd(true);
 		setAlarm(true, daysToAdd, context);
 	}
 
@@ -400,7 +425,7 @@ public class EventPreferencesTime extends EventPreferences {
 		if (!(isRunable() && _enabled)) 
 			return;
 		
-		int daysToAdd = computeDaysForAdd(false, false);
+		int daysToAdd = computeDaysForAdd(false);
 		setAlarm(false, daysToAdd, context);
 	}
 	

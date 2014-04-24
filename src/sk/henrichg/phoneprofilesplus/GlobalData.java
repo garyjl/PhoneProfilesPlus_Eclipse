@@ -37,10 +37,10 @@ public class GlobalData extends Application {
 			                             //"EventsService|"+
 	                                     //"PowerConnectionReceiver|"+
 			                             //"RefreshGUIBroadcastReceiver|"+
-	                                     //"DataWrapper.doEventService|"+
-			                             //"EventsAlarmBroadcastReceiver|"+
+	                                     "DataWrapper.doEventService|"+
+			                             "EventsAlarmBroadcastReceiver";//|"+
 	                                     //"EventPreferencesTime";
-										 "DataWrapper.doEventService";
+										 //"DataWrapper.doEventService";
 	
 	public static final String EXPORT_PATH = "/PhoneProfilesPlus";
 	public static final String LOG_FILENAME = "log.txt";
