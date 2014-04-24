@@ -605,7 +605,7 @@ public class DataWrapper {
 	
 	// this is called in boot or start application
 	// or when restart alarm triggered (?)
-	public void firstStartEvents(boolean invalidateList)
+	public void firstStartEvents(boolean invalidateList, boolean unblockEventsRun)
 	{
 		if (invalidateList)
 			invalidateEventList();  // force load form db
@@ -636,7 +636,7 @@ public class DataWrapper {
 		}
 		*/
 		
-		restartEvents();
+		restartEvents(unblockEventsRun);
 
 	}
 	
@@ -1330,7 +1330,7 @@ public class DataWrapper {
 		
 	}
 
-	public void restartEvents()
+	public void restartEvents(boolean unblockEventsRun)
 	{
 		if (!GlobalData.getGlobalEventsRuning(context))
 			// events are globally stopped
@@ -1339,8 +1339,11 @@ public class DataWrapper {
 		if (!GlobalData.getEventsBlocked(context))
 			return;
 
-		GlobalData.setEventsBlocked(context, false);
-		getDatabaseHandler().unblockAllEvents();
+		if (unblockEventsRun)
+		{
+			GlobalData.setEventsBlocked(context, false);
+			getDatabaseHandler().unblockAllEvents();
+		}
 		
 		getEventList();
 		for (Event event : eventList)
@@ -1372,7 +1375,7 @@ public class DataWrapper {
 			//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
 			dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
-					restartEvents();
+					restartEvents(true);
 					if (GlobalData.applicationClose && (!(_activity instanceof EditorProfilesActivity)))
 						_activity.finish();
 				}
@@ -1382,7 +1385,7 @@ public class DataWrapper {
 		}
 		else
 		{
-			restartEvents();
+			restartEvents(true);
 			if (GlobalData.applicationClose)
 				activity.finish();
 		}

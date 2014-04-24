@@ -44,7 +44,7 @@ public class LauncherActivity extends Activity {
 				
 				// startneme eventy
 				if (GlobalData.getGlobalEventsRuning(getBaseContext()))
-					dataWrapper.firstStartEvents(true);
+					dataWrapper.firstStartEvents(true, false);
 				else
 					BatteryEventsAlarmBroadcastReceiver.removeAlarm(getBaseContext());
 				

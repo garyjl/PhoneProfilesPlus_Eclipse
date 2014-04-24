@@ -548,7 +548,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 			{
 				GlobalData.setGlobalEventsRuning(getBaseContext(), true);
 				// setup for next start
-				dataWrapper.firstStartEvents(false);
+				dataWrapper.firstStartEvents(false, true);
 			}
 			invalidateOptionsMenu();
 			refreshGUI();
@@ -1080,7 +1080,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 					if (GlobalData.getGlobalEventsRuning(getBaseContext()))
 					{
 						GlobalData.setEventsBlocked(getBaseContext(), false);
-						dataWrapper.restartEvents();
+						dataWrapper.restartEvents(true);
 					}
 					else
 						BatteryEventsAlarmBroadcastReceiver.removeAlarm(getBaseContext());

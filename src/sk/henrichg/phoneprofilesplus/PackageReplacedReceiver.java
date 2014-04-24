@@ -30,7 +30,7 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 
 				// startneme eventy
 				if (GlobalData.getGlobalEventsRuning(context))
-					dataWrapper.firstStartEvents(true);
+					dataWrapper.firstStartEvents(true, false);
 				else
 					dataWrapper.activateProfile(0, GlobalData.STARTUP_SOURCE_BOOT, null, "");
 				
