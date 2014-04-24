@@ -3,6 +3,7 @@ package sk.henrichg.phoneprofilesplus;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -281,6 +282,11 @@ public class EditorEventListAdapter extends BaseAdapter
        	}
    		holder.eventStatus.setImageResource(statusRes);
 
+   		if (eventStatus == Event.ESTATUS_RUNNING)
+   			holder.eventName.setTypeface(null, Typeface.BOLD);
+   		else
+   			holder.eventName.setTypeface(null, Typeface.NORMAL);
+   			
    		if (event._forceRun)
    			holder.eventName.setText("\u23E9 " + event._name);
    		else
