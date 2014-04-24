@@ -636,7 +636,7 @@ public class DataWrapper {
 		}
 		*/
 		
-		restartEvents(unblockEventsRun);
+		restartEvents(true, unblockEventsRun);
 
 	}
 	
@@ -1330,13 +1330,13 @@ public class DataWrapper {
 		
 	}
 
-	public void restartEvents(boolean unblockEventsRun)
+	public void restartEvents(boolean forceRestart, boolean unblockEventsRun)
 	{
 		if (!GlobalData.getGlobalEventsRuning(context))
 			// events are globally stopped
 			return;
 		
-		if (!GlobalData.getEventsBlocked(context))
+		if ((!GlobalData.getEventsBlocked(context)) && (!forceRestart))
 			return;
 
 		if (unblockEventsRun)
@@ -1375,7 +1375,7 @@ public class DataWrapper {
 			//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
 			dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
-					restartEvents(true);
+					restartEvents(false, true);
 					if (GlobalData.applicationClose && (!(_activity instanceof EditorProfilesActivity)))
 						_activity.finish();
 				}
@@ -1385,7 +1385,7 @@ public class DataWrapper {
 		}
 		else
 		{
-			restartEvents(true);
+			restartEvents(false, true);
 			if (GlobalData.applicationClose)
 				activity.finish();
 		}

@@ -1078,10 +1078,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 					// restart events
 					// startneme eventy
 					if (GlobalData.getGlobalEventsRuning(getBaseContext()))
-					{
-						GlobalData.setEventsBlocked(getBaseContext(), false);
-						dataWrapper.restartEvents(true);
-					}
+						dataWrapper.restartEvents(true, true);
 					else
 						BatteryEventsAlarmBroadcastReceiver.removeAlarm(getBaseContext());
 					
