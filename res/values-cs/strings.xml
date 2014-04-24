@@ -259,8 +259,8 @@
     <string name="profile_preferences_volumeSpeakerPhone">Hlasitý odposlech</string>
     <string name="event_preferences_notificationSound">Tón notifikace</string>
     <string name="preferences_notificationSound_None">Žádné</string>
-    <string name="event_preferences_battery_level_low">Nízká úroveň</string>
-	<string name="event_preferences_battery_level_hight">Vysoká úroveň</string>
+    <string name="event_preferences_battery_level_low">Spodní úroveň</string>
+	<string name="event_preferences_battery_level_hight">Horní úroveň</string>
 	<string name="event_preferences_battery_charging">Nabíjení</string>
     <string name="pref_event_battery_level">Úroveň</string>
     <string name="pref_event_battery_charging">Nabíjení</string>
