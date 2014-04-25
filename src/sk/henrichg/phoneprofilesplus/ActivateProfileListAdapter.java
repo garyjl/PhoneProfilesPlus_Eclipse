@@ -2,6 +2,7 @@ package sk.henrichg.phoneprofilesplus;
 
 import java.util.List;
 
+import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -161,6 +162,7 @@ public class ActivateProfileListAdapter extends BaseAdapter
       	else
          	if (GlobalData.applicationTheme.equals("dlight"))
          		holder.listItemRoot.setBackgroundResource(R.drawable.header_card);
+    	holder.profileName.setTypeface(null, Typeface.BOLD);
       }
       else
       {
@@ -172,6 +174,7 @@ public class ActivateProfileListAdapter extends BaseAdapter
       	else
          	if (GlobalData.applicationTheme.equals("dlight"))
          		holder.listItemRoot.setBackgroundResource(R.drawable.card);
+    	holder.profileName.setTypeface(null, Typeface.NORMAL);
       }
       
       holder.profileName.setText(profile._name);

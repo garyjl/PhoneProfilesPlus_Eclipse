@@ -45,6 +45,7 @@
 		        android:paddingLeft="10dp"
 		        android:text="@string/profile_name_default"
 		        android:textSize="15sp"
+		        android:textStyle="bold"
 		        android:singleLine="true" />
 		
 		    <ImageView
