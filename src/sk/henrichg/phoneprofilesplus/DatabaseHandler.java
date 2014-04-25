@@ -1680,7 +1680,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				                         KEY_E_FORCE_RUN + "," +
 						                 KEY_E_BLOCKED + "," +
 						                 KEY_E_UNDONE_PROFILE +
-		                     " FROM " + TABLE_EVENTS;
+		                     " FROM " + TABLE_EVENTS +
+		                     " ORDER BY " + KEY_E_ID;
 
 		//SQLiteDatabase db = this.getReadableDatabase();
 		SQLiteDatabase db = getMyWritableDatabase();
