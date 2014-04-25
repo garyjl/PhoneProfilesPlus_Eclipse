@@ -13,17 +13,16 @@
             android:summary="@string/event_preferences_eventName"
             android:title="@string/event_preferences_eventName"
             android:selectAllOnFocus="true" /> 
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:summary="@string/event_preferences_category_startofevent"
+        android:title="@string/event_preferences_category_startofevent" >
         <sk.henrichg.phoneprofilesplus.ProfilePreference
             android:defaultValue="0"
             android:key="eventProfileStart"
             android:title="@string/event_preferences_eventProfileStart"
             henrichg:addActivatedItem="0" />
-        <sk.henrichg.phoneprofilesplus.ProfilePreference
-            android:defaultValue="-999"
-            android:key="eventProfileEnd"
-            android:title="@string/event_preferences_eventProfileEnd"
-            henrichg:addActivatedItem="1" />
-		<CheckBoxPreference 
+   		<CheckBoxPreference 
 		    android:key="eventForceRun"
 		    android:title="@string/event_preferences_ForceRun"
 		    android:defaultValue="false"
@@ -35,6 +34,20 @@
             android:ringtoneType="notification" 
             android:showSilent="true"
             android:showDefault="true" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:summary="@string/event_preferences_category_endofevent"
+        android:title="@string/event_preferences_category_endofevent" >
+        <sk.henrichg.phoneprofilesplus.ProfilePreference
+            android:defaultValue="-999"
+            android:key="eventProfileEnd"
+            android:title="@string/event_preferences_eventProfileEnd"
+            henrichg:addActivatedItem="1" />
+   		<CheckBoxPreference 
+		    android:key="eventUndoneProfile"
+		    android:title="@string/event_preferences_undoneProfile"
+		    android:defaultValue="true"
+		    android:summary="@string/event_preferences_undoneProfile_summary" />
     </PreferenceCategory>
     <PreferenceCategory
         android:summary="@string/event_preferences_category_eventTimeParameters"

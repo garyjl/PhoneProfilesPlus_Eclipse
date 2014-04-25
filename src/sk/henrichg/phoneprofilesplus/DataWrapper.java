@@ -427,7 +427,7 @@ public class DataWrapper {
 			if (event._fkProfileStart == profile._id) 
 				event._fkProfileStart = 0;
 			if (event._fkProfileEnd == profile._id) 
-				event._fkProfileEnd = Event.PROFILE_END_ACTIVATED;
+				event._fkProfileEnd = Event.PROFILE_END_NO_ACTIVATE;
 		}
 	}
 	
@@ -440,7 +440,7 @@ public class DataWrapper {
 		for (Event event : eventList)
 		{
 			event._fkProfileStart = 0;
-			event._fkProfileEnd = Event.PROFILE_END_ACTIVATED;
+			event._fkProfileEnd = Event.PROFILE_END_NO_ACTIVATE;
 		}
 	}
 	

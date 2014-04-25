@@ -155,7 +155,7 @@
     <string name="event_preferences_eventEnabled">Enable run</string>
     <string name="event_preferences_eventName">Event name</string>
     <string name="event_preferences_eventType">Event type</string>
-    <string name="event_preferences_eventProfileStart">Activate profile (start)</string>
+    <string name="event_preferences_eventProfileStart">Activate profile</string>
     <string name="widget_label_icon">PhoneProfiles-icon</string>
     <string name="widget_label_one_row">PhoneProfiles-single row</string>
     <string name="widget_label_list">PhoneProfiles-list</string>
@@ -306,8 +306,8 @@
     <string name="pref_event_call_no_contacts_selected">No contacts selected</string>
     <string name="pref_event_call_contacts_selected">Contacts selected</string>
     <string name="event_preferences_battery_level_bad_value">Bad value</string>
-    <string name="event_preferences_profile_end_activated">Activated before start</string>
-    <string name="event_preferences_eventProfileEnd">Activate profile (end)</string>
+    <string name="event_preferences_profile_end_no_activate">No activate</string>
+    <string name="event_preferences_eventProfileEnd">Activate profile</string>
     <string name="menu_restart_events">Restart events</string>  
       
     <string name="event_preferences_ForceRun">Force Run</string>
@@ -316,5 +316,10 @@
     <string name="restart_events_alert_title">Restart events</string>
     <string name="restart_events_alert_message">Are you sure</string>
     <string name="event_preferences_ForceRun_summary">Start event even if manual profile activation block start</string>
+    <string name="event_preferences_category_startofevent">Start of event</string>
+    <string name="event_preferences_category_endofevent">End of event</string>
+    <string name="event_preferences_undoneProfile">Undone profile</string>
+    <string name="event_preferences_undoneProfile_summary">Activate before start activated profile</string>
+    <string name="event_prefernce_profile_undone">Undone</string>
     
 </resources>

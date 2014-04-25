@@ -49,7 +49,7 @@ public class ProfilePreferenceDialog extends Dialog
 				{
 					long profileId;
 					if (position == 0)
-						profileId = Event.PROFILE_END_ACTIVATED;
+						profileId = Event.PROFILE_END_NO_ACTIVATE;
 					else
 						profileId = profilePreferenceAdapter.profileList.get(position-1)._id;
 					profilePreference.setProfileId(profileId);	

@@ -150,7 +150,7 @@
     <string name="event_preferences_eventEnabled">Активировать</string>
     <string name="event_preferences_eventName">Название события</string>
     <string name="event_preferences_eventType">Тип события</string>
-    <string name="event_preferences_eventProfileStart">Активировать профиль (в начале)</string>
+    <string name="event_preferences_eventProfileStart">Активировать профиль</string>
     <string name="widget_label_icon">PhoneProfiles (иконка)</string>
     <string name="widget_label_one_row">PhoneProfiles (один ряд)</string>
     <string name="widget_label_list">PhoneProfiles (список)</string>
@@ -306,8 +306,8 @@
     <string name="pref_event_call_no_contacts_selected">Нет выбранных контактов</string>
     <string name="pref_event_call_contacts_selected">Выбранные контакты</string>
     <string name="event_preferences_battery_level_bad_value">Неверное значение</string>
-    <string name="event_preferences_profile_end_activated">Активированный до начала</string>
-    <string name="event_preferences_eventProfileEnd">Активировать профиль (по окончанию)</string>
+    <string name="event_preferences_profile_end_no_activate">Не активируй</string>
+    <string name="event_preferences_eventProfileEnd">Активировать профиль</string>
     <string name="menu_restart_events">Перезапуск событий</string>    
     <string name="event_preferences_ForceRun">Принудительный запуск</string>
     <string name="manual_profile_activation_forceRun_title">Активировать профиль</string>

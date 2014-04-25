@@ -340,7 +340,10 @@ public class EditorEventListAdapter extends BaseAdapter
         profile =  dataWrapper.getProfileById(event._fkProfileEnd);
         if (profile != null)
         {
-        	holder.profileEndName.setText(profile._name);
+        	String profileName = profile._name;
+        	if (event._undoneProfile)
+        		profileName = profileName + " + " + vi.getResources().getString(R.string.event_prefernce_profile_undone);
+        	holder.profileEndName.setText(profileName);
 		    if (profile.getIsIconResourceID())
 		    {
 		    	holder.profileEndIcon.setImageResource(0);
@@ -363,10 +366,17 @@ public class EditorEventListAdapter extends BaseAdapter
         }
         else
         {
-        	if (event._fkProfileEnd == Event.PROFILE_END_ACTIVATED)
-        		holder.profileEndName.setText(R.string.event_preferences_profile_end_activated);
+        	String profileName;
+        	if (event._undoneProfile)
+        		profileName = vi.getResources().getString(R.string.event_prefernce_profile_undone);
         	else
-        		holder.profileEndName.setText(R.string.event_preferences_profile_not_set);
+        	{
+	        	if (event._fkProfileEnd == Event.PROFILE_END_NO_ACTIVATE)
+	        		profileName = vi.getResources().getString(R.string.event_preferences_profile_end_no_activate); 
+	        	else
+	        		profileName = vi.getResources().getString(R.string.event_preferences_profile_not_set);
+        	}
+    		holder.profileEndName.setText(profileName);
         	holder.profileEndIcon.setImageResource(R.drawable.ic_profile_default);
 			if (GlobalData.applicationEditorPrefIndicator)
 			{
@@ -377,38 +387,6 @@ public class EditorEventListAdapter extends BaseAdapter
 			}
         }
         
-        /*
-        holder.eventItemRunStop.setTag(R.id.event_list_item_run_stop_event);
-        // change button icon by event status
-        if (GlobalData.getGlobalEventsRuning(dataWrapper.context))
-        {
-        	holder.eventItemRunStop.setVisibility(View.VISIBLE);
-	        if (event.getStatusFromDB(dataWrapper) == Event.ESTATUS_STOP)
-	        {
-	           	if (GlobalData.applicationTheme.equals("dark"))
-	        		holder.eventItemRunStop.setImageResource(R.drawable.ic_action_event_run_dark);
-	           	else
-	        		holder.eventItemRunStop.setImageResource(R.drawable.ic_action_event_run);
-	        }
-	        else
-	        {
-	           	if (GlobalData.applicationTheme.equals("dark"))
-	        		holder.eventItemRunStop.setImageResource(R.drawable.ic_action_event_stop_dark);
-	           	else
-	        		holder.eventItemRunStop.setImageResource(R.drawable.ic_action_event_stop);
-	        }
-        }
-        else
-        	holder.eventItemRunStop.setVisibility(View.GONE);
-        holder.eventItemRunStop.setOnClickListener(new OnClickListener() {
-
-				public void onClick(View v) {
-					//Log.d("EditorProfileListAdapter.onClick", "duplicate");
-					((EditorEventListFragment)fragment).finishEventPreferencesActionMode();
-					((EditorEventListFragment)fragment).runStopEvent(event);
-				}
-			});
-		*/ 
         holder.eventItemEditMenu.setTag(event);
         final ImageView eventItemEditMenu = holder.eventItemEditMenu;
         holder.eventItemEditMenu.setOnClickListener(new OnClickListener() {

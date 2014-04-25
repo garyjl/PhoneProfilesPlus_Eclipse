@@ -47,7 +47,7 @@ public class ExecuteVolumeProfilePrefsService extends IntentService //WakefulInt
 			// nahodenie ringer modu - hlasitosti zmenia silent/vibrate
 			aph.setRingerMode(profile, audioManager);
 			
-			if (intent.getBooleanExtra(GlobalData.EXTRA_SECOND_SET_VOLUMES, false))
+		/*	if (intent.getBooleanExtra(GlobalData.EXTRA_SECOND_SET_VOLUMES, false))
 			{
 				// run service for execute volumes - second set
 				Intent volumeServiceIntent = new Intent(context, ExecuteVolumeProfilePrefsService.class);
@@ -57,7 +57,7 @@ public class ExecuteVolumeProfilePrefsService extends IntentService //WakefulInt
 				//WakefulIntentService.sendWakefulWork(context, radioServiceIntent);
 				context.startService(volumeServiceIntent);
 			}
-			else
+			else */
 			{
 				// play notification sound
 				if (!eventNotificationSound.isEmpty())

@@ -75,7 +75,7 @@ public class ProfilePreference extends Preference {
 		    }
 		    else
 		    {
-		    	if ((addActivatedItem == 1) && (Long.parseLong(profileId) == Event.PROFILE_END_ACTIVATED))
+		    	if ((addActivatedItem == 1) && (Long.parseLong(profileId) == Event.PROFILE_END_NO_ACTIVATE))
 		    		profileIcon.setImageResource(R.drawable.ic_profile_default); // resource na ikonu
 		    	else
 		    		profileIcon.setImageResource(0); // resource na ikonu
@@ -204,8 +204,8 @@ public class ProfilePreference extends Preference {
 	    }
 	    else
 	    {
-	    	if ((addActivatedItem == 1) && (profileId == Event.PROFILE_END_ACTIVATED))
-	    		setSummary(prefContext.getResources().getString(R.string.event_preferences_profile_end_activated));
+	    	if ((addActivatedItem == 1) && (profileId == Event.PROFILE_END_NO_ACTIVATE))
+	    		setSummary(prefContext.getResources().getString(R.string.event_preferences_profile_end_no_activate));
 	    	else
 	    		setSummary(prefContext.getResources().getString(R.string.event_preferences_profile_not_set));
 	    }

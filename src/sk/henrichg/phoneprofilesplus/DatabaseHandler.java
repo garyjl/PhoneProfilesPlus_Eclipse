@@ -25,7 +25,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static SQLiteDatabase writableDb;	
     
 	// Database Version
-	private static final int DATABASE_VERSION = 1051;
+	private static final int DATABASE_VERSION = 1060;
 
 	// Database Name
 	private static final String DATABASE_NAME = "phoneProfilesManager";
@@ -100,6 +100,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_E_FK_PROFILE_END = "fkProfileEnd";
 	private static final String KEY_E_FORCE_RUN = "forceRun";
 	private static final String KEY_E_BLOCKED = "blocked";
+	private static final String KEY_E_UNDONE_PROFILE = "undoneProfile";
 	
 	private static final String KEY_ET_ID = "id";
 	private static final String KEY_ET_EORDER = "eorder";
@@ -231,7 +232,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	            + KEY_E_CALL_CONTACT_LIST_TYPE + " INTEGER,"
 				+ KEY_E_FK_PROFILE_END + " INTEGER,"
 				+ KEY_E_FORCE_RUN + " INTEGER,"
-				+ KEY_E_BLOCKED + " INTEGER"
+				+ KEY_E_BLOCKED + " INTEGER,"
+				+ KEY_E_UNDONE_PROFILE + " INTEGER"
 				+ ")";
 		db.execSQL(CREATE_EVENTS_TABLE);
 
@@ -640,7 +642,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_FK_PROFILE_END + " INTEGER");
 			
 			// updatneme zaznamy
-			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_FK_PROFILE_END + "=" + Event.PROFILE_END_ACTIVATED);
+			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_FK_PROFILE_END + "=" + Event.PROFILE_END_NO_ACTIVATE);
 			
 			// pridame index
 			db.execSQL("CREATE INDEX IDX_FK_PROFILE_END ON " + TABLE_EVENTS + " (" + KEY_E_FK_PROFILE_END + ")");
@@ -662,6 +664,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			
 			// updatneme zaznamy
 			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_BLOCKED + "=0");
+		}
+
+		if (oldVersion < 1060)
+		{
+			// pridame nove stlpce
+			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_UNDONE_PROFILE + " INTEGER");
+			
+			// updatneme zaznamy
+			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_UNDONE_PROFILE + "=1");
 		}
 		
 	}
@@ -988,7 +999,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			        new String[] { String.valueOf(profile._id) });
 
 			ContentValues values2 = new ContentValues();
-			values2.put(KEY_E_FK_PROFILE_END, Event.PROFILE_END_ACTIVATED);
+			values2.put(KEY_E_FK_PROFILE_END, Event.PROFILE_END_NO_ACTIVATE);
 			db.update(TABLE_EVENTS, values2, KEY_E_FK_PROFILE_END + " = ?",
 			        new String[] { String.valueOf(profile._id) });
 			
@@ -1015,7 +1026,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			// unlink profiles from events
 			ContentValues values = new ContentValues();
 			values.put(KEY_E_FK_PROFILE_START, 0);
-			values.put(KEY_E_FK_PROFILE_END, Event.PROFILE_END_ACTIVATED);
+			values.put(KEY_E_FK_PROFILE_END, Event.PROFILE_END_NO_ACTIVATE);
 			db.update(TABLE_EVENTS, values, null, null);
 			
 			db.setTransactionSuccessful();
@@ -1584,6 +1595,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_E_NOTIFICATION_SOUND, event._notificationSound); // Event Name
 		values.put(KEY_E_FORCE_RUN, event._forceRun ? 1 : 0); // force run when manual profile activation
 		values.put(KEY_E_BLOCKED, event._blocked ? 1 : 0); // temporary blocked
+		values.put(KEY_E_UNDONE_PROFILE, event._undoneProfile ? 1 : 0); // undone profile after event end
 		
 		db.beginTransaction();
 		
@@ -1616,7 +1628,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 												KEY_E_STATUS,
 												KEY_E_NOTIFICATION_SOUND,
 												KEY_E_FORCE_RUN,
-												KEY_E_BLOCKED
+												KEY_E_BLOCKED,
+												KEY_E_UNDONE_PROFILE
 												}, 
 				                 KEY_ID + "=?",
 				                 new String[] { String.valueOf(event_id) }, null, null, null, null);
@@ -1635,7 +1648,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				                      Integer.parseInt(cursor.getString(4)),
 				                      cursor.getString(5),
 				                      Integer.parseInt(cursor.getString(6)) == 1,
-				                      Integer.parseInt(cursor.getString(7)) == 1
+				                      Integer.parseInt(cursor.getString(7)) == 1,
+				                      Integer.parseInt(cursor.getString(8)) == 1
 				                      );
 		}
 
@@ -1664,7 +1678,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				                         KEY_E_STATUS + "," +
 						                 KEY_E_NOTIFICATION_SOUND + "," +
 				                         KEY_E_FORCE_RUN + "," +
-						                 KEY_E_BLOCKED +
+						                 KEY_E_BLOCKED + "," +
+						                 KEY_E_UNDONE_PROFILE +
 		                     " FROM " + TABLE_EVENTS;
 
 		//SQLiteDatabase db = this.getReadableDatabase();
@@ -1684,6 +1699,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				event._notificationSound = cursor.getString(5);
 				event._forceRun = Integer.parseInt(cursor.getString(6)) == 1;
 				event._blocked = Integer.parseInt(cursor.getString(7)) == 1;
+				event._undoneProfile = Integer.parseInt(cursor.getString(8)) == 1;
 				event.createEventPreferences();
 				getEventPreferences(event, db);
 				// Adding contact to list
@@ -1711,6 +1727,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_E_NOTIFICATION_SOUND, event._notificationSound);
 		values.put(KEY_E_FORCE_RUN, event._forceRun ? 1 : 0);
 		values.put(KEY_E_BLOCKED, event._blocked ? 1 : 0);
+		values.put(KEY_E_UNDONE_PROFILE, event._undoneProfile ? 1 : 0);
 
 		int r = 0;
 		
@@ -1792,7 +1809,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						new String[] { String.valueOf(profile._id) });
 
 			ContentValues values2 = new ContentValues();
-			values2.put(KEY_E_FK_PROFILE_END, Event.PROFILE_END_ACTIVATED);
+			values2.put(KEY_E_FK_PROFILE_END, Event.PROFILE_END_NO_ACTIVATE);
 			// updating row
 			db.update(TABLE_EVENTS, values2, KEY_E_FK_PROFILE_END + " = ?",
 						new String[] { String.valueOf(profile._id) });
@@ -1814,7 +1831,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 		ContentValues values = new ContentValues();
 		values.put(KEY_E_FK_PROFILE_START, 0);
-		values.put(KEY_E_FK_PROFILE_END, Event.PROFILE_END_ACTIVATED);
+		values.put(KEY_E_FK_PROFILE_END, Event.PROFILE_END_NO_ACTIVATE);
 
 		// updating row
 		db.update(TABLE_EVENTS, values, null, null);
@@ -1831,7 +1848,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						                 KEY_E_STATUS + "," +
 						                 KEY_E_NOTIFICATION_SOUND + "," +
 						                 KEY_E_FORCE_RUN + "," +
-						                 KEY_E_BLOCKED +
+						                 KEY_E_BLOCKED + "," +
+						                 KEY_E_UNDONE_PROFILE +
 						    " FROM " + TABLE_EVENTS;
 						    
 
@@ -1853,6 +1871,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			event._notificationSound = cursor.getString(5);
 			event._forceRun = Integer.parseInt(cursor.getString(6)) == 1;
 			event._blocked = Integer.parseInt(cursor.getString(7)) == 1;
+			event._undoneProfile = Integer.parseInt(cursor.getString(8)) == 1;
 		}
 		
 		cursor.close();
@@ -2239,7 +2258,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 		ContentValues values = new ContentValues();
 		values.put(KEY_ET_FK_EVENT, eventTimeline._fkEvent); // Event id
-		values.put(KEY_ET_FK_PROFILE_RETURN, eventTimeline._fkProfileReturn); // Profile id returned on pause/stop event
+		values.put(KEY_ET_FK_PROFILE_RETURN, eventTimeline._fkProfileEndActivated); // Profile id returned on pause/stop event
 		values.put(KEY_ET_EORDER, getMaxEOrderET()+1); // event running order 
 		
 		db.beginTransaction();
@@ -2321,7 +2340,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				
 				eventTimeline._id = Long.parseLong(cursor.getString(0));
 				eventTimeline._fkEvent = Long.parseLong(cursor.getString(1));
-				eventTimeline._fkProfileReturn = Long.parseLong(cursor.getString(2));
+				eventTimeline._fkProfileEndActivated = Long.parseLong(cursor.getString(2));
 				eventTimeline._eorder = Integer.parseInt(cursor.getString(3));
 				
 				// Adding event timeline to list
@@ -2391,7 +2410,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			
 			for (EventTimeline eventTimeline : eventTimelineList)
 			{
-				values.put(KEY_ET_FK_PROFILE_RETURN, eventTimeline._fkProfileReturn);
+				values.put(KEY_ET_FK_PROFILE_RETURN, eventTimeline._fkProfileEndActivated);
 
 				// updating row
 				db.update(TABLE_EVENT_TIMELINE, values, KEY_ID + " = ?",
@@ -2593,6 +2612,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 							int batteryLevel = 15;
 							int batteryDetectorType = 0;
 							int eventType = 0;
+							long fkProfileEnd = Event.PROFILE_END_NO_ACTIVATE;
 							
 							if (cursorExportedDB.moveToFirst()) {
 								do {
@@ -2613,8 +2633,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 														values.put(columnNamesExportedDB[i], importDBEventProfileIds.get(profileIdx));
 													else
 													{
-														if (columnNamesExportedDB[i].equals(KEY_E_FK_PROFILE_END) && (cursorExportedDB.getLong(i) == Event.PROFILE_END_ACTIVATED))
-															values.put(columnNamesExportedDB[i], Event.PROFILE_END_ACTIVATED);
+														if (columnNamesExportedDB[i].equals(KEY_E_FK_PROFILE_END) && (cursorExportedDB.getLong(i) == Event.PROFILE_END_NO_ACTIVATE))
+															values.put(columnNamesExportedDB[i], Event.PROFILE_END_NO_ACTIVATE);
 														else
 															values.put(columnNamesExportedDB[i], 0);
 													}
@@ -2629,6 +2649,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 												batteryDetectorType = cursorExportedDB.getInt(i);
 											if (columnNamesExportedDB[i].equals(KEY_E_TYPE))
 												eventType = cursorExportedDB.getInt(i);
+											if (columnNamesExportedDB[i].equals(KEY_E_FK_PROFILE_END))
+												fkProfileEnd = cursorExportedDB.getLong(i);
 											
 											//Log.d("DatabaseHandler.importDB", "cn="+columnNames[i]+" val="+cursor.getString(i));
 										}
@@ -2698,12 +2720,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 										if (exportedDBObj.getVersion() < 1045)
 										{
-											values.put(KEY_E_FK_PROFILE_END, Event.PROFILE_END_ACTIVATED);
+											values.put(KEY_E_FK_PROFILE_END, Event.PROFILE_END_NO_ACTIVATE);
 										}
 
 										if (exportedDBObj.getVersion() < 1050)
 										{
 											values.put(KEY_E_FORCE_RUN, 0);
+										}
+
+										if (exportedDBObj.getVersion() < 1051)
+										{
+											values.put(KEY_E_BLOCKED, 0);
+										}
+
+										if (exportedDBObj.getVersion() < 1060)
+										{
+											if (fkProfileEnd == Event.PROFILE_END_NO_ACTIVATE)
+												values.put(KEY_E_UNDONE_PROFILE, 1);
+											else
+												values.put(KEY_E_UNDONE_PROFILE, 0);
 										}
 										
 										// Inserting Row do db z SQLiteOpenHelper

@@ -149,7 +149,7 @@
 	<string name="event_preferences_eventEnabled">Aktivieren</string> 
     <string name="event_preferences_eventName">Ereignis-Name</string> 
     <string name="event_preferences_eventType">Ereignis-Typ</string> 
-    <string name="event_preferences_eventProfileStart">Profil aktivieren (start)</string> 
+    <string name="event_preferences_eventProfileStart">Profil aktivieren</string> 
     <string name="widget_label_icon">PhoneProfiles-Icon</string> 
     <string name="widget_label_one_row">PhoneProfiles-Reihe</string>
 	<string name="widget_label_list">PhoneProfiles-Liste</string> 
@@ -301,8 +301,8 @@
     <string name="pref_event_call_no_contacts_selected">Keine Kontakte ausgewählt</string>
     <string name="pref_event_call_contacts_selected">Kontakte ausgewählt</string>
     <string name="event_preferences_battery_level_bad_value">Schlechte Wert</string>
-    <string name="event_preferences_profile_end_activated">Vor dem Start aktiviert</string>
-    <string name="event_references_eventProfileEnd">Profil aktivieren (ende)</string>
+    <string name="event_preferences_profile_end_no_activate">Nicht aktivieren</string>
+    <string name="event_references_eventProfileEnd">Profil aktivieren</string>
     <string name="menu_restart_events">Neustart Ereignissen</string>
     					
 </resources>

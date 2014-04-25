@@ -142,11 +142,12 @@ public class EventPreferencesFragment extends PreferenceListFragment
 			// create new event - default is TIME
 			event = new Event(getResources().getString(R.string.event_name_default), 
 						0,
-						Event.PROFILE_END_ACTIVATED,
+						Event.PROFILE_END_NO_ACTIVATE,
 						Event.ESTATUS_STOP,
 						"",
 						false,
-						false
+						false,
+						true
 		         );
 			event_id = 0;
 		}
@@ -162,7 +163,8 @@ public class EventPreferencesFragment extends PreferenceListFragment
 						   origEvent.getStatus(),
 						   origEvent._notificationSound,
 						   origEvent._forceRun,
-						   origEvent._blocked
+						   origEvent._blocked,
+						   origEvent._undoneProfile
 							);
 			event.copyEventPreferences(origEvent);
 			event_id = 0;

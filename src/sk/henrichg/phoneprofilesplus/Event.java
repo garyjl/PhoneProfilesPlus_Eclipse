@@ -16,6 +16,7 @@ public class Event {
 	public String _name;
 	public long _fkProfileStart;
 	public long _fkProfileEnd;
+	public boolean _undoneProfile;
 	private int _status;  
 	public String _notificationSound;
 	public boolean _forceRun;
@@ -25,7 +26,7 @@ public class Event {
 	public EventPreferencesBattery _eventPreferencesBattery;
 	public EventPreferencesCall _eventPreferencesCall;
 
-	public static final long PROFILE_END_ACTIVATED = -999;
+	public static final long PROFILE_END_NO_ACTIVATE = -999;
 	
 	public static final int ESTATUS_STOP = 0;
 	public static final int ESTATUS_PAUSE = 1;
@@ -38,6 +39,7 @@ public class Event {
     static final String PREF_EVENT_PROFILE_END = "eventProfileEnd";
     static final String PREF_EVENT_NOTIFICATION_SOUND = "eventNotificationSound";
     static final String PREF_EVENT_FORCE_RUN = "eventForceRun";
+    static final String PREF_EVENT_UNDONE_PROFILE = "eventUndoneProfile";
 	
 	// Empty constructor
 	public Event(){
@@ -52,7 +54,8 @@ public class Event {
 		         int status,
 		         String notificationSound,
 		         boolean forceRun,
-		         boolean blocked)
+		         boolean blocked,
+		         boolean undoneProfile)
 	{
 		this._id = id;
 		this._name = name;
@@ -62,6 +65,7 @@ public class Event {
         this._notificationSound = notificationSound;
         this._forceRun = forceRun;
         this._blocked = blocked;
+        this._undoneProfile = undoneProfile;
         
         createEventPreferences();
 	}
@@ -73,7 +77,8 @@ public class Event {
 	         	 int status,
 	         	 String notificationSound,
 	         	 boolean forceRun,
-	         	 boolean blocked)
+	         	 boolean blocked,
+	         	 boolean undoneProfile)
 	{
 		this._name = name;
 	    this._fkProfileStart = fkProfileStart;
@@ -82,6 +87,7 @@ public class Event {
         this._notificationSound = notificationSound;
         this._forceRun = forceRun;
         this._blocked = blocked;
+        this._undoneProfile = undoneProfile;
         
 	    createEventPreferences();
 	}
@@ -96,6 +102,7 @@ public class Event {
         this._notificationSound = event._notificationSound;
         this._forceRun = event._forceRun;
         this._blocked = event._blocked;
+        this._undoneProfile = event._undoneProfile;
         
         copyEventPreferences(event);
 	}
@@ -161,6 +168,7 @@ public class Event {
    		editor.putBoolean(PREF_EVENT_ENABLED, this._status != ESTATUS_STOP);
    		editor.putString(PREF_EVENT_NOTIFICATION_SOUND, this._notificationSound);
    		editor.putBoolean(PREF_EVENT_FORCE_RUN, _forceRun);
+   		editor.putBoolean(PREF_EVENT_UNDONE_PROFILE, _undoneProfile);
         this._eventPreferencesTime.loadSharedPrefereces(preferences);
         this._eventPreferencesBattery.loadSharedPrefereces(preferences);
         this._eventPreferencesCall.loadSharedPrefereces(preferences);
@@ -171,10 +179,11 @@ public class Event {
 	{
     	this._name = preferences.getString(PREF_EVENT_NAME, "");
 		this._fkProfileStart = Long.parseLong(preferences.getString(PREF_EVENT_PROFILE_START, "0"));
-		this._fkProfileEnd = Long.parseLong(preferences.getString(PREF_EVENT_PROFILE_END, Long.toString(PROFILE_END_ACTIVATED)));
+		this._fkProfileEnd = Long.parseLong(preferences.getString(PREF_EVENT_PROFILE_END, Long.toString(PROFILE_END_NO_ACTIVATE)));
 		this._status = (preferences.getBoolean(PREF_EVENT_ENABLED, false)) ? ESTATUS_PAUSE : ESTATUS_STOP;
 		this._notificationSound = preferences.getString(PREF_EVENT_NOTIFICATION_SOUND, "");
 		this._forceRun = preferences.getBoolean(PREF_EVENT_FORCE_RUN, false);
+		this._undoneProfile = preferences.getBoolean(PREF_EVENT_UNDONE_PROFILE, true);
 		//Log.e("Event.saveSharedPrefereces","notificationSound="+this._notificationSound);
 		this._eventPreferencesTime.saveSharedPrefereces(preferences);
 		this._eventPreferencesBattery.saveSharedPrefereces(preferences);
@@ -207,8 +216,8 @@ public class Event {
 		    }
 		    else
 		    {
-		    	if (lProfileId == PROFILE_END_ACTIVATED)
-		    		prefMng.findPreference(key).setSummary(context.getResources().getString(R.string.event_preferences_profile_end_activated));
+		    	if (lProfileId == PROFILE_END_NO_ACTIVATE)
+		    		prefMng.findPreference(key).setSummary(context.getResources().getString(R.string.event_preferences_profile_end_no_activate));
 		    	else
 		    		prefMng.findPreference(key).setSummary(context.getResources().getString(R.string.event_preferences_profile_not_set));
 		    }
@@ -309,23 +318,13 @@ public class Event {
 		EventTimeline eventTimeline = new EventTimeline();
 		eventTimeline._fkEvent = this._id;
 		eventTimeline._eorder = 0;
-		if (this._fkProfileEnd == PROFILE_END_ACTIVATED)
-		{
-			Profile profile = dataWrapper.getActivatedProfile();
-			if (profile != null)
-				eventTimeline._fkProfileReturn = profile._id;
-			else
-				eventTimeline._fkProfileReturn = 0;
-		}
+
+		Profile profile = dataWrapper.getActivatedProfile();
+		if (profile != null)
+			eventTimeline._fkProfileEndActivated = profile._id;
 		else
-		{
-			Profile profile = dataWrapper.getProfileById(this._fkProfileEnd);
-			if (profile != null)
-				eventTimeline._fkProfileReturn = profile._id;
-			else
-				eventTimeline._fkProfileReturn = 0;
-		}
-		
+			eventTimeline._fkProfileEndActivated = 0;
+
 		dataWrapper.getDatabaseHandler().addEventTimeline(eventTimeline);
 		eventTimelineList.add(eventTimeline);
 		
@@ -420,10 +419,10 @@ public class Event {
 						// move _fkProfileReturn up
 						for (int i = eventTimelineList.size()-1; i > 0; i--)
 						{
-							eventTimelineList.get(i)._fkProfileReturn = 
-									eventTimelineList.get(i-1)._fkProfileReturn;
+							eventTimelineList.get(i)._fkProfileEndActivated = 
+									eventTimelineList.get(i-1)._fkProfileEndActivated;
 						}
-						eventTimelineList.get(0)._fkProfileReturn = eventTimeline._fkProfileReturn;
+						eventTimelineList.get(0)._fkProfileEndActivated = eventTimeline._fkProfileEndActivated;
 						dataWrapper.getDatabaseHandler().updateProfileReturnET(eventTimelineList);
 					}
 					else
@@ -521,10 +520,10 @@ public class Event {
 				// move _fkProfileReturn up
 				for (int i = eventTimelineList.size()-1; i > 0; i--)
 				{
-					eventTimelineList.get(i)._fkProfileReturn = 
-							eventTimelineList.get(i-1)._fkProfileReturn;
+					eventTimelineList.get(i)._fkProfileEndActivated = 
+							eventTimelineList.get(i-1)._fkProfileEndActivated;
 				}
-				eventTimelineList.get(0)._fkProfileReturn = eventTimeline._fkProfileReturn;
+				eventTimelineList.get(0)._fkProfileEndActivated = eventTimeline._fkProfileEndActivated;
 				dataWrapper.getDatabaseHandler().updateProfileReturnET(eventTimelineList);
 			}
 			else
@@ -533,17 +532,32 @@ public class Event {
 				// event is in end of timeline 
 				
 				// activate profile only when profile not already activated
-				Profile profile = dataWrapper.getActivatedProfile();
-				long activateDprofileId = 0;
-				if (profile != null)
-					activateDprofileId = profile._id;
-				if ((eventTimeline._fkProfileReturn != activateDprofileId)
-					&& (activateReturnProfile)
-					&& (canActivateReturnProfile()))
+				if (activateReturnProfile && canActivateReturnProfile())
 				{
-					GlobalData.logE("Event.pauseEvent","activate return profile");
-					if (eventTimeline._fkProfileReturn != 0)
-						dataWrapper.activateProfileFromEvent(eventTimeline._fkProfileReturn, "");
+					Profile profile = dataWrapper.getActivatedProfile();
+					long activatedProfileId = 0;
+					if (profile != null)
+						activatedProfileId = profile._id;
+					// first activate _fkProfileEnd
+					if (_fkProfileEnd != Event.PROFILE_END_NO_ACTIVATE)
+					{
+						if (_fkProfileEnd != activatedProfileId)
+						{
+							GlobalData.logE("Event.pauseEvent","activate end porfile");
+							dataWrapper.activateProfileFromEvent(_fkProfileEnd, "");
+							activatedProfileId = _fkProfileEnd;
+						}
+					}
+					// second activate when undoneProfile is set
+					if (_undoneProfile)
+					{
+						if (eventTimeline._fkProfileEndActivated != activatedProfileId)
+						{
+							GlobalData.logE("Event.pauseEvent","undone profile");
+							if (eventTimeline._fkProfileEndActivated != 0)
+								dataWrapper.activateProfileFromEvent(eventTimeline._fkProfileEndActivated, "");
+						}
+					}
 				}
 			}
 			else
