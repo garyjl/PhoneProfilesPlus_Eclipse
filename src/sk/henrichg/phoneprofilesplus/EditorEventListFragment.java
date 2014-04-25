@@ -356,7 +356,7 @@ public class EditorEventListFragment extends Fragment {
 		{
 			// stop event
 			List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
-			event.stopEvent(dataWrapper, eventTimelineList, false, false, true); //no activate return profile
+			event.stopEvent(dataWrapper, eventTimelineList, true, false, true); // activate return profile
 			// redraw event list
 			updateListView(event, false);
 		}
