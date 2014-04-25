@@ -71,12 +71,12 @@ public class EventsService extends IntentService
 				GlobalData.logE("EventsService.onHandleIntent","event.getStatus()="+_event.getStatus());
 				
 				if (_event.getStatus() != Event.ESTATUS_STOP)
-					dataWrapper.doEventService(_event, false);
+					dataWrapper.doEventService(_event, false, true);
 			}
 		}
 		else
 		if (event.getStatus() != Event.ESTATUS_STOP)
-			dataWrapper.doEventService(event, false);
+			dataWrapper.doEventService(event, false, true);
 
 		doEndService(intent);
 

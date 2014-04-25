@@ -977,7 +977,7 @@ public class DataWrapper {
 		
 	}
 
-	public boolean doEventService(Event event, boolean restartEvent)
+	public boolean doEventService(Event event, boolean restartEvent, boolean playNotification)
 	{
 		int newEventStatus = Event.ESTATUS_NONE;
 
@@ -1182,7 +1182,7 @@ public class DataWrapper {
 			if (newEventStatus == Event.ESTATUS_RUNNING)
 			{
 				GlobalData.logE("DataWrapper.doEventService","start event");
-				event.startEvent(this, eventTimelineList, restartEvent, false);
+				event.startEvent(this, eventTimelineList, restartEvent, false, playNotification);
 			}
 			else
 			if (newEventStatus == Event.ESTATUS_PAUSE)
@@ -1350,7 +1350,7 @@ public class DataWrapper {
 		{
 			event._blocked = false;
 			if (event.getStatus() != Event.ESTATUS_STOP)
-				doEventService(event, true);
+				doEventService(event, true, false);
 		}
 	}
 	

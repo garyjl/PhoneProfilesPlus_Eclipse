@@ -334,7 +334,8 @@ public class Event {
 	public void startEvent(DataWrapper dataWrapper,
 							List<EventTimeline> eventTimelineList,
 							boolean restart, 
-							boolean ignoreGlobalPref)
+							boolean ignoreGlobalPref,
+							boolean playNotification)
 	{
 		if ((!GlobalData.getGlobalEventsRuning(dataWrapper.context)) && (!ignoreGlobalPref))
 			// events are globally stopped
@@ -448,8 +449,13 @@ public class Event {
 				activatedProfileId = activatedProfile._id;
 			
 			if (this._fkProfileStart != activatedProfileId)
+			{
 				// no activate profile, when is already activated
-				dataWrapper.activateProfileFromEvent(this._fkProfileStart, _notificationSound);
+				if (playNotification)
+					dataWrapper.activateProfileFromEvent(this._fkProfileStart, _notificationSound);
+				else
+					dataWrapper.activateProfileFromEvent(this._fkProfileStart, "");
+			}
 			else
 			{
 				ActivateProfileHelper activateProfileHelper = dataWrapper.getActivateProfileHelper();
