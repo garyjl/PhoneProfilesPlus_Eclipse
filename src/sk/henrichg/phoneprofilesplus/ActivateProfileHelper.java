@@ -26,9 +26,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.LocationManager;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
+import android.os.Handler;
 import android.provider.Settings;
 import android.provider.Settings.Global;
 import android.support.v4.app.NotificationCompat;
@@ -360,13 +362,19 @@ public class ActivateProfileHelper {
 		//boolean radiosExecuted = false;
 		
 		// nahodenie volume
-		// run service for execute volumes
+		/*// run service for execute volumes
 		Intent volumeServiceIntent = new Intent(context, ExecuteVolumeProfilePrefsService.class);
 		volumeServiceIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
 		volumeServiceIntent.putExtra(GlobalData.EXTRA_SECOND_SET_VOLUMES, true);
 		volumeServiceIntent.putExtra(GlobalData.EXTRA_EVENT_NOTIFICATION_SOUND, eventNotificationSound);
 		//WakefulIntentService.sendWakefulWork(context, radioServiceIntent);
-		context.startService(volumeServiceIntent);
+		context.startService(volumeServiceIntent);*/
+		AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+		// nahodenie ringer modu - aby sa mohli nastavit hlasitosti
+		setRingerMode(profile, audioManager);
+		setVolumes(profile, audioManager);
+		// nahodenie ringer modu - hlasitosti zmenia silent/vibrate
+		setRingerMode(profile, audioManager);
 
 		// nahodenie ringtone
 		if (profile._soundRingtoneChange == 1)
@@ -391,6 +399,32 @@ public class ActivateProfileHelper {
 				Settings.System.putString(context.getContentResolver(), Settings.System.ALARM_ALERT, profile._soundAlarm);
 		}
 
+		// event notification
+		if (!eventNotificationSound.isEmpty())
+		{
+			audioManager.setMode(AudioManager.MODE_NORMAL);
+			final String _eventNotificationSound = eventNotificationSound;
+			final DataWrapper _dataWrapper = dataWrapper;
+		    Handler handler = new Handler(context.getMainLooper());
+			handler.post(new Runnable() {
+				public void run() {
+					MediaPlayer mp=new MediaPlayer();
+					Uri ringtoneUri=Uri.parse(_eventNotificationSound);
+					try {
+						mp.setDataSource(_dataWrapper.context, ringtoneUri);
+					    mp.setAudioStreamType(AudioManager.STREAM_NOTIFICATION);
+					    mp.prepare();
+					    mp.start();
+			        	Thread.sleep(200);
+					}
+					catch(Exception e)
+					{
+					    e.printStackTrace();
+					}				
+				}
+			});
+		}
+		
 		// nahodenie radio preferences
 		if (PhoneProfilesHelper.isPPHelperInstalled(context, 0))
 		{
