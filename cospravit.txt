@@ -1,0 +1,8 @@
+Aktivacia radio preferences:
+- ak idem cez PPHelper, funguje to seriovo, cize sa medzi sebou nepobiju volanie service na nastavnenie radio preferences
+- ak idem bez PPHelper a prvy profil vypne wifi a druhy zapne, tak druhy profil wifi nezapne
+Cize ak dam aktivaciu radia cez broadcast tak by to mohlo zafungovat:
+1. sprav class na broadcast class v PPP a v nom volaj service
+2. pre radio preferences nevolaj priamo service, ale setni broadcast
+3. pre istotu daj do receivera pre PPHelper aj PPP sleep ???
+
