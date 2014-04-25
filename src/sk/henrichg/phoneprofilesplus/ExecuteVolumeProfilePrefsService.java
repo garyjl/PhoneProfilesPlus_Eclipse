@@ -40,7 +40,7 @@ public class ExecuteVolumeProfilePrefsService extends IntentService //WakefulInt
 			AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
 			
 			// nahodenie ringer modu - aby sa mohli nastavit hlasitosti
-			//aph.setRingerMode(profile, audioManager);
+			aph.setRingerMode(profile, audioManager);
 			
 			aph.setVolumes(profile, audioManager);
 
