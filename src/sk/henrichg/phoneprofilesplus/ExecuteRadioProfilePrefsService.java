@@ -33,5 +33,8 @@ public class ExecuteRadioProfilePrefsService extends IntentService
 		dataWrapper.invalidateDataWrapper();
 		aph = null;
 		dataWrapper = null;
+		
+		SetRadioPrefsForProfileBroadcastReceiver.completeWakefulIntent(intent);
+		
 	}
 }

@@ -51,7 +51,8 @@ public class ActivateProfileHelper {
 	private Context context;
 	private NotificationManager notificationManager;
 	
-	private static final String PPHELPER = "sk.henrichg.phoneprofileshelper.ACTION";
+	private static final String PPHELPERACTION = "sk.henrichg.phoneprofileshelper.ACTION";
+	private static final String SETRADIOACTION = "sk.henrichg.phoneprofilesplus.SetRadiosForProfile.ACTION";
 	private static final String PPHELPER_PROCEDURE = "procedure";
 	private static final String PPHELPER_PROCEDURE_RADIO_CHANGE = "radioChange";
 	private static final String PPHELPER_GPS_CHANGE = "GPSChange";
@@ -430,7 +431,7 @@ public class ActivateProfileHelper {
 		{
 			// broadcast PPHelper
 			Intent ppHelperIntent = new Intent();
-			ppHelperIntent.setAction(PPHELPER);
+			ppHelperIntent.setAction(PPHELPERACTION);
 			ppHelperIntent.putExtra(PPHELPER_PROCEDURE, PPHELPER_PROCEDURE_RADIO_CHANGE);
 			ppHelperIntent.putExtra(PPHELPER_GPS_CHANGE, profile._deviceGPS);
 			ppHelperIntent.putExtra(PPHELPER_AIRPLANE_MODE_CHANGE, profile._deviceAirplaneMode);
@@ -443,9 +444,10 @@ public class ActivateProfileHelper {
 		else
 		{
 			// run service for execute radios
-			Intent radioServiceIntent = new Intent(context, ExecuteRadioProfilePrefsService.class);
-			radioServiceIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
-			context.startService(radioServiceIntent);
+			Intent radioBroadcastReceiver = new Intent();
+			radioBroadcastReceiver.setAction(SETRADIOACTION);
+			radioBroadcastReceiver.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
+		    context.sendBroadcast(radioBroadcastReceiver);
 		}
 		
 		// nahodenie auto-sync

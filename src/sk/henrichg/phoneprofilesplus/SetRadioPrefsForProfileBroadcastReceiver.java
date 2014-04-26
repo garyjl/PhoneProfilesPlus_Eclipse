@@ -7,43 +7,30 @@ import android.util.Log;
 
 public class SetRadioPrefsForProfileBroadcastReceiver extends WakefulBroadcastReceiver {
 
-	private static final String	ACTION = "sk.henrichg.phoneprofileshelper.ACTION";
+	private static final String	ACTION = "sk.henrichg.phoneprofilesplus.SetRadiosForProfile.ACTION";
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {
 
     	Log.e("SetRadioPrefsForProfileBroadcastReceiver.onReceive","xxx");
+    	
 		
 		String action = intent.getAction();
+
+    	Log.e("SetRadioPrefsForProfileBroadcastReceiver.onReceive","action="+action);
 		
 		if (action.equals (ACTION))
 		{
-/*			
 			// start service
-			Intent serviceIntent = new Intent(context, SetProfilePreferenceService.class);
-			serviceIntent.putExtra(SetProfilePreferenceService.PROCEDURE, procedure);
-
-			int GPSChange = intent.getIntExtra(SetProfilePreferenceService.GPS_CHANGE, 0);
-			int airplaneModeChange = intent.getIntExtra(SetProfilePreferenceService.AIRPLANE_MODE_CHANGE, 0);
-			int NFCChange = intent.getIntExtra(SetProfilePreferenceService.NFC_CHANGE, 0);
-			int WifiChange = intent.getIntExtra(SetProfilePreferenceService.WIFI_CHANGE, 0);
-			int bluetoothChange = intent.getIntExtra(SetProfilePreferenceService.BLUETOOTH_CHANGE, 0);
-			int mobileDataChange = intent.getIntExtra(SetProfilePreferenceService.MOBILE_DATA_CHANGE, 0);
-
-			Log.e("SetRadioPrefsForProfileBroadcastReceiver.onReceive","GPSChange="+GPSChange);
-			Log.e("SetRadioPrefsForProfileBroadcastReceiver.onReceive","airplaneModeChange="+airplaneModeChange);
-			Log.e("SetRadioPrefsForProfileBroadcastReceiver.onReceive","NFCChange="+NFCChange);
-			Log.e("SetRadioPrefsForProfileBroadcastReceiver.onReceive","WifiChange="+WifiChange);
-			Log.e("SetRadioPrefsForProfileBroadcastReceiver.onReceive","bluetoothChange="+bluetoothChange);
-			Log.e("SetRadioPrefsForProfileBroadcastReceiver.onReceive","mobileDataChange="+mobileDataChange);
-			serviceIntent.putExtra(SetProfilePreferenceService.GPS_CHANGE, GPSChange);
-			serviceIntent.putExtra(SetProfilePreferenceService.AIRPLANE_MODE_CHANGE, airplaneModeChange);
-			serviceIntent.putExtra(SetProfilePreferenceService.NFC_CHANGE, NFCChange);
-			serviceIntent.putExtra(SetProfilePreferenceService.WIFI_CHANGE, WifiChange);
-			serviceIntent.putExtra(SetProfilePreferenceService.BLUETOOTH_CHANGE, bluetoothChange);
-			serviceIntent.putExtra(SetProfilePreferenceService.MOBILE_DATA_CHANGE, mobileDataChange);
-			startWakefulService(context, serviceIntent);
-*/			
+			
+			long profileId = intent.getLongExtra(GlobalData.EXTRA_PROFILE_ID, 0);
+	    	Log.e("SetRadioPrefsForProfileBroadcastReceiver.onReceive","profileId="+profileId);
+			if (profileId != 0)
+			{
+				Intent radioServiceIntent = new Intent(context, ExecuteRadioProfilePrefsService.class);
+				radioServiceIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profileId);
+				startWakefulService(context, radioServiceIntent);
+			}
 		}		
 		
 	}

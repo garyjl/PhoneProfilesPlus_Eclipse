@@ -228,6 +228,13 @@
 	   	
 	    <service android:name=".ExecuteRadioProfilePrefsService">
         </service>
+        <receiver android:name=".SetRadioPrefsForProfileBroadcastReceiver" 
+            android:enabled="true"> 
+ 			<intent-filter android:priority="1000" > 
+               	<action android:name="sk.henrichg.phoneprofilesplus.SetRadiosForProfile.ACTION" />
+            </intent-filter> 
+		</receiver>
+	    
 	    <service android:name=".ExecuteVolumeProfilePrefsService">
         </service>
 	    	    	    
