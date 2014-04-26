@@ -6,3 +6,4 @@ Cize ak dam aktivaciu radia cez broadcast tak by to mohlo zafungovat:
 2. pre radio preferences nevolaj priamo service, ale setni broadcast
 3. pre istotu daj do receivera pre PPHelper aj PPP sleep ???
 
+Hotovo, ale to mi inklinuje spravit service a broadcast na cely profil. Hm???
