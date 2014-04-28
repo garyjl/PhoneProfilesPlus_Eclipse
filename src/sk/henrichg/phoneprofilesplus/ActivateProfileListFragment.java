@@ -54,10 +54,19 @@ public class ActivateProfileListFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView;
 		
-		if (GlobalData.applicationActivatorPrefIndicator && GlobalData.applicationActivatorHeader)
+		Profile profile = dataWrapper.getDatabaseHandler().getActivatedProfile(); 
+		
+		boolean showHeader;
+		//if ((profile != null) && (!profile._showInActivator))
+		//	showHeader = true;
+		//else
+			showHeader = false;
+		showHeader = showHeader || GlobalData.applicationActivatorHeader;
+				
+		if (GlobalData.applicationActivatorPrefIndicator && showHeader)
 			rootView = inflater.inflate(R.layout.activate_profile_list, container, false); 
 		else
-		if (GlobalData.applicationActivatorHeader)
+		if (showHeader)
 			rootView = inflater.inflate(R.layout.activate_profile_list_no_indicator, container, false); 
 		else
 			rootView = inflater.inflate(R.layout.activate_profile_list_no_header, container, false); 
