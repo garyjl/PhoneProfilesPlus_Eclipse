@@ -39,10 +39,7 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 						Profile profile = dataWrapper.getDatabaseHandler().getActivatedProfile();
 						long profileId = 0;
 						if (profile != null)
-						{
 							profileId = profile._id;
-							dataWrapper.getDatabaseHandler().deactivateProfile();
-						}
 						dataWrapper.activateProfile(profileId, GlobalData.STARTUP_SOURCE_BOOT, null, "");
 					}
 					else
