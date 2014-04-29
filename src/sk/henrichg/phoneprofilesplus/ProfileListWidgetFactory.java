@@ -118,8 +118,9 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 		if ((!GlobalData.applicationWidgetListHeader) && (profile._checked))
 		{
 			// hm, interesting, how to set bold style for RemoteView text ;-)
-			Spannable sb = new SpannableString(dataWrapper.getProfileNameWithManualIndicator(profile));
-			sb.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, profile._name.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			String profileName = dataWrapper.getProfileNameWithManualIndicator(profile);
+			Spannable sb = new SpannableString(profileName);
+			sb.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, profileName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			row.setTextViewText(R.id.widget_profile_list_item_profile_name, sb);
 		}
 		else
@@ -200,6 +201,17 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 		dataWrapper.invalidateProfileList();
 		profileList = dataWrapper.getProfileList();
 		//Log.e("ProfileListWidgetFactory.onDataSetChanged",""+profileList);
+		
+    	if (!GlobalData.applicationWidgetListHeader)
+    	{
+    		Profile profile = dataWrapper.getActivatedProfile();
+    		if ((profile != null) && (!profile._showInActivator))
+    		{
+    			profile._showInActivator = true;
+    			profile._porder = -1;
+    		}
+    	}
+		
 		
 	    Collections.sort(profileList, new ProfileComparator());
 	}
