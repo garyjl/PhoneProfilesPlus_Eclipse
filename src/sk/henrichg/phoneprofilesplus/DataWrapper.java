@@ -608,37 +608,25 @@ public class DataWrapper {
 	public void firstStartEvents(boolean invalidateList, boolean unblockEventsRun)
 	{
 		if (invalidateList)
-		{
 			invalidateEventList();  // force load form db
-		}
 
-		// this is called from restartEvents()
-		//GlobalData.setEventsBlocked(context, false);
-		//getDatabaseHandler().unblockAllEvents();
+		if (unblockEventsRun)
+		{
+			GlobalData.setEventsBlocked(context, false);
+			getDatabaseHandler().unblockAllEvents();
+		}
 		
 		GlobalData.setForceRunEventRunning(context, false);
 		
 		BatteryEventsAlarmBroadcastReceiver.removeAlarm(context);
 		
-		/*
-		for (Event event : getEventList())
-		{
-			event._blocked = false;
-			
-			int status = event.getStatus();
-			
-			// remove all system events
-			event.setSystemEvent(context, Event.ESTATUS_STOP);
-			
-			// reset system event
-			if (status != Event.ESTATUS_STOP)
-			{
-				event.setSystemEvent(context, status);
-			}
-		}
-		*/
-		
-		restartEvents(true, unblockEventsRun);
+		getDatabaseHandler().updateAllEventsStatus(Event.ESTATUS_RUNNING, Event.ESTATUS_PAUSE);
+		getDatabaseHandler().deactivateProfile();
+
+		//restartEvents(true, unblockEventsRun);
+		Intent intent = new Intent();
+		intent.setAction(RestartEventsBroadcastReceiver.INTENT_RESTART_EVENTS);
+		context.sendBroadcast(intent);
 
 	}
 	
@@ -1187,7 +1175,7 @@ public class DataWrapper {
 			if (newEventStatus == Event.ESTATUS_RUNNING)
 			{
 				GlobalData.logE("DataWrapper.doEventService","start event");
-				event.startEvent(this, eventTimelineList, restartEvent, false, playNotification);
+				event.startEvent(this, eventTimelineList, false, playNotification);
 			}
 			else
 			if (newEventStatus == Event.ESTATUS_PAUSE)

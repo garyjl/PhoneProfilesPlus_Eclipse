@@ -357,8 +357,7 @@ public class Event {
 	}
 	
 	public void startEvent(DataWrapper dataWrapper,
-							List<EventTimeline> eventTimelineList,
-							boolean restart, 
+							List<EventTimeline> eventTimelineList, 
 							boolean ignoreGlobalPref,
 							boolean playNotification)
 	{
@@ -416,12 +415,10 @@ public class Event {
 		
 		EventTimeline eventTimeline;		
 		
-		if ((!restart) || (getStatus() != ESTATUS_RUNNING))
+		if (getStatus() != ESTATUS_RUNNING)
 		{
 	/////// delete duplicate from timeline
 
-			GlobalData.logE("Event.startEvent","event_id="+this._id+" restart");
-			
 			boolean exists = true;
 			while (exists)
 			{
@@ -497,15 +494,7 @@ public class Event {
 			}
 			
 		}
-/*		else
-		{
-			int eventPosition = getEventTimelinePosition(eventTimelineList);
-			if (eventPosition != -1)
-				eventTimeline = eventTimelineList.get(eventPosition);
-			else
-				eventTimeline = addEventTimeline(dataWrapper, eventTimelineList);
-		}
-*/		
+
 		setSystemEvent(dataWrapper.context, ESTATUS_RUNNING);
 		
 		this._status = ESTATUS_RUNNING;
