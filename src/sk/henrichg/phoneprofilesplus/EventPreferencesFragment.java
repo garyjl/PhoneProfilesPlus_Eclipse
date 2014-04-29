@@ -147,7 +147,8 @@ public class EventPreferencesFragment extends PreferenceListFragment
 						"",
 						false,
 						false,
-						true
+						true,
+						Event.EPRIORITY_NORMAL
 		         );
 			event_id = 0;
 		}
@@ -164,7 +165,8 @@ public class EventPreferencesFragment extends PreferenceListFragment
 						   origEvent._notificationSound,
 						   origEvent._forceRun,
 						   origEvent._blocked,
-						   origEvent._undoneProfile
+						   origEvent._undoneProfile,
+						   origEvent._priority
 							);
 			event.copyEventPreferences(origEvent);
 			event_id = 0;

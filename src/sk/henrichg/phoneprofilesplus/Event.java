@@ -8,6 +8,7 @@ import android.content.SharedPreferences.Editor;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.preference.ListPreference;
 import android.preference.PreferenceManager;
 
 public class Event {
@@ -21,6 +22,7 @@ public class Event {
 	public String _notificationSound;
 	public boolean _forceRun;
 	public boolean _blocked;
+	public int _priority;
 
 	public EventPreferencesTime _eventPreferencesTime;
 	public EventPreferencesBattery _eventPreferencesBattery;
@@ -33,6 +35,12 @@ public class Event {
 	public static final int ESTATUS_RUNNING = 2;
 	public static final int ESTATUS_NONE = 99;
 	
+	public static final int EPRIORITY_VERY_LOW = -2; 
+	public static final int EPRIORITY_LOW = -1;
+	public static final int EPRIORITY_NORMAL = 0;
+	public static final int EPRIORITY_HIGH = 1;
+	public static final int EPRIORITY_VERY_HIGH = 2;
+	
     static final String PREF_EVENT_ENABLED = "eventEnabled";
     static final String PREF_EVENT_NAME = "eventName";
     static final String PREF_EVENT_PROFILE_START = "eventProfileStart";
@@ -40,6 +48,7 @@ public class Event {
     static final String PREF_EVENT_NOTIFICATION_SOUND = "eventNotificationSound";
     static final String PREF_EVENT_FORCE_RUN = "eventForceRun";
     static final String PREF_EVENT_UNDONE_PROFILE = "eventUndoneProfile";
+    static final String PREF_EVENT_PRIORITY = "eventPriority";
 	
 	// Empty constructor
 	public Event(){
@@ -55,7 +64,8 @@ public class Event {
 		         String notificationSound,
 		         boolean forceRun,
 		         boolean blocked,
-		         boolean undoneProfile)
+		         boolean undoneProfile,
+		         int priority)
 	{
 		this._id = id;
 		this._name = name;
@@ -66,6 +76,7 @@ public class Event {
         this._forceRun = forceRun;
         this._blocked = blocked;
         this._undoneProfile = undoneProfile;
+        this._priority = priority;
         
         createEventPreferences();
 	}
@@ -78,7 +89,8 @@ public class Event {
 	         	 String notificationSound,
 	         	 boolean forceRun,
 	         	 boolean blocked,
-	         	 boolean undoneProfile)
+	         	 boolean undoneProfile,
+	         	 int priority)
 	{
 		this._name = name;
 	    this._fkProfileStart = fkProfileStart;
@@ -88,6 +100,7 @@ public class Event {
         this._forceRun = forceRun;
         this._blocked = blocked;
         this._undoneProfile = undoneProfile;
+        this._priority = priority;
         
 	    createEventPreferences();
 	}
@@ -103,6 +116,7 @@ public class Event {
         this._forceRun = event._forceRun;
         this._blocked = event._blocked;
         this._undoneProfile = event._undoneProfile;
+        this._priority = event._priority;
         
         copyEventPreferences(event);
 	}
@@ -167,8 +181,9 @@ public class Event {
    		editor.putString(PREF_EVENT_PROFILE_END, Long.toString(this._fkProfileEnd));
    		editor.putBoolean(PREF_EVENT_ENABLED, this._status != ESTATUS_STOP);
    		editor.putString(PREF_EVENT_NOTIFICATION_SOUND, this._notificationSound);
-   		editor.putBoolean(PREF_EVENT_FORCE_RUN, _forceRun);
-   		editor.putBoolean(PREF_EVENT_UNDONE_PROFILE, _undoneProfile);
+   		editor.putBoolean(PREF_EVENT_FORCE_RUN, this._forceRun);
+   		editor.putBoolean(PREF_EVENT_UNDONE_PROFILE, this._undoneProfile);
+   		editor.putString(PREF_EVENT_PRIORITY, Integer.toString(this._priority));
         this._eventPreferencesTime.loadSharedPrefereces(preferences);
         this._eventPreferencesBattery.loadSharedPrefereces(preferences);
         this._eventPreferencesCall.loadSharedPrefereces(preferences);
@@ -184,6 +199,7 @@ public class Event {
 		this._notificationSound = preferences.getString(PREF_EVENT_NOTIFICATION_SOUND, "");
 		this._forceRun = preferences.getBoolean(PREF_EVENT_FORCE_RUN, false);
 		this._undoneProfile = preferences.getBoolean(PREF_EVENT_UNDONE_PROFILE, true);
+		this._priority = Integer.parseInt(preferences.getString(PREF_EVENT_PRIORITY, Integer.toString(EPRIORITY_NORMAL)));
 		//Log.e("Event.saveSharedPrefereces","notificationSound="+this._notificationSound);
 		this._eventPreferencesTime.saveSharedPrefereces(preferences);
 		this._eventPreferencesBattery.saveSharedPrefereces(preferences);
@@ -239,6 +255,13 @@ public class Event {
 				prefMng.findPreference(key).setSummary(ringtoneName);
 			}
 		}
+		if (key.equals(PREF_EVENT_PRIORITY))
+		{
+			ListPreference listPreference = (ListPreference)prefMng.findPreference(key);
+			int index = listPreference.findIndexOfValue(value);
+			CharSequence summary = (index >= 0) ? listPreference.getEntries()[index] : null;
+			listPreference.setSummary(summary);
+		}
 	}
 
 	public void setSummary(PreferenceManager prefMng, String key, SharedPreferences preferences, Context context)
@@ -246,7 +269,8 @@ public class Event {
 		if (key.equals(PREF_EVENT_NAME) ||
 			key.equals(PREF_EVENT_PROFILE_START) ||
 			key.equals(PREF_EVENT_PROFILE_END) ||
-			key.equals(PREF_EVENT_NOTIFICATION_SOUND))
+			key.equals(PREF_EVENT_NOTIFICATION_SOUND) ||
+			key.equals(PREF_EVENT_PRIORITY))
 			setSummary(prefMng, key, preferences.getString(key, ""), context);
 		_eventPreferencesTime.setSummary(prefMng, key, preferences, context);
 		_eventPreferencesBattery.setSummary(prefMng, key, preferences, context);
@@ -256,9 +280,10 @@ public class Event {
 	public void setAllSummary(PreferenceManager prefMng, Context context)
 	{
 		setSummary(prefMng, PREF_EVENT_NAME, _name, context);
-		setSummary(prefMng, PREF_EVENT_PROFILE_START, Long.toString(_fkProfileStart), context);
-		setSummary(prefMng, PREF_EVENT_PROFILE_END, Long.toString(_fkProfileEnd), context);
-		setSummary(prefMng, PREF_EVENT_NOTIFICATION_SOUND, _notificationSound, context);
+		setSummary(prefMng, PREF_EVENT_PROFILE_START, Long.toString(this._fkProfileStart), context);
+		setSummary(prefMng, PREF_EVENT_PROFILE_END, Long.toString(this._fkProfileEnd), context);
+		setSummary(prefMng, PREF_EVENT_NOTIFICATION_SOUND, this._notificationSound, context);
+		setSummary(prefMng, PREF_EVENT_PRIORITY, Integer.toString(this._priority), context);
 		_eventPreferencesTime.setAllSummary(prefMng, context);
 		_eventPreferencesBattery.setAllSummary(prefMng, context);
 		_eventPreferencesCall.setAllSummary(prefMng, context);

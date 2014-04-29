@@ -13,6 +13,12 @@
             android:summary="@string/event_preferences_eventName"
             android:title="@string/event_preferences_eventName"
             android:selectAllOnFocus="true" /> 
+		<ListPreference android:title="@string/event_preferences_priority"
+            android:summary="@string/array_event_pref_priorityNormal"
+            android:key="eventPriority"
+            android:defaultValue="0"
+            android:entries="@array/eventPriorityArray"
+            android:entryValues="@array/eventPriorityValues" />        
     </PreferenceCategory>
     <PreferenceCategory
         android:summary="@string/event_preferences_category_startofevent"
