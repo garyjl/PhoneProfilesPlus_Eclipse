@@ -763,6 +763,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 			{
 				case 0: eventsOrderType = EditorEventListFragment.ORDER_TYPE_EVENT_NAME; break;
 				case 1: eventsOrderType = EditorEventListFragment.ORDER_TYPE_PROFILE_NAME; break;
+				case 2: eventsOrderType = EditorEventListFragment.ORDER_TYPE_PRIORITY; break;
 			}
 			((EditorEventListFragment)fragment).changeListOrder(eventsOrderType);
 			

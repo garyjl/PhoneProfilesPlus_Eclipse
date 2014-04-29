@@ -51,6 +51,7 @@ public class EditorEventListFragment extends Fragment {
 	
 	public static final int ORDER_TYPE_EVENT_NAME = 0;
 	public static final int ORDER_TYPE_PROFILE_NAME = 1;
+	public static final int ORDER_TYPE_PRIORITY = 2;
 	
 	private int filterType = FILTER_TYPE_ALL; 
 	private int orderType = ORDER_TYPE_EVENT_NAME;
@@ -593,6 +594,15 @@ public class EditorEventListFragment extends Fragment {
 		        return res;
 		    }
 		}
+
+		class PriorityComparator implements Comparator<Event> {
+			public int compare(Event lhs, Event rhs) {
+
+			    //int res =  lhs._priority - rhs._priority;
+			    int res =  rhs._priority - lhs._priority;
+		        return res;
+		    }
+		}
 		
 		switch (orderType)
 		{
@@ -601,6 +611,9 @@ public class EditorEventListFragment extends Fragment {
 				break;
 			case ORDER_TYPE_PROFILE_NAME:
 			    Collections.sort(eventList, new ProfileNameComparator());
+			    break;
+			case ORDER_TYPE_PRIORITY:
+			    Collections.sort(eventList, new PriorityComparator());
 			    break;
 		}
 	}

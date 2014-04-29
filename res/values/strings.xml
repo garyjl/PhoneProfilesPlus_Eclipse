@@ -327,5 +327,6 @@
 	<string name="array_event_pref_priorityNormal">Normal</string>    
 	<string name="array_event_pref_priorityLow">Low</string>    
 	<string name="array_event_pref_priorityVeryLow">Very low</string>    
-    
+    <string name="editor_drawer_order_priority">Priority</string>
+	
 </resources>
