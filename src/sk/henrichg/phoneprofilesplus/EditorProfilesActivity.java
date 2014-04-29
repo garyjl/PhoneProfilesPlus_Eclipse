@@ -1063,6 +1063,9 @@ public class EditorProfilesActivity extends ActionBarActivity
 					dataWrapper.getDatabaseHandler().updateAllEventsStatus(Event.ESTATUS_RUNNING, Event.ESTATUS_PAUSE);
 					dataWrapper.getActivateProfileHelper().showNotification(null);
 					dataWrapper.getActivateProfileHelper().updateWidget();
+					
+					GlobalData.setEventsBlocked(getBaseContext(), false);
+					dataWrapper.getDatabaseHandler().unblockAllEvents();
 
 					
 					// toast notification

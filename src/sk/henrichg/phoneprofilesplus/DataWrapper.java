@@ -608,7 +608,9 @@ public class DataWrapper {
 	public void firstStartEvents(boolean invalidateList, boolean unblockEventsRun)
 	{
 		if (invalidateList)
+		{
 			invalidateEventList();  // force load form db
+		}
 
 		// this is called from restartEvents()
 		//GlobalData.setEventsBlocked(context, false);
