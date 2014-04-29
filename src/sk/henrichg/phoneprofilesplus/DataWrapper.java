@@ -1161,6 +1161,7 @@ public class DataWrapper {
 		GlobalData.logE("DataWrapper.doEventService","callPassed="+callPassed);
 
 		GlobalData.logE("DataWrapper.doEventService","eventStart="+eventStart);
+		GlobalData.logE("DataWrapper.doEventService","restartEvent="+restartEvent);
 		
 		List<EventTimeline> eventTimelineList = getEventTimelineList();
 		
@@ -1179,6 +1180,8 @@ public class DataWrapper {
 
 		if ((event.getStatus() != newEventStatus) || restartEvent)
 		{
+			GlobalData.logE("DataWrapper.doEventService"," do new event status");
+			
 			if (newEventStatus == Event.ESTATUS_RUNNING)
 			{
 				GlobalData.logE("DataWrapper.doEventService","start event");

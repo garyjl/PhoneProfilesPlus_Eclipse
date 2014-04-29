@@ -373,6 +373,9 @@ public class Event {
 		if (GlobalData.getEventsBlocked(dataWrapper.context))
 		{
 			// blocked by manual profile activation
+			GlobalData.logE("Event.startEvent","event_id="+this._id+" events blocked");
+
+			
 			if (!_forceRun)
 				// event is not forceRun
 				return;
@@ -416,7 +419,9 @@ public class Event {
 		if ((!restart) || (getStatus() != ESTATUS_RUNNING))
 		{
 	/////// delete duplicate from timeline
-		
+
+			GlobalData.logE("Event.startEvent","event_id="+this._id+" restart");
+			
 			boolean exists = true;
 			while (exists)
 			{
@@ -476,6 +481,8 @@ public class Event {
 			if (this._fkProfileStart != activatedProfileId)
 			{
 				// no activate profile, when is already activated
+				GlobalData.logE("Event.startEvent","event_id="+this._id+" activate profile id="+this._fkProfileStart);
+				
 				if (playNotification)
 					dataWrapper.activateProfileFromEvent(this._fkProfileStart, _notificationSound);
 				else

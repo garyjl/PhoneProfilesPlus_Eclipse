@@ -1658,7 +1658,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 												KEY_E_UNDONE_PROFILE,
 												KEY_E_PRIORITY
 												}, 
-				                 KEY_ID + "=?",
+				                 KEY_E_ID + "=?",
 				                 new String[] { String.valueOf(event_id) }, null, null, null, null);
 		if (cursor != null)
 			cursor.moveToFirst();
@@ -1767,7 +1767,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 		try {
 			// updating row
-			r = db.update(TABLE_EVENTS, values, KEY_ID + " = ?",
+			r = db.update(TABLE_EVENTS, values, KEY_E_ID + " = ?",
 				new String[] { String.valueOf(event._id) });
 			updateEventPreferences(event, db);
 		
@@ -1790,7 +1790,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public void deleteEvent(Event event) {
 		//SQLiteDatabase db = this.getWritableDatabase();
 		SQLiteDatabase db = getMyWritableDatabase();
-		db.delete(TABLE_EVENTS, KEY_ID + " = ?",
+		db.delete(TABLE_EVENTS, KEY_E_ID + " = ?",
 				new String[] { String.valueOf(event._id) });
 		//db.close();
 	}
@@ -1968,7 +1968,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				         						KEY_E_END_TIME,
 				         						KEY_E_USE_END_TIME
 												}, 
-				                 KEY_ID + "=?",
+				                 KEY_E_ID + "=?",
 				                 new String[] { String.valueOf(event._id) }, null, null, null, null);
 		if (cursor != null)
 			cursor.moveToFirst();
@@ -2028,7 +2028,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 												KEY_E_BATTERY_LEVEL_HIGHT,
 												KEY_E_BATTERY_CHARGING
 												}, 
-				                 KEY_ID + "=?",
+				                 KEY_E_ID + "=?",
 				                 new String[] { String.valueOf(event._id) }, null, null, null, null);
 		if (cursor != null)
 			cursor.moveToFirst();
@@ -2050,7 +2050,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 												KEY_E_CALL_CONTACTS,
 												KEY_E_CALL_CONTACT_LIST_TYPE
 												}, 
-				                 KEY_ID + "=?",
+				                 KEY_E_ID + "=?",
 				                 new String[] { String.valueOf(event._id) }, null, null, null, null);
 		if (cursor != null)
 			cursor.moveToFirst();
@@ -2111,7 +2111,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_E_USE_END_TIME, (eventPreferences._useEndTime) ? 1 : 0);
 
 		// updating row
-		int r = db.update(TABLE_EVENTS, values, KEY_ID + " = ?",
+		int r = db.update(TABLE_EVENTS, values, KEY_E_ID + " = ?",
 				        new String[] { String.valueOf(event._id) });
         
 		return r;
@@ -2130,7 +2130,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_E_BATTERY_CHARGING, eventPreferences._charging ? 1 : 0);
 
 		// updating row
-		int r = db.update(TABLE_EVENTS, values, KEY_ID + " = ?",
+		int r = db.update(TABLE_EVENTS, values, KEY_E_ID + " = ?",
 				        new String[] { String.valueOf(event._id) });
         
 		return r;
@@ -2149,7 +2149,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_E_CALL_CONTACT_LIST_TYPE, eventPreferences._contactListType);
 
 		// updating row
-		int r = db.update(TABLE_EVENTS, values, KEY_ID + " = ?",
+		int r = db.update(TABLE_EVENTS, values, KEY_E_ID + " = ?",
 				        new String[] { String.valueOf(event._id) });
         
 		return r;
@@ -2166,7 +2166,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				                 new String[] {  
 												KEY_E_STATUS
 												}, 
-				                 KEY_ID + "=?",
+				                 KEY_E_ID + "=?",
 				                 new String[] { String.valueOf(event._id) }, null, null, null, null);
 		if (cursor != null)
 			cursor.moveToFirst();
@@ -2198,7 +2198,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 		try {
 			// updating row
-			r = db.update(TABLE_EVENTS, values, KEY_ID + " = ?",
+			r = db.update(TABLE_EVENTS, values, KEY_E_ID + " = ?",
 				new String[] { String.valueOf(event._id) });
 		
 			db.setTransactionSuccessful();
@@ -2231,7 +2231,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 		try {
 			// updating row
-			r = db.update(TABLE_EVENTS, values, KEY_ID + " = ?",
+			r = db.update(TABLE_EVENTS, values, KEY_E_ID + " = ?",
 				new String[] { String.valueOf(event._id) });
 		
 			db.setTransactionSuccessful();
@@ -2263,7 +2263,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.beginTransaction();
 		
 		try {
-			// updating row
+			// updating rows
 			r = db.update(TABLE_EVENTS, values, null, null);
 		
 			db.setTransactionSuccessful();
@@ -2271,6 +2271,39 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		} catch (Exception e){
 			//Error in between database transaction
 			Log.e("DatabaseHandler.unblockAllEvents", e.toString());
+			r = 0;
+		} finally {
+			db.endTransaction();
+		}	
+		
+        //db.close();
+        
+		return r;
+		
+	}
+
+	public int updateAllEventsStatus(int fromStatus, int toStatus)
+	{
+		//SQLiteDatabase db = this.getWritableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put(KEY_E_STATUS, toStatus);
+
+		int r = 0;
+		
+		db.beginTransaction();
+		
+		try {
+			// updating rows
+			r = db.update(TABLE_EVENTS, values, KEY_E_STATUS + " = ?", 
+					new String[] { String.valueOf(fromStatus) });
+		
+			db.setTransactionSuccessful();
+
+		} catch (Exception e){
+			//Error in between database transaction
+			Log.e("DatabaseHandler.updateAllEventsStatus", e.toString());
 			r = 0;
 		} finally {
 			db.endTransaction();
@@ -2447,7 +2480,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				values.put(KEY_ET_FK_PROFILE_RETURN, eventTimeline._fkProfileEndActivated);
 
 				// updating row
-				db.update(TABLE_EVENT_TIMELINE, values, KEY_ID + " = ?",
+				db.update(TABLE_EVENT_TIMELINE, values, KEY_ET_ID + " = ?",
 					new String[] { String.valueOf(eventTimeline._id) });
 			}
 		

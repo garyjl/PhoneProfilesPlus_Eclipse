@@ -1059,6 +1059,8 @@ public class EditorProfilesActivity extends ActionBarActivity
 
 					dataWrapper.invalidateProfileList();
 					dataWrapper.getDatabaseHandler().deactivateProfile();
+					dataWrapper.invalidateEventList();
+					dataWrapper.getDatabaseHandler().updateAllEventsStatus(Event.ESTATUS_RUNNING, Event.ESTATUS_PAUSE);
 					dataWrapper.getActivateProfileHelper().showNotification(null);
 					dataWrapper.getActivateProfileHelper().updateWidget();
 
@@ -1079,7 +1081,11 @@ public class EditorProfilesActivity extends ActionBarActivity
 					// restart events
 					// startneme eventy
 					if (GlobalData.getGlobalEventsRuning(getBaseContext()))
-						dataWrapper.restartEvents(true, true);
+					{
+						Intent intent = new Intent();
+						intent.setAction(RestartEventsBroadcastReceiver.INTENT_RESTART_EVENTS);
+						getBaseContext().sendBroadcast(intent);
+					}
 					else
 						BatteryEventsAlarmBroadcastReceiver.removeAlarm(getBaseContext());
 					

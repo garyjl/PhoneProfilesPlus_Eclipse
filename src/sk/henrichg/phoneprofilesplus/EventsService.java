@@ -71,7 +71,8 @@ public class EventsService extends IntentService
 				GlobalData.logE("EventsService.onHandleIntent","event.getStatus()="+_event.getStatus());
 				
 				if (_event.getStatus() != Event.ESTATUS_STOP)
-					dataWrapper.doEventService(_event, false, true);
+					dataWrapper.doEventService(_event, false, 
+							!broadcastReceiverType.equals(RestartEventsBroadcastReceiver.BROADCAST_RECEIVER_TYPE));
 			}
 		}
 		else
@@ -89,6 +90,8 @@ public class EventsService extends IntentService
 	private void doEndService(Intent intent)
 	{
 		// completting wake
+		if (broadcastReceiverType.equals(RestartEventsBroadcastReceiver.BROADCAST_RECEIVER_TYPE))
+			RestartEventsBroadcastReceiver.completeWakefulIntent(intent);
 		if (broadcastReceiverType.equals(EventsAlarmBroadcastReceiver.BROADCAST_RECEIVER_TYPE))
 			EventsAlarmBroadcastReceiver.completeWakefulIntent(intent);
 		else

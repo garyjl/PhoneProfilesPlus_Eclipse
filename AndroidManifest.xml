@@ -237,7 +237,16 @@
 	    
 	    <service android:name=".ExecuteVolumeProfilePrefsService">
         </service>
-	    	    	    
+
+	    <receiver android:name=".RestartEventsBroadcastReceiver"
+	        android:enabled="true"
+	        android:exported="false" >
+	        <intent-filter>
+	         	<action android:name="sk.henrichg.phoneprofilesplus.RESTART_EVENTS" />
+                <category android:name="android.intent.category.DEFAULT" />
+   	      	</intent-filter>
+	   	</receiver>
+	    
 	    <service android:name=".EventsService">
         </service>
         <receiver android:name=".EventsAlarmBroadcastReceiver"
