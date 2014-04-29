@@ -621,7 +621,11 @@ public class DataWrapper {
 		BatteryEventsAlarmBroadcastReceiver.removeAlarm(context);
 		
 		getDatabaseHandler().updateAllEventsStatus(Event.ESTATUS_RUNNING, Event.ESTATUS_PAUSE);
-		getDatabaseHandler().deactivateProfile();
+		
+		if (!GlobalData.getEventsBlocked(context))
+			// events is not blocked, deactivate profile
+			// profile will by activated in call of RestartEventsBroadcastReceiver
+			getDatabaseHandler().deactivateProfile();
 
 		//restartEvents(true, unblockEventsRun);
 		Intent intent = new Intent();

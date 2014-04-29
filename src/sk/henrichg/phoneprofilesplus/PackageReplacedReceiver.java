@@ -32,7 +32,22 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 				if (GlobalData.getGlobalEventsRuning(context))
 					dataWrapper.firstStartEvents(true, false);
 				else
-					dataWrapper.activateProfile(0, GlobalData.STARTUP_SOURCE_BOOT, null, "");
+				{
+					BatteryEventsAlarmBroadcastReceiver.removeAlarm(context);
+					if (GlobalData.applicationActivate)
+					{
+						Profile profile = dataWrapper.getDatabaseHandler().getActivatedProfile();
+						long profileId = 0;
+						if (profile != null)
+						{
+							profileId = profile._id;
+							dataWrapper.getDatabaseHandler().deactivateProfile();
+						}
+						dataWrapper.activateProfile(profileId, GlobalData.STARTUP_SOURCE_BOOT, null, "");
+					}
+					else
+						dataWrapper.activateProfile(0, GlobalData.STARTUP_SOURCE_BOOT, null, "");
+				}
 				
 				dataWrapper.invalidateDataWrapper();
 			}
