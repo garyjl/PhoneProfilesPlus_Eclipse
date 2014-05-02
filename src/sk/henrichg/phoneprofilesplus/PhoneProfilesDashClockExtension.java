@@ -190,7 +190,10 @@ public class PhoneProfilesDashClockExtension extends DashClockExtension {
 		
 		String status = "";
 		if (GlobalData.getEventsBlocked(getBaseContext()))
-			status = "M";
+			if (GlobalData.getForceRunEventRunning(getBaseContext()))
+				status = "F";
+			else
+				status = "M";
 		
 	    // Publish the extension data update.
         publishUpdate(new ExtensionData()
