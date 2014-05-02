@@ -287,10 +287,11 @@ public class EditorEventListAdapter extends BaseAdapter
    		else
    			holder.eventName.setTypeface(null, Typeface.NORMAL);
    			
+   		String eventPriority = "[" + (event._priority + 2)  + "] ";
    		if (event._forceRun)
-   			holder.eventName.setText("\u23E9 " + event._name);
+   			holder.eventName.setText("\u23E9 " + eventPriority + event._name);
    		else
-   			holder.eventName.setText(event._name);
+   			holder.eventName.setText(eventPriority + event._name);
    		
 	    if (GlobalData.applicationEditorPrefIndicator)
 	    {
