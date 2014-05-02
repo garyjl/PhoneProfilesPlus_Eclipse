@@ -2315,6 +2315,43 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 	}
 	
+	public int getTypeEventsRunningCount(int eventType)
+	{
+		final String countQuery;
+		String eventTypeChecked = "";
+		if (eventType == 1)
+			eventTypeChecked = KEY_E_TIME_ENABLED + "=1";
+		else
+		if (eventType == 2)
+			eventTypeChecked = KEY_E_BATTERY_ENABLED + "=1";
+		else
+		if (eventType == 3)
+			eventTypeChecked = KEY_E_CALL_ENABLED + "=1";
+		countQuery = "SELECT  count(*) FROM " + TABLE_EVENTS + 
+	    		     " WHERE " + KEY_E_STATUS + "=" + Event.ESTATUS_RUNNING +
+	    		        "AND " + eventTypeChecked;
+
+		//SQLiteDatabase db = this.getReadableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+		
+		Cursor cursor = db.rawQuery(countQuery, null);
+		
+		int r;
+		
+		if (cursor != null)
+		{
+			cursor.moveToFirst();
+			r = Integer.parseInt(cursor.getString(0));
+		}
+		else
+			r = 0;
+
+		cursor.close();
+		//db.close();
+		
+		return r;
+	}
+	
 // EVENT TIMELINE ------------------------------------------------------------------
 	
 	// Adding new event

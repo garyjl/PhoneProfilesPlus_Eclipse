@@ -1,7 +1,5 @@
 package sk.henrichg.phoneprofilesplus;
 
-import java.util.List;
-
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.WakefulBroadcastReceiver;
@@ -18,17 +16,8 @@ public class PowerConnectionReceiver extends WakefulBroadcastReceiver {
 		
 		if (GlobalData.getGlobalEventsRuning(context))
 		{
-			boolean batteryEventsExists = false;
-			
 			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
-			List<Event> eventList = dataWrapper.getEventList();
-			for (Event event : eventList)
-			{
-				if (event._eventPreferencesBattery._enabled && (event.getStatus() != Event.ESTATUS_STOP))
-				{
-					batteryEventsExists = true;
-				}
-			}
+			boolean batteryEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsRunningCount(2) > 0;
 			dataWrapper.invalidateDataWrapper();
 	
 			if (batteryEventsExists)

@@ -1,7 +1,5 @@
 package sk.henrichg.phoneprofilesplus;
 
-import java.util.List;
-
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.WakefulBroadcastReceiver;
@@ -45,14 +43,7 @@ public class EventsAlarmBroadcastReceiver extends WakefulBroadcastReceiver {
 			}
 			*/
 			
-			List<Event> eventList = dataWrapper.getEventList();
-			for (Event event : eventList)
-			{
-				if (event._eventPreferencesTime._enabled && (event.getStatus() != Event.ESTATUS_STOP))
-				{
-					timeEventsExists = true;
-				}
-			}
+			timeEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsRunningCount(1) > 0;
 			dataWrapper.invalidateDataWrapper();
 
 			if (timeEventsExists)

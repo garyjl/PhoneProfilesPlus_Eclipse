@@ -1,8 +1,6 @@
 package sk.henrichg.phoneprofilesplus;
 
 import java.util.Date;
-import java.util.List;
-
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -37,15 +35,7 @@ public class PhoneCallBroadcastReceiver extends PhoneCallReceiver {
 	{
 		if (GlobalData.getGlobalEventsRuning(savedContext))
 		{
-			boolean callEventsExists = false;
-			List<Event> eventList = dataWrapper.getEventList();
-			for (Event event : eventList)
-			{
-				if (event._eventPreferencesCall._enabled && (event.getStatus() != Event.ESTATUS_STOP))
-				{
-					callEventsExists = true;
-				}
-			}
+			boolean callEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsRunningCount(3) > 0;
 			
 			if (callEventsExists)
 			{

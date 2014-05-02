@@ -1,7 +1,5 @@
 package sk.henrichg.phoneprofilesplus;
 
-import java.util.List;
-
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -24,14 +22,7 @@ public class BatteryEventsAlarmBroadcastReceiver extends WakefulBroadcastReceive
 		if (GlobalData.getGlobalEventsRuning(context))
 		{
 			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
-			List<Event> eventList = dataWrapper.getEventList();
-			for (Event event : eventList)
-			{
-				if (event._eventPreferencesBattery._enabled && (event.getStatus() != Event.ESTATUS_STOP))
-				{
-					batteryEventsExists = true;
-				}
-			}
+			batteryEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsRunningCount(2) > 0;
 			dataWrapper.invalidateDataWrapper();
 
 			if (batteryEventsExists)
