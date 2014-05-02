@@ -589,6 +589,7 @@ public class DataWrapper {
 				(event._fkProfileStart == profile._id))
 				event.stopEvent(this, eventTimelineList, false, true, saveEventStatus);
 		}
+		restartEvents(false, false);
 	}
 	
 	// pauses all events without activating profiles from Timeline
