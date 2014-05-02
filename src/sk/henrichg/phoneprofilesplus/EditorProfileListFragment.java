@@ -505,6 +505,7 @@ public class EditorProfileListFragment extends Fragment {
 			protected Integer doInBackground(Void... params) {
 				
 				dataWrapper.stopEventsForProfile(_profile, true);
+				dataWrapper.unlinkEventsFromProfile(_profile);
 				profileListAdapter.deleteItemNoNotify(_profile);
 				databaseHandler.unlinkEventsFromProfile(_profile);
 				databaseHandler.deleteProfile(_profile);
@@ -630,6 +631,7 @@ public class EditorProfileListFragment extends Fragment {
 					protected Integer doInBackground(Void... params) {
 						
 						dataWrapper.stopAllEvents(true);
+						dataWrapper.unlinkAllEvents();
 						profileListAdapter.clearNoNotify();
 						databaseHandler.deleteAllProfiles();
 						databaseHandler.unlinkAllEvents();

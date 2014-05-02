@@ -622,6 +622,26 @@ public class DataWrapper {
 		}
 		BatteryEventsAlarmBroadcastReceiver.removeAlarm(context);
 	}
+
+	public void unlinkEventsFromProfile(Profile profile)
+	{
+		for (Event event : getEventList())
+		{
+			if (event._fkProfileStart == profile._id)
+				event._fkProfileStart = 0;
+			if (event._fkProfileEnd == profile._id)
+				event._fkProfileEnd = Event.PROFILE_END_NO_ACTIVATE;
+		}
+	}
+	
+	public void unlinkAllEvents()
+	{
+		for (Event event : getEventList())
+		{
+			event._fkProfileStart = 0;
+			event._fkProfileEnd = Event.PROFILE_END_NO_ACTIVATE;
+		}
+	}
 	
 	// this is called in boot or start application
 	// or when restart alarm triggered (?)
