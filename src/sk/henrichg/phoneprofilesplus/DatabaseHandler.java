@@ -2329,7 +2329,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			eventTypeChecked = KEY_E_CALL_ENABLED + "=1";
 		countQuery = "SELECT  count(*) FROM " + TABLE_EVENTS + 
 	    		     " WHERE " + KEY_E_STATUS + "=" + Event.ESTATUS_RUNNING +
-	    		        "AND " + eventTypeChecked;
+	    		       " AND " + eventTypeChecked;
 
 		//SQLiteDatabase db = this.getReadableDatabase();
 		SQLiteDatabase db = getMyWritableDatabase();
