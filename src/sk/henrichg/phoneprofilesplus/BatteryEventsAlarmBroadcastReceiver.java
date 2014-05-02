@@ -33,17 +33,18 @@ public class BatteryEventsAlarmBroadcastReceiver extends WakefulBroadcastReceive
 				}
 			}
 			dataWrapper.invalidateDataWrapper();
+
+			if (batteryEventsExists)
+			{
+				// start service
+				Intent eventsServiceIntent = new Intent(context, EventsService.class);
+				eventsServiceIntent.putExtra(GlobalData.EXTRA_EVENT_ID, 0L);
+				eventsServiceIntent.putExtra(GlobalData.EXTRA_BROADCAST_RECEIVER_TYPE, BROADCAST_RECEIVER_TYPE);
+				startWakefulService(context, eventsServiceIntent);
+			}
+				
 		}
 
-		if (batteryEventsExists)
-		{
-			// start service
-			Intent eventsServiceIntent = new Intent(context, EventsService.class);
-			eventsServiceIntent.putExtra(GlobalData.EXTRA_EVENT_ID, 0L);
-			eventsServiceIntent.putExtra(GlobalData.EXTRA_BROADCAST_RECEIVER_TYPE, BROADCAST_RECEIVER_TYPE);
-			startWakefulService(context, eventsServiceIntent);
-		}
-			
 		if (!batteryEventsExists)
 			removeAlarm(context);
 	}

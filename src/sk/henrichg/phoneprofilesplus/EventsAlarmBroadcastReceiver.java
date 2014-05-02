@@ -1,5 +1,7 @@
 package sk.henrichg.phoneprofilesplus;
 
+import java.util.List;
+
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.WakefulBroadcastReceiver;
@@ -15,29 +17,55 @@ public class EventsAlarmBroadcastReceiver extends WakefulBroadcastReceiver {
 		
 		GlobalData.loadPreferences(context);
 		
-		long eventId = intent.getLongExtra(GlobalData.EXTRA_EVENT_ID, 0);
-		boolean startEvent = intent.getBooleanExtra(GlobalData.EXTRA_START_SYSTEM_EVENT, true);
-		
-		GlobalData.logE("EventsAlarmBroadcastReceiver.onReceive","eventId="+eventId);
-		GlobalData.logE("EventsAlarmBroadcastReceiver.onReceive","startEvent="+startEvent);
-		
-		DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
-		Event event = dataWrapper.getEventById(eventId);
-		
-		if (event != null)
+		if (GlobalData.getGlobalEventsRuning(context))
 		{
-			event._eventPreferencesTime.removeSystemEvent(context);
 			
+			//long eventId = intent.getLongExtra(GlobalData.EXTRA_EVENT_ID, 0);
+			//boolean startEvent = intent.getBooleanExtra(GlobalData.EXTRA_START_SYSTEM_EVENT, true);
 			
-			Intent eventsServiceIntent = new Intent(context, EventsService.class);
-			eventsServiceIntent.putExtra(GlobalData.EXTRA_EVENT_ID, eventId);
-			eventsServiceIntent.putExtra(GlobalData.EXTRA_BROADCAST_RECEIVER_TYPE, BROADCAST_RECEIVER_TYPE);
-			startWakefulService(context, eventsServiceIntent);
+			//GlobalData.logE("EventsAlarmBroadcastReceiver.onReceive","eventId="+eventId);
+			//GlobalData.logE("EventsAlarmBroadcastReceiver.onReceive","startEvent="+startEvent);
+			
+			boolean timeEventsExists = false;
+			
+			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
+			//Event event = dataWrapper.getEventById(eventId);
+
+			/*
+			if (event != null)
+			{
+				event._eventPreferencesTime.removeSystemEvent(context);
+				
+				
+				Intent eventsServiceIntent = new Intent(context, EventsService.class);
+				eventsServiceIntent.putExtra(GlobalData.EXTRA_EVENT_ID, eventId);
+				eventsServiceIntent.putExtra(GlobalData.EXTRA_BROADCAST_RECEIVER_TYPE, BROADCAST_RECEIVER_TYPE);
+				startWakefulService(context, eventsServiceIntent);
+				
+			}
+			*/
+			
+			List<Event> eventList = dataWrapper.getEventList();
+			for (Event event : eventList)
+			{
+				if (event._eventPreferencesTime._enabled && (event.getStatus() != Event.ESTATUS_STOP))
+				{
+					timeEventsExists = true;
+				}
+			}
+			dataWrapper.invalidateDataWrapper();
+
+			if (timeEventsExists)
+			{
+				// start service
+				Intent eventsServiceIntent = new Intent(context, EventsService.class);
+				eventsServiceIntent.putExtra(GlobalData.EXTRA_EVENT_ID, 0L);
+				eventsServiceIntent.putExtra(GlobalData.EXTRA_BROADCAST_RECEIVER_TYPE, BROADCAST_RECEIVER_TYPE);
+				startWakefulService(context, eventsServiceIntent);
+			}
 			
 		}
 		
-		dataWrapper.invalidateDataWrapper();
-			
 	}
 
 }

@@ -16,10 +16,10 @@ public class PowerConnectionReceiver extends WakefulBroadcastReceiver {
 		
 		GlobalData.loadPreferences(context);
 		
-		boolean batteryEventsExists = false;
-		
 		if (GlobalData.getGlobalEventsRuning(context))
 		{
+			boolean batteryEventsExists = false;
+			
 			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
 			List<Event> eventList = dataWrapper.getEventList();
 			for (Event event : eventList)
