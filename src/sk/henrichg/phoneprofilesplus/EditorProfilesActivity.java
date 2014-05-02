@@ -533,7 +533,7 @@ public class EditorProfilesActivity extends ActionBarActivity
             }	
 			return super.onOptionsItemSelected(item);
 		case R.id.menu_restart_events:
-			// neignoruj manualnu aktivaciu profilu
+			// ignoruj manualnu aktivaciu profilu
 			// a odblokuj forceRun eventy
 			getDataWrapper().restartEventsWithAlert(this);
 			return true;

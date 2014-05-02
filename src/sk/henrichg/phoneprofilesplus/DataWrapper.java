@@ -1392,9 +1392,9 @@ public class DataWrapper {
 			//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
 			dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
-					// neignoruj manualnu aktivaciu profilu
+					// ignoruj manualnu aktivaciu profilu
 					// a odblokuj forceRun eventy
-					restartEvents(false, true);
+					restartEvents(true, true);
 					if (GlobalData.applicationClose && (!(_activity instanceof EditorProfilesActivity)))
 						_activity.finish();
 				}
@@ -1404,9 +1404,9 @@ public class DataWrapper {
 		}
 		else
 		{
-			// neignoruj manualnu aktivaciu profilu
+			// ignoruj manualnu aktivaciu profilu
 			// a odblokuj forceRun eventy
-			restartEvents(false, true);
+			restartEvents(true, true);
 			if (GlobalData.applicationClose)
 				activity.finish();
 		}
