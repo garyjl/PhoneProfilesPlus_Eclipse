@@ -381,32 +381,16 @@ public class Event {
 			if (_blocked)
 				// forceRun event is temporary blocked
 				return;
-
-			/*
-			// unblock events run when forceRun is starting
-			for (EventTimeline eventTimeline : eventTimelineList)
-			{
-				Event event = dataWrapper.getEventById(eventTimeline._fkEvent);
-				if ((event != null) && (event._blocked))
-					dataWrapper.setEventBlocked(event, false);
-			}
-			GlobalData.setEventsBlocked(dataWrapper.context, false);
-			*/
 		}
-	/*	else
+		
+		// search for runing event with higher priority
+		for (EventTimeline eventTimeline : eventTimelineList)
 		{
-			// when forceRun events are running, no start no-forceRun event
-			if (!_forceRun)
-			{
-				for (EventTimeline eventTimeline : eventTimelineList)
-				{
-					Event event = dataWrapper.getEventById(eventTimeline._fkEvent);
-					if ((event != null) && event._forceRun)
-						// forceRun event is running	
-						return;
-				}
-			}
-		}  */
+			Event event = dataWrapper.getEventById(eventTimeline._fkEvent);
+			if ((event != null) && (event._priority > this._priority))
+				// is running event with higher priority
+				return;
+		}
 		
 		if (_forceRun)
 			GlobalData.setForceRunEventRunning(dataWrapper.context, true);
