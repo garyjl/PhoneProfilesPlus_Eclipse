@@ -1,6 +1,8 @@
 package sk.henrichg.phoneprofilesplus;
 
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import android.app.Activity;
@@ -509,6 +511,23 @@ public class DataWrapper {
 		}
 	}
 */	
+	public void sortEventsByPriority()
+	{
+		class PriorityComparator implements Comparator<Event> {
+			public int compare(Event lhs, Event rhs) {
+
+			    int res =  lhs._priority - rhs._priority;
+		        return res;
+		    }
+		}
+		
+		getEventList();
+		if (eventList != null)
+		{
+		    Collections.sort(eventList, new PriorityComparator());
+		}
+	}
+	
 	public Event getEventById(long id)
 	{
 		if (eventList == null)
@@ -1324,28 +1343,32 @@ public class DataWrapper {
 		
 	}
 
-	public void restartEvents(boolean forceRestart, boolean unblockEventsRun)
+	public void restartEvents(boolean ignoreForceRun, boolean unblockEventsRun)
 	{
+		GlobalData.logE("DataWrapper.restartEvents","xxx");
+
 		if (!GlobalData.getGlobalEventsRuning(context))
 			// events are globally stopped
 			return;
+
+		GlobalData.logE("DataWrapper.restartEvents","events are not globbaly stopped");
 		
-		if ((!GlobalData.getEventsBlocked(context)) && (!forceRestart))
+		if (GlobalData.getEventsBlocked(context) && (!ignoreForceRun))
 			return;
 
+		GlobalData.logE("DataWrapper.restartEvents","events are not blocked");
+		
 		if (unblockEventsRun)
 		{
 			GlobalData.setEventsBlocked(context, false);
 			getDatabaseHandler().unblockAllEvents();
 		}
 		
-		getEventList();
-		for (Event event : eventList)
-		{
-			event._blocked = false;
-			if (event.getStatus() != Event.ESTATUS_STOP)
-				doEventService(event, true, false);
-		}
+		getDatabaseHandler().updateAllEventsStatus(Event.ESTATUS_RUNNING, Event.ESTATUS_PAUSE);
+		
+		Intent intent = new Intent();
+		intent.setAction(RestartEventsBroadcastReceiver.INTENT_RESTART_EVENTS);
+		context.sendBroadcast(intent);
 	}
 	
 	public void restartEventsWithAlert(Activity activity)
@@ -1369,6 +1392,8 @@ public class DataWrapper {
 			//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
 			dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
+					// neignoruj manualnu aktivaciu profilu
+					// a odblokuj forceRun eventy
 					restartEvents(false, true);
 					if (GlobalData.applicationClose && (!(_activity instanceof EditorProfilesActivity)))
 						_activity.finish();
@@ -1379,6 +1404,8 @@ public class DataWrapper {
 		}
 		else
 		{
+			// neignoruj manualnu aktivaciu profilu
+			// a odblokuj forceRun eventy
 			restartEvents(false, true);
 			if (GlobalData.applicationClose)
 				activity.finish();

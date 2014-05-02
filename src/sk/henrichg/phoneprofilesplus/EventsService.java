@@ -61,16 +61,18 @@ public class EventsService extends IntentService
 		callEventType = intent.getIntExtra(GlobalData.EXTRA_EVENT_CALL_EVENT_TYPE, PhoneCallBroadcastReceiver.CALL_EVENT_UNDEFINED);
 		phoneNumber = intent.getStringExtra(GlobalData.EXTRA_EVENT_CALL_PHONE_NUMBER);
 		
-		List<Event> eventList = dataWrapper.getEventList();
-		
 		if (event == null)
 		{
+			List<Event> eventList = dataWrapper.getEventList();
+			dataWrapper.sortEventsByPriority();
+			
 			for (Event _event : eventList)
 			{
 				GlobalData.logE("EventsService.onHandleIntent","event._id="+_event._id);
 				GlobalData.logE("EventsService.onHandleIntent","event.getStatus()="+_event.getStatus());
 				
 				if (_event.getStatus() != Event.ESTATUS_STOP)
+					// nespusti, ak uz je v takom stave
 					dataWrapper.doEventService(_event, false, 
 							!broadcastReceiverType.equals(RestartEventsBroadcastReceiver.BROADCAST_RECEIVER_TYPE));
 			}
