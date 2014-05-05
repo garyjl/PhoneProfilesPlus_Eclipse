@@ -660,7 +660,7 @@ public class DataWrapper {
 		
 		BatteryEventsAlarmBroadcastReceiver.removeAlarm(context);
 		
-		getDatabaseHandler().updateAllEventsStatus(Event.ESTATUS_RUNNING, Event.ESTATUS_PAUSE);
+		//getDatabaseHandler().updateAllEventsStatus(Event.ESTATUS_RUNNING, Event.ESTATUS_PAUSE);
 		
 		if (!GlobalData.getEventsBlocked(context))
 			// events is not blocked, deactivate profile
@@ -1011,7 +1011,8 @@ public class DataWrapper {
 		
 	}
 
-	public boolean doEventService(Event event, boolean restartEvent, boolean playNotification)
+	public boolean doEventService(Event event, boolean statePause, 
+									boolean restartEvent, boolean playNotification)
 	{
 		int newEventStatus = Event.ESTATUS_NONE;
 
@@ -1209,17 +1210,20 @@ public class DataWrapper {
 		else
 			newEventStatus = Event.ESTATUS_PAUSE;
 
+		GlobalData.logE("DataWrapper.doEventService","event.getStatus()="+event.getStatus());
+		GlobalData.logE("DataWrapper.doEventService","newEventStatus="+newEventStatus);
+		
 		if ((event.getStatus() != newEventStatus) || restartEvent)
 		{
 			GlobalData.logE("DataWrapper.doEventService"," do new event status");
 			
-			if (newEventStatus == Event.ESTATUS_RUNNING)
+			if ((newEventStatus == Event.ESTATUS_RUNNING) && (!statePause))
 			{
 				GlobalData.logE("DataWrapper.doEventService","start event");
 				event.startEvent(this, eventTimelineList, false, playNotification);
 			}
 			else
-			if (newEventStatus == Event.ESTATUS_PAUSE)
+			if ((newEventStatus == Event.ESTATUS_PAUSE) && statePause)
 			{
 				GlobalData.logE("DataWrapper.doEventService","pause event");
 				event.pauseEvent(this, eventTimelineList, true, false, false);
@@ -1385,7 +1389,7 @@ public class DataWrapper {
 			getDatabaseHandler().unblockAllEvents();
 		}
 		
-		getDatabaseHandler().updateAllEventsStatus(Event.ESTATUS_RUNNING, Event.ESTATUS_PAUSE);
+		//getDatabaseHandler().updateAllEventsStatus(Event.ESTATUS_RUNNING, Event.ESTATUS_PAUSE);
 		
 		Intent intent = new Intent();
 		intent.setAction(RestartEventsBroadcastReceiver.INTENT_RESTART_EVENTS);

@@ -11,7 +11,6 @@ public class EventsService extends IntentService
 {
 	Context context;
 	DataWrapper dataWrapper;
-	List<EventTimeline> eventTimelineList;
 	String broadcastReceiverType;
 	
 	public static int callEventType = PhoneCallBroadcastReceiver.CALL_EVENT_UNDEFINED;
@@ -44,10 +43,6 @@ public class EventsService extends IntentService
 	    Handler handler = new Handler(getMainLooper());
 	    dataWrapper.setToastHandler(handler);
 		
-		eventTimelineList = dataWrapper.getEventTimelineList();
-
-		GlobalData.logE("EventsService.onHandleIntent","eventTimelineList.size()="+eventTimelineList.size());
-		
 		broadcastReceiverType = intent.getStringExtra(GlobalData.EXTRA_BROADCAST_RECEIVER_TYPE);
 		
 		GlobalData.logE("EventsService.onHandleIntent","broadcastReceiverType="+broadcastReceiverType);
@@ -66,20 +61,86 @@ public class EventsService extends IntentService
 			List<Event> eventList = dataWrapper.getEventList();
 			dataWrapper.sortEventsByPriority();
 			
-			for (Event _event : eventList)
+			boolean isRestart = broadcastReceiverType.equals(RestartEventsBroadcastReceiver.BROADCAST_RECEIVER_TYPE);
+			
+			if (isRestart)
 			{
-				GlobalData.logE("EventsService.onHandleIntent","event._id="+_event._id);
-				GlobalData.logE("EventsService.onHandleIntent","event.getStatus()="+_event.getStatus());
-				
-				if (_event.getStatus() != Event.ESTATUS_STOP)
-					// nespusti, ak uz je v takom stave
-					dataWrapper.doEventService(_event, false, 
-							!broadcastReceiverType.equals(RestartEventsBroadcastReceiver.BROADCAST_RECEIVER_TYPE));
+				// 1. pause events
+				for (Event _event : eventList)
+				{
+					GlobalData.logE("EventsService.onHandleIntent","state PAUSE");
+					GlobalData.logE("EventsService.onHandleIntent","event._id="+_event._id);
+					GlobalData.logE("EventsService.onHandleIntent","event.getStatus()="+_event.getStatus());
+					
+					if (_event.getStatus() != Event.ESTATUS_STOP)
+						// len pauzuj eventy
+						// pauzuj aj ked uz je zapauznuty
+						dataWrapper.doEventService(_event, true, true, false); 
+				}
+				// 2. restart events in timeline order
+				List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
+				GlobalData.logE("EventsService.onHandleIntent","eventTimeLineList.size()="+eventTimelineList.size());
+				for (EventTimeline eventTimeline : eventTimelineList)
+				{
+					Event _event = dataWrapper.getEventById(eventTimeline._fkEvent);
+					if (_event != null)
+					{
+						GlobalData.logE("EventsService.onHandleIntent","state RUNNING from eventTimeLine");
+						GlobalData.logE("EventsService.onHandleIntent","event._id="+_event._id);
+						GlobalData.logE("EventsService.onHandleIntent","event.getStatus()="+_event.getStatus());
+						if (_event.getStatus() != Event.ESTATUS_STOP)
+							// len spustaj eventy
+							// spusatj aj ked uz je spusteny
+							dataWrapper.doEventService(_event, false, true, false); 
+					}
+				}
+				// 3. start no started events in point 2.
+				for (Event _event : eventList)
+				{
+					GlobalData.logE("EventsService.onHandleIntent","state RUNNING");
+					GlobalData.logE("EventsService.onHandleIntent","event._id="+_event._id);
+					GlobalData.logE("EventsService.onHandleIntent","event.getStatus()="+_event.getStatus());
+					
+					if (_event.getStatus() != Event.ESTATUS_STOP)
+						// len spustaj eventy
+						// spustaj len ak este nebezi
+						dataWrapper.doEventService(_event, false, false, false); 
+				}
+			}
+			else
+			{
+				//1. pause events
+				for (Event _event : eventList)
+				{
+					GlobalData.logE("EventsService.onHandleIntent","state PAUSE");
+					GlobalData.logE("EventsService.onHandleIntent","event._id="+_event._id);
+					GlobalData.logE("EventsService.onHandleIntent","event.getStatus()="+_event.getStatus());
+					
+					if (_event.getStatus() != Event.ESTATUS_STOP)
+						// len pauzuj eventy
+						// pauzuj len ak este nie je zapauznuty
+						dataWrapper.doEventService(_event, true, false, true); 
+				}
+				//2. start events
+				for (Event _event : eventList)
+				{
+					GlobalData.logE("EventsService.onHandleIntent","state RUNNING");
+					GlobalData.logE("EventsService.onHandleIntent","event._id="+_event._id);
+					GlobalData.logE("EventsService.onHandleIntent","event.getStatus()="+_event.getStatus());
+					
+					if (_event.getStatus() != Event.ESTATUS_STOP)
+						// len spustaj eventy
+						// spustaj len ak este nebezi
+						dataWrapper.doEventService(_event, false, false, true); 
+				}
 			}
 		}
 		else
 		if (event.getStatus() != Event.ESTATUS_STOP)
-			dataWrapper.doEventService(event, false, true);
+		{
+			dataWrapper.doEventService(event, true, false, true);
+			dataWrapper.doEventService(event, false, false, true);
+		}
 
 		doEndService(intent);
 

@@ -1062,7 +1062,10 @@ public class EditorProfilesActivity extends ActionBarActivity
 					dataWrapper.invalidateProfileList();
 					dataWrapper.getDatabaseHandler().deactivateProfile();
 					dataWrapper.invalidateEventList();
+					
+					// timeline is not exported, set status to PAUSE for all events 
 					dataWrapper.getDatabaseHandler().updateAllEventsStatus(Event.ESTATUS_RUNNING, Event.ESTATUS_PAUSE);
+					
 					dataWrapper.getActivateProfileHelper().showNotification(null);
 					dataWrapper.getActivateProfileHelper().updateWidget();
 					
