@@ -399,10 +399,9 @@ public class Event {
 		
 		EventTimeline eventTimeline;		
 		
-		if (getStatus() != ESTATUS_RUNNING)
-		{
+		//if (getStatus() != ESTATUS_RUNNING)
+		//{
 	/////// delete duplicate from timeline
-
 			boolean exists = true;
 			while (exists)
 			{
@@ -477,7 +476,7 @@ public class Event {
 				activateProfileHelper.updateWidget();
 			}
 			
-		}
+		//}
 
 		setSystemEvent(dataWrapper.context, ESTATUS_RUNNING);
 		

@@ -2891,6 +2891,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			Log.e("DatabaseHandler.importDB", e.toString());
 		} */
 		
+		updateAllEventsStatus(Event.ESTATUS_RUNNING, Event.ESTATUS_PAUSE);
+		deactivateProfile();
+		unblockAllEvents();
+		
 		return ret;
 	}
 	
