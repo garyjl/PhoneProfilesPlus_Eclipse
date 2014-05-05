@@ -111,7 +111,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	EditorDrawerListAdapter drawerAdapter;
 	
 	private int drawerSelectedItem = 0;
-	private int orderSelectedItem = 0;
+	private int orderSelectedItem = 2; // priority
 	private int profilesFilterType = EditorProfileListFragment.FILTER_TYPE_SHOW_IN_ACTIVATOR;
 	private int eventsFilterType = EditorEventListFragment.FILTER_TYPE_ALL;
 	private int eventsOrderType = EditorEventListFragment.ORDER_TYPE_EVENT_NAME;
@@ -377,11 +377,8 @@ public class EditorProfilesActivity extends ActionBarActivity
         {
         	SharedPreferences preferences = getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Activity.MODE_PRIVATE);
         	drawerSelectedItem = preferences.getInt(SP_EDITOR_DRAWER_SELECTED_ITEM, 2);
-        	orderSelectedItem = preferences.getInt(SP_EDITOR_ORDER_SELECTED_ITEM, 0);
+        	orderSelectedItem = preferences.getInt(SP_EDITOR_ORDER_SELECTED_ITEM, 2); // priority
         }
-        // replace removed orders
-        if (orderSelectedItem == 2) orderSelectedItem = 0;
-        if (orderSelectedItem == 3) orderSelectedItem = 1;
 
     	selectDrawerItem(drawerSelectedItem, false);
     	changeEventOrder(orderSelectedItem);
