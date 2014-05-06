@@ -15,6 +15,7 @@ import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.PopupMenu;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -220,6 +221,7 @@ public class EditorEventListFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... params) {
         	List<Event> eventList = dataWrapper.getEventList();
+        	Log.e("EditorEventListFragment.LoadEventListAsyncTask.doInBackground","orderType="+orderType);
         	EditorEventListFragment.sortList(eventList, orderType, dataWrapper);
 			dataWrapper.getProfileList();
 

@@ -31,6 +31,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -380,8 +381,10 @@ public class EditorProfilesActivity extends ActionBarActivity
         	orderSelectedItem = preferences.getInt(SP_EDITOR_ORDER_SELECTED_ITEM, 2); // priority
         }
 
-    	selectDrawerItem(drawerSelectedItem, false);
+        //Log.e("EditorProfilesActivity.onCreate","orderSelectedItem="+orderSelectedItem);
+        // first must be set eventsOrderType
     	changeEventOrder(orderSelectedItem);
+    	selectDrawerItem(drawerSelectedItem, false);
 
 		refreshGUI();
     	
@@ -747,34 +750,36 @@ public class EditorProfilesActivity extends ActionBarActivity
     {
     	orderSelectedItem = position;
     	
+        //Log.e("EditorProfilesActivity.changeEventOrder","orderSelectedItem="+orderSelectedItem);
+    	
     	// save into shared preferences
     	SharedPreferences preferences = getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Activity.MODE_PRIVATE);
     	Editor editor = preferences.edit();
     	editor.putInt(SP_EDITOR_ORDER_SELECTED_ITEM, orderSelectedItem);
 		editor.commit();
-    	
+
+		//Log.e("EditorProfilesActivity.changeEventOrder","xxx");
+		eventsOrderType = EditorEventListFragment.ORDER_TYPE_EVENT_NAME;
+		switch (position)
+		{
+			case 0: eventsOrderType = EditorEventListFragment.ORDER_TYPE_EVENT_NAME; break;
+			case 1: eventsOrderType = EditorEventListFragment.ORDER_TYPE_PROFILE_NAME; break;
+			case 2: eventsOrderType = EditorEventListFragment.ORDER_TYPE_PRIORITY; break;
+		}
+		setStatusBarTitle();
+		
 		Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
 		if ((fragment != null) && (fragment instanceof EditorEventListFragment))
 		{
-			//Log.e("EditorProfilesActivity.changeEventOrder","xxx");
-			eventsOrderType = EditorEventListFragment.ORDER_TYPE_EVENT_NAME;
-			switch (position)
-			{
-				case 0: eventsOrderType = EditorEventListFragment.ORDER_TYPE_EVENT_NAME; break;
-				case 1: eventsOrderType = EditorEventListFragment.ORDER_TYPE_PROFILE_NAME; break;
-				case 2: eventsOrderType = EditorEventListFragment.ORDER_TYPE_PRIORITY; break;
-			}
 			((EditorEventListFragment)fragment).changeListOrder(eventsOrderType);
-			
-			setStatusBarTitle();
-			
-	        // Close drawer
-			if (GlobalData.applicationEditorAutoCloseDrawer)
-				drawerLayout.closeDrawer(drawerRoot);
 		}
-		
+
 		orderSpinner.setSelection(orderSelectedItem);
-    	
+
+        // Close drawer
+		if (GlobalData.applicationEditorAutoCloseDrawer)
+			drawerLayout.closeDrawer(drawerRoot);
+		
     }
 	
 	@Override
