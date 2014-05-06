@@ -289,6 +289,8 @@ public class EventPreferencesTime extends EventPreferences {
 		calStartTime.set(Calendar.DAY_OF_MONTH, now.get(Calendar.DAY_OF_MONTH));
 		calStartTime.set(Calendar.MONTH, now.get(Calendar.MONTH)); 
 		calStartTime.set(Calendar.YEAR,  now.get(Calendar.YEAR));
+		calStartTime.set(Calendar.SECOND, 1);
+		calStartTime.set(Calendar.MILLISECOND, 0);
 
 		long computedEndTime = _endTime;
 		if (!_useEndTime)
@@ -297,8 +299,10 @@ public class EventPreferencesTime extends EventPreferences {
 		calEndTime.set(Calendar.DAY_OF_MONTH, now.get(Calendar.DAY_OF_MONTH));
 		calEndTime.set(Calendar.MONTH, now.get(Calendar.MONTH)); 
 		calEndTime.set(Calendar.YEAR,  now.get(Calendar.YEAR));
+		calEndTime.set(Calendar.SECOND, 1);
+		calEndTime.set(Calendar.MILLISECOND, 0);
 
-		if (_startTime >= computedEndTime)
+		if (calStartTime.getTimeInMillis() >= calEndTime.getTimeInMillis())
 	    {
 			// endTime is over midnight
 			GlobalData.logE("EventPreferencesTime.computeAlarm","startTime >= endTime");
