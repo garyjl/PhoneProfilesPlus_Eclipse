@@ -77,7 +77,7 @@ public class EventsService extends IntentService
 						// pauzuj aj ked uz je zapauznuty
 						dataWrapper.doEventService(_event, true, true, false); 
 				}
-				// 2. restart events in timeline order
+				// 2. start events in timeline order
 				List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
 				GlobalData.logE("EventsService.onHandleIntent","eventTimeLineList.size()="+eventTimelineList.size());
 				for (EventTimeline eventTimeline : eventTimelineList)
