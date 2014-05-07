@@ -283,7 +283,6 @@
     <string name="phoneprofilehepler_uninstall_error">Chyba pri odinštalácii PPHelper-a</string>
     <string name="profile_preferences_install_pphelper">Nainštaluj PPHelper</string>
     <string name="profile_preferences_upgrade_pphelper">Aktualizuj PPHelper</string>
-
     <string name="contacts_multiselect_summary_text_selected">Vybraté</string>	    			
     <string name="contacts_multiselect_summary_text_not_selected">Nevybraté</string>
     <string name="event_preferences_category_eventCallParameters">Parametre hovoru</string>
@@ -306,5 +305,26 @@
     <string name="event_preferences_profile_end_no_activate">Neaktivovať</string>
     <string name="event_preferences_eventProfileEnd">Aktivovať profil</string>
     <string name="menu_restart_events">Reštart udalostí</string>
+
+    <string name="event_preferences_ForceRun">Force Run</string>
+    <string name="manual_profile_activation_forceRun_title">Activate profile</string>
+    <string name="manual_profile_activation_forceRun_message">Event with option \"Force run\" is running. Activate anyway</string>
+    <string name="restart_events_alert_title">Restart events</string>
+    <string name="restart_events_alert_message">Are you sure</string>
+    <string name="event_preferences_ForceRun_summary">Start event even if manual profile activation block start</string>
+    <string name="event_preferences_category_startofevent">Start of event</string>
+    <string name="event_preferences_category_endofevent">End of event</string>
+    <string name="event_preferences_undoneProfile">Undone profile</string>
+    <string name="event_preferences_undoneProfile_summary">Activate before start activated profile</string>
+    <string name="event_prefernce_profile_undone">Undone</string>
+    <string name="event_preferences_priority">Priority</string>
+	<string name="array_event_pref_priorityVeryHigh">Very high</string>    
+	<string name="array_event_pref_priorityHigh">High</string>    
+	<string name="array_event_pref_priorityNormal">Normal</string>    
+	<string name="array_event_pref_priorityLow">Low</string>    
+	<string name="array_event_pref_priorityVeryLow">Very low</string>    
+    <string name="editor_drawer_order_priority">Priority</string>
+
+    <string name="event_type_peripheral">Periféria</string>
     	
 </resources>

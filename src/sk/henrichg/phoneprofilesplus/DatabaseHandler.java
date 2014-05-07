@@ -25,7 +25,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static SQLiteDatabase writableDb;	
     
 	// Database Version
-	private static final int DATABASE_VERSION = 1070;
+	private static final int DATABASE_VERSION = 1080;
 
 	// Database Name
 	private static final String DATABASE_NAME = "phoneProfilesManager";
@@ -42,6 +42,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public static final int ETYPE_TIME = 1;
 	public static final int ETYPE_BATTERY = 2;
 	public static final int ETYPE_CALL = 3;
+	public static final int ETYPE_PERIPHERAL = 4;
 	
 	// Profiles Table Columns names
 	private static final String KEY_ID = "id";
@@ -107,6 +108,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_E_BLOCKED = "blocked";
 	private static final String KEY_E_UNDONE_PROFILE = "undoneProfile";
 	private static final String KEY_E_PRIORITY = "priority";
+	private static final String KEY_E_PERIPHERAL_ENABLED = "peripheralEnabled";
+	private static final String KEY_E_PERIPHERAL_TYPE = "peripheralType";
 	
 	private static final String KEY_ET_ID = "id";
 	private static final String KEY_ET_EORDER = "eorder";
@@ -240,7 +243,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_E_FORCE_RUN + " INTEGER,"
 				+ KEY_E_BLOCKED + " INTEGER,"
 				+ KEY_E_UNDONE_PROFILE + " INTEGER,"
-				+ KEY_E_PRIORITY + " INTEGER"
+				+ KEY_E_PRIORITY + " INTEGER,"
+				+ KEY_E_PERIPHERAL_ENABLED + " INTEGER,"
+				+ KEY_E_PERIPHERAL_TYPE + " INTEGER"
 				+ ")";
 		db.execSQL(CREATE_EVENTS_TABLE);
 
@@ -695,6 +700,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL("CREATE INDEX IDX_PRIORITY ON " + TABLE_EVENTS + " (" + KEY_E_PRIORITY + ")");
 		}
 		
+		if (oldVersion < 1080)
+		{
+			// pridame nove stlpce
+			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_PERIPHERAL_ENABLED + " INTEGER");
+			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_PERIPHERAL_TYPE + " INTEGER");
+			
+			// updatneme zaznamy
+			db.beginTransaction();
+			try {
+				db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_PERIPHERAL_ENABLED + "=0");
+				db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_PERIPHERAL_TYPE + "=0");
+				db.setTransactionSuccessful();
+		     } catch (Exception e){
+		         //Error in between database transaction 
+		     } finally {
+		    	db.endTransaction();
+	         }	
+		}
 		
 	}
 	
@@ -1963,6 +1986,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
        	getEventPreferencesTime(event, db);
        	getEventPreferencesBattery(event, db);
        	getEventPreferencesCall(event, db);
+       	getEventPreferencesPeripheral(event, db);
 	}
 	
 	private void getEventPreferencesTime(Event event, SQLiteDatabase db) {
@@ -2069,6 +2093,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 		cursor.close();
 	}
+
+	private void getEventPreferencesPeripheral(Event event, SQLiteDatabase db) {
+		Cursor cursor = db.query(TABLE_EVENTS, 
+				                 new String[] { KEY_E_PERIPHERAL_ENABLED,
+												KEY_E_PERIPHERAL_TYPE
+												}, 
+				                 KEY_E_ID + "=?",
+				                 new String[] { String.valueOf(event._id) }, null, null, null, null);
+		if (cursor != null)
+			cursor.moveToFirst();
+
+		EventPreferencesPeripherals eventPreferences = (EventPreferencesPeripherals)event._eventPreferencesPeripherals;
+
+		eventPreferences._enabled = (Integer.parseInt(cursor.getString(0)) == 1);
+		eventPreferences._peripheralType = Integer.parseInt(cursor.getString(1));
+		
+		cursor.close();
+	}
 	
 	public int updateEventPreferences(Event event) {
 		//SQLiteDatabase db = this.getReadableDatabase();
@@ -2087,6 +2129,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
        		r = updateEventPreferencesBattery(event, db);
        	if (r != 0)
        		r = updateEventPreferencesCall(event, db);
+       	if (r != 0)
+       		r = updateEventPreferencesPeripheral(event, db);
 
        	return r;
 	}
@@ -2152,6 +2196,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_E_CALL_EVENT, eventPreferences._callEvent);
 		values.put(KEY_E_CALL_CONTACTS, eventPreferences._contacts);
 		values.put(KEY_E_CALL_CONTACT_LIST_TYPE, eventPreferences._contactListType);
+
+		// updating row
+		int r = db.update(TABLE_EVENTS, values, KEY_E_ID + " = ?",
+				        new String[] { String.valueOf(event._id) });
+        
+		return r;
+	}
+
+	private int updateEventPreferencesPeripheral(Event event, SQLiteDatabase db) {
+		ContentValues values = new ContentValues();
+		
+		EventPreferencesPeripherals eventPreferences = (EventPreferencesPeripherals)event._eventPreferencesPeripherals; 
+
+		//Log.e("DatabaseHandler.updateEventPreferencesPeripheral","type="+event._type);
+		
+		values.put(KEY_E_PERIPHERAL_ENABLED, (eventPreferences._enabled) ? 1 : 0);
+		values.put(KEY_E_PERIPHERAL_TYPE, eventPreferences._peripheralType);
 
 		// updating row
 		int r = db.update(TABLE_EVENTS, values, KEY_E_ID + " = ?",
@@ -2332,6 +2393,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		else
 		if (eventType == ETYPE_CALL)
 			eventTypeChecked = KEY_E_CALL_ENABLED + "=1";
+		else
+		if (eventType == ETYPE_PERIPHERAL)
+			eventTypeChecked = KEY_E_PERIPHERAL_ENABLED + "=1";
 		countQuery = "SELECT  count(*) FROM " + TABLE_EVENTS + 
 	    		     " WHERE " + eventTypeChecked;
 
@@ -2852,6 +2916,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 										if (exportedDBObj.getVersion() < 1070)
 										{
 											values.put(KEY_E_PRIORITY, Event.EPRIORITY_NORMAL);
+										}
+
+										if (exportedDBObj.getVersion() < 1080)
+										{
+											values.put(KEY_E_PERIPHERAL_ENABLED, 0);
+											values.put(KEY_E_PERIPHERAL_TYPE, 0);
 										}
 										
 										// Inserting Row do db z SQLiteOpenHelper

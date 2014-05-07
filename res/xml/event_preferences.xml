@@ -141,4 +141,19 @@
             android:entryValues="@array/eventCallContactListTypeValues"
             android:dependency="eventCallEnabled" />        
 	</PreferenceCategory>
+    <PreferenceCategory
+        android:summary="@string/event_preferences_category_eventPeripheralParameters"
+        android:title="@string/event_preferences_category_eventPeripheralParameters" >
+		<CheckBoxPreference 
+		    android:key="eventPeripheralEnabled"
+		    android:title="@string/event_preferences_peripheral_enabled"
+		    android:defaultValue="false" />
+		<ListPreference android:title="@string/event_preferences_peripheral_type"
+            android:summary="@string/array_event_pref_peripheralType_deskDock"
+            android:key="eventPeripheralType"
+            android:defaultValue="0"
+            android:entries="@array/eventPeripheralTypeArray"
+            android:entryValues="@array/eventPeripheralTypeValues"
+            android:dependency="eventPeripheralEnabled" />        
+	</PreferenceCategory>
 </PreferenceScreen>    

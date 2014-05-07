@@ -328,5 +328,12 @@
 	<string name="array_event_pref_priorityLow">Low</string>    
 	<string name="array_event_pref_priorityVeryLow">Very low</string>    
     <string name="editor_drawer_order_priority">Priority</string>
-	
+
+    <string name="event_type_peripheral">Peripheral</string>
+    <string name="array_event_pref_peripheralType_deskDock">Desk dock</string>
+    <string name="array_event_pref_peripheralType_carDock">Car dock</string>
+    <string name="event_preferences_category_eventPeripheralParameters">Periheral parameters</string>
+    <string name="event_preferences_peripheral_enabled">Enable peripheral</string>
+    <string name="event_preferences_peripheral_type">Peripheral type</string>
+    	
 </resources>
