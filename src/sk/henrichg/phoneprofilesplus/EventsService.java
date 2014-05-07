@@ -155,6 +155,7 @@ public class EventsService extends IntentService
 		// completting wake
 		if (broadcastReceiverType.equals(RestartEventsBroadcastReceiver.BROADCAST_RECEIVER_TYPE))
 			RestartEventsBroadcastReceiver.completeWakefulIntent(intent);
+		else
 		if (broadcastReceiverType.equals(EventsAlarmBroadcastReceiver.BROADCAST_RECEIVER_TYPE))
 			EventsAlarmBroadcastReceiver.completeWakefulIntent(intent);
 		else
@@ -166,5 +167,9 @@ public class EventsService extends IntentService
 		else
 		if (broadcastReceiverType.equals(PhoneCallBroadcastReceiver.BROADCAST_RECEIVER_TYPE))
 			PhoneCallBroadcastReceiver.completeWakefulIntent(intent);
+		else
+		if (broadcastReceiverType.equals(DockConnectionBroadcastReceiver.BROADCAST_RECEIVER_TYPE))
+			DockConnectionBroadcastReceiver.completeWakefulIntent(intent);
 	}
+	
 }

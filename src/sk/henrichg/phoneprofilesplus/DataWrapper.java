@@ -1021,6 +1021,7 @@ public class DataWrapper {
 		boolean timePassed = true;
 		boolean batteryPassed = true;
 		boolean callPassed = true;
+		boolean peripheralPassed = true;
 		
 		boolean isCharging = false;
 		float batteryPct = 100.0f;
@@ -1187,17 +1188,52 @@ public class DataWrapper {
 			else
 				callPassed = false;
 		}
+
+		if (event._eventPreferencesPeripherals._enabled)
+		{
+			if ((event._eventPreferencesPeripherals._peripheralType == EventPreferencesPeripherals.PERIPHERAL_TYPE_DESK_DOCK) ||
+				(event._eventPreferencesPeripherals._peripheralType == EventPreferencesPeripherals.PERIPHERAL_TYPE_CAR_DOCK))
+			{
+				// get dock status
+				IntentFilter ifilter = new IntentFilter(Intent.ACTION_DOCK_EVENT);
+				Intent dockStatus = context.registerReceiver(null, ifilter);
+				
+				int dockState = dockStatus.getIntExtra(Intent.EXTRA_DOCK_STATE, -1);
+				boolean isDocked = dockState != Intent.EXTRA_DOCK_STATE_UNDOCKED;
+				boolean isCar = dockState == Intent.EXTRA_DOCK_STATE_CAR;
+				boolean isDesk = dockState == Intent.EXTRA_DOCK_STATE_DESK || 
+				                 dockState == Intent.EXTRA_DOCK_STATE_LE_DESK ||
+				                 dockState == Intent.EXTRA_DOCK_STATE_HE_DESK;				
+				
+				if (isDocked)
+				{
+					if ((event._eventPreferencesPeripherals._peripheralType == EventPreferencesPeripherals.PERIPHERAL_TYPE_DESK_DOCK) && isDesk)
+						peripheralPassed = true;
+					else
+					if ((event._eventPreferencesPeripherals._peripheralType == EventPreferencesPeripherals.PERIPHERAL_TYPE_CAR_DOCK) && isCar)
+						peripheralPassed = true;
+					else
+						peripheralPassed = false;
+				}
+				else
+				{
+					peripheralPassed = false;
+				}
+				eventStart = eventStart && peripheralPassed;
+			}
+		}
 		
 		GlobalData.logE("DataWrapper.doEventService","timePassed="+timePassed);
 		GlobalData.logE("DataWrapper.doEventService","batteryPassed="+batteryPassed);
 		GlobalData.logE("DataWrapper.doEventService","callPassed="+callPassed);
+		GlobalData.logE("DataWrapper.doEventService","peripheralPassed="+peripheralPassed);
 
 		GlobalData.logE("DataWrapper.doEventService","eventStart="+eventStart);
 		GlobalData.logE("DataWrapper.doEventService","restartEvent="+restartEvent);
 		
 		List<EventTimeline> eventTimelineList = getEventTimelineList();
 		
-		if (timePassed && batteryPassed && callPassed)
+		if (timePassed && batteryPassed && callPassed && peripheralPassed)
 		{
 			// podmienky sedia, vykoname, co treba
 
@@ -1235,7 +1271,7 @@ public class DataWrapper {
 			context.sendBroadcast(refreshIntent);
 		}
 		
-		return (timePassed && batteryPassed && callPassed);
+		return (timePassed && batteryPassed && callPassed && peripheralPassed);
 	}
 	
 	public Profile filterProfileWithBatteryEvents(Profile profile)
