@@ -280,6 +280,12 @@
             </intent-filter>
         </receiver>
 
+		<receiver android:name=".DockConnectionBroadcastReceiver">   
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_DOCK_EVENT" />
+            </intent-filter>
+        </receiver>
+				
     </application>
 
 </manifest>
