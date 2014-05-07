@@ -111,7 +111,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	Integer[] drawerItemsIcon;
 	EditorDrawerListAdapter drawerAdapter;
 	
-	private int drawerSelectedItem = 0;
+	private int drawerSelectedItem = 2;
 	private int orderSelectedItem = 2; // priority
 	private int profilesFilterType = EditorProfileListFragment.FILTER_TYPE_SHOW_IN_ACTIVATOR;
 	private int eventsFilterType = EditorEventListFragment.FILTER_TYPE_ALL;

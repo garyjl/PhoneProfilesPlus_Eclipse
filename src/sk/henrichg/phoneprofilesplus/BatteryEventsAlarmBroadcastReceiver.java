@@ -22,7 +22,7 @@ public class BatteryEventsAlarmBroadcastReceiver extends WakefulBroadcastReceive
 		if (GlobalData.getGlobalEventsRuning(context))
 		{
 			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
-			batteryEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsRunningCount(2) > 0;
+			batteryEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_BATTERY) > 0;
 			dataWrapper.invalidateDataWrapper();
 
 			if (batteryEventsExists)

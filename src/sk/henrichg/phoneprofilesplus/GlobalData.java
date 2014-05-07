@@ -30,20 +30,21 @@ public class GlobalData extends Application {
 
 	static String PACKAGE_NAME;
 	
-	public static boolean logIntoLogCat = false;
+	public static boolean logIntoLogCat = true;
 	public static boolean logIntoFile = false;
-	public static String logFilterTags = "EventPreferencesBattery|"+
+	public static String logFilterTags = //"EventPreferencesBattery|"+
 	                                     //"BatteryEventsAlarmBroadcastReceiver|"+
-			                             //"EventsService|"+
-	                                     //"Event.startEvent|"+
+			                             "EventsService|"+
+	                                     "Event.startEvent|"+
+	                                     "Event.pauseEvent|"+
 	                                     //"PowerConnectionReceiver|"+
 			                             //"RefreshGUIBroadcastReceiver|"+
 	                                     //"DataWrapper.doEventService|"+
-			                             //"EventsAlarmBroadcastReceiver";//|"+
-	                                     "EventPreferencesTime|"+
-										 "DataWrapper.doEventService|"+
-	                                     "DataWrapper.restartEvents|"+
-										 "RestartEventsBroadcastReceiver";
+			                             "EventsAlarmBroadcastReceiver";
+	                                     //"EventPreferencesTime|"+
+										 //"DataWrapper.doEventService|"+
+	                                     //"DataWrapper.restartEvents|"+
+										 //"RestartEventsBroadcastReceiver";
 	
 	public static final String EXPORT_PATH = "/PhoneProfilesPlus";
 	public static final String LOG_FILENAME = "log.txt";

@@ -412,6 +412,7 @@ public class Event {
 				// test whenever event exists in timeline
 				eventTimeline = null;
 				int eventPosition = getEventTimelinePosition(eventTimelineList);
+				GlobalData.logE("Event.startEvent","eventPosition="+eventPosition);
 				if (eventPosition != -1)
 					eventTimeline = eventTimelineList.get(eventPosition);
 				
@@ -511,6 +512,7 @@ public class Event {
 		// test whenever event exists in timeline
 		boolean exists = false;
 		int eventPosition = getEventTimelinePosition(eventTimelineList);
+		GlobalData.logE("Event.pauseEvent","eventPosition="+eventPosition);
 
 		exists = eventPosition != -1;
 		

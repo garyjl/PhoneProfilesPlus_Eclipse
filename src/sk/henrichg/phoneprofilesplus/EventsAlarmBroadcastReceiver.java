@@ -43,7 +43,8 @@ public class EventsAlarmBroadcastReceiver extends WakefulBroadcastReceiver {
 			}
 			*/
 			
-			timeEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsRunningCount(1) > 0;
+			timeEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_TIME) > 0;
+			GlobalData.logE("EventsAlarmBroadcastReceiver.onReceive","timeEventsExists="+timeEventsExists);
 			dataWrapper.invalidateDataWrapper();
 
 			if (timeEventsExists)

@@ -37,6 +37,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	// import/export
 	private final String EXPORT_DBFILENAME = DATABASE_NAME + ".backup";
+
+	// event type
+	public static final int ETYPE_TIME = 1;
+	public static final int ETYPE_BATTERY = 2;
+	public static final int ETYPE_CALL = 3;
 	
 	// Profiles Table Columns names
 	private static final String KEY_ID = "id";
@@ -2315,21 +2320,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 	}
 	
-	public int getTypeEventsRunningCount(int eventType)
+	public int getTypeEventsCount(int eventType)
 	{
 		final String countQuery;
 		String eventTypeChecked = "";
-		if (eventType == 1)
+		if (eventType == ETYPE_TIME)
 			eventTypeChecked = KEY_E_TIME_ENABLED + "=1";
 		else
-		if (eventType == 2)
+		if (eventType == ETYPE_BATTERY)
 			eventTypeChecked = KEY_E_BATTERY_ENABLED + "=1";
 		else
-		if (eventType == 3)
+		if (eventType == ETYPE_CALL)
 			eventTypeChecked = KEY_E_CALL_ENABLED + "=1";
 		countQuery = "SELECT  count(*) FROM " + TABLE_EVENTS + 
-	    		     " WHERE " + KEY_E_STATUS + "=" + Event.ESTATUS_RUNNING +
-	    		       " AND " + eventTypeChecked;
+	    		     " WHERE " + eventTypeChecked;
 
 		//SQLiteDatabase db = this.getReadableDatabase();
 		SQLiteDatabase db = getMyWritableDatabase();

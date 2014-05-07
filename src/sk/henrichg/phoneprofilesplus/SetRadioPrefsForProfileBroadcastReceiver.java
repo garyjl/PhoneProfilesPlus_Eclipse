@@ -3,7 +3,6 @@ package sk.henrichg.phoneprofilesplus;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.WakefulBroadcastReceiver;
-import android.util.Log;
 
 public class SetRadioPrefsForProfileBroadcastReceiver extends WakefulBroadcastReceiver {
 
@@ -12,19 +11,19 @@ public class SetRadioPrefsForProfileBroadcastReceiver extends WakefulBroadcastRe
 	@Override
 	public void onReceive(Context context, Intent intent) {
 
-    	Log.e("SetRadioPrefsForProfileBroadcastReceiver.onReceive","xxx");
+    	//Log.e("SetRadioPrefsForProfileBroadcastReceiver.onReceive","xxx");
     	
 		
 		String action = intent.getAction();
 
-    	Log.e("SetRadioPrefsForProfileBroadcastReceiver.onReceive","action="+action);
+    	//Log.e("SetRadioPrefsForProfileBroadcastReceiver.onReceive","action="+action);
 		
 		if (action.equals (ACTION))
 		{
 			// start service
 			
 			long profileId = intent.getLongExtra(GlobalData.EXTRA_PROFILE_ID, 0);
-	    	Log.e("SetRadioPrefsForProfileBroadcastReceiver.onReceive","profileId="+profileId);
+	    	//Log.e("SetRadioPrefsForProfileBroadcastReceiver.onReceive","profileId="+profileId);
 			if (profileId != 0)
 			{
 				Intent radioServiceIntent = new Intent(context, ExecuteRadioProfilePrefsService.class);

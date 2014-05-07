@@ -35,7 +35,7 @@ public class PhoneCallBroadcastReceiver extends PhoneCallReceiver {
 	{
 		if (GlobalData.getGlobalEventsRuning(savedContext))
 		{
-			boolean callEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsRunningCount(3) > 0;
+			boolean callEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_CALL) > 0;
 			
 			if (callEventsExists)
 			{
