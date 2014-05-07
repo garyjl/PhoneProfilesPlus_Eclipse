@@ -305,22 +305,29 @@
     <string name="menu_restart_events">Ereignisse nachholen</string>
 
     <string name="event_preferences_ForceRun">Force Run</string>
-    <string name="manual_profile_activation_forceRun_title">Activate profile</string>
-    <string name="manual_profile_activation_forceRun_message">Event with option \"Force run\" is running. Activate anyway</string>
-    <string name="restart_events_alert_title">Restart events</string>
-    <string name="restart_events_alert_message">Are you sure</string>
+    
+    <string name="manual_profile_activation_forceRun_title">Profil aktivieren</string>
+    
+    <string name="manual_profile_activation_forceRun_message">Ein Ereignis mit der Eigenschaft \"Force run\" ist aktiv. Trotzdem aktivieren</string>
+    
+    <string name="restart_events_alert_title">Ereignisse neu starten</string>
+    <string name="restart_events_alert_message">Sicher</string>
+    
     <string name="event_preferences_ForceRun_summary">Start event even if manual profile activation block start</string>
+    
     <string name="event_preferences_category_startofevent">Ereignisstart</string>
     <string name="event_preferences_category_endofevent">Ereignisende</string>
-    <string name="event_preferences_undoneProfile">Undone profile</string>
+    <string name="event_preferences_undoneProfile">Vorheriges Profil</string>
+    
     <string name="event_preferences_undoneProfile_summary">Activate before start activated profile</string>
-    <string name="event_prefernce_profile_undone">Undone</string>
-    <string name="event_preferences_priority">Priority</string>
-	<string name="array_event_pref_priorityVeryHigh">Very high</string>    
-	<string name="array_event_pref_priorityHigh">High</string>    
-	<string name="array_event_pref_priorityNormal">Normal</string>    
-	<string name="array_event_pref_priorityLow">Low</string>    
-	<string name="array_event_pref_priorityVeryLow">Very low</string>    
-    <string name="editor_drawer_order_priority">Priority</string>
-    					
+    
+    <string name="event_prefernce_profile_undone">Vorheriges</string>
+    <string name="event_preferences_priority">Priorität</string>
+	<string name="array_event_pref_priorityVeryHigh">Sehr hoch</string>
+	<string name="array_event_pref_priorityHigh">Hoch</string>
+	<string name="array_event_pref_priorityNormal">Normal</string>
+	<string name="array_event_pref_priorityLow">Niedrig</string>
+	<string name="array_event_pref_priorityVeryLow">Sehr niedrig</string>
+    <string name="editor_drawer_order_priority">Priorität</string>    					
+    
 </resources>
