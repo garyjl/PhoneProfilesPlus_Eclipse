@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -25,7 +26,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static SQLiteDatabase writableDb;	
     
 	// Database Version
-	private static final int DATABASE_VERSION = 1080;
+	private static final int DATABASE_VERSION = 1081;
 
 	// Database Name
 	private static final String DATABASE_NAME = "phoneProfilesManager";
@@ -711,6 +712,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			try {
 				db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_PERIPHERAL_ENABLED + "=0");
 				db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_PERIPHERAL_TYPE + "=0");
+				db.setTransactionSuccessful();
+		     } catch (Exception e){
+		         //Error in between database transaction 
+		     } finally {
+		    	db.endTransaction();
+	         }	
+		}
+
+		if (oldVersion < 1081)
+		{
+			// conversion into GMT
+			int gmtOffset = TimeZone.getDefault().getRawOffset();
+			// updatneme zaznamy
+			db.beginTransaction();
+			try {
+				db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_START_TIME + "=" + KEY_E_START_TIME + "+" + gmtOffset);
+				db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_END_TIME + "=" + KEY_E_END_TIME + "+" + gmtOffset);
 				db.setTransactionSuccessful();
 		     } catch (Exception e){
 		         //Error in between database transaction 
@@ -2785,6 +2803,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 							int batteryDetectorType = 0;
 							int eventType = 0;
 							long fkProfileEnd = Event.PROFILE_END_NO_ACTIVATE;
+							long startTime = 0;
+							long endTime = 0;
 							
 							if (cursorExportedDB.moveToFirst()) {
 								do {
@@ -2823,6 +2843,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 												eventType = cursorExportedDB.getInt(i);
 											if (columnNamesExportedDB[i].equals(KEY_E_FK_PROFILE_END))
 												fkProfileEnd = cursorExportedDB.getLong(i);
+											if (columnNamesExportedDB[i].equals(KEY_E_START_TIME))
+												startTime = cursorExportedDB.getLong(i);
+											if (columnNamesExportedDB[i].equals(KEY_E_END_TIME))
+												endTime = cursorExportedDB.getLong(i);
 											
 											//Log.d("DatabaseHandler.importDB", "cn="+columnNames[i]+" val="+cursor.getString(i));
 										}
@@ -2922,6 +2946,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 										{
 											values.put(KEY_E_PERIPHERAL_ENABLED, 0);
 											values.put(KEY_E_PERIPHERAL_TYPE, 0);
+										}
+
+										if (exportedDBObj.getVersion() < 1081)
+										{
+											int gmtOffset = TimeZone.getDefault().getRawOffset();
+											values.put(KEY_E_START_TIME, startTime + gmtOffset);
+											values.put(KEY_E_END_TIME, endTime + gmtOffset);
 										}
 										
 										// Inserting Row do db z SQLiteOpenHelper

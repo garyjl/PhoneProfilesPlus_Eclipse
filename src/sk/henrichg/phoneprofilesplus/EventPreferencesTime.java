@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.TimeZone;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -90,9 +92,12 @@ public class EventPreferencesTime extends EventPreferences {
     	if (this._friday) sValue = sValue + "5|";
     	if (this._saturday) sValue = sValue + "6|";
 		//Log.e("EventPreferencesTime.loadSharedPreferences",sValue);
+
+    	int gmtOffset = TimeZone.getDefault().getRawOffset();
+    	
         editor.putString(PREF_EVENT_TIME_DAYS, sValue);
-        editor.putLong(PREF_EVENT_TIME_START_TIME, this._startTime);
-        editor.putLong(PREF_EVENT_TIME_END_TIME, this._endTime);
+        editor.putLong(PREF_EVENT_TIME_START_TIME, this._startTime - gmtOffset);
+        editor.putLong(PREF_EVENT_TIME_END_TIME, this._endTime - gmtOffset);
         editor.putBoolean(PREF_EVENT_TIME_USE_END_TIME, this._useEndTime);
 		editor.commit();
 	}
@@ -135,8 +140,11 @@ public class EventPreferencesTime extends EventPreferences {
 				this._saturday = this._saturday || value.equals("6");
 			}
 		}
-		this._startTime = preferences.getLong(PREF_EVENT_TIME_START_TIME, System.currentTimeMillis());
-		this._endTime = preferences.getLong(PREF_EVENT_TIME_END_TIME, System.currentTimeMillis());
+		
+		int gmtOffset = TimeZone.getDefault().getRawOffset();
+		
+		this._startTime = preferences.getLong(PREF_EVENT_TIME_START_TIME, System.currentTimeMillis()) + gmtOffset;
+		this._endTime = preferences.getLong(PREF_EVENT_TIME_END_TIME, System.currentTimeMillis()) + gmtOffset;
 		this._useEndTime = preferences.getBoolean(PREF_EVENT_TIME_USE_END_TIME, false);
 	}
 	
@@ -180,15 +188,17 @@ public class EventPreferencesTime extends EventPreferences {
 		    			descr = descr + namesOfDay[dayOfWeek+1] + " ";
 		    	}
 	    	}
+	
+	    	int gmtOffset = TimeZone.getDefault().getRawOffset();
 	    	
 	        Calendar calendar = Calendar.getInstance();
 	
-	        calendar.setTimeInMillis(this._startTime);
+	        calendar.setTimeInMillis(this._startTime - gmtOffset);
 			descr = descr + "- ";
 			descr = descr + DateFormat.getTimeFormat(context).format(new Date(calendar.getTimeInMillis()));
 			if (this._useEndTime)
 			{
-		        calendar.setTimeInMillis(this._endTime);
+		        calendar.setTimeInMillis(this._endTime - gmtOffset);
 				descr = descr + "-";
 				descr = descr + DateFormat.getTimeFormat(context).format(new Date(calendar.getTimeInMillis()));
 			}
@@ -284,17 +294,19 @@ public class EventPreferencesTime extends EventPreferences {
 		///// set calendar for startTime and endTime
 		Calendar calStartTime = Calendar.getInstance();
 		Calendar calEndTime = Calendar.getInstance();
+
+		int gmtOffset = TimeZone.getDefault().getRawOffset();
 		
-		calStartTime.setTimeInMillis(_startTime);
+		calStartTime.setTimeInMillis(_startTime - gmtOffset);
 		calStartTime.set(Calendar.DAY_OF_MONTH, now.get(Calendar.DAY_OF_MONTH));
 		calStartTime.set(Calendar.MONTH, now.get(Calendar.MONTH)); 
 		calStartTime.set(Calendar.YEAR,  now.get(Calendar.YEAR));
 		calStartTime.set(Calendar.SECOND, 0);
 		calStartTime.set(Calendar.MILLISECOND, 0);
 
-		long computedEndTime = _endTime;
+		long computedEndTime = _endTime - gmtOffset;
 		if (!_useEndTime)
-			computedEndTime = _startTime + (5 * 1000);
+			computedEndTime = (_startTime - gmtOffset) + (5 * 1000);
 		calEndTime.setTimeInMillis(computedEndTime);
 		calEndTime.set(Calendar.DAY_OF_MONTH, now.get(Calendar.DAY_OF_MONTH));
 		calEndTime.set(Calendar.MONTH, now.get(Calendar.MONTH)); 

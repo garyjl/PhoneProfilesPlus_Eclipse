@@ -41,7 +41,7 @@ public class GlobalData extends Application {
 			                             //"RefreshGUIBroadcastReceiver|"+
 	                                     //"DataWrapper.doEventService|"+
 			                             //"EventsAlarmBroadcastReceiver";
-	                                     //"EventPreferencesTime|"+
+	                                     //"EventPreferencesTime";
 										 //"DataWrapper.doEventService|"+
 	                                     //"DataWrapper.restartEvents|"+
 										 //"RestartEventsBroadcastReceiver";
