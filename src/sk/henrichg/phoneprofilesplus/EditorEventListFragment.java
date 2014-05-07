@@ -221,7 +221,7 @@ public class EditorEventListFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... params) {
         	List<Event> eventList = dataWrapper.getEventList();
-        	Log.e("EditorEventListFragment.LoadEventListAsyncTask.doInBackground","orderType="+orderType);
+        	//Log.e("EditorEventListFragment.LoadEventListAsyncTask.doInBackground","orderType="+orderType);
         	EditorEventListFragment.sortList(eventList, orderType, dataWrapper);
 			dataWrapper.getProfileList();
 
