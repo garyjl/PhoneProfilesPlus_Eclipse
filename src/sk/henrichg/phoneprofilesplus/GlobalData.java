@@ -31,16 +31,16 @@ public class GlobalData extends Application {
 	static String PACKAGE_NAME;
 	
 	public static boolean logIntoLogCat = true;
-	public static boolean logIntoFile = false;
+	public static boolean logIntoFile = true;
 	public static String logFilterTags = //"EventPreferencesBattery|"+
 	                                     //"BatteryEventsAlarmBroadcastReceiver|"+
-			                             "EventsService|"+
+			                             //"EventsService|"+
 	                                     "Event.startEvent|"+
-	                                     "Event.pauseEvent|"+
+	                                     "Event.pauseEvent";
 	                                     //"PowerConnectionReceiver|"+
 			                             //"RefreshGUIBroadcastReceiver|"+
 	                                     //"DataWrapper.doEventService|"+
-			                             "EventsAlarmBroadcastReceiver";
+			                             //"EventsAlarmBroadcastReceiver";
 	                                     //"EventPreferencesTime|"+
 										 //"DataWrapper.doEventService|"+
 	                                     //"DataWrapper.restartEvents|"+

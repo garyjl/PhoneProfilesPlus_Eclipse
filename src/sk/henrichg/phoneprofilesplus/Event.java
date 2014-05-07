@@ -566,6 +566,7 @@ public class Event {
 						if (eventTimeline._fkProfileEndActivated != activatedProfileId)
 						{
 							GlobalData.logE("Event.pauseEvent","undone profile");
+							GlobalData.logE("Event.pauseEvent","_fkProfileEndActivated="+eventTimeline._fkProfileEndActivated);
 							if (eventTimeline._fkProfileEndActivated != 0)
 								dataWrapper.activateProfileFromEvent(eventTimeline._fkProfileEndActivated, "");
 						}
