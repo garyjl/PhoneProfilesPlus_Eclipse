@@ -310,12 +310,12 @@
     <string name="event_preferences_eventProfileEnd">Activate profile</string>
     <string name="menu_restart_events">Restart events</string>  
       
-    <string name="event_preferences_ForceRun">Force Run</string>
+    <string name="event_preferences_ForceRun">Ignore manual activation</string>
     <string name="manual_profile_activation_forceRun_title">Activate profile</string>
-    <string name="manual_profile_activation_forceRun_message">Event with option \"Force run\" is running. Activate anyway</string>
+    <string name="manual_profile_activation_forceRun_message">Event with option \"Ignore manual activation\" is running. Activate anyway</string>
     <string name="restart_events_alert_title">Restart events</string>
     <string name="restart_events_alert_message">Are you sure</string>
-    <string name="event_preferences_ForceRun_summary">Start event even if manual profile activation block start</string>
+    <string name="event_preferences_ForceRun_summary">Start event even after manually activated profile</string>
     <string name="event_preferences_category_startofevent">Start of event</string>
     <string name="event_preferences_category_endofevent">End of event</string>
     <string name="event_preferences_undoneProfile">Undone profile</string>

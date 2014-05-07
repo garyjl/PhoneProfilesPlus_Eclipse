@@ -304,16 +304,16 @@
     <string name="event_references_eventProfileEnd">Profil aktivieren</string>
     <string name="menu_restart_events">Ereignisse nachholen</string>
 
-    <string name="event_preferences_ForceRun">Force Run</string>
+    <string name="event_preferences_ForceRun">Ignore manual activation</string>
     
     <string name="manual_profile_activation_forceRun_title">Profil aktivieren</string>
     
-    <string name="manual_profile_activation_forceRun_message">Ein Ereignis mit der Eigenschaft \"Force run\" ist aktiv. Trotzdem aktivieren</string>
+    <string name="manual_profile_activation_forceRun_message">Ein Ereignis mit der Eigenschaft \"Ignore manual activation\" ist aktiv. Trotzdem aktivieren</string>
     
     <string name="restart_events_alert_title">Ereignisse neu starten</string>
     <string name="restart_events_alert_message">Sicher</string>
     
-    <string name="event_preferences_ForceRun_summary">Start event even if manual profile activation block start</string>
+    <string name="event_preferences_ForceRun_summary">Start event even after manually activated profile</string>
     
     <string name="event_preferences_category_startofevent">Ereignisstart</string>
     <string name="event_preferences_category_endofevent">Ereignisende</string>
