@@ -35,7 +35,6 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 					dataWrapper.firstStartEvents(true, false);
 				else
 				{
-					BatteryEventsAlarmBroadcastReceiver.removeAlarm(context);
 					if (GlobalData.applicationActivate)
 					{
 						Profile profile = dataWrapper.getDatabaseHandler().getActivatedProfile();

@@ -45,8 +45,6 @@ public class LauncherActivity extends Activity {
 				// startneme eventy
 				if (GlobalData.getGlobalEventsRuning(getBaseContext()))
 					dataWrapper.firstStartEvents(true, false);
-				else
-					BatteryEventsAlarmBroadcastReceiver.removeAlarm(getBaseContext());
 				
 				// mozeme aktivovat profil, ak je nastavene, ze sa tak ma stat 
 				if (GlobalData.applicationActivate)

@@ -622,7 +622,6 @@ public class DataWrapper {
 			if (event.getStatusFromDB(this) != Event.ESTATUS_STOP)
 				event.stopEvent(this, eventTimelineList, false, true, saveEventStatus);
 		}
-		BatteryEventsAlarmBroadcastReceiver.removeAlarm(context);
 	}
 
 	public void unlinkEventsFromProfile(Profile profile)
@@ -659,8 +658,6 @@ public class DataWrapper {
 		}
 		
 		GlobalData.setForceRunEventRunning(context, false);
-		
-		BatteryEventsAlarmBroadcastReceiver.removeAlarm(context);
 		
 		//getDatabaseHandler().updateAllEventsStatus(Event.ESTATUS_RUNNING, Event.ESTATUS_PAUSE);
 		

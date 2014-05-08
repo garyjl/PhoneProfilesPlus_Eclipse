@@ -544,7 +544,6 @@ public class EditorProfilesActivity extends ActionBarActivity
 				// no setup for next start
 				dataWrapper.pauseAllEvents(true, false);
 				GlobalData.setGlobalEventsRuning(getBaseContext(), false);
-				BatteryEventsAlarmBroadcastReceiver.removeAlarm(getBaseContext());
 			}
 			else
 			{
@@ -1092,8 +1091,6 @@ public class EditorProfilesActivity extends ActionBarActivity
 						intent.setAction(RestartEventsBroadcastReceiver.INTENT_RESTART_EVENTS);
 						getBaseContext().sendBroadcast(intent);
 					}
-					else
-						BatteryEventsAlarmBroadcastReceiver.removeAlarm(getBaseContext());
 					
 					// refresh activity
 					GUIData.reloadActivity(activity, true);

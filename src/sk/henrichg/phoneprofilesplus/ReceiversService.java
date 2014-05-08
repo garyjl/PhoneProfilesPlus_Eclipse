@@ -7,19 +7,25 @@ import android.os.IBinder;
 
 public class ReceiversService extends Service {
 
+	private final BatteryEventBroadcastReceiver batteryEventReceiver = new BatteryEventBroadcastReceiver();
 	private final HeadsetConnectionBroadcastReceiver headsetPlugReceiver = new HeadsetConnectionBroadcastReceiver();
 	
 	@Override
     public void onCreate()
 	{
-		IntentFilter intentFilter = new IntentFilter();
-		intentFilter.addAction(Intent.ACTION_HEADSET_PLUG);
-		registerReceiver(headsetPlugReceiver, intentFilter);
+		IntentFilter intentFilter1 = new IntentFilter();
+		intentFilter1.addAction(Intent.ACTION_BATTERY_CHANGED);
+		registerReceiver(batteryEventReceiver, intentFilter1);
+		
+		IntentFilter intentFilter2 = new IntentFilter();
+		intentFilter2.addAction(Intent.ACTION_HEADSET_PLUG);
+		registerReceiver(headsetPlugReceiver, intentFilter2);
 	}
 	 
 	@Override
     public void onDestroy()
 	{
+		unregisterReceiver(batteryEventReceiver);
 		unregisterReceiver(headsetPlugReceiver);
     }
 	 

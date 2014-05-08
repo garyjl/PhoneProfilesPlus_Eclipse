@@ -214,61 +214,16 @@ public class EventPreferencesBattery extends EventPreferences {
 	@Override
 	public void setSystemRunningEvent(Context context)
 	{
-		// set alarm for state PAUSE
-		
-		if (!(isRunable() && _enabled)) 
-			return;
-		
-		setAlarm(context);
 	}
 
 	@Override
 	public void setSystemPauseEvent(Context context)
 	{
-		// set alarm for state RUNNING
-
-		if (!(isRunable() && _enabled)) 
-			return;
-		
-		setAlarm(context);
 	}
 	
 	@Override
 	public void removeSystemEvent(Context context)
 	{
-	}
-
-	private boolean isAlarmSet(Context context)
-	{
-		Intent intent = new Intent(context, BatteryEventsAlarmBroadcastReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), 0, intent, PendingIntent.FLAG_NO_CREATE);
-		return (pendingIntent != null);
-	}
-	
-	private void setAlarm(Context context)
-	{
-		GlobalData.logE("EventPreferencesBattery.setAlarm","xxx");
-		
-		if (!isAlarmSet(context))
-		{
-			GlobalData.logE("EventPreferencesBattery.setAlarm","set");
-
-			AlarmManager alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-			
-			Intent intent = new Intent(context, BatteryEventsAlarmBroadcastReceiver.class);
-			
-			/*
-			Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(System.currentTimeMillis());
-            calendar.add(Calendar.SECOND, 10);
-            */
-            
-			PendingIntent alarmIntent = PendingIntent.getBroadcast(context.getApplicationContext(), 0, intent, 0);
-			alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-											5 * 1000,
-											AlarmManager.INTERVAL_FIFTEEN_MINUTES,
-											alarmIntent);
-		}
 	}
 
 }
