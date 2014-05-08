@@ -13,9 +13,6 @@ public class EventsService extends IntentService
 	DataWrapper dataWrapper;
 	String broadcastReceiverType;
 	
-	public static int callEventType = PhoneCallBroadcastReceiver.CALL_EVENT_UNDEFINED;
-	public static String phoneNumber = "";
-	
 	public EventsService() {
 		super("EventsService");
 	}
@@ -51,10 +48,6 @@ public class EventsService extends IntentService
 		long event_id = intent.getLongExtra(GlobalData.EXTRA_EVENT_ID, 0L);
 		GlobalData.logE("EventsService.onHandleIntent","event_id="+event_id);
 		Event event = dataWrapper.getEventById(event_id);
-		
-		// in intnet are phone call parameters
-		callEventType = intent.getIntExtra(GlobalData.EXTRA_EVENT_CALL_EVENT_TYPE, PhoneCallBroadcastReceiver.CALL_EVENT_UNDEFINED);
-		phoneNumber = intent.getStringExtra(GlobalData.EXTRA_EVENT_CALL_PHONE_NUMBER);
 		
 		if (event == null)
 		{
@@ -170,6 +163,9 @@ public class EventsService extends IntentService
 		else
 		if (broadcastReceiverType.equals(DockConnectionBroadcastReceiver.BROADCAST_RECEIVER_TYPE))
 			DockConnectionBroadcastReceiver.completeWakefulIntent(intent);
+		else
+		if (broadcastReceiverType.equals(HeadsetConnectionBroadcastReceiver.BROADCAST_RECEIVER_TYPE))
+			HeadsetConnectionBroadcastReceiver.completeWakefulIntent(intent);
 	}
 	
 }

@@ -11,6 +11,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.media.AudioManager;
 import android.os.BatteryManager;
@@ -1094,7 +1096,11 @@ public class DataWrapper {
 
 		if (event._eventPreferencesCall._enabled)
 		{
-			if (EventsService.callEventType != PhoneCallBroadcastReceiver.CALL_EVENT_UNDEFINED)
+			SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+			int callEventType = preferences.getInt(GlobalData.PREF_EVENT_CALL_EVENT_TYPE, PhoneCallBroadcastReceiver.CALL_EVENT_UNDEFINED);
+			String phoneNumber = preferences.getString(GlobalData.PREF_EVENT_CALL_PHONE_NUMBER, "");
+			
+			if (callEventType != PhoneCallBroadcastReceiver.CALL_EVENT_UNDEFINED)
 			{
 				if (event._eventPreferencesCall._contactListType != EventPreferencesCall.CONTACT_LIST_TYPE_NOT_USE)
 				{
@@ -1119,10 +1125,10 @@ public class DataWrapper {
 								Cursor phones = context.getContentResolver().query( ContactsContract.CommonDataKinds.Phone.CONTENT_URI, projection2, selection2, selection2Args, null);
 								while (phones.moveToNext()) 
 								{
-									String phoneNumber = phones.getString(phones.getColumnIndex( ContactsContract.CommonDataKinds.Phone.NUMBER));
+									String _phoneNumber = phones.getString(phones.getColumnIndex( ContactsContract.CommonDataKinds.Phone.NUMBER));
+									//Log.e("DataWrapper.doEventService","_phoneNumber="+_phoneNumber);
 									//Log.e("DataWrapper.doEventService","phoneNumber="+phoneNumber);
-									//Log.e("DataWrapper.doEventService","EventsService.phoneNumber="+EventsService.phoneNumber);
-									if (PhoneNumberUtils.compare(phoneNumber, EventsService.phoneNumber))
+									if (PhoneNumberUtils.compare(_phoneNumber, phoneNumber))
 									{
 										phoneNumberFinded = true;
 										break;
@@ -1150,7 +1156,7 @@ public class DataWrapper {
 				{
 					if (event._eventPreferencesCall._callEvent == EventPreferencesCall.CALL_EVENT_RINGING)
 					{
-						if (EventsService.callEventType == PhoneCallBroadcastReceiver.CALL_EVENT_INCOMING_CALL_RINGING)
+						if (callEventType == PhoneCallBroadcastReceiver.CALL_EVENT_INCOMING_CALL_RINGING)
 							eventStart = eventStart && true;
 						else
 							callPassed = false;
@@ -1158,7 +1164,7 @@ public class DataWrapper {
 					else
 					if (event._eventPreferencesCall._callEvent == EventPreferencesCall.CALL_EVENT_INCOMING_CALL_ANSWERED)
 					{
-						if (EventsService.callEventType == PhoneCallBroadcastReceiver.CALL_EVENT_INCOMING_CALL_ANSWERED)
+						if (callEventType == PhoneCallBroadcastReceiver.CALL_EVENT_INCOMING_CALL_ANSWERED)
 							eventStart = eventStart && true;
 						else	
 							callPassed = false;
@@ -1166,19 +1172,21 @@ public class DataWrapper {
 					else
 					if (event._eventPreferencesCall._callEvent == EventPreferencesCall.CALL_EVENT_OUTGOING_CALL_STARTED)
 					{
-						if (EventsService.callEventType == PhoneCallBroadcastReceiver.CALL_EVENT_OUTGOING_CALL_STARTED)
+						if (callEventType == PhoneCallBroadcastReceiver.CALL_EVENT_OUTGOING_CALL_STARTED)
 							eventStart = eventStart && true;
 						else
 							callPassed = false;
 					}
 					
-					if ((EventsService.callEventType == PhoneCallBroadcastReceiver.CALL_EVENT_INCOMING_CALL_ENDED) ||
-						(EventsService.callEventType == PhoneCallBroadcastReceiver.CALL_EVENT_OUTGOING_CALL_ENDED))
+					if ((callEventType == PhoneCallBroadcastReceiver.CALL_EVENT_INCOMING_CALL_ENDED) ||
+						(callEventType == PhoneCallBroadcastReceiver.CALL_EVENT_OUTGOING_CALL_ENDED))
 					{
 						callPassed = true;
 						eventStart = eventStart && false;
-						EventsService.callEventType = PhoneCallBroadcastReceiver.CALL_EVENT_UNDEFINED;
-						EventsService.phoneNumber = "";
+						Editor editor = preferences.edit();
+						editor.putInt(GlobalData.PREF_EVENT_CALL_EVENT_TYPE, PhoneCallBroadcastReceiver.CALL_EVENT_UNDEFINED);
+						editor.putString(GlobalData.PREF_EVENT_CALL_PHONE_NUMBER, "");
+						editor.commit();
 					}
 				}
 				else
@@ -1207,18 +1215,42 @@ public class DataWrapper {
 				
 				if (isDocked)
 				{
-					if ((event._eventPreferencesPeripherals._peripheralType == EventPreferencesPeripherals.PERIPHERAL_TYPE_DESK_DOCK) && isDesk)
+					if ((event._eventPreferencesPeripherals._peripheralType == EventPreferencesPeripherals.PERIPHERAL_TYPE_DESK_DOCK) 
+							&& isDesk)
 						peripheralPassed = true;
 					else
-					if ((event._eventPreferencesPeripherals._peripheralType == EventPreferencesPeripherals.PERIPHERAL_TYPE_CAR_DOCK) && isCar)
+					if ((event._eventPreferencesPeripherals._peripheralType == EventPreferencesPeripherals.PERIPHERAL_TYPE_CAR_DOCK) 
+							&& isCar)
 						peripheralPassed = true;
 					else
 						peripheralPassed = false;
 				}
 				else
-				{
 					peripheralPassed = false;
+				eventStart = eventStart && peripheralPassed;
+			}
+			else
+			if ((event._eventPreferencesPeripherals._peripheralType == EventPreferencesPeripherals.PERIPHERAL_TYPE_HEADSET) ||
+				(event._eventPreferencesPeripherals._peripheralType == EventPreferencesPeripherals.PERIPHERAL_TYPE_HEADPHONES))
+			{
+				SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+				boolean headsetConnected = preferences.getBoolean(GlobalData.PREF_EVENT_HEADSET_CONNECTED, false);
+				boolean headsetMicrophone = preferences.getBoolean(GlobalData.PREF_EVENT_HEADSET_MICROPHONE, false);
+				
+				if (headsetConnected)
+				{
+					if ((event._eventPreferencesPeripherals._peripheralType == EventPreferencesPeripherals.PERIPHERAL_TYPE_HEADSET) 
+							&& headsetMicrophone)
+						peripheralPassed = true;
+					else
+					if ((event._eventPreferencesPeripherals._peripheralType == EventPreferencesPeripherals.PERIPHERAL_TYPE_HEADPHONES)
+							&& (!headsetMicrophone))
+						peripheralPassed = true;
+					else
+						peripheralPassed = false;
 				}
+				else
+					peripheralPassed = false;
 				eventStart = eventStart && peripheralPassed;
 			}
 		}

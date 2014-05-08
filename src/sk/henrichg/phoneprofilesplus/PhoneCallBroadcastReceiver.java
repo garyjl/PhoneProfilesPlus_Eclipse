@@ -3,6 +3,8 @@ package sk.henrichg.phoneprofilesplus;
 import java.util.Date;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.media.AudioManager;
 
 public class PhoneCallBroadcastReceiver extends PhoneCallReceiver {
@@ -39,11 +41,15 @@ public class PhoneCallBroadcastReceiver extends PhoneCallReceiver {
 			
 			if (callEventsExists)
 			{
+				SharedPreferences preferences = savedContext.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+				Editor editor = preferences.edit();
+				editor.putInt(GlobalData.PREF_EVENT_CALL_EVENT_TYPE, eventType);
+				editor.putString(GlobalData.PREF_EVENT_CALL_PHONE_NUMBER, phoneNumber);
+				editor.commit();
+				
 				// start service
 				Intent eventsServiceIntent = new Intent(savedContext, EventsService.class);
 				eventsServiceIntent.putExtra(GlobalData.EXTRA_EVENT_ID, 0L);
-				eventsServiceIntent.putExtra(GlobalData.EXTRA_EVENT_CALL_EVENT_TYPE, eventType);
-				eventsServiceIntent.putExtra(GlobalData.EXTRA_EVENT_CALL_PHONE_NUMBER, phoneNumber);
 				eventsServiceIntent.putExtra(GlobalData.EXTRA_BROADCAST_RECEIVER_TYPE, BROADCAST_RECEIVER_TYPE);
 				startWakefulService(savedContext, eventsServiceIntent);
 			}

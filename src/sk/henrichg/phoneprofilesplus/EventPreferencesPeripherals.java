@@ -15,6 +15,8 @@ public class EventPreferencesPeripherals extends EventPreferences {
 	
 	static final int PERIPHERAL_TYPE_DESK_DOCK = 0;
 	static final int PERIPHERAL_TYPE_CAR_DOCK = 1;
+	static final int PERIPHERAL_TYPE_HEADSET = 2;
+	static final int PERIPHERAL_TYPE_HEADPHONES = 3;
 	
 	public EventPreferencesPeripherals(Event event, 
 									boolean enabled,

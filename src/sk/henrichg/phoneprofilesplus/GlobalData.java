@@ -36,7 +36,8 @@ public class GlobalData extends Application {
 	                                     //"BatteryEventsAlarmBroadcastReceiver|"+
 			                             //"EventsService|"+
 	                                     "Event.startEvent|"+
-	                                     "Event.pauseEvent";
+	                                     "Event.pauseEvent|"+
+										 "HeadsetConnectionBroadcastReceiver";
 	                                     //"PowerConnectionReceiver|"+
 			                             //"RefreshGUIBroadcastReceiver|"+
 	                                     //"DataWrapper.doEventService|"+
@@ -60,8 +61,6 @@ public class GlobalData extends Application {
 	static final String EXTRA_SECOND_SET_VOLUMES = "second_set_volumes";
 	static final String EXTRA_EVENT_NOTIFICATION_SOUND = "event_notification_sound";
 	static final String EXTRA_BROADCAST_RECEIVER_TYPE = "broadcast_receiver_type";
-	static final String EXTRA_EVENT_CALL_EVENT_TYPE = "event_call_event_type";
-	static final String EXTRA_EVENT_CALL_PHONE_NUMBER = "event_call_phone_number";
 
 	static final int STARTUP_SOURCE_NOTIFICATION = 1;
 	static final int STARTUP_SOURCE_WIDGET = 2;
@@ -172,6 +171,11 @@ public class GlobalData extends Application {
 	private static final String PREF_APPLICATION_STARTED = "applicationStarted";
 	private static final String PREF_EVENTS_BLOCKED = "eventsBlocked";
 	private static final String PREF_FORCE_RUN_EVENT_RUNNING = "forceRunEventRunning";
+
+	static final String PREF_EVENT_CALL_EVENT_TYPE = "eventCallEventType";
+	static final String PREF_EVENT_CALL_PHONE_NUMBER = "eventCallPhoneNumber";
+	static final String PREF_EVENT_HEADSET_CONNECTED = "eventHeadsetConnected";
+	static final String PREF_EVENT_HEADSET_MICROPHONE = "eventHeadsetMicrophone";
 	
     public static boolean applicationStartOnBoot;
     public static boolean applicationActivate;

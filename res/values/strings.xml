@@ -335,5 +335,7 @@
     <string name="event_preferences_category_eventPeripheralParameters">Accessories parameters</string>
     <string name="event_preferences_peripheral_enabled">Enable accessories</string>
     <string name="event_preferences_peripheral_type">Accessories type</string>
+    <string name="array_event_pref_peripheralType_headset">Handsfree</string>
+    <string name="array_event_pref_peripheralType_headphones">Headphones</string>
     	
 </resources>
