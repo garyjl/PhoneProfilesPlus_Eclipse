@@ -228,7 +228,7 @@
 	   	
 	    <service android:name=".ExecuteRadioProfilePrefsService">
         </service>
-        <receiver android:name=".SetRadioPrefsForProfileBroadcastReceiver" 
+	    <receiver android:name=".SetRadioPrefsForProfileBroadcastReceiver" 
             android:enabled="true"> 
  			<intent-filter android:priority="1000" > 
                	<action android:name="sk.henrichg.phoneprofilesplus.SetRadiosForProfile.ACTION" />
@@ -238,6 +238,9 @@
 	    <service android:name=".ExecuteVolumeProfilePrefsService">
         </service>
 
+	    <service android:name=".ReceiversService">
+        </service>
+	    	    
 	    <receiver android:name=".RestartEventsBroadcastReceiver"
 	        android:enabled="true"
 	        android:exported="false" >
@@ -246,7 +249,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
    	      	</intent-filter>
 	   	</receiver>
-	    
 	    <service android:name=".EventsService">
         </service>
         <receiver android:name=".EventsAlarmBroadcastReceiver"
@@ -263,7 +265,6 @@
 			    <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
 		  	</intent-filter>
 		</receiver>
-        
 	    <receiver android:name=".RefreshGUIBroadcastReceiver"
 	        android:enabled="true"
 	        android:exported="false" >
@@ -272,25 +273,17 @@
                 <category android:name="android.intent.category.DEFAULT" />
    	      	</intent-filter>
 	   	</receiver>
-	   	
 		<receiver android:name=".PhoneCallBroadcastReceiver">   
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
                 <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
             </intent-filter>
         </receiver>
-
 		<receiver android:name=".DockConnectionBroadcastReceiver">   
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_DOCK_EVENT" />
             </intent-filter>
         </receiver>
-
-		<receiver android:name=".HeadsetConnectionBroadcastReceiver">
-		    <intent-filter>
-		        <action android:name="android.intent.action.HEADSET_PLUG"/>
-		    </intent-filter>
-		</receiver>		
 
 	</application>
 

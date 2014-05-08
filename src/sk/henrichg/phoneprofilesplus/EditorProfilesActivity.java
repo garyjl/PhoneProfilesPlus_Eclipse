@@ -600,6 +600,8 @@ public class EditorProfilesActivity extends ActionBarActivity
 			// zrusenie notifikacie
 			getDataWrapper().getActivateProfileHelper().removeNotification();
 			
+			stopService(new Intent(getApplicationContext(), ReceiversService.class));
+			
 			finish();
 
 			return true;

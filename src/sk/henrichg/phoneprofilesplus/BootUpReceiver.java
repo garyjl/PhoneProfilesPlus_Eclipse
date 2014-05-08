@@ -26,6 +26,8 @@ public class BootUpReceiver extends BroadcastReceiver {
 
 			// start PPHelper
 			PhoneProfilesHelper.startPPHelper(context);
+			// start ReceiverService
+			context.startService(new Intent(context.getApplicationContext(), ReceiversService.class));
 			
 			DataWrapper dataWrapper = new DataWrapper(context, true, false, 0);
 			dataWrapper.getActivateProfileHelper().initialize(dataWrapper, null, context);
