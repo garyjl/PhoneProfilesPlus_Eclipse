@@ -229,7 +229,8 @@
 	    <service android:name=".ExecuteRadioProfilePrefsService">
         </service>
 	    <receiver android:name=".SetRadioPrefsForProfileBroadcastReceiver" 
-            android:enabled="true"> 
+            android:enabled="true"
+	        android:exported="false"> 
  			<intent-filter android:priority="1000" > 
                	<action android:name="sk.henrichg.phoneprofilesplus.SetRadiosForProfile.ACTION" />
             </intent-filter> 
@@ -252,10 +253,6 @@
 	    <service android:name=".EventsService">
         </service>
         <receiver android:name=".EventsAlarmBroadcastReceiver"
-	        android:enabled="true" 
-	        android:exported="false">
-        </receiver>
-        <receiver android:name=".BatteryEventsAlarmBroadcastReceiver"
 	        android:enabled="true" 
 	        android:exported="false">
         </receiver>
