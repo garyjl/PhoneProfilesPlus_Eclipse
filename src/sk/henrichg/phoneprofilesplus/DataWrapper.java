@@ -1227,17 +1227,23 @@ public class DataWrapper {
 				eventStart = eventStart && peripheralPassed;
 			}
 			else
-			if ((event._eventPreferencesPeripherals._peripheralType == EventPreferencesPeripherals.PERIPHERAL_TYPE_HEADSET) ||
+			if ((event._eventPreferencesPeripherals._peripheralType == EventPreferencesPeripherals.PERIPHERAL_TYPE_WIRED_HEADSET) ||
+				(event._eventPreferencesPeripherals._peripheralType == EventPreferencesPeripherals.PERIPHERAL_TYPE_BLUETOOTH_HEADSET) ||
 				(event._eventPreferencesPeripherals._peripheralType == EventPreferencesPeripherals.PERIPHERAL_TYPE_HEADPHONES))
 			{
 				SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
 				boolean headsetConnected = preferences.getBoolean(GlobalData.PREF_EVENT_HEADSET_CONNECTED, false);
 				boolean headsetMicrophone = preferences.getBoolean(GlobalData.PREF_EVENT_HEADSET_MICROPHONE, false);
+				boolean bluetoothHeadset = preferences.getBoolean(GlobalData.PREF_EVENT_HEADSET_BLUETOOTH, false);
 				
 				if (headsetConnected)
 				{
-					if ((event._eventPreferencesPeripherals._peripheralType == EventPreferencesPeripherals.PERIPHERAL_TYPE_HEADSET) 
-							&& headsetMicrophone)
+					if ((event._eventPreferencesPeripherals._peripheralType == EventPreferencesPeripherals.PERIPHERAL_TYPE_WIRED_HEADSET) 
+							&& headsetMicrophone && (!bluetoothHeadset))
+						peripheralPassed = true;
+					else
+					if ((event._eventPreferencesPeripherals._peripheralType == EventPreferencesPeripherals.PERIPHERAL_TYPE_BLUETOOTH_HEADSET) 
+							&& headsetMicrophone && bluetoothHeadset)
 						peripheralPassed = true;
 					else
 					if ((event._eventPreferencesPeripherals._peripheralType == EventPreferencesPeripherals.PERIPHERAL_TYPE_HEADPHONES)

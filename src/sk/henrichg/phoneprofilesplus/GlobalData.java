@@ -176,6 +176,7 @@ public class GlobalData extends Application {
 	static final String PREF_EVENT_CALL_PHONE_NUMBER = "eventCallPhoneNumber";
 	static final String PREF_EVENT_HEADSET_CONNECTED = "eventHeadsetConnected";
 	static final String PREF_EVENT_HEADSET_MICROPHONE = "eventHeadsetMicrophone";
+	static final String PREF_EVENT_HEADSET_BLUETOOTH = "eventHeadsetBluetooth";
 	
     public static boolean applicationStartOnBoot;
     public static boolean applicationActivate;

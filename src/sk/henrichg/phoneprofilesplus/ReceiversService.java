@@ -18,7 +18,9 @@ public class ReceiversService extends Service {
 		registerReceiver(batteryEventReceiver, intentFilter1);
 		
 		IntentFilter intentFilter2 = new IntentFilter();
-		intentFilter2.addAction(Intent.ACTION_HEADSET_PLUG);
+		for (String action: HeadsetConnectionBroadcastReceiver.HEADPHONE_ACTIONS) {
+			intentFilter2.addAction(action);
+        }		
 		registerReceiver(headsetPlugReceiver, intentFilter2);
 	}
 	 

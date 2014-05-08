@@ -332,6 +332,8 @@
     <string name="event_preferences_peripheral_enabled">Použi príslušenstvo</string>
     <string name="event_preferences_peripheral_type">Typ príslušenstva</string>
     <string name="array_event_pref_peripheralType_headset">Handsfree</string>
+    <string name="array_event_pref_peripheralType_wired_headset">Drôtové handsfree</string>
+    <string name="array_event_pref_peripheralType_bluetooth_headset">Bluetooth handsfree</string>
     <string name="array_event_pref_peripheralType_headphones">Slúchadlá</string>
     	
 </resources>
