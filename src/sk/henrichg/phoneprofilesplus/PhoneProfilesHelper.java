@@ -220,7 +220,7 @@ public class PhoneProfilesHelper {
 		
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
 		dialogBuilder.setTitle(activity.getResources().getString(R.string.phoneprofilehepler_install_title));
-		dialogBuilder.setMessage(activity.getResources().getString(R.string.phoneprofilehepler_install_message) + "?");
+		dialogBuilder.setMessage(activity.getResources().getString(R.string.phoneprofilehepler_install_message));
 		dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				boolean OK = doInstallPPHelper(_activity);
@@ -293,7 +293,7 @@ public class PhoneProfilesHelper {
 		
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
 		dialogBuilder.setTitle(activity.getResources().getString(R.string.phoneprofilehepler_uninstall_title));
-		dialogBuilder.setMessage(activity.getResources().getString(R.string.phoneprofilehepler_uninstall_message) + "?");
+		dialogBuilder.setMessage(activity.getResources().getString(R.string.phoneprofilehepler_uninstall_message));
 		dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				boolean OK = doUninstallPPHelper(_activity);

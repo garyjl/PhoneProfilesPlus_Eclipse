@@ -581,7 +581,7 @@ public class EditorProfileListFragment extends Fragment {
 	{
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
 		dialogBuilder.setTitle(getResources().getString(R.string.profile_string_0) + ": " + profile._name);
-		dialogBuilder.setMessage(getResources().getString(R.string.delete_profile_alert_message) + "?");
+		dialogBuilder.setMessage(getResources().getString(R.string.delete_profile_alert_message));
 		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
 		
 		final Profile _profile = profile;
@@ -600,7 +600,7 @@ public class EditorProfileListFragment extends Fragment {
 	{
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
 		dialogBuilder.setTitle(getResources().getString(R.string.alert_title_delete_all_profiles));
-		dialogBuilder.setMessage(getResources().getString(R.string.alert_message_delete_all_profiles) + "?");
+		dialogBuilder.setMessage(getResources().getString(R.string.alert_message_delete_all_profiles));
 		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
 		
 		final Activity activity = getActivity();

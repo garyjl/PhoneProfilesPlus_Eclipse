@@ -1116,13 +1116,13 @@ public class EditorProfilesActivity extends ActionBarActivity
 		if (remoteExport)
 		{
 			dialogBuilder2.setTitle(getResources().getString(R.string.import_profiles_from_phoneprofiles_alert_title2));
-			dialogBuilder2.setMessage(getResources().getString(R.string.import_profiles_alert_message) + "?");
+			dialogBuilder2.setMessage(getResources().getString(R.string.import_profiles_alert_message));
 			//dialogBuilder2.setIcon(android.R.drawable.ic_dialog_alert);
 		}
 		else
 		{
 			dialogBuilder2.setTitle(getResources().getString(R.string.import_profiles_alert_title));
-			dialogBuilder2.setMessage(getResources().getString(R.string.import_profiles_alert_message) + "?");
+			dialogBuilder2.setMessage(getResources().getString(R.string.import_profiles_alert_message));
 			//dialogBuilder2.setIcon(android.R.drawable.ic_dialog_alert);
 		}
 
@@ -1159,7 +1159,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 
 			AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
 			dialogBuilder.setTitle(getResources().getString(R.string.import_profiles_from_phoneprofiles_alert_title));
-			dialogBuilder.setMessage(getResources().getString(R.string.import_profiles_from_phoneprofiles_alert_message) + "?");
+			dialogBuilder.setMessage(getResources().getString(R.string.import_profiles_from_phoneprofiles_alert_message));
 			//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
 			
 			dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
@@ -1214,7 +1214,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	{
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
 		dialogBuilder.setTitle(getResources().getString(R.string.export_profiles_alert_title));
-		dialogBuilder.setMessage(getResources().getString(R.string.export_profiles_alert_message) + "?");
+		dialogBuilder.setMessage(getResources().getString(R.string.export_profiles_alert_message));
 		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
 
 		final Activity activity = this;

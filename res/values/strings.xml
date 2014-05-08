@@ -21,8 +21,8 @@
     <string name="profile_context_header">Profile</string>
     <string name="profile_string_0">Profile</string>
     <string name="event_string_0">Event</string>
-    <string name="delete_profile_alert_message">Delete profile</string>
-    <string name="delete_event_alert_message">Delete event</string>
+    <string name="delete_profile_alert_message">Delete profile?</string>
+    <string name="delete_event_alert_message">Delete event?</string>
     <string name="toast_profile_activated_0">Profile</string>
     <string name="toast_profile_activated_1">activated</string>
     <string name="title_activity_image_view_preference_dialog">Change icon</string>
@@ -118,10 +118,10 @@
     <string name="toast_export_ok">App. data exported</string>
     <string name="toast_import_ok">App. data imported</string>
     <string name="import_profiles_alert_title">Import app. data</string>
-    <string name="import_profiles_alert_message">Are you sure</string>
+    <string name="import_profiles_alert_message">Are you sure?</string>
     <string name="import_profiles_alert_error">Error when importing app. data</string>
     <string name="export_profiles_alert_title">Export app. data</string>
-    <string name="export_profiles_alert_message">Are you sure</string>
+    <string name="export_profiles_alert_message">Are you sure?</string>
     <string name="export_profiles_alert_error">Error when exporting app. data</string>
     <string name="profile_preferences_deviceMobileData">Mobile data</string>
     <string name="profile_preferences_deviceMobileDataPrefs">(I) Mobile data preferences</string>
@@ -131,9 +131,9 @@
     <string name="profile_preferences_deviceRunApplicationPackageName">Application</string>
     <string name="profile_preferences_deviceRunApplicationChange">Run application</string>
     <string name="alert_title_delete_all_profiles">Delete all profiles</string>
-    <string name="alert_message_delete_all_profiles">Are you sure</string>
+    <string name="alert_message_delete_all_profiles">Are you sure?</string>
     <string name="alert_title_delete_all_events">Delete all events</string>
-    <string name="alert_message_delete_all_events">Are you sure</string>
+    <string name="alert_message_delete_all_events">Are you sure?</string>
     <string name="phone_profiles_pref_applicationTheme">Application theme</string>
     <string name="phone_profiles_pref_applicationTheme_light">Light</string>
     <string name="phone_profiles_pref_applicationTheme_dark">Dark</string>
@@ -210,7 +210,7 @@
     <string name="phone_profiles_pref_applicationAutoCloseDrawer">Auto-hide navig.drawer</string>
     <string name="import_profiles_from_phoneprofiles_alert_title">Import app. data</string>
     <string name="import_profiles_from_phoneprofiles_alert_title2">Import from PhoneProfiles</string>
-    <string name="import_profiles_from_phoneprofiles_alert_message">Import from PhoneProfiles</string>
+    <string name="import_profiles_from_phoneprofiles_alert_message">Import from PhoneProfiles?</string>
     <string name="alert_button_yes">Yes</string>
     <string name="alert_button_no">No</string>
     <string name="profile_preferences_deviceAutoRotation">Display rotation</string>
@@ -278,11 +278,11 @@
     <string name="menu_phoneprofilehepler_uninstall">Uninstall PPHelper</string>
     <string name="menu_phoneprofilehepler_upgrade">Upgrade PPHelper</string>
     <string name="phoneprofilehepler_install_title">PPHelper installation</string>
-    <string name="phoneprofilehepler_install_message">Are you sure</string>
+    <string name="phoneprofilehepler_install_message">Are you sure?</string>
     <string name="phoneprofilehepler_reboot_title">PPHelper installation</string>
     <string name="phoneprofilehepler_reboot_message">For PPHelper functionality, it is required to restart the device. Restart now?</string>
     <string name="phoneprofilehepler_uninstall_title">PPHelper uninstallation</string>
-    <string name="phoneprofilehepler_uninstall_message">Are you sure</string>
+    <string name="phoneprofilehepler_uninstall_message">Are you sure?</string>
     <string name="phoneprofilehepler_install_error">Error when installing PPHelper</string>
     <string name="phoneprofilehepler_uninstall_error">Error when uninstalling PPhelper</string>
     <string name="profile_preferences_install_pphelper">Install PPHelper</string>
@@ -329,11 +329,11 @@
 	<string name="array_event_pref_priorityVeryLow">Very low</string>    
     <string name="editor_drawer_order_priority">Priority</string>
 
-    <string name="event_type_peripheral">Peripheral</string>
+    <string name="event_type_peripheral">Accessories</string>
     <string name="array_event_pref_peripheralType_deskDock">Desk dock</string>
     <string name="array_event_pref_peripheralType_carDock">Car dock</string>
-    <string name="event_preferences_category_eventPeripheralParameters">Periheral parameters</string>
-    <string name="event_preferences_peripheral_enabled">Enable peripheral</string>
-    <string name="event_preferences_peripheral_type">Peripheral type</string>
+    <string name="event_preferences_category_eventPeripheralParameters">Accessories parameters</string>
+    <string name="event_preferences_peripheral_enabled">Enable accessories</string>
+    <string name="event_preferences_peripheral_type">Accessories type</string>
     	
 </resources>

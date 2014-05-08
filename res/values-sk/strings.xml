@@ -21,8 +21,8 @@
     <string name="profile_context_header">Profil</string>
     <string name="profile_string_0">Profil</string>
     <string name="event_string_0">Udalosť</string>
-    <string name="delete_profile_alert_message">Vymazať profil</string>
-    <string name="delete_event_alert_message">Vymazaž udalosť</string>
+    <string name="delete_profile_alert_message">Vymazať profil?</string>
+    <string name="delete_event_alert_message">Vymazaž udalosť?</string>
     <string name="toast_profile_activated_0">Profil</string>
     <string name="toast_profile_activated_1">aktivovaný</string>
     <string name="title_activity_image_view_preference_dialog">Zmena ikony</string>
@@ -113,10 +113,10 @@
     <string name="toast_export_ok">Apl. dáta sú exportnuté</string>
     <string name="toast_import_ok">Apl. dáta sú importnuté</string>
     <string name="import_profiles_alert_title">Import apl. dát</string>
-    <string name="import_profiles_alert_message">Ste si istý</string>
+    <string name="import_profiles_alert_message">Ste si istý?</string>
     <string name="import_profiles_alert_error">Chyba pri importe apl. dát</string>
     <string name="export_profiles_alert_title">Export apl. dát</string>
-    <string name="export_profiles_alert_message">Ste si istý</string>
+    <string name="export_profiles_alert_message">Ste si istý?</string>
     <string name="export_profiles_alert_error">Chyba pri exporte apl. dát</string>
     <string name="profile_preferences_deviceMobileData">Mobilné dáta</string>
     <string name="profile_preferences_deviceMobileDataPrefs">(I) Nastavenia mobilných dát</string>
@@ -126,9 +126,9 @@
     <string name="profile_preferences_deviceRunApplicationPackageName">Aplikácia</string>
     <string name="profile_preferences_deviceRunApplicationChange">Spustiť aplikáciu</string>
     <string name="alert_title_delete_all_profiles">Vymazať všetky profily</string>
-    <string name="alert_message_delete_all_profiles">Ste si istý</string>
+    <string name="alert_message_delete_all_profiles">Ste si istý?</string>
     <string name="alert_title_delete_all_events">Vymazať všetky udalosti</string>
-    <string name="alert_message_delete_all_events">Ste si istí</string>
+    <string name="alert_message_delete_all_events">Ste si istí?</string>
     <string name="phone_profiles_pref_applicationTheme">Téma aplikácie</string>
     <string name="phone_profiles_pref_applicationTheme_light">Svetlá téma</string>
     <string name="phone_profiles_pref_applicationTheme_dark">Tmavá téma</string>
@@ -206,7 +206,7 @@
     <string name="phone_profiles_pref_applicationAutoCloseDrawer">Auto-schovnie navig.panelu</string>
     <string name="import_profiles_from_phoneprofiles_alert_title">Import apl. dát</string>
     <string name="import_profiles_from_phoneprofiles_alert_title2">Importovať z PhoneProfiles</string>
-    <string name="import_profiles_from_phoneprofiles_alert_message">Importovať z PhoneProfiles</string>
+    <string name="import_profiles_from_phoneprofiles_alert_message">Importovať z PhoneProfiles?</string>
     <string name="alert_button_yes">Áno</string>
     <string name="alert_button_no">Nie</string>
     <string name="profile_preferences_deviceAutoRotation">Rotácia displeja</string>
@@ -274,11 +274,11 @@
     <string name="menu_phoneprofilehepler_uninstall">Odinštaluj PPHelper</string>
     <string name="menu_phoneprofilehepler_upgrade">Aktualizuj PPHelper</string>
     <string name="phoneprofilehepler_install_title">Inštalácia PPHelper-a</string>
-    <string name="phoneprofilehepler_install_message">Ste si istý</string>
+    <string name="phoneprofilehepler_install_message">Ste si istý?</string>
     <string name="phoneprofilehepler_reboot_title">Inštalácia PPHelper-a</string>
     <string name="phoneprofilehepler_reboot_message">Pre funkčnosť PPHelper-a, je vyžadovaný reštart zariadenia. Reštartovať teraz?</string>
     <string name="phoneprofilehepler_uninstall_title">Odinštalácia PPHelper-a</string>
-    <string name="phoneprofilehepler_uninstall_message">Ste si istý</string>
+    <string name="phoneprofilehepler_uninstall_message">Ste si istý?</string>
     <string name="phoneprofilehepler_install_error">Chyba pri inštalácii PPHelper-a</string>
     <string name="phoneprofilehepler_uninstall_error">Chyba pri odinštalácii PPHelper-a</string>
     <string name="profile_preferences_install_pphelper">Nainštaluj PPHelper</string>
@@ -325,6 +325,6 @@
 	<string name="array_event_pref_priorityVeryLow">Very low</string>    
     <string name="editor_drawer_order_priority">Priority</string>
 
-    <string name="event_type_peripheral">Periféria</string>
+    <string name="event_type_peripheral">Prsílušenstvo</string>
     	
 </resources>

@@ -21,8 +21,8 @@
     <string name="profile_context_header">Profil</string>
     <string name="profile_string_0">Profil</string>
     <string name="event_string_0">Událost</string>
-    <string name="delete_profile_alert_message">Vymazat profil</string>
-    <string name="delete_event_alert_message">Vymazat událost</string>
+    <string name="delete_profile_alert_message">Vymazat profil?</string>
+    <string name="delete_event_alert_message">Vymazat událost?</string>
     <string name="toast_profile_activated_0">Profil</string>
     <string name="toast_profile_activated_1">aktivovaný</string>
     <string name="title_activity_image_view_preference_dialog">Změna ikony</string>
@@ -113,10 +113,10 @@
     <string name="toast_export_ok">Apl. data jsou exportnuté</string>
     <string name="toast_import_ok">Apl. data jsou importnuté</string>
     <string name="import_profiles_alert_title">Import apl. dat</string>
-    <string name="import_profiles_alert_message">Jste si jisti</string>
+    <string name="import_profiles_alert_message">Jste si jisti?</string>
     <string name="import_profiles_alert_error">Chyba při importu apl. dat</string>
     <string name="export_profiles_alert_title">Export apl. dat</string>
-    <string name="export_profiles_alert_message">Jste si jisti</string>
+    <string name="export_profiles_alert_message">Jste si jisti?</string>
     <string name="export_profiles_alert_error">Chyba při exportu apl. dat</string>
     <string name="profile_preferences_deviceMobileData">Mobilní data</string>
     <string name="profile_preferences_deviceMobileDataPrefs">(I) Nastavení mobilních dat</string>
@@ -126,9 +126,9 @@
     <string name="profile_preferences_deviceRunApplicationPackageName">Aplikace</string>
     <string name="profile_preferences_deviceRunApplicationChange">Spustit aplikaci</string>
     <string name="alert_title_delete_all_profiles">Vymazat všechny profily</string>
-    <string name="alert_message_delete_all_profiles">Jste si jisti</string>
+    <string name="alert_message_delete_all_profiles">Jste si jisti?</string>
     <string name="alert_title_delete_all_events">Vymazat všechny události</string>
-    <string name="alert_message_delete_all_events">Jste si jisti</string>
+    <string name="alert_message_delete_all_events">Jste si jisti?</string>
     <string name="phone_profiles_pref_applicationTheme">Téma aplikace</string>
     <string name="phone_profiles_pref_applicationTheme_light">Světlá téma</string>
     <string name="phone_profiles_pref_applicationTheme_dark">Tmavá téma</string>
@@ -136,7 +136,6 @@
     <string name="array_pref_value_light">light</string>
     <string name="array_pref_value_dark">dark</string>
     <string name="array_pref_value_dlight">dlight</string>
-    <string name="phone_preferences_actionmode_title">Uložit změny?</string>
     <string name="phone_preferences_actionmode_save">Uložit</string>
     <string name="phone_preferences_actionmode_cancel">Zrušit</string>
     <string name="profile_preferences_showInActivator">Zobrazuj v Aktivátore</string>
@@ -206,7 +205,7 @@
     <string name="phone_profiles_pref_applicationAutoCloseDrawer">Auto-schování navig.panelu</string>
     <string name="import_profiles_from_phoneprofiles_alert_title">Import apl. dat</string>
     <string name="import_profiles_from_phoneprofiles_alert_title2">Importovat z PhoneProfiles</string>
-    <string name="import_profiles_from_phoneprofiles_alert_message">Importovat z PhoneProfiles</string>
+    <string name="import_profiles_from_phoneprofiles_alert_message">Importovat z PhoneProfiles?</string>
     <string name="alert_button_yes">Ano</string>
     <string name="alert_button_no">Ne</string>
     <string name="profile_preferences_deviceAutoRotation">Rotace displeje</string>
@@ -274,11 +273,11 @@
     <string name="menu_phoneprofilehepler_uninstall">Odinstaluj PPHelper</string>
     <string name="menu_phoneprofilehepler_upgrade">Aktualizuj PPHelper</string>
     <string name="phoneprofilehepler_install_title">Instalace PPHelper-a</string>
-    <string name="phoneprofilehepler_install_message">Jste si jistý</string>
+    <string name="phoneprofilehepler_install_message">Jste si jisti?</string>
     <string name="phoneprofilehepler_reboot_title">Instalace PPHelper-a</string>
     <string name="phoneprofilehepler_reboot_message">Pro funkčnost PPHelper-a, je vyžadován restart zařízení. Restartovat nyní?</string>
     <string name="phoneprofilehepler_uninstall_title">Odinstalace PPHelper-a</string>
-    <string name="phoneprofilehepler_uninstall_message">Jste si jistý</string>
+    <string name="phoneprofilehepler_uninstall_message">Jste si jisti?</string>
     <string name="phoneprofilehepler_install_error">Chyba při instalaci PPHelper-a</string>
     <string name="phoneprofilehepler_uninstall_error">Chyba při odinstalaci PPHelper-a</string>
     <string name="profile_preferences_install_pphelper">Nainstaluj PPHelper</string>

@@ -484,7 +484,7 @@ public class EditorEventListFragment extends Fragment {
 
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
 		dialogBuilder.setTitle(getResources().getString(R.string.event_string_0) + ": " + event._name);
-		dialogBuilder.setMessage(getResources().getString(R.string.delete_event_alert_message) + "?");
+		dialogBuilder.setMessage(getResources().getString(R.string.delete_event_alert_message));
 		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
 		dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
 			
@@ -500,7 +500,7 @@ public class EditorEventListFragment extends Fragment {
 	{
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
 		dialogBuilder.setTitle(getResources().getString(R.string.alert_title_delete_all_events));
-		dialogBuilder.setMessage(getResources().getString(R.string.alert_message_delete_all_events) + "?");
+		dialogBuilder.setMessage(getResources().getString(R.string.alert_message_delete_all_events));
 		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
 		dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
 			
