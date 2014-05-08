@@ -308,9 +308,35 @@
     <string name="event_preferences_battery_level_bad_value">Неверное значение</string>
     <string name="event_preferences_profile_end_no_activate">Не активируй</string>
     <string name="event_preferences_eventProfileEnd">Активировать профиль</string>
-    <string name="menu_restart_events">Перезапуск событий</string>    
-    <string name="event_preferences_ForceRun">Принудительный запуск</string>
+    <string name="menu_restart_events">Перезапуск событий</string>
+        
+    <string name="event_preferences_ForceRun">Игнорировать ручную активацию</string>
     <string name="manual_profile_activation_forceRun_title">Активировать профиль</string>
-    <string name="manual_profile_activation_forceRun_message">Запущено событие с опцией \"Принудительный запуск\". Всё равно активировать</string>
+    <string name="manual_profile_activation_forceRun_message">Любое событие с опцией \"Игнорировать ручную активацию\" работает. Активировать в любом случае?</string>
+    <string name="restart_events_alert_title">Перезапуск событий</string>
+    <string name="restart_events_alert_message">Вы уверены?</string>
+    <string name="event_preferences_ForceRun_summary">Начало событие, несмотря на то, что он был вручную активированного профиля</string>
+    <string name="event_preferences_category_startofevent">Начните события</string>
+    <string name="event_preferences_category_endofevent">Завершение события</string>
+    <string name="event_preferences_undoneProfile">Аннулировать профиль</string>
+    <string name="event_preferences_undoneProfile_summary">Активировать профиль, который был активен до начала события</string>
+    <string name="event_prefernce_profile_undone">Аннулировать</string>
+    <string name="event_preferences_priority">Приоритет</string>
+	<string name="array_event_pref_priorityVeryHigh">Очень высокий</string>    
+	<string name="array_event_pref_priorityHigh">Высокий</string>    
+	<string name="array_event_pref_priorityNormal">Нормальный</string>    
+	<string name="array_event_pref_priorityLow">низкий</string>    
+	<string name="array_event_pref_priorityVeryLow">Очень низкий</string>    
+    <string name="editor_drawer_order_priority">Приоритет</string>
+
+    <string name="event_type_peripheral">Аксессуары</string>
+    <string name="array_event_pref_peripheralType_deskDock">Док-станция</string>
+    <string name="array_event_pref_peripheralType_carDock">Автомобильный комплект</string>
+    <string name="event_preferences_category_eventPeripheralParameters">Параметры аксессуары</string>
+    <string name="event_preferences_peripheral_enabled">Активировать</string>
+    <string name="event_preferences_peripheral_type">Тип аксессуаров</string>
+    <string name="array_event_pref_peripheralType_wired_headset">Проводной громкой связи</string>
+    <string name="array_event_pref_peripheralType_bluetooth_headset">Громкая связь Bluetooth</string>
+    <string name="array_event_pref_peripheralType_headphones">Наушники</string>
     
 </resources>

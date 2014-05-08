@@ -325,13 +325,12 @@
 	<string name="array_event_pref_priorityVeryLow">Veľmi nízka</string>    
     <string name="editor_drawer_order_priority">Priorita</string>
 
-    <string name="event_type_peripheral">Prsílušenstvo</string>
+    <string name="event_type_peripheral">Príslušenstvo</string>
     <string name="array_event_pref_peripheralType_deskDock">Dokovacia stanica</string>
     <string name="array_event_pref_peripheralType_carDock">Autosúprava</string>
     <string name="event_preferences_category_eventPeripheralParameters">Parametre príslušenstva</string>
     <string name="event_preferences_peripheral_enabled">Použi príslušenstvo</string>
     <string name="event_preferences_peripheral_type">Typ príslušenstva</string>
-    <string name="array_event_pref_peripheralType_headset">Handsfree</string>
     <string name="array_event_pref_peripheralType_wired_headset">Drôtové handsfree</string>
     <string name="array_event_pref_peripheralType_bluetooth_headset">Bluetooth handsfree</string>
     <string name="array_event_pref_peripheralType_headphones">Slúchadlá</string>

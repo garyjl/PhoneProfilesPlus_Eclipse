@@ -113,10 +113,10 @@
     <string name="toast_export_ok">Apl. data jsou exportnuté</string>
     <string name="toast_import_ok">Apl. data jsou importnuté</string>
     <string name="import_profiles_alert_title">Import apl. dat</string>
-    <string name="import_profiles_alert_message">Jste si jisti?</string>
+    <string name="import_profiles_alert_message">Jste si jistý?</string>
     <string name="import_profiles_alert_error">Chyba při importu apl. dat</string>
     <string name="export_profiles_alert_title">Export apl. dat</string>
-    <string name="export_profiles_alert_message">Jste si jisti?</string>
+    <string name="export_profiles_alert_message">Jste si jistý?</string>
     <string name="export_profiles_alert_error">Chyba při exportu apl. dat</string>
     <string name="profile_preferences_deviceMobileData">Mobilní data</string>
     <string name="profile_preferences_deviceMobileDataPrefs">(I) Nastavení mobilních dat</string>
@@ -126,9 +126,9 @@
     <string name="profile_preferences_deviceRunApplicationPackageName">Aplikace</string>
     <string name="profile_preferences_deviceRunApplicationChange">Spustit aplikaci</string>
     <string name="alert_title_delete_all_profiles">Vymazat všechny profily</string>
-    <string name="alert_message_delete_all_profiles">Jste si jisti?</string>
+    <string name="alert_message_delete_all_profiles">Jste si jistý?</string>
     <string name="alert_title_delete_all_events">Vymazat všechny události</string>
-    <string name="alert_message_delete_all_events">Jste si jisti?</string>
+    <string name="alert_message_delete_all_events">Jste si jistý?</string>
     <string name="phone_profiles_pref_applicationTheme">Téma aplikace</string>
     <string name="phone_profiles_pref_applicationTheme_light">Světlá téma</string>
     <string name="phone_profiles_pref_applicationTheme_dark">Tmavá téma</string>
@@ -273,11 +273,11 @@
     <string name="menu_phoneprofilehepler_uninstall">Odinstaluj PPHelper</string>
     <string name="menu_phoneprofilehepler_upgrade">Aktualizuj PPHelper</string>
     <string name="phoneprofilehepler_install_title">Instalace PPHelper-a</string>
-    <string name="phoneprofilehepler_install_message">Jste si jisti?</string>
+    <string name="phoneprofilehepler_install_message">Jste si jistý?</string>
     <string name="phoneprofilehepler_reboot_title">Instalace PPHelper-a</string>
     <string name="phoneprofilehepler_reboot_message">Pro funkčnost PPHelper-a, je vyžadován restart zařízení. Restartovat nyní?</string>
     <string name="phoneprofilehepler_uninstall_title">Odinstalace PPHelper-a</string>
-    <string name="phoneprofilehepler_uninstall_message">Jste si jisti?</string>
+    <string name="phoneprofilehepler_uninstall_message">Jste si jistý?</string>
     <string name="phoneprofilehepler_install_error">Chyba při instalaci PPHelper-a</string>
     <string name="phoneprofilehepler_uninstall_error">Chyba při odinstalaci PPHelper-a</string>
     <string name="profile_preferences_install_pphelper">Nainstaluj PPHelper</string>
@@ -304,5 +304,34 @@
     <string name="event_preferences_profile_end_no_activate">Neaktivovat</string>
     <string name="event_preferences_eventProfileEnd">Aktivovat profil</string>
     <string name="menu_restart_events">Restart událostí</string>
+
+    <string name="event_preferences_ForceRun">Ignoruj ​​manuální aktivaci</string>
+    <string name="manual_profile_activation_forceRun_title">Aktivace profilu</string>
+    <string name="manual_profile_activation_forceRun_message">Nějaká událost s parametrem \"Ignoruj ​​manuální aktivaci\" běží. I tak aktivovat?</string>
+    <string name="restart_events_alert_title">Restartovat události</string>
+    <string name="restart_events_alert_message">Jste si jistý?</string>
+    <string name="event_preferences_ForceRun_summary">Spustit událost přesto, že byl manuálně aktivovaný profil</string>
+    <string name="event_preferences_category_startofevent">Start události</string>
+    <string name="event_preferences_category_endofevent">Konec události</string>
+    <string name="event_preferences_undoneProfile">Vrať zpět profil</string>
+    <string name="event_preferences_undoneProfile_summary">Aktivovat profil, který byl aktivní před startem události</string>
+    <string name="event_prefernce_profile_undone">Vrať zpět</string>
+    <string name="event_preferences_priority">Priorita</string>
+	<string name="array_event_pref_priorityVeryHigh">Velmi vysoká</string>    
+	<string name="array_event_pref_priorityHigh">Vysoká</string>    
+	<string name="array_event_pref_priorityNormal">Normálni</string>    
+	<string name="array_event_pref_priorityLow">Nízka</string>    
+	<string name="array_event_pref_priorityVeryLow">Velmi nízká</string>    
+    <string name="editor_drawer_order_priority">Priorita</string>
+
+    <string name="event_type_peripheral">Příslušenství</string>
+    <string name="array_event_pref_peripheralType_deskDock">Dokovací stanice</string>
+    <string name="array_event_pref_peripheralType_carDock">Autosada</string>
+    <string name="event_preferences_category_eventPeripheralParameters">Parametry příslušenství</string>
+    <string name="event_preferences_peripheral_enabled">Použij příslušenství</string>
+    <string name="event_preferences_peripheral_type">Typ příslušenství</string>
+    <string name="array_event_pref_peripheralType_wired_headset">Drátové handsfree</string>
+    <string name="array_event_pref_peripheralType_bluetooth_headset">Bluetooth handsfree</string>
+    <string name="array_event_pref_peripheralType_headphones">Sluchátka</string>
     		
 </resources>
