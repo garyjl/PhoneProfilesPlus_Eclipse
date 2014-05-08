@@ -33,7 +33,7 @@
     <string name="title_activity_phone_profiles_preferences">Настройки Приложения</string>
     <string name="menu_exit">Выход</string>
     <string name="profile_item_help_text">Зажмите для редактирования</string>
-    <string name="activate_profile_alert_message">Активировать профиль</string>
+    <string name="activate_profile_alert_message">Активировать профиль?</string>
     <string name="empty_string"></string>
     <string name="brightness_pref_dialog_no_change_chb">Не изменять</string>
     <string name="brightness_pref_dialog_automatic_chb">Автоматическая</string>

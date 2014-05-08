@@ -33,7 +33,7 @@
     <string name="title_activity_phone_profiles_preferences">Application Settings</string>
     <string name="menu_exit">Exit</string>
     <string name="profile_item_help_text">Long-press to edit</string>
-    <string name="activate_profile_alert_message">Activate profile</string>
+    <string name="activate_profile_alert_message">Activate profile?</string>
     <string name="empty_string"></string>
     <string name="brightness_pref_dialog_no_change_chb">Don\'t change</string>
     <string name="brightness_pref_dialog_automatic_chb">Automatic</string>
@@ -312,15 +312,15 @@
       
     <string name="event_preferences_ForceRun">Ignore manual activation</string>
     <string name="manual_profile_activation_forceRun_title">Activate profile</string>
-    <string name="manual_profile_activation_forceRun_message">Event with option \"Ignore manual activation\" is running. Activate anyway</string>
+    <string name="manual_profile_activation_forceRun_message">Any event with option \"Ignore manual activation\" is running. Activate anyway?</string>
     <string name="restart_events_alert_title">Restart events</string>
-    <string name="restart_events_alert_message">Are you sure</string>
-    <string name="event_preferences_ForceRun_summary">Start event even after manually activated profile</string>
+    <string name="restart_events_alert_message">Are you sure?</string>
+    <string name="event_preferences_ForceRun_summary">Start the event despite the fact that he was manually activated profile</string>
     <string name="event_preferences_category_startofevent">Start of event</string>
     <string name="event_preferences_category_endofevent">End of event</string>
-    <string name="event_preferences_undoneProfile">Undone profile</string>
-    <string name="event_preferences_undoneProfile_summary">Activate before start activated profile</string>
-    <string name="event_prefernce_profile_undone">Undone</string>
+    <string name="event_preferences_undoneProfile">Undo the profile</string>
+    <string name="event_preferences_undoneProfile_summary">Activate a profile, that was active before the start of the event</string>
+    <string name="event_prefernce_profile_undone">Undo</string>
     <string name="event_preferences_priority">Priority</string>
 	<string name="array_event_pref_priorityVeryHigh">Very high</string>    
 	<string name="array_event_pref_priorityHigh">High</string>    

@@ -33,7 +33,7 @@
     <string name="title_activity_phone_profiles_preferences">Nastavenia aplikácie</string>
     <string name="menu_exit">Ukončiť</string>
     <string name="profile_item_help_text">Dlho podržať pre úpravu</string>
-    <string name="activate_profile_alert_message">Aktivovať profil</string>
+    <string name="activate_profile_alert_message">Aktivovať profil?</string>
     <string name="empty_string"></string>
     <string name="brightness_pref_dialog_no_change_chb">Nemeniť</string>
     <string name="brightness_pref_dialog_automatic_chb">Automaticky</string>
@@ -306,25 +306,30 @@
     <string name="event_preferences_eventProfileEnd">Aktivovať profil</string>
     <string name="menu_restart_events">Reštart udalostí</string>
 
-    <string name="event_preferences_ForceRun">Ignore manual activation</string>
-    <string name="manual_profile_activation_forceRun_title">Activate profile</string>
-    <string name="manual_profile_activation_forceRun_message">Event with option \"Ignore manual activation\" is running. Activate anyway</string>
-    <string name="restart_events_alert_title">Restart events</string>
-    <string name="restart_events_alert_message">Are you sure</string>
-    <string name="event_preferences_ForceRun_summary">Start event even after manually activated profile</string>
-    <string name="event_preferences_category_startofevent">Start of event</string>
-    <string name="event_preferences_category_endofevent">End of event</string>
-    <string name="event_preferences_undoneProfile">Undone profile</string>
-    <string name="event_preferences_undoneProfile_summary">Activate before start activated profile</string>
-    <string name="event_prefernce_profile_undone">Undone</string>
-    <string name="event_preferences_priority">Priority</string>
-	<string name="array_event_pref_priorityVeryHigh">Very high</string>    
-	<string name="array_event_pref_priorityHigh">High</string>    
-	<string name="array_event_pref_priorityNormal">Normal</string>    
-	<string name="array_event_pref_priorityLow">Low</string>    
-	<string name="array_event_pref_priorityVeryLow">Very low</string>    
-    <string name="editor_drawer_order_priority">Priority</string>
+    <string name="event_preferences_ForceRun">Ignoruj manuálnu aktiváciu</string>
+    <string name="manual_profile_activation_forceRun_title">Aktivácia profilu</string>
+    <string name="manual_profile_activation_forceRun_message">Dáka udalosť s parametrom \"Ignoruj manuálnu aktiváciu\" beží. Aj tak aktivovať?</string>
+    <string name="restart_events_alert_title">Reštartovať udalosti</string>
+    <string name="restart_events_alert_message">Ste si istý?</string>
+    <string name="event_preferences_ForceRun_summary">Spustiť udalosť napriek tomu, že bol manuálne aktivovaný profil</string>
+    <string name="event_preferences_category_startofevent">Štart udalosti</string>
+    <string name="event_preferences_category_endofevent">Koniec udalosti</string>
+    <string name="event_preferences_undoneProfile">Vráť späť profil</string>
+    <string name="event_preferences_undoneProfile_summary">Aktivovať profil, ktorý bol aktívny pred startom udalosti</string>
+    <string name="event_prefernce_profile_undone">Vráť späť</string>
+    <string name="event_preferences_priority">Priorita</string>
+	<string name="array_event_pref_priorityVeryHigh">Veľmi vysoká</string>    
+	<string name="array_event_pref_priorityHigh">Vysoká</string>    
+	<string name="array_event_pref_priorityNormal">Normála</string>    
+	<string name="array_event_pref_priorityLow">Nízka</string>    
+	<string name="array_event_pref_priorityVeryLow">Veľmi nízka</string>    
+    <string name="editor_drawer_order_priority">Priorita</string>
 
     <string name="event_type_peripheral">Prsílušenstvo</string>
+    <string name="array_event_pref_peripheralType_deskDock">Dokovacia stanica</string>
+    <string name="array_event_pref_peripheralType_carDock">Autosúprava</string>
+    <string name="event_preferences_category_eventPeripheralParameters">Parametre príslušenstva</string>
+    <string name="event_preferences_peripheral_enabled">Použi príslušenstvo</string>
+    <string name="event_preferences_peripheral_type">Typ príslušenstva</string>
     	
 </resources>

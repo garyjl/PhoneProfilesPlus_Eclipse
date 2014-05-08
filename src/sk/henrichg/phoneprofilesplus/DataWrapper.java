@@ -799,9 +799,9 @@ public class DataWrapper {
 			AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
 			dialogBuilder.setTitle(activity.getResources().getString(R.string.profile_string_0) + ": " + profile._name);
 			if (isforceRunEvent)
-				dialogBuilder.setMessage(activity.getResources().getString(R.string.manual_profile_activation_forceRun_message) + "?");
+				dialogBuilder.setMessage(activity.getResources().getString(R.string.manual_profile_activation_forceRun_message));
 			else
-				dialogBuilder.setMessage(activity.getResources().getString(R.string.activate_profile_alert_message) + "?");
+				dialogBuilder.setMessage(activity.getResources().getString(R.string.activate_profile_alert_message));
 			//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
 			dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
@@ -1449,7 +1449,7 @@ public class DataWrapper {
 			
 			AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
 			dialogBuilder.setTitle(activity.getResources().getString(R.string.restart_events_alert_title));
-			dialogBuilder.setMessage(activity.getResources().getString(R.string.restart_events_alert_message) + "?");
+			dialogBuilder.setMessage(activity.getResources().getString(R.string.restart_events_alert_message));
 			//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
 			dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {

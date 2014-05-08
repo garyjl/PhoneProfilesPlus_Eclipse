@@ -33,7 +33,7 @@
     <string name="title_activity_phone_profiles_preferences">App-Einstellungen</string> 
     <string name="menu_exit">Beenden</string> 
     <string name="profile_item_help_text">Lang drücken zum Bearbeiten</string> 
-    <string name="activate_profile_alert_message">Profil aktivieren</string> 
+    <string name="activate_profile_alert_message">Profil aktivieren?</string> 
     <string name="empty_string"></string> 
     <string name="brightness_pref_dialog_no_change_chb">Nicht ändern</string> 
     <string name="brightness_pref_dialog_automatic_chb">Automatisch</string> 
@@ -308,10 +308,10 @@
     
     <string name="manual_profile_activation_forceRun_title">Profil aktivieren</string>
     
-    <string name="manual_profile_activation_forceRun_message">Ein Ereignis mit der Eigenschaft \"Ignore manual activation\" ist aktiv. Trotzdem aktivieren</string>
+    <string name="manual_profile_activation_forceRun_message">Ein Ereignis mit der Eigenschaft \"Ignore manual activation\" ist aktiv. Trotzdem aktivieren?</string>
     
     <string name="restart_events_alert_title">Ereignisse neu starten</string>
-    <string name="restart_events_alert_message">Sicher</string>
+    <string name="restart_events_alert_message">Sicher?</string>
     
     <string name="event_preferences_ForceRun_summary">Start event even after manually activated profile</string>
     
