@@ -304,23 +304,16 @@
     <string name="event_references_eventProfileEnd">Profil aktivieren</string>
     <string name="menu_restart_events">Ereignisse nachholen</string>
 
-    <string name="event_preferences_ForceRun">Ignore manual activation</string>
-    
+    <string name="event_preferences_ForceRun">Manuelle Aktivierung ignorieren</string>
     <string name="manual_profile_activation_forceRun_title">Profil aktivieren</string>
-    
-    <string name="manual_profile_activation_forceRun_message">Ein Ereignis mit der Eigenschaft \"Ignore manual activation\" ist aktiv. Trotzdem aktivieren?</string>
-    
+    <string name="manual_profile_activation_forceRun_message">Ein Ereignis mit der Eigenschaft \"Manuelle Aktivierung ignorieren\" ist aktiv. Trotzdem aktivieren?</string>
     <string name="restart_events_alert_title">Ereignisse neu starten</string>
     <string name="restart_events_alert_message">Sicher?</string>
-    
-    <string name="event_preferences_ForceRun_summary">Start event even after manually activated profile</string>
-    
+    <string name="event_preferences_ForceRun_summary">Event auch nach manuell aktiviertem Profil starten</string>
     <string name="event_preferences_category_startofevent">Ereignisstart</string>
     <string name="event_preferences_category_endofevent">Ereignisende</string>
     <string name="event_preferences_undoneProfile">Vorheriges Profil</string>
-    
-    <string name="event_preferences_undoneProfile_summary">Activate a profile, that was active before the start of the event</string>
-    
+    <string name="event_preferences_undoneProfile_summary">Profil aktivieren, das vor dem Start des Ereignisses aktiv war</string>    
     <string name="event_prefernce_profile_undone">Vorheriges</string>
     <string name="event_preferences_priority">Priorität</string>
 	<string name="array_event_pref_priorityVeryHigh">Sehr hoch</string>
@@ -330,14 +323,14 @@
 	<string name="array_event_pref_priorityVeryLow">Sehr niedrig</string>
     <string name="editor_drawer_order_priority">Priorität</string>    					
     
-    <string name="event_type_peripheral">Accessories</string>
+ 	<string name="event_type_peripheral">Zubehör</string>
     <string name="array_event_pref_peripheralType_deskDock">Schreibtisch-Dock</string>
     <string name="array_event_pref_peripheralType_carDock">Auto-Dock</string>
-    <string name="event_preferences_category_eventPeripheralParameters">Accessories parameters</string>
-    <string name="event_preferences_peripheral_enabled">Enable accessories</string>
-    <string name="event_preferences_peripheral_type">Accessories type</string>
-    <string name="array_event_pref_peripheralType_wired_headset">Wired handsfree</string>
-    <string name="array_event_pref_peripheralType_bluetooth_headset">Bluetooth handsfree</string>
-    <string name="array_event_pref_peripheralType_headphones">Headphones</string>
-    
+ 	<string name="event_preferences_category_eventPeripheralParameters">Zubehörparameter</string>
+    <string name="event_preferences_peripheral_enabled">Zubehör aktivieren</string>
+    <string name="event_preferences_peripheral_type">Zubehörtyp</string>
+    <string name="array_event_pref_peripheralType_wired_headset">Freisprecheinrichtung</string>
+    <string name="array_event_pref_peripheralType_bluetooth_headset">BlueTooth-Freisprecheinrichtung</string>
+    <string name="array_event_pref_peripheralType_headphones">Kopfhörer</string>
+        
 </resources>
