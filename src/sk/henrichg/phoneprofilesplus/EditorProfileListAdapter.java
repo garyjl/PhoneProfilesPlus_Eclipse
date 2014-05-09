@@ -128,16 +128,16 @@ public class EditorProfileListAdapter extends BaseAdapter
 		if (profileList == null)
 			return -1;
 		
-		if (filterType == EditorProfileListFragment.FILTER_TYPE_ALL)
-			return profileList.indexOf(profile);
-		
 		int pos = -1;
 		
 		for (int i = 0; i < profileList.size(); i++)
 		{
 			switch (filterType)
 	        {
-				case EditorProfileListFragment.FILTER_TYPE_SHOW_IN_ACTIVATOR:
+				case EditorProfileListFragment.FILTER_TYPE_ALL:
+					++pos;
+					break;
+	        	case EditorProfileListFragment.FILTER_TYPE_SHOW_IN_ACTIVATOR:
 					if (profile._showInActivator)
 						++pos;
 					break;

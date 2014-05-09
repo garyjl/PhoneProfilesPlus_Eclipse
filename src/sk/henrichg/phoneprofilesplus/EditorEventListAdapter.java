@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -132,12 +133,9 @@ public class EditorEventListAdapter extends BaseAdapter
 	{
 		if (eventList == null)
 			return -1;
-
+		
 		if (event == null)
 			return -1;
-		
-		if (filterType == EditorEventListFragment.FILTER_TYPE_ALL)
-			return eventList.indexOf(event);
 		
 		int pos = -1;
 		
@@ -145,6 +143,9 @@ public class EditorEventListAdapter extends BaseAdapter
 		{
 			switch (filterType)
 	        {
+				case EditorEventListFragment.FILTER_TYPE_ALL:
+					++pos;
+					break;
 				case EditorEventListFragment.FILTER_TYPE_RUNNING:
 					if (event.getStatusFromDB(dataWrapper) == Event.ESTATUS_RUNNING)
 						++pos;

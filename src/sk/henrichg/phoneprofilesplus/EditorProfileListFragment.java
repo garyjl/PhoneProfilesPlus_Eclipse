@@ -393,6 +393,7 @@ public class EditorProfileListFragment extends Fragment {
 			int profilePos = profileListAdapter.getItemPosition(_profile);
 			listView.setSelection(profilePos);
 			listView.setItemChecked(profilePos, true);
+			listView.smoothScrollToPosition(profilePos);
 			editMode = EDIT_MODE_EDIT;
 		}
 		else
@@ -786,6 +787,7 @@ public class EditorProfileListFragment extends Fragment {
 				// set event visible in list
 				listView.setSelection(profilePos);
 				listView.setItemChecked(profilePos, true);
+				listView.smoothScrollToPosition(profilePos);
 			}
 		}
 	}

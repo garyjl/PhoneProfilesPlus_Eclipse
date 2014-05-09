@@ -183,7 +183,7 @@ public class EditorEventListFragment extends Fragment {
 
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-				//Log.d("EditorEventListFragment.onItemClick", "xxxx");
+				//Log.e("EditorEventListFragment.onItemClick", "xxxx");
 
 				startEventPreferencesActivity((Event)eventListAdapter.getItem(position));
 				
@@ -326,6 +326,7 @@ public class EditorEventListFragment extends Fragment {
 			int profilePos = eventListAdapter.getItemPosition(_event);
 			listView.setSelection(profilePos);
 			listView.setItemChecked(profilePos, true);
+			listView.smoothScrollToPosition(profilePos);
 			editMode = EDIT_MODE_EDIT;
 		}
 		else
@@ -556,6 +557,7 @@ public class EditorEventListFragment extends Fragment {
 				// set event visible in list
 				listView.setSelection(eventPos);
 				listView.setItemChecked(eventPos, true);
+				listView.smoothScrollToPosition(eventPos);
 			}
 		}
 	}
