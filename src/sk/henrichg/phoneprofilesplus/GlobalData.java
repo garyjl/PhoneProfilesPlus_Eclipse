@@ -35,9 +35,9 @@ public class GlobalData extends Application {
 	public static String logFilterTags = //"EventPreferencesBattery|"+
 	                                     //"BatteryEventsAlarmBroadcastReceiver|"+
 			                             //"EventsService|"+
-	                                     "Event.startEvent|"+
-	                                     "Event.pauseEvent|"+
-										 "BatteryEventBroadcastReceiver";
+	                                     //"Event.startEvent|"+
+	                                     //"Event.pauseEvent|"+
+										 "RefreshGUIBroadcastReceiver";
 	                                     //"PowerConnectionReceiver|"+
 			                             //"RefreshGUIBroadcastReceiver|"+
 	                                     //"DataWrapper.doEventService|"+

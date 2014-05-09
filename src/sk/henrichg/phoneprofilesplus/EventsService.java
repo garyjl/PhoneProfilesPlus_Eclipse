@@ -137,8 +137,14 @@ public class EventsService extends IntentService
 
 		doEndService(intent);
 
+		// refresh GUI
+		Intent refreshIntent = new Intent();
+		refreshIntent.setAction(RefreshGUIBroadcastReceiver.INTENT_REFRESH_GUI);
+		context.sendBroadcast(refreshIntent);
+		
 		dataWrapper.invalidateDataWrapper();
 
+		
 		GlobalData.logE("EventsService.onHandleIntent","-- end --------------------------------");
 		
 	}

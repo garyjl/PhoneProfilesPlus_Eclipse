@@ -1299,11 +1299,6 @@ public class DataWrapper {
 				GlobalData.logE("DataWrapper.doEventService","pause event");
 				event.pauseEvent(this, eventTimelineList, true, false, false);
 			}
-		
-			// refresh GUI
-			Intent refreshIntent = new Intent();
-			refreshIntent.setAction(RefreshGUIBroadcastReceiver.INTENT_REFRESH_GUI);
-			context.sendBroadcast(refreshIntent);
 		}
 		
 		return (timePassed && batteryPassed && callPassed && peripheralPassed);

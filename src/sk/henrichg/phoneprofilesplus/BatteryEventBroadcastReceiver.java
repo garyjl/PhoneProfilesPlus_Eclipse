@@ -22,10 +22,10 @@ public class BatteryEventBroadcastReceiver extends WakefulBroadcastReceiver {
 		if (GlobalData.getGlobalEventsRuning(context))
 		{
 			int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
-			GlobalData.logE("DataWrapper.doEventService","status="+status);
+			GlobalData.logE("BatteryEventBroadcastReceiver.onReceive","status="+status);
 			boolean _isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
 			                     status == BatteryManager.BATTERY_STATUS_FULL;
-			GlobalData.logE("DataWrapper.doEventService","isCharging="+isCharging);
+			GlobalData.logE("BatteryEventBroadcastReceiver.onReceive","isCharging="+isCharging);
 			
 			int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
 			//int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);

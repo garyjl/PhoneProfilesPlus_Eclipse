@@ -11,7 +11,7 @@ public class RefreshGUIBroadcastReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		
-		GlobalData.logE("RefreshGUIBroadcastReceiver","xxx");
+		GlobalData.logE("### RefreshGUIBroadcastReceiver","xxx");
 		
 		ActivateProfileActivity activateProfileActivity = ActivateProfileActivity.getInstance();
 		if (activateProfileActivity != null)
