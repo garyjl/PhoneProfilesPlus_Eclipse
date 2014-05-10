@@ -315,7 +315,7 @@
     <string name="event_preferences_category_startofevent">Štart udalosti</string>
     <string name="event_preferences_category_endofevent">Koniec udalosti</string>
     <string name="event_preferences_undoneProfile">Vráť späť profil</string>
-    <string name="event_preferences_undoneProfile_summary">Aktivovať profil, ktorý bol aktívny pred startom udalosti</string>
+    <string name="event_preferences_undoneProfile_summary">Aktivovať profil, ktorý bol aktívny pred štartom udalosti</string>
     <string name="event_prefernce_profile_undone">Vráť späť</string>
     <string name="event_preferences_priority">Priorita</string>
 	<string name="array_event_pref_priorityVeryHigh">Veľmi vysoká</string>    
