@@ -1,9 +1,11 @@
-Aktivacia radio preferences:
-- ak idem cez PPHelper, funguje to seriovo, cize sa medzi sebou nepobiju volanie service na nastavnenie radio preferences
-- ak idem bez PPHelper a prvy profil vypne wifi a druhy zapne, tak druhy profil wifi nezapne
-Cize ak dam aktivaciu radia cez broadcast tak by to mohlo zafungovat:
-1. sprav class na broadcast class v PPP a v nom volaj service
-2. pre radio preferences nevolaj priamo service, ale setni broadcast
-3. pre istotu daj do receivera pre PPHelper aj PPP sleep ???
+Event preferences: CALENDAR
+1. vyberie si ktore kalendare chce - multselection listview
+2. zoznam kalendarov: zobrazit farbu kalendara
+3. dam moznost vybrat si udalosti - multiselection listview
+4. asi by som mal dat vyberat len z udalosti, co sa opakuju, nema vyznam rboit event na 
+   jednorazove udalosti
+5. zoznam udalosti: zobrazit farbu kalendara
+6. dat aj moznost si zadat retazec, ktory sa bude vyhladavat v "Nazov udalosti" a v "Popis"
 
-Hotovo, ale to mi inklinuje spravit service a broadcast na cely profil. Hm???
+Cize tak ako pri telefoonych cislach si budem pamatat id kalendara, id udalosti.
+
