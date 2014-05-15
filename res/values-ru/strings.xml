@@ -302,7 +302,7 @@
     <string name="array_event_pref_contact_list_type_not_use">Не использовать</string>
     <string name="event_type_call">Вызов</string>
     <string name="pref_event_call_event">Событие</string>
-    <string name="pref_event_call_contactListType">Тип списка</string> 
+    <string name="pref_event_call_contactListType">Список</string> 
     <string name="pref_event_call_no_contacts_selected">Нет выбранных контактов</string>
     <string name="pref_event_call_contacts_selected">Выбранные контакты</string>
     <string name="event_preferences_battery_level_bad_value">Неверное значение</string>

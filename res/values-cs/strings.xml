@@ -297,7 +297,7 @@
     <string name="array_event_pref_contact_list_type_not_use">Nepoužij</string>
     <string name="event_type_call">Hovor</string>
     <string name="pref_event_call_event">Událost</string>
-    <string name="pref_event_call_contactListType">Typ seznamu</string> 
+    <string name="pref_event_call_contactListType">Seznam</string> 
     <string name="pref_event_call_no_contacts_selected">Nevybrané kontakty</string>
     <string name="pref_event_call_contacts_selected">Vybrané kontakty</string>
     <string name="event_preferences_battery_level_bad_value">Špatná hodnota</string>

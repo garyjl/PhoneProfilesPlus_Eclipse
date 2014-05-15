@@ -302,7 +302,7 @@
     <string name="array_event_pref_contact_list_type_not_use">Don\'t use</string>
     <string name="event_type_call">Call</string>
     <string name="pref_event_call_event">Event</string>
-    <string name="pref_event_call_contactListType">List type</string> 
+    <string name="pref_event_call_contactListType">List</string> 
     <string name="pref_event_call_no_contacts_selected">No contacts selected</string>
     <string name="pref_event_call_contacts_selected">Contacts selected</string>
     <string name="event_preferences_battery_level_bad_value">Bad value</string>
