@@ -365,11 +365,26 @@ public class Event {
 		eventTimeline._fkEvent = this._id;
 		eventTimeline._eorder = 0;
 
-		Profile profile = dataWrapper.getActivatedProfile();
-		if (profile != null)
-			eventTimeline._fkProfileEndActivated = profile._id;
+		Profile profile = null;
+		if (eventTimelineList.size() == 0)
+		{
+			profile = dataWrapper.getActivatedProfile();
+			if (profile != null)
+				eventTimeline._fkProfileEndActivated = profile._id;
+			else
+				eventTimeline._fkProfileEndActivated = 0;
+		}
 		else
+		{
 			eventTimeline._fkProfileEndActivated = 0;
+			EventTimeline _eventTimeline = eventTimelineList.get(eventTimelineList.size()-1);
+			if (_eventTimeline != null)
+			{
+				Event event = dataWrapper.getEventById(_eventTimeline._fkEvent);
+				if (event != null)
+					eventTimeline._fkProfileEndActivated = event._fkProfileStart;
+			}
+		}
 
 		dataWrapper.getDatabaseHandler().addEventTimeline(eventTimeline);
 		eventTimelineList.add(eventTimeline);
