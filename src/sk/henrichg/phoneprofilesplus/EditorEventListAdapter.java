@@ -257,15 +257,32 @@ public class EditorEventListAdapter extends BaseAdapter
         
 		
         final Event event = (Event)getItem(position);
+       	int eventStatus = event.getStatusFromDB(dataWrapper); 
 
-       	if (GlobalData.applicationTheme.equals("light"))
-       		holder.listItemRoot.setBackgroundResource(R.drawable.card);
-       	else
-       	if (GlobalData.applicationTheme.equals("dark"))
-       		holder.listItemRoot.setBackgroundResource(R.drawable.card_dark);
+        if (eventStatus == Event.ESTATUS_RUNNING)
+        {
+	       	if (GlobalData.applicationTheme.equals("light"))
+	       		holder.listItemRoot.setBackgroundResource(R.drawable.header_card);
+	       	else
+	       	if (GlobalData.applicationTheme.equals("dark"))
+	       		holder.listItemRoot.setBackgroundResource(R.drawable.header_card_dark);
+	      	else
+         	if (GlobalData.applicationTheme.equals("dlight"))
+         		holder.listItemRoot.setBackgroundResource(R.drawable.header_card);
+        }
+        else
+        {
+	       	if (GlobalData.applicationTheme.equals("light"))
+	       		holder.listItemRoot.setBackgroundResource(R.drawable.card);
+	       	else
+	       	if (GlobalData.applicationTheme.equals("dark"))
+	       		holder.listItemRoot.setBackgroundResource(R.drawable.card_dark);
+	      	else
+         	if (GlobalData.applicationTheme.equals("dlight"))
+         		holder.listItemRoot.setBackgroundResource(R.drawable.card);
+        }
         
        	int statusRes = Event.ESTATUS_STOP;
-       	int eventStatus = event.getStatusFromDB(dataWrapper); 
        	switch (eventStatus)
        	{
        		case Event.ESTATUS_RUNNING:
