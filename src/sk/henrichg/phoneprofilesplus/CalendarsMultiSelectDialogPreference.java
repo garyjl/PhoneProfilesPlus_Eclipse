@@ -86,6 +86,8 @@ public class CalendarsMultiSelectDialogPreference extends DialogPreference
 			@Override
 			protected Void doInBackground(Void... params) {
 				
+				calendarList.clear();
+				
 				Cursor cur = null;
 				ContentResolver cr = _context.getContentResolver();
 				Uri uri = Calendars.CONTENT_URI;
