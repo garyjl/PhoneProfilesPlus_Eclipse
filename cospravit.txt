@@ -1,11 +1,8 @@
 Event preferences: CALENDAR
 1. vyberie si ktore kalendare chce - multselection listview
 2. zoznam kalendarov: zobrazit farbu kalendara
-3. dam moznost vybrat si udalosti - multiselection listview
-4. asi by som mal dat vyberat len z udalosti, co sa opakuju, nema vyznam rboit event na 
-   jednorazove udalosti
-5. zoznam udalosti: zobrazit farbu kalendara
-6. dat aj moznost si zadat retazec, ktory sa bude vyhladavat v "Nazov udalosti" a v "Popis"
+3. vyber, kde chce hladat retazec: "Nazov udalosti" alebo "Popis"
+4. zadat retazec, ktory sa bude vyhladavat
 
-Cize tak ako pri telefoonych cislach si budem pamatat id kalendara, id udalosti.
+Tak ako pri telefoonych cislach si budem pamatat id kalendara.
 
