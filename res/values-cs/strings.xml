@@ -304,7 +304,6 @@
     <string name="event_preferences_profile_end_no_activate">Neaktivovat</string>
     <string name="event_preferences_eventProfileEnd">Aktivovat profil</string>
     <string name="menu_restart_events">Restart událostí</string>
-
     <string name="event_preferences_ForceRun">Ignoruj ​​manuální aktivaci</string>
     <string name="manual_profile_activation_forceRun_title">Aktivace profilu</string>
     <string name="manual_profile_activation_forceRun_message">Nějaká událost s parametrem \"Ignoruj ​​manuální aktivaci\" běží. I tak aktivovat?</string>
@@ -323,7 +322,6 @@
 	<string name="array_event_pref_priorityLow">Nízka</string>    
 	<string name="array_event_pref_priorityVeryLow">Velmi nízká</string>    
     <string name="editor_drawer_order_priority">Priorita</string>
-
     <string name="event_type_peripheral">Příslušenství</string>
     <string name="array_event_pref_peripheralType_deskDock">Dokovací stanice</string>
     <string name="array_event_pref_peripheralType_carDock">Autosada</string>
@@ -333,5 +331,12 @@
     <string name="array_event_pref_peripheralType_wired_headset">Drátové handsfree</string>
     <string name="array_event_pref_peripheralType_bluetooth_headset">Bluetooth handsfree</string>
     <string name="array_event_pref_peripheralType_headphones">Sluchátka</string>
-    		
+    
+	<string name="toast_default_events_generated">Přednastavené profily vygenerované</string> 
+	<string name="default_event_name_during_the_week">Přes týden</string> 
+	<string name="default_event_name_weekend">Víkend</string> 
+	<string name="default_event_name_during_the_work">Během práce</string> 
+	<string name="default_event_name_overnight">V noci</string> 
+	<string name="default_event_name_low_battery">Slabá baterie</string> 
+	<string name="default_profile_name_battery_low">Slabá baterie</string>
 </resources>

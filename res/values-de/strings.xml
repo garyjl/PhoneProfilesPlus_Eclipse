@@ -303,7 +303,6 @@
     <string name="event_preferences_profile_end_no_activate">Nicht aktivieren</string>
     <string name="event_references_eventProfileEnd">Profil aktivieren</string>
     <string name="menu_restart_events">Ereignisse nachholen</string>
-
     <string name="event_preferences_ForceRun">Manuelle Aktivierung ignorieren</string>
     <string name="manual_profile_activation_forceRun_title">Profil aktivieren</string>
     <string name="manual_profile_activation_forceRun_message">Ein Ereignis mit der Eigenschaft \"Manuelle Aktivierung ignorieren\" ist aktiv. Trotzdem aktivieren?</string>
@@ -322,7 +321,6 @@
 	<string name="array_event_pref_priorityLow">Niedrig</string>
 	<string name="array_event_pref_priorityVeryLow">Sehr niedrig</string>
     <string name="editor_drawer_order_priority">Priorität</string>    					
-    
  	<string name="event_type_peripheral">Zubehör</string>
     <string name="array_event_pref_peripheralType_deskDock">Schreibtisch-Dock</string>
     <string name="array_event_pref_peripheralType_carDock">Auto-Dock</string>
@@ -332,5 +330,13 @@
     <string name="array_event_pref_peripheralType_wired_headset">Freisprecheinrichtung</string>
     <string name="array_event_pref_peripheralType_bluetooth_headset">BlueTooth-Freisprecheinrichtung</string>
     <string name="array_event_pref_peripheralType_headphones">Kopfhörer</string>
+
+ 	<string name="toast_default_events_generated">Standard-Ereignisse erstellt</string>
+    <string name="default_event_name_during_the_week">Werktags</string>
+    <string name="default_event_name_weekend">Wochenende</string>
+    <string name="default_event_name_during_the_work">Arbeit</string>
+    <string name="default_event_name_overnight">Nacht</string>
+    <string name="default_event_name_low_battery">Akku schwach</string>
+    <string name="default_profile_name_battery_low">Akku schwach</string>
         
 </resources>

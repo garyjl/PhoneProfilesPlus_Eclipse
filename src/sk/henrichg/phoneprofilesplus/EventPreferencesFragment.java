@@ -140,16 +140,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		if (new_event_mode == EditorEventListFragment.EDIT_MODE_INSERT)
 		{
 			// create new event - default is TIME
-			event = new Event(getResources().getString(R.string.event_name_default), 
-						0,
-						Event.PROFILE_END_NO_ACTIVATE,
-						Event.ESTATUS_STOP,
-						"",
-						false,
-						false,
-						true,
-						Event.EPRIORITY_NORMAL
-		         );
+			event = dataWrapper.getNoinitializedEvent(getResources().getString(R.string.event_name_default));
 			event_id = 0;
 		}
 		else

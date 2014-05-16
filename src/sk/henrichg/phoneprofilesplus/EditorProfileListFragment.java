@@ -254,7 +254,7 @@ public class EditorProfileListFragment extends Fragment {
 		private DataWrapper dataWrapper;
 		private int filterType;
 		boolean defaultProfilesGenerated = false;
-		
+		boolean defaultEventsGenerated = false;
 
         private LoadProfileListAsyncTask (EditorProfileListFragment fragment, int filterType) {
             this.fragmentWeakRef = new WeakReference<EditorProfileListFragment>(fragment);
@@ -267,9 +267,13 @@ public class EditorProfileListFragment extends Fragment {
 			List<Profile> profileList = dataWrapper.getProfileList();
 			if (profileList.size() == 0)
 			{
-				// no profiles in DB, generate default profiles
+				// no profiles in DB, generate default profiles and events
+				
 				profileList = dataWrapper.getDefaultProfileList();
 				defaultProfilesGenerated = true;
+				
+				dataWrapper.generateDefaultEventList();
+				defaultEventsGenerated = true;
 			}
 			// sort list
 			if (filterType != EditorProfileListFragment.FILTER_TYPE_SHOW_IN_ACTIVATOR)
@@ -308,6 +312,13 @@ public class EditorProfileListFragment extends Fragment {
 					fragment.activateProfileHelper.updateWidget();
 					Toast msg = Toast.makeText(fragment.getActivity(), 
 							fragment.getResources().getString(R.string.toast_default_profiles_generated), 
+							Toast.LENGTH_SHORT);
+					msg.show();
+				}
+				if (defaultEventsGenerated)
+				{
+					Toast msg = Toast.makeText(fragment.getActivity(), 
+							fragment.getResources().getString(R.string.toast_default_events_generated), 
 							Toast.LENGTH_SHORT);
 					msg.show();
 				}

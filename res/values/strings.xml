@@ -309,7 +309,6 @@
     <string name="event_preferences_profile_end_no_activate">No activate</string>
     <string name="event_preferences_eventProfileEnd">Activate profile</string>
     <string name="menu_restart_events">Restart events</string>  
-      
     <string name="event_preferences_ForceRun">Ignore manual activation</string>
     <string name="manual_profile_activation_forceRun_title">Activate profile</string>
     <string name="manual_profile_activation_forceRun_message">Any event with option \"Ignore manual activation\" is running. Activate anyway?</string>
@@ -328,7 +327,6 @@
 	<string name="array_event_pref_priorityLow">Low</string>    
 	<string name="array_event_pref_priorityVeryLow">Very low</string>    
     <string name="editor_drawer_order_priority">Priority</string>
-
     <string name="event_type_peripheral">Accessories</string>
     <string name="array_event_pref_peripheralType_deskDock">Desk dock</string>
     <string name="array_event_pref_peripheralType_carDock">Car dock</string>
@@ -338,5 +336,13 @@
     <string name="array_event_pref_peripheralType_wired_headset">Wired handsfree</string>
     <string name="array_event_pref_peripheralType_bluetooth_headset">Bluetooth handsfree</string>
     <string name="array_event_pref_peripheralType_headphones">Headphones</string>
+
+    <string name="toast_default_events_generated">Default events generated</string>
+    <string name="default_event_name_during_the_week">During the week</string>
+    <string name="default_event_name_weekend">Weekend</string>
+    <string name="default_event_name_during_the_work">During the work</string>
+    <string name="default_event_name_overnight">Overnight</string>
+    <string name="default_event_name_low_battery">Low battery</string>
+    <string name="default_profile_name_battery_low">Low battery</string>
     	
 </resources>

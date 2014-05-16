@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
@@ -221,6 +222,7 @@ public class EditorEventListFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... params) {
         	List<Event> eventList = dataWrapper.getEventList();
+        	
         	//Log.e("EditorEventListFragment.LoadEventListAsyncTask.doInBackground","orderType="+orderType);
         	EditorEventListFragment.sortList(eventList, orderType, dataWrapper);
 			dataWrapper.getProfileList();
@@ -244,6 +246,7 @@ public class EditorEventListFragment extends Fragment {
 
     			fragment.eventListAdapter = new EditorEventListAdapter(fragment, fragment.dataWrapper, fragment.filterType);
     			fragment.listView.setAdapter(fragment.eventListAdapter);
+    			
             }
         }
     }

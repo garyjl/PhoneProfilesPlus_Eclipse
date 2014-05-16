@@ -309,7 +309,6 @@
     <string name="event_preferences_profile_end_no_activate">Не активируй</string>
     <string name="event_preferences_eventProfileEnd">Активировать профиль</string>
     <string name="menu_restart_events">Перезапуск событий</string>
-        
     <string name="event_preferences_ForceRun">Игнорировать ручную активацию</string>
     <string name="manual_profile_activation_forceRun_title">Активировать профиль</string>
     <string name="manual_profile_activation_forceRun_message">Любое событие с опцией \"Игнорировать ручную активацию\" работает. Активировать в любом случае?</string>
@@ -328,7 +327,6 @@
 	<string name="array_event_pref_priorityLow">низкий</string>    
 	<string name="array_event_pref_priorityVeryLow">Очень низкий</string>    
     <string name="editor_drawer_order_priority">Приоритет</string>
-
     <string name="event_type_peripheral">Аксессуары</string>
     <string name="array_event_pref_peripheralType_deskDock">Док-станция</string>
     <string name="array_event_pref_peripheralType_carDock">Автомобильный комплект</string>
@@ -338,5 +336,13 @@
     <string name="array_event_pref_peripheralType_wired_headset">Проводной громкой связи</string>
     <string name="array_event_pref_peripheralType_bluetooth_headset">Громкая связь Bluetooth</string>
     <string name="array_event_pref_peripheralType_headphones">Наушники</string>
+
+    <string name="toast_default_events_generated">Default events generated</string>
+    <string name="default_event_name_during_the_week">During the week</string>
+    <string name="default_event_name_weekend">Weekend</string>
+    <string name="default_event_name_during_the_work">During the work</string>
+    <string name="default_event_name_overnight">Overnight</string>
+    <string name="default_event_name_low_battery">Low battery</string>
+    <string name="default_profile_name_battery_low">Low battery</string>
     
 </resources>

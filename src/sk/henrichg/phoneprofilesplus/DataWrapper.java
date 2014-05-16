@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.TimeZone;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -224,6 +225,14 @@ public class DataWrapper {
 		profile._deviceWiFi = 0;
 		//profile._deviceBrightness = "10|0|0|0";
 		getDatabaseHandler().addProfile(profile);
+		profile = getNoinitializedProfile(context.getString(R.string.default_profile_name_battery_low), "ic_profile_battery_1", 6);
+		profile._showInActivator = false;
+		profile._deviceAutosync = 2;
+		profile._deviceMobileData = 2;
+		profile._deviceWiFi = 2;
+		profile._deviceBluetooth = 2;
+		profile._deviceGPS = 2;
+		getDatabaseHandler().addProfile(profile);
 		
 		return getProfileList();
 	}
@@ -400,7 +409,7 @@ public class DataWrapper {
 			return getProfileByIdFromDB(id);
 		}
 	}
-
+	
 	public void updateProfile(Profile profile)
 	{
 		if (profile != null)
@@ -672,6 +681,135 @@ public class DataWrapper {
 		context.sendBroadcast(intent);
 
 	}
+	
+	public Event getNoinitializedEvent(String name)
+	{
+		return new Event(name, 
+				0,
+				Event.PROFILE_END_NO_ACTIVATE,
+				Event.ESTATUS_STOP,
+				"",
+				false,
+				false,
+				true,
+				Event.EPRIORITY_NORMAL
+         );
+	}
+	
+	private long getProfileIdByName(String name)
+	{
+		if (profileList == null)
+		{
+			return 0;
+		}
+		else
+		{
+			Profile profile;
+			for (int i = 0; i < profileList.size(); i++)
+			{
+				profile = profileList.get(i); 
+				if (profile._name.equals(name))
+					return profile._id;
+			}
+			return 0;
+		}
+	}
+	
+	public void generateDefaultEventList()
+	{
+		invalidateEventList();
+		getDatabaseHandler().deleteAllEvents();
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.clear(Calendar.DATE);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		
+    	int gmtOffset = TimeZone.getDefault().getRawOffset();
+		
+		Event event;
+		
+		event = getNoinitializedEvent(context.getString(R.string.default_event_name_during_the_week));
+		event._fkProfileStart = getProfileIdByName(context.getString(R.string.default_profile_name_home));
+		event._undoneProfile = false;
+		event._eventPreferencesTime._enabled = true;
+		event._eventPreferencesTime._monday = true;
+		event._eventPreferencesTime._tuesday = true;
+		event._eventPreferencesTime._wendesday = true;
+		event._eventPreferencesTime._thursday = true;
+		event._eventPreferencesTime._friday = true;
+		calendar.set(Calendar.HOUR, 8);
+		calendar.set(Calendar.MINUTE, 0);
+		event._eventPreferencesTime._startTime = calendar.getTimeInMillis() + gmtOffset;
+		calendar.set(Calendar.HOUR, 23);
+		calendar.set(Calendar.MINUTE, 0);
+		event._eventPreferencesTime._endTime = calendar.getTimeInMillis() + gmtOffset;
+		event._eventPreferencesTime._useEndTime = true;
+		getDatabaseHandler().addEvent(event);
+		event = getNoinitializedEvent(context.getString(R.string.default_event_name_weekend));
+		event._fkProfileStart = getProfileIdByName(context.getString(R.string.default_profile_name_home));
+		event._undoneProfile = false;
+		event._eventPreferencesTime._enabled = true;
+		event._eventPreferencesTime._saturday = true;
+		event._eventPreferencesTime._sunday = true;
+		calendar.set(Calendar.HOUR, 8);
+		calendar.set(Calendar.MINUTE, 0);
+		event._eventPreferencesTime._startTime = calendar.getTimeInMillis() + gmtOffset;
+		calendar.set(Calendar.HOUR, 23);
+		calendar.set(Calendar.MINUTE, 0);
+		event._eventPreferencesTime._endTime = calendar.getTimeInMillis() + gmtOffset;
+		event._eventPreferencesTime._useEndTime = true;
+		getDatabaseHandler().addEvent(event);
+		event = getNoinitializedEvent(context.getString(R.string.default_event_name_during_the_work));
+		event._fkProfileStart = getProfileIdByName(context.getString(R.string.default_profile_name_work));
+		event._undoneProfile = true;
+		event._priority = Event.EPRIORITY_HIGH;
+		event._eventPreferencesTime._enabled = true;
+		event._eventPreferencesTime._monday = true;
+		event._eventPreferencesTime._tuesday = true;
+		event._eventPreferencesTime._wendesday = true;
+		event._eventPreferencesTime._thursday = true;
+		event._eventPreferencesTime._friday = true;
+		calendar.set(Calendar.HOUR, 9);
+		calendar.set(Calendar.MINUTE, 30);
+		event._eventPreferencesTime._startTime = calendar.getTimeInMillis() + gmtOffset;
+		calendar.set(Calendar.HOUR, 17);
+		calendar.set(Calendar.MINUTE, 30);
+		event._eventPreferencesTime._endTime = calendar.getTimeInMillis() + gmtOffset;
+		event._eventPreferencesTime._useEndTime = true;
+		getDatabaseHandler().addEvent(event);
+		event = getNoinitializedEvent(context.getString(R.string.default_event_name_overnight));
+		event._fkProfileStart = getProfileIdByName(context.getString(R.string.default_profile_name_sleep));
+		event._undoneProfile = false;
+		event._eventPreferencesTime._enabled = true;
+		event._eventPreferencesTime._monday = true;
+		event._eventPreferencesTime._tuesday = true;
+		event._eventPreferencesTime._wendesday = true;
+		event._eventPreferencesTime._thursday = true;
+		event._eventPreferencesTime._friday = true;
+		event._eventPreferencesTime._saturday = true;
+		event._eventPreferencesTime._sunday = true;
+		calendar.set(Calendar.HOUR, 23);
+		calendar.set(Calendar.MINUTE, 0);
+		event._eventPreferencesTime._startTime = calendar.getTimeInMillis() + gmtOffset;
+		calendar.set(Calendar.HOUR, 8);
+		calendar.set(Calendar.MINUTE, 0);
+		event._eventPreferencesTime._endTime = calendar.getTimeInMillis() + gmtOffset;
+		event._eventPreferencesTime._useEndTime = true;
+		getDatabaseHandler().addEvent(event);
+		event = getNoinitializedEvent(context.getString(R.string.default_event_name_low_battery));
+		event._fkProfileStart = getProfileIdByName(context.getString(R.string.default_profile_name_battery_low));
+		event._undoneProfile = false;
+		event._priority = Event.EPRIORITY_VERY_HIGH;
+		event._forceRun = true;
+		event._eventPreferencesBattery._enabled = true;
+		event._eventPreferencesBattery._levelLow = 0;
+		event._eventPreferencesBattery._levelHight = 10;
+		event._eventPreferencesBattery._charging = false;
+		getDatabaseHandler().addEvent(event);
+		
+	}
+	
 	
 //---------------------------------------------------
 	
