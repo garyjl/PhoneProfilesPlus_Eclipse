@@ -9,6 +9,7 @@ public class ReceiversService extends Service {
 
 	private final BatteryEventBroadcastReceiver batteryEventReceiver = new BatteryEventBroadcastReceiver();
 	private final HeadsetConnectionBroadcastReceiver headsetPlugReceiver = new HeadsetConnectionBroadcastReceiver();
+	private final RestartEventsBroadcastReceiver restartEventsReceiver = new RestartEventsBroadcastReceiver();
 	
 	@Override
     public void onCreate()
@@ -22,6 +23,16 @@ public class ReceiversService extends Service {
 			intentFilter2.addAction(action);
         }		
 		registerReceiver(headsetPlugReceiver, intentFilter2);
+		
+		
+		
+		// receivers for system date and time change
+		// events must by restarted
+		IntentFilter intentFilter99 = new IntentFilter();
+		intentFilter99.addAction(Intent.ACTION_TIMEZONE_CHANGED);
+		intentFilter99.addAction(Intent.ACTION_TIME_CHANGED);
+	    registerReceiver(restartEventsReceiver, intentFilter99);
+		
 	}
 	 
 	@Override

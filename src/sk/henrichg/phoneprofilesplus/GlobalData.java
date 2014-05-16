@@ -42,8 +42,8 @@ public class GlobalData extends Application {
 	                                     //"EventPreferencesTime";
 										 //"DataWrapper.doEventService|"+
 	                                     //"DataWrapper.restartEvents|"+
-										 //"RestartEventsBroadcastReceiver";
-										 "HeadsetConnectionBroadcastReceiver";
+										 "RestartEventsBroadcastReceiver";
+										 //"HeadsetConnectionBroadcastReceiver";
 	
 	public static final String EXPORT_PATH = "/PhoneProfilesPlus";
 	public static final String LOG_FILENAME = "log.txt";
