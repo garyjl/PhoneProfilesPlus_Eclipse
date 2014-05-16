@@ -1519,9 +1519,9 @@ public class DataWrapper {
 		else
 		{
 			if (GlobalData.getForceRunEventRunning(context))
-				return "F - " + profile._name;
+				return "\u23E9 " + profile._name;
 			else
-				return "M - " + profile._name;
+				return "\uD83D\uDC46 " + profile._name;
 		}
 	}
 	
