@@ -347,5 +347,8 @@
 
     <string name="calendars_multiselect_summary_text_selected">Selected</string>	    			
     <string name="calendars_multiselect_summary_text_not_selected">Not selected</string>
+    <string name="event_preferences_category_eventCalendarParameters">Calendar parameters</string>
+    <string name="event_preferences_calendar_enabled">Enable calendar</string>
+    <string name="event_preferences_calendar_calendars">Calendars</string>
     	
 </resources>

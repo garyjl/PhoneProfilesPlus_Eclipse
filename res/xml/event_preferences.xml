@@ -86,6 +86,19 @@
             android:dependency="eventTimeUseEndTime" />
     </PreferenceCategory>
     <PreferenceCategory
+        android:summary="@string/event_preferences_category_eventCalendarParameters"
+        android:title="@string/event_preferences_category_eventCalendarParameters" >
+		<CheckBoxPreference 
+		    android:key="eventCalendarEnabled"
+		    android:title="@string/event_preferences_calendar_enabled"
+		    android:defaultValue="false" />
+		<sk.henrichg.phoneprofilesplus.CalendarsMultiSelectDialogPreference
+            android:key="eventCalendarCalendars"
+            android:defaultValue=""
+            android:title="@string/event_preferences_calendar_calendars"
+            android:dependency="eventCalendarEnabled" />
+	</PreferenceCategory>
+    <PreferenceCategory
         android:summary="@string/event_preferences_category_eventBatteryParameters"
         android:title="@string/event_preferences_category_eventBatteryParameters" >
 		<CheckBoxPreference 
