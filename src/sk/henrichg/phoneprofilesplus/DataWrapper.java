@@ -1657,9 +1657,19 @@ public class DataWrapper {
 		else
 		{
 			if (GlobalData.getForceRunEventRunning(context))
-				return "\u23E9 " + profile._name;
+			{
+	   			if (android.os.Build.VERSION.SDK_INT >= 16)
+	   				return "\u23E9 " + profile._name;
+	   			else
+	   				return "F-" + profile._name;
+			}
 			else
-				return "\uD83D\uDC46 " + profile._name;
+			{
+	   			if (android.os.Build.VERSION.SDK_INT >= 16)
+	   				return "\uD83D\uDC46 " + profile._name;
+	   			else
+	   				return "M-" + profile._name;
+			}
 		}
 	}
 	

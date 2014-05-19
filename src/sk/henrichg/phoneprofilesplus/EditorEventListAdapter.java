@@ -306,7 +306,12 @@ public class EditorEventListAdapter extends BaseAdapter
    			
    		String eventPriority = "[" + (event._priority + 2)  + "] ";
    		if (event._forceRun)
-   			holder.eventName.setText("\u23E9 " + eventPriority + event._name);
+   		{
+   			if (android.os.Build.VERSION.SDK_INT >= 16)
+   				holder.eventName.setText("\u23E9 " + eventPriority + event._name);
+   			else
+   				holder.eventName.setText("F-" + eventPriority + event._name);
+   		}
    		else
    			holder.eventName.setText(eventPriority + event._name);
    		

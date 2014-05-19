@@ -191,9 +191,19 @@ public class PhoneProfilesDashClockExtension extends DashClockExtension {
 		String status = "";
 		if (GlobalData.getEventsBlocked(getBaseContext()))
 			if (GlobalData.getForceRunEventRunning(getBaseContext()))
-				status = "\u23E9";
+			{
+	   			if (android.os.Build.VERSION.SDK_INT >= 16)
+	   				status = "\u23E9";
+	   			else
+	   				status = "F-";
+			}
 			else
-				status = "\uD83D\uDC46";
+			{
+	   			if (android.os.Build.VERSION.SDK_INT >= 16)
+	   				status = "\uD83D\uDC46";
+	   			else
+	   				status = "M-";
+			}
 		
 	    // Publish the extension data update.
         publishUpdate(new ExtensionData()
