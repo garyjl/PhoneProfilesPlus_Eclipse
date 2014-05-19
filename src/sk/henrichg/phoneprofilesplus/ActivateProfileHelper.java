@@ -600,7 +600,8 @@ public class ActivateProfileHelper {
 				if (profile._deviceMobileDataPrefs == 1)
 				{
 		    		final Intent intent = new Intent(android.provider.Settings.ACTION_DATA_ROAMING_SETTINGS);
-					activity.startActivityForResult(intent, 1);
+		    		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					context.startActivity(intent);
 				}
 			}
 			
@@ -608,8 +609,9 @@ public class ActivateProfileHelper {
 			//{  No check only GPS
 				if (profile._deviceLocationServicePrefs == 1)
 				{
-				     final Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-				     activity.startActivity(intent);
+				    final Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+		    		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				    context.startActivity(intent);
 				}
 			//}			
 
@@ -621,10 +623,10 @@ public class ActivateProfileHelper {
 				if (intent != null)
 				{
 					intent.addCategory(Intent.CATEGORY_LAUNCHER);
-					activity.startActivity(intent);
+		    		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					context.startActivity(intent);
 				}
 			}
-			
 		}
 		
 	}

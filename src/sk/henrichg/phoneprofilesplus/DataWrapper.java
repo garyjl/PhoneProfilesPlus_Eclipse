@@ -351,7 +351,7 @@ public class DataWrapper {
 		} */
 	}
 	
-	public void activateProfileFromEvent(long profile_id, String eventNotificationSound)
+	public void activateProfileFromEvent(long profile_id, boolean interactive, String eventNotificationSound)
 	{
 		//Log.d("PhoneProfilesService.activateProfile",profile_id+"");
 		/*
@@ -363,7 +363,7 @@ public class DataWrapper {
 	    context.startActivity(intent);
 	    */
 		getActivateProfileHelper().initialize(this, null, context);
-		_activateProfile(getProfileById(profile_id), GlobalData.STARTUP_SOURCE_SERVICE, false, null, eventNotificationSound);
+		_activateProfile(getProfileById(profile_id), GlobalData.STARTUP_SOURCE_SERVICE, interactive, null, eventNotificationSound);
 	}
 	
 	
@@ -1149,7 +1149,7 @@ public class DataWrapper {
 	}
 
 	public boolean doEventService(Event event, boolean statePause, 
-									boolean restartEvent, boolean playNotification)
+									boolean restartEvent, boolean interactive)
 	{
 		int newEventStatus = Event.ESTATUS_NONE;
 
@@ -1429,7 +1429,7 @@ public class DataWrapper {
 			if ((newEventStatus == Event.ESTATUS_RUNNING) && (!statePause))
 			{
 				GlobalData.logE("DataWrapper.doEventService","start event");
-				event.startEvent(this, eventTimelineList, false, playNotification);
+				event.startEvent(this, eventTimelineList, false, interactive);
 			}
 			else
 			if ((newEventStatus == Event.ESTATUS_PAUSE) && statePause)

@@ -395,7 +395,7 @@ public class Event {
 	public void startEvent(DataWrapper dataWrapper,
 							List<EventTimeline> eventTimelineList, 
 							boolean ignoreGlobalPref,
-							boolean playNotification)
+							boolean interactive)
 	{
 		if ((!GlobalData.getGlobalEventsRuning(dataWrapper.context)) && (!ignoreGlobalPref))
 			// events are globally stopped
@@ -500,10 +500,10 @@ public class Event {
 				// no activate profile, when is already activated
 				GlobalData.logE("Event.startEvent","event_id="+this._id+" activate profile id="+this._fkProfileStart);
 				
-				if (playNotification)
-					dataWrapper.activateProfileFromEvent(this._fkProfileStart, _notificationSound);
+				if (interactive)
+					dataWrapper.activateProfileFromEvent(this._fkProfileStart, interactive, _notificationSound);
 				else
-					dataWrapper.activateProfileFromEvent(this._fkProfileStart, "");
+					dataWrapper.activateProfileFromEvent(this._fkProfileStart, interactive, "");
 			}
 			else
 			{
@@ -592,7 +592,7 @@ public class Event {
 						if (_fkProfileEnd != activatedProfileId)
 						{
 							GlobalData.logE("Event.pauseEvent","activate end porfile");
-							dataWrapper.activateProfileFromEvent(_fkProfileEnd, "");
+							dataWrapper.activateProfileFromEvent(_fkProfileEnd, false, "");
 							activatedProfileId = _fkProfileEnd;
 						}
 					}
@@ -604,7 +604,7 @@ public class Event {
 							GlobalData.logE("Event.pauseEvent","undone profile");
 							GlobalData.logE("Event.pauseEvent","_fkProfileEndActivated="+eventTimeline._fkProfileEndActivated);
 							if (eventTimeline._fkProfileEndActivated != 0)
-								dataWrapper.activateProfileFromEvent(eventTimeline._fkProfileEndActivated, "");
+								dataWrapper.activateProfileFromEvent(eventTimeline._fkProfileEndActivated, false, "");
 						}
 					}
 				}
