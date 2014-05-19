@@ -15,6 +15,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 @SuppressLint("NewApi")
@@ -85,6 +86,7 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 		if (GlobalData.applicationWidgetListBackground.equals("100")) alpha = 0xFF;
 		widget.setInt(R.id.widget_profile_list_root, "setBackgroundColor", Color.argb(alpha, red, green, blue));
 		
+		
 		// header
 		if (GlobalData.applicationWidgetListHeader || (!largeLayout))
 		{
@@ -120,6 +122,9 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 				profile._icon = GlobalData.PROFILE_ICON_DEFAULT+"|1";
 
 				profile.generateIconBitmap(context, 
+						GlobalData.applicationWidgetListIconColor.equals("1"), 
+						monochromeValue);
+				profile.generatePreferencesIndicator(context, 
 						GlobalData.applicationWidgetListIconColor.equals("1"), 
 						monochromeValue);
 				isIconResourceID = profile.getIsIconResourceID();
@@ -206,7 +211,6 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 			                                            PendingIntent.FLAG_UPDATE_CURRENT);
 			      
 			widget.setPendingIntentTemplate(R.id.widget_profile_list, clickPI);
-
 		}
 		else
 		{
@@ -237,7 +241,10 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 		else
 			myOptions = null;
         setLayoutParams(ctxt, appWidgetManager, appWidgetId, myOptions);
-    	RemoteViews widget = buildLayout(ctxt, appWidgetManager, appWidgetId, isLargeLayout);			
+    	RemoteViews widget = buildLayout(ctxt, appWidgetManager, appWidgetId, isLargeLayout);
+    	Log.e("ProfileListWidgetProvider.doOnUpdate","widget="+widget);
+    	Log.e("ProfileListWidgetProvider.doOnUpdate","appWidgetId="+appWidgetId);
+    	Log.e("ProfileListWidgetProvider.doOnUpdate","isLargeLayout="+isLargeLayout);
     	appWidgetManager.updateAppWidget(appWidgetId, widget);
 	}
 	
