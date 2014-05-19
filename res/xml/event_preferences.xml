@@ -85,7 +85,7 @@
             android:title="@string/event_preferences_time_endTime"
             android:dependency="eventTimeUseEndTime" />
     </PreferenceCategory>
-    <PreferenceCategory
+<!--    <PreferenceCategory
         android:summary="@string/event_preferences_category_eventCalendarParameters"
         android:title="@string/event_preferences_category_eventCalendarParameters" >
 		<CheckBoxPreference 
@@ -97,7 +97,7 @@
             android:defaultValue=""
             android:title="@string/event_preferences_calendar_calendars"
             android:dependency="eventCalendarEnabled" />
-	</PreferenceCategory>
+	</PreferenceCategory>   -->
     <PreferenceCategory
         android:summary="@string/event_preferences_category_eventBatteryParameters"
         android:title="@string/event_preferences_category_eventBatteryParameters" >
