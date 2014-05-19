@@ -306,6 +306,8 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 		String preferenceKey = "isLargeLayout_"+appWidgetId;
 		SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
 
+		AppWidgetProviderInfo appWidgetProviderInfo = appWidgetManager.getAppWidgetInfo(appWidgetId); 
+		
 		int minHeight;
 		if (newOptions != null)
 		{
@@ -319,9 +321,9 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 	        minHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
 	        //int maxHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
 
-			if (minHeight == 0)
+			if ((minHeight == 0) && (appWidgetProviderInfo != null))
 			{
-				minHeight = appWidgetManager.getAppWidgetInfo(appWidgetId).minHeight;
+				minHeight = appWidgetProviderInfo.minHeight;
 			}
 
 			//Log.e("ProfileListWidgetProvider.setLayoutParams","minHeight="+minHeight);
@@ -330,7 +332,10 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 		else
 		{
 			isKeyguard = false;
-			minHeight = appWidgetManager.getAppWidgetInfo(appWidgetId).minHeight;
+			if (appWidgetProviderInfo != null)
+				minHeight = appWidgetProviderInfo.minHeight;
+			else
+				minHeight = 0;
 			//Log.e("ProfileListWidgetProvider.setLayoutParams"," null minHeight="+minHeight);
 
 			//if (minHeight == 0)
