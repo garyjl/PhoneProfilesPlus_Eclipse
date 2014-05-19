@@ -15,7 +15,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 @SuppressLint("NewApi")
@@ -242,9 +241,6 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 			myOptions = null;
         setLayoutParams(ctxt, appWidgetManager, appWidgetId, myOptions);
     	RemoteViews widget = buildLayout(ctxt, appWidgetManager, appWidgetId, isLargeLayout);
-    	Log.e("ProfileListWidgetProvider.doOnUpdate","widget="+widget);
-    	Log.e("ProfileListWidgetProvider.doOnUpdate","appWidgetId="+appWidgetId);
-    	Log.e("ProfileListWidgetProvider.doOnUpdate","isLargeLayout="+isLargeLayout);
     	appWidgetManager.updateAppWidget(appWidgetId, widget);
 	}
 	
