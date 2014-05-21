@@ -187,7 +187,8 @@ public class ShortcutCreatorListFragment extends Fragment {
 			profileName = getResources().getString(R.string.profile_name_default);
 		}
 
-		Intent shortcutIntent = new Intent(getActivity(), BackgroundActivateProfileActivity.class);
+		Intent shortcutIntent = new Intent(getActivity().getApplicationContext(), BackgroundActivateProfileActivity.class);
+		//Intent shortcutIntent = new Intent(getActivity(), BackgroundActivateProfileActivity.class);
 		// BackgroundActivateProfileActivity musi toto testovat, a len spravit aktivaciu profilu
 		shortcutIntent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_SHORTCUT);
 		shortcutIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
