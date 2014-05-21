@@ -1385,7 +1385,7 @@ public class DataWrapper {
 						peripheralPassed = true;
 					else
 					if ((event._eventPreferencesPeripherals._peripheralType == EventPreferencesPeripherals.PERIPHERAL_TYPE_HEADPHONES)
-							&& (!headsetMicrophone))
+							&& (!headsetMicrophone) && (!bluetoothHeadset))
 						peripheralPassed = true;
 					else
 						peripheralPassed = false;

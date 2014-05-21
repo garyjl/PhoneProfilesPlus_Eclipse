@@ -1,5 +1,7 @@
 package sk.henrichg.phoneprofilesplus;
 
+import android.bluetooth.BluetoothHeadset;
+import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,8 +14,8 @@ public class HeadsetConnectionBroadcastReceiver extends WakefulBroadcastReceiver
 	
 	public static final String[] HEADPHONE_ACTIONS = {
         Intent.ACTION_HEADSET_PLUG,
-        "android.bluetooth.headset.action.STATE_CHANGED",
-        "android.bluetooth.headset.profile.action.CONNECTION_STATE_CHANGED"
+        BluetoothHeadset.ACTION_AUDIO_STATE_CHANGED,
+        BluetoothHeadset.ACTION_CONNECTION_STATE_CHANGED
     };
 	
 	@Override
@@ -44,8 +46,8 @@ public class HeadsetConnectionBroadcastReceiver extends WakefulBroadcastReceiver
 	        // Works up to and including Honeycomb
 	        if (intent.getAction().equals(HEADPHONE_ACTIONS[1]))
 	        {
-	            connectedHeadphones = (intent.getIntExtra("android.bluetooth.headset.extra.STATE", 0) == 2);
-				//connectedMicrophone = false;
+	            connectedHeadphones = (intent.getIntExtra(BluetoothProfile.EXTRA_STATE, BluetoothHeadset.STATE_AUDIO_DISCONNECTED) == BluetoothHeadset.STATE_AUDIO_CONNECTED);
+				connectedMicrophone = true;
 				bluetoothHeadset = true;
 	            
 	            broadcast = true;
@@ -54,8 +56,8 @@ public class HeadsetConnectionBroadcastReceiver extends WakefulBroadcastReceiver
 	        // Works for Ice Cream Sandwich
 	        if (intent.getAction().equals(HEADPHONE_ACTIONS[2]))
 	        {
-	            connectedHeadphones = (intent.getIntExtra("android.bluetooth.profile.extra.STATE", 0) == 2);
-				//connectedMicrophone = false;
+	            connectedHeadphones = (intent.getIntExtra(BluetoothProfile.EXTRA_STATE, BluetoothProfile.STATE_DISCONNECTED) == BluetoothProfile.STATE_CONNECTED);
+				connectedMicrophone = true;
 				bluetoothHeadset = true;
 	            
 	            broadcast = true;
