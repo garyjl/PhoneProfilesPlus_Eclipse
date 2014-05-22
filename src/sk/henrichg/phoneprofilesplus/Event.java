@@ -28,6 +28,7 @@ public class Event {
 	public EventPreferencesBattery _eventPreferencesBattery;
 	public EventPreferencesCall _eventPreferencesCall;
 	public EventPreferencesPeripherals _eventPreferencesPeripherals;
+	public EventPreferencesCalendar _eventPreferencesCalendar;
 
 	public static final long PROFILE_END_NO_ACTIVATE = -999;
 	
@@ -141,6 +142,11 @@ public class Event {
 	{
        	this._eventPreferencesPeripherals = new EventPreferencesPeripherals(this, false, 0);
 	}
+
+	private void createEventPreferencesCalendar()
+	{
+       	this._eventPreferencesCalendar = new EventPreferencesCalendar(this, false, "", 0, "");
+	}
 	
 	public void createEventPreferences()
 	{
@@ -149,6 +155,7 @@ public class Event {
 		createEventPreferencesBattery();
 		createEventPreferencesCall();
 		createEventPreferencesPeripherals();
+		createEventPreferencesCalendar();
 	}
 	
 	public void copyEventPreferences(Event fromEvent)
@@ -165,6 +172,7 @@ public class Event {
 		this._eventPreferencesBattery.copyPreferences(fromEvent);
 		this._eventPreferencesCall.copyPreferences(fromEvent);
 		this._eventPreferencesPeripherals.copyPreferences(fromEvent);
+		this._eventPreferencesCalendar.copyPreferences(fromEvent);
 	}
 	
 	public boolean isRunnable()
@@ -173,7 +181,8 @@ public class Event {
 		if (!(this._eventPreferencesTime._enabled ||
 			  this._eventPreferencesBattery._enabled ||
 			  this._eventPreferencesCall._enabled ||
-			  this._eventPreferencesPeripherals._enabled))
+			  this._eventPreferencesPeripherals._enabled ||
+			  this._eventPreferencesCalendar._enabled))
 			runnable = false;
 		if (this._eventPreferencesTime._enabled)
 			runnable = runnable && this._eventPreferencesTime.isRunable();
@@ -183,6 +192,8 @@ public class Event {
 			runnable = runnable && this._eventPreferencesCall.isRunable();
 		if (this._eventPreferencesPeripherals._enabled)
 			runnable = runnable && this._eventPreferencesPeripherals.isRunable();
+		if (this._eventPreferencesCalendar._enabled)
+			runnable = runnable && this._eventPreferencesCalendar.isRunable();
 		return runnable;
 	}
 	
@@ -201,6 +212,7 @@ public class Event {
         this._eventPreferencesBattery.loadSharedPrefereces(preferences);
         this._eventPreferencesCall.loadSharedPrefereces(preferences);
         this._eventPreferencesPeripherals.loadSharedPrefereces(preferences);
+        this._eventPreferencesCalendar.loadSharedPrefereces(preferences);
 		editor.commit();
 	}
 
@@ -219,6 +231,7 @@ public class Event {
 		this._eventPreferencesBattery.saveSharedPrefereces(preferences);
 		this._eventPreferencesCall.saveSharedPrefereces(preferences);
 		this._eventPreferencesPeripherals.saveSharedPrefereces(preferences);
+		this._eventPreferencesCalendar.saveSharedPrefereces(preferences);
 		
 		if (!this.isRunnable())
 			this._status = ESTATUS_STOP;
@@ -291,6 +304,7 @@ public class Event {
 		_eventPreferencesBattery.setSummary(prefMng, key, preferences, context);
 		_eventPreferencesCall.setSummary(prefMng, key, preferences, context);
 		_eventPreferencesPeripherals.setSummary(prefMng, key, preferences, context);
+		_eventPreferencesCalendar.setSummary(prefMng, key, preferences, context);
 	}
 	
 	public void setAllSummary(PreferenceManager prefMng, Context context)
@@ -304,6 +318,7 @@ public class Event {
 		_eventPreferencesBattery.setAllSummary(prefMng, context);
 		_eventPreferencesCall.setAllSummary(prefMng, context);
 		_eventPreferencesPeripherals.setAllSummary(prefMng, context);
+		_eventPreferencesCalendar.setAllSummary(prefMng, context);
 	}
 	
 	public String getPreferecesDescription(Context context)
@@ -319,6 +334,8 @@ public class Event {
 		description = _eventPreferencesCall.getPreferencesDescription(description, context);
 		description = description + "\n";
 		description = _eventPreferencesPeripherals.getPreferencesDescription(description, context);
+		description = description + "\n";
+		description = _eventPreferencesCalendar.getPreferencesDescription(description, context);
 		
 		return description;
 	}
@@ -335,6 +352,8 @@ public class Event {
 			canActivate = canActivate || this._eventPreferencesCall.activateReturnProfile();
 		if (this._eventPreferencesPeripherals._enabled)
 			canActivate = canActivate || this._eventPreferencesPeripherals.activateReturnProfile();
+		if (this._eventPreferencesCalendar._enabled)
+			canActivate = canActivate || this._eventPreferencesCalendar.activateReturnProfile();
 		
 		return canActivate;
 	}
@@ -698,6 +717,7 @@ public class Event {
 			_eventPreferencesBattery.setSystemRunningEvent(context);
 			_eventPreferencesCall.setSystemRunningEvent(context);
 			_eventPreferencesPeripherals.setSystemRunningEvent(context);
+			_eventPreferencesCalendar.setSystemRunningEvent(context);
 		}
 		else
 		if (forStatus == ESTATUS_RUNNING)
@@ -708,6 +728,7 @@ public class Event {
 			_eventPreferencesBattery.setSystemPauseEvent(context);
 			_eventPreferencesCall.setSystemPauseEvent(context);
 			_eventPreferencesPeripherals.setSystemPauseEvent(context);
+			_eventPreferencesCalendar.setSystemPauseEvent(context);
 		}
 		else
 		if (forStatus == ESTATUS_STOP)
@@ -718,6 +739,7 @@ public class Event {
 			_eventPreferencesBattery.removeSystemEvent(context);
 			_eventPreferencesCall.removeSystemEvent(context);
 			_eventPreferencesPeripherals.removeSystemEvent(context);
+			_eventPreferencesCalendar.removeSystemEvent(context);
 		}
 	}
 	
