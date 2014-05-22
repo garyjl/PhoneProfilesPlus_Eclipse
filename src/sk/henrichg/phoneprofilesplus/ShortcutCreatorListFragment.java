@@ -230,6 +230,9 @@ public class ShortcutCreatorListFragment extends Fragment {
     	profileShortcutBitmap = combineImages(profileBitmap, shortcutOverlayBitmap);
     	intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, profileShortcutBitmap);
 				
+    	//intent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+    	//getActivity().getApplicationContext().sendBroadcast(intent);
+    	
     	getActivity().setResult(Activity.RESULT_OK, intent);
 		
 		getActivity().finish();
