@@ -26,7 +26,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static SQLiteDatabase writableDb;	
     
 	// Database Version
-	private static final int DATABASE_VERSION = 1081;
+	private static final int DATABASE_VERSION = 1090;
 
 	// Database Name
 	private static final String DATABASE_NAME = "phoneProfilesManager";
@@ -44,6 +44,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public static final int ETYPE_BATTERY = 2;
 	public static final int ETYPE_CALL = 3;
 	public static final int ETYPE_PERIPHERAL = 4;
+	public static final int ETYPE_CALENDAR = 5;
 	
 	// Profiles Table Columns names
 	private static final String KEY_ID = "id";
@@ -111,6 +112,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_E_PRIORITY = "priority";
 	private static final String KEY_E_PERIPHERAL_ENABLED = "peripheralEnabled";
 	private static final String KEY_E_PERIPHERAL_TYPE = "peripheralType";
+	private static final String KEY_E_CALENDAR_ENABLED = "calendarEnabled";
+	private static final String KEY_E_CALENDAR_CALENDARS = "calendarCalendars";
+	private static final String KEY_E_CALENDAR_SEARCH_FIELD = "calendarSearchField";
+	private static final String KEY_E_CALENDAR_SEARCH_STRING = "calendarSearchString";
 	
 	private static final String KEY_ET_ID = "id";
 	private static final String KEY_ET_EORDER = "eorder";
@@ -246,7 +251,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_E_UNDONE_PROFILE + " INTEGER,"
 				+ KEY_E_PRIORITY + " INTEGER,"
 				+ KEY_E_PERIPHERAL_ENABLED + " INTEGER,"
-				+ KEY_E_PERIPHERAL_TYPE + " INTEGER"
+				+ KEY_E_PERIPHERAL_TYPE + " INTEGER,"
+				+ KEY_E_CALENDAR_ENABLED + " INTEGER,"
+				+ KEY_E_CALENDAR_CALENDARS + " TEXT,"
+				+ KEY_E_CALENDAR_SEARCH_FIELD + " INTEGER,"
+				+ KEY_E_CALENDAR_SEARCH_STRING + " TEXT"
 				+ ")";
 		db.execSQL(CREATE_EVENTS_TABLE);
 
@@ -737,6 +746,29 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	         }	
 		}
 		
+		if (oldVersion < 1090)
+		{
+			// pridame nove stlpce
+			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_CALENDAR_ENABLED + " INTEGER");
+			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_CALENDAR_CALENDARS + " TEXT");
+			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_CALENDAR_SEARCH_FIELD + " INTEGER");
+			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_CALENDAR_SEARCH_STRING + " TEXT");
+			
+			// updatneme zaznamy
+			db.beginTransaction();
+			try {
+				db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_CALENDAR_ENABLED + "=0");
+				db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_CALENDAR_CALENDARS + "\"\"");
+				db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_CALENDAR_SEARCH_FIELD + "=0");
+				db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_CALENDAR_SEARCH_STRING + "\"\"");
+				db.setTransactionSuccessful();
+		     } catch (Exception e){
+		         //Error in between database transaction 
+		     } finally {
+		    	db.endTransaction();
+	         }	
+		}
+
 	}
 	
 
@@ -2005,6 +2037,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
        	getEventPreferencesBattery(event, db);
        	getEventPreferencesCall(event, db);
        	getEventPreferencesPeripheral(event, db);
+       	getEventPreferencesCalendar(event, db);
 	}
 	
 	private void getEventPreferencesTime(Event event, SQLiteDatabase db) {
@@ -2130,6 +2163,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		cursor.close();
 	}
 	
+	private void getEventPreferencesCalendar(Event event, SQLiteDatabase db) {
+		Cursor cursor = db.query(TABLE_EVENTS, 
+				                 new String[] { KEY_E_CALENDAR_ENABLED,
+												KEY_E_CALENDAR_CALENDARS,
+												KEY_E_CALENDAR_SEARCH_FIELD,
+												KEY_E_CALENDAR_SEARCH_STRING
+												}, 
+				                 KEY_E_ID + "=?",
+				                 new String[] { String.valueOf(event._id) }, null, null, null, null);
+		if (cursor != null)
+			cursor.moveToFirst();
+
+		EventPreferencesCalendar eventPreferences = (EventPreferencesCalendar)event._eventPreferencesCalendar;
+
+		eventPreferences._enabled = (Integer.parseInt(cursor.getString(0)) == 1);
+		eventPreferences._calendars = cursor.getString(1);
+		eventPreferences._searchField = Integer.parseInt(cursor.getString(2));
+		eventPreferences._searchString = cursor.getString(3);
+		
+		cursor.close();
+	}
+	
 	public int updateEventPreferences(Event event) {
 		//SQLiteDatabase db = this.getReadableDatabase();
 		SQLiteDatabase db = getMyWritableDatabase();
@@ -2149,6 +2204,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
        		r = updateEventPreferencesCall(event, db);
        	if (r != 0)
        		r = updateEventPreferencesPeripheral(event, db);
+       	if (r != 0)
+       		r = updateEventPreferencesCalendar(event, db);
 
        	return r;
 	}
@@ -2231,6 +2288,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 		values.put(KEY_E_PERIPHERAL_ENABLED, (eventPreferences._enabled) ? 1 : 0);
 		values.put(KEY_E_PERIPHERAL_TYPE, eventPreferences._peripheralType);
+
+		// updating row
+		int r = db.update(TABLE_EVENTS, values, KEY_E_ID + " = ?",
+				        new String[] { String.valueOf(event._id) });
+        
+		return r;
+	}
+
+	private int updateEventPreferencesCalendar(Event event, SQLiteDatabase db) {
+		ContentValues values = new ContentValues();
+		
+		EventPreferencesCalendar eventPreferences = (EventPreferencesCalendar)event._eventPreferencesCalendar; 
+
+		//Log.e("DatabaseHandler.updateEventPreferencesCalendar","type="+event._type);
+		
+		values.put(KEY_E_CALENDAR_ENABLED, (eventPreferences._enabled) ? 1 : 0);
+		values.put(KEY_E_CALENDAR_CALENDARS, eventPreferences._calendars);
+		values.put(KEY_E_CALENDAR_SEARCH_FIELD, eventPreferences._searchField);
+		values.put(KEY_E_CALENDAR_SEARCH_STRING, eventPreferences._searchString);
 
 		// updating row
 		int r = db.update(TABLE_EVENTS, values, KEY_E_ID + " = ?",
@@ -2414,6 +2490,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		else
 		if (eventType == ETYPE_PERIPHERAL)
 			eventTypeChecked = KEY_E_PERIPHERAL_ENABLED + "=1";
+		else
+		if (eventType == ETYPE_CALENDAR)
+			eventTypeChecked = KEY_E_CALENDAR_ENABLED + "=1";
+		
 		countQuery = "SELECT  count(*) FROM " + TABLE_EVENTS + 
 	    		     " WHERE " + eventTypeChecked;
 
@@ -2953,6 +3033,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 											int gmtOffset = TimeZone.getDefault().getRawOffset();
 											values.put(KEY_E_START_TIME, startTime + gmtOffset);
 											values.put(KEY_E_END_TIME, endTime + gmtOffset);
+										}
+
+										if (exportedDBObj.getVersion() < 1090)
+										{
+											values.put(KEY_E_CALENDAR_ENABLED, 0);
+											values.put(KEY_E_CALENDAR_CALENDARS, "");
+											values.put(KEY_E_CALENDAR_SEARCH_FIELD, 0);
+											values.put(KEY_E_CALENDAR_SEARCH_STRING, "");
 										}
 										
 										// Inserting Row do db z SQLiteOpenHelper

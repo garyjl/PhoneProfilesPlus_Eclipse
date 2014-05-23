@@ -97,6 +97,19 @@
             android:defaultValue=""
             android:title="@string/event_preferences_calendar_calendars"
             android:dependency="eventCalendarEnabled" />
+		<ListPreference android:title="@string/event_preferences_calendar_search_field"
+            android:summary="@string/array_event_pref_calendarSearchField_eventName"
+            android:key="eventCalendarSearchField"
+            android:defaultValue="0"
+            android:entries="@array/eventCalendarSearchFieldArray"
+            android:entryValues="@array/eventCalendarSearchFieldValues"
+            android:dependency="eventCalendarEnabled" />     
+        <EditTextPreference
+            android:key="eventCalendarSearchString"
+            android:summary="@string/event_preferences_calendar_search_string"
+            android:title="@string/event_preferences_calendar_search_string"
+            android:selectAllOnFocus="true"
+            android:dependency="eventCalendarEnabled" />
 	</PreferenceCategory>
     <PreferenceCategory
         android:summary="@string/event_preferences_category_eventBatteryParameters"

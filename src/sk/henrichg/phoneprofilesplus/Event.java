@@ -168,6 +168,8 @@ public class Event {
 			createEventPreferencesCall();
 		if (this._eventPreferencesPeripherals == null)
 			createEventPreferencesPeripherals();
+		if (this._eventPreferencesCalendar == null)
+			createEventPreferencesCalendar();
 		this._eventPreferencesTime.copyPreferences(fromEvent);
 		this._eventPreferencesBattery.copyPreferences(fromEvent);
 		this._eventPreferencesCall.copyPreferences(fromEvent);

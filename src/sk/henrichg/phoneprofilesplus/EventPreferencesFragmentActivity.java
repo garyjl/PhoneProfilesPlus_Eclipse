@@ -37,7 +37,7 @@ public class EventPreferencesFragmentActivity extends ActionBarActivity
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setTitle(R.string.title_activity_event_preferences);
 
-        event_id = getIntent().getLongExtra(GlobalData.EXTRA_EVENT_ID, 0);
+        event_id = getIntent().getLongExtra(GlobalData.EXTRA_EVENT_ID, 0L);
         newEventMode = getIntent().getIntExtra(GlobalData.EXTRA_NEW_EVENT_MODE, EditorEventListFragment.EDIT_MODE_UNDEFINED);
 
 		if (savedInstanceState == null) {

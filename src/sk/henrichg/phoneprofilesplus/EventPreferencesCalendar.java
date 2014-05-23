@@ -1,7 +1,5 @@
 package sk.henrichg.phoneprofilesplus;
 
-import java.sql.Date;
-import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -14,6 +12,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.preference.ListPreference;
+import android.preference.PreferenceManager;
 import android.text.format.DateFormat;
 
 public class EventPreferencesCalendar extends EventPreferences {
@@ -63,7 +63,7 @@ public class EventPreferencesCalendar extends EventPreferences {
 	{
     	Editor editor = preferences.edit();
         editor.putBoolean(PREF_EVENT_CALENDAR_ENABLED, _enabled);
-        editor.putString(PREF_EVENT_CALENDAR_ENABLED, _calendars);
+        editor.putString(PREF_EVENT_CALENDAR_CALENDARS, _calendars);
         editor.putString(PREF_EVENT_CALENDAR_SEARCH_FIELD, String.valueOf(_searchField));
         editor.putString(PREF_EVENT_CALENDAR_SEARCH_STRING, _searchString);
 		editor.commit();
@@ -87,9 +87,13 @@ public class EventPreferencesCalendar extends EventPreferences {
 			descr = descr + context.getString(R.string.event_preferences_not_enabled);
 		else
 		{
-			//TODO tu pridat zobrazenie searchField a searchString
+			String[] searchFields = context.getResources().getStringArray(R.array.eventCalendarSearchFieldArray);
+			descr = descr + searchFields[this._searchField] + "; ";
 			
-	        Calendar calendar = Calendar.getInstance();
+			if (!this._searchString.isEmpty())
+				descr = descr + this._searchString; 
+			
+	        //Calendar calendar = Calendar.getInstance();
 	
 	   		if (GlobalData.getGlobalEventsRuning(context))
 	   		{
@@ -122,6 +126,39 @@ public class EventPreferencesCalendar extends EventPreferences {
 	}
 	
 	@Override
+	public void setSummary(PreferenceManager prefMng, String key, String value, Context context)
+	{
+		if (key.equals(PREF_EVENT_CALENDAR_SEARCH_FIELD))
+		{	
+			ListPreference listPreference = (ListPreference)prefMng.findPreference(key);
+			int index = listPreference.findIndexOfValue(value);
+			CharSequence summary = (index >= 0) ? listPreference.getEntries()[index] : null;
+			listPreference.setSummary(summary);
+		}
+		if (key.equals(PREF_EVENT_CALENDAR_SEARCH_STRING))
+		{
+	        prefMng.findPreference(key).setSummary(value);
+		}
+	}
+	
+	@Override
+	public void setSummary(PreferenceManager prefMng, String key, SharedPreferences preferences, Context context)
+	{
+		if (key.equals(PREF_EVENT_CALENDAR_SEARCH_FIELD) || 
+			key.equals(PREF_EVENT_CALENDAR_SEARCH_STRING))
+		{
+			setSummary(prefMng, key, preferences.getString(key, ""), context);
+		}
+	}
+	
+	@Override
+	public void setAllSummary(PreferenceManager prefMng, Context context)
+	{
+		setSummary(prefMng, PREF_EVENT_CALENDAR_SEARCH_STRING, Integer.toString(_searchField), context);
+		setSummary(prefMng, PREF_EVENT_CALENDAR_SEARCH_STRING, _searchString, context);
+	}
+	
+	@Override
 	public boolean isRunable()
 	{
 		
@@ -143,15 +180,6 @@ public class EventPreferencesCalendar extends EventPreferences {
 	{
 		GlobalData.logE("EventPreferencesTime.computeAlarm","startEvent="+startEvent);
 
-		boolean[] daysOfWeek =  new boolean[8];
-		daysOfWeek[Calendar.SUNDAY] = this._sunday;
-		daysOfWeek[Calendar.MONDAY] = this._monday;
-		daysOfWeek[Calendar.TUESDAY] = this._tuesday;
-		daysOfWeek[Calendar.WEDNESDAY] = this._wendesday;
-		daysOfWeek[Calendar.THURSDAY] = this._thursday;
-		daysOfWeek[Calendar.FRIDAY] = this._friday;
-		daysOfWeek[Calendar.SATURDAY] = this._saturday;
-		
 		Calendar now = Calendar.getInstance();
 		
 		///// set calendar for startTime and endTime
@@ -168,8 +196,6 @@ public class EventPreferencesCalendar extends EventPreferences {
 		calStartTime.set(Calendar.MILLISECOND, 0);
 
 		long computedEndTime = _endTime - gmtOffset;
-		if (!_useEndTime)
-			computedEndTime = (_startTime - gmtOffset) + (5 * 1000);
 		calEndTime.setTimeInMillis(computedEndTime);
 		calEndTime.set(Calendar.DAY_OF_MONTH, now.get(Calendar.DAY_OF_MONTH));
 		calEndTime.set(Calendar.MONTH, now.get(Calendar.MONTH)); 
@@ -200,52 +226,6 @@ public class EventPreferencesCalendar extends EventPreferences {
 			calEndTime.add(Calendar.DAY_OF_YEAR, 1);
 		}	
 		////////////////////////////
-
-		//// update calendar for startTime a endTime by selected day of week
-		int startDayOfWeek = calStartTime.get(Calendar.DAY_OF_WEEK);
-		if (daysOfWeek[startDayOfWeek])
-		{
-			// startTime of week is selected
-			GlobalData.logE("EventPreferencesTime.computeAlarm","startTime of week is selected");
-		}
-		else
-		{
-			// startTime of week is not selected,
-			GlobalData.logE("EventPreferencesTime.computeAlarm","startTime of week is NOT selected");
-			GlobalData.logE("EventPreferencesTime.computeAlarm","startDayOfWeek="+startDayOfWeek);
-			
-			// search for selected day of week
-			boolean found = false;
-			int daysToAdd = 0;
-			for (int i = startDayOfWeek+1; i < 8; i++)
-			{
-				++daysToAdd;
-				if (daysOfWeek[i])
-				{
-					found = true;
-					break;
-				}
-			}
-			if (!found)
-			{
-				for (int i = 1; i < startDayOfWeek; i++)
-				{
-					++daysToAdd;
-					if (daysOfWeek[i])
-					{
-						found = true;
-						break;
-					}
-				}
-			}
-			if (found)
-			{
-				GlobalData.logE("EventPreferencesTime.computeAlarm","daysToAdd="+daysToAdd);
-				calStartTime.add(Calendar.DAY_OF_YEAR, daysToAdd);
-				calEndTime.add(Calendar.DAY_OF_YEAR, daysToAdd);
-			}
-		}
-		//////////////////////
 
 		long alarmTime;
 		if (startEvent)
