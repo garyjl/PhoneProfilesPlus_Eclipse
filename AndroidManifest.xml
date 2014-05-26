@@ -257,7 +257,7 @@
 	   	</receiver>
 	    <service android:name=".EventsService">
         </service>
-        <receiver android:name=".EventsAlarmBroadcastReceiver"
+        <receiver android:name=".EventsTimeBroadcastReceiver"
 	        android:enabled="true" 
 	        android:exported="false">
         </receiver>
@@ -280,7 +280,11 @@
                 <action android:name="android.intent.action.ACTION_DOCK_EVENT" />
             </intent-filter>
         </receiver>
-
+        <receiver android:name=".EventsCalendarBroadcastReceiver"
+	        android:enabled="true" 
+	        android:exported="false">
+        </receiver>
+		
 	</application>
 
 </manifest>

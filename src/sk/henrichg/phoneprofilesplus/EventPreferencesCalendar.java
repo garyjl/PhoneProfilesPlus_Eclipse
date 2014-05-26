@@ -24,6 +24,7 @@ public class EventPreferencesCalendar extends EventPreferences {
 	
 	public long _startTime;
 	public long _endTime;
+	public boolean _eventFound;
 	
 	static final String PREF_EVENT_CALENDAR_ENABLED = "eventCalendarEnabled";
 	static final String PREF_EVENT_CALENDAR_CALENDARS = "eventCalendarCalendars";
@@ -44,6 +45,7 @@ public class EventPreferencesCalendar extends EventPreferences {
 		
 		this._startTime = 0;
 		this._endTime = 0;
+		this._eventFound = false;
 	}
 	
 	@Override
@@ -54,8 +56,9 @@ public class EventPreferencesCalendar extends EventPreferences {
 		this._searchField = ((EventPreferencesCalendar)fromEvent._eventPreferencesCalendar)._searchField;
 		this._searchString = ((EventPreferencesCalendar)fromEvent._eventPreferencesCalendar)._searchString;
 		
-		this._startTime = ((EventPreferencesCalendar)fromEvent._eventPreferencesCalendar)._startTime;
-		this._endTime = ((EventPreferencesCalendar)fromEvent._eventPreferencesCalendar)._endTime;
+		this._startTime = 0;
+		this._endTime = 0;
+		this._eventFound = false;
 	}
 	
 	@Override
@@ -76,6 +79,10 @@ public class EventPreferencesCalendar extends EventPreferences {
 		this._calendars = preferences.getString(PREF_EVENT_CALENDAR_CALENDARS, "");
 		this._searchField = Integer.parseInt(preferences.getString(PREF_EVENT_CALENDAR_SEARCH_FIELD, "0"));
 		this._searchString = preferences.getString(PREF_EVENT_CALENDAR_SEARCH_STRING, "");
+		
+		this._startTime = 0;
+		this._endTime = 0;
+		this._eventFound = false;
 	}
 	
 	@Override
@@ -178,7 +185,7 @@ public class EventPreferencesCalendar extends EventPreferences {
 	
 	public long computeAlarm(boolean startEvent)
 	{
-		GlobalData.logE("EventPreferencesTime.computeAlarm","startEvent="+startEvent);
+		GlobalData.logE("EventPreferencesCalendar.computeAlarm","startEvent="+startEvent);
 
 		Calendar now = Calendar.getInstance();
 		
@@ -206,7 +213,7 @@ public class EventPreferencesCalendar extends EventPreferences {
 		if (calStartTime.getTimeInMillis() >= calEndTime.getTimeInMillis())
 	    {
 			// endTime is over midnight
-			GlobalData.logE("EventPreferencesTime.computeAlarm","startTime >= endTime");
+			GlobalData.logE("EventPreferencesCalendar.computeAlarm","startTime >= endTime");
 			
 			if (now.getTimeInMillis() < calEndTime.getTimeInMillis())
 			{
@@ -242,14 +249,13 @@ public class EventPreferencesCalendar extends EventPreferences {
 	{
 		// set alarm for state PAUSE
 		
-		// this alarm generates broadcast, that change state into RUNNING
-		// from broadcast will by called EventsService with 
-		// EXTRA_EVENTS_SERVICE_PROCEDURE == ESP_START_EVENT
+		// this alarm generates broadcast, that change state into RUNNING;
+		// from broadcast will by called EventsService
 		
 
 		removeAlarm(context);
 		
-		if (!(isRunable() && _enabled)) 
+		if (!(isRunable() && _enabled && _eventFound)) 
 			return;
 
 		setAlarm(true, computeAlarm(true), context);
@@ -260,9 +266,8 @@ public class EventPreferencesCalendar extends EventPreferences {
 	{
 		// set alarm for state RUNNING
 
-		// this alarm generates broadcast, that change state into PAUSE
-		// from broadcast will by called EventsService with 
-		// EXTRA_EVENTS_SERVICE_PROCEDURE == ESP_PAUSE_EVENT
+		// this alarm generates broadcast, that change state into PAUSE;
+		// from broadcast will by called EventsService
 
 		removeAlarm(context);
 		
@@ -279,19 +284,19 @@ public class EventPreferencesCalendar extends EventPreferences {
 
 		removeAlarm(context);
 		
-		GlobalData.logE("EventPreferencesTime.removeSystemEvent","xxx");
+		GlobalData.logE("EventPreferencesCalendar.removeSystemEvent","xxx");
 	}
 
 	public void removeAlarm(Context context)
 	{
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
 
-		Intent intent = new Intent(context, EventsAlarmBroadcastReceiver.class);
+		Intent intent = new Intent(context, EventsTimeBroadcastReceiver.class);
 	    
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), (int) _event._id, intent, PendingIntent.FLAG_NO_CREATE);
         if (pendingIntent != null)
         {
-       		GlobalData.logE("EventPreferencesTime.removeAlarm","alarm found");
+       		GlobalData.logE("EventPreferencesCalendar.removeAlarm","alarm found");
         		
         	alarmManager.cancel(pendingIntent);
         	pendingIntent.cancel();
@@ -304,11 +309,11 @@ public class EventPreferencesCalendar extends EventPreferences {
 	    SimpleDateFormat sdf = new SimpleDateFormat("EE d.MM.yyyy HH:mm:ss:S");
 	    String result = sdf.format(alarmTime);
 	    if (startEvent)
-	    	GlobalData.logE("EventPreferencesTime.setAlarm","startTime="+result);
+	    	GlobalData.logE("EventPreferencesCalendar.setAlarm","startTime="+result);
 	    else
-	    	GlobalData.logE("EventPreferencesTime.setAlarm","endTime="+result);
+	    	GlobalData.logE("EventPreferencesCalendar.setAlarm","endTime="+result);
 	    
-	    Intent intent = new Intent(context, EventsAlarmBroadcastReceiver.class);
+	    Intent intent = new Intent(context, EventsCalendarBroadcastReceiver.class);
 	    intent.putExtra(GlobalData.EXTRA_EVENT_ID, _event._id);
 	    intent.putExtra(GlobalData.EXTRA_START_SYSTEM_EVENT, startEvent);
 	    

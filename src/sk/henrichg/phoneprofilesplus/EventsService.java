@@ -155,8 +155,8 @@ public class EventsService extends IntentService
 		if (broadcastReceiverType.equals(RestartEventsBroadcastReceiver.BROADCAST_RECEIVER_TYPE))
 			RestartEventsBroadcastReceiver.completeWakefulIntent(intent);
 		else
-		if (broadcastReceiverType.equals(EventsAlarmBroadcastReceiver.BROADCAST_RECEIVER_TYPE))
-			EventsAlarmBroadcastReceiver.completeWakefulIntent(intent);
+		if (broadcastReceiverType.equals(EventsTimeBroadcastReceiver.BROADCAST_RECEIVER_TYPE))
+			EventsTimeBroadcastReceiver.completeWakefulIntent(intent);
 		else
 		if (broadcastReceiverType.equals(BatteryEventBroadcastReceiver.BROADCAST_RECEIVER_TYPE))
 			BatteryEventBroadcastReceiver.completeWakefulIntent(intent);
@@ -169,6 +169,9 @@ public class EventsService extends IntentService
 		else
 		if (broadcastReceiverType.equals(HeadsetConnectionBroadcastReceiver.BROADCAST_RECEIVER_TYPE))
 			HeadsetConnectionBroadcastReceiver.completeWakefulIntent(intent);
+		else
+		if (broadcastReceiverType.equals(EventsCalendarBroadcastReceiver.BROADCAST_RECEIVER_TYPE))
+			EventsCalendarBroadcastReceiver.completeWakefulIntent(intent);
 	}
 	
 }

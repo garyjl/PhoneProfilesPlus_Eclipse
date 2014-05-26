@@ -399,9 +399,8 @@ public class EventPreferencesTime extends EventPreferences {
 	{
 		// set alarm for state PAUSE
 		
-		// this alarm generates broadcast, that change state into RUNNING
-		// from broadcast will by called EventsService with 
-		// EXTRA_EVENTS_SERVICE_PROCEDURE == ESP_START_EVENT
+		// this alarm generates broadcast, that change state into RUNNING;
+		// from broadcast will by called EventsService
 		
 
 		removeAlarm(context);
@@ -417,9 +416,8 @@ public class EventPreferencesTime extends EventPreferences {
 	{
 		// set alarm for state RUNNING
 
-		// this alarm generates broadcast, that change state into PAUSE
-		// from broadcast will by called EventsService with 
-		// EXTRA_EVENTS_SERVICE_PROCEDURE == ESP_PAUSE_EVENT
+		// this alarm generates broadcast, that change state into PAUSE;
+		// from broadcast will by called EventsService
 
 		removeAlarm(context);
 		
@@ -443,7 +441,7 @@ public class EventPreferencesTime extends EventPreferences {
 	{
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
 
-		Intent intent = new Intent(context, EventsAlarmBroadcastReceiver.class);
+		Intent intent = new Intent(context, EventsTimeBroadcastReceiver.class);
 	    
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), (int) _event._id, intent, PendingIntent.FLAG_NO_CREATE);
         if (pendingIntent != null)
@@ -465,7 +463,7 @@ public class EventPreferencesTime extends EventPreferences {
 	    else
 	    	GlobalData.logE("EventPreferencesTime.setAlarm","endTime="+result);
 	    
-	    Intent intent = new Intent(context, EventsAlarmBroadcastReceiver.class);
+	    Intent intent = new Intent(context, EventsTimeBroadcastReceiver.class);
 	    intent.putExtra(GlobalData.EXTRA_EVENT_ID, _event._id);
 	    intent.putExtra(GlobalData.EXTRA_START_SYSTEM_EVENT, startEvent);
 	    
