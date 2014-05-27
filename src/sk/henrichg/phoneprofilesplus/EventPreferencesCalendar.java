@@ -2,19 +2,28 @@ package sk.henrichg.phoneprofilesplus;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.TimeZone;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.database.Cursor;
+import android.net.Uri;
 import android.preference.ListPreference;
 import android.preference.PreferenceManager;
+import android.provider.CalendarContract.Calendars;
+import android.provider.CalendarContract.Events;
+import android.provider.CalendarContract.Instances;
 import android.text.format.DateFormat;
+import android.util.Log;
 
 public class EventPreferencesCalendar extends EventPreferences {
 
@@ -30,6 +39,9 @@ public class EventPreferencesCalendar extends EventPreferences {
 	static final String PREF_EVENT_CALENDAR_CALENDARS = "eventCalendarCalendars";
 	static final String PREF_EVENT_CALENDAR_SEARCH_FIELD = "eventCalendarSearchField";
 	static final String PREF_EVENT_CALENDAR_SEARCH_STRING = "eventCalendarSearchString";
+	
+	static final int SEARCH_FIELD_TITLE = 0;
+	static final int SEARCH_FIELD_DESCRIPTION = 1;
 	
 	public EventPreferencesCalendar(Event event,
 			                    boolean enabled,
@@ -104,27 +116,35 @@ public class EventPreferencesCalendar extends EventPreferences {
 	
 	   		if (GlobalData.getGlobalEventsRuning(context))
 	   		{
-	   			long alarmTime;
-	   		    //SimpleDateFormat sdf = new SimpleDateFormat("EEd/MM/yy HH:mm");
-	   		    String alarmTimeS = "";
-	   			if (_event.getStatus() == Event.ESTATUS_PAUSE)
+	   			if (_eventFound)
 	   			{
-	   				alarmTime = computeAlarm(true);
-	   				// date and time format by user system settings configuration
-	   	   		    alarmTimeS = "(st) " + DateFormat.getDateFormat(context).format(alarmTime) +
-	   	   		    			 " " + DateFormat.getTimeFormat(context).format(alarmTime);
-	   	   		    descr = descr + '\n';
-	   	   		    descr = descr + "-> " + alarmTimeS;
+		   			long alarmTime;
+		   		    //SimpleDateFormat sdf = new SimpleDateFormat("EEd/MM/yy HH:mm");
+		   		    String alarmTimeS = "";
+		   			if (_event.getStatus() == Event.ESTATUS_PAUSE)
+		   			{
+		   				alarmTime = computeAlarm(true);
+		   				// date and time format by user system settings configuration
+		   	   		    alarmTimeS = "(st) " + DateFormat.getDateFormat(context).format(alarmTime) +
+		   	   		    			 " " + DateFormat.getTimeFormat(context).format(alarmTime);
+		   	   		    descr = descr + '\n';
+		   	   		    descr = descr + "-> " + alarmTimeS;
+		   			}
+		   			else
+		   			if (_event.getStatus() == Event.ESTATUS_RUNNING)
+		   			{
+		   				alarmTime = computeAlarm(false);
+		   				// date and time format by user system settings configuration
+		   	   		    alarmTimeS = "(et) " + DateFormat.getDateFormat(context).format(alarmTime) +
+		   	   		    			 " " + DateFormat.getTimeFormat(context).format(alarmTime);
+		   	   		    descr = descr + '\n';
+		   	   		    descr = descr + "-> " + alarmTimeS;
+		   			}
 	   			}
 	   			else
-	   			if (_event.getStatus() == Event.ESTATUS_RUNNING)
 	   			{
-	   				alarmTime = computeAlarm(false);
-	   				// date and time format by user system settings configuration
-	   	   		    alarmTimeS = "(et) " + DateFormat.getDateFormat(context).format(alarmTime) +
-	   	   		    			 " " + DateFormat.getTimeFormat(context).format(alarmTime);
 	   	   		    descr = descr + '\n';
-	   	   		    descr = descr + "-> " + alarmTimeS;
+	   	   		    descr = descr + "-> " + context.getResources().getString(R.string.event_preferences_calendar_no_event);
 	   			}
 	   		}
 		}
@@ -161,7 +181,7 @@ public class EventPreferencesCalendar extends EventPreferences {
 	@Override
 	public void setAllSummary(PreferenceManager prefMng, Context context)
 	{
-		setSummary(prefMng, PREF_EVENT_CALENDAR_SEARCH_STRING, Integer.toString(_searchField), context);
+		setSummary(prefMng, PREF_EVENT_CALENDAR_SEARCH_FIELD, Integer.toString(_searchField), context);
 		setSummary(prefMng, PREF_EVENT_CALENDAR_SEARCH_STRING, _searchString, context);
 	}
 	
@@ -196,43 +216,12 @@ public class EventPreferencesCalendar extends EventPreferences {
 		int gmtOffset = TimeZone.getDefault().getRawOffset();
 		
 		calStartTime.setTimeInMillis(_startTime - gmtOffset);
-		calStartTime.set(Calendar.DAY_OF_MONTH, now.get(Calendar.DAY_OF_MONTH));
-		calStartTime.set(Calendar.MONTH, now.get(Calendar.MONTH)); 
-		calStartTime.set(Calendar.YEAR,  now.get(Calendar.YEAR));
 		calStartTime.set(Calendar.SECOND, 0);
 		calStartTime.set(Calendar.MILLISECOND, 0);
 
-		long computedEndTime = _endTime - gmtOffset;
-		calEndTime.setTimeInMillis(computedEndTime);
-		calEndTime.set(Calendar.DAY_OF_MONTH, now.get(Calendar.DAY_OF_MONTH));
-		calEndTime.set(Calendar.MONTH, now.get(Calendar.MONTH)); 
-		calEndTime.set(Calendar.YEAR,  now.get(Calendar.YEAR));
+		calEndTime.setTimeInMillis(_endTime - gmtOffset);
 		calEndTime.set(Calendar.SECOND, 0);
 		calEndTime.set(Calendar.MILLISECOND, 0);
-
-		if (calStartTime.getTimeInMillis() >= calEndTime.getTimeInMillis())
-	    {
-			// endTime is over midnight
-			GlobalData.logE("EventPreferencesCalendar.computeAlarm","startTime >= endTime");
-			
-			if (now.getTimeInMillis() < calEndTime.getTimeInMillis())
-			{
-				// now is before endTime
-				// decrease start/end time
-				calStartTime.add(Calendar.DAY_OF_YEAR, -1);
-				calEndTime.add(Calendar.DAY_OF_YEAR, -1);
-			}
-				
-			calEndTime.add(Calendar.DAY_OF_YEAR, 1);
-	    }
-		
-		if (calEndTime.getTimeInMillis() < now.getTimeInMillis())
-		{
-			// endTime is before actual time, compute for future
-			calStartTime.add(Calendar.DAY_OF_YEAR, 1);
-			calEndTime.add(Calendar.DAY_OF_YEAR, 1);
-		}	
-		////////////////////////////
 
 		long alarmTime;
 		if (startEvent)
@@ -255,6 +244,8 @@ public class EventPreferencesCalendar extends EventPreferences {
 
 		removeAlarm(context);
 		
+		searchEvent(context);
+		
 		if (!(isRunable() && _enabled && _eventFound)) 
 			return;
 
@@ -270,8 +261,10 @@ public class EventPreferencesCalendar extends EventPreferences {
 		// from broadcast will by called EventsService
 
 		removeAlarm(context);
+
+		searchEvent(context);
 		
-		if (!(isRunable() && _enabled)) 
+		if (!(isRunable() && _enabled && _eventFound)) 
 			return;
 		
 		setAlarm(false, computeAlarm(false), context);
@@ -291,7 +284,7 @@ public class EventPreferencesCalendar extends EventPreferences {
 	{
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
 
-		Intent intent = new Intent(context, EventsTimeBroadcastReceiver.class);
+		Intent intent = new Intent(context, EventsCalendarBroadcastReceiver.class);
 	    
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), (int) _event._id, intent, PendingIntent.FLAG_NO_CREATE);
         if (pendingIntent != null)
@@ -322,9 +315,153 @@ public class EventPreferencesCalendar extends EventPreferences {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
 
         alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
+
         //alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, alarmTime, 24 * 60 * 60 * 1000 , pendingIntent);
         //alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, alarmTime, 24 * 60 * 60 * 1000 , pendingIntent);
-        
+
+	}
+
+	public void searchEvent(Context context)
+	{
+		if (!(isRunable() && _enabled))
+		{
+			_startTime = 0;
+			_endTime = 0;
+			_eventFound = false;
+	    	DatabaseHandler.getInstance(context).updateEventCalendarTimes(_event);
+			return;
+		}
+
+	    //Log.e("EventPreferencesCalendar.searchEvent", "is runnable");
+		
+	    final String[] INSTANCE_PROJECTION = new String[] {
+	        Instances.BEGIN,         // 0
+	        Instances.END,			 // 1
+	        Instances.TITLE,         // 2
+	        Instances.DESCRIPTION,   // 3
+	        Instances.CALENDAR_ID,   // 4
+	        Instances.ALL_DAY/*,       // 5
+	        Instances.EVENT_TIMEZONE // 6 */
+	    };
+	      
+	    // The indices for the projection array above.
+	    final int PROJECTION_BEGIN_INDEX = 0;
+	    final int PROJECTION_END_INDEX = 1;
+	    final int PROJECTION_TITLE_INDEX = 2;	    
+	    //final int PROJECTION_DESCRIPTION_INDEX = 3;	    
+	    //final int PROJECTION_CALENDAR_ID_INDEX = 4;
+	    final int PROJECTION_ALL_DAY_INDEX = 5;
+	    //final int PROJECTION_EVENT_TIMEZONE_INDEX = 6;
+
+	    Cursor cur = null;
+	    ContentResolver cr = context.getContentResolver();
+
+		String selection =  "(    (" + Instances.CALENDAR_ID + " = ?)"; 
+		if (_searchField == SEARCH_FIELD_TITLE)
+			selection = selection + 
+							" AND (lower("+Instances.TITLE+")" + " LIKE lower(?))";
+		else
+		if (_searchField == SEARCH_FIELD_DESCRIPTION)
+					selection = selection + 
+					        " AND (lower("+Instances.DESCRIPTION+")" + " LIKE lower(?))";
+		selection = selection + ")";
+	    //Log.e("EventPreferencesCalendar.searchEvent", "selection="+selection);
+		
+	    
+	    // Construct the query with the desired date range.
+		Calendar calendar = Calendar.getInstance();
+		long now = calendar.getTimeInMillis();
+		calendar.add(Calendar.DAY_OF_YEAR, -1);
+		long startMillis = calendar.getTimeInMillis();
+		calendar.add(Calendar.DAY_OF_YEAR, 32);
+		long endMillis = calendar.getTimeInMillis();
+
+	    Uri.Builder builder = Instances.CONTENT_URI.buildUpon();
+	    ContentUris.appendId(builder, startMillis);
+	    ContentUris.appendId(builder, endMillis);
+
+	    _eventFound = false;
+    	_startTime = 0;
+    	_endTime = 0;
+	    
+		String[] splits = _calendars.split("\\|");
+		for (int i = 0; i < splits.length; i++)
+		{
+			long calendarId = Long.parseLong(splits[i]);
+
+			String[] selectionArgs = new String[] { String.valueOf(calendarId), "%"+_searchString+"%" };
+		    
+		    // Submit the query
+		    cur =  cr.query(builder.build(), INSTANCE_PROJECTION, selection, selectionArgs, Instances.BEGIN + " ASC");
+		       
+		    while (cur.moveToNext()) {
+		        long beginVal = 0;
+		        long endVal = 0;
+		        String title = null;
+		        
+		        // Get the field values
+		        beginVal = cur.getLong(PROJECTION_BEGIN_INDEX);
+		        endVal = cur.getLong(PROJECTION_END_INDEX);
+		        
+		        if (cur.getInt(PROJECTION_ALL_DAY_INDEX) == 1)
+		        {
+		        	// get UTC offset
+		        	Date _now = new Date();
+		    		int utcOffset = TimeZone.getDefault().getOffset(_now.getTime());
+		    		
+		    		beginVal -= utcOffset;
+		    		endVal -= utcOffset;
+		        }
+		        
+		        title = cur.getString(PROJECTION_TITLE_INDEX);
+
+			    Log.e("EventPreferencesCalendar.searchEvent", "beginVal="+getDate(beginVal));
+			    Log.e("EventPreferencesCalendar.searchEvent", "endVal="+getDate(endVal));
+			    Log.e("EventPreferencesCalendar.searchEvent", "title="+title);
+
+	    		int gmtOffset = TimeZone.getDefault().getRawOffset();
+			    
+			    if ((beginVal <= now) && (endVal > now))
+			    {
+			    	// event instance is found
+				    Log.e("EventPreferencesCalendar.searchEvent", "found 1");
+			    	_eventFound = true;
+			    	_startTime = beginVal + gmtOffset;
+			    	_endTime = endVal + gmtOffset;
+			    	break;
+			    }
+			    else
+			    if (beginVal > now)
+			    {
+			    	// event instance is found
+				    Log.e("EventPreferencesCalendar.searchEvent", "found 2");
+			    	_eventFound = true;
+			    	_startTime = beginVal + gmtOffset;
+			    	_endTime = endVal + gmtOffset;
+			    	break;
+			    }
+			    else
+			    	Log.e("EventPreferencesCalendar.searchEvent", "not found");
+			    
+		    }
+		    
+		    cur.close();
+		    
+		    if (_eventFound)
+		    {
+		    	break;
+		    }
+		}
+
+    	DatabaseHandler.getInstance(context).updateEventCalendarTimes(_event);
+		
 	}
 	
+	private static String getDate(long milliSeconds)
+	{
+	    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+	    Calendar calendar = Calendar.getInstance();
+	    calendar.setTimeInMillis(milliSeconds);
+	    return formatter.format(calendar.getTime());
+	}	
 }

@@ -1159,6 +1159,7 @@ public class DataWrapper {
 		boolean batteryPassed = true;
 		boolean callPassed = true;
 		boolean peripheralPassed = true;
+		boolean calendarPassed = true;
 		
 		boolean isCharging = false;
 		float batteryPct = 100.0f;
@@ -1395,18 +1396,53 @@ public class DataWrapper {
 				eventStart = eventStart && peripheralPassed;
 			}
 		}
+
+		if (event._eventPreferencesCalendar._enabled)
+		{
+			// compute start datetime
+   			long startAlarmTime;
+   			long endAlarmTime;
+			
+   			if (event._eventPreferencesCalendar._eventFound)
+   			{
+				startAlarmTime = event._eventPreferencesCalendar.computeAlarm(true);
+				
+	   		    String alarmTimeS = DateFormat.getDateFormat(context).format(startAlarmTime) +
+		   		    	  		    " " + DateFormat.getTimeFormat(context).format(startAlarmTime);
+				GlobalData.logE("DataWrapper.doEventService","startAlarmTime="+alarmTimeS);
+				
+				endAlarmTime = event._eventPreferencesCalendar.computeAlarm(false);
+	
+	   		    alarmTimeS = DateFormat.getDateFormat(context).format(endAlarmTime) +
+		    	  		     " " + DateFormat.getTimeFormat(context).format(endAlarmTime);
+	   		    GlobalData.logE("DataWrapper.doEventService","endAlarmTime="+alarmTimeS);
+				
+				Calendar now = Calendar.getInstance();
+				long nowAlarmTime = now.getTimeInMillis();
+	   		    alarmTimeS = DateFormat.getDateFormat(context).format(nowAlarmTime) +
+	   	  		     " " + DateFormat.getTimeFormat(context).format(nowAlarmTime);
+			    GlobalData.logE("DataWrapper.doEventService","nowAlarmTime="+alarmTimeS);
+	
+				calendarPassed = ((nowAlarmTime >= startAlarmTime) && (nowAlarmTime <= endAlarmTime));
+   			}
+   			else
+   				calendarPassed = false;
+			
+			eventStart = eventStart && calendarPassed;
+		}
 		
 		GlobalData.logE("DataWrapper.doEventService","timePassed="+timePassed);
 		GlobalData.logE("DataWrapper.doEventService","batteryPassed="+batteryPassed);
 		GlobalData.logE("DataWrapper.doEventService","callPassed="+callPassed);
 		GlobalData.logE("DataWrapper.doEventService","peripheralPassed="+peripheralPassed);
+		GlobalData.logE("DataWrapper.doEventService","calendarPassed="+calendarPassed);
 
 		GlobalData.logE("DataWrapper.doEventService","eventStart="+eventStart);
 		GlobalData.logE("DataWrapper.doEventService","restartEvent="+restartEvent);
 		
 		List<EventTimeline> eventTimelineList = getEventTimelineList();
 		
-		if (timePassed && batteryPassed && callPassed && peripheralPassed)
+		if (timePassed && batteryPassed && callPassed && peripheralPassed && calendarPassed)
 		{
 			// podmienky sedia, vykoname, co treba
 
@@ -1439,7 +1475,7 @@ public class DataWrapper {
 			}
 		}
 		
-		return (timePassed && batteryPassed && callPassed && peripheralPassed);
+		return (timePassed && batteryPassed && callPassed && peripheralPassed && calendarPassed);
 	}
 	
 	public Profile filterProfileWithBatteryEvents(Profile profile)

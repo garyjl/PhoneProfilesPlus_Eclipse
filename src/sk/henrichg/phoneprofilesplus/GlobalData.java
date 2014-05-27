@@ -32,7 +32,7 @@ public class GlobalData extends Application {
 	
 	public static boolean logIntoLogCat = false;
 	public static boolean logIntoFile = false;
-	public static String logFilterTags = //"EventPreferencesBattery|"+
+	public static String logFilterTags = "EventsService.onHandleIntent|"+
 			                             //"EventsService|"+
 	                                     //"Event.startEvent|"+
 	                                     //"Event.pauseEvent|"+
@@ -42,7 +42,7 @@ public class GlobalData extends Application {
 	                                     //"EventPreferencesTime";
 										 //"DataWrapper.doEventService|"+
 	                                     //"DataWrapper.restartEvents|"+
-										 "RestartEventsBroadcastReceiver";
+										 "EventsCalendarBroadcastReceiver";
 										 //"HeadsetConnectionBroadcastReceiver";
 	
 	public static final String EXPORT_PATH = "/PhoneProfilesPlus";

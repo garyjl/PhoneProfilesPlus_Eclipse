@@ -33,7 +33,7 @@ public class CalendarsMultiSelectDialogPreference extends DialogPreference
 
 	private CalendarsMultiselectPreferenceAdapter listAdapter;
 
-	private static final String[] EVENT_PROJECTION = new String[] {
+	private static final String[] CALENDAR_PROJECTION = new String[] {
 	    Calendars._ID,                           // 0
 	    Calendars.CALENDAR_DISPLAY_NAME,         // 1
 	    Calendars.CALENDAR_COLOR				 // 2
@@ -99,8 +99,8 @@ public class CalendarsMultiSelectDialogPreference extends DialogPreference
 				        "sampleuser@gmail.com"};
 				*/ 
 				// Submit the query and get a Cursor object back. 
-				//cur = cr.query(uri, EVENT_PROJECTION, selection, selectionArgs, null);
-				cur = cr.query(uri, EVENT_PROJECTION, null, null, null);
+				//cur = cr.query(uri, CALENDAR_PROJECTION, selection, selectionArgs, null);
+				cur = cr.query(uri, CALENDAR_PROJECTION, null, null, null);
 				while (cur.moveToNext()) {
 				    long calID = 0;
 				    String displayName = null;

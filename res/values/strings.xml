@@ -355,5 +355,6 @@
     <string name="array_event_pref_calendarSearchField_eventName">Event name</string>
     <string name="array_event_pref_calendarSearchField_description">Description</string>
     <string name="event_preferences_calendar_search_string">Search string</string>
+    <string name="event_preferences_calendar_no_event">No event</string>
     	
 </resources>

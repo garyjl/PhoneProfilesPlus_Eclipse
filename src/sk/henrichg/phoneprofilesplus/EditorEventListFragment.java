@@ -635,6 +635,7 @@ public class EditorEventListFragment extends Fragment {
 		{
 			int status = dataWrapper.getDatabaseHandler().getEventStatus(event);
 			event.setStatus(status);
+			dataWrapper.getDatabaseHandler().setEventCalendarTimes(event);
 		}
 		updateListView(null, false);
 	}

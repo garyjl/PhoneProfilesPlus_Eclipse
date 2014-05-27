@@ -2211,8 +2211,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		eventPreferences._calendars = cursor.getString(1);
 		eventPreferences._searchField = Integer.parseInt(cursor.getString(2));
 		eventPreferences._searchString = cursor.getString(3);
-		eventPreferences._startTime = Integer.parseInt(cursor.getString(4));
-		eventPreferences._endTime = Integer.parseInt(cursor.getString(5));
+		eventPreferences._startTime = Long.parseLong(cursor.getString(4));
+		eventPreferences._endTime = Long.parseLong(cursor.getString(5));
 		eventPreferences._eventFound = (Integer.parseInt(cursor.getString(6)) == 1);
 		
 		cursor.close();
@@ -2561,7 +2561,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 		ContentValues values = new ContentValues();
 		values.put(KEY_E_CALENDAR_EVENT_START_TIME, event._eventPreferencesCalendar._startTime);
-		values.put(KEY_E_CALENDAR_EVENT_START_TIME, event._eventPreferencesCalendar._endTime);
+		values.put(KEY_E_CALENDAR_EVENT_END_TIME, event._eventPreferencesCalendar._endTime);
 		values.put(KEY_E_CALENDAR_EVENT_FOUND, event._eventPreferencesCalendar._eventFound ? 1 : 0);
 
 		int r = 0;
@@ -2587,6 +2587,37 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         
 		return r;
 		
+	}
+
+	public void setEventCalendarTimes(Event event)
+	{
+		//SQLiteDatabase db = this.getReadableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+
+		int eventStatus = 0;
+		
+		Cursor cursor = db.query(TABLE_EVENTS, 
+				                 new String[] {  
+												KEY_E_CALENDAR_EVENT_START_TIME,
+												KEY_E_CALENDAR_EVENT_END_TIME,
+												KEY_E_CALENDAR_EVENT_FOUND
+												}, 
+				                 KEY_E_ID + "=?",
+				                 new String[] { String.valueOf(event._id) }, null, null, null, null);
+		if (cursor != null)
+			cursor.moveToFirst();
+
+		if (cursor.getCount() > 0)
+		{
+			event._eventPreferencesCalendar._startTime = Long.parseLong(cursor.getString(0));
+			event._eventPreferencesCalendar._endTime = Long.parseLong(cursor.getString(1));
+			event._eventPreferencesCalendar._eventFound = (Integer.parseInt(cursor.getString(2)) == 1);
+		}
+
+		cursor.close();
+		
+		//db.close();
+
 	}
 	
 	
