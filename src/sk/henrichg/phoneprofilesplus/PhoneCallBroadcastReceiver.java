@@ -49,7 +49,6 @@ public class PhoneCallBroadcastReceiver extends PhoneCallReceiver {
 				
 				// start service
 				Intent eventsServiceIntent = new Intent(savedContext, EventsService.class);
-				eventsServiceIntent.putExtra(GlobalData.EXTRA_EVENT_ID, 0L);
 				eventsServiceIntent.putExtra(GlobalData.EXTRA_BROADCAST_RECEIVER_TYPE, BROADCAST_RECEIVER_TYPE);
 				startWakefulService(savedContext, eventsServiceIntent);
 			}

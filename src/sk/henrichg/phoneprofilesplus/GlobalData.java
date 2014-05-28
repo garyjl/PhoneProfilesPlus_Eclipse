@@ -30,10 +30,10 @@ public class GlobalData extends Application {
 
 	static String PACKAGE_NAME;
 	
-	public static boolean logIntoLogCat = false;
+	public static boolean logIntoLogCat = true;
 	public static boolean logIntoFile = false;
-	public static String logFilterTags = "EventsService.onHandleIntent|"+
-			                             //"EventsService|"+
+	public static String logFilterTags = "CalendarProviderChangedBroadcastReceiver|"+
+			                             "EventsService.onHandleIntent|"+
 	                                     //"Event.startEvent|"+
 	                                     //"Event.pauseEvent|"+
 			                             //"RefreshGUIBroadcastReceiver|"+

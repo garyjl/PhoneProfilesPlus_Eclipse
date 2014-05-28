@@ -28,7 +28,6 @@ public class CalendarProviderChangedBroadcastReceiver extends WakefulBroadcastRe
 			{
 				// start service
 				Intent eventsServiceIntent = new Intent(context, EventsService.class);
-				eventsServiceIntent.putExtra(GlobalData.EXTRA_EVENT_ID, 0L);
 				eventsServiceIntent.putExtra(GlobalData.EXTRA_BROADCAST_RECEIVER_TYPE, BROADCAST_RECEIVER_TYPE);
 				startWakefulService(context, eventsServiceIntent);
 			}
