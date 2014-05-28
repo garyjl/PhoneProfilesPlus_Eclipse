@@ -19,11 +19,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.preference.ListPreference;
 import android.preference.PreferenceManager;
-import android.provider.CalendarContract.Calendars;
-import android.provider.CalendarContract.Events;
 import android.provider.CalendarContract.Instances;
 import android.text.format.DateFormat;
-import android.util.Log;
 
 public class EventPreferencesCalendar extends EventPreferences {
 
@@ -207,8 +204,6 @@ public class EventPreferencesCalendar extends EventPreferences {
 	{
 		GlobalData.logE("EventPreferencesCalendar.computeAlarm","startEvent="+startEvent);
 
-		Calendar now = Calendar.getInstance();
-		
 		///// set calendar for startTime and endTime
 		Calendar calStartTime = Calendar.getInstance();
 		Calendar calEndTime = Calendar.getInstance();
@@ -347,7 +342,7 @@ public class EventPreferencesCalendar extends EventPreferences {
 	    // The indices for the projection array above.
 	    final int PROJECTION_BEGIN_INDEX = 0;
 	    final int PROJECTION_END_INDEX = 1;
-	    final int PROJECTION_TITLE_INDEX = 2;	    
+	    //final int PROJECTION_TITLE_INDEX = 2;	    
 	    //final int PROJECTION_DESCRIPTION_INDEX = 3;	    
 	    //final int PROJECTION_CALENDAR_ID_INDEX = 4;
 	    final int PROJECTION_ALL_DAY_INDEX = 5;
@@ -397,7 +392,7 @@ public class EventPreferencesCalendar extends EventPreferences {
 		    while (cur.moveToNext()) {
 		        long beginVal = 0;
 		        long endVal = 0;
-		        String title = null;
+		        //String title = null;
 		        
 		        // Get the field values
 		        beginVal = cur.getLong(PROJECTION_BEGIN_INDEX);
@@ -413,18 +408,18 @@ public class EventPreferencesCalendar extends EventPreferences {
 		    		endVal -= utcOffset;
 		        }
 		        
-		        title = cur.getString(PROJECTION_TITLE_INDEX);
+		        //title = cur.getString(PROJECTION_TITLE_INDEX);
 
-			    Log.e("EventPreferencesCalendar.searchEvent", "beginVal="+getDate(beginVal));
-			    Log.e("EventPreferencesCalendar.searchEvent", "endVal="+getDate(endVal));
-			    Log.e("EventPreferencesCalendar.searchEvent", "title="+title);
+			    //Log.e("EventPreferencesCalendar.searchEvent", "beginVal="+getDate(beginVal));
+			    //Log.e("EventPreferencesCalendar.searchEvent", "endVal="+getDate(endVal));
+			    //Log.e("EventPreferencesCalendar.searchEvent", "title="+title);
 
 	    		int gmtOffset = TimeZone.getDefault().getRawOffset();
 			    
 			    if ((beginVal <= now) && (endVal > now))
 			    {
 			    	// event instance is found
-				    Log.e("EventPreferencesCalendar.searchEvent", "found 1");
+				    //Log.e("EventPreferencesCalendar.searchEvent", "found 1");
 			    	_eventFound = true;
 			    	_startTime = beginVal + gmtOffset;
 			    	_endTime = endVal + gmtOffset;
@@ -434,14 +429,14 @@ public class EventPreferencesCalendar extends EventPreferences {
 			    if (beginVal > now)
 			    {
 			    	// event instance is found
-				    Log.e("EventPreferencesCalendar.searchEvent", "found 2");
+				    //Log.e("EventPreferencesCalendar.searchEvent", "found 2");
 			    	_eventFound = true;
 			    	_startTime = beginVal + gmtOffset;
 			    	_endTime = endVal + gmtOffset;
 			    	break;
 			    }
-			    else
-			    	Log.e("EventPreferencesCalendar.searchEvent", "not found");
+			    //else
+			    //	Log.e("EventPreferencesCalendar.searchEvent", "not found");
 			    
 		    }
 		    
@@ -457,6 +452,7 @@ public class EventPreferencesCalendar extends EventPreferences {
 		
 	}
 	
+	@SuppressLint("SimpleDateFormat")
 	private static String getDate(long milliSeconds)
 	{
 	    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");

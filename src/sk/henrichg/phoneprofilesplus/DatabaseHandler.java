@@ -2594,8 +2594,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		//SQLiteDatabase db = this.getReadableDatabase();
 		SQLiteDatabase db = getMyWritableDatabase();
 
-		int eventStatus = 0;
-		
 		Cursor cursor = db.query(TABLE_EVENTS, 
 				                 new String[] {  
 												KEY_E_CALENDAR_EVENT_START_TIME,
