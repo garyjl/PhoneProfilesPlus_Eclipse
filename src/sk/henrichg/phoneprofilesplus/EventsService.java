@@ -172,6 +172,9 @@ public class EventsService extends IntentService
 		else
 		if (broadcastReceiverType.equals(EventsCalendarBroadcastReceiver.BROADCAST_RECEIVER_TYPE))
 			EventsCalendarBroadcastReceiver.completeWakefulIntent(intent);
+		else
+		if (broadcastReceiverType.equals(CalendarProviderChangedBroadcastReceiver.BROADCAST_RECEIVER_TYPE))
+			CalendarProviderChangedBroadcastReceiver.completeWakefulIntent(intent);
 	}
 	
 }
