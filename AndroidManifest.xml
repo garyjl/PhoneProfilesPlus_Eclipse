@@ -292,7 +292,11 @@
 		        <data android:host="com.android.calendar" />
 		    </intent-filter>
 		</receiver>        
-		
+        <receiver android:name=".SearchCalendarEventsBroadcastReceiver"
+	        android:enabled="true" 
+	        android:exported="false">
+        </receiver>
+				
 	</application>
 
 </manifest>

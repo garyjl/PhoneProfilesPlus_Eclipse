@@ -48,6 +48,7 @@ import android.widget.Toast;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -598,6 +599,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 			// zrusenie notifikacie
 			getDataWrapper().getActivateProfileHelper().removeNotification();
 			
+			SearchCalendarEventsBroadcastReceiver.removeAlarm(getApplicationContext());
 			stopService(new Intent(getApplicationContext(), ReceiversService.class));
 			
 			finish();

@@ -47,7 +47,8 @@ public class EventsService extends IntentService
 		List<Event> eventList = dataWrapper.getEventList();
 		dataWrapper.sortEventsByPriority();
 		
-		if (broadcastReceiverType.equals(CalendarProviderChangedBroadcastReceiver.BROADCAST_RECEIVER_TYPE))
+		if (broadcastReceiverType.equals(CalendarProviderChangedBroadcastReceiver.BROADCAST_RECEIVER_TYPE) ||
+			broadcastReceiverType.equals(SearchCalendarEventsBroadcastReceiver.BROADCAST_RECEIVER_TYPE))
 		{
 			// search for calendar events
 			GlobalData.logE("EventsService.onHandleIntent","search for calendar events");
@@ -62,7 +63,8 @@ public class EventsService extends IntentService
 		}
 		
 		boolean isRestart = (broadcastReceiverType.equals(RestartEventsBroadcastReceiver.BROADCAST_RECEIVER_TYPE) ||
-							 broadcastReceiverType.equals(CalendarProviderChangedBroadcastReceiver.BROADCAST_RECEIVER_TYPE));
+							 broadcastReceiverType.equals(CalendarProviderChangedBroadcastReceiver.BROADCAST_RECEIVER_TYPE) ||
+							 broadcastReceiverType.equals(SearchCalendarEventsBroadcastReceiver.BROADCAST_RECEIVER_TYPE));
 
 		GlobalData.logE("EventsService.onHandleIntent","isRestart="+isRestart);
 		
@@ -178,6 +180,9 @@ public class EventsService extends IntentService
 		else
 		if (broadcastReceiverType.equals(CalendarProviderChangedBroadcastReceiver.BROADCAST_RECEIVER_TYPE))
 			CalendarProviderChangedBroadcastReceiver.completeWakefulIntent(intent);
+		else
+		if (broadcastReceiverType.equals(SearchCalendarEventsBroadcastReceiver.BROADCAST_RECEIVER_TYPE))
+			SearchCalendarEventsBroadcastReceiver.completeWakefulIntent(intent);
 	}
 	
 }

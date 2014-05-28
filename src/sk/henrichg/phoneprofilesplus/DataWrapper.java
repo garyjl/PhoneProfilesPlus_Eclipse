@@ -675,6 +675,8 @@ public class DataWrapper {
 			// profile will by activated in call of RestartEventsBroadcastReceiver
 			getDatabaseHandler().deactivateProfile();
 
+		SearchCalendarEventsBroadcastReceiver.setAlarm(context);
+		
 		//restartEvents(true, unblockEventsRun);
 		Intent intent = new Intent();
 		intent.setAction(RestartEventsBroadcastReceiver.INTENT_RESTART_EVENTS);
