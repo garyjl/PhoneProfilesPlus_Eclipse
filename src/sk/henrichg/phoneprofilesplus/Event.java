@@ -331,13 +331,13 @@ public class Event {
 		
 		description = _eventPreferencesTime.getPreferencesDescription(description, context);
 		description = description + "\n";
+		description = _eventPreferencesCalendar.getPreferencesDescription(description, context);
+		description = description + "\n";
 		description = _eventPreferencesBattery.getPreferencesDescription(description, context);
 		description = description + "\n";
 		description = _eventPreferencesCall.getPreferencesDescription(description, context);
 		description = description + "\n";
 		description = _eventPreferencesPeripherals.getPreferencesDescription(description, context);
-		description = description + "\n";
-		description = _eventPreferencesCalendar.getPreferencesDescription(description, context);
 		
 		return description;
 	}
