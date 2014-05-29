@@ -40,6 +40,7 @@ public class ReceiversService extends Service {
 	{
 		unregisterReceiver(batteryEventReceiver);
 		unregisterReceiver(headsetPlugReceiver);
+		unregisterReceiver(restartEventsReceiver);
     }
 	 
 	@Override
