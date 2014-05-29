@@ -60,7 +60,7 @@ public class LauncherActivity extends Activity {
 				}
 				
 				// start PPHelper
-				PhoneProfilesHelper.startPPHelper(getBaseContext());
+				//PhoneProfilesHelper.startPPHelper(getBaseContext());
 				// start ReceiverService
 				startService(new Intent(getApplicationContext(), ReceiversService.class));
 			}

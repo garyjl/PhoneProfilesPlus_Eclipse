@@ -20,7 +20,7 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 				GlobalData.grantRoot(true);
 
 				// start PPHelper
-				PhoneProfilesHelper.startPPHelper(context);
+				//PhoneProfilesHelper.startPPHelper(context);
 				// start ReceiverService
 				context.startService(new Intent(context.getApplicationContext(), ReceiversService.class));
 				

@@ -487,7 +487,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 			}
 		}
 		
-		boolean isPPHInstalled = PhoneProfilesHelper.isPPHelperInstalled(getBaseContext(), 8);
+		boolean isPPHInstalled = PhoneProfilesHelper.isPPHelperInstalled(getBaseContext(), PhoneProfilesHelper.PPHELPER_CURRENT_VERSION);
 		
 		menuItem = menu.findItem(R.id.menu_pphelper_install);
 		if (menuItem != null)
