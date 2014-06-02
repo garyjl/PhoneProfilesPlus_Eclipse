@@ -2886,9 +2886,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 											String value = cursorExportedDB.getString(i);
 										
 											// update values
-											if (((exportedDBObj.getVersion() < 1002) || (applicationDataPath.equals(GlobalData.EXPORT_PATH)))
+											if (((exportedDBObj.getVersion() < 1002) && (applicationDataPath.equals(GlobalData.EXPORT_PATH)))
 												||
-												((exportedDBObj.getVersion() < 52) || (applicationDataPath.equals(GUIData.REMOTE_EXPORT_PATH))))
+												((exportedDBObj.getVersion() < 52) && (applicationDataPath.equals(GUIData.REMOTE_EXPORT_PATH))))
 											{
 												if (columnNamesExportedDB[i].equals(KEY_DEVICE_AUTOROTATE))
 												{
@@ -2933,13 +2933,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 									{
 										values.put(KEY_DEVICE_AUTOSYNC, 0);
 									}
-									if ((exportedDBObj.getVersion() < 1000) || (applicationDataPath.equals(GUIData.REMOTE_EXPORT_PATH)))
+									if ((exportedDBObj.getVersion() < 1000) && (applicationDataPath.equals(GUIData.REMOTE_EXPORT_PATH)))
 									{
 										values.put(KEY_SHOW_IN_ACTIVATOR, 1);
 									}
-									if (((exportedDBObj.getVersion() < 1001) || (applicationDataPath.equals(GlobalData.EXPORT_PATH)))
+									if (((exportedDBObj.getVersion() < 1001) && (applicationDataPath.equals(GlobalData.EXPORT_PATH)))
 										||
-										((exportedDBObj.getVersion() < 51) || (applicationDataPath.equals(GUIData.REMOTE_EXPORT_PATH))))
+										((exportedDBObj.getVersion() < 51) && (applicationDataPath.equals(GUIData.REMOTE_EXPORT_PATH))))
 									{
 										values.put(KEY_DEVICE_AUTOROTATE, 0);
 									}
