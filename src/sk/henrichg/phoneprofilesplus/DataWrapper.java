@@ -902,7 +902,7 @@ public class DataWrapper {
 	{
 		boolean isforceRunEvent = false;
 		
-		//if (interactive || (startupSource == GlobalData.STARTUP_SOURCE_EDITOR))
+		/*
 		if (interactive)
 		{
 			// search for forceRun events
@@ -919,6 +919,7 @@ public class DataWrapper {
 				}
 			}
 		}
+		*/
 		
 		if ((interactive) && (GlobalData.applicationActivateWithAlert || 
 							 (startupSource == GlobalData.STARTUP_SOURCE_EDITOR) || 
