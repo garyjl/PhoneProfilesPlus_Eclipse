@@ -32,8 +32,8 @@ public class GlobalData extends Application {
 	
 	public static boolean logIntoLogCat = false;
 	public static boolean logIntoFile = false;
-	public static String logFilterTags = "CalendarProviderChangedBroadcastReceiver|"+
-			                             "EventsService.onHandleIntent|"+
+	public static String logFilterTags = //"CalendarProviderChangedBroadcastReceiver|"+
+			                             //"EventsService.onHandleIntent|"+
 	                                     //"Event.startEvent|"+
 	                                     //"Event.pauseEvent|"+
 			                             //"RefreshGUIBroadcastReceiver|"+
@@ -42,8 +42,9 @@ public class GlobalData extends Application {
 	                                     //"EventPreferencesTime";
 										 //"DataWrapper.doEventService|"+
 	                                     //"DataWrapper.restartEvents|"+
-										 "EventsCalendarBroadcastReceiver";
+										 //"EventsCalendarBroadcastReceiver";
 										 //"HeadsetConnectionBroadcastReceiver";
+										 "DatabaseHandler";
 	
 	public static final String EXPORT_PATH = "/PhoneProfilesPlus";
 	public static final String LOG_FILENAME = "log.txt";
