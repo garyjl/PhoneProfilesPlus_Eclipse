@@ -106,8 +106,7 @@ public class EventPreferencesCalendar extends EventPreferences {
 			String[] searchFields = context.getResources().getStringArray(R.array.eventCalendarSearchFieldArray);
 			descr = descr + searchFields[this._searchField] + "; ";
 			
-			if (!this._searchString.isEmpty())
-				descr = descr + this._searchString; 
+			descr = descr + "\"" + this._searchString + "\""; 
 			
 	        //Calendar calendar = Calendar.getInstance();
 	
