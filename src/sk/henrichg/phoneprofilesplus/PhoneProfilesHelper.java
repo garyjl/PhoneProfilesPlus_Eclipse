@@ -8,13 +8,19 @@ import java.io.OutputStream;
 import sk.henrichg.phoneprofilesplus.R;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface.OnClickListener;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.AssetManager;
 import android.os.Build;
 import android.os.Environment;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.stericson.RootTools.RootTools;
@@ -213,23 +219,45 @@ public class PhoneProfilesHelper {
 		return OK;
 	}
 	
-	static public void installPPHelper(Activity activity)
+	static public void installPPHelper(Activity activity, boolean finishActivity)
 	{
 		final Activity _activity = activity;
+		final boolean _finishActivity = finishActivity;
+		
+		// set theme and language for dialog alert ;-)
+		// not working on Android 2.3.x
+		GUIData.setTheme(activity, true);
+		GUIData.setLanguage(activity.getBaseContext());
 		
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
 		dialogBuilder.setTitle(activity.getResources().getString(R.string.phoneprofilehepler_install_title));
 		dialogBuilder.setMessage(activity.getResources().getString(R.string.phoneprofilehepler_install_message));
 		dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
+			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				boolean OK = doInstallPPHelper(_activity);
 				if (OK)
-			    	restartAndroid(_activity);
+				{
+			    	restartAndroid(_activity, _finishActivity);
+				}
 				else
-					installUnInstallPPhelperErrorDialog(_activity, 1);
+					installUnInstallPPhelperErrorDialog(_activity, 1, _finishActivity);
 			}
 		});
-		dialogBuilder.setNegativeButton(R.string.alert_button_no, null);
+		dialogBuilder.setNegativeButton(R.string.alert_button_no, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+		    	if (_finishActivity)
+		    		_activity.finish();
+			}
+		});
+		dialogBuilder.setOnCancelListener(new OnCancelListener() {
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				if (_finishActivity)
+					_activity.finish();
+			}
+		});
 		dialogBuilder.show();
 	}
 	
@@ -297,28 +325,45 @@ public class PhoneProfilesHelper {
 			public void onClick(DialogInterface dialog, int which) {
 				boolean OK = doUninstallPPHelper(_activity);
 				if (!OK)
-					installUnInstallPPhelperErrorDialog(_activity, 2);
+					installUnInstallPPhelperErrorDialog(_activity, 2, false);
 			}
 		});
 		dialogBuilder.setNegativeButton(R.string.alert_button_no, null);
 		dialogBuilder.show();
 	}
 	
-	static private void restartAndroid(Activity activity)
+	static private void restartAndroid(Activity activity, boolean finishActivity)
 	{
+		final Activity _activity = activity;
+		final boolean _finishActivity = finishActivity;
+		
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
 		dialogBuilder.setTitle(activity.getResources().getString(R.string.phoneprofilehepler_reboot_title));
 		dialogBuilder.setMessage(activity.getResources().getString(R.string.phoneprofilehepler_reboot_message));
 		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
 		
 		dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
-			
+			@Override
 			public void onClick(DialogInterface dialog, int which) {
 		    	// restart device
 		    	RootTools.restartAndroid();
 			}
 		});
-		dialogBuilder.setNegativeButton(R.string.alert_button_no, null);
+		dialogBuilder.setNegativeButton(R.string.alert_button_no, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+		    	if (_finishActivity)
+		    		_activity.finish();
+			}
+		});
+		dialogBuilder.setOnCancelListener(new OnCancelListener() {
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				if (_finishActivity)
+					_activity.finish();
+			}
+		});
+		
 		dialogBuilder.show();
 	}
 	
@@ -353,8 +398,11 @@ public class PhoneProfilesHelper {
         return OK;
     }	
 	
-	static private void installUnInstallPPhelperErrorDialog(Activity activity, int importExport)
+	static private void installUnInstallPPhelperErrorDialog(Activity activity, int importExport, boolean finishActivity)
 	{
+		final Activity _activity = activity;
+		final boolean _finishActivity = finishActivity;
+		
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
 		String resString;
 		if (importExport == 1)
@@ -368,8 +416,37 @@ public class PhoneProfilesHelper {
 			resString = activity.getResources().getString(R.string.phoneprofilehepler_uninstall_error);
 		dialogBuilder.setMessage(resString + "!");
 		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
-		dialogBuilder.setPositiveButton(android.R.string.ok, null);
+		
+		dialogBuilder.setPositiveButton(android.R.string.ok, new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				if (_finishActivity)
+					_activity.finish();
+			}
+		});
+		dialogBuilder.setOnCancelListener(new OnCancelListener() {
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				if (_finishActivity)
+					_activity.finish();
+			}
+		});
+		
 		dialogBuilder.show();
+	}
+
+	static public void showPPHelperUpgradeNotification(Context context)
+	{
+		NotificationCompat.Builder mBuilder =   new NotificationCompat.Builder(context)
+        	.setSmallIcon(R.drawable.ic_launcher) // notification icon
+        	.setContentTitle(context.getString(R.string.pphelper_upgrade_notification_title)) // title for notification
+        	.setContentText(context.getString(R.string.pphelper_upgrade_notification_text)) // message for notification
+        	.setAutoCancel(true); // clear notification after click
+		Intent intent = new Intent(context, UpgradePPHelperActivity.class);
+		PendingIntent pi = PendingIntent.getActivity(context, 0, intent, Intent.FLAG_ACTIVITY_NEW_TASK);
+		mBuilder.setContentIntent(pi);
+		NotificationManager mNotificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+		mNotificationManager.notify(0, mBuilder.build());		
 	}
 	
 }

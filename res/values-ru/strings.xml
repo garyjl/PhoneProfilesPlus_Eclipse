@@ -356,5 +356,8 @@
     <string name="array_event_pref_calendarSearchField_description">Описание</string>
     <string name="event_preferences_calendar_search_string">Искомая строка</string>
     <string name="event_preferences_calendar_no_event">Нет мероприятия</string>
+
+    <string name="pphelper_upgrade_notification_title">Нужно обновить PPHelper.</string>
+    <string name="pphelper_upgrade_notification_text">Пожалуйста, нажмите здесь, чтобы начать обновление.</string>
     
 </resources>

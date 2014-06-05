@@ -570,7 +570,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 
 			return true;
 		case R.id.menu_pphelper_install:
-			PhoneProfilesHelper.installPPHelper(this);
+			PhoneProfilesHelper.installPPHelper(this, false);
 			return true;
 		case R.id.menu_pphelper_uninstall:
 			PhoneProfilesHelper.uninstallPPHelper(this);

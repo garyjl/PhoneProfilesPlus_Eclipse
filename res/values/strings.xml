@@ -356,5 +356,8 @@
     <string name="array_event_pref_calendarSearchField_description">Description</string>
     <string name="event_preferences_calendar_search_string">Search string</string>
     <string name="event_preferences_calendar_no_event">No event</string>
+    
+    <string name="pphelper_upgrade_notification_title">PPHelper upgrade is required.</string>
+    <string name="pphelper_upgrade_notification_text">Please click for upgrade it.</string>
     	
 </resources>

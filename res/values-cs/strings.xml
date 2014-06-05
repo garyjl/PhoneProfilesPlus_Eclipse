@@ -352,4 +352,7 @@
 	<string name="event_preferences_calendar_search_string">Hledaný řetězec</string> 
 	<string name="event_preferences_calendar_no_event">Žádná událost</string>	
 
+    <string name="pphelper_upgrade_notification_title">Je nutná aktualizace PPHelpera.</string>
+    <string name="pphelper_upgrade_notification_text">Prosím klikněte na spuštění aktualizace.</string>
+		
 </resources>

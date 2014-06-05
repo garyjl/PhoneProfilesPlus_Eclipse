@@ -1,8 +1,11 @@
 package sk.henrichg.phoneprofilesplus;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
 
 public class PackageReplacedReceiver extends BroadcastReceiver {
 
@@ -21,6 +24,21 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 
 				// start PPHelper
 				//PhoneProfilesHelper.startPPHelper(context);
+				
+				// show notification about upgrade PPHelper
+				if (GlobalData.isRooted())
+				{
+					if (!PhoneProfilesHelper.isPPHelperInstalled(context, PhoneProfilesHelper.PPHELPER_CURRENT_VERSION))
+					{
+						// proper PPHelper version is not installed
+						if (PhoneProfilesHelper.PPHelperVersion != -1)
+						{
+							// PPHelper is installed, show notification 
+							PhoneProfilesHelper.showPPHelperUpgradeNotification(context);							
+						}
+					}
+				}
+				
 				// start ReceiverService
 				context.startService(new Intent(context.getApplicationContext(), ReceiversService.class));
 				
@@ -51,5 +69,5 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 			}
 		}		
 	}
-
+	
 }

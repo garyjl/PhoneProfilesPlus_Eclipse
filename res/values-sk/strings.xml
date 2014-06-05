@@ -352,5 +352,8 @@
     <string name="array_event_pref_calendarSearchField_description">Popis</string>
     <string name="event_preferences_calendar_search_string">Hľadaný reťazec</string>
     <string name="event_preferences_calendar_no_event">Žiadna udalosť</string>
+
+    <string name="pphelper_upgrade_notification_title">Je nutná aktualizácia PPHelpera.</string>
+    <string name="pphelper_upgrade_notification_text">Prosím kliknite na spustenie aktualizácie.</string>
     	
 </resources>
