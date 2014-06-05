@@ -331,7 +331,6 @@
     <string name="array_event_pref_peripheralType_wired_headset">Drátové handsfree</string>
     <string name="array_event_pref_peripheralType_bluetooth_headset">Bluetooth handsfree</string>
     <string name="array_event_pref_peripheralType_headphones">Sluchátka</string>
-    
 	<string name="toast_default_events_generated">Přednastavené profily vygenerované</string> 
 	<string name="default_event_name_during_the_week">Přes týden</string> 
 	<string name="default_event_name_weekend">Víkend</string> 
@@ -339,7 +338,6 @@
 	<string name="default_event_name_overnight">V noci</string> 
 	<string name="default_event_name_low_battery">Slabá baterie</string> 
 	<string name="default_profile_name_battery_low">Slabá baterie</string>
-	
 	<string name="calendars_multiselect_summary_text_selected">Vybrané</string> 
 	<string name="calendars_multiselect_summary_text_not_selected">Nevybráno</string> 
 	<string name="event_preferences_category_eventCalendarParameters">Parametry kalendáře</string> 

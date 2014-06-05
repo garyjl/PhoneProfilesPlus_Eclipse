@@ -336,7 +336,6 @@
     <string name="array_event_pref_peripheralType_wired_headset">Wired handsfree</string>
     <string name="array_event_pref_peripheralType_bluetooth_headset">Bluetooth handsfree</string>
     <string name="array_event_pref_peripheralType_headphones">Headphones</string>
-
     <string name="toast_default_events_generated">Default events generated</string>
     <string name="default_event_name_during_the_week">During the week</string>
     <string name="default_event_name_weekend">Weekend</string>
@@ -344,7 +343,6 @@
     <string name="default_event_name_overnight">Overnight</string>
     <string name="default_event_name_low_battery">Low battery</string>
     <string name="default_profile_name_battery_low">Low battery</string>
-
     <string name="calendars_multiselect_summary_text_selected">Selected</string>	    			
     <string name="calendars_multiselect_summary_text_not_selected">Not selected</string>
     <string name="event_preferences_category_eventCalendarParameters">Calendar parameters</string>

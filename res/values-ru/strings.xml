@@ -336,7 +336,6 @@
     <string name="array_event_pref_peripheralType_wired_headset">Проводной громкой связи</string>
     <string name="array_event_pref_peripheralType_bluetooth_headset">Громкая связь Bluetooth</string>
     <string name="array_event_pref_peripheralType_headphones">Наушники</string>
-
     <string name="toast_default_events_generated">События по умолчанию сгенерированы</string>
 	<string name="default_event_name_during_the_week">Во время недели</string>
 	<string name="default_event_name_weekend">Выходные</string>
@@ -344,7 +343,6 @@
 	<string name="default_event_name_overnight">Ночью</string>
 	<string name="default_event_name_low_battery">Слабую батарею</string>
 	<string name="default_profile_name_battery_low">Слабую батарею</string>
-	
 	<string name="calendars_multiselect_summary_text_selected">Выбрано</string>	    			
     <string name="calendars_multiselect_summary_text_not_selected">Не выбрано</string>
     <string name="event_preferences_category_eventCalendarParameters">Параметры календарю</string>
