@@ -330,7 +330,6 @@
     <string name="array_event_pref_peripheralType_wired_headset">Freisprecheinrichtung</string>
     <string name="array_event_pref_peripheralType_bluetooth_headset">BlueTooth-Freisprecheinrichtung</string>
     <string name="array_event_pref_peripheralType_headphones">Kopfhörer</string>
-
  	<string name="toast_default_events_generated">Standard-Ereignisse erstellt</string>
     <string name="default_event_name_during_the_week">Werktags</string>
     <string name="default_event_name_weekend">Wochenende</string>
@@ -338,7 +337,6 @@
     <string name="default_event_name_overnight">Nacht</string>
     <string name="default_event_name_low_battery">Akku schwach</string>
     <string name="default_profile_name_battery_low">Akku schwach</string>
-        
     <string name="calendars_multiselect_summary_text_selected">Ausgewählt</string>
     <string name="calendars_multiselect_summary_text_not_selected">Nicht ausgewählt</string>
     <string name="event_preferences_category_eventCalendarParameters">Kalenderparameter</string>
@@ -350,5 +348,8 @@
     <string name="array_event_pref_calendarSearchField_description">Beschreibung</string>
     <string name="event_preferences_calendar_search_string">Suchbegriff</string>
     <string name="event_preferences_calendar_no_event">Kein Ereignis</string>
-        
+
+	<string name="pphelper_upgrade_notification_title">PPHelfer-Upgrade benötigt.</string>
+    <string name="pphelper_upgrade_notification_text">Drücke zum Upgraden.</string>    
+    
 </resources>
