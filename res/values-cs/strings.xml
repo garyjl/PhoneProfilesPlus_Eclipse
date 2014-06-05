@@ -339,4 +339,17 @@
 	<string name="default_event_name_overnight">V noci</string> 
 	<string name="default_event_name_low_battery">Slabá baterie</string> 
 	<string name="default_profile_name_battery_low">Slabá baterie</string>
+	
+	<string name="calendars_multiselect_summary_text_selected">Vybrané</string> 
+	<string name="calendars_multiselect_summary_text_not_selected">Nevybráno</string> 
+	<string name="event_preferences_category_eventCalendarParameters">Parametry kalendáře</string> 
+	<string name="event_preferences_calendar_enabled">Použij kalendář</string> 
+	<string name="event_preferences_calendar_calendars">Kalendáře</string> 
+	<string name="event_type_calendar">Kalendář</string> 
+	<string name="event_preferences_calendar_search_field">Hledat v položce</string> 
+	<string name="array_event_pref_calendarSearchField_eventName">Název události</string> 
+	<string name="array_event_pref_calendarSearchField_description">Popis</string> 
+	<string name="event_preferences_calendar_search_string">Hledaný řetězec</string> 
+	<string name="event_preferences_calendar_no_event">Žádná událost</string>	
+
 </resources>

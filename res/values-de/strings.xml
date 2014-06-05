@@ -339,4 +339,16 @@
     <string name="default_event_name_low_battery">Akku schwach</string>
     <string name="default_profile_name_battery_low">Akku schwach</string>
         
+    <string name="calendars_multiselect_summary_text_selected">Ausgewählt</string>
+    <string name="calendars_multiselect_summary_text_not_selected">Nicht ausgewählt</string>
+    <string name="event_preferences_category_eventCalendarParameters">Kalenderparameter</string>
+    <string name="event_preferences_calendar_enabled">Kalender aktivieren</string>
+    <string name="event_preferences_calendar_calendars">Kalender</string>
+    <string name="event_type_calendar">Kalender</string>
+    <string name="event_preferences_calendar_search_field">Suchfeld</string>
+    <string name="array_event_pref_calendarSearchField_eventName">Ereignisname</string>
+    <string name="array_event_pref_calendarSearchField_description">Beschreibung</string>
+    <string name="event_preferences_calendar_search_string">Suchbegriff</string>
+    <string name="event_preferences_calendar_no_event">Kein Ereignis</string>
+        
 </resources>

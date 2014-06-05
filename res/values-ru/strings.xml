@@ -337,12 +337,24 @@
     <string name="array_event_pref_peripheralType_bluetooth_headset">Громкая связь Bluetooth</string>
     <string name="array_event_pref_peripheralType_headphones">Наушники</string>
 
-    <string name="toast_default_events_generated">Default events generated</string>
-    <string name="default_event_name_during_the_week">During the week</string>
-    <string name="default_event_name_weekend">Weekend</string>
-    <string name="default_event_name_during_the_work">During the work</string>
-    <string name="default_event_name_overnight">Overnight</string>
-    <string name="default_event_name_low_battery">Low battery</string>
-    <string name="default_profile_name_battery_low">Low battery</string>
+    <string name="toast_default_events_generated">События по умолчанию сгенерированы</string>
+	<string name="default_event_name_during_the_week">Во время недели</string>
+	<string name="default_event_name_weekend">Выходные</string>
+	<string name="default_event_name_during_the_work">Во время работы</string>
+	<string name="default_event_name_overnight">Ночью</string>
+	<string name="default_event_name_low_battery">Слабую батарею</string>
+	<string name="default_profile_name_battery_low">Слабую батарею</string>
+	
+	<string name="calendars_multiselect_summary_text_selected">Выбрано</string>	    			
+    <string name="calendars_multiselect_summary_text_not_selected">Не выбрано</string>
+    <string name="event_preferences_category_eventCalendarParameters">Параметры календарю</string>
+    <string name="event_preferences_calendar_enabled">Активировать</string>
+    <string name="event_preferences_calendar_calendars">Календари</string>
+    <string name="event_type_calendar">Календарь</string>
+    <string name="event_preferences_calendar_search_field">Искать в</string>
+    <string name="array_event_pref_calendarSearchField_eventName">Название мероприятия</string>
+    <string name="array_event_pref_calendarSearchField_description">Описание</string>
+    <string name="event_preferences_calendar_search_string">Искомая строка</string>
+    <string name="event_preferences_calendar_no_event">Нет мероприятия</string>
     
 </resources>
