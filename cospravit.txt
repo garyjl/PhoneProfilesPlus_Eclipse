@@ -75,3 +75,4 @@ Event preferences: WiFi location
 "very high",     4   2   very high
 "highest"        5 
  
+7 zistit, ako prinutit Google play, aby naslo mna. Zistil som, ze trena slovo "profile" mat oddelene. 
