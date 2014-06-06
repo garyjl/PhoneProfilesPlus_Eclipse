@@ -57,3 +57,7 @@ Event preferences: WiFi location
  - navrhujem:
    a) ak ma airplane mode zapnuty, brat event preference ako nezaskrtnute
    b) ak ma vypnutu wifi, zapnut ju a potom vypnut
+- kukni WifiManager.isScanAlwaysAvailable() (API 18) - toto by mohlo scanovat aj ked wifi nie je zanuta
+   
+   
+ 
