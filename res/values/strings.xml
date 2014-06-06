@@ -323,7 +323,7 @@
     <string name="event_preferences_priority">Priority</string>
 	<string name="array_event_pref_priorityVeryHigh">Very high</string>    
 	<string name="array_event_pref_priorityHigh">High</string>    
-	<string name="array_event_pref_priorityNormal">Normal</string>    
+	<string name="array_event_pref_priorityMedium">Medium</string>    
 	<string name="array_event_pref_priorityLow">Low</string>    
 	<string name="array_event_pref_priorityVeryLow">Very low</string>    
     <string name="editor_drawer_order_priority">Priority</string>
@@ -357,5 +357,12 @@
     
     <string name="pphelper_upgrade_notification_title">PPHelper upgrade is required.</string>
     <string name="pphelper_upgrade_notification_text">Please click for upgrade it.</string>
+    
+    <string name="array_event_pref_priorityLowest">Lowest</string>
+    <string name="array_event_pref_priorityLower">Lower</string>
+    <string name="array_event_pref_priorityLowerMiddle">Lower middle</string>
+    <string name="array_event_pref_priorityUpperMedium">Upper medium</string>
+    <string name="array_event_pref_priorityHigher">Higher</string>
+    <string name="array_event_pref_priorityHighest">Highest</string>
     	
 </resources>

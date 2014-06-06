@@ -14,7 +14,7 @@
             android:title="@string/event_preferences_eventName"
             android:selectAllOnFocus="true" /> 
 		<ListPreference android:title="@string/event_preferences_priority"
-            android:summary="@string/array_event_pref_priorityNormal"
+            android:summary="@string/array_event_pref_priorityMedium"
             android:key="eventPriority"
             android:defaultValue="0"
             android:entries="@array/eventPriorityArray"

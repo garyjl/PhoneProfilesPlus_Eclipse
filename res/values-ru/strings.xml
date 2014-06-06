@@ -323,7 +323,7 @@
     <string name="event_preferences_priority">Приоритет</string>
 	<string name="array_event_pref_priorityVeryHigh">Очень высокий</string>    
 	<string name="array_event_pref_priorityHigh">Высокий</string>    
-	<string name="array_event_pref_priorityNormal">Нормальный</string>    
+	<string name="array_event_pref_priorityMedium">Средний</string>    
 	<string name="array_event_pref_priorityLow">низкий</string>    
 	<string name="array_event_pref_priorityVeryLow">Очень низкий</string>    
     <string name="editor_drawer_order_priority">Приоритет</string>

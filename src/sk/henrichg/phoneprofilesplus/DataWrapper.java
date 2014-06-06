@@ -694,7 +694,7 @@ public class DataWrapper {
 				false,
 				false,
 				true,
-				Event.EPRIORITY_NORMAL
+				Event.EPRIORITY_MEDIUM
          );
 	}
 	
@@ -765,7 +765,7 @@ public class DataWrapper {
 		event = getNoinitializedEvent(context.getString(R.string.default_event_name_during_the_work));
 		event._fkProfileStart = getProfileIdByName(context.getString(R.string.default_profile_name_work));
 		event._undoneProfile = true;
-		event._priority = Event.EPRIORITY_HIGH;
+		event._priority = Event.EPRIORITY_HIGHER;
 		event._eventPreferencesTime._enabled = true;
 		event._eventPreferencesTime._monday = true;
 		event._eventPreferencesTime._tuesday = true;
@@ -802,7 +802,7 @@ public class DataWrapper {
 		event = getNoinitializedEvent(context.getString(R.string.default_event_name_low_battery));
 		event._fkProfileStart = getProfileIdByName(context.getString(R.string.default_profile_name_battery_low));
 		event._undoneProfile = false;
-		event._priority = Event.EPRIORITY_VERY_HIGH;
+		event._priority = Event.EPRIORITY_HIGHEST;
 		event._forceRun = true;
 		event._eventPreferencesBattery._enabled = true;
 		event._eventPreferencesBattery._levelLow = 0;

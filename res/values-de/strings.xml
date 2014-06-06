@@ -317,7 +317,7 @@
     <string name="event_preferences_priority">Priorität</string>
 	<string name="array_event_pref_priorityVeryHigh">Sehr hoch</string>
 	<string name="array_event_pref_priorityHigh">Hoch</string>
-	<string name="array_event_pref_priorityNormal">Normal</string>
+	<string name="array_event_pref_priorityMedium">Mitte</string>
 	<string name="array_event_pref_priorityLow">Niedrig</string>
 	<string name="array_event_pref_priorityVeryLow">Sehr niedrig</string>
     <string name="editor_drawer_order_priority">Priorität</string>    					

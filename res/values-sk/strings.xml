@@ -319,7 +319,7 @@
     <string name="event_preferences_priority">Priorita</string>
 	<string name="array_event_pref_priorityVeryHigh">Veľmi vysoká</string>    
 	<string name="array_event_pref_priorityHigh">Vysoká</string>    
-	<string name="array_event_pref_priorityNormal">Normála</string>    
+	<string name="array_event_pref_priorityMedium">Stredná</string>    
 	<string name="array_event_pref_priorityLow">Nízka</string>    
 	<string name="array_event_pref_priorityVeryLow">Veľmi nízka</string>    
     <string name="editor_drawer_order_priority">Priorita</string>

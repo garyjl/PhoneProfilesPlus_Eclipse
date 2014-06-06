@@ -36,12 +36,18 @@ public class Event {
 	public static final int ESTATUS_PAUSE = 1;
 	public static final int ESTATUS_RUNNING = 2;
 	public static final int ESTATUS_NONE = 99;
-	
-	public static final int EPRIORITY_VERY_LOW = -2; 
+
+	public static final int EPRIORITY_LOWEST = -5; 
+	public static final int EPRIORITY_VERY_LOW = -4;
+	public static final int EPRIORITY_LOWER = -3;
 	public static final int EPRIORITY_LOW = -1;
-	public static final int EPRIORITY_NORMAL = 0;
-	public static final int EPRIORITY_HIGH = 1;
-	public static final int EPRIORITY_VERY_HIGH = 2;
+	public static final int EPRIORITY_LOWER_MIDDLE = -1;
+	public static final int EPRIORITY_MEDIUM = 0;          
+	public static final int EPRIORITY_UPPER_MEDIUM = 1;
+	public static final int EPRIORITY_HIGH = 2;
+	public static final int EPRIORITY_HIGHER = 3;
+	public static final int EPRIORITY_VERY_HIGH = 4;
+	public static final int EPRIORITY_HIGHEST = 5; 
 	
     static final String PREF_EVENT_ENABLED = "eventEnabled";
     static final String PREF_EVENT_NAME = "eventName";
@@ -227,7 +233,7 @@ public class Event {
 		this._notificationSound = preferences.getString(PREF_EVENT_NOTIFICATION_SOUND, "");
 		this._forceRun = preferences.getBoolean(PREF_EVENT_FORCE_RUN, false);
 		this._undoneProfile = preferences.getBoolean(PREF_EVENT_UNDONE_PROFILE, true);
-		this._priority = Integer.parseInt(preferences.getString(PREF_EVENT_PRIORITY, Integer.toString(EPRIORITY_NORMAL)));
+		this._priority = Integer.parseInt(preferences.getString(PREF_EVENT_PRIORITY, Integer.toString(EPRIORITY_MEDIUM)));
 		//Log.e("Event.saveSharedPrefereces","notificationSound="+this._notificationSound);
 		this._eventPreferencesTime.saveSharedPrefereces(preferences);
 		this._eventPreferencesBattery.saveSharedPrefereces(preferences);

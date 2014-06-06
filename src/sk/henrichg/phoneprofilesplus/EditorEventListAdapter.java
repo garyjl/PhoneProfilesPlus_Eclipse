@@ -304,7 +304,7 @@ public class EditorEventListAdapter extends BaseAdapter
    		else
    			holder.eventName.setTypeface(null, Typeface.NORMAL);
    			
-   		String eventPriority = "[" + (event._priority + 2)  + "] ";
+   		String eventPriority = "[" + (event._priority + Event.EPRIORITY_HIGHEST)  + "] ";
    		if (event._forceRun)
    		{
    			/*if (android.os.Build.VERSION.SDK_INT >= 16)

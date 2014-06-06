@@ -391,18 +391,30 @@
     <item>2</item>
 </string-array>
 <string-array name="eventPriorityArray">
-	<item>@string/array_event_pref_priorityVeryHigh</item>    
-	<item>@string/array_event_pref_priorityHigh</item>    
-	<item>@string/array_event_pref_priorityNormal</item>    
-	<item>@string/array_event_pref_priorityLow</item>    
-	<item>@string/array_event_pref_priorityVeryLow</item>    
+    <item>@string/array_event_pref_priorityHighest</item>
+    <item>@string/array_event_pref_priorityVeryHigh</item>
+    <item>@string/array_event_pref_priorityHigher</item>
+    <item>@string/array_event_pref_priorityHigh</item>
+    <item>@string/array_event_pref_priorityUpperMedium</item>
+    <item>@string/array_event_pref_priorityMedium</item>
+    <item>@string/array_event_pref_priorityLowerMiddle</item>
+    <item>@string/array_event_pref_priorityLow</item>
+    <item>@string/array_event_pref_priorityLower</item>
+    <item>@string/array_event_pref_priorityVeryLow</item>
+    <item>@string/array_event_pref_priorityLowest</item>
 </string-array>
 <string-array name="eventPriorityValues">
+    <item>5</item>
+    <item>4</item>
+    <item>3</item>
     <item>2</item>
     <item>1</item>
     <item>0</item>
     <item>-1</item>
     <item>-2</item>
+    <item>-3</item>
+    <item>-4</item>
+    <item>-5</item>
 </string-array>
 <string-array name="eventPeripheralTypeArray">
 	<item>@string/array_event_pref_peripheralType_deskDock</item>    

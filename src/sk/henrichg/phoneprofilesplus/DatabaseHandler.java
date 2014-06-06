@@ -26,7 +26,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static SQLiteDatabase writableDb;	
     
 	// Database Version
-	private static final int DATABASE_VERSION = 1095;
+	private static final int DATABASE_VERSION = 1100;
 
 	// Database Name
 	private static final String DATABASE_NAME = "phoneProfilesManager";
@@ -673,7 +673,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_CALENDAR_EVENT_END_TIME + "=0");
 			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_CALENDAR_EVENT_FOUND + "=0");
 		}
-		
+
+		if (oldVersion < 1100)
+		{
+			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_PRIORITY + "=4 WHERE " + KEY_E_PRIORITY + "=2");
+			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_PRIORITY + "=2 WHERE " + KEY_E_PRIORITY + "=1");
+			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_PRIORITY + "=-2 WHERE " + KEY_E_PRIORITY + "=-1");
+			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_PRIORITY + "=-4 WHERE " + KEY_E_PRIORITY + "=-2");
+		}
 	}
 	
 
@@ -2864,6 +2871,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 							long fkProfileEnd = Event.PROFILE_END_NO_ACTIVATE;
 							long startTime = 0;
 							long endTime = 0;
+							int priority = 0;
 							
 							if (cursorExportedDB.moveToFirst()) {
 								do {
@@ -2906,6 +2914,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 												startTime = cursorExportedDB.getLong(i);
 											if (columnNamesExportedDB[i].equals(KEY_E_END_TIME))
 												endTime = cursorExportedDB.getLong(i);
+											if (columnNamesExportedDB[i].equals(KEY_E_PRIORITY))
+												priority = cursorExportedDB.getInt(i);
 											
 											//Log.d("DatabaseHandler.importDB", "cn="+columnNames[i]+" val="+cursor.getString(i));
 										}
@@ -2998,7 +3008,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 										if (exportedDBObj.getVersion() < 1070)
 										{
-											values.put(KEY_E_PRIORITY, Event.EPRIORITY_NORMAL);
+											values.put(KEY_E_PRIORITY, Event.EPRIORITY_MEDIUM);
 										}
 
 										if (exportedDBObj.getVersion() < 1080)
@@ -3027,6 +3037,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 											values.put(KEY_E_CALENDAR_EVENT_START_TIME, 0);
 											values.put(KEY_E_CALENDAR_EVENT_END_TIME, 0);
 											values.put(KEY_E_CALENDAR_EVENT_FOUND, 0);
+										}
+
+										if (exportedDBObj.getVersion() < 1100)
+										{
+											switch (priority) {
+												case -2:
+													values.put(KEY_E_PRIORITY, -4);
+													break;
+												case -1:
+													values.put(KEY_E_PRIORITY, -2);
+													break;
+												case 1:
+													values.put(KEY_E_PRIORITY, 2);
+													break;
+												case 2:
+													values.put(KEY_E_PRIORITY, 4);
+													break;
+											}
 										}
 										
 										// Inserting Row do db z SQLiteOpenHelper
