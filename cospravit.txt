@@ -62,14 +62,14 @@ Event preferences: WiFi location
 ------------------------
 10 priorit:
 "lowest", 
-"very low", 
+"very low",       very low
 "lower", 
-"low", 
+"low",            low
 "lower middle", 
 "medium",         normal          
 "upper medium", 
-"high", 
+"high",           high
 "higher", 
-"very high", 
+"very high",     very high
 "highest"   
  
