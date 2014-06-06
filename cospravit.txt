@@ -59,5 +59,17 @@ Event preferences: WiFi location
    b) ak ma vypnutu wifi, zapnut ju a potom vypnut
 - kukni WifiManager.isScanAlwaysAvailable() (API 18) - toto by mohlo scanovat aj ked wifi nie je zanuta
    
-   
+------------------------
+10 priorit:
+"lowest", 
+"very low", 
+"lower", 
+"low", 
+"lower middle", 
+"medium",         normal          
+"upper medium", 
+"high", 
+"higher", 
+"very high", 
+"highest"   
  
