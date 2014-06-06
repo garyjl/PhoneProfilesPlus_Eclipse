@@ -2,6 +2,7 @@ Event preferences: WiFi location
 1. parametre:
 	a) interval skenovania (minuty)
 	b) SSID
+	c) skenuj len ak je zanuta WiFi (???)
 2. bude sa dat povolit, len ak device ma Wifi
 3. alarm na interval skenovania
     a) zapne sa v DataWrapper.firstStartEvents() ak ma device Wifi
