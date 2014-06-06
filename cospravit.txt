@@ -1,8 +1,58 @@
-Event preferences: CALENDAR
-1. vyberie si ktore kalendare chce - multselection listview
-2. zoznam kalendarov: zobrazit farbu kalendara
-3. vyber, kde chce hladat retazec: "Nazov udalosti" alebo "Popis"
-4. zadat retazec, ktory sa bude vyhladavat
+Event preferences: WiFi location
+1. parametre:
+	a) interval skenovania (minuty)
+	b) SSID
+2. bude sa dat povolit, len ak device ma Wifi
+3. alarm na interval skenovania
+    a) zapne sa v DataWrapper.firstStartEvents() ak ma device Wifi
+       - asi by sa mal zapnut len ak je daky event s "wifi location" povoleny
+       - cize by ho mal zapnut samotny class EventPreferences na status start/pause a vypnut na status stop
+       - teda ako kedysi battery preferences 
+    b) vypne sa v EditorProfilesActivity.onOptionsItemSelected() na R.id.menu_exit
+4. v ReceiversService
+      	receiver = new WiFiScanReceiver(this);
+	    registerReceiver(receiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+4. v receiveri intervalu skenovania:
+    a) testne sa, ci uz sa skenuje
+    b) ak sa neskenuje:
+    	ba) zapne sa wifi ak je vypnuta - odpamata sa, ze sa wifi zapla
+		bb) wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+	    bc) spusti sa skenovanie:
+	    	// 1. zapiseme, ze sa spustil scan
+	    	// 2. spustime scan:      
+	      	wifi.startScan();
+5. WifiScanReceiver:
+      public class WiFiScanReceiver extends BroadcastReceiver
+      {
+          WiFiDemo wifiDemo;
 
-Tak ako pri telefoonych cislach si budem pamatat id kalendara.
+	      public WiFiScanReceiver(WiFiDemo wifiDemo)
+	      {
+	          super();
+	          this.wifiDemo = wifiDemo;
+	      }
+	
+	      @Override
+	      public void onReceive(Context c, Intent intent)
+	      {
+	          List<ScanResult> results = wifiDemo.wifi.getScanResults();
 
+			  // 1. vypne sa wifi, ak sa pri starte skenovania zapinala	  
+
+			  // 2. zapiseme najdene SSID do shared preferences ako retazec SSID oddelenych |	          		
+	          for (ScanResult result : results)
+	          {
+	          		// result.SSID = najdene SSID
+	          }
+			
+			  // 3. standardnym sposobom zavolame EventsService
+			  // 4. zapiseme, ze uz je doskenovane	          
+	          
+	      }
+      } 
+ 6. zanutie/vypnutie wifi
+ - je otazne, ci to robit, mozno si uzivatel nezela zapnut wifi, ak ho ma vypnute, ale zasa
+ si moze zelat, aby event fungoval. Skoda, ze mobil nevie citat myslienky. :-D
+ - navrhujem:
+   a) ak ma airplane mode zapnuty, brat event preference ako nezaskrtnute
+   b) ak ma vypnutu wifi, zapnut ju a potom vypnut
