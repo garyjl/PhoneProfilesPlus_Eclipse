@@ -3,6 +3,7 @@ Event preferences: WiFi location
 	a) interval skenovania (minuty)
 	b) SSID
 	c) skenuj len ak je zanuta WiFi (???)
+1.1 ukoncenie eventu bude na opustenie SSID
 2. bude sa dat povolit, len ak device ma Wifi
 3. alarm na interval skenovania
     a) zapne sa v DataWrapper.firstStartEvents() ak ma device Wifi
@@ -58,6 +59,7 @@ Event preferences: WiFi location
    a) ak ma airplane mode zapnuty, brat event preference ako nezaskrtnute
    b) ak ma vypnutu wifi, zapnut ju a potom vypnut
 - kukni WifiManager.isScanAlwaysAvailable() (API 18) - toto by mohlo scanovat aj ked wifi nie je zanuta
+
    
 ------------------------
 10 priorit:
