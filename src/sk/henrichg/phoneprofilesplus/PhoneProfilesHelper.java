@@ -149,14 +149,16 @@ public class PhoneProfilesHelper {
 			
 
 			OK = RootTools.remount("/system", "RW");
-			//if (OK)
-			//	Log.e("PhoneProfilesHelper.doInstallPPHelper", "remount RW OK");
+			if (!OK)
+				Log.e("PhoneProfilesHelper.doInstallPPHelper", "remount RW ERROR");
 			if (OK)
 				RootTools.deleteFileOrDirectory(destinationFile, false);
+			if (!OK)
+				Log.e("PhoneProfilesHelper.doInstallPPHelper", "delete file ERROR");
 			if (OK)
 				OK = RootTools.copyFile(sourceFile, destinationFile, false, false);
-			//if (OK)
-			//	Log.e("PhoneProfilesHelper.doInstallPPHelper", "copy PPHelper.apk OK");
+			if (!OK)
+				Log.e("PhoneProfilesHelper.doInstallPPHelper", "copy file ERROR");
 			if (OK)
 			{
 				CommandCapture command = new CommandCapture(1, "chmod 644 "+destinationFile);
@@ -170,12 +172,12 @@ public class PhoneProfilesHelper {
 					OK = false;
 				}
 			}
-			//if (OK)
-			//	Log.e("PhoneProfilesHelper.doInstallPPHelper", "chmod PPHelper.apk OK");
+			if (!OK)
+				Log.e("PhoneProfilesHelper.doInstallPPHelper", "chmod ERROR");
 			if (OK)
 				OK = RootTools.remount("/system", "RO");
-			//if (OK)
-			//	Log.e("PhoneProfilesHelper.doInstallPPHelper", "remount RO OK");
+			if (!OK)
+				Log.e("PhoneProfilesHelper.doInstallPPHelper", "remount RO ERROR");
 
 			/*
 			if (OK)
