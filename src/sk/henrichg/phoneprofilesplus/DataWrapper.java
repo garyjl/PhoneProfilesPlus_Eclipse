@@ -1204,16 +1204,24 @@ public class DataWrapper {
 			IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
 			Intent batteryStatus = context.registerReceiver(null, ifilter);
 			
-			int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
-			GlobalData.logE("DataWrapper.doEventService","status="+status);
-			isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
-			             status == BatteryManager.BATTERY_STATUS_FULL;
-			GlobalData.logE("DataWrapper.doEventService","isCharging="+isCharging);
+			if (batteryStatus != null)
+			{
+				int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+				GlobalData.logE("DataWrapper.doEventService","status="+status);
+				isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
+				             status == BatteryManager.BATTERY_STATUS_FULL;
+				GlobalData.logE("DataWrapper.doEventService","isCharging="+isCharging);
+				
+				int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+				int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+				batteryPct = level / (float)scale;	
+			}
+			else
+			{
+				isCharging = false;
+				batteryPct = -1.0f;
+			}
 			
-			int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-			int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-			
-			batteryPct = level / (float)scale;	
 			GlobalData.logE("DataWrapper.doEventService","batteryPct="+batteryPct);
 
 			batteryPassed = (isCharging == event._eventPreferencesBattery._charging);
@@ -1344,13 +1352,20 @@ public class DataWrapper {
 				// get dock status
 				IntentFilter ifilter = new IntentFilter(Intent.ACTION_DOCK_EVENT);
 				Intent dockStatus = context.registerReceiver(null, ifilter);
+
+				boolean isDocked = false;
+				boolean isCar = false;
+				boolean isDesk = false;				
 				
-				int dockState = dockStatus.getIntExtra(Intent.EXTRA_DOCK_STATE, -1);
-				boolean isDocked = dockState != Intent.EXTRA_DOCK_STATE_UNDOCKED;
-				boolean isCar = dockState == Intent.EXTRA_DOCK_STATE_CAR;
-				boolean isDesk = dockState == Intent.EXTRA_DOCK_STATE_DESK || 
-				                 dockState == Intent.EXTRA_DOCK_STATE_LE_DESK ||
-				                 dockState == Intent.EXTRA_DOCK_STATE_HE_DESK;				
+				if (dockStatus != null)
+				{
+					int dockState = dockStatus.getIntExtra(Intent.EXTRA_DOCK_STATE, -1);
+					isDocked = dockState != Intent.EXTRA_DOCK_STATE_UNDOCKED;
+					isCar = dockState == Intent.EXTRA_DOCK_STATE_CAR;
+					isDesk = dockState == Intent.EXTRA_DOCK_STATE_DESK || 
+					         dockState == Intent.EXTRA_DOCK_STATE_LE_DESK ||
+					         dockState == Intent.EXTRA_DOCK_STATE_HE_DESK;
+				}
 				
 				if (isDocked)
 				{
