@@ -161,12 +161,11 @@ public class PhoneProfilesHelper {
 				Log.e("PhoneProfilesHelper.doInstallPPHelper", "copy file ERROR");
 			if (OK)
 			{
-				CommandCapture command = new CommandCapture(1, "chmod 644 "+destinationFile);
+				CommandCapture command = new CommandCapture(0, "chmod 644 "+destinationFile);
 				try {
 					RootTools.getShell(true).add(command);
 					OK = commandWait(command);
 					OK = OK && command.getExitCode() == 0;
-					RootTools.closeAllShells();
 				} catch (Exception e) {
 					e.printStackTrace();
 					OK = false;
@@ -179,6 +178,12 @@ public class PhoneProfilesHelper {
 			if (!OK)
 				Log.e("PhoneProfilesHelper.doInstallPPHelper", "remount RO ERROR");
 
+			try {
+				RootTools.closeAllShells();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 			/*
 			if (OK)
 				Log.e("PhoneProfilesHelper.doInstallPPHelper", "PhoneProfilesHelper installed");
@@ -285,6 +290,12 @@ public class PhoneProfilesHelper {
 		OK = RootTools.deleteFileOrDirectory(destinationFile, true);
 		//if (OK)
 		//	Log.e("PhoneProfilesHelper.doInstallPPHelper", "remount RO OK");
+		
+		try {
+			RootTools.closeAllShells();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		/*
 		CommandCapture command;
