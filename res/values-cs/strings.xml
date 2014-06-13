@@ -354,10 +354,10 @@
     <string name="pphelper_upgrade_notification_text">Prosím klikněte na spuštění aktualizace.</string>
 
 	<string name="array_event_pref_priorityLowest">Nejnižší</string> 
-	<string name="array_event_pref_priorityLower">Nízká</string> 
+	<string name="array_event_pref_priorityLower">Nižší</string> 
 	<string name="array_event_pref_priorityLowerMedium">Středně nízká</string> 
 	<string name="array_event_pref_priorityUpperMedium">Středně vysoká</string> 
-	<string name="array_event_pref_priorityHigher">Vysoká</string> 
+	<string name="array_event_pref_priorityHigher">Vyšší</string> 
 	<string name="array_event_pref_priorityHighest">Nejvyšší</string>
     		
 </resources>
