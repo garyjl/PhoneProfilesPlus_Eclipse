@@ -360,7 +360,7 @@
     
     <string name="array_event_pref_priorityLowest">Lowest</string>
     <string name="array_event_pref_priorityLower">Lower</string>
-    <string name="array_event_pref_priorityLowerMiddle">Lower middle</string>
+    <string name="array_event_pref_priorityLowerMedium">Lower medium</string>
     <string name="array_event_pref_priorityUpperMedium">Upper medium</string>
     <string name="array_event_pref_priorityHigher">Higher</string>
     <string name="array_event_pref_priorityHighest">Highest</string>

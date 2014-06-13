@@ -354,4 +354,11 @@
     <string name="pphelper_upgrade_notification_title">Je nutná aktualizácia PPHelpera.</string>
     <string name="pphelper_upgrade_notification_text">Prosím kliknite na spustenie aktualizácie.</string>
     	
+    <string name="array_event_pref_priorityLowest">Najnižšia</string>
+    <string name="array_event_pref_priorityLower">Nízka</string>
+    <string name="array_event_pref_priorityLowerMedium">Stredne nízka</string>
+    <string name="array_event_pref_priorityUpperMedium">Stredne vysoká</string>
+    <string name="array_event_pref_priorityHigher">Vysoká</string>
+    <string name="array_event_pref_priorityHighest">Najvyššia</string>
+    
 </resources>

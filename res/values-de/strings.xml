@@ -352,4 +352,11 @@
 	<string name="pphelper_upgrade_notification_title">PPHelfer-Upgrade benötigt.</string>
     <string name="pphelper_upgrade_notification_text">Drücke zum Upgraden.</string>    
     
+  	<string name="array_event_pref_priorityLowest">Am niedrigsten</string>
+    <string name="array_event_pref_priorityLower">Niedriger</string>
+    <string name="array_event_pref_priorityLowerMedium">Untere Mitte</string>
+    <string name="array_event_pref_priorityUpperMedium">Obere Mitte</string>
+    <string name="array_event_pref_priorityHigher">Höher</string>
+    <string name="array_event_pref_priorityHighest">Am höchsten</string>
+        
 </resources>

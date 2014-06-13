@@ -358,4 +358,11 @@
     <string name="pphelper_upgrade_notification_title">Нужно обновить PPHelper.</string>
     <string name="pphelper_upgrade_notification_text">Пожалуйста, нажмите здесь, чтобы начать обновление.</string>
     
+    <string name="array_event_pref_priorityLowest">Низкая</string>
+    <string name="array_event_pref_priorityLower">Ниже</string>
+    <string name="array_event_pref_priorityLowerMedium">Умеренно низким</string>
+    <string name="array_event_pref_priorityUpperMedium">Умеренно высокой</string>
+    <string name="array_event_pref_priorityHigher">Высшее</string>
+    <string name="array_event_pref_priorityHighest">Наивысший</string>
+    
 </resources>

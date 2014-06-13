@@ -397,7 +397,7 @@
     <item>@string/array_event_pref_priorityHigh</item>
     <item>@string/array_event_pref_priorityUpperMedium</item>
     <item>@string/array_event_pref_priorityMedium</item>
-    <item>@string/array_event_pref_priorityLowerMiddle</item>
+    <item>@string/array_event_pref_priorityLowerMedium</item>
     <item>@string/array_event_pref_priorityLow</item>
     <item>@string/array_event_pref_priorityLower</item>
     <item>@string/array_event_pref_priorityVeryLow</item>
