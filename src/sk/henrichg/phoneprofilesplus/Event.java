@@ -41,7 +41,7 @@ public class Event {
 	public static final int EPRIORITY_VERY_LOW = -4;
 	public static final int EPRIORITY_LOWER = -3;
 	public static final int EPRIORITY_LOW = -1;
-	public static final int EPRIORITY_LOWER_MIDDLE = -1;
+	public static final int EPRIORITY_LOWER_MEDIUM = -1;
 	public static final int EPRIORITY_MEDIUM = 0;          
 	public static final int EPRIORITY_UPPER_MEDIUM = 1;
 	public static final int EPRIORITY_HIGH = 2;
