@@ -823,7 +823,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					                      Integer.parseInt(cursor.getString(28)),
 					                      cursor.getString(29),
 					                      Integer.parseInt(cursor.getString(30)),
-					                      (Integer.parseInt(cursor.getString(31)) == 1) ? true : false,
+					                      cursor.isNull(31) ? true : ((Integer.parseInt(cursor.getString(31)) == 1) ? true : false),
 					                      Integer.parseInt(cursor.getString(32)),
 					                      Integer.parseInt(cursor.getString(33)),
 					                      Integer.parseInt(cursor.getString(34)),
@@ -921,7 +921,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 profile._deviceRunApplicationChange = Integer.parseInt(cursor.getString(28));
                 profile._deviceRunApplicationPackageName = cursor.getString(29);
                 profile._deviceAutosync = Integer.parseInt(cursor.getString(30));
-                profile._showInActivator = (Integer.parseInt(cursor.getString(31)) == 1) ? true : false;
+                profile._showInActivator = cursor.isNull(31) ? true : ((Integer.parseInt(cursor.getString(31)) == 1) ? true : false);
                 profile._deviceAutoRotate = Integer.parseInt(cursor.getString(32));
                 profile._deviceLocationServicePrefs = Integer.parseInt(cursor.getString(33));
                 profile._volumeSpeakerPhone = Integer.parseInt(cursor.getString(34));
@@ -1250,7 +1250,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					                      Integer.parseInt(cursor.getString(28)),
 					                      cursor.getString(29),
 					                      Integer.parseInt(cursor.getString(30)),
-					                      (Integer.parseInt(cursor.getString(31)) == 1) ? true : false,
+					                      cursor.isNull(31) ? true : ((Integer.parseInt(cursor.getString(31)) == 1) ? true : false),
 					                      Integer.parseInt(cursor.getString(32)),
 					                      Integer.parseInt(cursor.getString(33)),
 					                      Integer.parseInt(cursor.getString(34)),
@@ -1349,7 +1349,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			profile._deviceRunApplicationChange = (Integer.parseInt(cursor.getString(28)) == 1) ? true : false;
 			profile._deviceRunApplicationPackageName = cursor.getString(29);
 			profile._deviceAutosync = Integer.parseInt(cursor.getString(30));
-			profile._showInActivator = (Integer.parseInt(cursor.getString(31)) == 1) ? true : false;
+			profile._showInActivator = cursor.isNull(31) ? true : ((Integer.parseInt(cursor.getString(31)) == 1) ? true : false);
 			profile._deviceAutoRotate = Integer.parseInt(cursor.getString(32));
 			profile._deviceLocationServicePrefs = Integer.parseInt(cursor.getString(33));
 			profile._speakerPhone = Integer.parseInt(cursor.getString(34));
@@ -2818,7 +2818,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 									{
 										values.put(KEY_DEVICE_AUTOSYNC, 0);
 									}
-									if ((exportedDBObj.getVersion() < 1000) && (applicationDataPath.equals(GUIData.REMOTE_EXPORT_PATH)))
+									if (applicationDataPath.equals(GUIData.REMOTE_EXPORT_PATH)
+										||
+										((exportedDBObj.getVersion() < 26) && (applicationDataPath.equals(GlobalData.EXPORT_PATH))))
 									{
 										values.put(KEY_SHOW_IN_ACTIVATOR, 1);
 									}
