@@ -1,43 +1,77 @@
 Event preferences: WiFi location
 1. parametre:
-	a) interval skenovania (minuty)
-	b) SSID
-	c) skenuj len ak je zanuta WiFi (???)
-1.1 ukoncenie eventu bude na opustenie SSID
+	a) SSID
+	b) mod pripojene (pripojene, v blizkosti)
+	a) interval skenovania (minuty) - povolene len pre mod spojenia "v blizkosti"
+	c) skenuj len ak je zanuta WiFi - povolene len pre mod spojenia "v blizkosti" 
+1.1 ukoncenie eventu bude na:
+    - opustenie SSID (mod pripojenia "v blizkosti"
+    - odpojenie od SSID (mod pripojenia "pripojene")
 2. bude sa dat povolit, len ak device ma Wifi
-3. alarm na interval skenovania
+3. mod spojenia "pripojene"
+3.1. nakonfigurovat receiever - do ReceiversService
+
+		IntentFilter intentFilter = new IntentFilter();
+		intentFilter.addAction(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
+		registerReceiver(broadcastReceiver, intentFilter);
+		
+3.2. v receiveri:
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+		    final String action = intent.getAction();
+		    if (action.equals(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION)) {
+		        if (intent.getBooleanExtra(WifiManager.EXTRA_SUPPLICANT_CONNECTED, false)){
+		            //do stuff
+		            
+		            // o ake SSID ide ?
+					WifiManager wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
+					WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+					Log.d("wifiInfo", wifiInfo.toString());
+					Log.d("SSID",wifiInfo.getSSID());		            
+		        } else {
+		            // wifi connection was lost
+		        }
+		    }
+		}
+				   
+4. mod spojenia "v blizkosti"
+4.1. alarm na interval skenovania
     a) zapne sa v DataWrapper.firstStartEvents() ak ma device Wifi
        - asi by sa mal zapnut len ak je daky event s "wifi location" povoleny
        - cize by ho mal zapnut samotny class EventPreferences na status start/pause a vypnut na status stop
        - teda ako kedysi battery preferences 
     b) vypne sa v EditorProfilesActivity.onOptionsItemSelected() na R.id.menu_exit
-4. v ReceiversService
-      	receiver = new WiFiScanReceiver(this);
-	    registerReceiver(receiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
-4. v receiveri intervalu skenovania:
+4.2. v ReceiversService
+        - static WifiManager wifi;
+        - metoda, co vratit wifi, ak nie je inicializovana tak:
+			wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+      	- receiver = new WiFiScanReceiver(this);
+	    - registerReceiver(receiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+4.3. v receiveri intervalu skenovania (AlarmManager):
     a) testne sa, ci uz sa skenuje
     b) ak sa neskenuje:
     	ba) zapne sa wifi ak je vypnuta - odpamata sa, ze sa wifi zapla
-		bb) wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+    	bb) zavolat staticku metodu z ReceiversService, co vrati wifi
 	    bc) spusti sa skenovanie:
 	    	// 1. zapiseme, ze sa spustil scan
 	    	// 2. spustime scan:      
 	      	wifi.startScan();
-5. WifiScanReceiver:
+4.4. WifiScanReceiver:
       public class WiFiScanReceiver extends BroadcastReceiver
       {
-          WiFiDemo wifiDemo;
+          ReceiversService receiversService;
 
-	      public WiFiScanReceiver(WiFiDemo wifiDemo)
+	      public WiFiScanReceiver(ReceiversService receiversService)
 	      {
 	          super();
-	          this.wifiDemo = wifiDemo;
+	          this.receiversService = receiversService;
 	      }
 	
 	      @Override
 	      public void onReceive(Context c, Intent intent)
 	      {
-	          List<ScanResult> results = wifiDemo.wifi.getScanResults();
+	          List<ScanResult> results = receiversService.wifi.getScanResults();
 
 			  // 1. vypne sa wifi, ak sa pri starte skenovania zapinala	  
 
@@ -52,28 +86,8 @@ Event preferences: WiFi location
 	          
 	      }
       } 
- 6. zanutie/vypnutie wifi
- - je otazne, ci to robit, mozno si uzivatel nezela zapnut wifi, ak ho ma vypnute, ale zasa
- si moze zelat, aby event fungoval. Skoda, ze mobil nevie citat myslienky. :-D
- - navrhujem:
+4.5. zanutie/vypnutie wifi
    a) ak ma airplane mode zapnuty, brat event preference ako nezaskrtnute
    b) ak ma vypnutu wifi, zapnut ju a potom vypnut
 - kukni WifiManager.isScanAlwaysAvailable() (API 18) - toto by mohlo scanovat aj ked wifi nie je zanuta
 
-   
-------------------------
-10 priorit:
-"lowest",       -5 
-"very low",     -4  -2   very low
-"lower",        -3
-"low",          -2  -1   low
-"lower middle", -1
-"medium",        0   0   normal          
-"upper medium",  1
-"high",          2   1   high
-"higher",        3
-"very high",     4   2   very high
-"highest"        5 
- 
-7 zistit, ako prinutit Google play, aby naslo mna. Zistil som, ze trena slovo "profile" mat oddelene. 
-Ze by stacilo zmenit nazov v developer konzole? 
