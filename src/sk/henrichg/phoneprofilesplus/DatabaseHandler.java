@@ -26,7 +26,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static SQLiteDatabase writableDb;	
     
 	// Database Version
-	private static final int DATABASE_VERSION = 1100;
+	private static final int DATABASE_VERSION = 1105;
 
 	// Database Name
 	private static final String DATABASE_NAME = "phoneProfilesManager";
@@ -45,6 +45,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public static final int ETYPE_CALL = 3;
 	public static final int ETYPE_PERIPHERAL = 4;
 	public static final int ETYPE_CALENDAR = 5;
+	public static final int ETYPE_WIFI = 6;
 	
 	// Profiles Table Columns names
 	private static final String KEY_ID = "id";
@@ -119,6 +120,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_E_CALENDAR_EVENT_START_TIME = "calendarEventStartTime";
 	private static final String KEY_E_CALENDAR_EVENT_END_TIME = "calendarEventEndTime";
 	private static final String KEY_E_CALENDAR_EVENT_FOUND = "calendarEventFound";
+	private static final String KEY_E_WIFI_ENABLED = "wifiEnabled";
+	private static final String KEY_E_WIFI_SSID = "wifiSSID";
 	
 	private static final String KEY_ET_ID = "id";
 	private static final String KEY_ET_EORDER = "eorder";
@@ -261,7 +264,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_E_CALENDAR_SEARCH_STRING + " TEXT,"
 				+ KEY_E_CALENDAR_EVENT_START_TIME + " INTEGER,"
 				+ KEY_E_CALENDAR_EVENT_END_TIME + " INTEGER,"
-				+ KEY_E_CALENDAR_EVENT_FOUND + " INTEGER"
+				+ KEY_E_CALENDAR_EVENT_FOUND + " INTEGER,"
+				+ KEY_E_WIFI_ENABLED + " INTEGER,"
+				+ KEY_E_WIFI_SSID + " TEXT"
 				+ ")";
 		db.execSQL(CREATE_EVENTS_TABLE);
 
@@ -680,6 +685,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_PRIORITY + "=2 WHERE " + KEY_E_PRIORITY + "=1");
 			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_PRIORITY + "=-2 WHERE " + KEY_E_PRIORITY + "=-1");
 			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_PRIORITY + "=-4 WHERE " + KEY_E_PRIORITY + "=-2");
+		}
+
+		if (oldVersion < 1105)
+		{
+			// pridame nove stlpce
+			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_WIFI_ENABLED + " INTEGER");
+			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_WIFI_SSID + " TEXT");
+			
+			// updatneme zaznamy
+			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_WIFI_ENABLED + "=0");
+			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_WIFI_SSID + "=\"\"");
 		}
 	}
 	
@@ -1950,6 +1966,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
        	getEventPreferencesCall(event, db);
        	getEventPreferencesPeripheral(event, db);
        	getEventPreferencesCalendar(event, db);
+       	getEventPreferencesWifi(event, db);
 	}
 	
 	private void getEventPreferencesTime(Event event, SQLiteDatabase db) {
@@ -2102,6 +2119,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 		cursor.close();
 	}
+
+	private void getEventPreferencesWifi(Event event, SQLiteDatabase db) {
+		Cursor cursor = db.query(TABLE_EVENTS, 
+				                 new String[] { KEY_E_WIFI_ENABLED,
+												KEY_E_WIFI_SSID
+												}, 
+				                 KEY_E_ID + "=?",
+				                 new String[] { String.valueOf(event._id) }, null, null, null, null);
+		if (cursor != null)
+			cursor.moveToFirst();
+
+		EventPreferencesWifi eventPreferences = (EventPreferencesWifi)event._eventPreferencesWifi;
+
+		eventPreferences._enabled = (Integer.parseInt(cursor.getString(0)) == 1);
+		eventPreferences._SSID = cursor.getString(1);
+		
+		cursor.close();
+	}
 	
 	public int updateEventPreferences(Event event) {
 		//SQLiteDatabase db = this.getReadableDatabase();
@@ -2124,6 +2159,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
        		r = updateEventPreferencesPeripheral(event, db);
        	if (r != 0)
        		r = updateEventPreferencesCalendar(event, db);
+       	if (r != 0)
+       		r = updateEventPreferencesWifi(event, db);
 
        	return r;
 	}
@@ -2228,6 +2265,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_E_CALENDAR_EVENT_START_TIME, eventPreferences._startTime);
 		values.put(KEY_E_CALENDAR_EVENT_END_TIME, eventPreferences._endTime);
 		values.put(KEY_E_CALENDAR_EVENT_FOUND, (eventPreferences._eventFound) ? 1 : 0);
+
+		// updating row
+		int r = db.update(TABLE_EVENTS, values, KEY_E_ID + " = ?",
+				        new String[] { String.valueOf(event._id) });
+        
+		return r;
+	}
+
+	private int updateEventPreferencesWifi(Event event, SQLiteDatabase db) {
+		ContentValues values = new ContentValues();
+		
+		EventPreferencesWifi eventPreferences = (EventPreferencesWifi)event._eventPreferencesWifi; 
+
+		//Log.e("DatabaseHandler.updateEventPreferencesCalendar","type="+event._type);
+		
+		values.put(KEY_E_WIFI_ENABLED, (eventPreferences._enabled) ? 1 : 0);
+		values.put(KEY_E_WIFI_SSID, eventPreferences._SSID);
 
 		// updating row
 		int r = db.update(TABLE_EVENTS, values, KEY_E_ID + " = ?",
@@ -2414,6 +2468,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		else
 		if (eventType == ETYPE_CALENDAR)
 			eventTypeChecked = KEY_E_CALENDAR_ENABLED + "=1";
+		else
+		if (eventType == ETYPE_WIFI)
+			eventTypeChecked = KEY_E_WIFI_ENABLED + "=1";
 		
 		countQuery = "SELECT  count(*) FROM " + TABLE_EVENTS + 
 	    		     " WHERE " + eventTypeChecked;
@@ -3057,6 +3114,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 													values.put(KEY_E_PRIORITY, 4);
 													break;
 											}
+										}
+
+										if (exportedDBObj.getVersion() < 1105)
+										{
+											values.put(KEY_E_WIFI_ENABLED, 0);
+											values.put(KEY_E_WIFI_SSID, "");
 										}
 										
 										// Inserting Row do db z SQLiteOpenHelper

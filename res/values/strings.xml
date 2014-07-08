@@ -354,15 +354,15 @@
     <string name="array_event_pref_calendarSearchField_description">Description</string>
     <string name="event_preferences_calendar_search_string">Search string</string>
     <string name="event_preferences_calendar_no_event">No event</string>
-    
     <string name="pphelper_upgrade_notification_title">PPHelper upgrade is required.</string>
     <string name="pphelper_upgrade_notification_text">Please click for upgrade it.</string>
-    
     <string name="array_event_pref_priorityLowest">Lowest</string>
     <string name="array_event_pref_priorityLower">Lower</string>
     <string name="array_event_pref_priorityLowerMedium">Lower medium</string>
     <string name="array_event_pref_priorityUpperMedium">Upper medium</string>
     <string name="array_event_pref_priorityHigher">Higher</string>
     <string name="array_event_pref_priorityHighest">Highest</string>
+
+    <string name="event_type_wifi">WiFi</string>
     	
 </resources>

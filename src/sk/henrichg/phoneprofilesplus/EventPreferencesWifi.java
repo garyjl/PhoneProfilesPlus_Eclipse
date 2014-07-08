@@ -1,0 +1,113 @@
+package sk.henrichg.phoneprofilesplus;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.preference.PreferenceManager;
+
+public class EventPreferencesWifi extends EventPreferences {
+
+	public String _SSID;
+	
+	static final String PREF_EVENT_WIFI_ENABLED = "eventWiFiEnabled";
+	static final String PREF_EVENT_WIFI_SSID = "eventWiFiSSID";
+	
+	public EventPreferencesWifi(Event event, 
+									boolean enabled,
+									String SSID)
+	{
+		super(event, enabled);
+		
+		this._SSID = SSID;
+	}
+	
+	@Override
+	public void copyPreferences(Event fromEvent)
+	{
+		this._enabled = ((EventPreferencesWifi)fromEvent._eventPreferencesWifi)._enabled;
+		this._SSID = ((EventPreferencesWifi)fromEvent._eventPreferencesWifi)._SSID;
+	}
+	
+	@Override
+	public void loadSharedPrefereces(SharedPreferences preferences)
+	{
+		Editor editor = preferences.edit();
+        editor.putBoolean(PREF_EVENT_WIFI_ENABLED, _enabled);
+		editor.putString(PREF_EVENT_WIFI_SSID, this._SSID);
+		editor.commit();
+	}
+	
+	@Override
+	public void saveSharedPrefereces(SharedPreferences preferences)
+	{
+		this._enabled = preferences.getBoolean(PREF_EVENT_WIFI_ENABLED, false);
+		this._SSID = preferences.getString(PREF_EVENT_WIFI_SSID, "");
+	}
+	
+	@Override
+	public String getPreferencesDescription(String description, Context context)
+	{
+		String descr = description + context.getString(R.string.event_type_wifi) + ": ";
+		
+		if (!this._enabled)
+			descr = descr + context.getString(R.string.event_preferences_not_enabled);
+		else
+		{
+			descr = descr + this._SSID;
+		}
+		
+		return descr;
+	}
+	
+	@Override
+	public void setSummary(PreferenceManager prefMng, String key, String value, Context context)
+	{
+		if (key.equals(PREF_EVENT_WIFI_SSID))
+		{	
+	        prefMng.findPreference(key).setSummary(value);
+		}
+	}
+	
+	@Override
+	public void setSummary(PreferenceManager prefMng, String key, SharedPreferences preferences, Context context)
+	{
+		if (key.equals(PREF_EVENT_WIFI_SSID))
+		{
+			setSummary(prefMng, key, preferences.getString(key, ""), context);
+		}
+	}
+	
+	@Override
+	public void setAllSummary(PreferenceManager prefMng, Context context)
+	{
+		setSummary(prefMng, PREF_EVENT_WIFI_SSID, _SSID, context);
+	}
+	
+	@Override
+	public boolean isRunable()
+	{
+		return super.isRunable() && (!this._SSID.isEmpty());
+	}
+	
+	@Override
+	public boolean activateReturnProfile()
+	{
+		return true;
+	}
+	
+	@Override
+	public void setSystemRunningEvent(Context context)
+	{
+	}
+
+	@Override
+	public void setSystemPauseEvent(Context context)
+	{
+	}
+	
+	@Override
+	public void removeSystemEvent(Context context)
+	{
+	}
+
+}
