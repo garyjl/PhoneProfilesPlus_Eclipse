@@ -360,9 +360,9 @@ public class Event {
 		description = description + "\n";
 		description = _eventPreferencesCall.getPreferencesDescription(description, context);
 		description = description + "\n";
-		description = _eventPreferencesPeripherals.getPreferencesDescription(description, context);
-		description = description + "\n";
 		description = _eventPreferencesWifi.getPreferencesDescription(description, context);
+		description = description + "\n";
+		description = _eventPreferencesPeripherals.getPreferencesDescription(description, context);
 		
 		return description;
 	}
