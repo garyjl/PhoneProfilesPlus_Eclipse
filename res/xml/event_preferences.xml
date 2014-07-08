@@ -168,6 +168,21 @@
             android:dependency="eventCallEnabled" />        
 	</PreferenceCategory>
     <PreferenceCategory
+        android:summary="@string/event_preferences_category_eventWifiParameters"
+        android:title="@string/event_preferences_category_eventWifiParameters" >
+		<CheckBoxPreference 
+		    android:key="eventWiFiEnabled"
+		    android:title="@string/event_preferences_wifi_enabled"
+		    android:defaultValue="false" />
+        <EditTextPreference
+            android:key="eventWiFiSSID"
+            android:summary="@string/event_preferences_wifi_ssid"
+            android:title="@string/event_preferences_wifi_ssid"
+            android:inputType="textShortMessage|textNoSuggestions"
+            android:selectAllOnFocus="true"
+            android:dependency="eventWiFiEnabled" />
+	</PreferenceCategory>
+    <PreferenceCategory
         android:summary="@string/event_preferences_category_eventPeripheralParameters"
         android:title="@string/event_preferences_category_eventPeripheralParameters" >
 		<CheckBoxPreference 
