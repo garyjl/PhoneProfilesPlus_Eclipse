@@ -2,6 +2,7 @@ package sk.henrichg.phoneprofilesplus;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.support.v4.content.WakefulBroadcastReceiver;
 
@@ -11,7 +12,7 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		GlobalData.logE("#### HeadsetConnectionBroadcastReceiver.onReceive","xxx");
+		GlobalData.logE("#### WifiConnectionBroadcastReceiver.onReceive","xxx");
 		
 		GlobalData.loadPreferences(context);
 		
@@ -21,20 +22,17 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 		    final String action = intent.getAction();
 		    if (action.equals(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION))
 		    {
-		    	
-		    	/*
 		        if (intent.getBooleanExtra(WifiManager.EXTRA_SUPPLICANT_CONNECTED, false)){
 		            //do stuff
 		            
 		            // o ake SSID ide ?
 					WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 					WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-					Log.d("wifiInfo", wifiInfo.toString());
-					Log.d("SSID",wifiInfo.getSSID());		            
+					//Log.d("wifiInfo", wifiInfo.toString());
+					GlobalData.logE("WifiConnectionBroadcastReceiver.onReceive", "SSID="+wifiInfo.getSSID());		            
 		        } else {
 		            // wifi connection was lost
 		        }
-		        */
 		    	
 		    	
 				DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);

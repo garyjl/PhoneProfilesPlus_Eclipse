@@ -1461,12 +1461,22 @@ public class DataWrapper {
 			WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 			if (wifiManager.getWifiState() == WifiManager.WIFI_STATE_ENABLED)
 			{
+				GlobalData.logE("DataWrapper.doEventService","wifiStateEnabled=true");
+				
 				ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 				NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-				if (mWifi.isConnected()) {
+				if (mWifi.isConnected())
+				{
+					GlobalData.logE("DataWrapper.doEventService","wifiConnected=true");
+
 					WifiInfo wifiInfo = wifiManager.getConnectionInfo();
 					
-					if (wifiInfo.getSSID().equals(event._eventPreferencesWifi._SSID))
+					GlobalData.logE("DataWrapper.doEventService","wifiSSID="+wifiInfo.getSSID());
+					GlobalData.logE("DataWrapper.doEventService","eventSSID="+event._eventPreferencesWifi._SSID);
+					
+					String ssid1 = event._eventPreferencesWifi._SSID;
+					String ssid2 = "\"" + ssid1 + "\"";
+					if (wifiInfo.getSSID().equals(ssid1) || wifiInfo.getSSID().equals(ssid2))
 						wifiPassed = true;
 				}
 			}
