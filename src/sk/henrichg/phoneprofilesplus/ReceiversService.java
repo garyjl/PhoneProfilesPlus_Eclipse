@@ -27,7 +27,7 @@ public class ReceiversService extends Service {
 		registerReceiver(headsetPlugReceiver, intentFilter2);
 		
 		IntentFilter intentFilter3 = new IntentFilter();
-		intentFilter3.addAction(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
+		intentFilter3.addAction(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION); //WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
 		registerReceiver(wifiConnectionReceiver, intentFilter3);
 		
 		
