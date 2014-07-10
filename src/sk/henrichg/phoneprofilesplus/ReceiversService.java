@@ -2,6 +2,7 @@ package sk.henrichg.phoneprofilesplus;
 import android.app.Service;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.wifi.WifiManager;
 import android.os.IBinder;
 
 
@@ -10,6 +11,7 @@ public class ReceiversService extends Service {
 	private final BatteryEventBroadcastReceiver batteryEventReceiver = new BatteryEventBroadcastReceiver();
 	private final HeadsetConnectionBroadcastReceiver headsetPlugReceiver = new HeadsetConnectionBroadcastReceiver();
 	private final RestartEventsBroadcastReceiver restartEventsReceiver = new RestartEventsBroadcastReceiver();
+	private final WifiConnectionBroadcastReceiver wifiConnectionReceiver = new WifiConnectionBroadcastReceiver();
 	
 	@Override
     public void onCreate()
@@ -23,6 +25,11 @@ public class ReceiversService extends Service {
 			intentFilter2.addAction(action);
         }		
 		registerReceiver(headsetPlugReceiver, intentFilter2);
+		
+		IntentFilter intentFilter3 = new IntentFilter();
+		intentFilter3.addAction(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
+		registerReceiver(wifiConnectionReceiver, intentFilter3);
+		
 		
 		
 		
@@ -40,6 +47,7 @@ public class ReceiversService extends Service {
 	{
 		unregisterReceiver(batteryEventReceiver);
 		unregisterReceiver(headsetPlugReceiver);
+		unregisterReceiver(wifiConnectionReceiver);
 		unregisterReceiver(restartEventsReceiver);
     }
 	 

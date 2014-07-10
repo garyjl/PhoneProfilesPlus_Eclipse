@@ -183,6 +183,9 @@ public class EventsService extends IntentService
 		else
 		if (broadcastReceiverType.equals(SearchCalendarEventsBroadcastReceiver.BROADCAST_RECEIVER_TYPE))
 			SearchCalendarEventsBroadcastReceiver.completeWakefulIntent(intent);
+		else
+		if (broadcastReceiverType.equals(WifiConnectionBroadcastReceiver.BROADCAST_RECEIVER_TYPE))
+			WifiConnectionBroadcastReceiver.completeWakefulIntent(intent);
 	}
 	
 }

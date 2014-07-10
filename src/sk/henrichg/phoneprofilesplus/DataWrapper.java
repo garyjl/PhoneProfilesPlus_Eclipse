@@ -16,6 +16,10 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.media.AudioManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.BatteryManager;
 import android.os.Handler;
 import android.provider.ContactsContract;
@@ -1163,6 +1167,7 @@ public class DataWrapper {
 		boolean callPassed = true;
 		boolean peripheralPassed = true;
 		boolean calendarPassed = true;
+		boolean wifiPassed = true;
 		
 		boolean isCharging = false;
 		float batteryPct = 100.0f;
@@ -1449,18 +1454,44 @@ public class DataWrapper {
 			eventStart = eventStart && calendarPassed;
 		}
 		
+		if (event._eventPreferencesWifi._enabled)
+		{
+			wifiPassed = false;
+			
+			WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+			if (wifiManager.getWifiState() == WifiManager.WIFI_STATE_ENABLED)
+			{
+				ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+				NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+				if (mWifi.isConnected()) {
+					WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+					
+					if (wifiInfo.getSSID().equals(event._eventPreferencesWifi._SSID))
+						wifiPassed = true;
+				}
+			}
+
+			eventStart = eventStart && wifiPassed;
+		}
+		
 		GlobalData.logE("DataWrapper.doEventService","timePassed="+timePassed);
 		GlobalData.logE("DataWrapper.doEventService","batteryPassed="+batteryPassed);
 		GlobalData.logE("DataWrapper.doEventService","callPassed="+callPassed);
 		GlobalData.logE("DataWrapper.doEventService","peripheralPassed="+peripheralPassed);
 		GlobalData.logE("DataWrapper.doEventService","calendarPassed="+calendarPassed);
+		GlobalData.logE("DataWrapper.doEventService","wifiPassed="+wifiPassed);
 
 		GlobalData.logE("DataWrapper.doEventService","eventStart="+eventStart);
 		GlobalData.logE("DataWrapper.doEventService","restartEvent="+restartEvent);
 		
 		List<EventTimeline> eventTimelineList = getEventTimelineList();
 		
-		if (timePassed && batteryPassed && callPassed && peripheralPassed && calendarPassed)
+		if (timePassed && 
+			batteryPassed && 
+			callPassed && 
+			peripheralPassed && 
+			calendarPassed &&
+			wifiPassed)
 		{
 			// podmienky sedia, vykoname, co treba
 
@@ -1493,7 +1524,12 @@ public class DataWrapper {
 			}
 		}
 		
-		return (timePassed && batteryPassed && callPassed && peripheralPassed && calendarPassed);
+		return (timePassed && 
+				batteryPassed && 
+				callPassed && 
+				peripheralPassed && 
+				calendarPassed &&
+				wifiPassed);
 	}
 	
 	public Profile filterProfileWithBatteryEvents(Profile profile)
