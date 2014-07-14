@@ -157,7 +157,7 @@ public class Event {
 
 	private void createEventPreferencesWiFi()
 	{
-       	this._eventPreferencesWifi = new EventPreferencesWifi(this, false, "");
+       	this._eventPreferencesWifi = new EventPreferencesWifi(this, false, "", 0);
 	}
 	
 	public void createEventPreferences()

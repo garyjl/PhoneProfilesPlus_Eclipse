@@ -174,7 +174,14 @@
 		    android:key="eventWiFiEnabled"
 		    android:title="@string/event_preferences_wifi_enabled"
 		    android:defaultValue="false" />
-        <EditTextPreference
+		<ListPreference android:title="@string/event_preferences_wifi_connection_type"
+            android:summary="@string/array_event_pref_wifiConnectionType_connected"
+            android:key="eventWiFiConnectionType"
+            android:defaultValue="0"
+            android:entries="@array/eventWifiConnectionTypeArray"
+            android:entryValues="@array/eventWifiConnectionTypeValues"
+            android:dependency="eventWiFiEnabled" />        
+		<EditTextPreference
             android:key="eventWiFiSSID"
             android:summary="@string/event_preferences_wifi_ssid"
             android:title="@string/event_preferences_wifi_ssid"
