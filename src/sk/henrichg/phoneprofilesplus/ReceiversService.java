@@ -12,6 +12,7 @@ public class ReceiversService extends Service {
 	private final HeadsetConnectionBroadcastReceiver headsetPlugReceiver = new HeadsetConnectionBroadcastReceiver();
 	private final RestartEventsBroadcastReceiver restartEventsReceiver = new RestartEventsBroadcastReceiver();
 	private final WifiConnectionBroadcastReceiver wifiConnectionReceiver = new WifiConnectionBroadcastReceiver();
+	private final WifiScanBroadcastReceiver wifiScanReceiver = new WifiScanBroadcastReceiver();
 	
 	@Override
     public void onCreate()
@@ -29,8 +30,11 @@ public class ReceiversService extends Service {
 		IntentFilter intentFilter3 = new IntentFilter();
 		intentFilter3.addAction(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION); //WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
 		registerReceiver(wifiConnectionReceiver, intentFilter3);
-		
-		
+
+		IntentFilter intentFilter4 = new IntentFilter();
+		intentFilter4.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+		registerReceiver(wifiScanReceiver, intentFilter4);
+
 		
 		
 		// receivers for system date and time change
@@ -48,6 +52,7 @@ public class ReceiversService extends Service {
 		unregisterReceiver(batteryEventReceiver);
 		unregisterReceiver(headsetPlugReceiver);
 		unregisterReceiver(wifiConnectionReceiver);
+		unregisterReceiver(wifiScanReceiver);
 		unregisterReceiver(restartEventsReceiver);
     }
 	 

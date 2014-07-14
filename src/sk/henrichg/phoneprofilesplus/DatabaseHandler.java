@@ -46,6 +46,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public static final int ETYPE_PERIPHERAL = 4;
 	public static final int ETYPE_CALENDAR = 5;
 	public static final int ETYPE_WIFI = 6;
+	public static final int ETYPE_WIFISCAN = 7;
 	
 	// Profiles Table Columns names
 	private static final String KEY_ID = "id";
@@ -2485,6 +2486,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		else
 		if (eventType == ETYPE_WIFI)
 			eventTypeChecked = KEY_E_WIFI_ENABLED + "=1";
+		else
+		if (eventType == ETYPE_WIFISCAN)
+			eventTypeChecked = KEY_E_WIFI_ENABLED + "=1" + " AND " + KEY_E_WIFI_CONNECTION_TYPE + "=1";
 		
 		countQuery = "SELECT  count(*) FROM " + TABLE_EVENTS + 
 	    		     " WHERE " + eventTypeChecked;

@@ -599,6 +599,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 			getDataWrapper().getActivateProfileHelper().removeNotification();
 			
 			SearchCalendarEventsBroadcastReceiver.removeAlarm(getApplicationContext());
+			WifiScanAlarmBroadcastReceiver.removeAlarm(getApplicationContext());
 			stopService(new Intent(getApplicationContext(), ReceiversService.class));
 			
 			finish();

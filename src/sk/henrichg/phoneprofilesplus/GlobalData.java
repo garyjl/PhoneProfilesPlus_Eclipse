@@ -30,7 +30,7 @@ public class GlobalData extends Application {
 
 	static String PACKAGE_NAME;
 	
-	public static boolean logIntoLogCat = false;
+	public static boolean logIntoLogCat = true;
 	public static boolean logIntoFile = false;
 	public static String logFilterTags = //"CalendarProviderChangedBroadcastReceiver|"+
 			                             //"EventsService.onHandleIntent|"+
@@ -44,8 +44,8 @@ public class GlobalData extends Application {
 	                                     //"DataWrapper.restartEvents|"+
 										 //"EventsCalendarBroadcastReceiver";
 										 //"HeadsetConnectionBroadcastReceiver";
-										 "WifiConnectionBroadcastReceiver|"+
-										 "DataWrapper.doEventService";
+										 "WifiScanAlarmBroadcastReceiver|"+
+										 "WifiScanBroadcastReceiver";
 	
 	public static final String EXPORT_PATH = "/PhoneProfilesPlus";
 	public static final String LOG_FILENAME = "log.txt";
