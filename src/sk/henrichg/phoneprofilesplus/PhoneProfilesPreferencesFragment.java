@@ -109,7 +109,8 @@ public class PhoneProfilesPreferencesFragment extends PreferenceListFragment
 			// For all other preferences, set the summary to the value's
 			// simple string representation.
 		    //Log.e("PhoneProfilesPreferencesFragment.setSummary",key+"="+stringValue);
-			preference.setSummary(preference.toString());
+			//preference.setSummary(preference.toString());
+			 preference.setSummary(stringValue);
 		}
 	}
 	
@@ -146,6 +147,7 @@ public class PhoneProfilesPreferencesFragment extends PreferenceListFragment
 	    setSummary(GlobalData.PREF_APPLICATION_WIDGET_ICON_LIGHTNESS);
 	    setSummary(GlobalData.PREF_APPLICATION_WIDGET_LIST_ICON_COLOR);
 	    setSummary(GlobalData.PREF_APPLICATION_WIDGET_LIST_ICON_LIGHTNESS);
+	    setSummary(GlobalData.PREF_APPLICATION_EVENT_WIFI_SCAN_INTERVAL);
 	}
 	
 	@Override

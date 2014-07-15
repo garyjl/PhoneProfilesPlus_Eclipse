@@ -70,7 +70,7 @@ public class WifiScanAlarmBroadcastReceiver extends WakefulBroadcastReceiver {
 			PendingIntent alarmIntent = PendingIntent.getBroadcast(context.getApplicationContext(), 0, intent, 0);
 			alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
 											5 * 1000,
-											5 * 60 * 1000, // 5 minutes
+											GlobalData.applicationEventWifiScanInterval * 60 * 1000, 
 											alarmIntent);
 		}
 		else
@@ -92,5 +92,12 @@ public class WifiScanAlarmBroadcastReceiver extends WakefulBroadcastReceiver {
         	pendingIntent.cancel();
         }
     }
+	
+	public static boolean isAlarmSet(Context context)
+	{
+		Intent intent = new Intent(context, WifiScanAlarmBroadcastReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), 0, intent, PendingIntent.FLAG_NO_CREATE);
+        return (pendingIntent != null);
+	}
 
 }
