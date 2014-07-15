@@ -680,7 +680,7 @@ public class DataWrapper {
 			getDatabaseHandler().deactivateProfile();
 
 		SearchCalendarEventsBroadcastReceiver.setAlarm(context);
-		WifiScanAlarmBroadcastReceiver.setAlarm(context);
+		//WifiScanAlarmBroadcastReceiver.setAlarm(context);
 		
 		//restartEvents(true, unblockEventsRun);
 		Intent intent = new Intent();
