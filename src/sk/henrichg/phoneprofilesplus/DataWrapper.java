@@ -680,7 +680,7 @@ public class DataWrapper {
 			getDatabaseHandler().deactivateProfile();
 
 		SearchCalendarEventsBroadcastReceiver.setAlarm(context);
-		//WifiScanAlarmBroadcastReceiver.setAlarm(context);
+		WifiScanAlarmBroadcastReceiver.removeAlarm(context);
 		
 		//restartEvents(true, unblockEventsRun);
 		Intent intent = new Intent();
@@ -1471,7 +1471,7 @@ public class DataWrapper {
 					//NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 					//if (mWifi.isConnected())
 					//{
-						GlobalData.logE("DataWrapper.doEventService","wifiConnected=true");
+					//	GlobalData.logE("DataWrapper.doEventService","wifiConnected=true");
 	
 						WifiInfo wifiInfo = wifiManager.getConnectionInfo();
 						

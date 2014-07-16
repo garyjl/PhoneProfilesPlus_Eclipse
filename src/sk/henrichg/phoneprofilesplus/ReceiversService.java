@@ -27,9 +27,12 @@ public class ReceiversService extends Service {
         }		
 		registerReceiver(headsetPlugReceiver, intentFilter2);
 		
+		
 		IntentFilter intentFilter3 = new IntentFilter();
-		intentFilter3.addAction(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION); //WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
+		//intentFilter3.addAction(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION); //WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
+		intentFilter3.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
 		registerReceiver(wifiConnectionReceiver, intentFilter3);
+		
 
 		IntentFilter intentFilter4 = new IntentFilter();
 		intentFilter4.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
@@ -51,7 +54,7 @@ public class ReceiversService extends Service {
 	{
 		unregisterReceiver(batteryEventReceiver);
 		unregisterReceiver(headsetPlugReceiver);
-		unregisterReceiver(wifiConnectionReceiver);
+		//unregisterReceiver(wifiConnectionReceiver);
 		unregisterReceiver(wifiScanReceiver);
 		unregisterReceiver(restartEventsReceiver);
     }

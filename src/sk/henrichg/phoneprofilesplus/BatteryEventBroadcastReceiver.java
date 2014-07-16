@@ -9,7 +9,7 @@ public class BatteryEventBroadcastReceiver extends WakefulBroadcastReceiver {
 
 	public static final String BROADCAST_RECEIVER_TYPE = "batteryEvent";
 	private static boolean isCharging = false;
-	int batteryLevel = -100;
+	private static int batteryLevel = -100;
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {

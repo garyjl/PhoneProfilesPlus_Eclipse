@@ -99,6 +99,10 @@ public class WifiScanAlarmBroadcastReceiver extends WakefulBroadcastReceiver {
 	{
 		Intent intent = new Intent(context, WifiScanAlarmBroadcastReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), 0, intent, PendingIntent.FLAG_NO_CREATE);
+
+        if (pendingIntent != null)
+        	GlobalData.logE("WifiScanAlarmBroadcastReceiver.isAlarmSet","alarm found");
+
         return (pendingIntent != null);
 	}
 

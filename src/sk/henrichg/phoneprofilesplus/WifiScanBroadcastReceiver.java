@@ -44,9 +44,11 @@ public class WifiScanBroadcastReceiver extends WakefulBroadcastReceiver {
 					startWakefulService(context, eventsServiceIntent);
 				}
 			}
+
+			WifiScanAlarmBroadcastReceiver.scanStarted = false;
+			
 		}
 		
-		WifiScanAlarmBroadcastReceiver.scanStarted = false;
 		
 	}
 	
