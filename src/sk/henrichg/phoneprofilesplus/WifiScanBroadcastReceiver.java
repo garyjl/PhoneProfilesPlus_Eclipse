@@ -29,6 +29,8 @@ public class WifiScanBroadcastReceiver extends WakefulBroadcastReceiver {
 			
 			if (GlobalData.getGlobalEventsRuning(context))
 			{
+				GlobalData.logE("@@@ WifiScanBroadcastReceiver.onReceive","xxx");
+
 				boolean wifiEventsExists = false;
 				
 				DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);

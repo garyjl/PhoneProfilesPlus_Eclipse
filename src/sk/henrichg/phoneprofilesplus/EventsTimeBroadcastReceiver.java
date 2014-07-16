@@ -17,6 +17,8 @@ public class EventsTimeBroadcastReceiver extends WakefulBroadcastReceiver {
 		
 		if (GlobalData.getGlobalEventsRuning(context))
 		{
+			GlobalData.logE("@@@ EventsTimeBroadcastReceiver.onReceive","xxx");
+
 			boolean timeEventsExists = false;
 			
 			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);

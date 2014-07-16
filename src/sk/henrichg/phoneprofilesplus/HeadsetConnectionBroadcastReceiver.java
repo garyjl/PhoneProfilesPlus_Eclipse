@@ -65,6 +65,7 @@ public class HeadsetConnectionBroadcastReceiver extends WakefulBroadcastReceiver
 
 	        if (broadcast)
 	        {
+	    		GlobalData.logE("@@@ HeadsetConnectionBroadcastReceiver.onReceive","xxx");
 				
 				DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
 				boolean peripheralEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_PERIPHERAL) > 0;

@@ -32,6 +32,8 @@ public class BatteryEventBroadcastReceiver extends WakefulBroadcastReceiver {
 			
 			if ((isCharging != _isCharging) || (batteryLevel != level))
 			{
+				GlobalData.logE("@@@ BatteryEventBroadcastReceiver.onReceive","xxx");
+
 				GlobalData.logE("BatteryEventBroadcastReceiver.onReceive","state changed");
 				GlobalData.logE("BatteryEventBroadcastReceiver.onReceive","batteryLevel="+batteryLevel);
 				GlobalData.logE("BatteryEventBroadcastReceiver.onReceive","level="+level);

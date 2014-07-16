@@ -28,6 +28,8 @@ public class WifiScanAlarmBroadcastReceiver extends WakefulBroadcastReceiver {
 		
 		if (GlobalData.getGlobalEventsRuning(context))
 		{
+			GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.onReceive","xxx");
+
 			boolean wifiEventsExists = false;
 			
 			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);

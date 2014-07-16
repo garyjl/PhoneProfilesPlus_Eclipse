@@ -17,6 +17,8 @@ public class CalendarProviderChangedBroadcastReceiver extends WakefulBroadcastRe
 		
 		if (GlobalData.getGlobalEventsRuning(context))
 		{
+			GlobalData.logE("@@@ CalendarProviderChangedBroadcastReceiver.onReceive","xxx");
+			
 			boolean calendarEventsExists = false;
 			
 			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
