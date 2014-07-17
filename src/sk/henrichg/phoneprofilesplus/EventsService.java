@@ -54,10 +54,13 @@ public class EventsService extends IntentService
 			GlobalData.logE("EventsService.onHandleIntent","search for calendar events");
 			for (Event _event : eventList)
 			{
-				if (_event._eventPreferencesCalendar._enabled)
+				if (_event.getStatus() != Event.ESTATUS_STOP)
 				{
-					GlobalData.logE("EventsService.onHandleIntent","event._id="+_event._id);
-					_event._eventPreferencesCalendar.searchEvent(context);
+					if (_event._eventPreferencesCalendar._enabled)
+					{
+						GlobalData.logE("EventsService.onHandleIntent","event._id="+_event._id);
+						_event._eventPreferencesCalendar.searchEvent(context);
+					}
 				}
 			}
 		}
@@ -80,7 +83,7 @@ public class EventsService extends IntentService
 				if (_event.getStatus() != Event.ESTATUS_STOP)
 					// len pauzuj eventy
 					// pauzuj aj ked uz je zapauznuty
-					dataWrapper.doEventService(_event, true, true, false); 
+					dataWrapper.doEventService(_event, true, true, false);
 			}
 			// 2. start events in timeline order
 			List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
@@ -109,7 +112,7 @@ public class EventsService extends IntentService
 				if (_event.getStatus() != Event.ESTATUS_STOP)
 					// len spustaj eventy
 					// spustaj len ak este nebezi
-					dataWrapper.doEventService(_event, false, false, false); 
+					dataWrapper.doEventService(_event, false, false, false);
 			}
 		}
 		else
@@ -124,7 +127,7 @@ public class EventsService extends IntentService
 				if (_event.getStatus() != Event.ESTATUS_STOP)
 					// len pauzuj eventy
 					// pauzuj len ak este nie je zapauznuty
-					dataWrapper.doEventService(_event, true, false, true); 
+					dataWrapper.doEventService(_event, true, false, true);
 			}
 			//2. start events
 			for (Event _event : eventList)
