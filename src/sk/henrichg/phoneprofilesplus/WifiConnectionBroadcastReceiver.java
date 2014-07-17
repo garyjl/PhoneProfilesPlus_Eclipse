@@ -50,7 +50,7 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 	        		GlobalData.logE("@@@ WifiConnectionBroadcastReceiver.onReceive","state="+info.getState());
 	        		
 	    			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
-	    			boolean wifiEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_WIFI) > 0;
+	    			boolean wifiEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_WIFICONNECTED) > 0;
 	    			dataWrapper.invalidateDataWrapper();
 	    	
 	    			if (wifiEventsExists)

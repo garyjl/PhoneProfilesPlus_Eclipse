@@ -5,13 +5,13 @@ import java.util.List;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
-import android.support.v4.content.WakefulBroadcastReceiver;
 
-public class WifiScanAlarmBroadcastReceiver extends WakefulBroadcastReceiver {
+public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 
 	public static final String BROADCAST_RECEIVER_TYPE = "wifiScanAlarm";
 	
@@ -19,7 +19,6 @@ public class WifiScanAlarmBroadcastReceiver extends WakefulBroadcastReceiver {
 	
 	public static List<ScanResult> scanResults = null;
 	
-	@Override
 	public void onReceive(Context context, Intent intent) {
 		
 		GlobalData.logE("#### WifiScanAlarmBroadcastReceiver.onReceive","xxx");
@@ -33,7 +32,7 @@ public class WifiScanAlarmBroadcastReceiver extends WakefulBroadcastReceiver {
 			boolean wifiEventsExists = false;
 			
 			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
-			wifiEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_WIFISCAN) > 0;
+			wifiEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_WIFIINFRONT) > 0;
 			GlobalData.logE("WifiScanAlarmBroadcastReceiver.onReceive","wifiEventsExists="+wifiEventsExists);
 			dataWrapper.invalidateDataWrapper();
 
@@ -94,6 +93,8 @@ public class WifiScanAlarmBroadcastReceiver extends WakefulBroadcastReceiver {
         		
         	alarmManager.cancel(pendingIntent);
         	pendingIntent.cancel();
+        	
+			WifiScanAlarmBroadcastReceiver.scanStarted = false;
         }
     }
 	

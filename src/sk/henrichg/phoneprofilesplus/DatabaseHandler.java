@@ -45,8 +45,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public static final int ETYPE_CALL = 3;
 	public static final int ETYPE_PERIPHERAL = 4;
 	public static final int ETYPE_CALENDAR = 5;
-	public static final int ETYPE_WIFI = 6;
-	public static final int ETYPE_WIFISCAN = 7;
+	public static final int ETYPE_WIFICONNECTED = 6;
+	public static final int ETYPE_WIFIINFRONT = 7;
 	
 	// Profiles Table Columns names
 	private static final String KEY_ID = "id";
@@ -2468,27 +2468,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public int getTypeEventsCount(int eventType)
 	{
 		final String countQuery;
-		String eventTypeChecked = "";
+		String eventTypeChecked = KEY_E_STATUS + "!=0" + " AND ";  //  only not stopped events
 		if (eventType == ETYPE_TIME)
-			eventTypeChecked = KEY_E_TIME_ENABLED + "=1";
+			eventTypeChecked = eventTypeChecked + KEY_E_TIME_ENABLED + "=1";
 		else
 		if (eventType == ETYPE_BATTERY)
-			eventTypeChecked = KEY_E_BATTERY_ENABLED + "=1";
+			eventTypeChecked = eventTypeChecked + KEY_E_BATTERY_ENABLED + "=1";
 		else
 		if (eventType == ETYPE_CALL)
-			eventTypeChecked = KEY_E_CALL_ENABLED + "=1";
+			eventTypeChecked = eventTypeChecked + KEY_E_CALL_ENABLED + "=1";
 		else
 		if (eventType == ETYPE_PERIPHERAL)
-			eventTypeChecked = KEY_E_PERIPHERAL_ENABLED + "=1";
+			eventTypeChecked = eventTypeChecked + KEY_E_PERIPHERAL_ENABLED + "=1";
 		else
 		if (eventType == ETYPE_CALENDAR)
-			eventTypeChecked = KEY_E_CALENDAR_ENABLED + "=1";
+			eventTypeChecked = eventTypeChecked + KEY_E_CALENDAR_ENABLED + "=1";
 		else
-		if (eventType == ETYPE_WIFI)
-			eventTypeChecked = KEY_E_WIFI_ENABLED + "=1";
+		if (eventType == ETYPE_WIFICONNECTED)
+			eventTypeChecked = eventTypeChecked + KEY_E_WIFI_ENABLED + "=1" + " AND " + KEY_E_WIFI_CONNECTION_TYPE + "=0";
 		else
-		if (eventType == ETYPE_WIFISCAN)
-			eventTypeChecked = KEY_E_WIFI_ENABLED + "=1" + " AND " + KEY_E_WIFI_CONNECTION_TYPE + "=1";
+		if (eventType == ETYPE_WIFIINFRONT)
+			eventTypeChecked = eventTypeChecked + KEY_E_WIFI_ENABLED + "=1" + " AND " + KEY_E_WIFI_CONNECTION_TYPE + "=1";
 		
 		countQuery = "SELECT  count(*) FROM " + TABLE_EVENTS + 
 	    		     " WHERE " + eventTypeChecked;

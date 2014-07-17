@@ -543,6 +543,8 @@ public class EditorProfilesActivity extends ActionBarActivity
 				// no setup for next start
 				dataWrapper.pauseAllEvents(true, false);
 				GlobalData.setGlobalEventsRuning(getBaseContext(), false);
+				// stop Wifi scanner
+				WifiScanAlarmBroadcastReceiver.removeAlarm(getBaseContext());
 			}
 			else
 			{
