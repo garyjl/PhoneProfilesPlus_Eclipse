@@ -387,59 +387,62 @@ public class EventPreferencesCalendar extends EventPreferences {
 		    
 		    // Submit the query
 		    cur =  cr.query(builder.build(), INSTANCE_PROJECTION, selection, selectionArgs, Instances.BEGIN + " ASC");
-		       
-		    while (cur.moveToNext()) {
-		        long beginVal = 0;
-		        long endVal = 0;
-		        //String title = null;
-		        
-		        // Get the field values
-		        beginVal = cur.getLong(PROJECTION_BEGIN_INDEX);
-		        endVal = cur.getLong(PROJECTION_END_INDEX);
-		        
-		        if (cur.getInt(PROJECTION_ALL_DAY_INDEX) == 1)
-		        {
-		        	// get UTC offset
-		        	Date _now = new Date();
-		    		int utcOffset = TimeZone.getDefault().getOffset(_now.getTime());
-		    		
-		    		beginVal -= utcOffset;
-		    		endVal -= utcOffset;
-		        }
-		        
-		        //title = cur.getString(PROJECTION_TITLE_INDEX);
-
-			    //Log.e("EventPreferencesCalendar.searchEvent", "beginVal="+getDate(beginVal));
-			    //Log.e("EventPreferencesCalendar.searchEvent", "endVal="+getDate(endVal));
-			    //Log.e("EventPreferencesCalendar.searchEvent", "title="+title);
-
-	    		int gmtOffset = TimeZone.getDefault().getRawOffset();
-			    
-			    if ((beginVal <= now) && (endVal > now))
-			    {
-			    	// event instance is found
-				    //Log.e("EventPreferencesCalendar.searchEvent", "found 1");
-			    	_eventFound = true;
-			    	_startTime = beginVal + gmtOffset;
-			    	_endTime = endVal + gmtOffset;
-			    	break;
-			    }
-			    else
-			    if (beginVal > now)
-			    {
-			    	// event instance is found
-				    //Log.e("EventPreferencesCalendar.searchEvent", "found 2");
-			    	_eventFound = true;
-			    	_startTime = beginVal + gmtOffset;
-			    	_endTime = endVal + gmtOffset;
-			    	break;
-			    }
-			    //else
-			    //	Log.e("EventPreferencesCalendar.searchEvent", "not found");
-			    
-		    }
 		    
-		    cur.close();
+		    if (cur != null)
+		    {
+			    while (cur.moveToNext()) {
+			        long beginVal = 0;
+			        long endVal = 0;
+			        //String title = null;
+			        
+			        // Get the field values
+			        beginVal = cur.getLong(PROJECTION_BEGIN_INDEX);
+			        endVal = cur.getLong(PROJECTION_END_INDEX);
+			        
+			        if (cur.getInt(PROJECTION_ALL_DAY_INDEX) == 1)
+			        {
+			        	// get UTC offset
+			        	Date _now = new Date();
+			    		int utcOffset = TimeZone.getDefault().getOffset(_now.getTime());
+			    		
+			    		beginVal -= utcOffset;
+			    		endVal -= utcOffset;
+			        }
+			        
+			        //title = cur.getString(PROJECTION_TITLE_INDEX);
+	
+				    //Log.e("EventPreferencesCalendar.searchEvent", "beginVal="+getDate(beginVal));
+				    //Log.e("EventPreferencesCalendar.searchEvent", "endVal="+getDate(endVal));
+				    //Log.e("EventPreferencesCalendar.searchEvent", "title="+title);
+	
+		    		int gmtOffset = TimeZone.getDefault().getRawOffset();
+				    
+				    if ((beginVal <= now) && (endVal > now))
+				    {
+				    	// event instance is found
+					    //Log.e("EventPreferencesCalendar.searchEvent", "found 1");
+				    	_eventFound = true;
+				    	_startTime = beginVal + gmtOffset;
+				    	_endTime = endVal + gmtOffset;
+				    	break;
+				    }
+				    else
+				    if (beginVal > now)
+				    {
+				    	// event instance is found
+					    //Log.e("EventPreferencesCalendar.searchEvent", "found 2");
+				    	_eventFound = true;
+				    	_startTime = beginVal + gmtOffset;
+				    	_endTime = endVal + gmtOffset;
+				    	break;
+				    }
+				    //else
+				    //	Log.e("EventPreferencesCalendar.searchEvent", "not found");
+				    
+			    }
+			    
+			    cur.close();
+		    }
 		    
 		    if (_eventFound)
 		    {
