@@ -670,7 +670,7 @@ public class DataWrapper {
 			getDatabaseHandler().unblockAllEvents();
 		}
 		
-		GlobalData.setForceRunEventRunning(context, false);
+		//GlobalData.setForceRunEventRunning(context, false);
 		
 		//getDatabaseHandler().updateAllEventsStatus(Event.ESTATUS_RUNNING, Event.ESTATUS_PAUSE);
 		
