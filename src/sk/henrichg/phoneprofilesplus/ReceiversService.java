@@ -54,8 +54,9 @@ public class ReceiversService extends Service {
 	{
 		unregisterReceiver(batteryEventReceiver);
 		unregisterReceiver(headsetPlugReceiver);
-		//unregisterReceiver(wifiConnectionReceiver);
+		unregisterReceiver(wifiConnectionReceiver);
 		unregisterReceiver(wifiScanReceiver);
+		
 		unregisterReceiver(restartEventsReceiver);
     }
 	 

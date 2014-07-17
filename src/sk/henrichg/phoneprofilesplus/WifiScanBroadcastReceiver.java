@@ -17,6 +17,8 @@ public class WifiScanBroadcastReceiver extends WakefulBroadcastReceiver {
 
 		WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 		WifiScanAlarmBroadcastReceiver.scanResults = wifi.getScanResults();
+		WifiScanAlarmBroadcastReceiver.unlock();
+		
 
 		for (ScanResult result : WifiScanAlarmBroadcastReceiver.scanResults)
         {

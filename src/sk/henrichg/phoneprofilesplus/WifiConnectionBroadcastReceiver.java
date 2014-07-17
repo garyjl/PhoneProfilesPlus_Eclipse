@@ -55,6 +55,8 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 	    	
 	    			if (wifiEventsExists)
 	    			{
+		        		GlobalData.logE("@@@ WifiConnectionBroadcastReceiver.onReceive","wifiEventsExists="+wifiEventsExists);
+
 	    				// start service
 	    				Intent eventsServiceIntent = new Intent(context, EventsService.class);
 	    				eventsServiceIntent.putExtra(GlobalData.EXTRA_BROADCAST_RECEIVER_TYPE, BROADCAST_RECEIVER_TYPE);
