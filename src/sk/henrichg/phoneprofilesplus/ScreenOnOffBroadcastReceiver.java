@@ -32,9 +32,9 @@ public class ScreenOnOffBroadcastReceiver extends WakefulBroadcastReceiver {
 				if (wifiEventsExists)
 				{
 					if (WifiScanAlarmBroadcastReceiver.isAlarmSet(context))
-					{
-						// send broadcast only when wifi scan alarm is set
-				 		Intent broadcastIntent = new Intent(context, WifiScanAlarmBroadcastReceiver.class);
+					{	
+						// alarm is set = wifi scanning is ON
+						Intent broadcastIntent = new Intent(context, WifiScanAlarmBroadcastReceiver.class);
 						context.sendBroadcast(broadcastIntent);
 					}
 				}

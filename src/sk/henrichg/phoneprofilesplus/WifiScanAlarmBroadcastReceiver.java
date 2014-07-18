@@ -9,7 +9,10 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiManager.WifiLock;
 import android.os.PowerManager;
@@ -54,8 +57,8 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		    		isWifiEnabled = isWifiEnabled || (wifi.isScanAlwaysAvailable());
 				if (isWifiEnabled)
 			    {
-			        lock(); // lock wakeLock and wifiLock, then scan.
-			                // unlock() is then called at the end of the onReceive function of WifiScanBroadcastReceiver
+			        lock(context); // lock wakeLock and wifiLock, then scan.
+			                       // unlock() is then called at the end of the onReceive function of WifiScanBroadcastReceiver
 			        scanStarted = wifi.startScan();
 			    }
 			    else
@@ -81,16 +84,29 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		{
 			GlobalData.logE("WifiScanAlarmBroadcastReceiver.setAlarm","WifiHardware=true");
 			
-			 // initialise the locks
-			if (wifiLock == null)
-		        wifiLock = ((WifiManager) context.getSystemService(Context.WIFI_SERVICE))
-		                        .createWifiLock(WifiManager.WIFI_MODE_SCAN_ONLY , "WifiScanWifiLock");
-			if (wakeLock == null)
-		        wakeLock = ((PowerManager) context.getSystemService(Context.POWER_SERVICE))
-		                        .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "WifiScanWakeLock");			
-
 	        // enable Wifi
 	        enableWifi(context);
+	        
+			ConnectivityManager connManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+			NetworkInfo networkInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+			if (networkInfo.isConnected())
+			{
+				// wifi is connected
+				WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+				WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+    			String SSID = wifiInfo.getSSID().replace("\"", "");
+    			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
+    			boolean isSSIDScanned = dataWrapper.getDatabaseHandler().isSSIDScanned(SSID); 
+    			dataWrapper.invalidateDataWrapper();
+    			
+    			if (isSSIDScanned)
+    			{
+    				// connected SSID is scanned
+    				// no set alarm
+    				return;
+    			}
+			}
+			
 	        
 	        AlarmManager alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 	 			
@@ -143,9 +159,17 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
         return (pendingIntent != null);
 	}
 
-    public static void lock()
+    public static void lock(Context context)
     {
-        try {
+		 // initialise the locks
+		if (wifiLock == null)
+	        wifiLock = ((WifiManager) context.getSystemService(Context.WIFI_SERVICE))
+	                        .createWifiLock(WifiManager.WIFI_MODE_SCAN_ONLY , "WifiScanWifiLock");
+		if (wakeLock == null)
+	        wakeLock = ((PowerManager) context.getSystemService(Context.POWER_SERVICE))
+	                        .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "WifiScanWakeLock");			
+
+    	try {
             wakeLock.acquire();
             wifiLock.acquire();
 			GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.lock","xxx");

@@ -17,6 +17,8 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.media.AudioManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -680,7 +682,7 @@ public class DataWrapper {
 			getDatabaseHandler().deactivateProfile();
 
 		SearchCalendarEventsBroadcastReceiver.setAlarm(context);
-		WifiScanAlarmBroadcastReceiver.removeAlarm(context);
+		WifiScanAlarmBroadcastReceiver.setAlarm(context);
 		
 		//restartEvents(true, unblockEventsRun);
 		Intent intent = new Intent();
@@ -1462,17 +1464,16 @@ public class DataWrapper {
 
 			WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 			boolean isWifiEnabled = wifiManager.getWifiState() == WifiManager.WIFI_STATE_ENABLED;
+
+			ConnectivityManager connManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+			NetworkInfo networkInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 			
 			if (isWifiEnabled)
 			{
 				GlobalData.logE("DataWrapper.doEventService","wifiStateEnabled=true");
-				
-				//ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-				//NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-				//if (mWifi.isConnected())
-				//{
-				//	GlobalData.logE("DataWrapper.doEventService","wifiConnected=true");
 
+				if (networkInfo.isConnected())
+				{
 					WifiInfo wifiInfo = wifiManager.getConnectionInfo();
 					
 					GlobalData.logE("DataWrapper.doEventService","wifiSSID="+wifiInfo.getSSID());
@@ -1482,23 +1483,21 @@ public class DataWrapper {
 					String ssid2 = "\"" + ssid1 + "\"";
 					if (wifiInfo.getSSID().equals(ssid1) || wifiInfo.getSSID().equals(ssid2))
 						wifiPassed = true;
-				//}
+				}
 			}
-
 			if (event._eventPreferencesWifi._connectionType == EventPreferencesWifi.CTYPE_INFRONT)
 			{
 				if (wifiPassed)
 				{
-					// wifi is connected to event._eventPreferencesWifi._SSID
-					// remove scanner alarm = stop scanning
-    				WifiScanAlarmBroadcastReceiver.removeAlarm(context);
+					// connected into scanned SSID, remove alarm = stop scanning
+					WifiScanAlarmBroadcastReceiver.removeAlarm(context);
 				}
 				else
 				{
-					// wifi is not connected setAlarm
-					if (GlobalData.getGlobalEventsRuning(context) && 
-						(!WifiScanAlarmBroadcastReceiver.isAlarmSet(context)))
+					// not connected into scanned SSID, start scanning
+					if (!WifiScanAlarmBroadcastReceiver.isAlarmSet(context))
 						WifiScanAlarmBroadcastReceiver.setAlarm(context);
+					
 					
 			    	if (android.os.Build.VERSION.SDK_INT >= 18)
 			    		isWifiEnabled = isWifiEnabled || (wifiManager.isScanAlwaysAvailable());
