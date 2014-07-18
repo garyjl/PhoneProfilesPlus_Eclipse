@@ -51,33 +51,6 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 
 	    			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
 	        		
-	        	/*	if (info.getState() == NetworkInfo.State.CONNECTED)
-	        		{
-	        			WifiInfo wifiInfo = intent.getParcelableExtra(WifiManager.EXTRA_WIFI_INFO);
-	        			String SSID = wifiInfo.getSSID().replace("\"", "");
-	        			if (dataWrapper.getDatabaseHandler().isSSIDScanned(SSID))
-	        			{
-	        				// send broadcast for rescan
-	    					if (WifiScanAlarmBroadcastReceiver.isAlarmSet(context))
-	    					{
-		        				// stop scanning
-		        				WifiScanAlarmBroadcastReceiver.removeAlarm(context);
-	    						// send broadcast only when wifi scan alarm is set
-	    				 		Intent broadcastIntent = new Intent(context, WifiScanAlarmBroadcastReceiver.class);
-	    						context.sendBroadcast(broadcastIntent);
-	    					}
-	        			}
-	        			
-	        		}
-	        		else
-	        		if (info.getState() == NetworkInfo.State.DISCONNECTED)
-	        		{
-	        			if (dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_WIFIINFRONT) > 0)
-		        			// start scanning
-	        				WifiScanAlarmBroadcastReceiver.setAlarm(context);
-	        		}
-	        	*/		
-	        		
 	    			boolean wifiEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_WIFICONNECTED) > 0;
 	    			dataWrapper.invalidateDataWrapper();
 	    	

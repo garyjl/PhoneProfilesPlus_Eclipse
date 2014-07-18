@@ -20,6 +20,7 @@ import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
+import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.BatteryManager;
@@ -1477,12 +1478,10 @@ public class DataWrapper {
 					WifiInfo wifiInfo = wifiManager.getConnectionInfo();
 					
 					GlobalData.logE("DataWrapper.doEventService","wifiSSID="+wifiInfo.getSSID());
+					GlobalData.logE("DataWrapper.doEventService","wifiSSID="+wifiInfo.getBSSID());
 					GlobalData.logE("DataWrapper.doEventService","eventSSID="+event._eventPreferencesWifi._SSID);
 					
-					String ssid1 = event._eventPreferencesWifi._SSID;
-					String ssid2 = "\"" + ssid1 + "\"";
-					if (wifiInfo.getSSID().equals(ssid1) || wifiInfo.getSSID().equals(ssid2))
-						wifiPassed = true;
+					wifiPassed = compareSSID(wifiManager, wifiInfo, event._eventPreferencesWifi._SSID);
 				}
 			}
 			if (event._eventPreferencesWifi._connectionType == EventPreferencesWifi.CTYPE_INFRONT)
@@ -1812,6 +1811,29 @@ public class DataWrapper {
 	   				return "[M] " + profile._name;
 			}
 		}
+	}
+
+	public String getSSID(WifiManager wifiManager, WifiInfo wifiInfo)
+	{
+		String SSID = wifiInfo.getSSID().replace("\"", ""); 
+		
+		if (SSID.isEmpty())
+		{
+			List<WifiConfiguration> wifiConfigurationList = wifiManager.getConfiguredNetworks();
+			for (WifiConfiguration wifiConfiguration : wifiConfigurationList)
+			{
+				if (wifiConfiguration.BSSID.equals(wifiInfo.getBSSID()))
+					return wifiConfiguration.SSID.replace("\"", "");
+			}
+		}
+		
+		return SSID; 
+	}
+	
+	public boolean compareSSID(WifiManager wifiManager, WifiInfo wifiInfo, String SSID)
+	{
+		String ssid2 = "\"" + SSID + "\"";
+		return (getSSID(wifiManager, wifiInfo).equals(SSID) || getSSID(wifiManager, wifiInfo).equals(ssid2));
 	}
 	
 }
