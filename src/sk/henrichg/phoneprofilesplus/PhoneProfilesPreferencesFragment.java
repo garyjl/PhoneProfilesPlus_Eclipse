@@ -149,6 +149,14 @@ public class PhoneProfilesPreferencesFragment extends PreferenceListFragment
 	    setSummary(GlobalData.PREF_APPLICATION_WIDGET_LIST_ICON_LIGHTNESS);
 	    setSummary(GlobalData.PREF_APPLICATION_EVENT_WIFI_SCAN_INTERVAL);
 	    setSummary(GlobalData.PREF_APPLICATION_EVENT_WIFI_ENABLE_WIFI);
+	    
+		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_WIFI, preferencesActivity.getBaseContext()) 
+					!= GlobalData.HARDWARE_CHECK_ALLOWED)
+		{
+			prefMng.findPreference(GlobalData.PREF_APPLICATION_EVENT_WIFI_SCAN_INTERVAL).setEnabled(false);
+			prefMng.findPreference(GlobalData.PREF_APPLICATION_EVENT_WIFI_ENABLE_WIFI).setEnabled(false);
+		}
+	    
 	}
 	
 	@Override

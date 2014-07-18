@@ -1516,7 +1516,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	{
 		int ret = 0;
 		
-		final String selectQuery = "SELECT " + KEY_ID + "," +
+		final String selectProfilesQuery = "SELECT " + KEY_ID + "," +
 										KEY_DEVICE_AIRPLANE_MODE + "," +
 										KEY_DEVICE_WIFI + "," +
 										KEY_DEVICE_BLUETOOTH + "," +
@@ -1526,17 +1526,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 										KEY_DEVICE_LOCATION_SERVICE_PREFS + "," + 
 										KEY_DEVICE_NFC + 
 							" FROM " + TABLE_PROFILES;
+		final String selectEventsQuery = "SELECT " + KEY_E_ID + "," +
+										KEY_E_WIFI_ENABLED +
+							" FROM " + TABLE_EVENTS;
 
 		//SQLiteDatabase db = this.getWritableDatabase();
 		SQLiteDatabase db = getMyWritableDatabase();
 		
 		ContentValues values = new ContentValues();
 
-		Cursor cursor = db.rawQuery(selectQuery, null);
-		
 		db.beginTransaction();
 		try {
 
+			Cursor cursor = db.rawQuery(selectProfilesQuery, null);
+			
 			if (cursor.moveToFirst()) {
 				do {
 						if ((Integer.parseInt(cursor.getString(1)) != 0) &&	
@@ -1608,6 +1611,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 			cursor.close();
 
+			//-----------------------
+			
+			cursor = db.rawQuery(selectEventsQuery, null);
+			
+			if (cursor.moveToFirst()) {
+				do {
+						if ((Integer.parseInt(cursor.getString(1)) != 0) &&
+							(GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_WIFI, context) == GlobalData.HARDWARE_CHECK_NOT_ALLOWED))
+						{
+							values.put(KEY_E_WIFI_ENABLED, 0);
+							db.update(TABLE_EVENTS, values, KEY_ID + " = ?",
+							   new String[] { String.valueOf(Integer.parseInt(cursor.getString(0))) });							
+						}
+						
+				} while (cursor.moveToNext());
+			}
+
+			cursor.close();
+			
 			db.setTransactionSuccessful();
 
 			ret = 1;

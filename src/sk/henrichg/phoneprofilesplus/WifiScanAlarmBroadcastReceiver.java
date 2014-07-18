@@ -76,7 +76,8 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		
 		GlobalData.logE("WifiScanAlarmBroadcastReceiver.setAlarm","xxx");
 
-		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_WIFI, context) == GlobalData.HARDWARE_CHECK_ALLOWED)
+		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_WIFI, context) 
+				== GlobalData.HARDWARE_CHECK_ALLOWED)
 		{
 			GlobalData.logE("WifiScanAlarmBroadcastReceiver.setAlarm","WifiHardware=true");
 			
