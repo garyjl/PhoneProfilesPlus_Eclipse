@@ -183,6 +183,12 @@ public class PhoneProfilesHelper {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			if (OK)
+			{
+				File file = new File(sd, GlobalData.EXPORT_PATH + "/" + "PhoneProfilesHelper.x");
+				file.delete();
+			}
+				
 			
 			/*
 			if (OK)
