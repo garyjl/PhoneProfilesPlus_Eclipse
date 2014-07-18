@@ -156,6 +156,7 @@ public class GlobalData extends Application {
     public static final String PREF_APPLICATION_WIDGET_LAUNCHER = "applicationWidgetLauncher";
     public static final String PREF_APPLICATION_NOTIFICATION_LAUNCHER = "applicationNotificationLauncher";
     public static final String PREF_APPLICATION_EVENT_WIFI_SCAN_INTERVAL = "applicationEventWifiScanInterval";
+    public static final String PREF_APPLICATION_EVENT_WIFI_ENABLE_WIFI = "applicationEventWifiEnableWifi";
 
     public static final int HARDWARE_CHECK_NOT_ALLOWED = 0;
     public static final int HARDWARE_CHECK_ALLOWED = 1;
@@ -205,6 +206,7 @@ public class GlobalData extends Application {
     public static String applicationWidgetLauncher;
     public static String applicationNotificationLauncher;
     public static int applicationEventWifiScanInterval;
+    public static boolean applicationEventWifiEnableWifi;
     
 	public void onCreate()
 	{
@@ -376,6 +378,7 @@ public class GlobalData extends Application {
 	    applicationWidgetLauncher = preferences.getString(PREF_APPLICATION_WIDGET_LAUNCHER, "activator");
 	    applicationNotificationLauncher = preferences.getString(PREF_APPLICATION_NOTIFICATION_LAUNCHER, "activator");
 	    applicationEventWifiScanInterval = Integer.valueOf(preferences.getString(PREF_APPLICATION_EVENT_WIFI_SCAN_INTERVAL, "5"));
+	    applicationEventWifiEnableWifi = preferences.getBoolean(PREF_APPLICATION_EVENT_WIFI_ENABLE_WIFI, false);
 	}
 	
 	private static String getVolumeLevelString(int percentage, int maxValue)

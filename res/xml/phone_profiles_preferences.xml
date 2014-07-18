@@ -55,6 +55,10 @@
     <PreferenceCategory
         android:title="@string/phone_profiles_pref_category_event"
         android:summary="@string/phone_profiles_pref_category_event" >
+		<CheckBoxPreference 
+		    android:key="applicationEventWifiEnableWifi"
+		    android:title="@string/phone_profiles_pref_applicationEventWifiEnableWifi"
+		    android:defaultValue="false" />
         <EditTextPreference
             android:key="applicationEventWifiScanInterval"
             android:summary="@string/phone_profiles_pref_applicationEventWifiScanInterval"

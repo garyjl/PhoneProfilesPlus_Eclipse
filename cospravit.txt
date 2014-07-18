@@ -93,3 +93,14 @@ Event preferences: WiFi location
    b) ak ma vypnutu wifi, zapnut ju a potom vypnut
 - kukni WifiManager.isScanAlwaysAvailable() (API 18) - toto by mohlo scanovat aj ked wifi nie je zanuta
 
+5. Ak nema zapnute WiFi:
+   a) skontrolovat, ci ma airplane mode - ak ma, nerobit nic
+   b) ak nema a nema zapnute wifi - zapnut
+   c) ci zapnut wifi dat ako preference aplikacie
+   d) ak ma zapnute zapinanie v preferences:
+      - spravit do WifiScanAlarmBroadcastReceiver metodu na zapinanie wifi
+      - dat to do WifiScanAlarmBroadcastReceiver.setAlarm()  
+      - kuknut, ci ma dake eventy s wifi
+      - ak nema wifi zapnutu, zapnut
+      - do EventPreferencesWifi.setSystemPauseEvent a setSystemRunningEvent pridat
+        pre connectionType = CTYPE_CONNECTED

@@ -373,6 +373,7 @@
 	<string name="array_event_pref_wifiConnectionType_inFront">In front</string>
 	<string name="event_preferences_wifi_connection_type">Connection type</string>
 	<string name="phone_profiles_pref_category_event">Events</string>
-	<string name="phone_profiles_pref_applicationEventWifiScanInterval">WiFi scan interval (min)</string>    
+	<string name="phone_profiles_pref_applicationEventWifiScanInterval">WiFi scan interval (min)</string>
+	<string name="phone_profiles_pref_applicationEventWifiEnableWifi">Enable WiFi</string>    
     	
 </resources>

@@ -148,6 +148,7 @@ public class PhoneProfilesPreferencesFragment extends PreferenceListFragment
 	    setSummary(GlobalData.PREF_APPLICATION_WIDGET_LIST_ICON_COLOR);
 	    setSummary(GlobalData.PREF_APPLICATION_WIDGET_LIST_ICON_LIGHTNESS);
 	    setSummary(GlobalData.PREF_APPLICATION_EVENT_WIFI_SCAN_INTERVAL);
+	    setSummary(GlobalData.PREF_APPLICATION_EVENT_WIFI_ENABLE_WIFI);
 	}
 	
 	@Override

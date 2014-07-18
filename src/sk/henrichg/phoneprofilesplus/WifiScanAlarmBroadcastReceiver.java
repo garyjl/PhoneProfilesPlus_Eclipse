@@ -14,6 +14,8 @@ import android.net.wifi.WifiManager;
 import android.net.wifi.WifiManager.WifiLock;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.provider.Settings;
+import android.provider.Settings.Global;
 import android.util.Log;
 
 public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
@@ -84,6 +86,9 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 	        wakeLock = ((PowerManager) context.getSystemService(Context.POWER_SERVICE))
 	                        .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "WifiScanWakeLock");			
 
+	        // enable Wifi
+	        enableWifi(context);
+	        
 	        AlarmManager alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 	 			
 	 		Intent intent = new Intent(context, WifiScanAlarmBroadcastReceiver.class);
@@ -155,6 +160,35 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
             wifiLock.release();
 		GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.unlock","xxx");
     }
-	
+    
+    @SuppressWarnings("deprecation")
+	@SuppressLint("NewApi")
+	public static void enableWifi(Context context)
+    {
+    	if (GlobalData.applicationEventWifiEnableWifi)
+    	{
+    		boolean isAirplaneMode;
+        	if (android.os.Build.VERSION.SDK_INT >= 17)
+        		isAirplaneMode = Settings.Global.getInt(context.getContentResolver(), Global.AIRPLANE_MODE_ON, 0) != 0;
+        	else
+        		isAirplaneMode = Settings.System.getInt(context.getContentResolver(), Settings.System.AIRPLANE_MODE_ON, 0) != 0;
+    		if (!isAirplaneMode)
+    		{
+				WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+				boolean isWifiEnabled = wifi.getWifiState() == WifiManager.WIFI_STATE_ENABLED;
+		    	if (android.os.Build.VERSION.SDK_INT >= 18)
+		    		isWifiEnabled = isWifiEnabled || (wifi.isScanAlwaysAvailable());
+		    	if (!isWifiEnabled)
+		    	{
+					DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
+					boolean wifiEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_WIFI) > 0;
+					dataWrapper.invalidateDataWrapper();
+
+					if (wifiEventsExists)
+						wifi.setWifiEnabled(true);
+		    	}
+    		}
+    	}
+    }
 	
 }

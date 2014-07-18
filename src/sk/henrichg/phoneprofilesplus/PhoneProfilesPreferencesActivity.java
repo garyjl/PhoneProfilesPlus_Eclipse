@@ -20,6 +20,7 @@ public class PhoneProfilesPreferencesActivity extends ActionBarActivity
 	private String activeLanguage;
 	private String activeTheme;
 	private int wifiScanInterval;
+	private boolean enableWifi;
 
 	private boolean invalidateEditor = false;
 	 
@@ -48,6 +49,7 @@ public class PhoneProfilesPreferencesActivity extends ActionBarActivity
         showEditorPrefIndicator = preferences.getBoolean(GlobalData.PREF_APPLICATION_EDITOR_PREF_INDICATOR, true);
         showEditorHeader = preferences.getBoolean(GlobalData.PREF_APPLICATION_EDITOR_HEADER, true);
         wifiScanInterval = Integer.valueOf(preferences.getString(GlobalData.PREF_APPLICATION_EVENT_WIFI_SCAN_INTERVAL, "5"));
+        enableWifi = preferences.getBoolean(GlobalData.PREF_APPLICATION_EVENT_WIFI_ENABLE_WIFI, false);
 		
 		if (savedInstanceState == null) {
 			PhoneProfilesPreferencesFragment fragment = new PhoneProfilesPreferencesFragment();
@@ -147,6 +149,11 @@ public class PhoneProfilesPreferencesActivity extends ActionBarActivity
 			if (WifiScanAlarmBroadcastReceiver.isAlarmSet(getApplicationContext()))
 				WifiScanAlarmBroadcastReceiver.setAlarm(getApplicationContext());
 		}
+		if (enableWifi != GlobalData.applicationEventWifiEnableWifi)
+		{
+			WifiScanAlarmBroadcastReceiver.enableWifi(getApplicationContext());
+		}
+		
 		
 		// for startActivityForResult
 		Intent returnIntent = new Intent();
