@@ -1460,54 +1460,65 @@ public class DataWrapper {
 		{
 			wifiPassed = false;
 
-			if (event._eventPreferencesWifi._connectionType == EventPreferencesWifi.CTYPE_CONNECTED)
+			WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+			boolean isWifiEnabled = wifiManager.getWifiState() == WifiManager.WIFI_STATE_ENABLED;
+			
+			if (isWifiEnabled)
 			{
-				WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-				if (wifiManager.getWifiState() == WifiManager.WIFI_STATE_ENABLED)
-				{
-					GlobalData.logE("DataWrapper.doEventService","wifiStateEnabled=true");
+				GlobalData.logE("DataWrapper.doEventService","wifiStateEnabled=true");
+				
+				//ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+				//NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+				//if (mWifi.isConnected())
+				//{
+				//	GlobalData.logE("DataWrapper.doEventService","wifiConnected=true");
+
+					WifiInfo wifiInfo = wifiManager.getConnectionInfo();
 					
-					//ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-					//NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-					//if (mWifi.isConnected())
-					//{
-					//	GlobalData.logE("DataWrapper.doEventService","wifiConnected=true");
-	
-						WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-						
-						GlobalData.logE("DataWrapper.doEventService","wifiSSID="+wifiInfo.getSSID());
-						GlobalData.logE("DataWrapper.doEventService","eventSSID="+event._eventPreferencesWifi._SSID);
-						
-						String ssid1 = event._eventPreferencesWifi._SSID;
-						String ssid2 = "\"" + ssid1 + "\"";
-						if (wifiInfo.getSSID().equals(ssid1) || wifiInfo.getSSID().equals(ssid2))
-							wifiPassed = true;
-					//}
-				}
+					GlobalData.logE("DataWrapper.doEventService","wifiSSID="+wifiInfo.getSSID());
+					GlobalData.logE("DataWrapper.doEventService","eventSSID="+event._eventPreferencesWifi._SSID);
+					
+					String ssid1 = event._eventPreferencesWifi._SSID;
+					String ssid2 = "\"" + ssid1 + "\"";
+					if (wifiInfo.getSSID().equals(ssid1) || wifiInfo.getSSID().equals(ssid2))
+						wifiPassed = true;
+				//}
 			}
-			else
+
 			if (event._eventPreferencesWifi._connectionType == EventPreferencesWifi.CTYPE_INFRONT)
 			{
-				WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-				boolean isWifiEnabled = wifiManager.getWifiState() == WifiManager.WIFI_STATE_ENABLED;
-		    	if (android.os.Build.VERSION.SDK_INT >= 18)
-		    		isWifiEnabled = isWifiEnabled || (wifiManager.isScanAlwaysAvailable());
-				if (isWifiEnabled)
+				if (wifiPassed)
 				{
-					GlobalData.logE("DataWrapper.doEventService","wifiStateEnabled=true");
-
-					if (WifiScanAlarmBroadcastReceiver.scanResults != null)
+					// wifi is connected to event._eventPreferencesWifi._SSID
+					// remove scanner alarm = stop scanning
+    				WifiScanAlarmBroadcastReceiver.removeAlarm(context);
+				}
+				else
+				{
+					// wifi is not connected setAlarm
+					if (GlobalData.getGlobalEventsRuning(context) && 
+						(!WifiScanAlarmBroadcastReceiver.isAlarmSet(context)))
+						WifiScanAlarmBroadcastReceiver.setAlarm(context);
+					
+			    	if (android.os.Build.VERSION.SDK_INT >= 18)
+			    		isWifiEnabled = isWifiEnabled || (wifiManager.isScanAlwaysAvailable());
+					if (isWifiEnabled)
 					{
-						for (ScanResult result : WifiScanAlarmBroadcastReceiver.scanResults)
-				        {
-							String ssid1 = event._eventPreferencesWifi._SSID;
-							String ssid2 = "\"" + ssid1 + "\"";
-							if (result.SSID.equals(ssid1) || result.SSID.equals(ssid2))
-							{
-								wifiPassed = true;
-								break;
-							}
-				        }
+						GlobalData.logE("DataWrapper.doEventService","wifiStateEnabled=true");
+	
+						if (WifiScanAlarmBroadcastReceiver.scanResults != null)
+						{
+							for (ScanResult result : WifiScanAlarmBroadcastReceiver.scanResults)
+					        {
+								String ssid1 = event._eventPreferencesWifi._SSID;
+								String ssid2 = "\"" + ssid1 + "\"";
+								if (result.SSID.equals(ssid1) || result.SSID.equals(ssid2))
+								{
+									wifiPassed = true;
+									break;
+								}
+					        }
+						}
 					}
 				}
 			}

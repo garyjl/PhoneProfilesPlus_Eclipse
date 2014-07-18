@@ -44,9 +44,9 @@ public class ScreenOnOffBroadcastReceiver extends WakefulBroadcastReceiver {
 			boolean screenEventsExists = false;
 			
 			screenEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_SCREEN) > 0;
-			GlobalData.logE("ScreenOnOffBroadcastReceiver.onReceive","screenEventsExists="+screenEventsExists);
+			GlobalData.logE("ScreenOnOffBroadcastReceiver.onReceive","screenEventsExists="+screenEventsExists);*/
 			dataWrapper.invalidateDataWrapper();
-
+			/*
 			if (screenEventsExists)
 			{
 				// start service
