@@ -48,8 +48,27 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 			        */
 
 	        		GlobalData.logE("@@@ WifiConnectionBroadcastReceiver.onReceive","state="+info.getState());
-	        		
+
 	    			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
+	        		
+	        		if (info.getState() == NetworkInfo.State.CONNECTED)
+	        		{
+	        			WifiInfo wifiInfo = intent.getParcelableExtra(WifiManager.EXTRA_WIFI_INFO);
+	        			String SSID = wifiInfo.getSSID().replace("\"", "");
+	        			if (dataWrapper.getDatabaseHandler().isSSIDScanned(SSID))
+	        				// stop scanning
+	        				WifiScanAlarmBroadcastReceiver.removeAlarm(context);
+	        			
+	        		}
+	        		else
+	        		if (info.getState() == NetworkInfo.State.DISCONNECTED)
+	        		{
+	        			if (dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_WIFIINFRONT) > 0)
+		        			// start scanning
+	        				WifiScanAlarmBroadcastReceiver.setAlarm(context);
+	        		}
+	        			
+	        		
 	    			boolean wifiEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_WIFICONNECTED) > 0;
 	    			dataWrapper.invalidateDataWrapper();
 	    	

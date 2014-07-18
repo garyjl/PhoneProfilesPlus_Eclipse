@@ -2604,6 +2604,38 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	}
 	
+	public boolean isSSIDScanned(String SSID)
+	{
+		final String countQuery;
+		String eventTypeChecked = KEY_E_STATUS + "!=0" + " AND ";  //  only not stopped events
+		eventTypeChecked = eventTypeChecked + KEY_E_WIFI_ENABLED + "=1" + " AND " + 
+												KEY_E_WIFI_CONNECTION_TYPE + "=1" + " AND " +
+												KEY_E_WIFI_SSID + "=\"" + SSID + "\"";
+		
+		countQuery = "SELECT  count(*) FROM " + TABLE_EVENTS + 
+	    		     " WHERE " + eventTypeChecked;
+
+		//SQLiteDatabase db = this.getReadableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+		
+		Cursor cursor = db.rawQuery(countQuery, null);
+		
+		int r;
+		
+		if (cursor != null)
+		{
+			cursor.moveToFirst();
+			r = Integer.parseInt(cursor.getString(0));
+		}
+		else
+			r = 0;
+
+		cursor.close();
+		//db.close();
+		
+		return r != 0;
+	}
+	
 	
 // EVENT TIMELINE ------------------------------------------------------------------
 	

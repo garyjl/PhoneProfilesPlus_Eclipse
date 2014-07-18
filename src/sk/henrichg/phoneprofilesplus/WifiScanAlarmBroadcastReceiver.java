@@ -22,8 +22,8 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 
 	public static final String BROADCAST_RECEIVER_TYPE = "wifiScanAlarm";
 
-	private static WifiLock wifiLock;
-    private static WakeLock wakeLock;
+	private static WifiLock wifiLock = null;
+    private static WakeLock wakeLock = null;
  
 	public static boolean scanStarted = false;
 	public static List<ScanResult> scanResults = null;
@@ -82,10 +82,12 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 			GlobalData.logE("WifiScanAlarmBroadcastReceiver.setAlarm","WifiHardware=true");
 			
 			 // initialise the locks
-	        wifiLock = ((WifiManager) context.getSystemService(Context.WIFI_SERVICE))
-	                        .createWifiLock(WifiManager.WIFI_MODE_SCAN_ONLY , "WifiScanWifiLock");
-	        wakeLock = ((PowerManager) context.getSystemService(Context.POWER_SERVICE))
-	                        .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "WifiScanWakeLock");			
+			if (wifiLock == null)
+		        wifiLock = ((WifiManager) context.getSystemService(Context.WIFI_SERVICE))
+		                        .createWifiLock(WifiManager.WIFI_MODE_SCAN_ONLY , "WifiScanWifiLock");
+			if (wakeLock == null)
+		        wakeLock = ((PowerManager) context.getSystemService(Context.POWER_SERVICE))
+		                        .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "WifiScanWakeLock");			
 
 	        // enable Wifi
 	        enableWifi(context);
