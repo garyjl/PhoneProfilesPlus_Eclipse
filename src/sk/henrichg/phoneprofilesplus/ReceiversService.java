@@ -13,6 +13,7 @@ public class ReceiversService extends Service {
 	private final RestartEventsBroadcastReceiver restartEventsReceiver = new RestartEventsBroadcastReceiver();
 	private final WifiConnectionBroadcastReceiver wifiConnectionReceiver = new WifiConnectionBroadcastReceiver();
 	private final WifiScanBroadcastReceiver wifiScanReceiver = new WifiScanBroadcastReceiver();
+	private final ScreenOnOffBroadcastReceiver screenOnOffReceiver = new ScreenOnOffBroadcastReceiver();
 	
 	@Override
     public void onCreate()
@@ -38,7 +39,10 @@ public class ReceiversService extends Service {
 		intentFilter4.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
 		registerReceiver(wifiScanReceiver, intentFilter4);
 
-		
+		IntentFilter intentFilter5 = new IntentFilter();
+		intentFilter5.addAction(Intent.ACTION_SCREEN_ON);
+		intentFilter5.addAction(Intent.ACTION_SCREEN_OFF);
+		registerReceiver(screenOnOffReceiver, intentFilter5);
 		
 		// receivers for system date and time change
 		// events must by restarted
@@ -56,6 +60,7 @@ public class ReceiversService extends Service {
 		unregisterReceiver(headsetPlugReceiver);
 		unregisterReceiver(wifiConnectionReceiver);
 		unregisterReceiver(wifiScanReceiver);
+		unregisterReceiver(screenOnOffReceiver);
 		
 		unregisterReceiver(restartEventsReceiver);
     }
@@ -71,7 +76,6 @@ public class ReceiversService extends Service {
 	@Override
 	public IBinder onBind(Intent intent)
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
 
