@@ -56,8 +56,17 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 	        			WifiInfo wifiInfo = intent.getParcelableExtra(WifiManager.EXTRA_WIFI_INFO);
 	        			String SSID = wifiInfo.getSSID().replace("\"", "");
 	        			if (dataWrapper.getDatabaseHandler().isSSIDScanned(SSID))
-	        				// stop scanning
-	        				WifiScanAlarmBroadcastReceiver.removeAlarm(context);
+	        			{
+	        				// send broadcast for rescan
+	    					if (WifiScanAlarmBroadcastReceiver.isAlarmSet(context))
+	    					{
+		        				// stop scanning
+		        				WifiScanAlarmBroadcastReceiver.removeAlarm(context);
+	    						// send broadcast only when wifi scan alarm is set
+	    				 		Intent broadcastIntent = new Intent(context, WifiScanAlarmBroadcastReceiver.class);
+	    						context.sendBroadcast(broadcastIntent);
+	    					}
+	        			}
 	        			
 	        		}
 	        		else
