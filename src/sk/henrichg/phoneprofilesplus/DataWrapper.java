@@ -529,12 +529,29 @@ public class DataWrapper {
 		}
 	}
 */	
-	public void sortEventsByPriority()
+	public void sortEventsByPriorityAsc()
 	{
 		class PriorityComparator implements Comparator<Event> {
 			public int compare(Event lhs, Event rhs) {
 
 			    int res =  lhs._priority - rhs._priority;
+		        return res;
+		    }
+		}
+		
+		getEventList();
+		if (eventList != null)
+		{
+		    Collections.sort(eventList, new PriorityComparator());
+		}
+	}
+
+	public void sortEventsByPriorityDesc()
+	{
+		class PriorityComparator implements Comparator<Event> {
+			public int compare(Event lhs, Event rhs) {
+
+			    int res =  rhs._priority - lhs._priority;
 		        return res;
 		    }
 		}
@@ -684,6 +701,7 @@ public class DataWrapper {
 
 		SearchCalendarEventsBroadcastReceiver.setAlarm(context);
 		WifiScanAlarmBroadcastReceiver.setAlarm(context);
+		
 		
 		//restartEvents(true, unblockEventsRun);
 		Intent intent = new Intent();
@@ -1473,50 +1491,69 @@ public class DataWrapper {
 			{
 				GlobalData.logE("DataWrapper.doEventService","wifiStateEnabled=true");
 
+				GlobalData.logE("@@@ DataWrapper.doEventService","-- eventSSID="+event._eventPreferencesWifi._SSID);
 				if (networkInfo.isConnected())
 				{
 					WifiInfo wifiInfo = wifiManager.getConnectionInfo();
 					
-					GlobalData.logE("DataWrapper.doEventService","wifiSSID="+wifiInfo.getSSID());
-					GlobalData.logE("DataWrapper.doEventService","wifiSSID="+wifiInfo.getBSSID());
-					GlobalData.logE("DataWrapper.doEventService","eventSSID="+event._eventPreferencesWifi._SSID);
+					GlobalData.logE("@@@ DataWrapper.doEventService","wifiSSID="+getSSID(wifiManager, wifiInfo));
+					GlobalData.logE("@@@ DataWrapper.doEventService","wifiBSSID="+wifiInfo.getBSSID());
 					
 					wifiPassed = compareSSID(wifiManager, wifiInfo, event._eventPreferencesWifi._SSID);
+					if (wifiPassed)
+						GlobalData.logE("@@@ DataWrapper.doEventService","wifi connected");
+					else
+						GlobalData.logE("@@@ DataWrapper.doEventService","wifi not connected");
+						
 				}
+				else
+					GlobalData.logE("@@@ DataWrapper.doEventService","wifi not connected");
 			}
 			if (event._eventPreferencesWifi._connectionType == EventPreferencesWifi.CTYPE_INFRONT)
 			{
-				if (wifiPassed)
+				/*if (wifiPassed)
 				{
 					// connected into scanned SSID, remove alarm = stop scanning
 					WifiScanAlarmBroadcastReceiver.removeAlarm(context);
+					GlobalData.logE("@@@ DataWrapper.doEventService","alarm removed");
 				}
 				else
 				{
 					// not connected into scanned SSID, start scanning
 					if (!WifiScanAlarmBroadcastReceiver.isAlarmSet(context))
+					{
 						WifiScanAlarmBroadcastReceiver.setAlarm(context);
-					
-					
+						if (WifiScanAlarmBroadcastReceiver.isAlarmSet(context))
+							GlobalData.logE("@@@ DataWrapper.doEventService","alarm set");
+					} */
+				if (!wifiPassed)
+				{	
 			    	if (android.os.Build.VERSION.SDK_INT >= 18)
 			    		isWifiEnabled = isWifiEnabled || (wifiManager.isScanAlwaysAvailable());
 					if (isWifiEnabled)
 					{
 						GlobalData.logE("DataWrapper.doEventService","wifiStateEnabled=true");
 	
+						
 						if (WifiScanAlarmBroadcastReceiver.scanResults != null)
 						{
+							GlobalData.logE("@@@ DataWrapper.doEventService","-- eventSSID="+event._eventPreferencesWifi._SSID);
+	
 							for (ScanResult result : WifiScanAlarmBroadcastReceiver.scanResults)
 					        {
-								String ssid1 = event._eventPreferencesWifi._SSID;
-								String ssid2 = "\"" + ssid1 + "\"";
-								if (result.SSID.equals(ssid1) || result.SSID.equals(ssid2))
+								if (compareSSID(wifiManager, result, event._eventPreferencesWifi._SSID))
 								{
+									GlobalData.logE("@@@ DataWrapper.doEventService","wifi found");
+									GlobalData.logE("@@@ DataWrapper.doEventService","wifiSSID="+getSSID(wifiManager, result));
+									GlobalData.logE("@@@ DataWrapper.doEventService","wifiBSSID="+result.BSSID);
 									wifiPassed = true;
 									break;
 								}
 					        }
 						}
+						if (!wifiPassed)
+							GlobalData.logE("@@@ DataWrapper.doEventService","wifi not found");
+						
 					}
 				}
 			}
@@ -1820,10 +1857,13 @@ public class DataWrapper {
 		if (SSID.isEmpty())
 		{
 			List<WifiConfiguration> wifiConfigurationList = wifiManager.getConfiguredNetworks();
-			for (WifiConfiguration wifiConfiguration : wifiConfigurationList)
+			if (wifiConfigurationList != null)
 			{
-				if (wifiConfiguration.BSSID.equals(wifiInfo.getBSSID()))
-					return wifiConfiguration.SSID.replace("\"", "");
+				for (WifiConfiguration wifiConfiguration : wifiConfigurationList)
+				{
+					if (wifiConfiguration.BSSID.equals(wifiInfo.getBSSID()))
+						return wifiConfiguration.SSID.replace("\"", "");
+				}
 			}
 		}
 		
@@ -1834,6 +1874,33 @@ public class DataWrapper {
 	{
 		String ssid2 = "\"" + SSID + "\"";
 		return (getSSID(wifiManager, wifiInfo).equals(SSID) || getSSID(wifiManager, wifiInfo).equals(ssid2));
+	}
+
+	public String getSSID(WifiManager wifiManager, ScanResult result)
+	{
+		String SSID = result.SSID.replace("\"", ""); 
+		
+		if (SSID.isEmpty())
+		{
+			List<WifiConfiguration> wifiConfigurationList = wifiManager.getConfiguredNetworks();
+			if (wifiConfigurationList != null)
+			{
+				for (WifiConfiguration wifiConfiguration : wifiConfigurationList)
+				{
+					if ((wifiConfiguration.BSSID != null) && 
+						(wifiConfiguration.BSSID.equals(result.BSSID)))
+						return wifiConfiguration.SSID.replace("\"", "");
+				}
+			}
+		}
+		
+		return SSID; 
+	}
+	
+	public boolean compareSSID(WifiManager wifiManager, ScanResult result, String SSID)
+	{
+		String ssid2 = "\"" + SSID + "\"";
+		return (getSSID(wifiManager, result).equals(SSID) || getSSID(wifiManager, result).equals(ssid2));
 	}
 	
 }

@@ -42,6 +42,7 @@ public class GlobalData extends Application {
 										 "@@@ WifiScanAlarmBroadcastReceiver|"+
 										 "@@@ WifiScanBroadcastReceiver|"+
 										 "@@@ ScreenOnOffBroadcastReceiver";
+										//"@@@ DataWrapper"
 			;
 	
 	public static final String EXPORT_PATH = "/PhoneProfilesPlus";

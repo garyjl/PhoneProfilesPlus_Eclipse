@@ -17,7 +17,11 @@ public class ScreenOnOffBroadcastReceiver extends WakefulBroadcastReceiver {
 		
 		if (GlobalData.getGlobalEventsRuning(context))
 		{
-			GlobalData.logE("@@@ ScreenOnOffBroadcastReceiver.onReceive","xxx");
+			if (intent.getAction().equals(Intent.ACTION_SCREEN_ON))
+				GlobalData.logE("@@@ ScreenOnOffBroadcastReceiver.onReceive","screen on");
+			else
+			if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF))
+				GlobalData.logE("@@@ ScreenOnOffBroadcastReceiver.onReceive","screen off");
 
 			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
 			
@@ -31,12 +35,12 @@ public class ScreenOnOffBroadcastReceiver extends WakefulBroadcastReceiver {
 	
 				if (wifiEventsExists)
 				{
-					if (WifiScanAlarmBroadcastReceiver.isAlarmSet(context))
-					{	
+					//if (WifiScanAlarmBroadcastReceiver.isAlarmSet(context))
+					//{	
 						// alarm is set = wifi scanning is ON
 						Intent broadcastIntent = new Intent(context, WifiScanAlarmBroadcastReceiver.class);
 						context.sendBroadcast(broadcastIntent);
-					}
+					//}
 				}
 			}
 			

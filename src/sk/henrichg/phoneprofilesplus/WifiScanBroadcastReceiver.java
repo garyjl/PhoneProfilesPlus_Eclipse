@@ -15,6 +15,9 @@ public class WifiScanBroadcastReceiver extends WakefulBroadcastReceiver {
 		
 		GlobalData.logE("#### WifiScanBroadcastReceiver.onReceive","xxx");
 
+		boolean scanStarted = (WifiScanAlarmBroadcastReceiver.scanStarted);// ||
+				              //(WifiScanAlarmBroadcastReceiver.scanResults == null);
+		
 		WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 		WifiScanAlarmBroadcastReceiver.scanResults = wifi.getScanResults();
 		WifiScanAlarmBroadcastReceiver.unlock();
@@ -25,7 +28,7 @@ public class WifiScanBroadcastReceiver extends WakefulBroadcastReceiver {
 			GlobalData.logE("WifiScanBroadcastReceiver.onReceive","result.SSID="+result.SSID);
         }
 		
-		if (WifiScanAlarmBroadcastReceiver.scanStarted)
+		if (scanStarted)
 		{
 			GlobalData.loadPreferences(context);
 			

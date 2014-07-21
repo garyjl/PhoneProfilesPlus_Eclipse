@@ -47,7 +47,6 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
 			wifiEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_WIFIINFRONT) > 0;
 			GlobalData.logE("WifiScanAlarmBroadcastReceiver.onReceive","wifiEventsExists="+wifiEventsExists);
-			dataWrapper.invalidateDataWrapper();
 
 			if (wifiEventsExists)
 			{
@@ -57,6 +56,34 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		    		isWifiEnabled = isWifiEnabled || (wifi.isScanAlwaysAvailable());
 				if (isWifiEnabled)
 			    {
+					ConnectivityManager connManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+					NetworkInfo networkInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+					if (networkInfo.isConnected())
+					{
+						GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.onReceive","wifi is connected");
+
+						// wifi is connected
+						WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+						WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+		    			String SSID = dataWrapper.getSSID(wifiManager, wifiInfo);
+		    			boolean isSSIDScanned = dataWrapper.getDatabaseHandler().isSSIDScanned(SSID); 
+		    			
+		    			if (isSSIDScanned)
+		    			{
+		    				// connected SSID is scanned
+		    				// no scan
+		    				
+		    				scanStarted = false;
+
+		    				GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.onReceive","connected SSID is scanned, no start scan");
+
+		    				dataWrapper.invalidateDataWrapper();
+		    				
+		    				return;
+		    			}
+					}
+					
+					
 			        lock(context); // lock wakeLock and wifiLock, then scan.
 			                       // unlock() is then called at the end of the onReceive function of WifiScanBroadcastReceiver
 			        scanStarted = wifi.startScan();
@@ -64,10 +91,12 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 			    else
 			    	scanStarted = false;
 
-		      	GlobalData.logE("WifiScanAlarmBroadcastReceiver.onReceive","scanStarted="+scanStarted);
+		      	GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.onReceive","scanStarted="+scanStarted);
 			}
 			else
 				removeAlarm(context);
+			
+			dataWrapper.invalidateDataWrapper();
 			
 		}
 		
@@ -75,9 +104,7 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 	
 	public static void setAlarm(Context context)
 	{
-		removeAlarm(context);
-		
-		GlobalData.logE("WifiScanAlarmBroadcastReceiver.setAlarm","xxx");
+		GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.setAlarm","xxx");
 
 		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_WIFI, context) 
 				== GlobalData.HARDWARE_CHECK_ALLOWED)
@@ -87,10 +114,13 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 	        // enable Wifi
 	        enableWifi(context);
 	        
+	        /*
 			ConnectivityManager connManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 			NetworkInfo networkInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 			if (networkInfo.isConnected())
 			{
+				GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.setAlarm","wifi is connected");
+
 				// wifi is connected
 				WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 				WifiInfo wifiInfo = wifiManager.getConnectionInfo();
@@ -103,10 +133,15 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
     			{
     				// connected SSID is scanned
     				// no set alarm
+
+    				GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.setAlarm","connected SSID is scanned, no set alarm");
+    				
     				return;
     			}
 			}
-			
+			*/
+
+			removeAlarm(context);
 	        
 	        AlarmManager alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 	 			
@@ -123,6 +158,9 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 											5 * 1000,
 											GlobalData.applicationEventWifiScanInterval * 60 * 1000, 
 											alarmIntent);
+			
+			GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.setAlarm","alarm is set");
+
 		}
 		else
 			GlobalData.logE("WifiScanAlarmBroadcastReceiver.setAlarm","WifiHardware=false");
@@ -130,14 +168,14 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 	
 	public static void removeAlarm(Context context)
 	{
-  		GlobalData.logE("WifiScanAlarmBroadcastReceiver.removeAlarm","xxx");
+  		GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.removeAlarm","xxx");
 
 		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
 		Intent intent = new Intent(context, WifiScanAlarmBroadcastReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), 0, intent, PendingIntent.FLAG_NO_CREATE);
         if (pendingIntent != null)
         {
-       		GlobalData.logE("WifiScanAlarmBroadcastReceiver.removeAlarm","alarm found");
+       		GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.removeAlarm","alarm found");
         		
         	alarmManager.cancel(pendingIntent);
         	pendingIntent.cancel();
@@ -146,6 +184,8 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
         	
 			WifiScanAlarmBroadcastReceiver.scanStarted = false;
         }
+        else
+       		GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.removeAlarm","alarm not found");
     }
 	
 	public static boolean isAlarmSet(Context context)
@@ -154,7 +194,9 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), 0, intent, PendingIntent.FLAG_NO_CREATE);
 
         if (pendingIntent != null)
-        	GlobalData.logE("WifiScanAlarmBroadcastReceiver.isAlarmSet","alarm found");
+        	GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.isAlarmSet","alarm found");
+        else
+        	GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.isAlarmSet","alarm not found");
 
         return (pendingIntent != null);
 	}
@@ -172,7 +214,7 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
     	try {
             wakeLock.acquire();
             wifiLock.acquire();
-			GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.lock","xxx");
+		//	GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.lock","xxx");
         } catch(Exception e) {
             Log.e("WifiScanAlarmBroadcastReceiver.lock", "Error getting Lock: "+e.getMessage());
         }
@@ -185,7 +227,7 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
             wakeLock.release();
         if ((wifiLock != null) && (wifiLock.isHeld()))
             wifiLock.release();
-		GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.unlock","xxx");
+		//GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.unlock","xxx");
     }
     
     @SuppressWarnings("deprecation")

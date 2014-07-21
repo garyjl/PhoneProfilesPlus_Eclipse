@@ -45,7 +45,6 @@ public class EventsService extends IntentService
 		GlobalData.logE("EventsService.onHandleIntent","broadcastReceiverType="+broadcastReceiverType);
 		
 		List<Event> eventList = dataWrapper.getEventList();
-		dataWrapper.sortEventsByPriority();
 		
 		if (broadcastReceiverType.equals(CalendarProviderChangedBroadcastReceiver.BROADCAST_RECEIVER_TYPE) ||
 			broadcastReceiverType.equals(SearchCalendarEventsBroadcastReceiver.BROADCAST_RECEIVER_TYPE))
@@ -74,6 +73,7 @@ public class EventsService extends IntentService
 		if (isRestart)
 		{
 			// 1. pause events
+			dataWrapper.sortEventsByPriorityDesc();
 			for (Event _event : eventList)
 			{
 				GlobalData.logE("EventsService.onHandleIntent","state PAUSE");
@@ -103,6 +103,7 @@ public class EventsService extends IntentService
 				}
 			}
 			// 3. start no started events in point 2.
+			dataWrapper.sortEventsByPriorityAsc();
 			for (Event _event : eventList)
 			{
 				GlobalData.logE("EventsService.onHandleIntent","state RUNNING");
@@ -118,6 +119,7 @@ public class EventsService extends IntentService
 		else
 		{
 			//1. pause events
+			dataWrapper.sortEventsByPriorityDesc();
 			for (Event _event : eventList)
 			{
 				GlobalData.logE("EventsService.onHandleIntent","state PAUSE");
@@ -130,6 +132,7 @@ public class EventsService extends IntentService
 					dataWrapper.doEventService(_event, true, false, true);
 			}
 			//2. start events
+			dataWrapper.sortEventsByPriorityAsc();
 			for (Event _event : eventList)
 			{
 				GlobalData.logE("EventsService.onHandleIntent","state RUNNING");
