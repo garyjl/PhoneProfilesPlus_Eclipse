@@ -2031,55 +2031,58 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 												}, 
 				                 KEY_E_ID + "=?",
 				                 new String[] { String.valueOf(event._id) }, null, null, null, null);
+
 		if (cursor != null)
 		{
 			cursor.moveToFirst();
 
-			EventPreferencesTime eventPreferences = (EventPreferencesTime)event._eventPreferencesTime;
-			
-			eventPreferences._enabled = (Integer.parseInt(cursor.getString(0)) == 1) ? true : false; 
-					
-			String daysOfWeek = cursor.getString(1);
-			//Log.e("DatabaseHandler.getEventPreferencesTime","daysOfWeek="+daysOfWeek);
-	
-			if (daysOfWeek != null)
+			if (cursor.getCount() > 0)
 			{
-			String[] splits = daysOfWeek.split("\\|");
-			if (splits[0].equals(DaysOfWeekPreference.allValue))
-			{
-				eventPreferences._sunday = true;
-				eventPreferences._monday = true;
-				eventPreferences._tuesday = true;
-				eventPreferences._wendesday = true;
-				eventPreferences._thursday = true;
-				eventPreferences._friday = true;
-				eventPreferences._saturday = true;
-			}
-			else
-			{
-				eventPreferences._sunday = false;
-				eventPreferences._monday = false;
-				eventPreferences._tuesday = false;
-				eventPreferences._wendesday = false;
-				eventPreferences._thursday = false;
-				eventPreferences._friday = false;
-				eventPreferences._saturday = false;
-				for (String value : splits)
+				EventPreferencesTime eventPreferences = (EventPreferencesTime)event._eventPreferencesTime;
+				
+				eventPreferences._enabled = (Integer.parseInt(cursor.getString(0)) == 1) ? true : false; 
+						
+				String daysOfWeek = cursor.getString(1);
+				//Log.e("DatabaseHandler.getEventPreferencesTime","daysOfWeek="+daysOfWeek);
+		
+				if (daysOfWeek != null)
 				{
-					eventPreferences._sunday = eventPreferences._sunday || value.equals("0");
-					eventPreferences._monday = eventPreferences._monday || value.equals("1");
-					eventPreferences._tuesday = eventPreferences._tuesday || value.equals("2");
-					eventPreferences._wendesday = eventPreferences._wendesday || value.equals("3");
-					eventPreferences._thursday = eventPreferences._thursday || value.equals("4");
-					eventPreferences._friday = eventPreferences._friday || value.equals("5");
-					eventPreferences._saturday = eventPreferences._saturday || value.equals("6");
+				String[] splits = daysOfWeek.split("\\|");
+				if (splits[0].equals(DaysOfWeekPreference.allValue))
+				{
+					eventPreferences._sunday = true;
+					eventPreferences._monday = true;
+					eventPreferences._tuesday = true;
+					eventPreferences._wendesday = true;
+					eventPreferences._thursday = true;
+					eventPreferences._friday = true;
+					eventPreferences._saturday = true;
 				}
+				else
+				{
+					eventPreferences._sunday = false;
+					eventPreferences._monday = false;
+					eventPreferences._tuesday = false;
+					eventPreferences._wendesday = false;
+					eventPreferences._thursday = false;
+					eventPreferences._friday = false;
+					eventPreferences._saturday = false;
+					for (String value : splits)
+					{
+						eventPreferences._sunday = eventPreferences._sunday || value.equals("0");
+						eventPreferences._monday = eventPreferences._monday || value.equals("1");
+						eventPreferences._tuesday = eventPreferences._tuesday || value.equals("2");
+						eventPreferences._wendesday = eventPreferences._wendesday || value.equals("3");
+						eventPreferences._thursday = eventPreferences._thursday || value.equals("4");
+						eventPreferences._friday = eventPreferences._friday || value.equals("5");
+						eventPreferences._saturday = eventPreferences._saturday || value.equals("6");
+					}
+				}
+				}
+				eventPreferences._startTime = Long.parseLong(cursor.getString(2));
+				eventPreferences._endTime = Long.parseLong(cursor.getString(3));
+				eventPreferences._useEndTime = (Integer.parseInt(cursor.getString(4)) == 1) ? true : false;
 			}
-			}
-			eventPreferences._startTime = Long.parseLong(cursor.getString(2));
-			eventPreferences._endTime = Long.parseLong(cursor.getString(3));
-			eventPreferences._useEndTime = (Integer.parseInt(cursor.getString(4)) == 1) ? true : false;
-			
 			cursor.close();
 		}
 	}
@@ -2097,13 +2100,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		{
 			cursor.moveToFirst();
 
-			EventPreferencesBattery eventPreferences = (EventPreferencesBattery)event._eventPreferencesBattery;
-	
-			eventPreferences._enabled = (Integer.parseInt(cursor.getString(0)) == 1);
-			eventPreferences._levelLow = Integer.parseInt(cursor.getString(1));
-			eventPreferences._levelHight = Integer.parseInt(cursor.getString(2));
-			eventPreferences._charging = (Integer.parseInt(cursor.getString(3)) == 1);
-			
+			if (cursor.getCount() > 0)
+			{
+				EventPreferencesBattery eventPreferences = (EventPreferencesBattery)event._eventPreferencesBattery;
+		
+				eventPreferences._enabled = (Integer.parseInt(cursor.getString(0)) == 1);
+				eventPreferences._levelLow = Integer.parseInt(cursor.getString(1));
+				eventPreferences._levelHight = Integer.parseInt(cursor.getString(2));
+				eventPreferences._charging = (Integer.parseInt(cursor.getString(3)) == 1);
+			}
 			cursor.close();
 		}
 	}
@@ -2121,13 +2126,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		{
 			cursor.moveToFirst();
 
-			EventPreferencesCall eventPreferences = (EventPreferencesCall)event._eventPreferencesCall;
-	
-			eventPreferences._enabled = (Integer.parseInt(cursor.getString(0)) == 1);
-			eventPreferences._callEvent = Integer.parseInt(cursor.getString(1));
-			eventPreferences._contacts = cursor.getString(2);
-			eventPreferences._contactListType = Integer.parseInt(cursor.getString(3));
-			
+			if (cursor.getCount() > 0)
+			{
+				EventPreferencesCall eventPreferences = (EventPreferencesCall)event._eventPreferencesCall;
+		
+				eventPreferences._enabled = (Integer.parseInt(cursor.getString(0)) == 1);
+				eventPreferences._callEvent = Integer.parseInt(cursor.getString(1));
+				eventPreferences._contacts = cursor.getString(2);
+				eventPreferences._contactListType = Integer.parseInt(cursor.getString(3));
+			}
 			cursor.close();
 		}
 	}
@@ -2143,11 +2150,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		{
 			cursor.moveToFirst();
 
-			EventPreferencesPeripherals eventPreferences = (EventPreferencesPeripherals)event._eventPreferencesPeripherals;
-	
-			eventPreferences._enabled = (Integer.parseInt(cursor.getString(0)) == 1);
-			eventPreferences._peripheralType = Integer.parseInt(cursor.getString(1));
-			
+			if (cursor.getCount() > 0)
+			{
+				EventPreferencesPeripherals eventPreferences = (EventPreferencesPeripherals)event._eventPreferencesPeripherals;
+		
+				eventPreferences._enabled = (Integer.parseInt(cursor.getString(0)) == 1);
+				eventPreferences._peripheralType = Integer.parseInt(cursor.getString(1));
+			}
 			cursor.close();
 		}
 	}
@@ -2168,16 +2177,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		{
 			cursor.moveToFirst();
 
-			EventPreferencesCalendar eventPreferences = (EventPreferencesCalendar)event._eventPreferencesCalendar;
-	
-			eventPreferences._enabled = (Integer.parseInt(cursor.getString(0)) == 1);
-			eventPreferences._calendars = cursor.getString(1);
-			eventPreferences._searchField = Integer.parseInt(cursor.getString(2));
-			eventPreferences._searchString = cursor.getString(3);
-			eventPreferences._startTime = Long.parseLong(cursor.getString(4));
-			eventPreferences._endTime = Long.parseLong(cursor.getString(5));
-			eventPreferences._eventFound = (Integer.parseInt(cursor.getString(6)) == 1);
-			
+			if (cursor.getCount() > 0)
+			{
+				EventPreferencesCalendar eventPreferences = (EventPreferencesCalendar)event._eventPreferencesCalendar;
+		
+				eventPreferences._enabled = (Integer.parseInt(cursor.getString(0)) == 1);
+				eventPreferences._calendars = cursor.getString(1);
+				eventPreferences._searchField = Integer.parseInt(cursor.getString(2));
+				eventPreferences._searchString = cursor.getString(3);
+				eventPreferences._startTime = Long.parseLong(cursor.getString(4));
+				eventPreferences._endTime = Long.parseLong(cursor.getString(5));
+				eventPreferences._eventFound = (Integer.parseInt(cursor.getString(6)) == 1);
+			}
 			cursor.close();
 		}
 	}
@@ -2194,12 +2205,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		{
 			cursor.moveToFirst();
 
-			EventPreferencesWifi eventPreferences = (EventPreferencesWifi)event._eventPreferencesWifi;
-	
-			eventPreferences._enabled = (Integer.parseInt(cursor.getString(0)) == 1);
-			eventPreferences._SSID = cursor.getString(1);
-			eventPreferences._connectionType = Integer.parseInt(cursor.getString(2));
-			
+			if (cursor.getCount() > 0)
+			{
+				EventPreferencesWifi eventPreferences = (EventPreferencesWifi)event._eventPreferencesWifi;
+		
+				eventPreferences._enabled = (Integer.parseInt(cursor.getString(0)) == 1);
+				eventPreferences._SSID = cursor.getString(1);
+				eventPreferences._connectionType = Integer.parseInt(cursor.getString(2));
+			}
 			cursor.close();
 		}
 	}
