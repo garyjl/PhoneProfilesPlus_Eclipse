@@ -814,53 +814,57 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 												}, 
 				                 KEY_ID + "=?",
 				                 new String[] { String.valueOf(profile_id) }, null, null, null, null);
-		if (cursor != null)
-			cursor.moveToFirst();
-		
+
 		Profile profile = null;
 		
-		if (cursor.getCount() > 0)
+		if (cursor != null)
 		{
-			profile = new Profile(Long.parseLong(cursor.getString(0)),
-					                      cursor.getString(1), 
-					                      cursor.getString(2),
-					                      (Integer.parseInt(cursor.getString(3)) == 1) ? true : false,
-					                      Integer.parseInt(cursor.getString(4)),
-					                      Integer.parseInt(cursor.getString(5)),
-					                      cursor.getString(6),
-					                      cursor.getString(7),
-					                      cursor.getString(8),
-					                      cursor.getString(9),
-					                      cursor.getString(10),
-					                      cursor.getString(11),
-					                      Integer.parseInt(cursor.getString(12)),
-					                      cursor.getString(13),
-					                      Integer.parseInt(cursor.getString(14)),
-					                      cursor.getString(15),
-					                      Integer.parseInt(cursor.getString(16)),
-					                      cursor.getString(17),
-					                      Integer.parseInt(cursor.getString(18)),
-					                      Integer.parseInt(cursor.getString(19)),
-					                      Integer.parseInt(cursor.getString(20)),
-					                      Integer.parseInt(cursor.getString(21)),
-					                      cursor.getString(22),
-					                      Integer.parseInt(cursor.getString(23)),
-					                      cursor.getString(24),
-					                      Integer.parseInt(cursor.getString(25)),
-					                      Integer.parseInt(cursor.getString(26)),
-					                      Integer.parseInt(cursor.getString(27)),
-					                      Integer.parseInt(cursor.getString(28)),
-					                      cursor.getString(29),
-					                      Integer.parseInt(cursor.getString(30)),
-					                      cursor.isNull(31) ? true : ((Integer.parseInt(cursor.getString(31)) == 1) ? true : false),
-					                      Integer.parseInt(cursor.getString(32)),
-					                      Integer.parseInt(cursor.getString(33)),
-					                      Integer.parseInt(cursor.getString(34)),
-					                      Integer.parseInt(cursor.getString(35))
-					                      );
+			cursor.moveToFirst();
+		
+			if (cursor.getCount() > 0)
+			{
+				profile = new Profile(Long.parseLong(cursor.getString(0)),
+						                      cursor.getString(1), 
+						                      cursor.getString(2),
+						                      (Integer.parseInt(cursor.getString(3)) == 1) ? true : false,
+						                      Integer.parseInt(cursor.getString(4)),
+						                      Integer.parseInt(cursor.getString(5)),
+						                      cursor.getString(6),
+						                      cursor.getString(7),
+						                      cursor.getString(8),
+						                      cursor.getString(9),
+						                      cursor.getString(10),
+						                      cursor.getString(11),
+						                      Integer.parseInt(cursor.getString(12)),
+						                      cursor.getString(13),
+						                      Integer.parseInt(cursor.getString(14)),
+						                      cursor.getString(15),
+						                      Integer.parseInt(cursor.getString(16)),
+						                      cursor.getString(17),
+						                      Integer.parseInt(cursor.getString(18)),
+						                      Integer.parseInt(cursor.getString(19)),
+						                      Integer.parseInt(cursor.getString(20)),
+						                      Integer.parseInt(cursor.getString(21)),
+						                      cursor.getString(22),
+						                      Integer.parseInt(cursor.getString(23)),
+						                      cursor.getString(24),
+						                      Integer.parseInt(cursor.getString(25)),
+						                      Integer.parseInt(cursor.getString(26)),
+						                      Integer.parseInt(cursor.getString(27)),
+						                      Integer.parseInt(cursor.getString(28)),
+						                      cursor.getString(29),
+						                      Integer.parseInt(cursor.getString(30)),
+						                      cursor.isNull(31) ? true : ((Integer.parseInt(cursor.getString(31)) == 1) ? true : false),
+						                      Integer.parseInt(cursor.getString(32)),
+						                      Integer.parseInt(cursor.getString(33)),
+						                      Integer.parseInt(cursor.getString(34)),
+						                      Integer.parseInt(cursor.getString(35))
+						                      );
+			}
+	
+			cursor.close();
 		}
-
-		cursor.close();
+		
 		//db.close();
 
 		// return profile
@@ -1241,55 +1245,60 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				                 KEY_CHECKED + "=?",
 				                 new String[] { "1" }, null, null, null, null);
 		if (cursor != null)
+		{
 			cursor.moveToFirst();
 		
-		int rc = cursor.getCount();
-		
-		if (rc == 1)
-		{
+			int rc = cursor.getCount();
+			
+			if (rc == 1)
+			{
+	
+				profile = new Profile(Long.parseLong(cursor.getString(0)),
+						                      cursor.getString(1), 
+						                      cursor.getString(2),
+						                      (Integer.parseInt(cursor.getString(3)) == 1) ? true : false,
+						                      Integer.parseInt(cursor.getString(4)),
+						                      Integer.parseInt(cursor.getString(5)),
+						                      cursor.getString(6),
+						                      cursor.getString(7),
+						                      cursor.getString(8),
+						                      cursor.getString(9),
+						                      cursor.getString(10),
+						                      cursor.getString(11),
+						                      Integer.parseInt(cursor.getString(12)),
+						                      cursor.getString(13),
+						                      Integer.parseInt(cursor.getString(14)),
+						                      cursor.getString(15),
+						                      Integer.parseInt(cursor.getString(16)),
+						                      cursor.getString(17),
+						                      Integer.parseInt(cursor.getString(18)),
+						                      Integer.parseInt(cursor.getString(19)),
+						                      Integer.parseInt(cursor.getString(20)),
+						                      Integer.parseInt(cursor.getString(21)),
+						                      cursor.getString(22),
+						                      Integer.parseInt(cursor.getString(23)),
+						                      cursor.getString(24),
+						                      Integer.parseInt(cursor.getString(25)),
+						                      Integer.parseInt(cursor.getString(26)),
+						                      Integer.parseInt(cursor.getString(27)),
+						                      Integer.parseInt(cursor.getString(28)),
+						                      cursor.getString(29),
+						                      Integer.parseInt(cursor.getString(30)),
+						                      cursor.isNull(31) ? true : ((Integer.parseInt(cursor.getString(31)) == 1) ? true : false),
+						                      Integer.parseInt(cursor.getString(32)),
+						                      Integer.parseInt(cursor.getString(33)),
+						                      Integer.parseInt(cursor.getString(34)),
+						                      Integer.parseInt(cursor.getString(35))
+						                      );
+			}
+			else
+				profile = null;
 
-			profile = new Profile(Long.parseLong(cursor.getString(0)),
-					                      cursor.getString(1), 
-					                      cursor.getString(2),
-					                      (Integer.parseInt(cursor.getString(3)) == 1) ? true : false,
-					                      Integer.parseInt(cursor.getString(4)),
-					                      Integer.parseInt(cursor.getString(5)),
-					                      cursor.getString(6),
-					                      cursor.getString(7),
-					                      cursor.getString(8),
-					                      cursor.getString(9),
-					                      cursor.getString(10),
-					                      cursor.getString(11),
-					                      Integer.parseInt(cursor.getString(12)),
-					                      cursor.getString(13),
-					                      Integer.parseInt(cursor.getString(14)),
-					                      cursor.getString(15),
-					                      Integer.parseInt(cursor.getString(16)),
-					                      cursor.getString(17),
-					                      Integer.parseInt(cursor.getString(18)),
-					                      Integer.parseInt(cursor.getString(19)),
-					                      Integer.parseInt(cursor.getString(20)),
-					                      Integer.parseInt(cursor.getString(21)),
-					                      cursor.getString(22),
-					                      Integer.parseInt(cursor.getString(23)),
-					                      cursor.getString(24),
-					                      Integer.parseInt(cursor.getString(25)),
-					                      Integer.parseInt(cursor.getString(26)),
-					                      Integer.parseInt(cursor.getString(27)),
-					                      Integer.parseInt(cursor.getString(28)),
-					                      cursor.getString(29),
-					                      Integer.parseInt(cursor.getString(30)),
-					                      cursor.isNull(31) ? true : ((Integer.parseInt(cursor.getString(31)) == 1) ? true : false),
-					                      Integer.parseInt(cursor.getString(32)),
-					                      Integer.parseInt(cursor.getString(33)),
-					                      Integer.parseInt(cursor.getString(34)),
-					                      Integer.parseInt(cursor.getString(35))
-					                      );
+			cursor.close();
 		}
 		else
 			profile = null;
 
-		cursor.close();
 		//db.close();
 
 		// return profile
@@ -1492,21 +1501,26 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				                 new String[] { KEY_VOLUME_SPEAKER_PHONE }, 
 				                 KEY_CHECKED + "=?",
 				                 new String[] { "1" }, null, null, null, null);
+
+		int speakerPhone;
+
 		if (cursor != null)
+		{
 			cursor.moveToFirst();
 		
-		int rc = cursor.getCount();
-		
-		int speakerPhone;
-		
-		if (rc == 1)
-		{
-			speakerPhone = Integer.parseInt(cursor.getString(0)); 
+			int rc = cursor.getCount();
+			
+			if (rc == 1)
+			{
+				speakerPhone = Integer.parseInt(cursor.getString(0)); 
+			}
+			else
+				speakerPhone = 0;
+
+			cursor.close();
 		}
 		else
 			speakerPhone = 0;
-
-		cursor.close();
 		//db.close();
 
 		return speakerPhone;
@@ -1701,28 +1715,31 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 												}, 
 				                 KEY_E_ID + "=?",
 				                 new String[] { String.valueOf(event_id) }, null, null, null, null);
-		if (cursor != null)
-			cursor.moveToFirst();
 
 		Event event = null;
 		
-		if (cursor.getCount() > 0)
+		if (cursor != null)
 		{
-		
-			event = new Event(Long.parseLong(cursor.getString(0)),
-				                      cursor.getString(1), 
-				                      Long.parseLong(cursor.getString(2)),
-				                      Long.parseLong(cursor.getString(3)),
-				                      Integer.parseInt(cursor.getString(4)),
-				                      cursor.getString(5),
-				                      Integer.parseInt(cursor.getString(6)) == 1,
-				                      Integer.parseInt(cursor.getString(7)) == 1,
-				                      Integer.parseInt(cursor.getString(8)) == 1,
-				                      Integer.parseInt(cursor.getString(9))
-				                      );
-		}
+			cursor.moveToFirst();
 
-		cursor.close();
+			if (cursor.getCount() > 0)
+			{
+			
+				event = new Event(Long.parseLong(cursor.getString(0)),
+					                      cursor.getString(1), 
+					                      Long.parseLong(cursor.getString(2)),
+					                      Long.parseLong(cursor.getString(3)),
+					                      Integer.parseInt(cursor.getString(4)),
+					                      cursor.getString(5),
+					                      Integer.parseInt(cursor.getString(6)) == 1,
+					                      Integer.parseInt(cursor.getString(7)) == 1,
+					                      Integer.parseInt(cursor.getString(8)) == 1,
+					                      Integer.parseInt(cursor.getString(9))
+					                      );
+			}
+	
+			cursor.close();
+		}
 		
 		if (event != null)
 			getEventPreferences(event, db);
@@ -2015,54 +2032,56 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				                 KEY_E_ID + "=?",
 				                 new String[] { String.valueOf(event._id) }, null, null, null, null);
 		if (cursor != null)
+		{
 			cursor.moveToFirst();
 
-		EventPreferencesTime eventPreferences = (EventPreferencesTime)event._eventPreferencesTime;
-		
-		eventPreferences._enabled = (Integer.parseInt(cursor.getString(0)) == 1) ? true : false; 
-				
-		String daysOfWeek = cursor.getString(1);
-		//Log.e("DatabaseHandler.getEventPreferencesTime","daysOfWeek="+daysOfWeek);
-
-		if (daysOfWeek != null)
-		{
-		String[] splits = daysOfWeek.split("\\|");
-		if (splits[0].equals(DaysOfWeekPreference.allValue))
-		{
-			eventPreferences._sunday = true;
-			eventPreferences._monday = true;
-			eventPreferences._tuesday = true;
-			eventPreferences._wendesday = true;
-			eventPreferences._thursday = true;
-			eventPreferences._friday = true;
-			eventPreferences._saturday = true;
-		}
-		else
-		{
-			eventPreferences._sunday = false;
-			eventPreferences._monday = false;
-			eventPreferences._tuesday = false;
-			eventPreferences._wendesday = false;
-			eventPreferences._thursday = false;
-			eventPreferences._friday = false;
-			eventPreferences._saturday = false;
-			for (String value : splits)
+			EventPreferencesTime eventPreferences = (EventPreferencesTime)event._eventPreferencesTime;
+			
+			eventPreferences._enabled = (Integer.parseInt(cursor.getString(0)) == 1) ? true : false; 
+					
+			String daysOfWeek = cursor.getString(1);
+			//Log.e("DatabaseHandler.getEventPreferencesTime","daysOfWeek="+daysOfWeek);
+	
+			if (daysOfWeek != null)
 			{
-				eventPreferences._sunday = eventPreferences._sunday || value.equals("0");
-				eventPreferences._monday = eventPreferences._monday || value.equals("1");
-				eventPreferences._tuesday = eventPreferences._tuesday || value.equals("2");
-				eventPreferences._wendesday = eventPreferences._wendesday || value.equals("3");
-				eventPreferences._thursday = eventPreferences._thursday || value.equals("4");
-				eventPreferences._friday = eventPreferences._friday || value.equals("5");
-				eventPreferences._saturday = eventPreferences._saturday || value.equals("6");
+			String[] splits = daysOfWeek.split("\\|");
+			if (splits[0].equals(DaysOfWeekPreference.allValue))
+			{
+				eventPreferences._sunday = true;
+				eventPreferences._monday = true;
+				eventPreferences._tuesday = true;
+				eventPreferences._wendesday = true;
+				eventPreferences._thursday = true;
+				eventPreferences._friday = true;
+				eventPreferences._saturday = true;
 			}
+			else
+			{
+				eventPreferences._sunday = false;
+				eventPreferences._monday = false;
+				eventPreferences._tuesday = false;
+				eventPreferences._wendesday = false;
+				eventPreferences._thursday = false;
+				eventPreferences._friday = false;
+				eventPreferences._saturday = false;
+				for (String value : splits)
+				{
+					eventPreferences._sunday = eventPreferences._sunday || value.equals("0");
+					eventPreferences._monday = eventPreferences._monday || value.equals("1");
+					eventPreferences._tuesday = eventPreferences._tuesday || value.equals("2");
+					eventPreferences._wendesday = eventPreferences._wendesday || value.equals("3");
+					eventPreferences._thursday = eventPreferences._thursday || value.equals("4");
+					eventPreferences._friday = eventPreferences._friday || value.equals("5");
+					eventPreferences._saturday = eventPreferences._saturday || value.equals("6");
+				}
+			}
+			}
+			eventPreferences._startTime = Long.parseLong(cursor.getString(2));
+			eventPreferences._endTime = Long.parseLong(cursor.getString(3));
+			eventPreferences._useEndTime = (Integer.parseInt(cursor.getString(4)) == 1) ? true : false;
+			
+			cursor.close();
 		}
-		}
-		eventPreferences._startTime = Long.parseLong(cursor.getString(2));
-		eventPreferences._endTime = Long.parseLong(cursor.getString(3));
-		eventPreferences._useEndTime = (Integer.parseInt(cursor.getString(4)) == 1) ? true : false;
-		
-		cursor.close();
 	}
 
 	private void getEventPreferencesBattery(Event event, SQLiteDatabase db) {
@@ -2075,16 +2094,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				                 KEY_E_ID + "=?",
 				                 new String[] { String.valueOf(event._id) }, null, null, null, null);
 		if (cursor != null)
+		{
 			cursor.moveToFirst();
 
-		EventPreferencesBattery eventPreferences = (EventPreferencesBattery)event._eventPreferencesBattery;
-
-		eventPreferences._enabled = (Integer.parseInt(cursor.getString(0)) == 1);
-		eventPreferences._levelLow = Integer.parseInt(cursor.getString(1));
-		eventPreferences._levelHight = Integer.parseInt(cursor.getString(2));
-		eventPreferences._charging = (Integer.parseInt(cursor.getString(3)) == 1);
-		
-		cursor.close();
+			EventPreferencesBattery eventPreferences = (EventPreferencesBattery)event._eventPreferencesBattery;
+	
+			eventPreferences._enabled = (Integer.parseInt(cursor.getString(0)) == 1);
+			eventPreferences._levelLow = Integer.parseInt(cursor.getString(1));
+			eventPreferences._levelHight = Integer.parseInt(cursor.getString(2));
+			eventPreferences._charging = (Integer.parseInt(cursor.getString(3)) == 1);
+			
+			cursor.close();
+		}
 	}
 
 	private void getEventPreferencesCall(Event event, SQLiteDatabase db) {
@@ -2097,16 +2118,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				                 KEY_E_ID + "=?",
 				                 new String[] { String.valueOf(event._id) }, null, null, null, null);
 		if (cursor != null)
+		{
 			cursor.moveToFirst();
 
-		EventPreferencesCall eventPreferences = (EventPreferencesCall)event._eventPreferencesCall;
-
-		eventPreferences._enabled = (Integer.parseInt(cursor.getString(0)) == 1);
-		eventPreferences._callEvent = Integer.parseInt(cursor.getString(1));
-		eventPreferences._contacts = cursor.getString(2);
-		eventPreferences._contactListType = Integer.parseInt(cursor.getString(3));
-		
-		cursor.close();
+			EventPreferencesCall eventPreferences = (EventPreferencesCall)event._eventPreferencesCall;
+	
+			eventPreferences._enabled = (Integer.parseInt(cursor.getString(0)) == 1);
+			eventPreferences._callEvent = Integer.parseInt(cursor.getString(1));
+			eventPreferences._contacts = cursor.getString(2);
+			eventPreferences._contactListType = Integer.parseInt(cursor.getString(3));
+			
+			cursor.close();
+		}
 	}
 
 	private void getEventPreferencesPeripheral(Event event, SQLiteDatabase db) {
@@ -2117,14 +2140,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				                 KEY_E_ID + "=?",
 				                 new String[] { String.valueOf(event._id) }, null, null, null, null);
 		if (cursor != null)
+		{
 			cursor.moveToFirst();
 
-		EventPreferencesPeripherals eventPreferences = (EventPreferencesPeripherals)event._eventPreferencesPeripherals;
-
-		eventPreferences._enabled = (Integer.parseInt(cursor.getString(0)) == 1);
-		eventPreferences._peripheralType = Integer.parseInt(cursor.getString(1));
-		
-		cursor.close();
+			EventPreferencesPeripherals eventPreferences = (EventPreferencesPeripherals)event._eventPreferencesPeripherals;
+	
+			eventPreferences._enabled = (Integer.parseInt(cursor.getString(0)) == 1);
+			eventPreferences._peripheralType = Integer.parseInt(cursor.getString(1));
+			
+			cursor.close();
+		}
 	}
 	
 	private void getEventPreferencesCalendar(Event event, SQLiteDatabase db) {
@@ -2140,19 +2165,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				                 KEY_E_ID + "=?",
 				                 new String[] { String.valueOf(event._id) }, null, null, null, null);
 		if (cursor != null)
+		{
 			cursor.moveToFirst();
 
-		EventPreferencesCalendar eventPreferences = (EventPreferencesCalendar)event._eventPreferencesCalendar;
-
-		eventPreferences._enabled = (Integer.parseInt(cursor.getString(0)) == 1);
-		eventPreferences._calendars = cursor.getString(1);
-		eventPreferences._searchField = Integer.parseInt(cursor.getString(2));
-		eventPreferences._searchString = cursor.getString(3);
-		eventPreferences._startTime = Long.parseLong(cursor.getString(4));
-		eventPreferences._endTime = Long.parseLong(cursor.getString(5));
-		eventPreferences._eventFound = (Integer.parseInt(cursor.getString(6)) == 1);
-		
-		cursor.close();
+			EventPreferencesCalendar eventPreferences = (EventPreferencesCalendar)event._eventPreferencesCalendar;
+	
+			eventPreferences._enabled = (Integer.parseInt(cursor.getString(0)) == 1);
+			eventPreferences._calendars = cursor.getString(1);
+			eventPreferences._searchField = Integer.parseInt(cursor.getString(2));
+			eventPreferences._searchString = cursor.getString(3);
+			eventPreferences._startTime = Long.parseLong(cursor.getString(4));
+			eventPreferences._endTime = Long.parseLong(cursor.getString(5));
+			eventPreferences._eventFound = (Integer.parseInt(cursor.getString(6)) == 1);
+			
+			cursor.close();
+		}
 	}
 
 	private void getEventPreferencesWifi(Event event, SQLiteDatabase db) {
@@ -2164,15 +2191,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				                 KEY_E_ID + "=?",
 				                 new String[] { String.valueOf(event._id) }, null, null, null, null);
 		if (cursor != null)
+		{
 			cursor.moveToFirst();
 
-		EventPreferencesWifi eventPreferences = (EventPreferencesWifi)event._eventPreferencesWifi;
-
-		eventPreferences._enabled = (Integer.parseInt(cursor.getString(0)) == 1);
-		eventPreferences._SSID = cursor.getString(1);
-		eventPreferences._connectionType = Integer.parseInt(cursor.getString(2));
-		
-		cursor.close();
+			EventPreferencesWifi eventPreferences = (EventPreferencesWifi)event._eventPreferencesWifi;
+	
+			eventPreferences._enabled = (Integer.parseInt(cursor.getString(0)) == 1);
+			eventPreferences._SSID = cursor.getString(1);
+			eventPreferences._connectionType = Integer.parseInt(cursor.getString(2));
+			
+			cursor.close();
+		}
 	}
 	
 	public int updateEventPreferences(Event event) {
@@ -2342,14 +2371,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				                 KEY_E_ID + "=?",
 				                 new String[] { String.valueOf(event._id) }, null, null, null, null);
 		if (cursor != null)
+		{
 			cursor.moveToFirst();
 
-		if (cursor.getCount() > 0)
-		{
-			eventStatus = Integer.parseInt(cursor.getString(0));
+			if (cursor.getCount() > 0)
+			{
+				eventStatus = Integer.parseInt(cursor.getString(0));
+			}
+	
+			cursor.close();
 		}
-
-		cursor.close();
 		
 		//db.close();
 
@@ -2589,16 +2620,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				                 KEY_E_ID + "=?",
 				                 new String[] { String.valueOf(event._id) }, null, null, null, null);
 		if (cursor != null)
+		{
 			cursor.moveToFirst();
 
-		if (cursor.getCount() > 0)
-		{
-			event._eventPreferencesCalendar._startTime = Long.parseLong(cursor.getString(0));
-			event._eventPreferencesCalendar._endTime = Long.parseLong(cursor.getString(1));
-			event._eventPreferencesCalendar._eventFound = (Integer.parseInt(cursor.getString(2)) == 1);
+			if (cursor.getCount() > 0)
+			{
+				event._eventPreferencesCalendar._startTime = Long.parseLong(cursor.getString(0));
+				event._eventPreferencesCalendar._endTime = Long.parseLong(cursor.getString(1));
+				event._eventPreferencesCalendar._eventFound = (Integer.parseInt(cursor.getString(2)) == 1);
+			}
+	
+			cursor.close();
 		}
-
-		cursor.close();
 		
 		//db.close();
 
