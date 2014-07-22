@@ -350,15 +350,26 @@
     <string name="array_event_pref_calendarSearchField_description">Popis</string>
     <string name="event_preferences_calendar_search_string">Hľadaný reťazec</string>
     <string name="event_preferences_calendar_no_event">Žiadna udalosť</string>
-
     <string name="pphelper_upgrade_notification_title">Je nutná aktualizácia PPHelpera.</string>
     <string name="pphelper_upgrade_notification_text">Prosím kliknite na spustenie aktualizácie.</string>
-    	
     <string name="array_event_pref_priorityLowest">Najnižšia</string>
     <string name="array_event_pref_priorityLower">Nižšia</string>
     <string name="array_event_pref_priorityLowerMedium">Stredne nízka</string>
     <string name="array_event_pref_priorityUpperMedium">Stredne vysoká</string>
     <string name="array_event_pref_priorityHigher">Vyššia</string>
     <string name="array_event_pref_priorityHighest">Najvyššia</string>
+    
+    <string name="event_type_wifi">WiFi</string>
+    <string name="event_preferences_category_eventWifiParameters">WiFi</string>
+    <string name="event_preferences_wifi_enabled">Použi WiFi</string>
+    <string name="event_preferences_wifi_ssid">SSID</string>
+    <string name="pref_event_wifi_ssid">SSID</string>
+    <string name="pref_event_wifi_connectionType">Pripojenie</string>
+	<string name="array_event_pref_wifiConnectionType_connected">Pripojené</string>    
+	<string name="array_event_pref_wifiConnectionType_inFront">V okolí</string>
+	<string name="event_preferences_wifi_connection_type">Typ pripojenia</string>
+	<string name="phone_profiles_pref_category_event">Udalosti</string>
+	<string name="phone_profiles_pref_applicationEventWifiScanInterval">Interval skenovania WiFi (min)</string>
+	<string name="phone_profiles_pref_applicationEventWifiEnableWifi">Povoľ WiFi</string>    
     
 </resources>

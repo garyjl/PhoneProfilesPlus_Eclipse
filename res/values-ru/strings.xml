@@ -354,15 +354,26 @@
     <string name="array_event_pref_calendarSearchField_description">Описание</string>
     <string name="event_preferences_calendar_search_string">Искомая строка</string>
     <string name="event_preferences_calendar_no_event">Нет мероприятия</string>
-
     <string name="pphelper_upgrade_notification_title">Нужно обновить PPHelper.</string>
     <string name="pphelper_upgrade_notification_text">Пожалуйста, нажмите здесь, чтобы начать обновление.</string>
-    
     <string name="array_event_pref_priorityLowest">Низкая</string>
     <string name="array_event_pref_priorityLower">Ниже</string>
     <string name="array_event_pref_priorityLowerMedium">Умеренно низким</string>
     <string name="array_event_pref_priorityUpperMedium">Умеренно высокой</string>
     <string name="array_event_pref_priorityHigher">Высшее</string>
     <string name="array_event_pref_priorityHighest">Наивысший</string>
+
+    <string name="event_type_wifi">WiFi</string>
+    <string name="event_preferences_category_eventWifiParameters">WiFi</string>
+    <string name="event_preferences_wifi_enabled">Активировать</string>
+    <string name="event_preferences_wifi_ssid">SSID</string>
+    <string name="pref_event_wifi_ssid">SSID</string>
+    <string name="pref_event_wifi_connectionType">Подключение</string>
+	<string name="array_event_pref_wifiConnectionType_connected">Подключен</string>    
+	<string name="array_event_pref_wifiConnectionType_inFront">В передней</string>
+	<string name="event_preferences_wifi_connection_type">Подключение</string>
+	<string name="phone_profiles_pref_category_event">События</string>
+	<string name="phone_profiles_pref_applicationEventWifiScanInterval">WiFi интервал опроса (мин)</string>
+	<string name="phone_profiles_pref_applicationEventWifiEnableWifi">Активировать WiFi</string>    
     
 </resources>
