@@ -104,3 +104,18 @@ Event preferences: WiFi location
       - ak nema wifi zapnutu, zapnut
       - do EventPreferencesWifi.setSystemPauseEvent a setSystemRunningEvent pridat
         pre connectionType = CTYPE_CONNECTED
+        
+------------------------------------------
+
+Ako ukoncovat udalosti, ak sa prekryvaju:
+- Problem je, ze ak skonci skor udalost, ktora nie je posledna v timeline, nenaaktivuje sa jej "end profile".
+- Predpoklada sa totiz, ze udalost, ktora je na konci timeline stale trva, takze sa nema preco
+  aktivovat "end profile" pre udalost, ktora je nad nou.
+- Cize ak je v timeline poradie udalosti:
+  1. V OSK
+  2. V OSK v kancli
+  A prva skonci "V OSK", tak sa neaktivuje profil "Vonku". Potom skonci udalost "V OSK v kancli",
+  ale ta nema "end profile" nastaveny. Takze zostane nastaveny profil "Praca".
+- Co tak spravit to, ze ak ziadna udalost za tou, co sa ukoncuje ma nastaveny "end profile" na "None" a
+  aj "undo profile" nezaskrtnuty, tak sa spravi "end profile" udalost, ktora sa prave ukoncuje.
+       

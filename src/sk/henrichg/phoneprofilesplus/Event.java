@@ -572,7 +572,59 @@ public class Event {
 		return;
 	}
 	
-	public void pauseEvent(DataWrapper dataWrapper, 
+	private void doActivateEndProfile(DataWrapper dataWrapper,
+            							int eventPosition,
+            							int timeLineSize,
+										List<EventTimeline> eventTimelineList,
+										EventTimeline eventTimeline,
+										boolean activateReturnProfile)
+	{
+		
+		// check whether events behind are set _fkProfileEnd or _undoProfile
+		// when true, no activate "end profile"
+		if ((eventPosition < (timeLineSize-1)) && (timeLineSize > 1))
+		{	
+			for (int i = eventPosition; i < (timeLineSize-1); i++)
+			{
+				if (_fkProfileEnd != Event.PROFILE_END_NO_ACTIVATE)
+					return;
+				if (_undoneProfile)
+					return;
+			}
+		}
+		
+		// activate profile only when profile not already activated
+		if (activateReturnProfile && canActivateReturnProfile())
+		{
+			Profile profile = dataWrapper.getActivatedProfile();
+			long activatedProfileId = 0;
+			if (profile != null)
+				activatedProfileId = profile._id;
+			// first activate _fkProfileEnd
+			if (_fkProfileEnd != Event.PROFILE_END_NO_ACTIVATE)
+			{
+				if (_fkProfileEnd != activatedProfileId)
+				{
+					GlobalData.logE("Event.pauseEvent","activate end porfile");
+					dataWrapper.activateProfileFromEvent(_fkProfileEnd, false, "");
+					activatedProfileId = _fkProfileEnd;
+				}
+			}
+			// second activate when undoneProfile is set
+			if (_undoneProfile)
+			{
+				if (eventTimeline._fkProfileEndActivated != activatedProfileId)
+				{
+					GlobalData.logE("Event.pauseEvent","undone profile");
+					GlobalData.logE("Event.pauseEvent","_fkProfileEndActivated="+eventTimeline._fkProfileEndActivated);
+					if (eventTimeline._fkProfileEndActivated != 0)
+						dataWrapper.activateProfileFromEvent(eventTimeline._fkProfileEndActivated, false, "");
+				}
+			}
+		}
+	}
+	
+	public void pauseEvent(DataWrapper dataWrapper,
 							List<EventTimeline> eventTimelineList,
 							boolean activateReturnProfile, 
 							boolean ignoreGlobalPref,
@@ -621,47 +673,23 @@ public class Event {
 				}
 				eventTimelineList.get(0)._fkProfileEndActivated = eventTimeline._fkProfileEndActivated;
 				dataWrapper.getDatabaseHandler().updateProfileReturnET(eventTimelineList);
+
+				doActivateEndProfile(dataWrapper, eventPosition, timeLineSize, 
+									eventTimelineList, eventTimeline, activateReturnProfile);				
 			}
 			else
 			if (eventPosition == (timeLineSize-1))
 			{
 				// event is in end of timeline 
 				
-				// activate profile only when profile not already activated
-				if (activateReturnProfile && canActivateReturnProfile())
-				{
-					Profile profile = dataWrapper.getActivatedProfile();
-					long activatedProfileId = 0;
-					if (profile != null)
-						activatedProfileId = profile._id;
-					// first activate _fkProfileEnd
-					if (_fkProfileEnd != Event.PROFILE_END_NO_ACTIVATE)
-					{
-						if (_fkProfileEnd != activatedProfileId)
-						{
-							GlobalData.logE("Event.pauseEvent","activate end porfile");
-							dataWrapper.activateProfileFromEvent(_fkProfileEnd, false, "");
-							activatedProfileId = _fkProfileEnd;
-						}
-					}
-					// second activate when undoneProfile is set
-					if (_undoneProfile)
-					{
-						if (eventTimeline._fkProfileEndActivated != activatedProfileId)
-						{
-							GlobalData.logE("Event.pauseEvent","undone profile");
-							GlobalData.logE("Event.pauseEvent","_fkProfileEndActivated="+eventTimeline._fkProfileEndActivated);
-							if (eventTimeline._fkProfileEndActivated != 0)
-								dataWrapper.activateProfileFromEvent(eventTimeline._fkProfileEndActivated, false, "");
-						}
-					}
-				}
+				doActivateEndProfile(dataWrapper, eventPosition, timeLineSize, 
+									eventTimelineList, eventTimeline, activateReturnProfile);				
 			}
 			else
 			{
 				// event is in middle of timeline 
-
-				// do nothing
+				doActivateEndProfile(dataWrapper, eventPosition, timeLineSize, 
+									eventTimelineList, eventTimeline, activateReturnProfile);				
 			}
 		}
 
