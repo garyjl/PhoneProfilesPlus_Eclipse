@@ -1770,6 +1770,7 @@ public class DataWrapper {
 			getDatabaseHandler().unblockAllEvents();
 		}
 		
+		getDatabaseHandler().deactivateProfile();
 		//getDatabaseHandler().updateAllEventsStatus(Event.ESTATUS_RUNNING, Event.ESTATUS_PAUSE);
 		
 		Intent intent = new Intent();

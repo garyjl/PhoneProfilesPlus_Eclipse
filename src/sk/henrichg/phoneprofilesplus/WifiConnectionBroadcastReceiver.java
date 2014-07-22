@@ -49,8 +49,17 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 
 	        		GlobalData.logE("@@@ WifiConnectionBroadcastReceiver.onReceive","state="+info.getState());
 
-	    			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
+		        	if (info.getState() == NetworkInfo.State.CONNECTED)
+			        {
+		        		if (WifiScanAlarmBroadcastReceiver.scanResults == null)
+		        		{
+		        			// no wifi scan data, rescan
+							Intent broadcastIntent = new Intent(context, WifiScanAlarmBroadcastReceiver.class);
+							context.sendBroadcast(broadcastIntent);
+		        		}
+			        }
 	        		
+	    			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
 	    			boolean wifiEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_WIFICONNECTED) > 0;
 	    			dataWrapper.invalidateDataWrapper();
 	    	
@@ -63,6 +72,14 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 	    				eventsServiceIntent.putExtra(GlobalData.EXTRA_BROADCAST_RECEIVER_TYPE, BROADCAST_RECEIVER_TYPE);
 	    				startWakefulService(context, eventsServiceIntent);
 	    			}
+	    			
+		        	if (info.getState() == NetworkInfo.State.DISCONNECTED)
+			        {
+						// rescan wifi
+						Intent broadcastIntent = new Intent(context, WifiScanAlarmBroadcastReceiver.class);
+						context.sendBroadcast(broadcastIntent);
+			        }
+	    			
 	        	}
             }			
 		}

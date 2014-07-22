@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Handler;
 
@@ -65,6 +67,7 @@ public class ExecuteVolumeProfilePrefsService extends IntentService //WakefulInt
 					audioManager.setMode(AudioManager.MODE_NORMAL);
 					final String _eventNotificationSound = eventNotificationSound;
 					final DataWrapper _dataWrapper = dataWrapper;
+					
 				    Handler handler = new Handler(getMainLooper());
 					handler.post(new Runnable() {
 						public void run() {
@@ -75,7 +78,7 @@ public class ExecuteVolumeProfilePrefsService extends IntentService //WakefulInt
 							    mp.setAudioStreamType(AudioManager.STREAM_NOTIFICATION);
 							    mp.prepare();
 							    mp.start();
-					        	Thread.sleep(200);
+					        	Thread.sleep(2000);
 							}
 							catch(Exception e)
 							{
@@ -83,6 +86,13 @@ public class ExecuteVolumeProfilePrefsService extends IntentService //WakefulInt
 							}				
 						}
 					});
+					
+					/*
+					Uri notification = Uri.parse(_eventNotificationSound);
+							//RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+					Ringtone r = RingtoneManager.getRingtone(_dataWrapper.context, notification);
+					r.play();
+					*/					
 				}
 			}
 		}
