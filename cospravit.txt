@@ -116,6 +116,6 @@ Ako ukoncovat udalosti, ak sa prekryvaju:
   2. V OSK v kancli
   A prva skonci "V OSK", tak sa neaktivuje profil "Vonku". Potom skonci udalost "V OSK v kancli",
   ale ta nema "end profile" nastaveny. Takze zostane nastaveny profil "Praca".
-- Co tak spravit to, ze ak ziadna udalost za tou, co sa ukoncuje ma nastaveny "end profile" na "None" a
+- TOTO JE ZLE !!!! Co tak spravit to, ze ak ziadna udalost za tou, co sa ukoncuje ma nastaveny "end profile" na "None" a
   aj "undo profile" nezaskrtnuty, tak sa spravi "end profile" udalost, ktora sa prave ukoncuje.
        

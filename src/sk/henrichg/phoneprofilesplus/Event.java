@@ -584,13 +584,14 @@ public class Event {
 		// when true, no activate "end profile"
 		if ((eventPosition < (timeLineSize-1)) && (timeLineSize > 1))
 		{	
-			for (int i = eventPosition; i < (timeLineSize-1); i++)
+			/*for (int i = eventPosition; i < (timeLineSize-1); i++)
 			{
 				if (_fkProfileEnd != Event.PROFILE_END_NO_ACTIVATE)
 					return;
 				if (_undoneProfile)
 					return;
-			}
+			}*/
+			return;
 		}
 		
 		// activate profile only when profile not already activated
