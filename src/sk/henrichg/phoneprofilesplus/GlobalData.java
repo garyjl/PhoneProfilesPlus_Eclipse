@@ -41,8 +41,9 @@ public class GlobalData extends Application {
 										 "@@@ WifiConnectionBroadcastReceiver|"+
 										 "@@@ WifiScanAlarmBroadcastReceiver|"+
 										 "@@@ WifiScanBroadcastReceiver|"+
-										 "@@@ ScreenOnOffBroadcastReceiver";
-										//"@@@ DataWrapper"
+										 "@@@ ScreenOnOffBroadcastReceiver"
+										 //"@@@ DataWrapper|"+
+										 //"@@@ EventsService"
 			;
 	
 	public static final String EXPORT_PATH = "/PhoneProfilesPlus";
@@ -177,6 +178,8 @@ public class GlobalData extends Application {
 	static final String PREF_EVENT_HEADSET_CONNECTED = "eventHeadsetConnected";
 	static final String PREF_EVENT_HEADSET_MICROPHONE = "eventHeadsetMicrophone";
 	static final String PREF_EVENT_HEADSET_BLUETOOTH = "eventHeadsetBluetooth";
+	static final String PREF_EVENT_WIFI_START_SCAN = "eventWifiStartScan";
+	static final String PREF_EVENT_WIFI_ENABLED_FOR_SCAN = "eventWifiEnabledForScan"; 
 	
     public static boolean applicationStartOnBoot;
     public static boolean applicationActivate;

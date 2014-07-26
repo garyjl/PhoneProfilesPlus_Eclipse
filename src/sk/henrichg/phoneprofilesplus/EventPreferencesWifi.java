@@ -134,8 +134,6 @@ public class EventPreferencesWifi extends EventPreferences {
 		if ((_connectionType == CTYPE_INFRONT) && 
 			(!WifiScanAlarmBroadcastReceiver.isAlarmSet(context)))
 			WifiScanAlarmBroadcastReceiver.setAlarm(context);
-		if (_connectionType == CTYPE_CONNECTED)
-			WifiScanAlarmBroadcastReceiver.enableWifi(context);
 	}
 
 	@Override
@@ -144,8 +142,6 @@ public class EventPreferencesWifi extends EventPreferences {
 		if ((_connectionType == CTYPE_INFRONT) && 
 			(!WifiScanAlarmBroadcastReceiver.isAlarmSet(context)))
 			WifiScanAlarmBroadcastReceiver.setAlarm(context);
-		if (_connectionType == CTYPE_CONNECTED)
-			WifiScanAlarmBroadcastReceiver.enableWifi(context);
 	}
 	
 	@Override

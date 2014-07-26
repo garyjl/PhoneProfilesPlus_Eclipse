@@ -9,6 +9,8 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
@@ -26,9 +28,8 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 	public static final String BROADCAST_RECEIVER_TYPE = "wifiScanAlarm";
 
 	private static WifiLock wifiLock = null;
-    private static WakeLock wakeLock = null;
- 
-	public static boolean scanStarted = false;
+    //private static WakeLock wakeLock = null;
+
 	public static List<ScanResult> scanResults = null;
 
 	@SuppressLint("NewApi")
@@ -50,8 +51,11 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 
 			if (wifiEventsExists)
 			{
+				enableWifi(context);
+				
 				WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 				boolean isWifiEnabled = wifi.getWifiState() == WifiManager.WIFI_STATE_ENABLED;
+				isWifiEnabled = isWifiEnabled || getWifiEnabledForScan(context);
 		    	if (android.os.Build.VERSION.SDK_INT >= 18)
 		    		isWifiEnabled = isWifiEnabled || (wifi.isScanAlwaysAvailable());
 				if (isWifiEnabled)
@@ -73,7 +77,7 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		    				// connected SSID is scanned
 		    				// no scan
 		    				
-		    				scanStarted = false;
+		    				setStartScan(context, false);
 
 		    				GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.onReceive","connected SSID is scanned, no start scan");
 
@@ -86,12 +90,12 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 					
 			        lock(context); // lock wakeLock and wifiLock, then scan.
 			                       // unlock() is then called at the end of the onReceive function of WifiScanBroadcastReceiver
-			        scanStarted = wifi.startScan();
+    				setStartScan(context, wifi.startScan());
 			    }
 			    else
-			    	scanStarted = false;
+    				setStartScan(context, false);
 
-		      	GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.onReceive","scanStarted="+scanStarted);
+		      	GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.onReceive","scanStarted="+getStartScan(context));
 			}
 			else
 				removeAlarm(context);
@@ -100,6 +104,13 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 			
 		}
 		
+	}
+	
+	public static void initialize(Context context)
+	{
+    	unlock();
+    	setStartScan(context, false);
+    	setWifiEnabledForScan(context, false);
 	}
 	
 	public static void setAlarm(Context context)
@@ -111,36 +122,6 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		{
 			GlobalData.logE("WifiScanAlarmBroadcastReceiver.setAlarm","WifiHardware=true");
 			
-	        // enable Wifi
-	        enableWifi(context);
-	        
-	        /*
-			ConnectivityManager connManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-			NetworkInfo networkInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-			if (networkInfo.isConnected())
-			{
-				GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.setAlarm","wifi is connected");
-
-				// wifi is connected
-				WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-				WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-    			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
-    			String SSID = dataWrapper.getSSID(wifiManager, wifiInfo);
-    			boolean isSSIDScanned = dataWrapper.getDatabaseHandler().isSSIDScanned(SSID); 
-    			dataWrapper.invalidateDataWrapper();
-    			
-    			if (isSSIDScanned)
-    			{
-    				// connected SSID is scanned
-    				// no set alarm
-
-    				GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.setAlarm","connected SSID is scanned, no set alarm");
-    				
-    				return;
-    			}
-			}
-			*/
-
 			removeAlarm(context);
 	        
 	        AlarmManager alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
@@ -179,13 +160,11 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
         		
         	alarmManager.cancel(pendingIntent);
         	pendingIntent.cancel();
-        	
-        	unlock();
-        	
-			WifiScanAlarmBroadcastReceiver.scanStarted = false;
         }
         else
        		GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.removeAlarm","alarm not found");
+        
+        initialize(context);
     }
 	
 	public static boolean isAlarmSet(Context context)
@@ -207,12 +186,12 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		if (wifiLock == null)
 	        wifiLock = ((WifiManager) context.getSystemService(Context.WIFI_SERVICE))
 	                        .createWifiLock(WifiManager.WIFI_MODE_SCAN_ONLY , "WifiScanWifiLock");
-		if (wakeLock == null)
+		/*if (wakeLock == null)
 	        wakeLock = ((PowerManager) context.getSystemService(Context.POWER_SERVICE))
-	                        .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "WifiScanWakeLock");			
+	                        .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "WifiScanWakeLock");*/			
 
     	try {
-            wakeLock.acquire();
+            //wakeLock.acquire();
             wifiLock.acquire();
 		//	GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.lock","xxx");
         } catch(Exception e) {
@@ -223,13 +202,41 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
     public static void unlock()
     {
     	
-        if ((wakeLock != null) && (wakeLock.isHeld()))
-            wakeLock.release();
+        /*if ((wakeLock != null) && (wakeLock.isHeld()))
+            wakeLock.release();*/
         if ((wifiLock != null) && (wifiLock.isHeld()))
             wifiLock.release();
 		//GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.unlock","xxx");
     }
     
+	static public boolean getStartScan(Context context)
+	{
+		SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+		return preferences.getBoolean(GlobalData.PREF_EVENT_WIFI_START_SCAN, false);
+	}
+
+	static public void setStartScan(Context context, boolean eventsBlocked)
+	{
+		SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+		Editor editor = preferences.edit();
+		editor.putBoolean(GlobalData.PREF_EVENT_WIFI_START_SCAN, eventsBlocked);
+		editor.commit();
+	}
+
+	static public boolean getWifiEnabledForScan(Context context)
+	{
+		SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+		return preferences.getBoolean(GlobalData.PREF_EVENT_WIFI_ENABLED_FOR_SCAN, false);
+	}
+
+	static public void setWifiEnabledForScan(Context context, boolean eventsBlocked)
+	{
+		SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+		Editor editor = preferences.edit();
+		editor.putBoolean(GlobalData.PREF_EVENT_WIFI_ENABLED_FOR_SCAN, eventsBlocked);
+		editor.commit();
+	}
+	
     @SuppressWarnings("deprecation")
 	@SuppressLint("NewApi")
 	public static void enableWifi(Context context)
@@ -254,10 +261,17 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 					dataWrapper.invalidateDataWrapper();
 
 					if (wifiEventsExists)
+					{
+			        	GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.enableWifi","enable");
 						wifi.setWifiEnabled(true);
+						setWifiEnabledForScan(context, true);
+						return;
+					}
 		    	}
     		}
     	}
+
+    	setWifiEnabledForScan(context, false);
     }
 	
 }

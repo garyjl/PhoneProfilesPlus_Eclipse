@@ -28,25 +28,6 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 	        	if ((info.getState() == NetworkInfo.State.CONNECTED) ||
 	        		(info.getState() == NetworkInfo.State.DISCONNECTED))
 	        	{
-					/*
-					SupplicantState supState;
-			        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-			        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-			        supState = wifiInfo.getSupplicantState();	
-			        
-			        if (supState.equals(SupplicantState.COMPLETED)) {
-			            //logger.d("wifi enabled and connected");
-			        } else {
-			            if (supState.equals(SupplicantState.SCANNING)) {
-			                //logger.d("wifi scanning");
-			            } else if (supState.equals(SupplicantState.DISCONNECTED)) {
-			                //logger.d("wifi disonnected");
-			            } else {
-			                //logger.d("wifi connecting");
-			            }
-			        }
-			        */
-
 	        		GlobalData.logE("@@@ WifiConnectionBroadcastReceiver.onReceive","state="+info.getState());
 
 		        	if (info.getState() == NetworkInfo.State.CONNECTED)
@@ -73,12 +54,14 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 	    				startWakefulService(context, eventsServiceIntent);
 	    			}
 	    			
+	    			/*
 		        	if (info.getState() == NetworkInfo.State.DISCONNECTED)
 			        {
 						// rescan wifi
 						Intent broadcastIntent = new Intent(context, WifiScanAlarmBroadcastReceiver.class);
 						context.sendBroadcast(broadcastIntent);
 			        }
+			        */
 	    			
 	        	}
             }			

@@ -68,12 +68,11 @@ public class EventsService extends IntentService
 							 broadcastReceiverType.equals(CalendarProviderChangedBroadcastReceiver.BROADCAST_RECEIVER_TYPE) ||
 							 broadcastReceiverType.equals(SearchCalendarEventsBroadcastReceiver.BROADCAST_RECEIVER_TYPE));
 
-		GlobalData.logE("EventsService.onHandleIntent","isRestart="+isRestart);
+		//GlobalData.logE("@@@ EventsService.onHandleIntent","isRestart="+isRestart);
 		
 		if (isRestart)
 		{
 			List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
-			/*
 			// 1. pause events
 			dataWrapper.sortEventsByPriorityDesc();
 			for (Event _event : eventList)
@@ -87,9 +86,6 @@ public class EventsService extends IntentService
 					// pauzuj aj ked uz je zapauznuty
 					dataWrapper.doEventService(_event, true, true, false);
 			}
-			*/
-			// 1. pause all events
-			dataWrapper.pauseAllEvents(false, false);
 			// 2. start events in timeline order
 			GlobalData.logE("EventsService.onHandleIntent","eventTimeLineList.size()="+eventTimelineList.size());
 			for (EventTimeline eventTimeline : eventTimelineList)

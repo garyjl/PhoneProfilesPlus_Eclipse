@@ -699,8 +699,9 @@ public class DataWrapper {
 			// profile will by activated in call of RestartEventsBroadcastReceiver
 			getDatabaseHandler().deactivateProfile();
 
-		SearchCalendarEventsBroadcastReceiver.setAlarm(context);
+		WifiScanAlarmBroadcastReceiver.initialize(context);
 		WifiScanAlarmBroadcastReceiver.setAlarm(context);
+		SearchCalendarEventsBroadcastReceiver.setAlarm(context);
 		
 		
 		//restartEvents(true, unblockEventsRun);
@@ -1511,41 +1512,29 @@ public class DataWrapper {
 			}
 			if (event._eventPreferencesWifi._connectionType == EventPreferencesWifi.CTYPE_INFRONT)
 			{
-				/*if (wifiPassed)
-				{
-					// connected into scanned SSID, remove alarm = stop scanning
-					WifiScanAlarmBroadcastReceiver.removeAlarm(context);
-					GlobalData.logE("@@@ DataWrapper.doEventService","alarm removed");
-				}
-				else
-				{
-					// not connected into scanned SSID, start scanning
-					if (!WifiScanAlarmBroadcastReceiver.isAlarmSet(context))
-					{
-						WifiScanAlarmBroadcastReceiver.setAlarm(context);
-						if (WifiScanAlarmBroadcastReceiver.isAlarmSet(context))
-							GlobalData.logE("@@@ DataWrapper.doEventService","alarm set");
-					} */
 				if (!wifiPassed)
 				{	
+					/*
+					isWifiEnabled = isWifiEnabled || WifiScanAlarmBroadcastReceiver.getWifiEnabledForScan(context);
 			    	if (android.os.Build.VERSION.SDK_INT >= 18)
 			    		isWifiEnabled = isWifiEnabled || (wifiManager.isScanAlwaysAvailable());
 					if (isWifiEnabled)
 					{
+					*/
 						GlobalData.logE("DataWrapper.doEventService","wifiStateEnabled=true");
 	
 						
 						if (WifiScanAlarmBroadcastReceiver.scanResults != null)
 						{
-							GlobalData.logE("@@@ DataWrapper.doEventService","-- eventSSID="+event._eventPreferencesWifi._SSID);
+							//GlobalData.logE("@@@ DataWrapper.doEventService","-- eventSSID="+event._eventPreferencesWifi._SSID);
 	
 							for (ScanResult result : WifiScanAlarmBroadcastReceiver.scanResults)
 					        {
 								if (compareSSID(wifiManager, result, event._eventPreferencesWifi._SSID))
 								{
 									GlobalData.logE("@@@ DataWrapper.doEventService","wifi found");
-									GlobalData.logE("@@@ DataWrapper.doEventService","wifiSSID="+getSSID(wifiManager, result));
-									GlobalData.logE("@@@ DataWrapper.doEventService","wifiBSSID="+result.BSSID);
+									//GlobalData.logE("@@@ DataWrapper.doEventService","wifiSSID="+getSSID(wifiManager, result));
+									//GlobalData.logE("@@@ DataWrapper.doEventService","wifiBSSID="+result.BSSID);
 									wifiPassed = true;
 									break;
 								}
@@ -1554,7 +1543,7 @@ public class DataWrapper {
 						if (!wifiPassed)
 							GlobalData.logE("@@@ DataWrapper.doEventService","wifi not found");
 						
-					}
+					//}
 				}
 			}
 
@@ -1593,10 +1582,12 @@ public class DataWrapper {
 
 		GlobalData.logE("DataWrapper.doEventService","event.getStatus()="+event.getStatus());
 		GlobalData.logE("DataWrapper.doEventService","newEventStatus="+newEventStatus);
+
+		//GlobalData.logE("@@@ DataWrapper.doEventService","restartEvent="+restartEvent);
 		
 		if ((event.getStatus() != newEventStatus) || restartEvent)
 		{
-			GlobalData.logE("DataWrapper.doEventService"," do new event status");
+			//GlobalData.logE("@@@ DataWrapper.doEventService"," do new event status");
 			
 			if ((newEventStatus == Event.ESTATUS_RUNNING) && (!statePause))
 			{

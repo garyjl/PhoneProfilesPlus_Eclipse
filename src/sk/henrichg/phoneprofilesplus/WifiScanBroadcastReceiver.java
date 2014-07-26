@@ -13,14 +13,20 @@ public class WifiScanBroadcastReceiver extends WakefulBroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		
-		GlobalData.logE("#### WifiScanBroadcastReceiver.onReceive","xxx");
+		//GlobalData.logE("#### WifiScanBroadcastReceiver.onReceive","xxx");
+		GlobalData.logE("@@@ WifiScanBroadcastReceiver.onReceive","####");
 
-		boolean scanStarted = (WifiScanAlarmBroadcastReceiver.scanStarted);// ||
+		boolean scanStarted = (WifiScanAlarmBroadcastReceiver.getStartScan(context));// ||
 				              //(WifiScanAlarmBroadcastReceiver.scanResults == null);
 		
 		WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 		WifiScanAlarmBroadcastReceiver.scanResults = wifi.getScanResults();
 		WifiScanAlarmBroadcastReceiver.unlock();
+		if (WifiScanAlarmBroadcastReceiver.getWifiEnabledForScan(context))
+		{
+			wifi.setWifiEnabled(false);
+			WifiScanAlarmBroadcastReceiver.setWifiEnabledForScan(context, false);
+		}
 		
 
 		for (ScanResult result : WifiScanAlarmBroadcastReceiver.scanResults)
@@ -53,8 +59,7 @@ public class WifiScanBroadcastReceiver extends WakefulBroadcastReceiver {
 				//}
 			}
 
-			WifiScanAlarmBroadcastReceiver.scanStarted = false;
-			
+			WifiScanAlarmBroadcastReceiver.setStartScan(context, false);
 		}
 		
 		
