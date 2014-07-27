@@ -24,6 +24,8 @@ public class EventsService extends IntentService
 
 		GlobalData.logE("EventsService.onHandleIntent","-- start --------------------------------");
 
+		WifiScanAlarmBroadcastReceiver.unlock();
+		
 		if (!GlobalData.getApplicationStarted(context))
 			// application is not started
 			return;
