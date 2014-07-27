@@ -707,7 +707,7 @@ public class Event {
 			for (EventTimeline eventTimeline : eventTimelineList)
 			{
 				Event event = dataWrapper.getEventById(eventTimeline._fkEvent);
-				if (event._forceRun)
+				if ((event != null) && (event._forceRun))
 				{
 					forceRunRunning = true;
 					break;
