@@ -1843,7 +1843,7 @@ public class DataWrapper {
 	   			/*if (android.os.Build.VERSION.SDK_INT >= 16)
 	   				return "\u23E9 " + profile._name;
 	   			else*/
-	   				return "[>>] " + profile._name;
+	   				return "[\u00BB] " + profile._name;
 			}
 			else
 			{

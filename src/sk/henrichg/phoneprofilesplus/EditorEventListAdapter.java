@@ -310,7 +310,7 @@ public class EditorEventListAdapter extends BaseAdapter
    			/*if (android.os.Build.VERSION.SDK_INT >= 16)
    				holder.eventName.setText("\u23E9 " + eventPriority + event._name);
    			else */
-   				holder.eventName.setText("[>>]" + eventPriority + event._name);
+   				holder.eventName.setText("[\u00BB]" + eventPriority + event._name);
    		}
    		else
    			holder.eventName.setText(eventPriority + event._name);
