@@ -25,7 +25,7 @@
 	<declare-styleable name="EventTypePreference">
 	</declare-styleable>
 	<declare-styleable name="ProfilePreference">
-        <attr name="addActivatedItem" format="integer" />
+        <attr name="addNoActivateItem" format="integer" />
 	</declare-styleable>
 	<declare-styleable name="DaysOfWeekPreference">
         <attr format="string" name="checkAll" />

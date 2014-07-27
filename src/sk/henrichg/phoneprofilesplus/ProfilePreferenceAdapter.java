@@ -43,14 +43,14 @@ public class ProfilePreferenceAdapter extends BaseAdapter {
 	
 	public int getCount() {
 		int count = profileList.size();
-		if (dialog.addActivatedItem == 1)
+		if (dialog.addNoActivateItem == 1)
 			count++;
 		return count;
 	}
 
 	public Object getItem(int position) {
 		Profile profile;
-		if (dialog.addActivatedItem == 1)
+		if (dialog.addNoActivateItem == 1)
 		{
 			if (position == 0)
 				profile = null;
@@ -100,7 +100,7 @@ public class ProfilePreferenceAdapter extends BaseAdapter {
 	    }
 	    
 	    Profile profile;
-	    if (dialog.addActivatedItem == 1)
+	    if (dialog.addNoActivateItem == 1)
 	    {
 	    	if (position == 0)
 	    		profile = null;
@@ -129,7 +129,7 @@ public class ProfilePreferenceAdapter extends BaseAdapter {
 	    }
 	    else
 	    {
-	    	if ((dialog.addActivatedItem == 1) && (position == 0))
+	    	if ((dialog.addNoActivateItem == 1) && (position == 0))
 	    	{
 		    	holder.radioBtn.setChecked((profileId == Event.PROFILE_END_NO_ACTIVATE));
 		    	holder.profileLabel.setText(vi.getResources().getString(R.string.event_preferences_profile_end_no_activate));

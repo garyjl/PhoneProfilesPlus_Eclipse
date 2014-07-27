@@ -209,6 +209,12 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		//GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.unlock","xxx");
     }
     
+    public static void sendBroadcast(Context context)
+    {
+		Intent broadcastIntent = new Intent(context, WifiScanAlarmBroadcastReceiver.class);
+		context.sendBroadcast(broadcastIntent);
+    }
+    
 	static public boolean getStartScan(Context context)
 	{
 		SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);

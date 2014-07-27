@@ -62,6 +62,30 @@ public class PhoneProfilesPreferencesFragment extends PreferenceListFragment
 
 		//Log.e("PhoneProfilesPreferencesFragment.setSummary",key+"="+stringValue);
 		
+		if (key.equals(GlobalData.PREF_APPLICATION_EVENT_BACKGROUND_PROFILE))
+		{
+			String sProfileId = stringValue;
+			long lProfileId;
+			try {
+				lProfileId = Long.parseLong(sProfileId);
+			} catch (Exception e) {
+				lProfileId = 0;
+			}
+			DataWrapper dataWrapper = new DataWrapper(preferencesActivity.getBaseContext(), false, false, 0);
+		    Profile profile = dataWrapper.getProfileById(lProfileId);
+		    if (profile != null)
+		    {
+    	        prefMng.findPreference(key).setSummary(profile._name);
+		    }
+		    else
+		    {
+		    	if (lProfileId == Event.PROFILE_END_NO_ACTIVATE)
+		    		prefMng.findPreference(key).setSummary(preferencesActivity.getBaseContext().getResources().getString(R.string.event_preferences_profile_end_no_activate));
+		    	else
+		    		prefMng.findPreference(key).setSummary(preferencesActivity.getBaseContext().getResources().getString(R.string.event_preferences_profile_not_set));
+		    }
+		}
+		else
 		if (preference instanceof ListPreference) {
 			// For list preferences, look up the correct display value in
 			// the preference's 'entries' list.
@@ -122,7 +146,7 @@ public class PhoneProfilesPreferencesFragment extends PreferenceListFragment
 	private void updateSharedPreference()
 	{
 	    setSummary(GlobalData.PREF_APPLICATION_START_ON_BOOT);
-	    setSummary(GlobalData.PREF_APPLICATION_ACTIVATE);
+//	    setSummary(GlobalData.PREF_APPLICATION_ACTIVATE);
 	    setSummary(GlobalData.PREF_APPLICATION_ALERT);
 	    setSummary(GlobalData.PREF_APPLICATION_CLOSE);
 	    setSummary(GlobalData.PREF_APPLICATION_LONG_PRESS_ACTIVATION);
@@ -149,6 +173,7 @@ public class PhoneProfilesPreferencesFragment extends PreferenceListFragment
 	    setSummary(GlobalData.PREF_APPLICATION_WIDGET_LIST_ICON_LIGHTNESS);
 	    setSummary(GlobalData.PREF_APPLICATION_EVENT_WIFI_SCAN_INTERVAL);
 	    setSummary(GlobalData.PREF_APPLICATION_EVENT_WIFI_ENABLE_WIFI);
+	    setSummary(GlobalData.PREF_APPLICATION_EVENT_BACKGROUND_PROFILE);
 	    
 		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_WIFI, preferencesActivity.getBaseContext()) 
 					!= GlobalData.HARDWARE_CHECK_ALLOWED)

@@ -14,7 +14,7 @@ public class ProfilePreferenceDialog extends Dialog
 {
 
 	public ProfilePreference profilePreference;
-	public int addActivatedItem;
+	public int addNoActivateItem;
 	private ProfilePreferenceAdapter profilePreferenceAdapter;
 	
 	private Context _context;
@@ -31,7 +31,7 @@ public class ProfilePreferenceDialog extends Dialog
 		
 		profilePreference = preference;
 		
-		addActivatedItem = profilePreference.addActivatedItem;
+		addNoActivateItem = profilePreference.addNoActivateItem;
 
 
 		_context = context;
@@ -45,7 +45,7 @@ public class ProfilePreferenceDialog extends Dialog
 		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				if (addActivatedItem == 1)
+				if (addNoActivateItem == 1)
 				{
 					long profileId;
 					if (position == 0)

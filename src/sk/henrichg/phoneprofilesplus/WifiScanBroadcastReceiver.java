@@ -23,10 +23,7 @@ public class WifiScanBroadcastReceiver extends WakefulBroadcastReceiver {
 		WifiScanAlarmBroadcastReceiver.scanResults = wifi.getScanResults();
 		WifiScanAlarmBroadcastReceiver.unlock();
 		if (WifiScanAlarmBroadcastReceiver.getWifiEnabledForScan(context))
-		{
 			wifi.setWifiEnabled(false);
-			WifiScanAlarmBroadcastReceiver.setWifiEnabledForScan(context, false);
-		}
 		
 
 		for (ScanResult result : WifiScanAlarmBroadcastReceiver.scanResults)

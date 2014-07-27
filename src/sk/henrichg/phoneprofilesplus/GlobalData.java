@@ -130,7 +130,7 @@ public class GlobalData extends Application {
 	static final String DEFAULT_PROFILE_PREFS_NAME = "profile_preferences_default_profile"; //GlobalData.APPLICATION_PREFS_NAME;
 	
     public static final String PREF_APPLICATION_START_ON_BOOT = "applicationStartOnBoot";
-    public static final String PREF_APPLICATION_ACTIVATE = "applicationActivate";
+//    public static final String PREF_APPLICATION_ACTIVATE = "applicationActivate";
     public static final String PREF_APPLICATION_ALERT = "applicationAlert";
     public static final String PREF_APPLICATION_CLOSE = "applicationClose";
     public static final String PREF_APPLICATION_LONG_PRESS_ACTIVATION = "applicationLongClickActivation";
@@ -160,6 +160,7 @@ public class GlobalData extends Application {
     public static final String PREF_APPLICATION_NOTIFICATION_LAUNCHER = "applicationNotificationLauncher";
     public static final String PREF_APPLICATION_EVENT_WIFI_SCAN_INTERVAL = "applicationEventWifiScanInterval";
     public static final String PREF_APPLICATION_EVENT_WIFI_ENABLE_WIFI = "applicationEventWifiEnableWifi";
+    public static final String PREF_APPLICATION_EVENT_BACKGROUND_PROFILE = "applicationEventBackgroundProfile";
 
     public static final int HARDWARE_CHECK_NOT_ALLOWED = 0;
     public static final int HARDWARE_CHECK_ALLOWED = 1;
@@ -182,7 +183,7 @@ public class GlobalData extends Application {
 	static final String PREF_EVENT_WIFI_ENABLED_FOR_SCAN = "eventWifiEnabledForScan"; 
 	
     public static boolean applicationStartOnBoot;
-    public static boolean applicationActivate;
+//    public static boolean applicationActivate;
     public static boolean applicationActivateWithAlert;
     public static boolean applicationClose;
     public static boolean applicationLongClickActivation;
@@ -212,6 +213,7 @@ public class GlobalData extends Application {
     public static String applicationNotificationLauncher;
     public static int applicationEventWifiScanInterval;
     public static boolean applicationEventWifiEnableWifi;
+    public static String applicationEventBackgroundProfile;
     
 	public void onCreate()
 	{
@@ -354,7 +356,7 @@ public class GlobalData extends Application {
 		SharedPreferences preferences = context.getSharedPreferences(APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
 
 	    applicationStartOnBoot = preferences.getBoolean(PREF_APPLICATION_START_ON_BOOT, false);
-	    applicationActivate = preferences.getBoolean(PREF_APPLICATION_ACTIVATE, true);
+//	    applicationActivate = preferences.getBoolean(PREF_APPLICATION_ACTIVATE, true);
 	    applicationActivateWithAlert = preferences.getBoolean(PREF_APPLICATION_ALERT, true);
 	    applicationClose = preferences.getBoolean(PREF_APPLICATION_CLOSE, true);
 	    applicationLongClickActivation = preferences.getBoolean(PREF_APPLICATION_LONG_PRESS_ACTIVATION, false);
@@ -384,6 +386,7 @@ public class GlobalData extends Application {
 	    applicationNotificationLauncher = preferences.getString(PREF_APPLICATION_NOTIFICATION_LAUNCHER, "activator");
 	    applicationEventWifiScanInterval = Integer.valueOf(preferences.getString(PREF_APPLICATION_EVENT_WIFI_SCAN_INTERVAL, "5"));
 	    applicationEventWifiEnableWifi = preferences.getBoolean(PREF_APPLICATION_EVENT_WIFI_ENABLE_WIFI, false);
+	    applicationEventBackgroundProfile = preferences.getString(PREF_APPLICATION_EVENT_BACKGROUND_PROFILE, "-999");
 	}
 	
 	private static String getVolumeLevelString(int percentage, int maxValue)

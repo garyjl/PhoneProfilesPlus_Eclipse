@@ -45,8 +45,21 @@ public class LauncherActivity extends Activity {
 				// startneme eventy
 				if (GlobalData.getGlobalEventsRuning(getBaseContext()))
 					dataWrapper.firstStartEvents(true, false);
+				else
+				{
+					/*if (GlobalData.applicationActivate)
+					{
+						Profile profile = dataWrapper.getDatabaseHandler().getActivatedProfile();
+						long profileId = 0;
+						if (profile != null)
+							profileId = profile._id;
+						dataWrapper.activateProfile(profileId, GlobalData.STARTUP_SOURCE_LAUNCHER_START, null, "");
+					}
+					else*/
+						dataWrapper.activateProfile(0, GlobalData.STARTUP_SOURCE_LAUNCHER_START, null, "");
+				}
 				
-				// mozeme aktivovat profil, ak je nastavene, ze sa tak ma stat 
+/*				// mozeme aktivovat profil, ak je nastavene, ze sa tak ma stat 
 				if (GlobalData.applicationActivate)
 				{
 					// je nastavene, ze pri starte sa ma aktivita aktivovat
@@ -58,7 +71,7 @@ public class LauncherActivity extends Activity {
 					dataWrapper.getDatabaseHandler().deactivateProfile();
 					profile = null;
 				}
-				
+*/				
 				// start PPHelper
 				//PhoneProfilesHelper.startPPHelper(getBaseContext());
 				// start ReceiverService

@@ -449,6 +449,14 @@ public class DataWrapper {
 			if (event._fkProfileEnd == profile._id) 
 				event._fkProfileEnd = Event.PROFILE_END_NO_ACTIVATE;
 		}
+		// unlink profile from Background profile
+		if (Integer.valueOf(GlobalData.applicationEventBackgroundProfile) == profile._id)
+		{
+			SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+			Editor editor = preferences.edit();
+			editor.putString(GlobalData.PREF_APPLICATION_EVENT_BACKGROUND_PROFILE, String.valueOf(Event.PROFILE_END_NO_ACTIVATE));
+			editor.commit();
+		}
 	}
 	
 	public void deleteAllProfiles()
@@ -462,6 +470,11 @@ public class DataWrapper {
 			event._fkProfileStart = 0;
 			event._fkProfileEnd = Event.PROFILE_END_NO_ACTIVATE;
 		}
+		// unlink profiles from Background profile
+		SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+		Editor editor = preferences.edit();
+		editor.putString(GlobalData.PREF_APPLICATION_EVENT_BACKGROUND_PROFILE, String.valueOf(Event.PROFILE_END_NO_ACTIVATE));
+		editor.commit();
 	}
 	
 //---------------------------------------------------
@@ -1077,7 +1090,7 @@ public class DataWrapper {
 			actProfile = true;
 			interactive = ((startupSource != GlobalData.STARTUP_SOURCE_SERVICE));
 		}
-		else
+/*		else
 		if (startupSource == GlobalData.STARTUP_SOURCE_BOOT)	
 		{
 			// aktivacia bola spustena po boote telefonu
@@ -1133,7 +1146,7 @@ public class DataWrapper {
 				}
 			}
 		}
-			
+*/			
 		//Log.d("DataWrapper.activateProfile", "actProfile="+String.valueOf(actProfile));
 
 		if ((startupSource == GlobalData.STARTUP_SOURCE_SHORTCUT) ||

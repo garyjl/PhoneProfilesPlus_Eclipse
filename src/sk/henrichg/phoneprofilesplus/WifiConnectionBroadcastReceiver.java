@@ -35,8 +35,7 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 		        		if (WifiScanAlarmBroadcastReceiver.scanResults == null)
 		        		{
 		        			// no wifi scan data, rescan
-							Intent broadcastIntent = new Intent(context, WifiScanAlarmBroadcastReceiver.class);
-							context.sendBroadcast(broadcastIntent);
+							WifiScanAlarmBroadcastReceiver.sendBroadcast(context);
 		        		}
 			        }
 	        		
@@ -54,15 +53,18 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 	    				startWakefulService(context, eventsServiceIntent);
 	    			}
 	    			
-	    			/*
 		        	if (info.getState() == NetworkInfo.State.DISCONNECTED)
-			        {
-						// rescan wifi
-						Intent broadcastIntent = new Intent(context, WifiScanAlarmBroadcastReceiver.class);
-						context.sendBroadcast(broadcastIntent);
-			        }
-			        */
-	    			
+		        	{
+		        		if (!WifiScanAlarmBroadcastReceiver.getWifiEnabledForScan(context))
+				        {
+							// rescan wifi
+							WifiScanAlarmBroadcastReceiver.sendBroadcast(context);
+				        }
+		        		else
+		        		{
+		        			WifiScanAlarmBroadcastReceiver.setWifiEnabledForScan(context, false);
+		        		}
+		        	}
 	        	}
             }			
 		}

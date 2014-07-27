@@ -67,12 +67,13 @@ public class EventsService extends IntentService
 		boolean isRestart = (broadcastReceiverType.equals(RestartEventsBroadcastReceiver.BROADCAST_RECEIVER_TYPE) ||
 							 broadcastReceiverType.equals(CalendarProviderChangedBroadcastReceiver.BROADCAST_RECEIVER_TYPE) ||
 							 broadcastReceiverType.equals(SearchCalendarEventsBroadcastReceiver.BROADCAST_RECEIVER_TYPE));
+		
+		boolean interactive = !isRestart;
 
 		//GlobalData.logE("@@@ EventsService.onHandleIntent","isRestart="+isRestart);
 		
 		if (isRestart)
 		{
-			List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
 			// 1. pause events
 			dataWrapper.sortEventsByPriorityDesc();
 			for (Event _event : eventList)
@@ -84,9 +85,10 @@ public class EventsService extends IntentService
 				if (_event.getStatus() != Event.ESTATUS_STOP)
 					// len pauzuj eventy
 					// pauzuj aj ked uz je zapauznuty
-					dataWrapper.doEventService(_event, true, true, false);
+					dataWrapper.doEventService(_event, true, true, interactive);
 			}
 			// 2. start events in timeline order
+			List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
 			GlobalData.logE("EventsService.onHandleIntent","eventTimeLineList.size()="+eventTimelineList.size());
 			for (EventTimeline eventTimeline : eventTimelineList)
 			{
@@ -99,7 +101,7 @@ public class EventsService extends IntentService
 					if (_event.getStatus() != Event.ESTATUS_STOP)
 						// len spustaj eventy
 						// spusatj aj ked uz je spusteny
-						dataWrapper.doEventService(_event, false, true, false); 
+						dataWrapper.doEventService(_event, false, true, interactive); 
 				}
 			}
 			// 3. start no started events in point 2.
@@ -113,7 +115,7 @@ public class EventsService extends IntentService
 				if (_event.getStatus() != Event.ESTATUS_STOP)
 					// len spustaj eventy
 					// spustaj len ak este nebezi
-					dataWrapper.doEventService(_event, false, false, false);
+					dataWrapper.doEventService(_event, false, false, interactive);
 			}
 		}
 		else
@@ -129,7 +131,7 @@ public class EventsService extends IntentService
 				if (_event.getStatus() != Event.ESTATUS_STOP)
 					// len pauzuj eventy
 					// pauzuj len ak este nie je zapauznuty
-					dataWrapper.doEventService(_event, true, false, true);
+					dataWrapper.doEventService(_event, true, false, interactive);
 			}
 			//2. start events
 			dataWrapper.sortEventsByPriorityAsc();
@@ -142,10 +144,19 @@ public class EventsService extends IntentService
 				if (_event.getStatus() != Event.ESTATUS_STOP)
 					// len spustaj eventy
 					// spustaj len ak este nebezi
-					dataWrapper.doEventService(_event, false, false, true); 
+					dataWrapper.doEventService(_event, false, false, interactive); 
 			}
 		}
 
+		// when no events are running, activate background profile
+		List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
+		if (eventTimelineList.size() == 0)
+		{
+			int profileId = Integer.valueOf(GlobalData.applicationEventBackgroundProfile); 
+			if (profileId != Event.PROFILE_END_NO_ACTIVATE)
+				dataWrapper.activateProfileFromEvent(profileId, interactive, "");
+		}
+		
 		doEndService(intent);
 
 		// refresh GUI

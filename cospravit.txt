@@ -119,3 +119,25 @@ Ako ukoncovat udalosti, ak sa prekryvaju:
 - TOTO JE ZLE !!!! Co tak spravit to, ze ak ziadna udalost za tou, co sa ukoncuje ma nastaveny "end profile" na "None" a
   aj "undo profile" nezaskrtnuty, tak sa spravi "end profile" udalost, ktora sa prave ukoncuje.
        
+-------------------------------------------
+
+Background profile
+- restart events terazfunguje takto:
+1. natvrdo zapuzovat vsetko - nastavovat system event, pauzovat natvrdo, aj ked je zapauzovany
+2. spustat eventy v poradi podla timeline
+3. spustit, co este nie je spustene
+- Problem je, ze ak je v timeline daky event s vyssou prioritou, nestartne sa novy (pridany) event s nizsou.
+- Ide mi o tzv.: background event, ktory by bezal, ak ziaden event nebezi.
+- Moj aj Fabianov navrh je, pridat moznost si nastavit background profile.
+- Cize ak skonci posledny event, spravi sa jeho "end activation" a potom sa aktivuje background profile.
+- Na to uz peeference mam, cize ho len pridam do application preferences, bude tam noznost aj "Neaktivovat".
+- LauncherActivity - tu riesim aktivaciu profilu pri starte. Aktivuje profil, ktory je v db nastavena ako aktivovany.
+  - toto je ale dost kontroverzna funkcia, lebo sa tu netestuje, ci uz je daky profil aktivovany cez firstStartEvents().
+  - sposobi to, ze sa zbytocne profil aktivuje, lebo aj tak sa prepise spustenym eventom cez firstStartEvents().
+  - cize toto vyhodit, je to uplne zbytocne.
+- Background profile akativovat: v EventsService, ak ziadny event sa nenastartuje.
+- Treba vyriesit, ze ak uzivatel background profile vymaze, musi sa preferences nastavit na -999.   
+                
+
+  
+
