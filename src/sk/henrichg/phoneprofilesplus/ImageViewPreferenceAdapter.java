@@ -74,7 +74,7 @@ public class ImageViewPreferenceAdapter extends BaseAdapter {
 		View vi = convertView;
 		if (convertView == null)
 		{
-      		vi = inflater.inflate(R.layout.imageview_preference_gridview_item, null);
+      		vi = inflater.inflate(R.layout.imageview_preference_gridview_item, parent, false);
       		holder = new ViewHolder();
   			holder.icon = (ImageView)vi.findViewById(R.id.imageview_preference_gridview_item_icon);
   			vi.setTag(holder);        

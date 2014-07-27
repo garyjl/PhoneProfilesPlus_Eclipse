@@ -53,7 +53,7 @@ public class ContactsMultiselectPreferenceAdapter extends BaseAdapter
         // Create a new row view
         if (convertView == null)
         {
-            convertView = inflater.inflate(R.layout.contacts_multiselect_preference_list_item, null);
+            convertView = inflater.inflate(R.layout.contacts_multiselect_preference_list_item, parent, false);
 
             // Find the child views.
             imageViewPhoto = (ImageView) convertView.findViewById(R.id.contacts_multiselect_pref_dlg_item_icon);

@@ -52,7 +52,7 @@ public class ApplicationsPreferenceAdapter extends BaseAdapter {
 		View vi = convertView;
 		if (convertView == null)
 		{
-      		vi = inflater.inflate(R.layout.applications_preference_list_item, null);
+      		vi = inflater.inflate(R.layout.applications_preference_list_item, parent, false);
       		holder = new ViewHolder();
   			holder.applicationIcon = (ImageView)vi.findViewById(R.id.applications_pref_dlg_item_icon);
   			holder.applicationLabel = (TextView)vi.findViewById(R.id.applications_pref_dlg_item_label);

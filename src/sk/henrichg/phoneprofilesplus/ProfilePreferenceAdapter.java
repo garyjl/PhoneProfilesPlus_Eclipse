@@ -82,9 +82,9 @@ public class ProfilePreferenceAdapter extends BaseAdapter {
 	    if (convertView == null)
 	    {
 	      	if (GlobalData.applicationEditorPrefIndicator)
-	      		vi = inflater.inflate(R.layout.profile_preference_list_item, null);
+	      		vi = inflater.inflate(R.layout.profile_preference_list_item, parent, false);
 	      	else
-	      		vi = inflater.inflate(R.layout.profile_preference_list_item_no_indicator, null);
+	      		vi = inflater.inflate(R.layout.profile_preference_list_item_no_indicator, parent, false);
 	      	
 	        holder = new ViewHolder();
 	  		holder.profileIcon = (ImageView)vi.findViewById(R.id.profile_pref_dlg_item_icon);
