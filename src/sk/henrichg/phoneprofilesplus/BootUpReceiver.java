@@ -52,7 +52,7 @@ public class BootUpReceiver extends BroadcastReceiver {
 				dataWrapper.firstStartEvents(true, false);
 			else
 			{
-				/*if (GlobalData.applicationActivate)
+				if (GlobalData.applicationActivate)
 				{
 					Profile profile = dataWrapper.getDatabaseHandler().getActivatedProfile();
 					long profileId = 0;
@@ -60,7 +60,7 @@ public class BootUpReceiver extends BroadcastReceiver {
 						profileId = profile._id;
 					dataWrapper.activateProfile(profileId, GlobalData.STARTUP_SOURCE_BOOT, null, "");
 				}
-				else*/
+				else
 					dataWrapper.activateProfile(0, GlobalData.STARTUP_SOURCE_BOOT, null, "");
 			}
 

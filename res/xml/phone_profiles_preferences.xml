@@ -140,12 +140,10 @@
 		    android:key="applicationStartOnBoot"
 		    android:title="@string/phone_profiles_pref_applicationStartOnBoot"
 		    android:defaultValue="false" />
-<!-- 
 		<CheckBoxPreference 
 		    android:key="applicationActivate"
 		    android:title="@string/phone_profiles_pref_applicationActivate"
 		    android:defaultValue="true" />
- -->		    
     </PreferenceCategory>
     
     <PreferenceCategory

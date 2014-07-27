@@ -1090,7 +1090,7 @@ public class DataWrapper {
 			actProfile = true;
 			interactive = ((startupSource != GlobalData.STARTUP_SOURCE_SERVICE));
 		}
-/*		else
+		else
 		if (startupSource == GlobalData.STARTUP_SOURCE_BOOT)	
 		{
 			// aktivacia bola spustena po boote telefonu
@@ -1100,7 +1100,7 @@ public class DataWrapper {
 				// je nastavene, ze pri starte sa ma aktivita aktivovat
 				actProfile = true;
 			}
-			else
+			/*else
 			{
 				// nema sa aktivovat profil pri starte, ale musim pozriet, ci daky event bezi
 				// a ak ano, aktivovat profil posledneho eventu v timeline
@@ -1124,7 +1124,7 @@ public class DataWrapper {
 					//profile._checked = false;
 					profile = null;
 				}
-			}
+			}*/
 		}
 		else
 		if (startupSource == GlobalData.STARTUP_SOURCE_LAUNCHER_START)	
@@ -1136,7 +1136,7 @@ public class DataWrapper {
 				// je nastavene, ze pri starte sa ma aktivita aktivovat
 				actProfile = true;
 			}
-			else
+			/*else
 			{
 				if (profile != null)
 				{
@@ -1144,9 +1144,9 @@ public class DataWrapper {
 					//profile._checked = false;
 					profile = null;
 				}
-			}
+			}*/
 		}
-*/			
+			
 		//Log.d("DataWrapper.activateProfile", "actProfile="+String.valueOf(actProfile));
 
 		if ((startupSource == GlobalData.STARTUP_SOURCE_SHORTCUT) ||

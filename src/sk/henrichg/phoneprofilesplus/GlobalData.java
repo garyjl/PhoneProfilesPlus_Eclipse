@@ -130,7 +130,7 @@ public class GlobalData extends Application {
 	static final String DEFAULT_PROFILE_PREFS_NAME = "profile_preferences_default_profile"; //GlobalData.APPLICATION_PREFS_NAME;
 	
     public static final String PREF_APPLICATION_START_ON_BOOT = "applicationStartOnBoot";
-//    public static final String PREF_APPLICATION_ACTIVATE = "applicationActivate";
+    public static final String PREF_APPLICATION_ACTIVATE = "applicationActivate";
     public static final String PREF_APPLICATION_ALERT = "applicationAlert";
     public static final String PREF_APPLICATION_CLOSE = "applicationClose";
     public static final String PREF_APPLICATION_LONG_PRESS_ACTIVATION = "applicationLongClickActivation";
@@ -183,7 +183,7 @@ public class GlobalData extends Application {
 	static final String PREF_EVENT_WIFI_ENABLED_FOR_SCAN = "eventWifiEnabledForScan"; 
 	
     public static boolean applicationStartOnBoot;
-//    public static boolean applicationActivate;
+    public static boolean applicationActivate;
     public static boolean applicationActivateWithAlert;
     public static boolean applicationClose;
     public static boolean applicationLongClickActivation;
@@ -356,7 +356,7 @@ public class GlobalData extends Application {
 		SharedPreferences preferences = context.getSharedPreferences(APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
 
 	    applicationStartOnBoot = preferences.getBoolean(PREF_APPLICATION_START_ON_BOOT, false);
-//	    applicationActivate = preferences.getBoolean(PREF_APPLICATION_ACTIVATE, true);
+	    applicationActivate = preferences.getBoolean(PREF_APPLICATION_ACTIVATE, true);
 	    applicationActivateWithAlert = preferences.getBoolean(PREF_APPLICATION_ALERT, true);
 	    applicationClose = preferences.getBoolean(PREF_APPLICATION_CLOSE, true);
 	    applicationLongClickActivation = preferences.getBoolean(PREF_APPLICATION_LONG_PRESS_ACTIVATION, false);
