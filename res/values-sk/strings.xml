@@ -371,5 +371,7 @@
 	<string name="phone_profiles_pref_category_event">Udalosti</string>
 	<string name="phone_profiles_pref_applicationEventWifiScanInterval">Interval skenovania WiFi (min)</string>
 	<string name="phone_profiles_pref_applicationEventWifiEnableWifi">Povoľ WiFi</string>    
-    
+
+	<string name="phone_profiles_pref_applicationEventBackgroundProfile">Profil na pozadí</string>
+		
 </resources>
