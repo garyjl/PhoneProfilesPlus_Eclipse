@@ -369,5 +369,7 @@
 	<string name="phone_profiles_pref_category_event">Ereignisse</string>
 	<string name="phone_profiles_pref_applicationEventWifiScanInterval">WiFi-Scan-Interval (Minuten)</string>
 	<string name="phone_profiles_pref_applicationEventWifiEnableWifi">WiFi aktivieren</string>
-	    
+
+	<string name="phone_profiles_pref_applicationEventBackgroundProfile">Hintergrundprofil</string>
+		    
 </resources>
