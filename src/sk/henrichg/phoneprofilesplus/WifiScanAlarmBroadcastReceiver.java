@@ -29,13 +29,15 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
     //private static WakeLock wakeLock = null;
 
 	public static List<ScanResult> scanResults = null;
-
+	
 	@SuppressLint("NewApi")
 	public void onReceive(Context context, Intent intent) {
 		
 		GlobalData.logE("#### WifiScanAlarmBroadcastReceiver.onReceive","xxx");
-		
+
 		GlobalData.loadPreferences(context);
+
+    	setWifiEnabledForScan(context, false);
 		
 		if (GlobalData.getGlobalEventsRuning(context))
 		{
@@ -49,11 +51,9 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 
 			if (wifiEventsExists)
 			{
-				enableWifi(context);
-				
 				WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 				boolean isWifiEnabled = wifi.getWifiState() == WifiManager.WIFI_STATE_ENABLED;
-				isWifiEnabled = isWifiEnabled || getWifiEnabledForScan(context);
+				isWifiEnabled = isWifiEnabled || GlobalData.applicationEventWifiEnableWifi;
 		    	if (android.os.Build.VERSION.SDK_INT >= 18)
 		    		isWifiEnabled = isWifiEnabled || (wifi.isScanAlwaysAvailable());
 				if (isWifiEnabled)
@@ -84,11 +84,15 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		    				return;
 		    			}
 					}
+					else
+						isWifiEnabled = enableWifi(context);
 					
-					
-			        lock(context); // lock wakeLock and wifiLock, then scan.
-			                       // unlock() is then called at the end of the onReceive function of WifiScanBroadcastReceiver
-    				setStartScan(context, wifi.startScan());
+					if (isWifiEnabled && (!GlobalData.getEventsBlocked(context)))
+					{
+				        lock(context); // lock wakeLock and wifiLock, then scan.
+				                       // unlock() is then called at the end of the onReceive function of WifiScanBroadcastReceiver
+	    				setStartScan(context, wifi.startScan());
+					}
 			    }
 			    else
     				setStartScan(context, false);
@@ -243,7 +247,7 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 	
     @SuppressWarnings("deprecation")
 	@SuppressLint("NewApi")
-	public static void enableWifi(Context context)
+	public static boolean enableWifi(Context context)
     {
     	if (GlobalData.applicationEventWifiEnableWifi)
     	{
@@ -261,7 +265,7 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		    	if (!isWifiEnabled)
 		    	{
 					DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
-					boolean wifiEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_WIFI) > 0;
+					boolean wifiEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_WIFIINFRONT) > 0;
 					dataWrapper.invalidateDataWrapper();
 
 					if (wifiEventsExists)
@@ -269,13 +273,14 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 			        	GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.enableWifi","enable");
 						wifi.setWifiEnabled(true);
 						setWifiEnabledForScan(context, true);
-						return;
+						return true;
 					}
 		    	}
     		}
     	}
 
     	setWifiEnabledForScan(context, false);
+    	return false;
     }
 	
 }

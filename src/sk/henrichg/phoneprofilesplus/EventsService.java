@@ -151,18 +151,21 @@ public class EventsService extends IntentService
 		}
 
 		// when no events are running, activate background profile
-		List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
-		if (eventTimelineList.size() == 0)
+		if (GlobalData.getGlobalEventsRuning(context) && (!GlobalData.getEventsBlocked(context)))
 		{
-			int profileId = Integer.valueOf(GlobalData.applicationEventBackgroundProfile); 
-			if (profileId != Event.PROFILE_END_NO_ACTIVATE)
+			List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
+			if (eventTimelineList.size() == 0)
 			{
-				Profile profile = dataWrapper.getActivatedProfile();
-				long activatedProfileId = 0;
-				if (profile != null)
-					activatedProfileId = profile._id;
-				if (activatedProfileId != profileId)
-					dataWrapper.activateProfileFromEvent(profileId, interactive, "");
+				int profileId = Integer.valueOf(GlobalData.applicationEventBackgroundProfile); 
+				if (profileId != Event.PROFILE_END_NO_ACTIVATE)
+				{
+					Profile profile = dataWrapper.getActivatedProfile();
+					long activatedProfileId = 0;
+					if (profile != null)
+						activatedProfileId = profile._id;
+					if (activatedProfileId != profileId)
+						dataWrapper.activateProfileFromEvent(profileId, interactive, "");
+				}
 			}
 		}
 		

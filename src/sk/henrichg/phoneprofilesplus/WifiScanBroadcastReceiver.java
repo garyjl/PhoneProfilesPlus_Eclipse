@@ -22,23 +22,27 @@ public class WifiScanBroadcastReceiver extends WakefulBroadcastReceiver {
 		WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 		WifiScanAlarmBroadcastReceiver.scanResults = wifi.getScanResults();
 		WifiScanAlarmBroadcastReceiver.unlock();
-		if (WifiScanAlarmBroadcastReceiver.getWifiEnabledForScan(context))
-			wifi.setWifiEnabled(false);
 		
-
 		for (ScanResult result : WifiScanAlarmBroadcastReceiver.scanResults)
         {
 			GlobalData.logE("WifiScanBroadcastReceiver.onReceive","result.SSID="+result.SSID);
         }
 		
-		if (scanStarted)
+		GlobalData.loadPreferences(context);
+		
+		if (GlobalData.getGlobalEventsRuning(context))
 		{
-			GlobalData.loadPreferences(context);
-			
-			if (GlobalData.getGlobalEventsRuning(context))
+
+			if (scanStarted)
 			{
 				GlobalData.logE("@@@ WifiScanBroadcastReceiver.onReceive","xxx");
 
+				if (WifiScanAlarmBroadcastReceiver.getWifiEnabledForScan(context))
+				{
+					GlobalData.logE("@@@ WifiScanBroadcastReceiver.onReceive","disable wifi");
+					wifi.setWifiEnabled(false);
+				}
+				
 				/*
 				boolean wifiEventsExists = false;
 				
@@ -56,9 +60,9 @@ public class WifiScanBroadcastReceiver extends WakefulBroadcastReceiver {
 				//}
 			}
 
-			WifiScanAlarmBroadcastReceiver.setStartScan(context, false);
 		}
 		
+		WifiScanAlarmBroadcastReceiver.setStartScan(context, false);
 		
 	}
 	

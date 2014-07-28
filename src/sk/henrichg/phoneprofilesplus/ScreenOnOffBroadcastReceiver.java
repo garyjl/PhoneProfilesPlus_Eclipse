@@ -33,7 +33,7 @@ public class ScreenOnOffBroadcastReceiver extends WakefulBroadcastReceiver {
 				wifiEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_WIFIINFRONT) > 0;
 				GlobalData.logE("ScreenOnOffBroadcastReceiver.onReceive","wifiEventsExists="+wifiEventsExists);
 	
-				if (wifiEventsExists)
+				if (wifiEventsExists && (!GlobalData.getEventsBlocked(context)))
 				{
 					//if (WifiScanAlarmBroadcastReceiver.isAlarmSet(context))
 					//{	
