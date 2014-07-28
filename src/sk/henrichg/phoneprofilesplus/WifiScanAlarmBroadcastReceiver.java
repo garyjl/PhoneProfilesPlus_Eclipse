@@ -276,6 +276,8 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 						return true;
 					}
 		    	}
+		    	else
+		    		return true;
     		}
     	}
 
