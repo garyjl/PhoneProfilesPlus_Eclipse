@@ -367,7 +367,7 @@
 	<string name="array_event_pref_wifiConnectionType_inFront">verfügbar</string>
 	<string name="event_preferences_wifi_connection_type">Verbindungstyp</string>
 	<string name="phone_profiles_pref_category_event">Ereignisse</string>
-	<string name="phone_profiles_pref_applicationEventWifiScanInterval">WiFi-Scan-Interval (Minuten)</string>
+	<string name="phone_profiles_pref_applicationEventWifiScanInterval">WiFi-Scan-Intervall (Minuten)</string>
 	<string name="phone_profiles_pref_applicationEventWifiEnableWifi">WiFi aktivieren</string>
 
 	<string name="phone_profiles_pref_applicationEventBackgroundProfile">Hintergrundprofil</string>

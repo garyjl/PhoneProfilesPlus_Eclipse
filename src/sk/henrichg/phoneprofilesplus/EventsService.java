@@ -156,7 +156,14 @@ public class EventsService extends IntentService
 		{
 			int profileId = Integer.valueOf(GlobalData.applicationEventBackgroundProfile); 
 			if (profileId != Event.PROFILE_END_NO_ACTIVATE)
-				dataWrapper.activateProfileFromEvent(profileId, interactive, "");
+			{
+				Profile profile = dataWrapper.getActivatedProfile();
+				long activatedProfileId = 0;
+				if (profile != null)
+					activatedProfileId = profile._id;
+				if (activatedProfileId != profileId)
+					dataWrapper.activateProfileFromEvent(profileId, interactive, "");
+			}
 		}
 		
 		doEndService(intent);
