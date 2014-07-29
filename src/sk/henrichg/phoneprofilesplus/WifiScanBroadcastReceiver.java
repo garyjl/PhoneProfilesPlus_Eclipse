@@ -15,34 +15,34 @@ public class WifiScanBroadcastReceiver extends WakefulBroadcastReceiver {
 		//GlobalData.logE("#### WifiScanBroadcastReceiver.onReceive","xxx");
 		GlobalData.logE("@@@ WifiScanBroadcastReceiver.onReceive","----- start");
 
+		if (WifiScanAlarmBroadcastReceiver.wifi == null)
+			WifiScanAlarmBroadcastReceiver.wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+		
 		GlobalData.loadPreferences(context);
 		
 		if (GlobalData.getGlobalEventsRuning(context))
 		{
-		
+
 			boolean scanStarted = (WifiScanAlarmBroadcastReceiver.getStartScan(context));// ||
-					              //(WifiScanAlarmBroadcastReceiver.scanResults == null);
+            //(WifiScanAlarmBroadcastReceiver.scanResults == null);
 			
-			if (WifiScanAlarmBroadcastReceiver.wifi == null)
-				WifiScanAlarmBroadcastReceiver.wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-			
-			WifiScanAlarmBroadcastReceiver.scanResults = WifiScanAlarmBroadcastReceiver.wifi.getScanResults();
-			WifiScanAlarmBroadcastReceiver.unlock();
-			
-			/*
-			if (WifiScanAlarmBroadcastReceiver.scanResults != null)
-			{
-				for (ScanResult result : WifiScanAlarmBroadcastReceiver.scanResults)
-		        {
-					GlobalData.logE("WifiScanBroadcastReceiver.onReceive","result.SSID="+result.SSID);
-		        }
-		    }
-	        */
-		
 			if (scanStarted)
 			{
 				GlobalData.logE("@@@ WifiScanBroadcastReceiver.onReceive","xxx");
 
+				WifiScanAlarmBroadcastReceiver.scanResults = WifiScanAlarmBroadcastReceiver.wifi.getScanResults();
+				WifiScanAlarmBroadcastReceiver.unlock();
+				
+				/*
+				if (WifiScanAlarmBroadcastReceiver.scanResults != null)
+				{
+				for (ScanResult result : WifiScanAlarmBroadcastReceiver.scanResults)
+				{
+					GlobalData.logE("WifiScanBroadcastReceiver.onReceive","result.SSID="+result.SSID);
+				}
+				}
+				*/
+				
 				if (WifiScanAlarmBroadcastReceiver.getWifiEnabledForScan(context))
 				{
 					GlobalData.logE("@@@ WifiScanBroadcastReceiver.onReceive","disable wifi");
