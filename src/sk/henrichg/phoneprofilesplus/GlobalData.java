@@ -42,7 +42,7 @@ public class GlobalData extends Application {
 										 "@@@ WifiScanAlarmBroadcastReceiver|"+
 										 "@@@ WifiScanBroadcastReceiver|"+
 										 "@@@ ScreenOnOffBroadcastReceiver|"+
-										 //"@@@ DataWrapper|"+
+										 "@@@ RestartEventsBroadcastReceiver|"+
 										 "@@@ EventsService"
 			;
 	

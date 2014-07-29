@@ -11,7 +11,8 @@ public class RestartEventsBroadcastReceiver extends WakefulBroadcastReceiver {
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		GlobalData.logE("#### RestartEventsBroadcastReceiver.onReceive","xxx");
+		//GlobalData.logE("#### RestartEventsBroadcastReceiver.onReceive","xxx");
+		GlobalData.logE("@@@ RestartEventsBroadcastReceiver.onReceive","####");
 		
 		GlobalData.loadPreferences(context);
 		
