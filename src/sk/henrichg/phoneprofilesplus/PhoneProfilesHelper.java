@@ -32,7 +32,7 @@ public class PhoneProfilesHelper {
 
 	public static int PPHelperVersion = -1;
 
-	public static final int PPHELPER_CURRENT_VERSION = 17;
+	public static final int PPHELPER_CURRENT_VERSION = 18;
 	
 	static public boolean isPPHelperInstalled(Context context, int minVersion)
 	{
