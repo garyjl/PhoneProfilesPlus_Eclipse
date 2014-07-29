@@ -2,7 +2,6 @@ package sk.henrichg.phoneprofilesplus;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.support.v4.content.WakefulBroadcastReceiver;
 
@@ -19,15 +18,20 @@ public class WifiScanBroadcastReceiver extends WakefulBroadcastReceiver {
 		boolean scanStarted = (WifiScanAlarmBroadcastReceiver.getStartScan(context));// ||
 				              //(WifiScanAlarmBroadcastReceiver.scanResults == null);
 		
-		WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-		WifiScanAlarmBroadcastReceiver.scanResults = wifi.getScanResults();
+		if (WifiScanAlarmBroadcastReceiver.wifi == null)
+			WifiScanAlarmBroadcastReceiver.wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+		
+		WifiScanAlarmBroadcastReceiver.scanResults = WifiScanAlarmBroadcastReceiver.wifi.getScanResults();
 		WifiScanAlarmBroadcastReceiver.unlock();
 		
 		/*
-		for (ScanResult result : WifiScanAlarmBroadcastReceiver.scanResults)
-        {
-			GlobalData.logE("WifiScanBroadcastReceiver.onReceive","result.SSID="+result.SSID);
-        }
+		if (WifiScanAlarmBroadcastReceiver.scanResults != null)
+		{
+			for (ScanResult result : WifiScanAlarmBroadcastReceiver.scanResults)
+	        {
+				GlobalData.logE("WifiScanBroadcastReceiver.onReceive","result.SSID="+result.SSID);
+	        }
+	    }
         */
 		
 		GlobalData.loadPreferences(context);
@@ -35,14 +39,14 @@ public class WifiScanBroadcastReceiver extends WakefulBroadcastReceiver {
 		if (GlobalData.getGlobalEventsRuning(context))
 		{
 
-			if (scanStarted)
+			if ((WifiScanAlarmBroadcastReceiver.wifi != null) && scanStarted)
 			{
 				GlobalData.logE("@@@ WifiScanBroadcastReceiver.onReceive","xxx");
 
 				if (WifiScanAlarmBroadcastReceiver.getWifiEnabledForScan(context))
 				{
 					GlobalData.logE("@@@ WifiScanBroadcastReceiver.onReceive","disable wifi");
-					wifi.setWifiEnabled(false);
+					WifiScanAlarmBroadcastReceiver.wifi.setWifiEnabled(false);
 				}
 				
 				/*

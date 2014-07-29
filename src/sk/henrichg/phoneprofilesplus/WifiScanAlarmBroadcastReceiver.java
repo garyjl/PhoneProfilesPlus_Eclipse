@@ -25,6 +25,7 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 
 	public static final String BROADCAST_RECEIVER_TYPE = "wifiScanAlarm";
 
+	public static WifiManager wifi = null;
 	private static WifiLock wifiLock = null;
     //private static WakeLock wakeLock = null;
 
@@ -35,6 +36,9 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		
 		GlobalData.logE("#### WifiScanAlarmBroadcastReceiver.onReceive","xxx");
 
+		if (wifi == null)
+			wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+		
 		GlobalData.loadPreferences(context);
 
 		if (GlobalData.getGlobalEventsRuning(context))
@@ -51,7 +55,6 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 	
 				if (wifiEventsExists)
 				{
-					WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 					boolean isWifiEnabled = wifi.getWifiState() == WifiManager.WIFI_STATE_ENABLED;
 					isWifiEnabled = isWifiEnabled || GlobalData.applicationEventWifiEnableWifi;
 			    	if (android.os.Build.VERSION.SDK_INT >= 18)
@@ -68,9 +71,8 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 
 		        			setWifiEnabledForScan(context, false);
 							
-							WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-							WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-			    			String SSID = dataWrapper.getSSID(wifiManager, wifiInfo);
+							WifiInfo wifiInfo = wifi.getConnectionInfo();
+			    			String SSID = dataWrapper.getSSID(wifi, wifiInfo);
 			    			boolean isSSIDScanned = dataWrapper.getDatabaseHandler().isSSIDScanned(SSID); 
 			    			
 			    			if (isSSIDScanned)
@@ -88,11 +90,11 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 			    			}
 						}
 						else
-							isWifiEnabled = enableWifi(context);
+							isWifiEnabled = enableWifi(dataWrapper, wifi);
 						
 						if (isWifiEnabled && (!GlobalData.getEventsBlocked(context)))
 						{
-					        lock(context); // lock wakeLock and wifiLock, then scan.
+					        lock(context, wifi); // lock wakeLock and wifiLock, then scan.
 					                       // unlock() is then called at the end of the onReceive function of WifiScanBroadcastReceiver
 		    				setStartScan(context, wifi.startScan());
 						}
@@ -116,6 +118,8 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 	
 	public static void initialize(Context context)
 	{
+		wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+		
     	unlock();
     	setStartScan(context, false);
     	setWifiEnabledForScan(context, false);
@@ -188,12 +192,11 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
         return (pendingIntent != null);
 	}
 
-    public static void lock(Context context)
+    private static void lock(Context context, WifiManager wifi)
     {
 		 // initialise the locks
 		if (wifiLock == null)
-	        wifiLock = ((WifiManager) context.getSystemService(Context.WIFI_SERVICE))
-	                        .createWifiLock(WifiManager.WIFI_MODE_SCAN_ONLY , "WifiScanWifiLock");
+	        wifiLock = wifi.createWifiLock(WifiManager.WIFI_MODE_SCAN_ONLY , "WifiScanWifiLock");
 		/*if (wakeLock == null)
 	        wakeLock = ((PowerManager) context.getSystemService(Context.POWER_SERVICE))
 	                        .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "WifiScanWakeLock");*/			
@@ -253,32 +256,29 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 	
     @SuppressWarnings("deprecation")
 	@SuppressLint("NewApi")
-	public static boolean enableWifi(Context context)
+	private static boolean enableWifi(DataWrapper dataWrapper, WifiManager wifi)
     {
     	if (GlobalData.applicationEventWifiEnableWifi)
     	{
     		boolean isAirplaneMode;
         	if (android.os.Build.VERSION.SDK_INT >= 17)
-        		isAirplaneMode = Settings.Global.getInt(context.getContentResolver(), Global.AIRPLANE_MODE_ON, 0) != 0;
+        		isAirplaneMode = Settings.Global.getInt(dataWrapper.context.getContentResolver(), Global.AIRPLANE_MODE_ON, 0) != 0;
         	else
-        		isAirplaneMode = Settings.System.getInt(context.getContentResolver(), Settings.System.AIRPLANE_MODE_ON, 0) != 0;
+        		isAirplaneMode = Settings.System.getInt(dataWrapper.context.getContentResolver(), Settings.System.AIRPLANE_MODE_ON, 0) != 0;
     		if (!isAirplaneMode)
     		{
-				WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 				boolean isWifiEnabled = wifi.getWifiState() == WifiManager.WIFI_STATE_ENABLED;
 		    	if (android.os.Build.VERSION.SDK_INT >= 18)
 		    		isWifiEnabled = isWifiEnabled || (wifi.isScanAlwaysAvailable());
 		    	if (!isWifiEnabled)
 		    	{
-					DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
 					boolean wifiEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_WIFIINFRONT) > 0;
-					dataWrapper.invalidateDataWrapper();
 
 					if (wifiEventsExists)
 					{
 			        	GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.enableWifi","enable");
 						wifi.setWifiEnabled(true);
-						setWifiEnabledForScan(context, true);
+						setWifiEnabledForScan(dataWrapper.context, true);
 						return true;
 					}
 		    	}
@@ -287,7 +287,7 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
     		}
     	}
 
-    	setWifiEnabledForScan(context, false);
+    	setWifiEnabledForScan(dataWrapper.context, false);
     	return false;
     }
 	
