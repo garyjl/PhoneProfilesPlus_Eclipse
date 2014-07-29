@@ -22,7 +22,7 @@ public class EventsService extends IntentService
 
 		context = getBaseContext();
 
-		GlobalData.logE("EventsService.onHandleIntent","-- start --------------------------------");
+		GlobalData.logE("@@@ EventsService.onHandleIntent","-- start --------------------------------");
 
 		WifiScanAlarmBroadcastReceiver.unlock();
 		
