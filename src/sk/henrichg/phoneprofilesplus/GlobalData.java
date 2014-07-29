@@ -315,6 +315,9 @@ public class GlobalData extends Application {
 	
 	static public void logI(String tag, String text)
 	{
+		if (!(logIntoLogCat || logIntoFile))
+			return;
+			
 		if (logContainsFilterTag(tag))
 		{
 			if (logIntoLogCat) Log.i(tag, text);
@@ -324,6 +327,9 @@ public class GlobalData extends Application {
 	
 	static public void logW(String tag, String text)
 	{
+		if (!(logIntoLogCat || logIntoFile))
+			return;
+
 		if (logContainsFilterTag(tag))
 		{
 			if (logIntoLogCat) Log.w(tag, text);
@@ -333,6 +339,9 @@ public class GlobalData extends Application {
 	
 	static public void logE(String tag, String text)
 	{
+		if (!(logIntoLogCat || logIntoFile))
+			return;
+
 		if (logContainsFilterTag(tag))
 		{
 			if (logIntoLogCat) Log.e(tag, text);
@@ -342,6 +351,9 @@ public class GlobalData extends Application {
 
 	static public void logD(String tag, String text)
 	{
+		if (!(logIntoLogCat || logIntoFile))
+			return;
+
 		if (logContainsFilterTag(tag))
 		{
 			if (logIntoLogCat) Log.d(tag, text);
