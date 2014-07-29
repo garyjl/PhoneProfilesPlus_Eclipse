@@ -14,7 +14,7 @@ public class WifiScanBroadcastReceiver extends WakefulBroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		
 		//GlobalData.logE("#### WifiScanBroadcastReceiver.onReceive","xxx");
-		GlobalData.logE("@@@ WifiScanBroadcastReceiver.onReceive","####");
+		GlobalData.logE("@@@ WifiScanBroadcastReceiver.onReceive","----- start");
 
 		boolean scanStarted = (WifiScanAlarmBroadcastReceiver.getStartScan(context));// ||
 				              //(WifiScanAlarmBroadcastReceiver.scanResults == null);
@@ -65,6 +65,8 @@ public class WifiScanBroadcastReceiver extends WakefulBroadcastReceiver {
 		}
 		
 		WifiScanAlarmBroadcastReceiver.setStartScan(context, false);
+
+		GlobalData.logE("@@@ WifiScanBroadcastReceiver.onReceive","----- end");
 		
 	}
 	

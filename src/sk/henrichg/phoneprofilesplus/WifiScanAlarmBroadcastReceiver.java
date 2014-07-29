@@ -37,73 +37,79 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 
 		GlobalData.loadPreferences(context);
 
-    	setWifiEnabledForScan(context, false);
-		
 		if (GlobalData.getGlobalEventsRuning(context))
 		{
 			GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.onReceive","xxx");
 
-			boolean wifiEventsExists = false;
-			
-			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
-			wifiEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_WIFIINFRONT) > 0;
-			GlobalData.logE("WifiScanAlarmBroadcastReceiver.onReceive","wifiEventsExists="+wifiEventsExists);
+			//if (!getStartScan(context))
+			//{	
+				boolean wifiEventsExists = false;
+				
+				DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
+				wifiEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_WIFIINFRONT) > 0;
+				GlobalData.logE("WifiScanAlarmBroadcastReceiver.onReceive","wifiEventsExists="+wifiEventsExists);
+	
+				if (wifiEventsExists)
+				{
+					WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+					boolean isWifiEnabled = wifi.getWifiState() == WifiManager.WIFI_STATE_ENABLED;
+					isWifiEnabled = isWifiEnabled || GlobalData.applicationEventWifiEnableWifi;
+			    	if (android.os.Build.VERSION.SDK_INT >= 18)
+			    		isWifiEnabled = isWifiEnabled || (wifi.isScanAlwaysAvailable());
+					if (isWifiEnabled)
+				    {
+						ConnectivityManager connManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+						NetworkInfo networkInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+						if (networkInfo.isConnected())
+						{
+							GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.onReceive","wifi is connected");
+	
+							// wifi is connected
 
-			if (wifiEventsExists)
-			{
-				WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-				boolean isWifiEnabled = wifi.getWifiState() == WifiManager.WIFI_STATE_ENABLED;
-				isWifiEnabled = isWifiEnabled || GlobalData.applicationEventWifiEnableWifi;
-		    	if (android.os.Build.VERSION.SDK_INT >= 18)
-		    		isWifiEnabled = isWifiEnabled || (wifi.isScanAlwaysAvailable());
-				if (isWifiEnabled)
-			    {
-					ConnectivityManager connManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-					NetworkInfo networkInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-					if (networkInfo.isConnected())
-					{
-						GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.onReceive","wifi is connected");
-
-						// wifi is connected
-						WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-						WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-		    			String SSID = dataWrapper.getSSID(wifiManager, wifiInfo);
-		    			boolean isSSIDScanned = dataWrapper.getDatabaseHandler().isSSIDScanned(SSID); 
-		    			
-		    			if (isSSIDScanned)
-		    			{
-		    				// connected SSID is scanned
-		    				// no scan
-		    				
-		    				setStartScan(context, false);
-
-		    				GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.onReceive","connected SSID is scanned, no start scan");
-
-		    				dataWrapper.invalidateDataWrapper();
-		    				
-		    				return;
-		    			}
-					}
-					else
-						isWifiEnabled = enableWifi(context);
-					
-					if (isWifiEnabled && (!GlobalData.getEventsBlocked(context)))
-					{
-				        lock(context); // lock wakeLock and wifiLock, then scan.
-				                       // unlock() is then called at the end of the onReceive function of WifiScanBroadcastReceiver
-	    				setStartScan(context, wifi.startScan());
-					}
-			    }
-			    else
-    				setStartScan(context, false);
-
-		      	GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.onReceive","scanStarted="+getStartScan(context));
-			}
-			else
-				removeAlarm(context);
-			
-			dataWrapper.invalidateDataWrapper();
-			
+		        			setWifiEnabledForScan(context, false);
+							
+							WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+							WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+			    			String SSID = dataWrapper.getSSID(wifiManager, wifiInfo);
+			    			boolean isSSIDScanned = dataWrapper.getDatabaseHandler().isSSIDScanned(SSID); 
+			    			
+			    			if (isSSIDScanned)
+			    			{
+			    				// connected SSID is scanned
+			    				// no scan
+			    				
+			    				setStartScan(context, false);
+	
+			    				GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.onReceive","connected SSID is scanned, no start scan");
+	
+			    				dataWrapper.invalidateDataWrapper();
+			    				
+			    				return;
+			    			}
+						}
+						else
+							isWifiEnabled = enableWifi(context);
+						
+						if (isWifiEnabled && (!GlobalData.getEventsBlocked(context)))
+						{
+					        lock(context); // lock wakeLock and wifiLock, then scan.
+					                       // unlock() is then called at the end of the onReceive function of WifiScanBroadcastReceiver
+		    				setStartScan(context, wifi.startScan());
+						}
+				    }
+				    else
+				    {
+	    				setStartScan(context, false);
+	        			setWifiEnabledForScan(context, false);
+				    }
+	
+			      	GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.onReceive","scanStarted="+getStartScan(context));
+				}
+				else
+					removeAlarm(context);
+				
+				dataWrapper.invalidateDataWrapper();
+			//}
 		}
 		
 	}
