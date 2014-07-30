@@ -377,6 +377,13 @@
 	<string name="phone_profiles_pref_applicationEventBackgroundProfile">Background profile</string>
 	
 	<string name="event_type_screen">Screen</string>
+	<string name="pref_event_screen_eventType">Event type</string>
+	<string name="array_event_pref_eventScreenEventType_screenOn">Screen On</string>
+	<string name="array_event_pref_eventScreenEventType_screenOff">Screen Off</string>
 	<string name="pref_event_screen_delay">Delay</string>
+	<string name="event_preferences_category_eventScreenParameters">Screen</string>
+	<string name="event_preferences_screen_enabled">Enable screen</string>
+	<string name="event_preferences_screen_event_type">Event type</string>
+	<string name="event_preferences_screen_delay">Delay (min)</string>
     	
 </resources>

@@ -163,7 +163,7 @@ public class Event {
 
 	private void createEventPreferencesScreen()
 	{
-       	this._eventPreferencesScreen = new EventPreferencesScreen(this, false, 0);
+       	this._eventPreferencesScreen = new EventPreferencesScreen(this, false, 0, 0);
 	}
 	
 	public void createEventPreferences()

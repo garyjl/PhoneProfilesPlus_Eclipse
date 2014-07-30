@@ -218,6 +218,9 @@ public class EventsService extends IntentService
 		else
 		if (broadcastReceiverType.equals(WifiScanBroadcastReceiver.BROADCAST_RECEIVER_TYPE))
 			WifiScanBroadcastReceiver.completeWakefulIntent(intent);
+		else
+		if (broadcastReceiverType.equals(ScreenOnOffBroadcastReceiver.BROADCAST_RECEIVER_TYPE))
+			ScreenOnOffBroadcastReceiver.completeWakefulIntent(intent);
 	}
 	
 }

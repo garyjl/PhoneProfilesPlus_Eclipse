@@ -44,13 +44,13 @@ public class ScreenOnOffBroadcastReceiver extends WakefulBroadcastReceiver {
 				}
 			}
 			
-			/*
+			
 			boolean screenEventsExists = false;
 			
 			screenEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_SCREEN) > 0;
-			GlobalData.logE("ScreenOnOffBroadcastReceiver.onReceive","screenEventsExists="+screenEventsExists);*/
+			GlobalData.logE("ScreenOnOffBroadcastReceiver.onReceive","screenEventsExists="+screenEventsExists);
 			dataWrapper.invalidateDataWrapper();
-			/*
+			
 			if (screenEventsExists)
 			{
 				// start service
@@ -58,7 +58,7 @@ public class ScreenOnOffBroadcastReceiver extends WakefulBroadcastReceiver {
 				eventsServiceIntent.putExtra(GlobalData.EXTRA_BROADCAST_RECEIVER_TYPE, BROADCAST_RECEIVER_TYPE);
 				startWakefulService(context, eventsServiceIntent);
 			}
-			*/
+			
 		}
 
 	}

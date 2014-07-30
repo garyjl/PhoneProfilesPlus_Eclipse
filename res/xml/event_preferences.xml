@@ -211,7 +211,14 @@
 		    android:key="eventScreenEnabled"
 		    android:title="@string/event_preferences_screen_enabled"
 		    android:defaultValue="false" />
-        <EditTextPreference
+		<ListPreference android:title="@string/event_preferences_screen_event_type"
+            android:summary="@string/array_event_pref_eventScreenEventType_screenOn"
+            android:key="eventScreenEventType"
+            android:defaultValue="0"
+            android:entries="@array/eventScreenEventTypeArray"
+            android:entryValues="@array/eventScreenEventTypeValues"
+            android:dependency="eventScreenEnabled" />        
+		<EditTextPreference
             android:key="eventScreenDelay"
             android:summary="@string/event_preferences_screen_delay"
             android:title="@string/event_preferences_screen_delay" 
