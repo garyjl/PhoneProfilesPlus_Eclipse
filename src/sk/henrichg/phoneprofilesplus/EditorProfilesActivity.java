@@ -1737,7 +1737,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 			//Log.e("EditorProfilesActivity.getDataWrapper","COUNT_DRAWER_PROFILE_ITEMS="+COUNT_DRAWER_PROFILE_ITEMS);
 			//Log.e("EditorProfilesActivity.getDataWrapper","drawerSelectedItem="+drawerSelectedItem);
 			
-			if (drawerSelectedItem <= COUNT_DRAWER_PROFILE_ITEMS)
+			if (fragment instanceof EditorProfileListFragment)
 				return ((EditorProfileListFragment)fragment).dataWrapper;
 			else
 				return ((EditorEventListFragment)fragment).dataWrapper;
@@ -1769,7 +1769,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 			//Log.e("EditorProfilesActivity.getDataWrapper","COUNT_DRAWER_PROFILE_ITEMS="+COUNT_DRAWER_PROFILE_ITEMS);
 			//Log.e("EditorProfilesActivity.getDataWrapper","drawerSelectedItem="+drawerSelectedItem);
 			
-			if (drawerSelectedItem <= COUNT_DRAWER_PROFILE_ITEMS)
+			if (fragment instanceof EditorProfileListFragment)
 				((EditorProfileListFragment)fragment).refreshGUI();
 			else
 				((EditorEventListFragment)fragment).refreshGUI();
