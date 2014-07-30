@@ -362,7 +362,6 @@
     <string name="array_event_pref_priorityUpperMedium">Upper medium</string>
     <string name="array_event_pref_priorityHigher">Higher</string>
     <string name="array_event_pref_priorityHighest">Highest</string>
-
     <string name="event_type_wifi">WiFi</string>
     <string name="event_preferences_category_eventWifiParameters">WiFi</string>
     <string name="event_preferences_wifi_enabled">Enable WiFi</string>
@@ -375,7 +374,9 @@
 	<string name="phone_profiles_pref_category_event">Events</string>
 	<string name="phone_profiles_pref_applicationEventWifiScanInterval">WiFi scan interval (min)</string>
 	<string name="phone_profiles_pref_applicationEventWifiEnableWifi">Enable WiFi</string>
-	
 	<string name="phone_profiles_pref_applicationEventBackgroundProfile">Background profile</string>
+	
+	<string name="event_type_screen">Screen</string>
+	<string name="pref_event_screen_delay">Delay</string>
     	
 </resources>

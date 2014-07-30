@@ -204,4 +204,20 @@
             android:entryValues="@array/eventPeripheralTypeValues"
             android:dependency="eventPeripheralEnabled" />        
 	</PreferenceCategory>
+    <PreferenceCategory
+        android:summary="@string/event_preferences_category_eventScreenParameters"
+        android:title="@string/event_preferences_category_eventScreenParameters" >
+		<CheckBoxPreference 
+		    android:key="eventScreenEnabled"
+		    android:title="@string/event_preferences_screen_enabled"
+		    android:defaultValue="false" />
+        <EditTextPreference
+            android:key="eventScreenDelay"
+            android:summary="@string/event_preferences_screen_delay"
+            android:title="@string/event_preferences_screen_delay" 
+			android:inputType="number"
+            android:defaultValue="0"
+            android:selectAllOnFocus="true"
+            android:dependency="eventScreenEnabled" /> 
+	</PreferenceCategory>
 </PreferenceScreen>    

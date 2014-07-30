@@ -61,13 +61,13 @@ public class EventPreferencesBattery extends EventPreferences {
 		int iLevel;
 		
 		sLevel = preferences.getString(PREF_EVENT_BATTERY_LEVEL_LOW, "0");
-		if (sLevel == "") sLevel = "0";
+		if (sLevel.isEmpty()) sLevel = "0";
 		iLevel = Integer.parseInt(sLevel);
 		if ((iLevel < 0) || (iLevel > 100)) iLevel = 0;
 		this._levelLow= iLevel;
 
 		sLevel = preferences.getString(PREF_EVENT_BATTERY_LEVEL_HIGHT, "100");
-		if (sLevel == "") sLevel = "100";
+		if (sLevel.isEmpty()) sLevel = "100";
 		iLevel = Integer.parseInt(sLevel);
 		if ((iLevel < 0) || (iLevel > 100)) iLevel = 100;
 		this._levelHight= iLevel;

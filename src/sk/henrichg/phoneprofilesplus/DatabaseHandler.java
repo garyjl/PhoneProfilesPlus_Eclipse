@@ -26,7 +26,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static SQLiteDatabase writableDb;	
     
 	// Database Version
-	private static final int DATABASE_VERSION = 1106;
+	private static final int DATABASE_VERSION = 1110;
 
 	// Database Name
 	private static final String DATABASE_NAME = "phoneProfilesManager";
@@ -47,6 +47,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public static final int ETYPE_CALENDAR = 5;
 	public static final int ETYPE_WIFICONNECTED = 6;
 	public static final int ETYPE_WIFIINFRONT = 7;
+	public static final int ETYPE_SCREEN = 8;
 	
 	// Profiles Table Columns names
 	private static final String KEY_ID = "id";
@@ -124,6 +125,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_E_WIFI_ENABLED = "wifiEnabled";
 	private static final String KEY_E_WIFI_SSID = "wifiSSID";
 	private static final String KEY_E_WIFI_CONNECTION_TYPE = "wifiConnectionType";
+	private static final String KEY_E_SCREEN_ENABLED = "screenEnabled";
+	private static final String KEY_E_SCREEN_DELAY = "screenDelay";
 	
 	private static final String KEY_ET_ID = "id";
 	private static final String KEY_ET_EORDER = "eorder";
@@ -269,7 +272,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_E_CALENDAR_EVENT_FOUND + " INTEGER,"
 				+ KEY_E_WIFI_ENABLED + " INTEGER,"
 				+ KEY_E_WIFI_SSID + " TEXT,"
-				+ KEY_E_WIFI_CONNECTION_TYPE + " INTEGER"
+				+ KEY_E_WIFI_CONNECTION_TYPE + " INTEGER,"
+				+ KEY_E_SCREEN_ENABLED + " INTEGER,"
+				+ KEY_E_SCREEN_DELAY + " INTEGER"
 				+ ")";
 		db.execSQL(CREATE_EVENTS_TABLE);
 
@@ -709,6 +714,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			// updatneme zaznamy
 			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_WIFI_CONNECTION_TYPE + "=0");
 		}
+
+		if (oldVersion < 1110)
+		{
+			// pridame nove stlpce
+			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_SCREEN_ENABLED + " INTEGER");
+			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_SCREEN_DELAY + " INTEGER");
+			
+			// updatneme zaznamy
+			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_SCREEN_ENABLED + "=0");
+			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_SCREEN_DELAY + "=0");
+		}
+
 	}
 	
 
@@ -2018,6 +2035,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
        	getEventPreferencesPeripheral(event, db);
        	getEventPreferencesCalendar(event, db);
        	getEventPreferencesWifi(event, db);
+       	getEventPreferencesScreen(event, db);
 	}
 	
 	private void getEventPreferencesTime(Event event, SQLiteDatabase db) {
@@ -2215,6 +2233,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			cursor.close();
 		}
 	}
+
+	private void getEventPreferencesScreen(Event event, SQLiteDatabase db) {
+		Cursor cursor = db.query(TABLE_EVENTS, 
+				                 new String[] { KEY_E_SCREEN_ENABLED,
+												KEY_E_SCREEN_DELAY
+												}, 
+				                 KEY_E_ID + "=?",
+				                 new String[] { String.valueOf(event._id) }, null, null, null, null);
+		if (cursor != null)
+		{
+			cursor.moveToFirst();
+
+			if (cursor.getCount() > 0)
+			{
+				EventPreferencesScreen eventPreferences = (EventPreferencesScreen)event._eventPreferencesScreen;
+		
+				eventPreferences._enabled = (Integer.parseInt(cursor.getString(0)) == 1);
+				eventPreferences._delay = Integer.parseInt(cursor.getString(1));
+			}
+			cursor.close();
+		}
+	}
 	
 	public int updateEventPreferences(Event event) {
 		//SQLiteDatabase db = this.getReadableDatabase();
@@ -2239,6 +2279,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
        		r = updateEventPreferencesCalendar(event, db);
        	if (r != 0)
        		r = updateEventPreferencesWifi(event, db);
+       	if (r != 0)
+       		r = updateEventPreferencesScreen(event, db);
 
        	return r;
 	}
@@ -2356,11 +2398,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 		EventPreferencesWifi eventPreferences = (EventPreferencesWifi)event._eventPreferencesWifi; 
 
-		//Log.e("DatabaseHandler.updateEventPreferencesCalendar","type="+event._type);
+		//Log.e("DatabaseHandler.updateEventPreferencesWifi","type="+event._type);
 		
 		values.put(KEY_E_WIFI_ENABLED, (eventPreferences._enabled) ? 1 : 0);
 		values.put(KEY_E_WIFI_SSID, eventPreferences._SSID);
 		values.put(KEY_E_WIFI_CONNECTION_TYPE, eventPreferences._connectionType);
+
+		// updating row
+		int r = db.update(TABLE_EVENTS, values, KEY_E_ID + " = ?",
+				        new String[] { String.valueOf(event._id) });
+        
+		return r;
+	}
+
+	private int updateEventPreferencesScreen(Event event, SQLiteDatabase db) {
+		ContentValues values = new ContentValues();
+		
+		EventPreferencesScreen eventPreferences = (EventPreferencesScreen)event._eventPreferencesScreen; 
+
+		//Log.e("DatabaseHandler.updateEventPreferencesScreen","type="+event._type);
+		
+		values.put(KEY_E_SCREEN_ENABLED, (eventPreferences._enabled) ? 1 : 0);
+		values.put(KEY_E_SCREEN_DELAY, eventPreferences._delay);
 
 		// updating row
 		int r = db.update(TABLE_EVENTS, values, KEY_E_ID + " = ?",
@@ -2555,6 +2614,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		else
 		if (eventType == ETYPE_WIFIINFRONT)
 			eventTypeChecked = eventTypeChecked + KEY_E_WIFI_ENABLED + "=1" + " AND " + KEY_E_WIFI_CONNECTION_TYPE + "=1";
+		else
+		if (eventType == ETYPE_SCREEN)
+			eventTypeChecked = eventTypeChecked + KEY_E_SCREEN_ENABLED + "=1";
 		
 		countQuery = "SELECT  count(*) FROM " + TABLE_EVENTS + 
 	    		     " WHERE " + eventTypeChecked;
@@ -3244,6 +3306,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 										{
 											values.put(KEY_E_WIFI_CONNECTION_TYPE, 0);
 										}
+
+										if (exportedDBObj.getVersion() < 1110)
+										{
+											values.put(KEY_E_SCREEN_ENABLED, 0);
+											values.put(KEY_E_SCREEN_DELAY, 0);
+										}
+
 										
 										// Inserting Row do db z SQLiteOpenHelper
 										db.insert(TABLE_EVENTS, null, values);
