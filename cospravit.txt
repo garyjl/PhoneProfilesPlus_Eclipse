@@ -137,7 +137,37 @@ Background profile
   - cize toto vyhodit, je to uplne zbytocne.
 - Background profile akativovat: v EventsService, ak ziadny event sa nenastartuje.
 - Treba vyriesit, ze ak uzivatel background profile vymaze, musi sa preferences nastavit na -999.   
+
+-------------------------------------------------      
+Screen event preferences
+- je tam parameter_delay
+- v EventsService testovat broadcastReceiverType
+- ak to bude ScreenOnOffBroadcastReceiver.BROADCAST_RECEIVER_TYPE, prechadzat eventy
+  a na screen preferences enabled vytvorit alarm a ukoncit service.
+- podobne ako je to pre broadcastReceiverType 
+  CalendarProviderChangedBroadcastReceiver.BROADCAST_RECEIVER_TYPE 
+- Nezabudnut volat doEndService(intent); a dataWrapper.invalidateDataWrapper();
+- alarm rusit, ak sa event zapauzuje
                 
+----------------------------------------------
+Event start delay
+- pozdrzanie spustenie o cas v minutach
+- Do doEventService() to spravit
+  - pre statePause == false 
+	  1. nove event preference - boolean isInDelay - urcuje, ci je event v delay
+	  2. nove event preference - int delayMinutes - ucuje cas (v minutach) pozdrzania startu eventu
+	  3. Ak vsetky event preferences budu passed a isInDelay je false, nastavi sa na true a 
+	     vytvori sa alarm s casom sysdate+delayMinutes
+	  4. Ak nie su vsetky event preferences passed a isInDelay je true, nastavi sa na false a 
+	     zrusi sa alarm
+	  3. Ak vsetky event preferences budu passed a isInDelay je true, nerobi sa nic, cize caka sa
+	     na alarm
+	  5. Ak pride alarm na delay, vykona sa normalny start/pause eventu
+  pre statePause == true
+      1. zrusit alarm
+- Podmienkou je, aby doEventService() vedelo, ci receiver je z alarmu. Cize dat to ako parameter.  
+- Mozeme potom spravit novy indikator spustenia - ak bude event v delay, dat pause indikator
+  oranzovy.
 
   
 

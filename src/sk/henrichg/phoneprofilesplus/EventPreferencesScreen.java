@@ -130,32 +130,13 @@ public class EventPreferencesScreen extends EventPreferences {
 	{
 		// set alarm for state PAUSE
 		
-		// this alarm generates broadcast, that change state into RUNNING;
-		// from broadcast will by called EventsService
+		//removeAlarm(context);
 		
-
-	/*	removeAlarm(context);
-		
-		if (!(isRunable() && _enabled)) 
-			return;
-
-		setAlarm(true, computeAlarm(true), context); */
 	}
 
 	@Override
 	public void setSystemPauseEvent(Context context)
 	{
-		// set alarm for state RUNNING
-
-		// this alarm generates broadcast, that change state into PAUSE;
-		// from broadcast will by called EventsService
-
-	/*	removeAlarm(context);
-		
-		if (!(isRunable() && _enabled)) 
-			return;
-		
-		setAlarm(false, computeAlarm(false), context); */
 	}
 	
 	@Override
@@ -163,9 +144,7 @@ public class EventPreferencesScreen extends EventPreferences {
 	{
 		// remove alarms for state STOP
 
-	/*	removeAlarm(context);
-		
-		GlobalData.logE("EventPreferencesScreen.removeSystemEvent","xxx"); */
+		//	removeAlarm(context);
 	}
 
 	/*
