@@ -1,8 +1,15 @@
 package sk.henrichg.phoneprofilesplus;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.media.Ringtone;
@@ -853,6 +860,66 @@ public class Event {
 			_eventPreferencesWifi.removeSystemEvent(context);
 			_eventPreferencesScreen.removeSystemEvent(context);
 		}
+	}
+	
+	@SuppressLint("SimpleDateFormat")
+	public boolean setDelayAlarm(DataWrapper dataWrapper, boolean forStart)
+	{
+		boolean isAlarmSet = false;
+		
+		if (this._delayStart > 0)
+		{
+			// delay for start is > 0
+			// set alarm
+			
+			Calendar now = Calendar.getInstance();
+			long alarmTime = now.getTimeInMillis() + 1000 * 60 * this._delayStart;
+					
+		    SimpleDateFormat sdf = new SimpleDateFormat("EE d.MM.yyyy HH:mm:ss:S");
+		    String result = sdf.format(alarmTime);
+		    if (forStart)
+		    	GlobalData.logE("Event.setDelayAlarm","startTime="+result);
+		    else
+		    	GlobalData.logE("Event.setDelayAlarm","endTime="+result);
+		    
+		    Intent intent = new Intent(dataWrapper.context, EventDelayBroadcastReceiver.class);
+		    intent.putExtra(GlobalData.EXTRA_EVENT_ID, this._id);
+		    intent.putExtra(GlobalData.EXTRA_START_SYSTEM_EVENT, forStart);
+		    
+	        PendingIntent pendingIntent = PendingIntent.getBroadcast(dataWrapper.context.getApplicationContext(), (int) this._id, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+	        AlarmManager alarmManager = (AlarmManager) dataWrapper.context.getSystemService(Activity.ALARM_SERVICE);
+
+	        alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
+	        //alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, alarmTime, 24 * 60 * 60 * 1000 , pendingIntent);
+	        //alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, alarmTime, 24 * 60 * 60 * 1000 , pendingIntent);
+
+			isAlarmSet = true;
+		}
+			
+		this._isInDelay = true;
+		dataWrapper.getDatabaseHandler().updateEventInDelay(this);
+		
+		return isAlarmSet;
+	}
+	
+	public void removeDelayAlarm(DataWrapper dataWrapper, boolean forStart)
+	{
+        AlarmManager alarmManager = (AlarmManager) dataWrapper.context.getSystemService(Activity.ALARM_SERVICE);
+
+		Intent intent = new Intent(dataWrapper.context, EventDelayBroadcastReceiver.class);
+	    
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(dataWrapper.context.getApplicationContext(), (int) this._id, intent, PendingIntent.FLAG_NO_CREATE);
+        if (pendingIntent != null)
+        {
+       		GlobalData.logE("Event.removeDelayAlarm","alarm found");
+        		
+        	alarmManager.cancel(pendingIntent);
+        	pendingIntent.cancel();
+        }
+		
+		this._isInDelay = false;
+		dataWrapper.getDatabaseHandler().updateEventInDelay(this);
 	}
 	
 }

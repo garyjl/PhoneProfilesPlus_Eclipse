@@ -162,7 +162,7 @@ Event start delay
 	     zrusi sa alarm
 	  3. Ak vsetky event preferences budu passed a isInDelay je true, nerobi sa nic, cize caka sa
 	     na alarm
-	  5. Ak pride alarm na delay, vykona sa normalny start/pause eventu
+	  5. Ak pride alarm na delay, vykona sa normalny start eventu
   pre statePause == true
       1. zrusit alarm
 - Podmienkou je, aby doEventService() vedelo, ci receiver je z alarmu. Cize dat to ako parameter.  

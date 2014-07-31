@@ -1627,12 +1627,34 @@ public class DataWrapper {
 			if ((newEventStatus == Event.ESTATUS_RUNNING) && (!statePause))
 			{
 				GlobalData.logE("DataWrapper.doEventService","start event");
-				event.startEvent(this, eventTimelineList, false, interactive);
+				
+				boolean isDelayAlarmSet = false;
+				
+				if (!forDelayAlarm)
+				{
+					// called not for delay alarm
+					if (!event._isInDelay)
+						// if not delay alarm is set, set it
+						isDelayAlarmSet = event.setDelayAlarm(this, true); // for start delay
+				}
+				
+				if (forDelayAlarm || (!isDelayAlarmSet))
+				{
+					// called for delay alarm or not delay alarmi si set
+					// remove alarm
+					event.removeDelayAlarm(this, true); // for start delay
+					// and start event
+					event.startEvent(this, eventTimelineList, false, interactive);
+				}
 			}
 			else
 			if ((newEventStatus == Event.ESTATUS_PAUSE) && statePause)
 			{
 				GlobalData.logE("DataWrapper.doEventService","pause event");
+				
+				// remove delay alarm
+				event.removeDelayAlarm(this, true); // for start delay
+				
 				event.pauseEvent(this, eventTimelineList, true, false, false);
 			}
 		}
