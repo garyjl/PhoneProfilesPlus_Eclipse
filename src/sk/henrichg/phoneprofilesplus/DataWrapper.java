@@ -736,7 +736,8 @@ public class DataWrapper {
 				false,
 				true,
 				Event.EPRIORITY_MEDIUM,
-				0
+				0,
+				false
          );
 	}
 	
@@ -1195,7 +1196,8 @@ public class DataWrapper {
 
 	@SuppressLint("NewApi")
 	public boolean doEventService(Event event, boolean statePause, 
-									boolean restartEvent, boolean interactive)
+									boolean restartEvent, boolean interactive,
+									boolean forDelayAlarm)
 	{
 		int newEventStatus = Event.ESTATUS_NONE;
 

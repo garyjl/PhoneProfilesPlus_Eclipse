@@ -71,6 +71,8 @@ public class EventsService extends IntentService
 							 broadcastReceiverType.equals(SearchCalendarEventsBroadcastReceiver.BROADCAST_RECEIVER_TYPE));
 		
 		boolean interactive = !isRestart;
+		
+		boolean forDelayAlarm = false;
 
 		//GlobalData.logE("@@@ EventsService.onHandleIntent","isRestart="+isRestart);
 		
@@ -87,7 +89,7 @@ public class EventsService extends IntentService
 				if (_event.getStatus() != Event.ESTATUS_STOP)
 					// len pauzuj eventy
 					// pauzuj aj ked uz je zapauznuty
-					dataWrapper.doEventService(_event, true, true, interactive);
+					dataWrapper.doEventService(_event, true, true, interactive, forDelayAlarm);
 			}
 			// 2. start events in timeline order
 			List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
@@ -103,7 +105,7 @@ public class EventsService extends IntentService
 					if (_event.getStatus() != Event.ESTATUS_STOP)
 						// len spustaj eventy
 						// spusatj aj ked uz je spusteny
-						dataWrapper.doEventService(_event, false, true, interactive); 
+						dataWrapper.doEventService(_event, false, true, interactive, forDelayAlarm); 
 				}
 			}
 			// 3. start no started events in point 2.
@@ -117,7 +119,7 @@ public class EventsService extends IntentService
 				if (_event.getStatus() != Event.ESTATUS_STOP)
 					// len spustaj eventy
 					// spustaj len ak este nebezi
-					dataWrapper.doEventService(_event, false, false, interactive);
+					dataWrapper.doEventService(_event, false, false, interactive, forDelayAlarm);
 			}
 		}
 		else
@@ -133,7 +135,7 @@ public class EventsService extends IntentService
 				if (_event.getStatus() != Event.ESTATUS_STOP)
 					// len pauzuj eventy
 					// pauzuj len ak este nie je zapauznuty
-					dataWrapper.doEventService(_event, true, false, interactive);
+					dataWrapper.doEventService(_event, true, false, interactive, forDelayAlarm);
 			}
 			//2. start events
 			dataWrapper.sortEventsByPriorityAsc();
@@ -146,7 +148,7 @@ public class EventsService extends IntentService
 				if (_event.getStatus() != Event.ESTATUS_STOP)
 					// len spustaj eventy
 					// spustaj len ak este nebezi
-					dataWrapper.doEventService(_event, false, false, interactive); 
+					dataWrapper.doEventService(_event, false, false, interactive, forDelayAlarm); 
 			}
 		}
 

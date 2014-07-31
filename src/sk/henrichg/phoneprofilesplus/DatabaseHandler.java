@@ -26,7 +26,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static SQLiteDatabase writableDb;	
     
 	// Database Version
-	private static final int DATABASE_VERSION = 1112;
+	private static final int DATABASE_VERSION = 1113;
 
 	// Database Name
 	private static final String DATABASE_NAME = "phoneProfilesManager";
@@ -129,6 +129,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	//private static final String KEY_E_SCREEN_DELAY = "screenDelay";
 	private static final String KEY_E_SCREEN_EVENT_TYPE = "screenEventType";
 	private static final String KEY_E_DELAY_START = "delayStart";
+	private static final String KEY_E_IS_IN_DELAY = "isInDelay";
 	
 	private static final String KEY_ET_ID = "id";
 	private static final String KEY_ET_EORDER = "eorder";
@@ -277,7 +278,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_E_WIFI_CONNECTION_TYPE + " INTEGER,"
 				+ KEY_E_SCREEN_ENABLED + " INTEGER,"
 				+ KEY_E_SCREEN_EVENT_TYPE + " INTEGER,"
-				+ KEY_E_DELAY_START + " INTEGER"
+				+ KEY_E_DELAY_START + " INTEGER,"
+				+ KEY_E_IS_IN_DELAY + " INTEGER"
 				+ ")";
 		db.execSQL(CREATE_EVENTS_TABLE);
 
@@ -743,6 +745,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			
 			// updatneme zaznamy
 			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_DELAY_START + "=0");
+		}
+		
+		if (oldVersion < 1113)
+		{
+			// pridame nove stlpce
+			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_IS_IN_DELAY + " INTEGER");
+			
+			// updatneme zaznamy
+			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_IS_IN_DELAY + "=0");
 		}
 		
 	}
@@ -1713,6 +1724,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_E_UNDONE_PROFILE, event._undoneProfile ? 1 : 0); // undone profile after event end
 		values.put(KEY_E_PRIORITY, event._priority); // priority
 		values.put(KEY_E_DELAY_START, event._delayStart); // delay for start
+		values.put(KEY_E_IS_IN_DELAY, event._isInDelay ? 1 : 0); // event is in delay before start/pause
 		
 		db.beginTransaction();
 		
@@ -1748,7 +1760,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 												KEY_E_BLOCKED,
 												KEY_E_UNDONE_PROFILE,
 												KEY_E_PRIORITY,
-												KEY_E_DELAY_START
+												KEY_E_DELAY_START,
+												KEY_E_IS_IN_DELAY
 												}, 
 				                 KEY_E_ID + "=?",
 				                 new String[] { String.valueOf(event_id) }, null, null, null, null);
@@ -1772,7 +1785,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					                      Integer.parseInt(cursor.getString(7)) == 1,
 					                      Integer.parseInt(cursor.getString(8)) == 1,
 					                      Integer.parseInt(cursor.getString(9)),
-					                      Integer.parseInt(cursor.getString(10))
+					                      Integer.parseInt(cursor.getString(10)),
+					                      Integer.parseInt(cursor.getString(11)) == 1
 					                      );
 			}
 	
@@ -1805,7 +1819,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						                 KEY_E_BLOCKED + "," +
 						                 KEY_E_UNDONE_PROFILE + "," + 
 						                 KEY_E_PRIORITY + "," +
-						                 KEY_E_DELAY_START +
+						                 KEY_E_DELAY_START + "," +
+						                 KEY_E_IS_IN_DELAY +
 		                     " FROM " + TABLE_EVENTS +
 		                     " ORDER BY " + KEY_E_ID;
 
@@ -1829,6 +1844,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				event._undoneProfile = Integer.parseInt(cursor.getString(8)) == 1;
 				event._priority = Integer.parseInt(cursor.getString(9));
 				event._delayStart = Integer.parseInt(cursor.getString(10));
+				event._isInDelay = Integer.parseInt(cursor.getString(11)) == 1;
 				event.createEventPreferences();
 				getEventPreferences(event, db);
 				// Adding contact to list
@@ -1859,6 +1875,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_E_UNDONE_PROFILE, event._undoneProfile ? 1 : 0);
 		values.put(KEY_E_PRIORITY, event._priority);
 		values.put(KEY_E_DELAY_START, event._delayStart);
+		values.put(KEY_E_IS_IN_DELAY, event._isInDelay ? 1 : 0);
 
 		int r = 0;
 		
@@ -1982,7 +1999,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						                 KEY_E_BLOCKED + "," +
 						                 KEY_E_UNDONE_PROFILE + "," +
 						                 KEY_E_PRIORITY + "," +
-						                 KEY_E_DELAY_START
+						                 KEY_E_DELAY_START + "," +
+						                 KEY_E_IS_IN_DELAY +
 						    " FROM " + TABLE_EVENTS;
 						    
 
@@ -2007,6 +2025,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			event._undoneProfile = Integer.parseInt(cursor.getString(8)) == 1;
 			event._priority = Integer.parseInt(cursor.getString(9));
 			event._delayStart = Integer.parseInt(cursor.getString(10));
+			event._isInDelay = Integer.parseInt(cursor.getString(11)) == 1;
 		}
 		
 		cursor.close();
@@ -2767,6 +2786,39 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		return r != 0;
 	}
 	
+	public int updateEventInDelay(Event event)
+	{
+		//SQLiteDatabase db = this.getWritableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put(KEY_E_IS_IN_DELAY, event._isInDelay ? 1 : 0);
+
+		int r = 0;
+		
+		db.beginTransaction();
+		
+		try {
+			// updating row
+			r = db.update(TABLE_EVENTS, values, KEY_E_ID + " = ?",
+				new String[] { String.valueOf(event._id) });
+		
+			db.setTransactionSuccessful();
+
+		} catch (Exception e){
+			//Error in between database transaction
+			Log.e("DatabaseHandler.updateEventInDelay", e.toString());
+			r = 0;
+		} finally {
+			db.endTransaction();
+		}	
+		
+        //db.close();
+        
+		return r;
+		
+	}
+	
 	
 // EVENT TIMELINE ------------------------------------------------------------------
 	
@@ -3349,6 +3401,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 											values.put(KEY_E_DELAY_START, 0);
 										}
 										
+										if (exportedDBObj.getVersion() < 1113)
+										{
+											values.put(KEY_E_IS_IN_DELAY, 0);
+										}
+
 										// Inserting Row do db z SQLiteOpenHelper
 										db.insert(TABLE_EVENTS, null, values);
 										

@@ -158,7 +158,8 @@ public class EventPreferencesFragment extends PreferenceListFragment
 						   origEvent._blocked,
 						   origEvent._undoneProfile,
 						   origEvent._priority,
-						   origEvent._delayStart
+						   origEvent._delayStart,
+						   origEvent._isInDelay
 							);
 			event.copyEventPreferences(origEvent);
 			event_id = 0;

@@ -24,6 +24,7 @@ public class Event {
 	public boolean _blocked;
 	public int _priority;
 	public int _delayStart;
+	public boolean _isInDelay;
 
 	public EventPreferencesTime _eventPreferencesTime;
 	public EventPreferencesBattery _eventPreferencesBattery;
@@ -78,7 +79,8 @@ public class Event {
 		         boolean blocked,
 		         boolean undoneProfile,
 		         int priority,
-		         int delayStart)
+		         int delayStart,
+		         boolean isInDelay)
 	{
 		this._id = id;
 		this._name = name;
@@ -91,6 +93,7 @@ public class Event {
         this._undoneProfile = undoneProfile;
         this._priority = priority;
         this._delayStart = delayStart;
+        this._isInDelay = isInDelay;
         
         createEventPreferences();
 	}
@@ -105,7 +108,8 @@ public class Event {
 	         	 boolean blocked,
 	         	 boolean undoneProfile,
 	         	 int priority,
-	         	 int delayStart)
+	         	 int delayStart,
+	         	 boolean isInDelay)
 	{
 		this._name = name;
 	    this._fkProfileStart = fkProfileStart;
@@ -117,6 +121,7 @@ public class Event {
         this._undoneProfile = undoneProfile;
         this._priority = priority;
         this._delayStart = delayStart;
+        this._isInDelay = isInDelay;
         
 	    createEventPreferences();
 	}
@@ -134,6 +139,7 @@ public class Event {
         this._undoneProfile = event._undoneProfile;
         this._priority = event._priority;
         this._delayStart = event._delayStart;
+        this._isInDelay = event._isInDelay;
         
         copyEventPreferences(event);
 	}
