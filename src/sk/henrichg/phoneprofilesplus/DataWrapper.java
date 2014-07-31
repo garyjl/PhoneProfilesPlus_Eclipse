@@ -1640,7 +1640,7 @@ public class DataWrapper {
 				
 				if (forDelayAlarm || (!isDelayAlarmSet))
 				{
-					// called for delay alarm or not delay alarmi si set
+					// called for delay alarm or not delay alarm is set
 					// remove alarm
 					event.removeDelayAlarm(this, true); // for start delay
 					// and start event
