@@ -895,9 +895,11 @@ public class Event {
 	        //alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, alarmTime, 24 * 60 * 60 * 1000 , pendingIntent);
 
 			isAlarmSet = true;
+			this._isInDelay = true;
 		}
+		else
+			this._isInDelay = false;
 			
-		this._isInDelay = true;
 		dataWrapper.getDatabaseHandler().updateEventInDelay(this);
 		
 		return isAlarmSet;
