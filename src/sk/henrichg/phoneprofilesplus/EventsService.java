@@ -72,7 +72,7 @@ public class EventsService extends IntentService
 		
 		boolean interactive = !isRestart;
 		
-		boolean forDelayAlarm = false;
+		boolean forDelayAlarm = broadcastReceiverType.equals(EventDelayBroadcastReceiver.BROADCAST_RECEIVER_TYPE);
 
 		//GlobalData.logE("@@@ EventsService.onHandleIntent","isRestart="+isRestart);
 		
