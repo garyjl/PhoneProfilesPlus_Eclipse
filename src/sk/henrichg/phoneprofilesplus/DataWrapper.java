@@ -25,6 +25,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.BatteryManager;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.telephony.PhoneNumberUtils;
@@ -1206,6 +1207,7 @@ public class DataWrapper {
 		boolean peripheralPassed = true;
 		boolean calendarPassed = true;
 		boolean wifiPassed = true;
+		boolean screenPassed = true;
 		
 		boolean isCharging = false;
 		float batteryPct = 100.0f;
@@ -1564,12 +1566,28 @@ public class DataWrapper {
 			eventStart = eventStart && wifiPassed;
 		}
 		
+		if (event._eventPreferencesScreen._enabled)
+		{
+			
+			PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+			boolean isScreenOn = pm.isScreenOn();
+			
+			screenPassed = (isScreenOn && (event._eventPreferencesScreen._eventType == 
+								EventPreferencesScreen.ETYPE_SCREENON));
+			if (!screenPassed)
+				screenPassed = ((!isScreenOn) && (event._eventPreferencesScreen._eventType == 
+								EventPreferencesScreen.ETYPE_SCREENOFF));
+			
+			eventStart = eventStart && screenPassed;
+		}
+		
 		GlobalData.logE("DataWrapper.doEventService","timePassed="+timePassed);
 		GlobalData.logE("DataWrapper.doEventService","batteryPassed="+batteryPassed);
 		GlobalData.logE("DataWrapper.doEventService","callPassed="+callPassed);
 		GlobalData.logE("DataWrapper.doEventService","peripheralPassed="+peripheralPassed);
 		GlobalData.logE("DataWrapper.doEventService","calendarPassed="+calendarPassed);
 		GlobalData.logE("DataWrapper.doEventService","wifiPassed="+wifiPassed);
+		GlobalData.logE("DataWrapper.doEventService","screenPassed="+screenPassed);
 
 		GlobalData.logE("DataWrapper.doEventService","eventStart="+eventStart);
 		GlobalData.logE("DataWrapper.doEventService","restartEvent="+restartEvent);
@@ -1581,7 +1599,8 @@ public class DataWrapper {
 			callPassed && 
 			peripheralPassed && 
 			calendarPassed &&
-			wifiPassed)
+			wifiPassed &&
+			screenPassed)
 		{
 			// podmienky sedia, vykoname, co treba
 
@@ -1621,7 +1640,8 @@ public class DataWrapper {
 				callPassed && 
 				peripheralPassed && 
 				calendarPassed &&
-				wifiPassed);
+				wifiPassed &&
+				screenPassed);
 	}
 	
 	public Profile filterProfileWithBatteryEvents(Profile profile)
