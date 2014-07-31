@@ -26,7 +26,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static SQLiteDatabase writableDb;	
     
 	// Database Version
-	private static final int DATABASE_VERSION = 1111;
+	private static final int DATABASE_VERSION = 1112;
 
 	// Database Name
 	private static final String DATABASE_NAME = "phoneProfilesManager";
@@ -126,8 +126,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_E_WIFI_SSID = "wifiSSID";
 	private static final String KEY_E_WIFI_CONNECTION_TYPE = "wifiConnectionType";
 	private static final String KEY_E_SCREEN_ENABLED = "screenEnabled";
-	private static final String KEY_E_SCREEN_DELAY = "screenDelay";
+	//private static final String KEY_E_SCREEN_DELAY = "screenDelay";
 	private static final String KEY_E_SCREEN_EVENT_TYPE = "screenEventType";
+	private static final String KEY_E_DELAY_START = "delayStart";
 	
 	private static final String KEY_ET_ID = "id";
 	private static final String KEY_ET_EORDER = "eorder";
@@ -275,8 +276,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_E_WIFI_SSID + " TEXT,"
 				+ KEY_E_WIFI_CONNECTION_TYPE + " INTEGER,"
 				+ KEY_E_SCREEN_ENABLED + " INTEGER,"
-				+ KEY_E_SCREEN_DELAY + " INTEGER,"
-				+ KEY_E_SCREEN_EVENT_TYPE + " INTEGER"
+				+ KEY_E_SCREEN_EVENT_TYPE + " INTEGER,"
+				+ KEY_E_DELAY_START + " INTEGER"
 				+ ")";
 		db.execSQL(CREATE_EVENTS_TABLE);
 
@@ -721,11 +722,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		{
 			// pridame nove stlpce
 			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_SCREEN_ENABLED + " INTEGER");
-			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_SCREEN_DELAY + " INTEGER");
 			
 			// updatneme zaznamy
 			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_SCREEN_ENABLED + "=0");
-			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_SCREEN_DELAY + "=0");
 		}
 
 		if (oldVersion < 1111)
@@ -737,6 +736,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_SCREEN_EVENT_TYPE + "=0");
 		}
 
+		if (oldVersion < 1112)
+		{
+			// pridame nove stlpce
+			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_DELAY_START + " INTEGER");
+			
+			// updatneme zaznamy
+			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_DELAY_START + "=0");
+		}
+		
 	}
 	
 
@@ -1704,6 +1712,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_E_BLOCKED, event._blocked ? 1 : 0); // temporary blocked
 		values.put(KEY_E_UNDONE_PROFILE, event._undoneProfile ? 1 : 0); // undone profile after event end
 		values.put(KEY_E_PRIORITY, event._priority); // priority
+		values.put(KEY_E_DELAY_START, event._delayStart); // delay for start
 		
 		db.beginTransaction();
 		
@@ -1738,7 +1747,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 												KEY_E_FORCE_RUN,
 												KEY_E_BLOCKED,
 												KEY_E_UNDONE_PROFILE,
-												KEY_E_PRIORITY
+												KEY_E_PRIORITY,
+												KEY_E_DELAY_START
 												}, 
 				                 KEY_E_ID + "=?",
 				                 new String[] { String.valueOf(event_id) }, null, null, null, null);
@@ -1761,7 +1771,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					                      Integer.parseInt(cursor.getString(6)) == 1,
 					                      Integer.parseInt(cursor.getString(7)) == 1,
 					                      Integer.parseInt(cursor.getString(8)) == 1,
-					                      Integer.parseInt(cursor.getString(9))
+					                      Integer.parseInt(cursor.getString(9)),
+					                      Integer.parseInt(cursor.getString(10))
 					                      );
 			}
 	
@@ -1793,7 +1804,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				                         KEY_E_FORCE_RUN + "," +
 						                 KEY_E_BLOCKED + "," +
 						                 KEY_E_UNDONE_PROFILE + "," + 
-						                 KEY_E_PRIORITY +
+						                 KEY_E_PRIORITY + "," +
+						                 KEY_E_DELAY_START +
 		                     " FROM " + TABLE_EVENTS +
 		                     " ORDER BY " + KEY_E_ID;
 
@@ -1816,6 +1828,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				event._blocked = Integer.parseInt(cursor.getString(7)) == 1;
 				event._undoneProfile = Integer.parseInt(cursor.getString(8)) == 1;
 				event._priority = Integer.parseInt(cursor.getString(9));
+				event._delayStart = Integer.parseInt(cursor.getString(10));
 				event.createEventPreferences();
 				getEventPreferences(event, db);
 				// Adding contact to list
@@ -1845,6 +1858,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_E_BLOCKED, event._blocked ? 1 : 0);
 		values.put(KEY_E_UNDONE_PROFILE, event._undoneProfile ? 1 : 0);
 		values.put(KEY_E_PRIORITY, event._priority);
+		values.put(KEY_E_DELAY_START, event._delayStart);
 
 		int r = 0;
 		
@@ -1967,7 +1981,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						                 KEY_E_FORCE_RUN + "," +
 						                 KEY_E_BLOCKED + "," +
 						                 KEY_E_UNDONE_PROFILE + "," +
-						                 KEY_E_PRIORITY +
+						                 KEY_E_PRIORITY + "," +
+						                 KEY_E_DELAY_START
 						    " FROM " + TABLE_EVENTS;
 						    
 
@@ -1991,6 +2006,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			event._blocked = Integer.parseInt(cursor.getString(7)) == 1;
 			event._undoneProfile = Integer.parseInt(cursor.getString(8)) == 1;
 			event._priority = Integer.parseInt(cursor.getString(9));
+			event._delayStart = Integer.parseInt(cursor.getString(10));
 		}
 		
 		cursor.close();
@@ -2248,7 +2264,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private void getEventPreferencesScreen(Event event, SQLiteDatabase db) {
 		Cursor cursor = db.query(TABLE_EVENTS, 
 				                 new String[] { KEY_E_SCREEN_ENABLED,
-												KEY_E_SCREEN_DELAY,
 												KEY_E_SCREEN_EVENT_TYPE
 												}, 
 				                 KEY_E_ID + "=?",
@@ -2262,8 +2277,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				EventPreferencesScreen eventPreferences = (EventPreferencesScreen)event._eventPreferencesScreen;
 		
 				eventPreferences._enabled = (Integer.parseInt(cursor.getString(0)) == 1);
-				eventPreferences._delay = Integer.parseInt(cursor.getString(1));
-				eventPreferences._eventType = Integer.parseInt(cursor.getString(2));
+				eventPreferences._eventType = Integer.parseInt(cursor.getString(1));
 			}
 			cursor.close();
 		}
@@ -2432,7 +2446,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		//Log.e("DatabaseHandler.updateEventPreferencesScreen","type="+event._type);
 		
 		values.put(KEY_E_SCREEN_ENABLED, (eventPreferences._enabled) ? 1 : 0);
-		values.put(KEY_E_SCREEN_DELAY, eventPreferences._delay);
 		values.put(KEY_E_SCREEN_EVENT_TYPE, eventPreferences._eventType);
 
 		// updating row
@@ -3324,7 +3337,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 										if (exportedDBObj.getVersion() < 1110)
 										{
 											values.put(KEY_E_SCREEN_ENABLED, 0);
-											values.put(KEY_E_SCREEN_DELAY, 0);
 										}
 
 										if (exportedDBObj.getVersion() < 1111)
@@ -3332,6 +3344,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 											values.put(KEY_E_SCREEN_EVENT_TYPE, 0);
 										}
 
+										if (exportedDBObj.getVersion() < 1112)
+										{
+											values.put(KEY_E_DELAY_START, 0);
+										}
 										
 										// Inserting Row do db z SQLiteOpenHelper
 										db.insert(TABLE_EVENTS, null, values);

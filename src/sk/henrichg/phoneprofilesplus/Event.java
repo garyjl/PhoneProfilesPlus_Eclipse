@@ -23,6 +23,7 @@ public class Event {
 	public boolean _forceRun;
 	public boolean _blocked;
 	public int _priority;
+	public int _delayStart;
 
 	public EventPreferencesTime _eventPreferencesTime;
 	public EventPreferencesBattery _eventPreferencesBattery;
@@ -59,6 +60,7 @@ public class Event {
     static final String PREF_EVENT_FORCE_RUN = "eventForceRun";
     static final String PREF_EVENT_UNDONE_PROFILE = "eventUndoneProfile";
     static final String PREF_EVENT_PRIORITY = "eventPriority";
+    static final String PREF_EVENT_DELAY_START = "eventDelayStart";
 	
 	// Empty constructor
 	public Event(){
@@ -75,7 +77,8 @@ public class Event {
 		         boolean forceRun,
 		         boolean blocked,
 		         boolean undoneProfile,
-		         int priority)
+		         int priority,
+		         int delayStart)
 	{
 		this._id = id;
 		this._name = name;
@@ -87,6 +90,7 @@ public class Event {
         this._blocked = blocked;
         this._undoneProfile = undoneProfile;
         this._priority = priority;
+        this._delayStart = delayStart;
         
         createEventPreferences();
 	}
@@ -100,7 +104,8 @@ public class Event {
 	         	 boolean forceRun,
 	         	 boolean blocked,
 	         	 boolean undoneProfile,
-	         	 int priority)
+	         	 int priority,
+	         	 int delayStart)
 	{
 		this._name = name;
 	    this._fkProfileStart = fkProfileStart;
@@ -111,6 +116,7 @@ public class Event {
         this._blocked = blocked;
         this._undoneProfile = undoneProfile;
         this._priority = priority;
+        this._delayStart = delayStart;
         
 	    createEventPreferences();
 	}
@@ -127,6 +133,7 @@ public class Event {
         this._blocked = event._blocked;
         this._undoneProfile = event._undoneProfile;
         this._priority = event._priority;
+        this._delayStart = event._delayStart;
         
         copyEventPreferences(event);
 	}
@@ -163,7 +170,7 @@ public class Event {
 
 	private void createEventPreferencesScreen()
 	{
-       	this._eventPreferencesScreen = new EventPreferencesScreen(this, false, 0, 0);
+       	this._eventPreferencesScreen = new EventPreferencesScreen(this, false, 0);
 	}
 	
 	public void createEventPreferences()
@@ -242,6 +249,7 @@ public class Event {
    		editor.putBoolean(PREF_EVENT_FORCE_RUN, this._forceRun);
    		editor.putBoolean(PREF_EVENT_UNDONE_PROFILE, this._undoneProfile);
    		editor.putString(PREF_EVENT_PRIORITY, Integer.toString(this._priority));
+   		editor.putString(PREF_EVENT_DELAY_START, Integer.toString(this._delayStart));
         this._eventPreferencesTime.loadSharedPrefereces(preferences);
         this._eventPreferencesBattery.loadSharedPrefereces(preferences);
         this._eventPreferencesCall.loadSharedPrefereces(preferences);
@@ -262,7 +270,14 @@ public class Event {
 		this._forceRun = preferences.getBoolean(PREF_EVENT_FORCE_RUN, false);
 		this._undoneProfile = preferences.getBoolean(PREF_EVENT_UNDONE_PROFILE, true);
 		this._priority = Integer.parseInt(preferences.getString(PREF_EVENT_PRIORITY, Integer.toString(EPRIORITY_MEDIUM)));
-		//Log.e("Event.saveSharedPrefereces","notificationSound="+this._notificationSound);
+
+		String sDelayStart = preferences.getString(PREF_EVENT_DELAY_START, "0");
+		if (sDelayStart.isEmpty()) sDelayStart = "0";
+		int iDelayStart = Integer.parseInt(sDelayStart);
+		if (iDelayStart < 0) iDelayStart = 0;
+		this._delayStart = iDelayStart;
+
+		
 		this._eventPreferencesTime.saveSharedPrefereces(preferences);
 		this._eventPreferencesBattery.saveSharedPrefereces(preferences);
 		this._eventPreferencesCall.saveSharedPrefereces(preferences);
@@ -328,6 +343,10 @@ public class Event {
 			CharSequence summary = (index >= 0) ? listPreference.getEntries()[index] : null;
 			listPreference.setSummary(summary);
 		}
+		if (key.equals(PREF_EVENT_DELAY_START))
+		{	
+	        prefMng.findPreference(key).setSummary(value);
+		}
 	}
 
 	public void setSummary(PreferenceManager prefMng, String key, SharedPreferences preferences, Context context)
@@ -336,7 +355,8 @@ public class Event {
 			key.equals(PREF_EVENT_PROFILE_START) ||
 			key.equals(PREF_EVENT_PROFILE_END) ||
 			key.equals(PREF_EVENT_NOTIFICATION_SOUND) ||
-			key.equals(PREF_EVENT_PRIORITY))
+			key.equals(PREF_EVENT_PRIORITY) ||
+			key.equals(PREF_EVENT_DELAY_START))
 			setSummary(prefMng, key, preferences.getString(key, ""), context);
 		_eventPreferencesTime.setSummary(prefMng, key, preferences, context);
 		_eventPreferencesBattery.setSummary(prefMng, key, preferences, context);
@@ -354,6 +374,7 @@ public class Event {
 		setSummary(prefMng, PREF_EVENT_PROFILE_END, Long.toString(this._fkProfileEnd), context);
 		setSummary(prefMng, PREF_EVENT_NOTIFICATION_SOUND, this._notificationSound, context);
 		setSummary(prefMng, PREF_EVENT_PRIORITY, Integer.toString(this._priority), context);
+		setSummary(prefMng, PREF_EVENT_DELAY_START, Integer.toString(this._delayStart), context);
 		_eventPreferencesTime.setAllSummary(prefMng, context);
 		_eventPreferencesBattery.setAllSummary(prefMng, context);
 		_eventPreferencesCall.setAllSummary(prefMng, context);

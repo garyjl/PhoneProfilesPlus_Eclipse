@@ -33,7 +33,14 @@
 		    android:title="@string/event_preferences_ForceRun"
 		    android:defaultValue="false"
 		    android:summary="@string/event_preferences_ForceRun_summary" />
-        <RingtonePreference
+		<EditTextPreference
+            android:key="eventDelayStart"
+            android:summary="@string/event_preferences_delayStart"
+            android:title="@string/event_preferences_delayStart" 
+			android:inputType="number"
+            android:defaultValue="0"
+            android:selectAllOnFocus="true" /> 
+   		<RingtonePreference
             android:key="eventNotificationSound"
             android:summary="@string/array_pref_no_change"
             android:title="@string/event_preferences_notificationSound"
@@ -218,13 +225,5 @@
             android:entries="@array/eventScreenEventTypeArray"
             android:entryValues="@array/eventScreenEventTypeValues"
             android:dependency="eventScreenEnabled" />        
-		<EditTextPreference
-            android:key="eventScreenDelay"
-            android:summary="@string/event_preferences_screen_delay"
-            android:title="@string/event_preferences_screen_delay" 
-			android:inputType="number"
-            android:defaultValue="0"
-            android:selectAllOnFocus="true"
-            android:dependency="eventScreenEnabled" /> 
 	</PreferenceCategory>
 </PreferenceScreen>    
