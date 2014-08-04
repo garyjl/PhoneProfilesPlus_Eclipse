@@ -328,7 +328,10 @@ public class EditorEventListAdapter extends BaseAdapter
         Profile profile =  dataWrapper.getProfileById(event._fkProfileStart);
         if (profile != null)
         {
-        	holder.profileStartName.setText(profile._name);
+        	String profileName = profile._name;
+        	if (event._delayStart > 0)
+        		profileName = "[" + event._delayStart + "] " + profileName;
+        	holder.profileStartName.setText(profileName);
 		    if (profile.getIsIconResourceID())
 		    {
 		    	holder.profileStartIcon.setImageResource(0);
