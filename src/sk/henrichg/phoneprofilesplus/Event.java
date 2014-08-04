@@ -752,6 +752,9 @@ public class Event {
 		if (!noSetSystemEvent)
 			setSystemEvent(dataWrapper.context, ESTATUS_PAUSE);
 
+		// remove delay alarm
+		removeDelayAlarm(dataWrapper, true); // for start delay
+		
 		this._status = ESTATUS_PAUSE;
 		
 		dataWrapper.getDatabaseHandler().updateEventStatus(this);
@@ -789,11 +792,11 @@ public class Event {
 
 		GlobalData.logE("Event.stopEvent","event_id="+this._id+"-----------------------------------");
 		
-		if (this._status == ESTATUS_RUNNING)
-		{
-			// event zrovna bezi, zapauzujeme ho
+		//if (this._status == ESTATUS_RUNNING)
+		//{
+		//	// event zrovna bezi, zapauzujeme ho
 			pauseEvent(dataWrapper, eventTimelineList, activateReturnProfile, ignoreGlobalPref, true);
-		}
+		//}
 	
 		setSystemEvent(dataWrapper.context, ESTATUS_STOP);
 		
@@ -863,9 +866,9 @@ public class Event {
 	}
 	
 	@SuppressLint("SimpleDateFormat")
-	public boolean setDelayAlarm(DataWrapper dataWrapper, boolean forStart)
+	public void setDelayAlarm(DataWrapper dataWrapper, boolean forStart)
 	{
-		boolean isAlarmSet = false;
+		removeDelayAlarm(dataWrapper, forStart);
 		
 		if (this._delayStart > 0)
 		{
@@ -878,9 +881,9 @@ public class Event {
 		    SimpleDateFormat sdf = new SimpleDateFormat("EE d.MM.yyyy HH:mm:ss:S");
 		    String result = sdf.format(alarmTime);
 		    if (forStart)
-		    	GlobalData.logE("Event.setDelayAlarm","startTime="+result);
+		    	GlobalData.logE("@@@ Event.setDelayAlarm","startTime="+result);
 		    else
-		    	GlobalData.logE("Event.setDelayAlarm","endTime="+result);
+		    	GlobalData.logE("@@@ Event.setDelayAlarm","endTime="+result);
 		    
 		    Intent intent = new Intent(dataWrapper.context, EventDelayBroadcastReceiver.class);
 		    intent.putExtra(GlobalData.EXTRA_EVENT_ID, this._id);
@@ -894,7 +897,6 @@ public class Event {
 	        //alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, alarmTime, 24 * 60 * 60 * 1000 , pendingIntent);
 	        //alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, alarmTime, 24 * 60 * 60 * 1000 , pendingIntent);
 
-			isAlarmSet = true;
 			this._isInDelay = true;
 		}
 		else
@@ -902,7 +904,7 @@ public class Event {
 			
 		dataWrapper.getDatabaseHandler().updateEventInDelay(this);
 		
-		return isAlarmSet;
+		return;
 	}
 	
 	public void removeDelayAlarm(DataWrapper dataWrapper, boolean forStart)
@@ -914,7 +916,7 @@ public class Event {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(dataWrapper.context.getApplicationContext(), (int) this._id, intent, PendingIntent.FLAG_NO_CREATE);
         if (pendingIntent != null)
         {
-       		GlobalData.logE("Event.removeDelayAlarm","alarm found");
+       		GlobalData.logE("@@@ Event.removeDelayAlarm","alarm found");
         		
         	alarmManager.cancel(pendingIntent);
         	pendingIntent.cancel();

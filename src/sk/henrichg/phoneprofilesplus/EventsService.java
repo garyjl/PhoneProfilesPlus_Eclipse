@@ -75,6 +75,7 @@ public class EventsService extends IntentService
 		boolean forDelayAlarm = broadcastReceiverType.equals(EventDelayBroadcastReceiver.BROADCAST_RECEIVER_TYPE);
 
 		//GlobalData.logE("@@@ EventsService.onHandleIntent","isRestart="+isRestart);
+		GlobalData.logE("@@@ EventsService.onHandleIntent","forDelayAlarm="+forDelayAlarm);
 		
 		if (isRestart)
 		{
@@ -181,7 +182,7 @@ public class EventsService extends IntentService
 		dataWrapper.invalidateDataWrapper();
 
 		
-		GlobalData.logE("EventsService.onHandleIntent","-- end --------------------------------");
+		GlobalData.logE("@@@ EventsService.onHandleIntent","-- end --------------------------------");
 		
 	}
 

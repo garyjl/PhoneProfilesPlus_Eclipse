@@ -2819,6 +2819,39 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 	}
 	
+	public int removeAllEventsDelays()
+	{
+		//SQLiteDatabase db = this.getWritableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put(KEY_E_IS_IN_DELAY, 0);
+
+		int r = 0;
+		
+		db.beginTransaction();
+		
+		try {
+			// updating rows
+			r = db.update(TABLE_EVENTS, values, null, null);
+		
+			db.setTransactionSuccessful();
+
+		} catch (Exception e){
+			//Error in between database transaction
+			Log.e("DatabaseHandler.removeAllEventsDelay", e.toString());
+			r = 0;
+		} finally {
+			db.endTransaction();
+		}	
+		
+        //db.close();
+        
+		return r;
+		
+	}
+	
+	
 	
 // EVENT TIMELINE ------------------------------------------------------------------
 	

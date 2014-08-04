@@ -648,12 +648,12 @@ public class DataWrapper {
 		
 		for (Event event : getEventList())
 		{
-			if (event.getStatusFromDB(this) == Event.ESTATUS_RUNNING)
-			{
+			//if (event.getStatusFromDB(this) == Event.ESTATUS_RUNNING)
+			//{
 				event.pauseEvent(this, eventTimelineList, false, true, noSetSystemEvent);
 				if (event._forceRun)
 					setEventBlocked(event, blockEvents);
-			}
+			//}
 		}
 
 		GlobalData.setEventsBlocked(context, blockEvents);
@@ -1620,7 +1620,7 @@ public class DataWrapper {
 
 		//GlobalData.logE("@@@ DataWrapper.doEventService","restartEvent="+restartEvent);
 		
-		if ((event.getStatus() != newEventStatus) || restartEvent)
+		if ((event.getStatus() != newEventStatus) || restartEvent || event._isInDelay)
 		{
 			//GlobalData.logE("@@@ DataWrapper.doEventService"," do new event status");
 			
@@ -1628,17 +1628,23 @@ public class DataWrapper {
 			{
 				GlobalData.logE("DataWrapper.doEventService","start event");
 				
-				boolean isDelayAlarmSet = false;
-				
 				if (!forDelayAlarm)
 				{
 					// called not for delay alarm
 					if (!event._isInDelay)
 						// if not delay alarm is set, set it
-						isDelayAlarmSet = event.setDelayAlarm(this, true); // for start delay
+						event.setDelayAlarm(this, true); // for start delay
+					if (!event._isInDelay)
+					{
+						// no delay alarm is set
+						// remove alarm
+						event.removeDelayAlarm(this, true); // for start delay
+						// and start event
+						event.startEvent(this, eventTimelineList, false, interactive);
+					}
 				}
 				
-				if (forDelayAlarm || (!isDelayAlarmSet))
+				if (forDelayAlarm && event._isInDelay)
 				{
 					// called for delay alarm or not delay alarm is set
 					// remove alarm
@@ -1651,9 +1657,6 @@ public class DataWrapper {
 			if ((newEventStatus == Event.ESTATUS_PAUSE) && statePause)
 			{
 				GlobalData.logE("DataWrapper.doEventService","pause event");
-				
-				// remove delay alarm
-				event.removeDelayAlarm(this, true); // for start delay
 				
 				event.pauseEvent(this, eventTimelineList, true, false, false);
 			}
@@ -1821,6 +1824,9 @@ public class DataWrapper {
 		
 		getDatabaseHandler().deactivateProfile();
 		//getDatabaseHandler().updateAllEventsStatus(Event.ESTATUS_RUNNING, Event.ESTATUS_PAUSE);
+		
+		// remove all events delays
+		getDatabaseHandler().removeAllEventsDelays();
 		
 		Intent intent = new Intent();
 		intent.setAction(RestartEventsBroadcastReceiver.INTENT_RESTART_EVENTS);
