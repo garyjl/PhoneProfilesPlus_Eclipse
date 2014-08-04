@@ -368,7 +368,7 @@
 	<string name="array_event_pref_wifiConnectionType_inFront">V okolí</string>
 	<string name="event_preferences_wifi_connection_type">Typ připojení</string>
 	<string name="phone_profiles_pref_category_event">Události</string>
-	<string name="phone_profiles_pref_applicationEventWifiScanInterval">Interval skenování WiFi (min)</string>
+	<string name="phone_profiles_pref_applicationEventWifiScanInterval">Interval skenování WiFi (min.)</string>
 	<string name="phone_profiles_pref_applicationEventWifiEnableWifi">Povol WiFi</string>    
 
 	<string name="phone_profiles_pref_applicationEventBackgroundProfile">Profil na pozadí</string>
