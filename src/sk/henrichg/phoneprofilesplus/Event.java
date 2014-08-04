@@ -508,6 +508,9 @@ public class Event {
 			// event is not runnable, no pause it
 			return;
 
+		// remove delay alarm
+		removeDelayAlarm(dataWrapper, true); // for start delay
+		
 		if (GlobalData.getEventsBlocked(dataWrapper.context))
 		{
 			// blocked by manual profile activation
@@ -696,6 +699,9 @@ public class Event {
 
 		// unblock temporary paused event
 		dataWrapper.setEventBlocked(this, false);
+
+		// remove delay alarm
+		removeDelayAlarm(dataWrapper, true); // for start delay
 		
 		GlobalData.logE("Event.pauseEvent","event_id="+this._id+"-----------------------------------");
 		
@@ -752,9 +758,6 @@ public class Event {
 		if (!noSetSystemEvent)
 			setSystemEvent(dataWrapper.context, ESTATUS_PAUSE);
 
-		// remove delay alarm
-		removeDelayAlarm(dataWrapper, true); // for start delay
-		
 		this._status = ESTATUS_PAUSE;
 		
 		dataWrapper.getDatabaseHandler().updateEventStatus(this);

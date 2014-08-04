@@ -1639,19 +1639,15 @@ public class DataWrapper {
 					if (!event._isInDelay)
 					{
 						// no delay alarm is set
-						// remove alarm
-						event.removeDelayAlarm(this, true); // for start delay
-						// and start event
+						// start event
 						event.startEvent(this, eventTimelineList, false, interactive);
 					}
 				}
 				
 				if (forDelayAlarm && event._isInDelay)
 				{
-					// called for delay alarm or not delay alarm is set
-					// remove alarm
-					event.removeDelayAlarm(this, true); // for start delay
-					// and start event
+					// called for delay alarm
+					// start event
 					event.startEvent(this, eventTimelineList, false, interactive);
 				}
 			}
