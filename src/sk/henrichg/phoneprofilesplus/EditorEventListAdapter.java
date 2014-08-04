@@ -288,7 +288,10 @@ public class EditorEventListAdapter extends BaseAdapter
        			statusRes = R.drawable.ic_event_status_running;
        			break;
        		case Event.ESTATUS_PAUSE:
-       			statusRes = R.drawable.ic_event_status_pause;
+       			if (event._isInDelay)
+       				statusRes = R.drawable.ic_event_status_pause_delay;
+       			else
+       				statusRes = R.drawable.ic_event_status_pause;
        			break;
        		case Event.ESTATUS_STOP:
        			if (event.isRunnable())

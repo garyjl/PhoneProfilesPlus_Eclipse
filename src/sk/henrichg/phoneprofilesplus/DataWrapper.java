@@ -1824,7 +1824,7 @@ public class DataWrapper {
 		//getDatabaseHandler().updateAllEventsStatus(Event.ESTATUS_RUNNING, Event.ESTATUS_PAUSE);
 		
 		// remove all events delays
-		getDatabaseHandler().removeAllEventsDelays();
+		getDatabaseHandler().removeAllEventsInDelay();
 		
 		Intent intent = new Intent();
 		intent.setAction(RestartEventsBroadcastReceiver.INTENT_RESTART_EVENTS);

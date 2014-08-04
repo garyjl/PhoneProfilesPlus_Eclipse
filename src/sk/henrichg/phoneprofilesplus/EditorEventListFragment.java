@@ -635,6 +635,8 @@ public class EditorEventListFragment extends Fragment {
 		{
 			int status = dataWrapper.getDatabaseHandler().getEventStatus(event);
 			event.setStatus(status);
+			boolean isInDelay = dataWrapper.getDatabaseHandler().getEventInDelay(event);
+			event._isInDelay = isInDelay;
 			dataWrapper.getDatabaseHandler().setEventCalendarTimes(event);
 		}
 		updateListView(null, false);

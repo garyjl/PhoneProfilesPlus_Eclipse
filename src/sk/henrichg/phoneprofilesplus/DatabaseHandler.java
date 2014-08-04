@@ -2786,6 +2786,37 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		return r != 0;
 	}
 	
+	public boolean getEventInDelay(Event event)
+	{
+		//SQLiteDatabase db = this.getReadableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+
+		int eventInDelay = 0;
+		
+		Cursor cursor = db.query(TABLE_EVENTS, 
+				                 new String[] {  
+												KEY_E_IS_IN_DELAY
+												}, 
+				                 KEY_E_ID + "=?",
+				                 new String[] { String.valueOf(event._id) }, null, null, null, null);
+		if (cursor != null)
+		{
+			cursor.moveToFirst();
+
+			if (cursor.getCount() > 0)
+			{
+				eventInDelay = Integer.parseInt(cursor.getString(0));
+			}
+	
+			cursor.close();
+		}
+		
+		//db.close();
+
+		return (eventInDelay == 1);
+		
+	}
+	
 	public int updateEventInDelay(Event event)
 	{
 		//SQLiteDatabase db = this.getWritableDatabase();
@@ -2819,7 +2850,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 	}
 	
-	public int removeAllEventsDelays()
+	public int removeAllEventsInDelay()
 	{
 		//SQLiteDatabase db = this.getWritableDatabase();
 		SQLiteDatabase db = getMyWritableDatabase();
