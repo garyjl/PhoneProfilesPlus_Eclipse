@@ -621,8 +621,9 @@ public class DataWrapper {
 		
 		for (Event event : getEventList())
 		{
-			if ((event.getStatusFromDB(this) == Event.ESTATUS_RUNNING) &&
-				(event._fkProfileStart == profile._id))
+			//if ((event.getStatusFromDB(this) == Event.ESTATUS_RUNNING) &&
+			//	(event._fkProfileStart == profile._id))
+			if (event._fkProfileStart == profile._id)
 				event.pauseEvent(this, eventTimelineList, false, true, noSetSystemEvent);
 		}
 	}
@@ -634,8 +635,9 @@ public class DataWrapper {
 		
 		for (Event event : getEventList())
 		{
-			if ((event.getStatusFromDB(this) == Event.ESTATUS_RUNNING) &&
-				(event._fkProfileStart == profile._id))
+			//if ((event.getStatusFromDB(this) == Event.ESTATUS_RUNNING) &&
+			//	(event._fkProfileStart == profile._id))
+			if (event._fkProfileStart == profile._id)
 				event.stopEvent(this, eventTimelineList, false, true, saveEventStatus);
 		}
 		restartEvents(false, false);
@@ -666,7 +668,7 @@ public class DataWrapper {
 		
 		for (Event event : getEventList())
 		{
-			if (event.getStatusFromDB(this) != Event.ESTATUS_STOP)
+			//if (event.getStatusFromDB(this) != Event.ESTATUS_STOP)
 				event.stopEvent(this, eventTimelineList, false, true, saveEventStatus);
 		}
 	}
