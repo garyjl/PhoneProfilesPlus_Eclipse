@@ -768,9 +768,7 @@ public class DataWrapper {
 		getDatabaseHandler().deleteAllEvents();
 
 		Calendar calendar = Calendar.getInstance();
-		calendar.clear(Calendar.DATE);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
+		calendar.clear();
 		
     	int gmtOffset = TimeZone.getDefault().getRawOffset();
 		
@@ -785,11 +783,17 @@ public class DataWrapper {
 		event._eventPreferencesTime._wendesday = true;
 		event._eventPreferencesTime._thursday = true;
 		event._eventPreferencesTime._friday = true;
-		calendar.set(Calendar.HOUR, 8);
+		//calendar.clear(Calendar.DATE);
+		calendar.set(Calendar.HOUR_OF_DAY, 8);
 		calendar.set(Calendar.MINUTE, 0);
+		//calendar.set(Calendar.SECOND, 0);
+		//calendar.set(Calendar.MILLISECOND, 0);
 		event._eventPreferencesTime._startTime = calendar.getTimeInMillis() + gmtOffset;
-		calendar.set(Calendar.HOUR, 23);
+		///calendar.clear(Calendar.DATE);
+		calendar.set(Calendar.HOUR_OF_DAY, 23);
 		calendar.set(Calendar.MINUTE, 0);
+		//calendar.set(Calendar.SECOND, 0);
+		//calendar.set(Calendar.MILLISECOND, 0);
 		event._eventPreferencesTime._endTime = calendar.getTimeInMillis() + gmtOffset;
 		event._eventPreferencesTime._useEndTime = true;
 		getDatabaseHandler().addEvent(event);
@@ -799,11 +803,17 @@ public class DataWrapper {
 		event._eventPreferencesTime._enabled = true;
 		event._eventPreferencesTime._saturday = true;
 		event._eventPreferencesTime._sunday = true;
-		calendar.set(Calendar.HOUR, 8);
+		//calendar.clear(Calendar.DATE);
+		calendar.set(Calendar.HOUR_OF_DAY, 8);
 		calendar.set(Calendar.MINUTE, 0);
+		//calendar.set(Calendar.SECOND, 0);
+		//calendar.set(Calendar.MILLISECOND, 0);
 		event._eventPreferencesTime._startTime = calendar.getTimeInMillis() + gmtOffset;
-		calendar.set(Calendar.HOUR, 23);
+		//calendar.clear(Calendar.DATE);
+		calendar.set(Calendar.HOUR_OF_DAY, 23);
 		calendar.set(Calendar.MINUTE, 0);
+		//calendar.set(Calendar.SECOND, 0);
+		//calendar.set(Calendar.MILLISECOND, 0);
 		event._eventPreferencesTime._endTime = calendar.getTimeInMillis() + gmtOffset;
 		event._eventPreferencesTime._useEndTime = true;
 		getDatabaseHandler().addEvent(event);
@@ -817,11 +827,17 @@ public class DataWrapper {
 		event._eventPreferencesTime._wendesday = true;
 		event._eventPreferencesTime._thursday = true;
 		event._eventPreferencesTime._friday = true;
-		calendar.set(Calendar.HOUR, 9);
+		//calendar.clear(Calendar.DATE);
+		calendar.set(Calendar.HOUR_OF_DAY, 9);
 		calendar.set(Calendar.MINUTE, 30);
+		//calendar.set(Calendar.SECOND, 0);
+		//calendar.set(Calendar.MILLISECOND, 0);
 		event._eventPreferencesTime._startTime = calendar.getTimeInMillis() + gmtOffset;
-		calendar.set(Calendar.HOUR, 17);
+		//calendar.clear(Calendar.DATE);
+		calendar.set(Calendar.HOUR_OF_DAY, 17);
 		calendar.set(Calendar.MINUTE, 30);
+		//calendar.set(Calendar.SECOND, 0);
+		//calendar.set(Calendar.MILLISECOND, 0);
 		event._eventPreferencesTime._endTime = calendar.getTimeInMillis() + gmtOffset;
 		event._eventPreferencesTime._useEndTime = true;
 		getDatabaseHandler().addEvent(event);
@@ -836,11 +852,17 @@ public class DataWrapper {
 		event._eventPreferencesTime._friday = true;
 		event._eventPreferencesTime._saturday = true;
 		event._eventPreferencesTime._sunday = true;
-		calendar.set(Calendar.HOUR, 23);
+		//calendar.clear(Calendar.DATE);
+		calendar.set(Calendar.HOUR_OF_DAY, 23);
 		calendar.set(Calendar.MINUTE, 0);
+		//calendar.set(Calendar.SECOND, 0);
+		//calendar.set(Calendar.MILLISECOND, 0);
 		event._eventPreferencesTime._startTime = calendar.getTimeInMillis() + gmtOffset;
-		calendar.set(Calendar.HOUR, 8);
+		//calendar.clear(Calendar.DATE);
+		calendar.set(Calendar.HOUR_OF_DAY, 8);
 		calendar.set(Calendar.MINUTE, 0);
+		//calendar.set(Calendar.SECOND, 0);
+		//calendar.set(Calendar.MILLISECOND, 0);
 		event._eventPreferencesTime._endTime = calendar.getTimeInMillis() + gmtOffset;
 		event._eventPreferencesTime._useEndTime = true;
 		getDatabaseHandler().addEvent(event);
@@ -854,7 +876,6 @@ public class DataWrapper {
 		event._eventPreferencesBattery._levelHight = 10;
 		event._eventPreferencesBattery._charging = false;
 		getDatabaseHandler().addEvent(event);
-		
 	}
 	
 	
