@@ -82,6 +82,12 @@ public class PhoneProfilesHelper {
 	private static boolean doInstallPPHelper(Activity activity)
 	{
 		boolean OK = true;
+
+		if (!GlobalData.isRooted(false))
+		{
+            Log.e("PhoneProfilesHelper.doInstallPPHelper", "Device is not rooted");
+			return false;
+		}
 		
 	    AssetManager assetManager = activity.getBaseContext().getAssets();
 	    String[] files = null;

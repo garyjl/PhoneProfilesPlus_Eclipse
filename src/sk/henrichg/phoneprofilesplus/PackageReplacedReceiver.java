@@ -23,7 +23,7 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 				//PhoneProfilesHelper.startPPHelper(context);
 				
 				// show notification about upgrade PPHelper
-				if (GlobalData.isRooted())
+				if (GlobalData.isRooted(false))
 				{
 					if (!PhoneProfilesHelper.isPPHelperInstalled(context, PhoneProfilesHelper.PPHELPER_CURRENT_VERSION))
 					{

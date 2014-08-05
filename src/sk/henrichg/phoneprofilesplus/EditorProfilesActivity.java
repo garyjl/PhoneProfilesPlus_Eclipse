@@ -492,7 +492,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 		menuItem = menu.findItem(R.id.menu_pphelper_install);
 		if (menuItem != null)
 		{
-			menuItem.setVisible(GlobalData.isRooted() && (!isPPHInstalled));
+			menuItem.setVisible(GlobalData.isRooted(true) && (!isPPHInstalled));
 			
 			if (PhoneProfilesHelper.PPHelperVersion != -1)
 			{
@@ -506,7 +506,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 		menuItem = menu.findItem(R.id.menu_pphelper_uninstall);
 		if (menuItem != null)
 		{
-			menuItem.setVisible(GlobalData.isRooted() && (PhoneProfilesHelper.PPHelperVersion != -1));
+			menuItem.setVisible(GlobalData.isRooted(true) && (PhoneProfilesHelper.PPHelperVersion != -1));
 		}
 
 		menuItem = menu.findItem(R.id.menu_restart_events);
@@ -1020,7 +1020,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 			     this.dialog.show();						
 				
 				// check root, this set GlobalData.rooted for doInBackgroud()
-				GlobalData.isRooted();
+				GlobalData.isRooted(false);
 			}
 			
 			@Override

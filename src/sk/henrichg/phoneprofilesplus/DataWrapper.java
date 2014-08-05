@@ -1855,6 +1855,9 @@ public class DataWrapper {
 					// ignoruj manualnu aktivaciu profilu
 					// a odblokuj forceRun eventy
 					restartEvents(true, true);
+					// rescan wifi
+					WifiScanAlarmBroadcastReceiver.sendBroadcast(_activity.getBaseContext());
+					
 					if (GlobalData.applicationClose && (!(_activity instanceof EditorProfilesActivity)))
 						_activity.finish();
 				}

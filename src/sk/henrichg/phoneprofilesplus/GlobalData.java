@@ -713,7 +713,7 @@ public class GlobalData extends Application {
 					featurePresented = HARDWARE_CHECK_ALLOWED;
 				}
 				else
-				if (isRooted())
+				if (isRooted(false))
 				{
 					// zariadenie je rootnute
 					featurePresented = HARDWARE_CHECK_ALLOWED;
@@ -768,7 +768,7 @@ public class GlobalData extends Application {
 				    }
 					else
 					{
-						if (isRooted())
+						if (isRooted(false))
 						{
 							if (PhoneProfilesHelper.PPHelperVersion == -1)
 								featurePresented = HARDWARE_CHECK_INSTALL_PPHELPER;
@@ -778,7 +778,7 @@ public class GlobalData extends Application {
 					}
 				}
 				else
-				if (isRooted())
+				if (isRooted(false))
 				{
 					featurePresented = HARDWARE_CHECK_ALLOWED;
 					//Log.e("GlobalData.hardwareCheck - GPS","rooted");
@@ -798,7 +798,7 @@ public class GlobalData extends Application {
 			    }
 				else
 				{
-					if (isRooted())
+					if (isRooted(false))
 					{
 						if (PhoneProfilesHelper.PPHelperVersion == -1)
 							featurePresented = HARDWARE_CHECK_INSTALL_PPHELPER;
@@ -862,19 +862,27 @@ public class GlobalData extends Application {
 	static private boolean grantChecked = false;
 	static private boolean rootGranted = false;
 	
-	static boolean isRooted()
+	static boolean isRooted(boolean onlyCheckFlags)
 	{
 		if (!rootChecked)
 		{
-			if (RootTools.isRootAvailable())
+			if (!onlyCheckFlags)
 			{
-				// zariadenie je rootnute
-				rootChecked = true;
-				rooted = true;
+				if (RootTools.isRootAvailable())
+				{
+					// zariadenie je rootnute
+					rootChecked = true;
+					rooted = true;
+				}
+				else
+				{
+					rootChecked = true;
+					rooted = false;
+				}
 			}
 			else
 			{
-				rootChecked = true;
+				rootChecked = false;
 				rooted = false;
 			}
 		}
