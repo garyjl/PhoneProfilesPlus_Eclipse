@@ -293,6 +293,12 @@ public class PhoneProfilesHelper {
 	{
 		boolean OK = false;
 
+		if (!GlobalData.isRooted(false))
+		{
+            Log.e("PhoneProfilesHelper.doUninstallPPHelper", "Device is not rooted");
+			return false;
+		}
+		
 	    String destinationFile = "PhoneProfilesHelper.apk"; 
 		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2)
 		    destinationFile = "/system/priv-app/"+destinationFile; 
