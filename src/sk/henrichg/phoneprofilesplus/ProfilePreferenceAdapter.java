@@ -23,11 +23,12 @@ public class ProfilePreferenceAdapter extends BaseAdapter {
 	
 	private LayoutInflater inflater = null;
 	
-	public ProfilePreferenceAdapter(ProfilePreferenceDialog dialog, Context c, String profileId)
+	public ProfilePreferenceAdapter(ProfilePreferenceDialog dialog, Context c, String profileId, List<Profile> profileList)
 	{
 		//context = c;
 
 		this.dialog = dialog;
+		this.profileList = profileList;
 		
 		if (profileId.isEmpty())
 			this.profileId = 0;
@@ -35,10 +36,6 @@ public class ProfilePreferenceAdapter extends BaseAdapter {
 			this.profileId = Long.valueOf(profileId);
 			
 		inflater = (LayoutInflater)c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		
-		profileList = ProfilePreference.dataWrapper.getProfileList();
-	    Collections.sort(profileList, new AlphabeticallyComparator());
-
 	}
 	
 	public int getCount() {
@@ -158,13 +155,4 @@ public class ProfilePreferenceAdapter extends BaseAdapter {
 		return vi;
 	}
 
-	private class AlphabeticallyComparator implements Comparator<Profile> {
-
-		public int compare(Profile lhs, Profile rhs) {
-
-		    int res = GUIData.collator.compare(lhs._name, rhs._name);
-	        return res;
-	    }
-	}
-	
 }

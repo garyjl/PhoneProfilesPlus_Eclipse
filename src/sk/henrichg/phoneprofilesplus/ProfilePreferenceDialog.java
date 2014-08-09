@@ -1,5 +1,9 @@
 package sk.henrichg.phoneprofilesplus;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.widget.AdapterView;
@@ -17,6 +21,7 @@ public class ProfilePreferenceDialog extends Dialog
 	public int addNoActivateItem;
 	private ProfilePreferenceAdapter profilePreferenceAdapter;
 	
+	public List<Profile> profileList;
 	String profileId;
 	
 	private Context _context;
@@ -32,7 +37,10 @@ public class ProfilePreferenceDialog extends Dialog
 		super(context);
 		
 		profilePreference = preference;
+
 		this.profileId = profileId;
+		profileList = ProfilePreference.dataWrapper.getProfileList();
+	    Collections.sort(profileList, new AlphabeticallyComparator());
 		
 		addNoActivateItem = profilePreference.addNoActivateItem;
 
@@ -43,8 +51,44 @@ public class ProfilePreferenceDialog extends Dialog
 		
 		listView = (ListView)findViewById(R.id.profile_pref_dlg_listview);
 		
-		profilePreferenceAdapter = new ProfilePreferenceAdapter(this, _context, profileId); 
+		profileList = ProfilePreference.dataWrapper.getProfileList();
+	    Collections.sort(profileList, new AlphabeticallyComparator());
+		
+		profilePreferenceAdapter = new ProfilePreferenceAdapter(this, _context, profileId, profileList); 
 		listView.setAdapter(profilePreferenceAdapter);
+
+		int position;
+		long iProfileId;
+		if (profileId.isEmpty())
+			iProfileId = 0;
+		else
+			iProfileId = Long.valueOf(profileId);
+	    if ((addNoActivateItem == 1) && (iProfileId == Event.PROFILE_END_NO_ACTIVATE))
+	    	position = 0;
+	    else
+	    {
+	    	boolean found = false;
+	    	position = 0;
+	    	for (Profile profile : profileList)
+	    	{
+	    		if (profile._id == iProfileId)
+	    		{
+	    			found = true;
+	    			break;
+	    		}
+	    		position++;
+	    	}
+	    	if (found)
+	    	{
+	    		if (addNoActivateItem == 1)
+	    			position++;
+	    	}
+	    	else
+	    		position = 0;
+	    }
+		listView.setSelection(position);
+		listView.setItemChecked(position, true);
+		listView.smoothScrollToPosition(position);
 		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -69,6 +113,15 @@ public class ProfilePreferenceDialog extends Dialog
 		else
 			profilePreference.setProfileId(profilePreferenceAdapter.profileList.get(position)._id);
 		ProfilePreferenceDialog.this.dismiss();
+	}
+	
+	private class AlphabeticallyComparator implements Comparator<Profile> {
+
+		public int compare(Profile lhs, Profile rhs) {
+
+		    int res = GUIData.collator.compare(lhs._name, rhs._name);
+	        return res;
+	    }
 	}
 	
 }
