@@ -10,6 +10,7 @@
 	    android:padding="5dp"
 	    android:gravity="center"
 	    android:clipToPadding="false"
+	    android:choiceMode="singleChoice"
     	android:scrollbarStyle="outsideOverlay" />
 
 </LinearLayout>

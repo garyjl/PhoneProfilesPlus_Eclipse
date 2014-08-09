@@ -109,6 +109,14 @@ public class ProfilePreferenceAdapter extends BaseAdapter {
 	    }
 	    else
 	    	profile = profileList.get(position);
+	   
+		holder.radioBtn.setTag(position);
+    	holder.radioBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	RadioButton rb = (RadioButton) v;
+            	dialog.doOnItemSelected((Integer)rb.getTag());
+            }
+        });
 	    
 	    if (profile != null)
 	    {

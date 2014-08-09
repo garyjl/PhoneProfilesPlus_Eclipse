@@ -17,6 +17,8 @@ public class ProfilePreferenceDialog extends Dialog
 	public int addNoActivateItem;
 	private ProfilePreferenceAdapter profilePreferenceAdapter;
 	
+	String profileId;
+	
 	private Context _context;
 	
 	private ListView listView;
@@ -30,6 +32,7 @@ public class ProfilePreferenceDialog extends Dialog
 		super(context);
 		
 		profilePreference = preference;
+		this.profileId = profileId;
 		
 		addNoActivateItem = profilePreference.addNoActivateItem;
 
@@ -45,22 +48,27 @@ public class ProfilePreferenceDialog extends Dialog
 		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				if (addNoActivateItem == 1)
-				{
-					long profileId;
-					if (position == 0)
-						profileId = Event.PROFILE_END_NO_ACTIVATE;
-					else
-						profileId = profilePreferenceAdapter.profileList.get(position-1)._id;
-					profilePreference.setProfileId(profileId);	
-				}
-				else
-					profilePreference.setProfileId(profilePreferenceAdapter.profileList.get(position)._id);
-				ProfilePreferenceDialog.this.dismiss();
+				doOnItemSelected(position);
 			}
 
 		});
 		
 	}
 
+	public void doOnItemSelected(int position)
+	{
+		if (addNoActivateItem == 1)
+		{
+			long profileId;
+			if (position == 0)
+				profileId = Event.PROFILE_END_NO_ACTIVATE;
+			else
+				profileId = profilePreferenceAdapter.profileList.get(position-1)._id;
+			profilePreference.setProfileId(profileId);	
+		}
+		else
+			profilePreference.setProfileId(profilePreferenceAdapter.profileList.get(position)._id);
+		ProfilePreferenceDialog.this.dismiss();
+	}
+	
 }
