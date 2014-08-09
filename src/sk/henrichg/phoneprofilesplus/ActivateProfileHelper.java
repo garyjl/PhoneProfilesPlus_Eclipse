@@ -730,7 +730,8 @@ public class ActivateProfileHelper {
 		        
 		        notification.contentView = contentView;
 		        
-				notification.flags |= Notification.FLAG_NO_CLEAR; 
+				//notification.flags |= Notification.FLAG_NO_CLEAR; 
+				notification.flags |= Notification.FLAG_ONGOING_EVENT;
 				notificationManager.notify(GlobalData.NOTIFICATION_ID, notification);
 		}
 		else
