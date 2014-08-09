@@ -37,7 +37,7 @@ public class ImageViewPreferenceAdapter extends BaseAdapter {
 		
 		"ic_profile_call_1",
 		
-		"ic_profile_culture_1", "ic_profile_culture_2"
+		"ic_profile_culture_1", "ic_profile_culture_2", "ic_profile_culture_3", "ic_profile_culture_4"
 	};
 	
 	public ImageViewPreferenceAdapter(Context c, String imageIdentifier, boolean isImageResourceID)
