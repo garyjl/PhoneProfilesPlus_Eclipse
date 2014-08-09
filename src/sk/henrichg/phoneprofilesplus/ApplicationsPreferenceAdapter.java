@@ -14,15 +14,15 @@ public class ApplicationsPreferenceAdapter extends BaseAdapter {
 
 	//private Context context;
 	
+	ApplicationsPreferenceDialog dialog = null;
 	private LayoutInflater inflater = null;
 	String packageName;
 	
 	public ApplicationsPreferenceAdapter(ApplicationsPreferenceDialog dialog, Context c, String packageName)
 	{
 		//context = c;
-
+		this.dialog = dialog;
 		inflater = (LayoutInflater)c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		
 		this.packageName = packageName;
 	}
 	
@@ -78,7 +78,16 @@ public class ApplicationsPreferenceAdapter extends BaseAdapter {
 		//icon.setBounds(0, 0, width, height);
 		//applicationIcon.setCompoundDrawables(icon, null, null, null);
 		holder.applicationIcon.setImageDrawable(icon);
+		
+		holder.radioBtn.setTag(position);
     	holder.radioBtn.setChecked(applicationsCahce.getPackageName(position).equals(packageName));
+    	holder.radioBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	RadioButton rb = (RadioButton) v;
+            	dialog.doOnItemSelected((Integer)rb.getTag());
+            }
+        });
+    	
 		
 		return vi;
 	}

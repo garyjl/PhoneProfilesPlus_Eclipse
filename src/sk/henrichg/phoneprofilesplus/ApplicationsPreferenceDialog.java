@@ -19,6 +19,8 @@ public class ApplicationsPreferenceDialog extends Dialog implements OnShowListen
 	private ApplicationsPreference applicationsPreference;
 	private ApplicationsPreferenceAdapter applicationsPreferenceAdapter;
 	
+	private String packageName;
+	
 	private Context _context;
 	
 	private ListView listView;
@@ -33,6 +35,7 @@ public class ApplicationsPreferenceDialog extends Dialog implements OnShowListen
 		super(context);
 		
 		applicationsPreference = preference;
+		this.packageName = packageName;
 
 		_context = context;
 		
@@ -45,9 +48,7 @@ public class ApplicationsPreferenceDialog extends Dialog implements OnShowListen
 	
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				String packageName = applicationsPreferenceAdapter.getApplicationPackageName(position);
-				applicationsPreference.setPackageName(packageName);
-				ApplicationsPreferenceDialog.this.dismiss();
+				doOnItemSelected(position);
 			}
 
 		});
@@ -65,11 +66,11 @@ public class ApplicationsPreferenceDialog extends Dialog implements OnShowListen
 
 		if (EditorProfilesActivity.getApplicationsCache() == null)
 			EditorProfilesActivity.createApplicationsCache();
-		
+
 		if (!EditorProfilesActivity.getApplicationsCache().isCached())
 		{
 			new AsyncTask<Void, Integer, Void>() {
-	
+
 				@Override
 				protected void onPreExecute()
 				{
@@ -79,8 +80,8 @@ public class ApplicationsPreferenceDialog extends Dialog implements OnShowListen
 				
 				@Override
 				protected Void doInBackground(Void... params) {
-					EditorProfilesActivity.getApplicationsCache().getApplicationsList(_context);
-					
+					ApplicationsCache applicationsCahce = EditorProfilesActivity.getApplicationsCache();
+					applicationsCahce.getApplicationsList(_context);
 					return null;
 				}
 				
@@ -91,6 +92,17 @@ public class ApplicationsPreferenceDialog extends Dialog implements OnShowListen
 					
 					listView.setAdapter(applicationsPreferenceAdapter);
 					linlaProgress.setVisibility(View.GONE);
+					ApplicationsCache applicationsCahce = EditorProfilesActivity.getApplicationsCache();
+					for (int position = 0; position < applicationsCahce.getLength()-1; position++)
+					{
+						if (applicationsCahce.getPackageName(position).equals(packageName))
+						{
+							listView.setSelection(position);
+							listView.setItemChecked(position, true);
+							listView.smoothScrollToPosition(position);
+							break;
+						}
+					}
 				}
 				
 			}.execute();
@@ -98,10 +110,26 @@ public class ApplicationsPreferenceDialog extends Dialog implements OnShowListen
 		else
 		{
 			listView.setAdapter(applicationsPreferenceAdapter);
+			ApplicationsCache applicationsCahce = EditorProfilesActivity.getApplicationsCache();
+			for (int position = 0; position < applicationsCahce.getLength()-1; position++)
+			{
+				if (applicationsCahce.getPackageName(position).equals(packageName))
+				{
+					listView.setSelection(position);
+					listView.setItemChecked(position, true);
+					listView.smoothScrollToPosition(position);
+					break;
+				}
+			}
 		}
 
 	}
 	
-	
+	public void doOnItemSelected(int position)
+	{
+		String packageName = applicationsPreferenceAdapter.getApplicationPackageName(position);
+		applicationsPreference.setPackageName(packageName);
+		ApplicationsPreferenceDialog.this.dismiss();
+	}
 
 }
