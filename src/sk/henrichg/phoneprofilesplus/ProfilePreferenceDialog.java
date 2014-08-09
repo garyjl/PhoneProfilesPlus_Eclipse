@@ -63,7 +63,7 @@ public class ProfilePreferenceDialog extends Dialog
 			iProfileId = 0;
 		else
 			iProfileId = Long.valueOf(profileId);
-	    if ((addNoActivateItem == 1) && (iProfileId == Event.PROFILE_END_NO_ACTIVATE))
+	    if ((addNoActivateItem == 1) && (iProfileId == Event.PROFILE_NO_ACTIVATE))
 	    	position = 0;
 	    else
 	    {
@@ -105,7 +105,7 @@ public class ProfilePreferenceDialog extends Dialog
 		{
 			long profileId;
 			if (position == 0)
-				profileId = Event.PROFILE_END_NO_ACTIVATE;
+				profileId = Event.PROFILE_NO_ACTIVATE;
 			else
 				profileId = profilePreferenceAdapter.profileList.get(position-1)._id;
 			profilePreference.setProfileId(profileId);	

@@ -400,7 +400,7 @@ public class EditorEventListAdapter extends BaseAdapter
         		profileName = vi.getResources().getString(R.string.event_prefernce_profile_undone);
         	else
         	{
-	        	if (event._fkProfileEnd == Event.PROFILE_END_NO_ACTIVATE)
+	        	if (event._fkProfileEnd == Event.PROFILE_NO_ACTIVATE)
 	        		profileName = vi.getResources().getString(R.string.event_preferences_profile_end_no_activate); 
 	        	else
 	        		profileName = vi.getResources().getString(R.string.event_preferences_profile_not_set);

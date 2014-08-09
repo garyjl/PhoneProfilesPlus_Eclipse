@@ -79,7 +79,7 @@ public class PhoneProfilesPreferencesFragment extends PreferenceListFragment
 		    }
 		    else
 		    {
-		    	if (lProfileId == Event.PROFILE_END_NO_ACTIVATE)
+		    	if (lProfileId == Event.PROFILE_NO_ACTIVATE)
 		    		prefMng.findPreference(key).setSummary(preferencesActivity.getBaseContext().getResources().getString(R.string.event_preferences_profile_end_no_activate));
 		    	else
 		    		prefMng.findPreference(key).setSummary(preferencesActivity.getBaseContext().getResources().getString(R.string.event_preferences_profile_not_set));

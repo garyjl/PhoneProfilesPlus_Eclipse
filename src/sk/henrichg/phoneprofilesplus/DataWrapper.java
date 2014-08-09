@@ -448,14 +448,14 @@ public class DataWrapper {
 			if (event._fkProfileStart == profile._id) 
 				event._fkProfileStart = 0;
 			if (event._fkProfileEnd == profile._id) 
-				event._fkProfileEnd = Event.PROFILE_END_NO_ACTIVATE;
+				event._fkProfileEnd = Event.PROFILE_NO_ACTIVATE;
 		}
 		// unlink profile from Background profile
-		if (Integer.valueOf(GlobalData.applicationEventBackgroundProfile) == profile._id)
+		if (Long.valueOf(GlobalData.applicationEventBackgroundProfile) == profile._id)
 		{
 			SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
 			Editor editor = preferences.edit();
-			editor.putString(GlobalData.PREF_APPLICATION_EVENT_BACKGROUND_PROFILE, String.valueOf(Event.PROFILE_END_NO_ACTIVATE));
+			editor.putString(GlobalData.PREF_APPLICATION_EVENT_BACKGROUND_PROFILE, String.valueOf(Event.PROFILE_NO_ACTIVATE));
 			editor.commit();
 		}
 	}
@@ -469,12 +469,12 @@ public class DataWrapper {
 		for (Event event : eventList)
 		{
 			event._fkProfileStart = 0;
-			event._fkProfileEnd = Event.PROFILE_END_NO_ACTIVATE;
+			event._fkProfileEnd = Event.PROFILE_NO_ACTIVATE;
 		}
 		// unlink profiles from Background profile
 		SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
 		Editor editor = preferences.edit();
-		editor.putString(GlobalData.PREF_APPLICATION_EVENT_BACKGROUND_PROFILE, String.valueOf(Event.PROFILE_END_NO_ACTIVATE));
+		editor.putString(GlobalData.PREF_APPLICATION_EVENT_BACKGROUND_PROFILE, String.valueOf(Event.PROFILE_NO_ACTIVATE));
 		editor.commit();
 	}
 	
@@ -680,7 +680,7 @@ public class DataWrapper {
 			if (event._fkProfileStart == profile._id)
 				event._fkProfileStart = 0;
 			if (event._fkProfileEnd == profile._id)
-				event._fkProfileEnd = Event.PROFILE_END_NO_ACTIVATE;
+				event._fkProfileEnd = Event.PROFILE_NO_ACTIVATE;
 		}
 	}
 	
@@ -689,7 +689,7 @@ public class DataWrapper {
 		for (Event event : getEventList())
 		{
 			event._fkProfileStart = 0;
-			event._fkProfileEnd = Event.PROFILE_END_NO_ACTIVATE;
+			event._fkProfileEnd = Event.PROFILE_NO_ACTIVATE;
 		}
 	}
 	
@@ -731,7 +731,7 @@ public class DataWrapper {
 	{
 		return new Event(name, 
 				0,
-				Event.PROFILE_END_NO_ACTIVATE,
+				Event.PROFILE_NO_ACTIVATE,
 				Event.ESTATUS_STOP,
 				"",
 				false,
