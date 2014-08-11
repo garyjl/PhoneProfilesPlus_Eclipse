@@ -853,7 +853,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 				boolean restart = data.getBooleanExtra(GlobalData.EXTRA_RESET_EDITOR, false); 
 	
 				DataWrapper dataWrapper = getDataWrapper();
-				dataWrapper.getActivateProfileHelper().showNotification(dataWrapper.getActivatedProfile());
+				dataWrapper.getActivateProfileHelper().showNotification(dataWrapper.getDatabaseHandler().getActivatedProfile());
 				dataWrapper.getActivateProfileHelper().updateWidget();
 				
 				if (restart)

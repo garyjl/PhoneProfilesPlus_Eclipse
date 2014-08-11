@@ -20,6 +20,7 @@ public class PhoneProfilesPreferencesActivity extends ActionBarActivity
 	private String activeLanguage;
 	private String activeTheme;
 	private int wifiScanInterval;
+	private String activeBackgroundProfile;
 
 	private boolean invalidateEditor = false;
 	 
@@ -147,6 +148,21 @@ public class PhoneProfilesPreferencesActivity extends ActionBarActivity
 			if (WifiScanAlarmBroadcastReceiver.isAlarmSet(getApplicationContext()))
 				WifiScanAlarmBroadcastReceiver.setAlarm(getApplicationContext());
 		}
+		
+		if (activeBackgroundProfile != GlobalData.applicationBackgroundProfile)
+   		{
+   			long lApplicationBackgroundProfile = Long.valueOf(GlobalData.applicationBackgroundProfile);
+   			if (lApplicationBackgroundProfile != GlobalData.PROFILE_NO_ACTIVATE)
+   			{
+   				DataWrapper dataWrapper = new DataWrapper(getBaseContext(), true, false, 0);
+   				if (dataWrapper.getActivatedProfile() == null)
+   				{
+   					dataWrapper.getActivateProfileHelper().initialize(dataWrapper, null, getBaseContext());
+   					dataWrapper.activateProfile(lApplicationBackgroundProfile, GlobalData.STARTUP_SOURCE_SERVICE, null, "");
+   				}
+   				//invalidateEditor = true;
+   			}
+   		}
 		
 		
 		// for startActivityForResult
