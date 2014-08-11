@@ -55,7 +55,7 @@ public class LauncherActivity extends Activity {
 						if (profile == null)
 						{
 							long profileId = Long.valueOf(GlobalData.applicationEventBackgroundProfile);
-							if (profileId == Event.PROFILE_NO_ACTIVATE)
+							if (profileId == GlobalData.PROFILE_NO_ACTIVATE)
 								profileId = 0;
 							profile = dataWrapper.getProfileById(profileId);
 						}

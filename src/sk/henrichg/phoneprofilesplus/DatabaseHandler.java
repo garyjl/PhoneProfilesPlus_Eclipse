@@ -599,7 +599,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_FK_PROFILE_END + " INTEGER");
 			
 			// updatneme zaznamy
-			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_FK_PROFILE_END + "=" + Event.PROFILE_NO_ACTIVATE);
+			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_FK_PROFILE_END + "=" + GlobalData.PROFILE_NO_ACTIVATE);
 			
 			// pridame index
 			db.execSQL("CREATE INDEX IDX_FK_PROFILE_END ON " + TABLE_EVENTS + " (" + KEY_E_FK_PROFILE_END + ")");
@@ -1084,7 +1084,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			        new String[] { String.valueOf(profile._id) });
 
 			ContentValues values2 = new ContentValues();
-			values2.put(KEY_E_FK_PROFILE_END, Event.PROFILE_NO_ACTIVATE);
+			values2.put(KEY_E_FK_PROFILE_END, GlobalData.PROFILE_NO_ACTIVATE);
 			db.update(TABLE_EVENTS, values2, KEY_E_FK_PROFILE_END + " = ?",
 			        new String[] { String.valueOf(profile._id) });
 			
@@ -1111,7 +1111,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			// unlink profiles from events
 			ContentValues values = new ContentValues();
 			values.put(KEY_E_FK_PROFILE_START, 0);
-			values.put(KEY_E_FK_PROFILE_END, Event.PROFILE_NO_ACTIVATE);
+			values.put(KEY_E_FK_PROFILE_END, GlobalData.PROFILE_NO_ACTIVATE);
 			db.update(TABLE_EVENTS, values, null, null);
 			
 			db.setTransactionSuccessful();
@@ -1957,7 +1957,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						new String[] { String.valueOf(profile._id) });
 
 			ContentValues values2 = new ContentValues();
-			values2.put(KEY_E_FK_PROFILE_END, Event.PROFILE_NO_ACTIVATE);
+			values2.put(KEY_E_FK_PROFILE_END, GlobalData.PROFILE_NO_ACTIVATE);
 			// updating row
 			db.update(TABLE_EVENTS, values2, KEY_E_FK_PROFILE_END + " = ?",
 						new String[] { String.valueOf(profile._id) });
@@ -1979,7 +1979,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 		ContentValues values = new ContentValues();
 		values.put(KEY_E_FK_PROFILE_START, 0);
-		values.put(KEY_E_FK_PROFILE_END, Event.PROFILE_NO_ACTIVATE);
+		values.put(KEY_E_FK_PROFILE_END, GlobalData.PROFILE_NO_ACTIVATE);
 
 		// updating row
 		db.update(TABLE_EVENTS, values, null, null);
@@ -3250,7 +3250,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 							int batteryLevel = 15;
 							int batteryDetectorType = 0;
 							int eventType = 0;
-							long fkProfileEnd = Event.PROFILE_NO_ACTIVATE;
+							long fkProfileEnd = GlobalData.PROFILE_NO_ACTIVATE;
 							long startTime = 0;
 							long endTime = 0;
 							int priority = 0;
@@ -3274,8 +3274,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 														values.put(columnNamesExportedDB[i], importDBEventProfileIds.get(profileIdx));
 													else
 													{
-														if (columnNamesExportedDB[i].equals(KEY_E_FK_PROFILE_END) && (cursorExportedDB.getLong(i) == Event.PROFILE_NO_ACTIVATE))
-															values.put(columnNamesExportedDB[i], Event.PROFILE_NO_ACTIVATE);
+														if (columnNamesExportedDB[i].equals(KEY_E_FK_PROFILE_END) && (cursorExportedDB.getLong(i) == GlobalData.PROFILE_NO_ACTIVATE))
+															values.put(columnNamesExportedDB[i], GlobalData.PROFILE_NO_ACTIVATE);
 														else
 															values.put(columnNamesExportedDB[i], 0);
 													}
@@ -3367,7 +3367,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 										if (exportedDBObj.getVersion() < 1045)
 										{
-											values.put(KEY_E_FK_PROFILE_END, Event.PROFILE_NO_ACTIVATE);
+											values.put(KEY_E_FK_PROFILE_END, GlobalData.PROFILE_NO_ACTIVATE);
 										}
 
 										if (exportedDBObj.getVersion() < 1050)
@@ -3382,7 +3382,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 										if (exportedDBObj.getVersion() < 1060)
 										{
-											if (fkProfileEnd == Event.PROFILE_NO_ACTIVATE)
+											if (fkProfileEnd == GlobalData.PROFILE_NO_ACTIVATE)
 												values.put(KEY_E_UNDONE_PROFILE, 1);
 											else
 												values.put(KEY_E_UNDONE_PROFILE, 0);

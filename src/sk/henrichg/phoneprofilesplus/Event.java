@@ -41,8 +41,6 @@ public class Event {
 	public EventPreferencesWifi _eventPreferencesWifi;
 	public EventPreferencesScreen _eventPreferencesScreen;
 
-	public static final long PROFILE_NO_ACTIVATE = -999;
-	
 	public static final int ESTATUS_STOP = 0;
 	public static final int ESTATUS_PAUSE = 1;
 	public static final int ESTATUS_RUNNING = 2;
@@ -277,7 +275,7 @@ public class Event {
 	{
     	this._name = preferences.getString(PREF_EVENT_NAME, "");
 		this._fkProfileStart = Long.parseLong(preferences.getString(PREF_EVENT_PROFILE_START, "0"));
-		this._fkProfileEnd = Long.parseLong(preferences.getString(PREF_EVENT_PROFILE_END, Long.toString(PROFILE_NO_ACTIVATE)));
+		this._fkProfileEnd = Long.parseLong(preferences.getString(PREF_EVENT_PROFILE_END, Long.toString(GlobalData.PROFILE_NO_ACTIVATE)));
 		this._status = (preferences.getBoolean(PREF_EVENT_ENABLED, false)) ? ESTATUS_PAUSE : ESTATUS_STOP;
 		this._notificationSound = preferences.getString(PREF_EVENT_NOTIFICATION_SOUND, "");
 		this._forceRun = preferences.getBoolean(PREF_EVENT_FORCE_RUN, false);
@@ -326,7 +324,7 @@ public class Event {
 		    }
 		    else
 		    {
-		    	if (lProfileId == PROFILE_NO_ACTIVATE)
+		    	if (lProfileId == GlobalData.PROFILE_NO_ACTIVATE)
 		    		prefMng.findPreference(key).setSummary(context.getResources().getString(R.string.event_preferences_profile_end_no_activate));
 		    	else
 		    		prefMng.findPreference(key).setSummary(context.getResources().getString(R.string.event_preferences_profile_not_set));
@@ -660,7 +658,7 @@ public class Event {
 			if (profile != null)
 				activatedProfileId = profile._id;
 			// first activate _fkProfileEnd
-			if (_fkProfileEnd != Event.PROFILE_NO_ACTIVATE)
+			if (_fkProfileEnd != GlobalData.PROFILE_NO_ACTIVATE)
 			{
 				if (_fkProfileEnd != activatedProfileId)
 				{

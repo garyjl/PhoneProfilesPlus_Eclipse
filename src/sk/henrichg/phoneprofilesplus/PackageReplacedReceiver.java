@@ -59,7 +59,7 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 						else
 						{
 							profileId = Long.valueOf(GlobalData.applicationEventBackgroundProfile);
-							if (profileId == Event.PROFILE_NO_ACTIVATE)
+							if (profileId == GlobalData.PROFILE_NO_ACTIVATE)
 								profileId = 0;
 						}
 						dataWrapper.activateProfile(profileId, GlobalData.STARTUP_SOURCE_BOOT, null, "");
