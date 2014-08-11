@@ -52,13 +52,13 @@ public class LauncherActivity extends Activity {
 					{
 						// je nastavene, ze pri starte sa ma aktivita aktivovat
 						actProfile = true;
-						/*if (profile == null)
+						if (profile == null)
 						{
 							long profileId = Long.valueOf(GlobalData.applicationEventBackgroundProfile);
 							if (profileId == Event.PROFILE_NO_ACTIVATE)
 								profileId = 0;
 							profile = dataWrapper.getProfileById(profileId);
-						}*/
+						}
 					}
 					else
 					{

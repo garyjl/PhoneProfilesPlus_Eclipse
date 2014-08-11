@@ -60,9 +60,9 @@ public class BootUpReceiver extends BroadcastReceiver {
 						profileId = profile._id;
 					else
 					{
-						/*profileId = Long.valueOf(GlobalData.applicationEventBackgroundProfile);
+						profileId = Long.valueOf(GlobalData.applicationEventBackgroundProfile);
 						if (profileId == Event.PROFILE_NO_ACTIVATE)
-							profileId = 0;*/
+							profileId = 0;
 					}
 					dataWrapper.activateProfile(profileId, GlobalData.STARTUP_SOURCE_BOOT, null, "");
 				}

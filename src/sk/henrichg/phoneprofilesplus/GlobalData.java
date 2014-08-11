@@ -169,7 +169,8 @@ public class GlobalData extends Application {
     public static final int HARDWARE_CHECK_INSTALL_PPHELPER = 2;
     public static final int HARDWARE_CHECK_UPGRADE_PPHELPER = 3;
     
-	static final long DEFAULT_PROFILE_ID = -999;
+	public static final long DEFAULT_PROFILE_ID = -999;  // source profile id
+	public static final long PROFILE_NO_ACTIVATE = -999;
 	
 	private static final String PREF_GLOBAL_EVENTS_RUN_STOP = "globalEventsRunStop";
 	private static final String PREF_APPLICATION_STARTED = "applicationStarted";
