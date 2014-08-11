@@ -325,9 +325,9 @@ public class Event {
 		    else
 		    {
 		    	if (lProfileId == GlobalData.PROFILE_NO_ACTIVATE)
-		    		prefMng.findPreference(key).setSummary(context.getResources().getString(R.string.event_preferences_profile_end_no_activate));
+		    		prefMng.findPreference(key).setSummary(context.getResources().getString(R.string.profile_preference_profile_end_no_activate));
 		    	else
-		    		prefMng.findPreference(key).setSummary(context.getResources().getString(R.string.event_preferences_profile_not_set));
+		    		prefMng.findPreference(key).setSummary(context.getResources().getString(R.string.profile_preference_profile_not_set));
 		    }
 		}
 		if (key.equals(PREF_EVENT_NOTIFICATION_SOUND))

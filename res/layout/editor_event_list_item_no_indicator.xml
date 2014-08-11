@@ -83,7 +83,7 @@
 	        android:layout_toRightOf="@+id/event_list_item_profile_start_icon"
 	        android:paddingLeft="10dp"
 	        android:paddingTop="5dp"
-	        android:text="@string/event_preferences_profile_not_set"
+	        android:text="@string/profile_preference_profile_not_set"
 	        android:textSize="15sp"
 	        android:singleLine="true" />
 
@@ -108,7 +108,7 @@
 	        android:layout_toRightOf="@+id/event_list_item_profile_end_icon"
 	        android:paddingLeft="10dp"
 	        android:paddingTop="5dp"
-	        android:text="@string/event_preferences_profile_not_set"
+	        android:text="@string/profile_preference_profile_not_set"
 	        android:textSize="15sp"
 	        android:singleLine="true" />
 	    	    	    

@@ -354,7 +354,7 @@ public class EditorEventListAdapter extends BaseAdapter
         }
         else
         {
-        	holder.profileStartName.setText(R.string.event_preferences_profile_not_set);
+        	holder.profileStartName.setText(R.string.profile_preference_profile_not_set);
         	holder.profileStartIcon.setImageResource(R.drawable.ic_profile_default);
 			if (GlobalData.applicationEditorPrefIndicator)
 			{
@@ -401,9 +401,9 @@ public class EditorEventListAdapter extends BaseAdapter
         	else
         	{
 	        	if (event._fkProfileEnd == GlobalData.PROFILE_NO_ACTIVATE)
-	        		profileName = vi.getResources().getString(R.string.event_preferences_profile_end_no_activate); 
+	        		profileName = vi.getResources().getString(R.string.profile_preference_profile_end_no_activate); 
 	        	else
-	        		profileName = vi.getResources().getString(R.string.event_preferences_profile_not_set);
+	        		profileName = vi.getResources().getString(R.string.profile_preference_profile_not_set);
         	}
     		holder.profileEndName.setText(profileName);
         	holder.profileEndIcon.setImageResource(R.drawable.ic_profile_default);

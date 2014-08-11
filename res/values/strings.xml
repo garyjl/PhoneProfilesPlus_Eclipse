@@ -170,7 +170,6 @@
     <string name="array_pref_widgetColor_monochrome">Monochrome</string>
     <string name="phone_profiles_pref_applicationWidgetIconColor">Icon color type</string>
     <string name="phone_profiles_pref_category_widget_one_row">Widget-single row</string>
-    <string name="event_preferences_profile_not_set">Profile not set</string>
     <string name="profile_list_empty">No profiles</string>
     <string name="event_list_empty">No events</string>
     <string name="event_preferences_category_eventParameters">Event parameters</string>
@@ -306,7 +305,6 @@
     <string name="pref_event_call_no_contacts_selected">No contacts selected</string>
     <string name="pref_event_call_contacts_selected">Contacts selected</string>
     <string name="event_preferences_battery_level_bad_value">Bad value</string>
-    <string name="event_preferences_profile_end_no_activate">No activate</string>
     <string name="event_preferences_eventProfileEnd">Activate profile</string>
     <string name="menu_restart_events">Restart events</string>  
     <string name="event_preferences_ForceRun">Ignore manual activation</string>
@@ -375,7 +373,10 @@
 	<string name="phone_profiles_pref_applicationEventWifiScanInterval">WiFi scan interval (min)</string>
 	<string name="phone_profiles_pref_applicationEventWifiEnableWifi">Enable WiFi</string>
 	<string name="phone_profiles_pref_applicationEventBackgroundProfile">Default profile</string>
-	
+
+    <string name="profile_preference_profile_end_no_activate">No activate</string>
+    <string name="profile_preference_profile_not_set">Profile not set</string>
+    			
 	<string name="event_type_screen">Screen</string>
 	<string name="pref_event_screen_eventType">Event type</string>
 	<string name="array_event_pref_eventScreenEventType_screenOn">Screen On</string>

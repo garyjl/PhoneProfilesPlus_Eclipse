@@ -165,7 +165,6 @@
     <string name="array_pref_widgetColor_monochrome">Монохромная</string>
     <string name="phone_profiles_pref_applicationWidgetIconColor">Тип иконки</string>
     <string name="phone_profiles_pref_category_widget_one_row">Виджет &#171;Один ряд&#187;</string>
-    <string name="event_preferences_profile_not_set">Профиль не выбран</string>
     <string name="profile_list_empty">Нет профилей</string>
     <string name="event_list_empty">Нет событий</string>
     <string name="event_preferences_category_eventParameters">Параметры события</string>
@@ -306,7 +305,6 @@
     <string name="pref_event_call_no_contacts_selected">Нет выбранных контактов</string>
     <string name="pref_event_call_contacts_selected">Выбранные контакты</string>
     <string name="event_preferences_battery_level_bad_value">Неверное значение</string>
-    <string name="event_preferences_profile_end_no_activate">Не активируй</string>
     <string name="event_preferences_eventProfileEnd">Активировать профиль</string>
     <string name="menu_restart_events">Перезапуск событий</string>
     <string name="event_preferences_ForceRun">Игнорировать ручную активацию</string>
@@ -362,7 +360,6 @@
     <string name="array_event_pref_priorityUpperMedium">Умеренно высокой</string>
     <string name="array_event_pref_priorityHigher">Высшее</string>
     <string name="array_event_pref_priorityHighest">Наивысший</string>
-
     <string name="event_type_wifi">WiFi</string>
     <string name="event_preferences_category_eventWifiParameters">WiFi</string>
     <string name="event_preferences_wifi_enabled">Активировать</string>
@@ -375,7 +372,9 @@
 	<string name="phone_profiles_pref_category_event">События</string>
 	<string name="phone_profiles_pref_applicationEventWifiScanInterval">WiFi интервал опроса (мин)</string>
 	<string name="phone_profiles_pref_applicationEventWifiEnableWifi">Активировать WiFi</string>    
-    
 	<string name="phone_profiles_pref_applicationEventBackgroundProfile">Профиль по умолчанию</string>
-		
+
+    <string name="profile_preference_profile_end_no_activate">Не активируй</string>
+    <string name="profile_preference_profile_not_set">Профиль не выбран</string>
+    				
 </resources>

@@ -205,9 +205,9 @@ public class ProfilePreference extends Preference {
 	    else
 	    {
 	    	if ((addNoActivateItem == 1) && (profileId == GlobalData.PROFILE_NO_ACTIVATE))
-	    		setSummary(prefContext.getResources().getString(R.string.event_preferences_profile_end_no_activate));
+	    		setSummary(prefContext.getResources().getString(R.string.profile_preference_profile_end_no_activate));
 	    	else
-	    		setSummary(prefContext.getResources().getString(R.string.event_preferences_profile_not_set));
+	    		setSummary(prefContext.getResources().getString(R.string.profile_preference_profile_not_set));
 	    }
 	}
 	
