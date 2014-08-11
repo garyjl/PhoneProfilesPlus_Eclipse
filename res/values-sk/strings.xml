@@ -372,6 +372,6 @@
 	<string name="phone_profiles_pref_applicationEventWifiScanInterval">Interval skenovania WiFi (min.)</string>
 	<string name="phone_profiles_pref_applicationEventWifiEnableWifi">Povoľ WiFi</string>    
 
-	<string name="phone_profiles_pref_applicationEventBackgroundProfile">Profil na pozadí</string>
+	<string name="phone_profiles_pref_applicationEventBackgroundProfile">Predvolený profil</string>
 		
 </resources>

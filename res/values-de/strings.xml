@@ -370,6 +370,6 @@
 	<string name="phone_profiles_pref_applicationEventWifiScanInterval">WiFi-Scan-Intervall (Minuten)</string>
 	<string name="phone_profiles_pref_applicationEventWifiEnableWifi">WiFi aktivieren</string>
 
-	<string name="phone_profiles_pref_applicationEventBackgroundProfile">Hintergrundprofil</string>
+	<string name="phone_profiles_pref_applicationEventBackgroundProfile">Standard-Profil</string>
 		    
 </resources>

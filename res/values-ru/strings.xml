@@ -376,6 +376,6 @@
 	<string name="phone_profiles_pref_applicationEventWifiScanInterval">WiFi интервал опроса (мин)</string>
 	<string name="phone_profiles_pref_applicationEventWifiEnableWifi">Активировать WiFi</string>    
     
-	<string name="phone_profiles_pref_applicationEventBackgroundProfile">Профиль фона</string>
+	<string name="phone_profiles_pref_applicationEventBackgroundProfile">Профиль по умолчанию</string>
 		
 </resources>
