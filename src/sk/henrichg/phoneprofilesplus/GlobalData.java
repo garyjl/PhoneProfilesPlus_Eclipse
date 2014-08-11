@@ -162,7 +162,7 @@ public class GlobalData extends Application {
     public static final String PREF_APPLICATION_NOTIFICATION_LAUNCHER = "applicationNotificationLauncher";
     public static final String PREF_APPLICATION_EVENT_WIFI_SCAN_INTERVAL = "applicationEventWifiScanInterval";
     public static final String PREF_APPLICATION_EVENT_WIFI_ENABLE_WIFI = "applicationEventWifiEnableWifi";
-    public static final String PREF_APPLICATION_EVENT_BACKGROUND_PROFILE = "applicationEventBackgroundProfile";
+    public static final String PREF_APPLICATION_BACKGROUND_PROFILE = "applicationBackgroundProfile";
 
     public static final int HARDWARE_CHECK_NOT_ALLOWED = 0;
     public static final int HARDWARE_CHECK_ALLOWED = 1;
@@ -216,7 +216,7 @@ public class GlobalData extends Application {
     public static String applicationNotificationLauncher;
     public static int applicationEventWifiScanInterval;
     public static boolean applicationEventWifiEnableWifi;
-    public static String applicationEventBackgroundProfile;
+    public static String applicationBackgroundProfile;
     
 	public void onCreate()
 	{
@@ -401,7 +401,7 @@ public class GlobalData extends Application {
 	    applicationNotificationLauncher = preferences.getString(PREF_APPLICATION_NOTIFICATION_LAUNCHER, "activator");
 	    applicationEventWifiScanInterval = Integer.valueOf(preferences.getString(PREF_APPLICATION_EVENT_WIFI_SCAN_INTERVAL, "10"));
 	    applicationEventWifiEnableWifi = preferences.getBoolean(PREF_APPLICATION_EVENT_WIFI_ENABLE_WIFI, true);
-	    applicationEventBackgroundProfile = preferences.getString(PREF_APPLICATION_EVENT_BACKGROUND_PROFILE, "-999");
+	    applicationBackgroundProfile = preferences.getString(PREF_APPLICATION_BACKGROUND_PROFILE, "-999");
 	}
 	
 	private static String getVolumeLevelString(int percentage, int maxValue)

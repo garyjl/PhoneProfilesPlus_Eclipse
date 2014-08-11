@@ -451,11 +451,11 @@ public class DataWrapper {
 				event._fkProfileEnd = GlobalData.PROFILE_NO_ACTIVATE;
 		}
 		// unlink profile from Background profile
-		if (Long.valueOf(GlobalData.applicationEventBackgroundProfile) == profile._id)
+		if (Long.valueOf(GlobalData.applicationBackgroundProfile) == profile._id)
 		{
 			SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
 			Editor editor = preferences.edit();
-			editor.putString(GlobalData.PREF_APPLICATION_EVENT_BACKGROUND_PROFILE, String.valueOf(GlobalData.PROFILE_NO_ACTIVATE));
+			editor.putString(GlobalData.PREF_APPLICATION_BACKGROUND_PROFILE, String.valueOf(GlobalData.PROFILE_NO_ACTIVATE));
 			editor.commit();
 		}
 	}
@@ -474,7 +474,7 @@ public class DataWrapper {
 		// unlink profiles from Background profile
 		SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
 		Editor editor = preferences.edit();
-		editor.putString(GlobalData.PREF_APPLICATION_EVENT_BACKGROUND_PROFILE, String.valueOf(GlobalData.PROFILE_NO_ACTIVATE));
+		editor.putString(GlobalData.PREF_APPLICATION_BACKGROUND_PROFILE, String.valueOf(GlobalData.PROFILE_NO_ACTIVATE));
 		editor.commit();
 	}
 	

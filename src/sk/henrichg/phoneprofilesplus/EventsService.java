@@ -159,7 +159,7 @@ public class EventsService extends IntentService
 			List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
 			if (eventTimelineList.size() == 0)
 			{
-				long profileId = Long.valueOf(GlobalData.applicationEventBackgroundProfile); 
+				long profileId = Long.valueOf(GlobalData.applicationBackgroundProfile); 
 				if (profileId != GlobalData.PROFILE_NO_ACTIVATE)
 				{
 					Profile profile = dataWrapper.getActivatedProfile();

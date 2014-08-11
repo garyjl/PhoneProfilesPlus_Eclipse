@@ -28,7 +28,7 @@
         android:summary="@string/phone_profiles_pref_category_activation" >
         <sk.henrichg.phoneprofilesplus.ProfilePreference
             android:defaultValue="-999"
-            android:key="applicationEventBackgroundProfile"
+            android:key="applicationBackgroundProfile"
             android:title="@string/phone_profiles_pref_applicationEventBackgroundProfile"
             henrichg:addNoActivateItem="1" />
    		<CheckBoxPreference 

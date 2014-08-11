@@ -62,7 +62,7 @@ public class PhoneProfilesPreferencesFragment extends PreferenceListFragment
 
 		//Log.e("PhoneProfilesPreferencesFragment.setSummary",key+"="+stringValue);
 		
-		if (key.equals(GlobalData.PREF_APPLICATION_EVENT_BACKGROUND_PROFILE))
+		if (key.equals(GlobalData.PREF_APPLICATION_BACKGROUND_PROFILE))
 		{
 			String sProfileId = stringValue;
 			long lProfileId;
@@ -173,7 +173,7 @@ public class PhoneProfilesPreferencesFragment extends PreferenceListFragment
 	    setSummary(GlobalData.PREF_APPLICATION_WIDGET_LIST_ICON_LIGHTNESS);
 	    setSummary(GlobalData.PREF_APPLICATION_EVENT_WIFI_SCAN_INTERVAL);
 	    setSummary(GlobalData.PREF_APPLICATION_EVENT_WIFI_ENABLE_WIFI);
-	    setSummary(GlobalData.PREF_APPLICATION_EVENT_BACKGROUND_PROFILE);
+	    setSummary(GlobalData.PREF_APPLICATION_BACKGROUND_PROFILE);
 	    
 		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_WIFI, preferencesActivity.getBaseContext()) 
 					!= GlobalData.HARDWARE_CHECK_ALLOWED)
