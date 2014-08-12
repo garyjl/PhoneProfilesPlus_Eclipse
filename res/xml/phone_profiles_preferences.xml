@@ -69,7 +69,7 @@
             android:key="applicationEventWifiScanInterval"
             android:summary="@string/phone_profiles_pref_applicationEventWifiScanInterval"
             android:title="@string/phone_profiles_pref_applicationEventWifiScanInterval" 
-			android:inputType="number"
+			android:numeric="integer" 
             android:defaultValue="10"
             android:selectAllOnFocus="true" /> 
     </PreferenceCategory>

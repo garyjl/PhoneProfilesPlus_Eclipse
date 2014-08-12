@@ -37,7 +37,7 @@
             android:key="eventDelayStart"
             android:summary="@string/event_preferences_delayStart"
             android:title="@string/event_preferences_delayStart" 
-			android:inputType="number"
+			android:numeric="integer" 
             android:defaultValue="0"
             android:selectAllOnFocus="true" /> 
    		<RingtonePreference
@@ -129,7 +129,7 @@
             android:key="eventBatteryLevelLow"
             android:summary="@string/event_preferences_battery_level_low"
             android:title="@string/event_preferences_battery_level_low" 
-			android:inputType="number"
+			android:numeric="integer" 
             android:defaultValue="0"
             android:selectAllOnFocus="true"
             android:dependency="eventBatteryEnabled" /> 
@@ -137,7 +137,7 @@
             android:key="eventBatteryLevelHight"
             android:summary="@string/event_preferences_battery_level_hight"
             android:title="@string/event_preferences_battery_level_hight" 
-			android:inputType="number"
+			android:numeric="integer" 
             android:defaultValue="100"
             android:selectAllOnFocus="true"
             android:dependency="eventBatteryEnabled" /> 
