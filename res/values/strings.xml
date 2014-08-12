@@ -373,7 +373,6 @@
 	<string name="phone_profiles_pref_applicationEventWifiScanInterval">WiFi scan interval (min)</string>
 	<string name="phone_profiles_pref_applicationEventWifiEnableWifi">Enable WiFi</string>
 	<string name="phone_profiles_pref_applicationEventBackgroundProfile">Default profile</string>
-
     <string name="profile_preference_profile_end_no_activate">No activate</string>
     <string name="profile_preference_profile_not_set">Profile not set</string>
     			

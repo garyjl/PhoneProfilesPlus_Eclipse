@@ -223,18 +223,18 @@
     <string name="array_pref_value_auto_rotate">Automatische Drehung</string>
     <string name="array_pref_value_auto_rotate_on">Automatische Drehung AN</string>
     <string name="array_pref_value_auto_rotate_off">Automatische Drehung AUS</string>
-    <string name="default_profile_name">Quelle-Profil</string>
-    <string name="menu_default_profile">Quelle-Profil</string>
-    <string name="brightness_pref_dialog_default_profile_chb">Quelle-Profil</string>
-    <string name="preference_profile_default_profile">Quelle-Profil</string>
-    <string name="volume_pref_dialog_default_profile_chb">Quelle-Profil</string>
-    <string name="array_pref_default_profile">Quelle-Profil</string>
+    <string name="default_profile_name">Quell-Profil</string>
+    <string name="menu_default_profile">Quell-Profil</string>
+    <string name="brightness_pref_dialog_default_profile_chb">Quell-Profil</string>
+    <string name="preference_profile_default_profile">Quell-Profil</string>
+    <string name="volume_pref_dialog_default_profile_chb">Quell-Profil</string>
+    <string name="array_pref_default_profile">Quell-Profil</string>
     <string name="array_pref_change">Ändern</string>
     <string name="array_pref_no_show">Nicht zeigen</string>
     <string name="array_pref_show">Zeigen</string>
     <string name="array_pref_no_run">Nicht ausführen</string>
     <string name="array_pref_run">Ausführen</string>
-    <string name="title_activity_default_profile_preferences">Quelle-Profil</string>
+    <string name="title_activity_default_profile_preferences">Quell-Profil</string>
     <string name="toast_profile_activating_0">Profil</string>
     <string name="toast_profile_activating_1">activating&#8230;</string>
   	<string name="profile_list_item_menu_activate">Aktivieren</string>
@@ -367,8 +367,16 @@
 	<string name="phone_profiles_pref_applicationEventWifiScanInterval">WiFi-Scan-Intervall (Minuten)</string>
 	<string name="phone_profiles_pref_applicationEventWifiEnableWifi">WiFi aktivieren</string>
 	<string name="phone_profiles_pref_applicationEventBackgroundProfile">Standard-Profil</string>
-
     <string name="profile_preference_profile_end_no_activate">Nicht aktivieren</string>
     <string name="profile_preference_profile_not_set">Profil nicht ausgewählt</string> 
+
+	<string name="event_type_screen">Bildschirm</string>
+	<string name="pref_event_screen_eventType">Ereignistyp</string>
+	<string name="array_event_pref_eventScreenEventType_screenOn">Bildschirm an</string>
+	<string name="array_event_pref_eventScreenEventType_screenOff">Bildschirm aus</string>
+	<string name="event_preferences_category_eventScreenParameters">Bildschirm</string>
+	<string name="event_preferences_screen_enabled">Bildschirm aktivierten</string>
+	<string name="event_preferences_screen_event_type">Ereignistyp</string>
+	<string name="event_preferences_delayStart">Verzögerung (min)</string>
     				    
 </resources>
