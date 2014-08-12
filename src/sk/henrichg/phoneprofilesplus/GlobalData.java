@@ -125,6 +125,8 @@ public class GlobalData extends Application {
 	static final String PREF_PROFILE_DEVICE_LOCATION_SERVICE_PREFS = "prf_pref_deviceLocationServicePrefs";
 	static final String PREF_PROFILE_VOLUME_SPEAKER_PHONE = "prf_pref_volumeSpeakerPhone";
 	static final String PREF_PROFILE_DEVICE_NFC = "prf_pref_deviceNFC";
+	static final String PREF_PROFILE_DURATION = "prf_pref_duration";
+	static final String PREF_PROFILE_AFTER_DURATION_DO = "prf_pref_afterDurationDo";
 	
 	static final String PROFILE_ICON_DEFAULT = "ic_profile_default";
 	
@@ -176,6 +178,7 @@ public class GlobalData extends Application {
 	private static final String PREF_APPLICATION_STARTED = "applicationStarted";
 	private static final String PREF_EVENTS_BLOCKED = "eventsBlocked";
 	private static final String PREF_FORCE_RUN_EVENT_RUNNING = "forceRunEventRunning";
+	private static final String PREF_ACTIVATED_PROFILE_FOR_DURATION = "activatedProfileForDuration";
 
 	static final String PREF_EVENT_CALL_EVENT_TYPE = "eventCallEventType";
 	static final String PREF_EVENT_CALL_PHONE_NUMBER = "eventCallPhoneNumber";
@@ -453,7 +456,9 @@ public class GlobalData extends Application {
 				x.getKey().equals(PREF_PROFILE_DEVICE_AUTOROTATE) ||
 				x.getKey().equals(PREF_PROFILE_DEVICE_LOCATION_SERVICE_PREFS) ||
 				x.getKey().equals(PREF_PROFILE_VOLUME_SPEAKER_PHONE) ||
-				x.getKey().equals(PREF_PROFILE_DEVICE_NFC))
+				x.getKey().equals(PREF_PROFILE_DEVICE_NFC) ||
+				x.getKey().equals(PREF_PROFILE_DURATION) ||
+				x.getKey().equals(PREF_PROFILE_AFTER_DURATION_DO))
 			{
 			    if      (x.getValue().getClass().equals(Boolean.class)) editorNew.putBoolean(x.getKey(), (Boolean)x.getValue());
 			    else if (x.getValue().getClass().equals(Float.class))   editorNew.putFloat(x.getKey(),   (Float)x.getValue());
@@ -489,6 +494,8 @@ public class GlobalData extends Application {
 		profile._icon = PROFILE_ICON_DEFAULT;
 		profile._checked = false;
 		profile._porder = 0;
+		profile._duration = 0;
+		profile._afterDurationDo = Profile.AFTERDURATIONDO_NOTHING;
     	profile._volumeRingerMode = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE, "1")); // ring
     	profile._volumeRingtone = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_RINGTONE, getVolumeLevelString(71, maximumValueRing)+"|0|0");
     	profile._volumeNotification = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_NOTIFICATION, getVolumeLevelString(86, maximumValueNotification)+"|0|0");
@@ -565,7 +572,9 @@ public class GlobalData extends Application {
 							   profile._deviceAutoRotate,
 							   profile._deviceLocationServicePrefs,
 							   profile._volumeSpeakerPhone,
-							   profile._deviceNFC);
+							   profile._deviceNFC,
+							   profile._duration,
+							   profile._afterDurationDo);
 		
 			if (profile._volumeRingerMode == 99)
 				mappedProfile._volumeRingerMode = defaultProfile._volumeRingerMode;
@@ -695,6 +704,20 @@ public class GlobalData extends Application {
 		SharedPreferences preferences = context.getSharedPreferences(APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
 		Editor editor = preferences.edit();
 		editor.putBoolean(PREF_FORCE_RUN_EVENT_RUNNING, forceRunEventRunning);
+		editor.commit();
+	}
+	
+	static public long getActivatedProfileForDuration(Context context)
+	{
+		SharedPreferences preferences = context.getSharedPreferences(APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+		return preferences.getLong(PREF_ACTIVATED_PROFILE_FOR_DURATION, 0);
+	}
+
+	static public void setActivatedProfileForDuration(Context context, long profileId)
+	{
+		SharedPreferences preferences = context.getSharedPreferences(APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+		Editor editor = preferences.edit();
+		editor.putLong(PREF_ACTIVATED_PROFILE_FOR_DURATION, profileId);
 		editor.commit();
 	}
 	

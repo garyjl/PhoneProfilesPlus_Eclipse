@@ -18,7 +18,20 @@
 		    android:key="prf_pref_showInActivator"
 		    android:title="@string/profile_preferences_showInActivator"
 		    android:defaultValue="true" />
-    </PreferenceCategory>
+		<EditTextPreference
+            android:key="prf_pref_duration"
+            android:summary="@string/profile_preferences_duration"
+            android:title="@string/profile_preferences_duration" 
+			android:inputType="number"
+            android:defaultValue="0"
+            android:selectAllOnFocus="true" /> 
+		<ListPreference android:title="@string/profile_preferences_afterDurationDo"
+            android:summary="@string/array_pref_afterProfileDurationDo_nothing"
+            android:key="prf_pref_afterDurationDo"
+            android:defaultValue="0"
+            android:entries="@array/afterProfileDurationDoArray"
+            android:entryValues="@array/afterProfileDurationDoValues" />        
+		</PreferenceCategory>
     <PreferenceCategory
         android:summary="@string/profile_preferences_category_volumes"
         android:title="@string/profile_preferences_category_volumes" >

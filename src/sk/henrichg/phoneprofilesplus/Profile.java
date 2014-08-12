@@ -12,6 +12,8 @@ public class Profile {
 	public String _icon;
 	public boolean _checked;
 	public int _porder;
+	public int _duration;
+	public int _afterDurationDo;
 	public int _volumeRingerMode;
 	public String _volumeRingtone;
 	public String _volumeNotification;
@@ -46,6 +48,10 @@ public class Profile {
 	
 	public Bitmap _iconBitmap;
 	public Bitmap _preferencesIndicator;
+	
+	public static final int AFTERDURATIONDO_NOTHING = 0; 
+	public static final int AFTERDURATIONDO_UNDOPROFILE = 1;
+	public static final int AFTERDURATIONDO_BACKGROUNPROFILE = 2;
 	
 	
 	// Empty constructorn
@@ -89,7 +95,9 @@ public class Profile {
 			   	   int deviceAutoRotate,
 			   	   int deviceLocationServicePrefs,
 			   	   int volumeSpeakerPhone,
-			   	   int deviceNFC)
+			   	   int deviceNFC,
+			   	   int duration,
+			   	   int afterDurationDo)
 	{
 		this._id = id;
 		this._name = name;
@@ -127,6 +135,8 @@ public class Profile {
 		this._deviceLocationServicePrefs = deviceLocationServicePrefs;
 		this._volumeSpeakerPhone = volumeSpeakerPhone;
 		this._deviceNFC = deviceNFC;
+		this._duration = duration;
+		this._afterDurationDo = afterDurationDo;
 		
 		this._iconBitmap = null;
 		this._preferencesIndicator = null;
@@ -167,7 +177,9 @@ public class Profile {
 			   	   int deviceAutoRotate,
 			   	   int deviceLocationServicePrefs,
 			   	   int volumeSpeakerPhone,
-			   	   int deviceNFC)
+			   	   int deviceNFC,
+			   	   int duration,
+			   	   int afterDurationDo)
 	{
 		this._name = name;
 		this._icon = icon;
@@ -204,6 +216,8 @@ public class Profile {
 		this._deviceLocationServicePrefs = deviceLocationServicePrefs;
 		this._volumeSpeakerPhone = volumeSpeakerPhone;
 		this._deviceNFC = deviceNFC;
+		this._duration = duration;
+		this._afterDurationDo = afterDurationDo;
 		
 		this._iconBitmap = null;
 		this._preferencesIndicator = null;
@@ -247,6 +261,8 @@ public class Profile {
 		this._deviceLocationServicePrefs = profile._deviceLocationServicePrefs;
 		this._volumeSpeakerPhone = profile._volumeSpeakerPhone;
 		this._deviceNFC = profile._deviceNFC;
+		this._duration = profile._duration;
+		this._afterDurationDo = profile._afterDurationDo;
 		
 		this._iconBitmap = profile._iconBitmap;
 		this._preferencesIndicator = profile._preferencesIndicator;

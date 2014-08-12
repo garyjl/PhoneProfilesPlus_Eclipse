@@ -202,7 +202,9 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 						   origProfile._deviceAutoRotate,
 						   origProfile._deviceLocationServicePrefs,
 						   origProfile._volumeSpeakerPhone,
-						   origProfile._deviceNFC);
+						   origProfile._deviceNFC,
+						   origProfile._duration,
+						   origProfile._afterDurationDo);
 			profile_id = 0;
 		}
 		else
@@ -378,6 +380,8 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	        editor.remove(GlobalData.PREF_PROFILE_DEVICE_LOCATION_SERVICE_PREFS).editor.putString(GlobalData.PREF_PROFILE_DEVICE_LOCATION_SERVICE_PREFS, Integer.toString(profile._deviceLocationServicePrefs));
 	        editor.remove(GlobalData.PREF_PROFILE_VOLUME_SPEAKER_PHONE).editor.putString(GlobalData.PREF_PROFILE_VOLUME_SPEAKER_PHONE, Integer.toString(profile._speakerPhone));
 	        editor.remove(GlobalData.PREF_PROFILE_DEVICE_NFC).editor.putString(GlobalData.PREF_PROFILE_VOLUME_SPEAKER_PHONE, Integer.toString(profile._deviceNFC));
+	        editor.remove(GlobalData.PREF_PROFILE_DURATION).editor.putString(GlobalData.PREF_PROFILE_DURATION, Integer.toString(profile._duration));
+	        editor.remove(GlobalData.PREF_PROFILE_AFTER_DURATION_DO).editor.putString(GlobalData.PREF_PROFILE_AFTER_DURATION_DO, Integer.toString(profile._afterDurationDo));
 	        */
 	        editor.putString(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE, Integer.toString(profile._volumeRingerMode));
 	        editor.putString(GlobalData.PREF_PROFILE_VOLUME_RINGTONE, profile._volumeRingtone);
@@ -409,6 +413,8 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	        editor.putString(GlobalData.PREF_PROFILE_DEVICE_LOCATION_SERVICE_PREFS, Integer.toString(profile._deviceLocationServicePrefs));
 	        editor.putString(GlobalData.PREF_PROFILE_VOLUME_SPEAKER_PHONE, Integer.toString(profile._volumeSpeakerPhone));
 	        editor.putString(GlobalData.PREF_PROFILE_DEVICE_NFC, Integer.toString(profile._deviceNFC));
+	        editor.putString(GlobalData.PREF_PROFILE_DURATION, Integer.toString(profile._duration));
+	        editor.putString(GlobalData.PREF_PROFILE_AFTER_DURATION_DO, Integer.toString(profile._afterDurationDo));
 			editor.commit();
     	}
 		
@@ -458,6 +464,8 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
     	profile._deviceLocationServicePrefs = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_LOCATION_SERVICE_PREFS, ""));
     	profile._volumeSpeakerPhone = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_VOLUME_SPEAKER_PHONE, ""));
     	profile._deviceNFC = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_NFC, ""));
+    	profile._duration = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DURATION, ""));
+    	profile._afterDurationDo = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_AFTER_DURATION_DO, ""));
 
     	//Log.d("ProfilePreferencesFragment.onPause", "profile activated="+profile.getChecked());
     	
@@ -602,6 +610,18 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 			CharSequence summary = (index >= 0) ? listPreference.getEntries()[index] : null;
 			listPreference.setSummary(summary);
     	}
+		if (key.equals(GlobalData.PREF_PROFILE_DURATION))
+		{	
+	        prefMng.findPreference(key).setSummary(value.toString());
+		}
+    	if (key.equals(GlobalData.PREF_PROFILE_AFTER_DURATION_DO))
+       	{
+   			String sValue = value.toString();
+   			ListPreference listPreference = (ListPreference)prefMng.findPreference(key);
+   			int index = listPreference.findIndexOfValue(sValue);
+   			CharSequence summary = (index >= 0) ? listPreference.getEntries()[index] : null;
+   			listPreference.setSummary(summary);
+       	}
 	}
 	
 	private void disableDependedPref(String key, Object value)
@@ -673,6 +693,8 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	        setSummary(GlobalData.PREF_PROFILE_DEVICE_LOCATION_SERVICE_PREFS, profile._deviceLocationServicePrefs); 
 	        setSummary(GlobalData.PREF_PROFILE_VOLUME_SPEAKER_PHONE, profile._volumeSpeakerPhone); 
 	        setSummary(GlobalData.PREF_PROFILE_DEVICE_NFC, profile._deviceNFC); 
+	        setSummary(GlobalData.PREF_PROFILE_DURATION, profile._duration); 
+	        setSummary(GlobalData.PREF_PROFILE_AFTER_DURATION_DO, profile._afterDurationDo); 
 			
 		    // disable depended preferences
 		    disableDependedPref(GlobalData.PREF_PROFILE_SOUND_RINGTONE_CHANGE, profile._soundRingtoneChange);

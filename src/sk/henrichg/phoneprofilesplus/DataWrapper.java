@@ -157,7 +157,9 @@ public class DataWrapper {
 				  0,
 				  0,
 				  0,
-				  0
+				  0,
+				  0,
+				  Profile.AFTERDURATIONDO_NOTHING
 			);
 	}
 	
@@ -907,6 +909,8 @@ public class DataWrapper {
 		boolean interactive = _interactive;
 		final Activity activity = _activity;
 
+		Profile activatedProfile = getActivatedProfile();
+		
 		if ((startupSource != GlobalData.STARTUP_SOURCE_SERVICE) && 
 			(startupSource != GlobalData.STARTUP_SOURCE_BOOT) &&
 			(startupSource != GlobalData.STARTUP_SOURCE_LAUNCHER_START))
@@ -918,6 +922,15 @@ public class DataWrapper {
 		setProfileActive(profile);
 		
 		activateProfileHelper.execute(profile, interactive, eventNotificationSound);
+		
+		if (interactive)
+		{
+			long profileId = 0;
+			if (activatedProfile != null)
+				profileId = activatedProfile._id;
+			GlobalData.setActivatedProfileForDuration(context, profileId);
+			ProfileDurationAlarmBroadcastReceiver.setAlarm(profile, context);
+		}
 		
 		activateProfileHelper.showNotification(profile);
 		activateProfileHelper.updateWidget();
@@ -1121,6 +1134,8 @@ public class DataWrapper {
 		{
 			// aktivacia bola spustena po boote telefonu
 			
+			ProfileDurationAlarmBroadcastReceiver.removeAlarm(context);
+			
 			if (GlobalData.applicationActivate)
 			{
 				// je nastavene, ze pri starte sa ma aktivita aktivovat
@@ -1156,6 +1171,8 @@ public class DataWrapper {
 		if (startupSource == GlobalData.STARTUP_SOURCE_LAUNCHER_START)	
 		{
 			// aktivacia bola spustena z lauchera 
+			
+			ProfileDurationAlarmBroadcastReceiver.removeAlarm(context);
 			
 			if (GlobalData.applicationActivate)
 			{
@@ -1730,7 +1747,9 @@ public class DataWrapper {
 							   profile._deviceAutoRotate,
 							   profile._deviceLocationServicePrefs,
 							   profile._volumeSpeakerPhone,
-							   profile._deviceNFC);
+							   profile._deviceNFC,
+							   profile._duration,
+							   profile._afterDurationDo);
 		
 			List<EventTimeline> eventTimelineList = getEventTimelineList();
 			
@@ -1803,6 +1822,10 @@ public class DataWrapper {
 							filteredProfile._volumeSpeakerPhone = 0;
 						if (eventProfile._deviceNFC != 0)
 							filteredProfile._deviceNFC = 0;
+						if (eventProfile._duration != 0)
+							filteredProfile._duration = 0;
+						if (eventProfile._afterDurationDo != 0)
+							filteredProfile._afterDurationDo = 0;
 						
 						// last event finded
 						break;
