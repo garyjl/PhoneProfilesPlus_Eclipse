@@ -915,6 +915,9 @@ public class DataWrapper {
 			(startupSource != GlobalData.STARTUP_SOURCE_BOOT) &&
 			(startupSource != GlobalData.STARTUP_SOURCE_LAUNCHER_START))
 		{
+			// manual profile activation 
+
+			// pause all events
 			pauseAllEvents(false, true);
 		}
 		
@@ -923,8 +926,13 @@ public class DataWrapper {
 		
 		activateProfileHelper.execute(profile, interactive, eventNotificationSound);
 		
-		if (interactive)
+		if ((startupSource != GlobalData.STARTUP_SOURCE_SERVICE) && 
+			(startupSource != GlobalData.STARTUP_SOURCE_BOOT) &&
+			(startupSource != GlobalData.STARTUP_SOURCE_LAUNCHER_START))
 		{
+			// manual profile activation 
+
+			// set profile duration alarm
 			long profileId = 0;
 			if (activatedProfile != null)
 				profileId = activatedProfile._id;
