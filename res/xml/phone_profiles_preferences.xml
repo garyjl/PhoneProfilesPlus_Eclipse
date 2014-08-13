@@ -65,13 +65,13 @@
 		    android:key="applicationEventWifiEnableWifi"
 		    android:title="@string/phone_profiles_pref_applicationEventWifiEnableWifi"
 		    android:defaultValue="true" />
-        <EditTextPreference
+ 		<sk.henrichg.phoneprofilesplus.NumberPickerPreference
             android:key="applicationEventWifiScanInterval"
             android:summary="@string/phone_profiles_pref_applicationEventWifiScanInterval"
             android:title="@string/phone_profiles_pref_applicationEventWifiScanInterval" 
-			android:numeric="integer" 
             android:defaultValue="10"
-            android:selectAllOnFocus="true" /> 
+            henrichg:min="1"
+            henrichg:max="300" />
     </PreferenceCategory>
     
     <PreferenceCategory

@@ -18,13 +18,13 @@
 		    android:key="prf_pref_showInActivator"
 		    android:title="@string/profile_preferences_showInActivator"
 		    android:defaultValue="true" />
-		<EditTextPreference
+ 		<sk.henrichg.phoneprofilesplus.NumberPickerPreference
             android:key="prf_pref_duration"
             android:summary="@string/profile_preferences_duration"
             android:title="@string/profile_preferences_duration" 
-			android:numeric="integer" 
             android:defaultValue="0"
-            android:selectAllOnFocus="true" /> 
+            henrichg:min="0"
+            henrichg:max="1440" />
 		<ListPreference android:title="@string/profile_preferences_afterDurationDo"
             android:summary="@string/array_pref_afterProfileDurationDo_nothing"
             android:key="prf_pref_afterDurationDo"

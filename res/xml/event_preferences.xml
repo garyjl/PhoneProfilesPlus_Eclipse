@@ -33,14 +33,14 @@
 		    android:title="@string/event_preferences_ForceRun"
 		    android:defaultValue="false"
 		    android:summary="@string/event_preferences_ForceRun_summary" />
-		<EditTextPreference
+ 		<sk.henrichg.phoneprofilesplus.NumberPickerPreference
             android:key="eventDelayStart"
             android:summary="@string/event_preferences_delayStart"
             android:title="@string/event_preferences_delayStart" 
-			android:numeric="integer" 
             android:defaultValue="0"
-            android:selectAllOnFocus="true" /> 
-   		<RingtonePreference
+            henrichg:min="0"
+            henrichg:max="1440" />
+		<RingtonePreference
             android:key="eventNotificationSound"
             android:summary="@string/array_pref_no_change"
             android:title="@string/event_preferences_notificationSound"
@@ -125,23 +125,23 @@
 		    android:key="eventBatteryEnabled"
 		    android:title="@string/event_preferences_battery_enabled"
 		    android:defaultValue="false" />
-        <EditTextPreference
+ 		<sk.henrichg.phoneprofilesplus.NumberPickerPreference
             android:key="eventBatteryLevelLow"
             android:summary="@string/event_preferences_battery_level_low"
             android:title="@string/event_preferences_battery_level_low" 
-			android:numeric="integer" 
             android:defaultValue="0"
-            android:selectAllOnFocus="true"
-            android:dependency="eventBatteryEnabled" /> 
-        <EditTextPreference
+            henrichg:min="0"
+            henrichg:max="100"
+            android:dependency="eventBatteryEnabled" />
+ 		<sk.henrichg.phoneprofilesplus.NumberPickerPreference
             android:key="eventBatteryLevelHight"
             android:summary="@string/event_preferences_battery_level_hight"
             android:title="@string/event_preferences_battery_level_hight" 
-			android:numeric="integer" 
             android:defaultValue="100"
-            android:selectAllOnFocus="true"
-            android:dependency="eventBatteryEnabled" /> 
-		<CheckBoxPreference 
+            henrichg:min="0"
+            henrichg:max="100"
+            android:dependency="eventBatteryEnabled" />
+   		<CheckBoxPreference 
 		    android:key="eventBatteryCharging"
 		    android:title="@string/event_preferences_battery_charging"
 		    android:defaultValue="false"
