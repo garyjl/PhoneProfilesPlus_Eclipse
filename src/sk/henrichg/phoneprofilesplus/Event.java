@@ -415,6 +415,8 @@ public class Event {
 		description = description + "\n";
 		description = _eventPreferencesScreen.getPreferencesDescription(description, context);
 		
+		//description = description.replace(' ', '\u00A0');
+		
 		return description;
 	}
 	
