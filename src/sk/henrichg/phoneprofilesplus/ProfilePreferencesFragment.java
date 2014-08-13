@@ -344,10 +344,14 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 				editor.remove(GlobalData.PREF_PROFILE_NAME).putString(GlobalData.PREF_PROFILE_NAME, profile._name);
 				editor.remove(GlobalData.PREF_PROFILE_ICON).putString(GlobalData.PREF_PROFILE_ICON, profile._icon);
 		        editor.remove(GlobalData.PREF_PROFILE_SHOW_IN_ACTIVATOR).putBoolean(GlobalData.PREF_PROFILE_SHOW_IN_ACTIVATOR, profile._showInActivator);
+	        	editor.remove(GlobalData.PREF_PROFILE_DURATION).editor.putString(GlobalData.PREF_PROFILE_DURATION, Integer.toString(profile._duration));
+	        	editor.remove(GlobalData.PREF_PROFILE_AFTER_DURATION_DO).editor.putString(GlobalData.PREF_PROFILE_AFTER_DURATION_DO, Integer.toString(profile._afterDurationDo));
 		        */
 				editor.putString(GlobalData.PREF_PROFILE_NAME, profile._name);
 				editor.putString(GlobalData.PREF_PROFILE_ICON, profile._icon);
 		        editor.putBoolean(GlobalData.PREF_PROFILE_SHOW_IN_ACTIVATOR, profile._showInActivator);
+		        editor.putString(GlobalData.PREF_PROFILE_DURATION, Integer.toString(profile._duration));
+		        editor.putString(GlobalData.PREF_PROFILE_AFTER_DURATION_DO, Integer.toString(profile._afterDurationDo));
 			}
 			/*
 	        editor.remove(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE).putString(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE, Integer.toString(profile._volumeRingerMode));
@@ -380,8 +384,6 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	        editor.remove(GlobalData.PREF_PROFILE_DEVICE_LOCATION_SERVICE_PREFS).editor.putString(GlobalData.PREF_PROFILE_DEVICE_LOCATION_SERVICE_PREFS, Integer.toString(profile._deviceLocationServicePrefs));
 	        editor.remove(GlobalData.PREF_PROFILE_VOLUME_SPEAKER_PHONE).editor.putString(GlobalData.PREF_PROFILE_VOLUME_SPEAKER_PHONE, Integer.toString(profile._speakerPhone));
 	        editor.remove(GlobalData.PREF_PROFILE_DEVICE_NFC).editor.putString(GlobalData.PREF_PROFILE_VOLUME_SPEAKER_PHONE, Integer.toString(profile._deviceNFC));
-	        editor.remove(GlobalData.PREF_PROFILE_DURATION).editor.putString(GlobalData.PREF_PROFILE_DURATION, Integer.toString(profile._duration));
-	        editor.remove(GlobalData.PREF_PROFILE_AFTER_DURATION_DO).editor.putString(GlobalData.PREF_PROFILE_AFTER_DURATION_DO, Integer.toString(profile._afterDurationDo));
 	        */
 	        editor.putString(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE, Integer.toString(profile._volumeRingerMode));
 	        editor.putString(GlobalData.PREF_PROFILE_VOLUME_RINGTONE, profile._volumeRingtone);
@@ -413,8 +415,6 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	        editor.putString(GlobalData.PREF_PROFILE_DEVICE_LOCATION_SERVICE_PREFS, Integer.toString(profile._deviceLocationServicePrefs));
 	        editor.putString(GlobalData.PREF_PROFILE_VOLUME_SPEAKER_PHONE, Integer.toString(profile._volumeSpeakerPhone));
 	        editor.putString(GlobalData.PREF_PROFILE_DEVICE_NFC, Integer.toString(profile._deviceNFC));
-	        editor.putString(GlobalData.PREF_PROFILE_DURATION, Integer.toString(profile._duration));
-	        editor.putString(GlobalData.PREF_PROFILE_AFTER_DURATION_DO, Integer.toString(profile._afterDurationDo));
 			editor.commit();
     	}
 		
@@ -671,6 +671,8 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
     		if (startupSource != GlobalData.PREFERENCES_STARTUP_SOURCE_DEFAUT_PROFILE)
     		{
     			setSummary(GlobalData.PREF_PROFILE_NAME, profile._name);
+    	        setSummary(GlobalData.PREF_PROFILE_DURATION, profile._duration); 
+    	        setSummary(GlobalData.PREF_PROFILE_AFTER_DURATION_DO, profile._afterDurationDo); 
     		}
 	        setSummary(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE, profile._volumeRingerMode);
 	        setSummary(GlobalData.PREF_PROFILE_SOUND_RINGTONE_CHANGE, profile._soundRingtoneChange);
@@ -693,8 +695,6 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 	        setSummary(GlobalData.PREF_PROFILE_DEVICE_LOCATION_SERVICE_PREFS, profile._deviceLocationServicePrefs); 
 	        setSummary(GlobalData.PREF_PROFILE_VOLUME_SPEAKER_PHONE, profile._volumeSpeakerPhone); 
 	        setSummary(GlobalData.PREF_PROFILE_DEVICE_NFC, profile._deviceNFC); 
-	        setSummary(GlobalData.PREF_PROFILE_DURATION, profile._duration); 
-	        setSummary(GlobalData.PREF_PROFILE_AFTER_DURATION_DO, profile._afterDurationDo); 
 			
 		    // disable depended preferences
 		    disableDependedPref(GlobalData.PREF_PROFILE_SOUND_RINGTONE_CHANGE, profile._soundRingtoneChange);
