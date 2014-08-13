@@ -939,6 +939,8 @@ public class DataWrapper {
 			GlobalData.setActivatedProfileForDuration(context, profileId);
 			ProfileDurationAlarmBroadcastReceiver.setAlarm(profile, context);
 		}
+		else
+			ProfileDurationAlarmBroadcastReceiver.removeAlarm(context);
 		
 		activateProfileHelper.showNotification(profile);
 		activateProfileHelper.updateWidget();
@@ -1931,6 +1933,17 @@ public class DataWrapper {
 	{
 		event._blocked = blocked;
 		getDatabaseHandler().updateEventBlocked(event);
+	}
+	
+	public boolean getIsManualProfileActivation()
+	{
+		if (!GlobalData.getEventsBlocked(context))
+			return false;
+		else
+		if (GlobalData.getForceRunEventRunning(context))
+			return false;
+		else
+			return true;
 	}
 	
 	public String getProfileNameWithManualIndicator(Profile profile)

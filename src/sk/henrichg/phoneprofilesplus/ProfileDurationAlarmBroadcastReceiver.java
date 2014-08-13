@@ -26,28 +26,31 @@ public class ProfileDurationAlarmBroadcastReceiver extends BroadcastReceiver {
 			if (profileId != 0)
 			{
 				DataWrapper dataWrapper = new DataWrapper(context, true, false, 0);
-
-				Profile profile = dataWrapper.getProfileById(profileId);
-				Profile activatedProfile = dataWrapper.getActivatedProfile();
 				
-				if (activatedProfile._id == profile._id)
+				if (dataWrapper.getIsManualProfileActivation())
 				{
-					// alarm is from activated profile
+					Profile profile = dataWrapper.getProfileById(profileId);
+					Profile activatedProfile = dataWrapper.getActivatedProfile();
 					
-					long activateProfileId = 0;
-					if (profile._afterDurationDo == Profile.AFTERDURATIONDO_BACKGROUNPROFILE)
+					if (activatedProfile._id == profile._id)
 					{
-						activateProfileId = Long.valueOf(GlobalData.applicationBackgroundProfile);
-						if (activateProfileId == GlobalData.PROFILE_NO_ACTIVATE)
-							activateProfileId = 0;
+						// alarm is from activated profile
+						
+						long activateProfileId = 0;
+						if (profile._afterDurationDo == Profile.AFTERDURATIONDO_BACKGROUNPROFILE)
+						{
+							activateProfileId = Long.valueOf(GlobalData.applicationBackgroundProfile);
+							if (activateProfileId == GlobalData.PROFILE_NO_ACTIVATE)
+								activateProfileId = 0;
+						}
+						if (profile._afterDurationDo == Profile.AFTERDURATIONDO_UNDOPROFILE)
+						{
+							activateProfileId = GlobalData.getActivatedProfileForDuration(context);
+						}
+						
+						dataWrapper.getActivateProfileHelper().initialize(dataWrapper, null, context);
+						dataWrapper.activateProfile(activateProfileId, GlobalData.STARTUP_SOURCE_SERVICE, null, "");
 					}
-					if (profile._afterDurationDo == Profile.AFTERDURATIONDO_UNDOPROFILE)
-					{
-						activateProfileId = GlobalData.getActivatedProfileForDuration(context);
-					}
-					
-					dataWrapper.getActivateProfileHelper().initialize(dataWrapper, null, context);
-					dataWrapper.activateProfile(activateProfileId, GlobalData.STARTUP_SOURCE_SERVICE, null, "");
 				}
 				
 				dataWrapper.invalidateDataWrapper();
