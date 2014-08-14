@@ -160,7 +160,7 @@
     <string name="phone_profiles_pref_applicationWidgetLightnessI">Symbol-Helligkeit</string> 
     <string name="dashclock_extension_description">Aktives Profil mit Eigenschaften-Symbolen anzeigen. Drauf klicken öffnet Starter.</string> 
     <string name="phone_profiles_pref_category_widget_icon_shortcut">Widget-Symbol; Schnellstart</string>
-	<string name="array_pref_widgetColor_colorfull">Farbig</string> 
+	<string name="array_pref_widgetColor_colorful">Farbig</string> 
 	<string name="array_pref_widgetColor_monochrome">Schwarz-weiß</string> 
 	<string name="phone_profiles_pref_applicationWidgetIconColor">Symbol-Farbtyp</string> 
     <string name="phone_profiles_pref_category_widget_one_row">Widget-Zeile</string> 
@@ -355,7 +355,7 @@
     <string name="array_event_pref_priorityHigher">Höher</string>
     <string name="array_event_pref_priorityHighest">Am höchsten</string>
  	<string name="event_type_wifi">WiFi</string>
-    <string name="event_preferences_category_eventWifiParameters">WiFi</string>
+    <string name="event_preferences_category_eventWifiParameters">WiFiparameter</string>
     <string name="event_preferences_wifi_enabled">WiFi aktivieren</string>
     <string name="event_preferences_wifi_ssid">SSID</string>
     <string name="pref_event_wifi_ssid">SSID</string>
@@ -374,7 +374,7 @@
 	<string name="pref_event_screen_eventType">Ereignistyp</string>
 	<string name="array_event_pref_eventScreenEventType_screenOn">Bildschirm an</string>
 	<string name="array_event_pref_eventScreenEventType_screenOff">Bildschirm aus</string>
-	<string name="event_preferences_category_eventScreenParameters">Bildschirm</string>
+	<string name="event_preferences_category_eventScreenParameters">Bildschirmparameter</string>
 	<string name="event_preferences_screen_enabled">Bildschirm aktivierten</string>
 	<string name="event_preferences_screen_event_type">Ereignistyp</string>
 	<string name="event_preferences_delayStart">Verzögerung (min)</string>

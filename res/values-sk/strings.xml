@@ -162,7 +162,7 @@
     <string name="phone_profiles_pref_applicationWidgetLightnessI">Svetlosť ikony</string>
     <string name="dashclock_extension_description">Zobrazí aktívny profil s indikátorom preferencií profilu. Na kliknutie sa otvorí Aktivátor.</string>
     <string name="phone_profiles_pref_category_widget_icon_shortcut">Miniaplikácia-Ikona; Odkaz</string>
-	<string name="array_pref_widgetColor_colorfull">Farebné</string>
+	<string name="array_pref_widgetColor_colorful">Farebné</string>
 	<string name="array_pref_widgetColor_monochrome">Monochromatické</string>
 	<string name="phone_profiles_pref_applicationWidgetIconColor">Typ farby ikony</string>
     <string name="phone_profiles_pref_category_widget_one_row">Miniaplikácia-jednoriadková</string>
@@ -357,7 +357,7 @@
     <string name="array_event_pref_priorityHigher">Vyššia</string>
     <string name="array_event_pref_priorityHighest">Najvyššia</string>
     <string name="event_type_wifi">WiFi</string>
-    <string name="event_preferences_category_eventWifiParameters">WiFi</string>
+    <string name="event_preferences_category_eventWifiParameters">Parametre WiFi</string>
     <string name="event_preferences_wifi_enabled">Použi WiFi</string>
     <string name="event_preferences_wifi_ssid">SSID</string>
     <string name="pref_event_wifi_ssid">SSID</string>
