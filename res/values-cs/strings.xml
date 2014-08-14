@@ -368,8 +368,22 @@
 	<string name="phone_profiles_pref_applicationEventWifiScanInterval">Interval skenování WiFi (min.)</string>
 	<string name="phone_profiles_pref_applicationEventWifiEnableWifi">Povol WiFi</string>    
 	<string name="phone_profiles_pref_applicationEventBackgroundProfile">Předvolenej profil</string>
-						
     <string name="profile_preference_profile_end_no_activate">Neaktivovat</string>
     <string name="profile_preference_profile_not_set">Nevybrán žádnej profil</string>
+
+	<string name="event_type_screen">Obrazovka</string>
+	<string name="pref_event_screen_eventType">Typ události</string>
+	<string name="array_event_pref_eventScreenEventType_screenOn">Zapnutá</string>
+	<string name="array_event_pref_eventScreenEventType_screenOff">Vypnutá</string>
+	<string name="event_preferences_category_eventScreenParameters">Parametry obrazovky</string>
+	<string name="event_preferences_screen_enabled">Použij obrazovku</string>
+	<string name="event_preferences_screen_event_type">Typ události</string>
+	<string name="event_preferences_delayStart">Pozdržení (min.)</string>
+
+    <string name="profile_preferences_duration">Trvání (min.)</string>
+    <string name="profile_preferences_afterDurationDo">Po uplynutí trvání udělej</string>
+    <string name="array_pref_afterProfileDurationDo_nothing">Nic</string>
+    <string name="array_pref_afterProfileDurationDo_undoProfile">Vrať zpět profil</string>
+    <string name="array_pref_afterProfileDurationDo_backgroundProfile">Aktivuj předvolenej profil</string>
     		
 </resources>

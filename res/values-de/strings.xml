@@ -378,5 +378,11 @@
 	<string name="event_preferences_screen_enabled">Bildschirm aktivierten</string>
 	<string name="event_preferences_screen_event_type">Ereignistyp</string>
 	<string name="event_preferences_delayStart">Verzögerung (min)</string>
-    				    
+
+	<string name="profile_preferences_duration">Dauer (min)</string>
+	<string name="profile_preferences_afterDurationDo">Nach Dauer tue:</string>
+	<string name="array_pref_afterProfileDurationDo_nothing">Nichts</string>
+	<string name="array_pref_afterProfileDurationDo_undoProfile">Profil rückgängig machen</string>
+	<string name="array_pref_afterProfileDurationDo_backgroundProfile">Standard-Profil aktivieren</string>
+						    
 </resources>
