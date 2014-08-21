@@ -737,10 +737,21 @@ public class GlobalData extends Application {
 					featurePresented = HARDWARE_CHECK_ALLOWED;
 				}
 				else
-				if (isRooted(false))
 				{
-					// zariadenie je rootnute
-					featurePresented = HARDWARE_CHECK_ALLOWED;
+					if (isRooted(false))
+					{
+						// zariadenie je rootnute
+						if (settingsBinaryExists())
+							featurePresented = HARDWARE_CHECK_ALLOWED;
+						else
+						{
+							// "settings" binnary not exists 
+							if (PhoneProfilesHelper.PPHelperVersion == -1)
+								featurePresented = HARDWARE_CHECK_INSTALL_PPHELPER;
+							else
+								featurePresented = HARDWARE_CHECK_UPGRADE_PPHELPER;
+						}
+					}
 				}
 			}
 			else
@@ -804,8 +815,17 @@ public class GlobalData extends Application {
 				else
 				if (isRooted(false))
 				{
-					featurePresented = HARDWARE_CHECK_ALLOWED;
-					//Log.e("GlobalData.hardwareCheck - GPS","rooted");
+					// zariadenie je rootnute
+					if (settingsBinaryExists())
+						featurePresented = HARDWARE_CHECK_ALLOWED;
+					else
+					{
+						// "settings" binnary not exists 
+						if (PhoneProfilesHelper.PPHelperVersion == -1)
+							featurePresented = HARDWARE_CHECK_INSTALL_PPHELPER;
+						else
+							featurePresented = HARDWARE_CHECK_UPGRADE_PPHELPER;
+					}
 				}
 			}
 		}
@@ -885,11 +905,16 @@ public class GlobalData extends Application {
 	static private boolean rooted = false;
 	static private boolean grantChecked = false;
 	static private boolean rootGranted = false;
+	static private boolean settingsBinnaryExists = false;
+	static private boolean settingsBinaryChecked = false;
+
 	
 	static boolean isRooted(boolean onlyCheckFlags)
 	{
 		if (!rootChecked)
 		{
+			settingsBinnaryExists = false;
+			settingsBinaryChecked = false;
 			if (!onlyCheckFlags)
 			{
 				if (RootTools.isRootAvailable())
@@ -917,6 +942,8 @@ public class GlobalData extends Application {
 	{
 		if ((!grantChecked) || force)
 		{
+			settingsBinnaryExists = false;
+			settingsBinaryChecked = false;
 			if (RootTools.isAccessGiven())
 			{
 				// root grantnuty
@@ -934,7 +961,19 @@ public class GlobalData extends Application {
 				rootGranted = false;
 			}
 		}
+		if (rootGranted)
+			settingsBinaryExists();
 		return rootGranted;
+	}
+	
+	static boolean settingsBinaryExists()
+	{
+		if (!settingsBinaryChecked)
+		{
+			settingsBinnaryExists = RootTools.findBinary("settings");
+			settingsBinaryChecked = true;
+		}
+		return settingsBinnaryExists;
 	}
 	
 	//------------------------------------------------------------
