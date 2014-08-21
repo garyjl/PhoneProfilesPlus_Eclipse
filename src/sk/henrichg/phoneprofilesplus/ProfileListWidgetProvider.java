@@ -140,8 +140,8 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 	        {
         		widget.setImageViewBitmap(R.id.widget_profile_list_header_profile_icon, profile._iconBitmap);
 	        }
-	        if (GlobalData.applicationWidgetListIconColor.equals("1"))
-	        {
+	        //if (GlobalData.applicationWidgetListIconColor.equals("1"))
+	        //{
 	    		red = 0xFF;
 	    		green = 0xFF;
 	    		blue = 0xFF;
@@ -152,11 +152,11 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 	    		if (GlobalData.applicationWidgetListLightnessT.equals("100")) red = 0xFF;
 	    		green = red; blue = red;
 	        	widget.setTextColor(R.id.widget_profile_list_header_profile_name, Color.argb(0xFF, red, green, blue));
-	        }
-	        else
-	        {
-				widget.setTextColor(R.id.widget_profile_list_header_profile_name, Color.parseColor("#33b5e5"));
-	        }
+	        //}
+	        //else
+	        //{
+			//	widget.setTextColor(R.id.widget_profile_list_header_profile_name, Color.parseColor("#33b5e5"));
+	        //}
 			widget.setTextViewText(R.id.widget_profile_list_header_profile_name, profileName);
 			if (GlobalData.applicationWidgetListPrefIndicator)
 			{
