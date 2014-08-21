@@ -905,7 +905,7 @@ public class GlobalData extends Application {
 	static private boolean rooted = false;
 	static private boolean grantChecked = false;
 	static private boolean rootGranted = false;
-	static private boolean settingsBinnaryExists = false;
+	static private boolean settingsBinaryExists = false;
 	static private boolean settingsBinaryChecked = false;
 
 	
@@ -913,7 +913,7 @@ public class GlobalData extends Application {
 	{
 		if (!rootChecked)
 		{
-			settingsBinnaryExists = false;
+			settingsBinaryExists = false;
 			settingsBinaryChecked = false;
 			if (!onlyCheckFlags)
 			{
@@ -942,7 +942,7 @@ public class GlobalData extends Application {
 	{
 		if ((!grantChecked) || force)
 		{
-			settingsBinnaryExists = false;
+			settingsBinaryExists = false;
 			settingsBinaryChecked = false;
 			if (RootTools.isAccessGiven())
 			{
@@ -970,10 +970,10 @@ public class GlobalData extends Application {
 	{
 		if (!settingsBinaryChecked)
 		{
-			settingsBinnaryExists = RootTools.findBinary("settings");
+			settingsBinaryExists = RootTools.findBinary("settings");
 			settingsBinaryChecked = true;
 		}
-		return settingsBinnaryExists;
+		return settingsBinaryExists;
 	}
 	
 	//------------------------------------------------------------
