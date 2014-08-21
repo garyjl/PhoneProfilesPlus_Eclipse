@@ -541,6 +541,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 			if (GlobalData.getGlobalEventsRuning(getBaseContext()))
 			{
 				// no setup for next start
+				dataWrapper.removeAllEventDelays();
 				dataWrapper.pauseAllEvents(true, false);
 				GlobalData.setGlobalEventsRuning(getBaseContext(), false);
 				// stop Wifi scanner

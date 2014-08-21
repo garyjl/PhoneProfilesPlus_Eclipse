@@ -717,6 +717,8 @@ public class DataWrapper {
 			// profile will by activated in call of RestartEventsBroadcastReceiver
 			getDatabaseHandler().deactivateProfile();
 
+		removeAllEventDelays();
+		
 		WifiScanAlarmBroadcastReceiver.initialize(context);
 		WifiScanAlarmBroadcastReceiver.setAlarm(context);
 		SearchCalendarEventsBroadcastReceiver.setAlarm(context);
@@ -1906,6 +1908,8 @@ public class DataWrapper {
 			//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
 			dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
+					// remove all event delay alarms
+					removeAllEventDelays();
 					// ignoruj manualnu aktivaciu profilu
 					// a odblokuj forceRun eventy
 					restartEvents(true, true);
@@ -1921,9 +1925,14 @@ public class DataWrapper {
 		}
 		else
 		{
+			// remove all event delay alarms
+			removeAllEventDelays();
 			// ignoruj manualnu aktivaciu profilu
 			// a odblokuj forceRun eventy
 			restartEvents(true, true);
+			// rescan wifi
+			WifiScanAlarmBroadcastReceiver.sendBroadcast(activity.getBaseContext());
+			
 			if (GlobalData.applicationClose)
 				activity.finish();
 		}
@@ -2025,4 +2034,15 @@ public class DataWrapper {
 		return (getSSID(wifiManager, result).equals(SSID) || getSSID(wifiManager, result).equals(ssid2));
 	}
 	
+	
+	public void removeAllEventDelays()
+	{
+		for (Event event : getEventList())
+		{
+			event.removeDelayAlarm(this, true);
+			event.removeDelayAlarm(this, false);
+		}
+		getDatabaseHandler().removeAllEventsInDelay();
+	}
+
 }
