@@ -57,17 +57,26 @@ public class ActivateProfileListFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView;
 		
-		/*
-		if (GlobalData.applicationActivatorPrefIndicator && GlobalData.applicationActivatorHeader)
-			rootView = inflater.inflate(R.layout.activate_profile_list, container, false); 
+		if (!GlobalData.applicationActivatorGridLayout)
+		{
+			if (GlobalData.applicationActivatorPrefIndicator && GlobalData.applicationActivatorHeader)
+				rootView = inflater.inflate(R.layout.activate_profile_list, container, false); 
+			else
+			if (GlobalData.applicationActivatorHeader)
+				rootView = inflater.inflate(R.layout.activate_profile_list_no_indicator, container, false); 
+			else
+				rootView = inflater.inflate(R.layout.activate_profile_list_no_header, container, false);
+		}
 		else
-		if (GlobalData.applicationActivatorHeader)
-			rootView = inflater.inflate(R.layout.activate_profile_list_no_indicator, container, false); 
-		else
-			rootView = inflater.inflate(R.layout.activate_profile_list_no_header, container, false);
-		*/ 
-		rootView = inflater.inflate(R.layout.activate_profile_grid, container, false); 
-
+		{
+			if (GlobalData.applicationActivatorPrefIndicator && GlobalData.applicationActivatorHeader)
+				rootView = inflater.inflate(R.layout.activate_profile_grid, container, false); 
+			else
+			if (GlobalData.applicationActivatorHeader)
+				rootView = inflater.inflate(R.layout.activate_profile_grid_no_indicator, container, false); 
+			else
+				rootView = inflater.inflate(R.layout.activate_profile_grid_no_header, container, false);
+		}
 		
 		return rootView;
 	}
@@ -86,7 +95,7 @@ public class ActivateProfileListFragment extends Fragment {
 		if (!GlobalData.applicationActivatorGridLayout)
 			listView = (ListView)view.findViewById(R.id.act_prof_profiles_list);
 		else
-			gridView = (GridView)view.findViewById(R.id.act_prof_profiles_list);
+			gridView = (GridView)view.findViewById(R.id.act_prof_profiles_grid);
 		if (GlobalData.applicationActivatorPrefIndicator)
 		{
 			profilePrefIndicatorImageView = (ImageView)view.findViewById(R.id.act_prof_activated_profile_pref_indicator);

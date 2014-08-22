@@ -408,7 +408,7 @@ public class GlobalData extends Application {
 	    applicationEventWifiScanInterval = Integer.valueOf(preferences.getString(PREF_APPLICATION_EVENT_WIFI_SCAN_INTERVAL, "10"));
 	    applicationEventWifiEnableWifi = preferences.getBoolean(PREF_APPLICATION_EVENT_WIFI_ENABLE_WIFI, true);
 	    applicationBackgroundProfile = preferences.getString(PREF_APPLICATION_BACKGROUND_PROFILE, "-999");
-	    applicationActivatorGridLayout = false;
+	    applicationActivatorGridLayout = true;
 	}
 	
 	private static String getVolumeLevelString(int percentage, int maxValue)

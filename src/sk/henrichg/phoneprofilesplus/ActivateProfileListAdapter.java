@@ -132,17 +132,27 @@ public class ActivateProfileListAdapter extends BaseAdapter
 		View vi = convertView;
 		if (convertView == null)
 		{
-	  		LayoutInflater inflater = LayoutInflater.from(fragment.getActivity());
-	      	if (GlobalData.applicationActivatorPrefIndicator)
-	      		vi = inflater.inflate(R.layout.activate_profile_list_item, parent, false);
-	      	else
-	      		vi = inflater.inflate(R.layout.activate_profile_list_item_no_indicator, parent, false);
 	        holder = new ViewHolder();
-	        holder.listItemRoot = (RelativeLayout)vi.findViewById(R.id.act_prof_list_item_root);
-	        holder.profileName = (TextView)vi.findViewById(R.id.act_prof_list_item_profile_name);
-	        holder.profileIcon = (ImageView)vi.findViewById(R.id.act_prof_list_item_profile_icon);
-	  		if (GlobalData.applicationActivatorPrefIndicator)
-	  			holder.profileIndicator = (ImageView)vi.findViewById(R.id.act_prof_list_profile_pref_indicator);
+	  		LayoutInflater inflater = LayoutInflater.from(fragment.getActivity());
+			if (!GlobalData.applicationActivatorGridLayout)
+			{
+		      	if (GlobalData.applicationActivatorPrefIndicator)
+		      		vi = inflater.inflate(R.layout.activate_profile_list_item, parent, false);
+		      	else
+		      		vi = inflater.inflate(R.layout.activate_profile_list_item_no_indicator, parent, false);
+		        holder.listItemRoot = (RelativeLayout)vi.findViewById(R.id.act_prof_list_item_root);
+		        holder.profileName = (TextView)vi.findViewById(R.id.act_prof_list_item_profile_name);
+		        holder.profileIcon = (ImageView)vi.findViewById(R.id.act_prof_list_item_profile_icon);
+		  		if (GlobalData.applicationActivatorPrefIndicator)
+		  			holder.profileIndicator = (ImageView)vi.findViewById(R.id.act_prof_list_profile_pref_indicator);
+			}
+			else
+			{
+	      		vi = inflater.inflate(R.layout.activate_profile_grid_item, parent, false);
+		        holder.listItemRoot = (RelativeLayout)vi.findViewById(R.id.act_prof_list_item_root);
+		        holder.profileName = (TextView)vi.findViewById(R.id.act_prof_list_item_profile_name);
+		        holder.profileIcon = (ImageView)vi.findViewById(R.id.act_prof_list_item_profile_icon);
+			}
 	        vi.setTag(holder);        
 		}
 		else
@@ -196,7 +206,7 @@ public class ActivateProfileListAdapter extends BaseAdapter
 			holder.profileIcon.setImageBitmap(profile._iconBitmap);
 		}
 
-		if (GlobalData.applicationActivatorPrefIndicator)
+		if ((GlobalData.applicationActivatorPrefIndicator) && (!GlobalData.applicationActivatorGridLayout))
 		{
 			//profilePrefIndicatorImageView.setImageBitmap(null);
 			//Bitmap bitmap = ProfilePreferencesIndicator.paint(profile, vi.getContext());

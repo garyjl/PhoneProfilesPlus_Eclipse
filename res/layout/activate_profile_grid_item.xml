@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--  Single List Item Design -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/act_prof_list_item_root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:orientation="vertical" >
+    android:layout_height="80dp" >
 
     <ImageView
-        android:id="@+id/icon_widget_icon"
+        android:id="@+id/act_prof_list_item_profile_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:adjustViewBounds="true"
         android:maxHeight="50dp"
         android:maxWidth="50dp"
@@ -17,16 +18,15 @@
         android:contentDescription="@string/empty_string"/>
 
     <TextView
-        android:id="@+id/icon_widget_name"
+        android:id="@+id/act_prof_list_item_profile_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:shadowColor="#ff000000"
-        android:shadowDx="1"
-        android:shadowDy="1"
-        android:shadowRadius="3"
+	    android:singleLine="true"
+        android:layout_below="@+id/act_prof_list_item_profile_icon"
         android:text="@string/profile_name_default"
-        android:textColor="#ffffffff"
-        android:textSize="12sp" />
+        android:textSize="15sp" />
+    
+</RelativeLayout>
 
-</LinearLayout>

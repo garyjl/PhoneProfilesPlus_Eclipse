@@ -23,7 +23,6 @@ public class ActivateProfileActivity extends ActionBarActivity {
 	private float popupMaxHeight;
 	private float popupHeight;
 	private int actionBarHeight;
-	
 
 	@SuppressWarnings({ "deprecation" })
 	@Override
@@ -92,14 +91,27 @@ public class ActivateProfileActivity extends ActionBarActivity {
 		
 		// add global events on/off indicator
 		popupHeight = popupHeight + 3f * scale;
-		
-		// add list items height
+
 		DataWrapper dataWrapper = new DataWrapper(getBaseContext(), false, false, 0);
 		int profileCount = dataWrapper.getDatabaseHandler().getProfilesCount(true);
 		dataWrapper.invalidateDataWrapper();
-		
-		popupHeight = popupHeight + (50f * scale * profileCount); // item
-		popupHeight = popupHeight + (5f * scale * (profileCount-1)); // divider
+
+		if (!GlobalData.applicationActivatorGridLayout)
+		{
+			// add list items height
+			popupHeight = popupHeight + (50f * scale * profileCount); // item
+			popupHeight = popupHeight + (5f * scale * (profileCount-1)); // divider
+		}
+		else
+		{
+			// add grid items height
+			profileCount = profileCount / 3;
+			int modulo = profileCount % 3;
+			if (modulo != 0)
+				++profileCount;
+			popupHeight = popupHeight + (80f * scale * profileCount); // item
+			popupHeight = popupHeight + (5f * scale * (profileCount-1)); // divider
+		}
 
 		popupHeight = popupHeight + (20f * scale); // listview padding
 		
