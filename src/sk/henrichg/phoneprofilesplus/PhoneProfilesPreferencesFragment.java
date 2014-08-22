@@ -174,6 +174,7 @@ public class PhoneProfilesPreferencesFragment extends PreferenceListFragment
 	    setSummary(GlobalData.PREF_APPLICATION_EVENT_WIFI_SCAN_INTERVAL);
 	    setSummary(GlobalData.PREF_APPLICATION_EVENT_WIFI_ENABLE_WIFI);
 	    setSummary(GlobalData.PREF_APPLICATION_BACKGROUND_PROFILE);
+	    setSummary(GlobalData.PREF_APPLICATION_ACTIVATOR_GRID_LAYOUT);
 	    
 		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_WIFI, preferencesActivity.getBaseContext()) 
 					!= GlobalData.HARDWARE_CHECK_ALLOWED)

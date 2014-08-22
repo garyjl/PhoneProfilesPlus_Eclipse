@@ -390,5 +390,7 @@
     <string name="array_pref_afterProfileDurationDo_nothing">Nothing</string>
     <string name="array_pref_afterProfileDurationDo_undoProfile">Undo the profile</string>
     <string name="array_pref_afterProfileDurationDo_backgroundProfile">Activate Default profile</string>
-			
+
+    <string name="phone_profiles_pref_applicationGridLayout">Grid layout</string>
+    			
 </resources>

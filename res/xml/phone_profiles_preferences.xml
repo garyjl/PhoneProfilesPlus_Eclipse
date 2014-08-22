@@ -21,7 +21,11 @@
 		    android:key="applicationClose"
 		    android:title="@string/phone_profiles_pref_applicationClose"
 		    android:defaultValue="true" />
-    </PreferenceCategory>
+		<CheckBoxPreference 
+		    android:key="applicationActivatorGridLayout"
+		    android:title="@string/phone_profiles_pref_applicationGridLayout"
+		    android:defaultValue="false" />
+		</PreferenceCategory>
     
     <PreferenceCategory
         android:title="@string/phone_profiles_pref_category_activation"
