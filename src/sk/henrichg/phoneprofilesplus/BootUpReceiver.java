@@ -9,7 +9,7 @@ public class BootUpReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		
-		GlobalData.logE("## BootUpReceiver.onReceive", "xxxx");
+		GlobalData.logE("@@@ BootUpReceiver.onReceive", "####");
 		
 		GlobalData.loadPreferences(context);
 		

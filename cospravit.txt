@@ -169,5 +169,13 @@ Event start delay
 - Mozeme potom spravit novy indikator spustenia - ak bude event v delay, dat pause indikator
   oranzovy.
 
+-------------------------
+kazde 4 sekundy sa vola restartEvents
+Kedy je volany:
+- rucny restart eventov (tl. v Aktivatore a Editore)
+- povolenie/zakazanie eventu v Editore
+- vymazanie eventu
+- editovanie eventu
+- import dat
   
 

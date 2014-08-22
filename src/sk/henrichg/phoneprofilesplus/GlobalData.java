@@ -44,6 +44,8 @@ public class GlobalData extends Application {
 										 "@@@ ScreenOnOffBroadcastReceiver|"+
 										 "@@@ RestartEventsBroadcastReceiver|"+
 										 "@@@ EventDelayBroadcastReceiver|"+
+										 "@@@ BootUpReceiver|"+
+										 "@@@ PackageReplacedReceiver|"+
 										 "@@@ EventsService|"+
 										 "@@@ Event"
 			;

@@ -13,6 +13,8 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 		int myUid = android.os.Process.myUid();
 		if (intentUid == myUid)
 		{
+			GlobalData.logE("@@@ PackageReplacedReceiver.onReceive", "####");
+		
 			GlobalData.loadPreferences(context);
 			
 			if (GlobalData.getApplicationStarted(context))
