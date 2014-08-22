@@ -13,7 +13,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,6 +29,7 @@ public class ActivateProfileListFragment extends Fragment {
 	private List<Profile> profileList = null;
 	private ActivateProfileListAdapter profileListAdapter = null;
 	private ListView listView = null;
+	private GridView gridView = null;
 	private TextView activeProfileName;
 	private ImageView activeProfileIcon;
 	private ImageView profilePrefIndicatorImageView;
@@ -54,14 +57,18 @@ public class ActivateProfileListFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView;
 		
+		/*
 		if (GlobalData.applicationActivatorPrefIndicator && GlobalData.applicationActivatorHeader)
 			rootView = inflater.inflate(R.layout.activate_profile_list, container, false); 
 		else
 		if (GlobalData.applicationActivatorHeader)
 			rootView = inflater.inflate(R.layout.activate_profile_list_no_indicator, container, false); 
 		else
-			rootView = inflater.inflate(R.layout.activate_profile_list_no_header, container, false); 
+			rootView = inflater.inflate(R.layout.activate_profile_list_no_header, container, false);
+		*/ 
+		rootView = inflater.inflate(R.layout.activate_profile_grid, container, false); 
 
+		
 		return rootView;
 	}
 	
@@ -76,16 +83,25 @@ public class ActivateProfileListFragment extends Fragment {
 	{
 		activeProfileName = (TextView)view.findViewById(R.id.act_prof_activated_profile_name);
 		activeProfileIcon = (ImageView)view.findViewById(R.id.act_prof_activated_profile_icon);
-		listView = (ListView)view.findViewById(R.id.act_prof_profiles_list);
+		if (!GlobalData.applicationActivatorGridLayout)
+			listView = (ListView)view.findViewById(R.id.act_prof_profiles_list);
+		else
+			gridView = (GridView)view.findViewById(R.id.act_prof_profiles_list);
 		if (GlobalData.applicationActivatorPrefIndicator)
 		{
 			profilePrefIndicatorImageView = (ImageView)view.findViewById(R.id.act_prof_activated_profile_pref_indicator);
 		}
 		eventsRunStopIndicator = (LinearLayout)view.findViewById(R.id.act_prof_run_stop_indicator);
 		
-		//listView.setLongClickable(false);
+		AbsListView absListView;
+		if (!GlobalData.applicationActivatorGridLayout)
+			absListView = listView;
+		else
+			absListView = gridView;
 
-		listView.setOnItemClickListener(new OnItemClickListener() {
+		//absListView.setLongClickable(false);
+		
+		absListView.setOnItemClickListener(new OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -99,7 +115,7 @@ public class ActivateProfileListFragment extends Fragment {
 			
 		}); 
 		
-		listView.setOnItemLongClickListener(new OnItemLongClickListener() {
+		absListView.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -114,7 +130,7 @@ public class ActivateProfileListFragment extends Fragment {
 			
 		});
 
-        //listView.setRemoveListener(onRemove);
+        //absListView.setRemoveListener(onRemove);
 
 		if (profileList == null)
 		{
@@ -124,7 +140,7 @@ public class ActivateProfileListFragment extends Fragment {
 		}
 		else
 		{
-			listView.setAdapter(profileListAdapter);
+			absListView.setAdapter(profileListAdapter);
 			setEventsRunStopIndicator();
 		}
 		
@@ -196,7 +212,14 @@ public class ActivateProfileListFragment extends Fragment {
 				}
     	        
     	        fragment.profileListAdapter = new ActivateProfileListAdapter(fragment, fragment.profileList);
-    	        fragment.listView.setAdapter(fragment.profileListAdapter);
+
+    	        AbsListView absListView;
+    			if (!GlobalData.applicationActivatorGridLayout)
+    				absListView = fragment.listView;
+    			else
+    				absListView = fragment.gridView;
+    			absListView.setAdapter(fragment.profileListAdapter);
+    			
     			fragment.setEventsRunStopIndicator();
     	        
 				fragment.doOnStart();
@@ -250,8 +273,13 @@ public class ActivateProfileListFragment extends Fragment {
 	{
 		if (!isAsyncTaskPendingOrRunning())
 		{
-			if (listView != null)
-				listView.setAdapter(null);
+	        AbsListView absListView;
+			if (!GlobalData.applicationActivatorGridLayout)
+				absListView = listView;
+			else
+				absListView = gridView;
+			if (absListView != null)
+				absListView.setAdapter(null);
 			if (profileListAdapter != null)
 				profileListAdapter.release();
 			
