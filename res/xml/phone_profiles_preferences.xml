@@ -25,7 +25,7 @@
 		    android:key="applicationActivatorGridLayout"
 		    android:title="@string/phone_profiles_pref_applicationGridLayout"
 		    android:defaultValue="false" />
-		</PreferenceCategory>
+	</PreferenceCategory>
     
     <PreferenceCategory
         android:title="@string/phone_profiles_pref_category_activation"
