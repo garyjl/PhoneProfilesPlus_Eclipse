@@ -107,7 +107,7 @@ public class ActivateProfileActivity extends ActionBarActivity {
 			// add grid items height
 			profileCount = profileCount / 3;
 			int modulo = profileCount % 3;
-			if (modulo != 0)
+			if (modulo < 3)
 				++profileCount;
 			popupHeight = popupHeight + (80f * scale * profileCount); // item
 			popupHeight = popupHeight + (5f * scale * (profileCount-1)); // divider
