@@ -109,7 +109,7 @@ public class ActivateProfileActivity extends ActionBarActivity {
 			int modulo = profileCount % 3;
 			if (modulo < 3)
 				++profileCount;
-			popupHeight = popupHeight + (80f * scale * profileCount); // item
+			popupHeight = popupHeight + (75f * scale * profileCount); // item
 			popupHeight = popupHeight + (5f * scale * (profileCount-1)); // divider
 		}
 
