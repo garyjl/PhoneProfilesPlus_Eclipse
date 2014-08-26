@@ -387,5 +387,6 @@
     <string name="array_pref_afterProfileDurationDo_undoProfile">Vráť späť profil</string>
     <string name="array_pref_afterProfileDurationDo_backgroundProfile">Aktivuj predvolený profil</string>
 			
+    <string name="phone_profiles_pref_applicationGridLayout">Mriežkové rozloženie</string>
     				
 </resources>

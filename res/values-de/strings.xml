@@ -384,5 +384,7 @@
 	<string name="array_pref_afterProfileDurationDo_nothing">Nichts</string>
 	<string name="array_pref_afterProfileDurationDo_undoProfile">Profil rückgängig machen</string>
 	<string name="array_pref_afterProfileDurationDo_backgroundProfile">Standard-Profil aktivieren</string>
-						    
+
+    <string name="phone_profiles_pref_applicationGridLayout">Grid layout</string>
+								    
 </resources>
