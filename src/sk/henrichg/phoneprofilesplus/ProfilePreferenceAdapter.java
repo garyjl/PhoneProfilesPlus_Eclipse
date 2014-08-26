@@ -1,7 +1,5 @@
 package sk.henrichg.phoneprofilesplus;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import android.content.Context;

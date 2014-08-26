@@ -6,7 +6,6 @@ import android.content.SharedPreferences.Editor;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.widget.Toast;
 
 public class EventPreferencesBattery extends EventPreferences {
@@ -143,7 +142,7 @@ public class EventPreferencesBattery extends EventPreferences {
                 else
                 	iNewValue = Integer.parseInt(sNewValue);
                 
-                Log.e("EventPreferencesBattery.checkPreferences.lowLevelPreference","iNewValue="+iNewValue);
+                //Log.e("EventPreferencesBattery.checkPreferences.lowLevelPreference","iNewValue="+iNewValue);
                 
                 String sHightLevelValue = _prefMng.getSharedPreferences().getString(PREF_EVENT_BATTERY_LEVEL_HIGHT, "100");
                 int iHightLevelValue;
@@ -152,7 +151,7 @@ public class EventPreferencesBattery extends EventPreferences {
                 else
                 	iHightLevelValue = Integer.parseInt(sHightLevelValue);
 
-                Log.e("EventPreferencesBattery.checkPreferences.lowLevelPreference","iHightLevelValue="+iHightLevelValue);
+                //Log.e("EventPreferencesBattery.checkPreferences.lowLevelPreference","iHightLevelValue="+iHightLevelValue);
                 
                 boolean OK = ((iNewValue >= 0) && (iNewValue <= iHightLevelValue));
                 
@@ -179,7 +178,7 @@ public class EventPreferencesBattery extends EventPreferences {
                 else
                 	iNewValue = Integer.parseInt(sNewValue);
                 
-                Log.e("EventPreferencesBattery.checkPreferences.hightLevelPreference","iNewValue="+iNewValue);
+                //Log.e("EventPreferencesBattery.checkPreferences.hightLevelPreference","iNewValue="+iNewValue);
 
                 String sLowLevelValue = _prefMng.getSharedPreferences().getString(PREF_EVENT_BATTERY_LEVEL_LOW, "0");
                 int iLowLevelValue;
@@ -188,7 +187,7 @@ public class EventPreferencesBattery extends EventPreferences {
                 else
                 	iLowLevelValue = Integer.parseInt(sLowLevelValue);
 
-                Log.e("EventPreferencesBattery.checkPreferences.hightLevelPreference","iLowLevelValue="+iLowLevelValue);
+                //Log.e("EventPreferencesBattery.checkPreferences.hightLevelPreference","iLowLevelValue="+iLowLevelValue);
                 
                 boolean OK = ((iNewValue >= iLowLevelValue) && (iNewValue <= 100));
                 

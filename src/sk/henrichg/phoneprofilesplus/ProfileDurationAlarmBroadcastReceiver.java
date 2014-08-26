@@ -1,6 +1,5 @@
 package sk.henrichg.phoneprofilesplus;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import android.annotation.SuppressLint;
@@ -10,13 +9,12 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 public class ProfileDurationAlarmBroadcastReceiver extends BroadcastReceiver {
 
 	public void onReceive(Context context, Intent intent) {
 		
-		Log.e("#### ProfileDurationAlarmBroadcastReceiver.onReceive","xxx");
+		//Log.e("#### ProfileDurationAlarmBroadcastReceiver.onReceive","xxx");
 		
 		if (GlobalData.getApplicationStarted(context))
 		{
@@ -76,9 +74,9 @@ public class ProfileDurationAlarmBroadcastReceiver extends BroadcastReceiver {
 			Calendar now = Calendar.getInstance();
 			long alarmTime = now.getTimeInMillis() + 1000 * 60 * profile._duration;
 					
-		    SimpleDateFormat sdf = new SimpleDateFormat("EE d.MM.yyyy HH:mm:ss:S");
-		    String result = sdf.format(alarmTime);
-	    	Log.e("@@@ ProfileDurationAlarmBroadcastReceiver.setAlarm","time="+result);
+		    //SimpleDateFormat sdf = new SimpleDateFormat("EE d.MM.yyyy HH:mm:ss:S");
+		    //String result = sdf.format(alarmTime);
+	    	//Log.e("@@@ ProfileDurationAlarmBroadcastReceiver.setAlarm","time="+result);
 		    
 		    Intent intent = new Intent(context, ProfileDurationAlarmBroadcastReceiver.class);
 		    intent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
@@ -110,7 +108,7 @@ public class ProfileDurationAlarmBroadcastReceiver extends BroadcastReceiver {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), 0, intent, PendingIntent.FLAG_NO_CREATE);
         if (pendingIntent != null)
         {
-       		Log.e("@@@ ProfileDurationAlarmBroadcastReceiver.removeAlarm","alarm found");
+       		//Log.e("@@@ ProfileDurationAlarmBroadcastReceiver.removeAlarm","alarm found");
         		
         	alarmManager.cancel(pendingIntent);
         	pendingIntent.cancel();
