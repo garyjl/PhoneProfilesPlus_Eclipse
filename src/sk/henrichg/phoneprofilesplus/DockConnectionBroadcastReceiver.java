@@ -12,6 +12,10 @@ public class DockConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		GlobalData.logE("#### DockConnectionBroadcastReceiver.onReceive","xxx");
 		
+		if (!GlobalData.getApplicationStarted(context))
+			// application is not started
+			return;
+
 		GlobalData.loadPreferences(context);
 		
 		if (GlobalData.getGlobalEventsRuning(context))

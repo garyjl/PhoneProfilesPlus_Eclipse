@@ -15,10 +15,10 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 		{
 			GlobalData.logE("@@@ PackageReplacedReceiver.onReceive", "####");
 		
-			GlobalData.loadPreferences(context);
-			
 			if (GlobalData.getApplicationStarted(context))
 			{
+				GlobalData.loadPreferences(context);
+				
 				GlobalData.grantRoot(true);
 
 				// start PPHelper

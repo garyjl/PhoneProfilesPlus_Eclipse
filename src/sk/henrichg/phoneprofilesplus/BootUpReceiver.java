@@ -20,7 +20,8 @@ public class BootUpReceiver extends BroadcastReceiver {
 		
 		if (GlobalData.applicationStartOnBoot)
 		{	
-			GlobalData.setApplicationStarted(context, true);
+			// dislabled for firstStartEvents
+			//GlobalData.setApplicationStarted(context, true);
 			
 			GlobalData.grantRoot(true);
 
@@ -52,6 +53,8 @@ public class BootUpReceiver extends BroadcastReceiver {
 				dataWrapper.firstStartEvents(true, false);
 			else
 			{
+				GlobalData.setApplicationStarted(context, true);
+
 				if (GlobalData.applicationActivate)
 				{
 					Profile profile = dataWrapper.getDatabaseHandler().getActivatedProfile();

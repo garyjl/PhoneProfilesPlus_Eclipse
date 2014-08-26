@@ -18,10 +18,10 @@ public class ProfileDurationAlarmBroadcastReceiver extends BroadcastReceiver {
 		
 		Log.e("#### ProfileDurationAlarmBroadcastReceiver.onReceive","xxx");
 		
-		GlobalData.loadPreferences(context);
-		
 		if (GlobalData.getApplicationStarted(context))
 		{
+			GlobalData.loadPreferences(context);
+			
 			long profileId = intent.getLongExtra(GlobalData.EXTRA_PROFILE_ID, 0);
 			if (profileId != 0)
 			{

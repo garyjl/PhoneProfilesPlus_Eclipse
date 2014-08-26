@@ -22,6 +22,10 @@ public class HeadsetConnectionBroadcastReceiver extends WakefulBroadcastReceiver
 	public void onReceive(Context context, Intent intent) {
 		GlobalData.logE("#### HeadsetConnectionBroadcastReceiver.onReceive","xxx");
 
+		if (!GlobalData.getApplicationStarted(context))
+			// application is not started
+			return;
+
 		GlobalData.loadPreferences(context);
 
 		boolean broadcast = false;

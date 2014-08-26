@@ -15,6 +15,10 @@ public class BatteryEventBroadcastReceiver extends WakefulBroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		GlobalData.logE("##### BatteryEventBroadcastReceiver.onReceive","xxx");
 
+		if (!GlobalData.getApplicationStarted(context))
+			// application is not started
+			return;
+		
 		GlobalData.loadPreferences(context);
 		
 		boolean batteryEventsExists = false;

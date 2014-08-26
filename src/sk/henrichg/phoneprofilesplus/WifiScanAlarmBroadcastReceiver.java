@@ -39,6 +39,11 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		if (wifi == null)
 			wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 		
+		// disabled fro firstStartEvents
+		//if (!GlobalData.getApplicationStarted(context))
+			// application is not started
+		//	return;
+
 		GlobalData.loadPreferences(context);
 
 		if (GlobalData.getGlobalEventsRuning(context))

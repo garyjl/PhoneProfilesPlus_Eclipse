@@ -13,6 +13,10 @@ public class EventDelayBroadcastReceiver extends WakefulBroadcastReceiver {
 		
 		GlobalData.logE("#### EventDelayBroadcastReceiver.onReceive","xxx");
 		
+		if (!GlobalData.getApplicationStarted(context))
+			// application is not started
+			return;
+
 		GlobalData.loadPreferences(context);
 		
 		if (GlobalData.getGlobalEventsRuning(context))

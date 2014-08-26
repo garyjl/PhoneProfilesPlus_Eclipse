@@ -14,6 +14,10 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		GlobalData.logE("#### WifiConnectionBroadcastReceiver.onReceive","xxx");
 		
+		if (!GlobalData.getApplicationStarted(context))
+			// application is not started
+			return;
+
 		GlobalData.loadPreferences(context);
 		
 		if (GlobalData.getGlobalEventsRuning(context))

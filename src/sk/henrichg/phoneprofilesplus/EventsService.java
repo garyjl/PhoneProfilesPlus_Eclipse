@@ -26,9 +26,13 @@ public class EventsService extends IntentService
 
 		WifiScanAlarmBroadcastReceiver.unlock();
 		
-		if (!GlobalData.getApplicationStarted(context))
+		// disabled for firstStartEvents
+		//if (!GlobalData.getApplicationStarted(context))
 			// application is not started
-			return;
+		//	return;
+
+		GlobalData.setApplicationStarted(context, true);
+		
 		
 		if (!GlobalData.getGlobalEventsRuning(context))
 			// events are globally stopped

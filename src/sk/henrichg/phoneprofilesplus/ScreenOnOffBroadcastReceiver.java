@@ -13,6 +13,10 @@ public class ScreenOnOffBroadcastReceiver extends WakefulBroadcastReceiver {
 		
 		GlobalData.logE("#### ScreenOnOffBroadcastReceiver.onReceive","xxx");
 
+		if (!GlobalData.getApplicationStarted(context))
+			// application is not started
+			return;
+
 		GlobalData.loadPreferences(context);
 		
 		if (GlobalData.getGlobalEventsRuning(context))
