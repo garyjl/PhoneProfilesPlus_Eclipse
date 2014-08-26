@@ -59,8 +59,8 @@ public class SearchCalendarEventsBroadcastReceiver extends WakefulBroadcastRecei
          
 		PendingIntent alarmIntent = PendingIntent.getBroadcast(context.getApplicationContext(), 0, intent, 0);
 		alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-										//5 * 1000,
-										AlarmManager.INTERVAL_DAY,
+										5 * 1000,
+										//AlarmManager.INTERVAL_DAY,
 										AlarmManager.INTERVAL_DAY,
 										alarmIntent);
 	}
