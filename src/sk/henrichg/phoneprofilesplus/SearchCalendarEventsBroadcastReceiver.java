@@ -16,10 +16,9 @@ public class SearchCalendarEventsBroadcastReceiver extends WakefulBroadcastRecei
 		
 		GlobalData.logE("#### SearchCalendarEventsBroadcastReceiver.onReceive","xxx");
 		
-		// disabled for firstStartEvents
-		//if (!GlobalData.getApplicationStarted(context))
+		if (!GlobalData.getApplicationStarted(context))
 			// application is not started
-		//	return;
+			return;
 
 		GlobalData.loadPreferences(context);
 		
