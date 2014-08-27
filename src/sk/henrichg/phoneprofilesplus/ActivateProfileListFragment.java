@@ -151,6 +151,8 @@ public class ActivateProfileListFragment extends Fragment {
 		{
 			absListView.setAdapter(profileListAdapter);
 			setEventsRunStopIndicator();
+			
+			doOnStart();
 		}
 		
 		//Log.d("EditorProfileListFragment.onActivityCreated", "xxx");
