@@ -101,8 +101,11 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 	public RemoteViews getViewAt(int position) {
 		//Log.e("ProfileListWidgetFactory.getViewAt","xxx");
 		
-		
-		RemoteViews row=new RemoteViews(context.getPackageName(), R.layout.profile_list_widget_item);
+		RemoteViews row;
+		if (!GlobalData.applicationWidgetListGridLayout)
+			row=new RemoteViews(context.getPackageName(), R.layout.profile_list_widget_item);
+		else
+			row=new RemoteViews(context.getPackageName(), R.layout.profile_grid_widget_item);
     
 		Profile profile = getItem(position);
 
@@ -161,10 +164,13 @@ public class ProfileListWidgetFactory implements RemoteViewsService.RemoteViewsF
 		{
 			row.setTextColor(R.id.widget_profile_list_item_profile_name, Color.argb(0xFF, red, green, blue));
 		}
-		if (GlobalData.applicationWidgetListPrefIndicator)
-			row.setImageViewBitmap(R.id.widget_profile_list_profile_pref_indicator, profile._preferencesIndicator);
-		else
-			row.setImageViewResource(R.id.widget_profile_list_profile_pref_indicator, R.drawable.ic_empty);
+		if (!GlobalData.applicationWidgetListGridLayout)
+		{
+			if (GlobalData.applicationWidgetListPrefIndicator)
+				row.setImageViewBitmap(R.id.widget_profile_list_profile_pref_indicator, profile._preferencesIndicator);
+			else
+				row.setImageViewResource(R.id.widget_profile_list_profile_pref_indicator, R.drawable.ic_empty);
+		}
 
 		Intent i=new Intent();
 		Bundle extras=new Bundle();

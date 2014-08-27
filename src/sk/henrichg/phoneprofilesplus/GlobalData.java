@@ -224,6 +224,7 @@ public class GlobalData extends Application {
     public static boolean applicationEventWifiEnableWifi;
     public static String applicationBackgroundProfile;
     public static boolean applicationActivatorGridLayout;
+    public static boolean applicationWidgetListGridLayout;
     
 	public void onCreate()
 	{
@@ -410,6 +411,7 @@ public class GlobalData extends Application {
 	    applicationEventWifiEnableWifi = preferences.getBoolean(PREF_APPLICATION_EVENT_WIFI_ENABLE_WIFI, true);
 	    applicationBackgroundProfile = preferences.getString(PREF_APPLICATION_BACKGROUND_PROFILE, "-999");
 	    applicationActivatorGridLayout = preferences.getBoolean(PREF_APPLICATION_ACTIVATOR_GRID_LAYOUT, false);
+	    applicationWidgetListGridLayout = true;
 	}
 	
 	private static String getVolumeLevelString(int percentage, int maxValue)

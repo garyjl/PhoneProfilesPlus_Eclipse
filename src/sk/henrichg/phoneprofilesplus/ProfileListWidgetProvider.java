@@ -41,13 +41,28 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 		{
 			if (GlobalData.applicationWidgetListHeader)
 			{
-				if (GlobalData.applicationWidgetListPrefIndicator)
-					widget=new RemoteViews(context.getPackageName(), R.layout.profile_list_widget);
+				if (!GlobalData.applicationWidgetListGridLayout)
+				{
+					if (GlobalData.applicationWidgetListPrefIndicator)
+						widget=new RemoteViews(context.getPackageName(), R.layout.profile_list_widget);
+					else
+						widget=new RemoteViews(context.getPackageName(), R.layout.profile_list_widget_no_indicator);
+				}
 				else
-					widget=new RemoteViews(context.getPackageName(), R.layout.profile_list_widget_no_indicator);
+				{
+					if (GlobalData.applicationWidgetListPrefIndicator)
+						widget=new RemoteViews(context.getPackageName(), R.layout.profile_grid_widget);
+					else
+						widget=new RemoteViews(context.getPackageName(), R.layout.profile_grid_widget_no_indicator);
+				}
 			}
 			else
-				widget=new RemoteViews(context.getPackageName(), R.layout.profile_list_widget_no_header);
+			{
+				if (!GlobalData.applicationWidgetListGridLayout)
+					widget=new RemoteViews(context.getPackageName(), R.layout.profile_list_widget_no_header);
+				else
+					widget=new RemoteViews(context.getPackageName(), R.layout.profile_grid_widget_no_header);
+			}
 		}
 		else
 		{
@@ -196,12 +211,18 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
                     									PendingIntent.FLAG_UPDATE_CURRENT);
 			widget.setOnClickPendingIntent(R.id.widget_profile_list_header, pendingIntent);
 
-			widget.setRemoteAdapter(appWidgetId, R.id.widget_profile_list, svcIntent);
+			if (!GlobalData.applicationWidgetListGridLayout)
+				widget.setRemoteAdapter(appWidgetId, R.id.widget_profile_list, svcIntent);
+			else
+				widget.setRemoteAdapter(appWidgetId, R.id.widget_profile_grid, svcIntent);
 			
 			// The empty view is displayed when the collection has no items. 
 	        // It should be in the same layout used to instantiate the RemoteViews
 	        // object above.
-	        widget.setEmptyView(R.id.widget_profile_list, R.id.widget_profiles_list_empty);
+			if (!GlobalData.applicationWidgetListGridLayout)
+				widget.setEmptyView(R.id.widget_profile_list, R.id.widget_profiles_list_empty);
+			else
+				widget.setEmptyView(R.id.widget_profile_grid, R.id.widget_profiles_list_empty);
 			
 			Intent clickIntent=new Intent(context, BackgroundActivateProfileActivity.class);
 			clickIntent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_WIDGET);
@@ -209,7 +230,10 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 			                                            clickIntent,
 			                                            PendingIntent.FLAG_UPDATE_CURRENT);
 			      
-			widget.setPendingIntentTemplate(R.id.widget_profile_list, clickPI);
+			if (!GlobalData.applicationWidgetListGridLayout)
+				widget.setPendingIntentTemplate(R.id.widget_profile_list, clickPI);
+			else
+				widget.setPendingIntentTemplate(R.id.widget_profile_grid, clickPI);
 		}
 		else
 		{
@@ -420,7 +444,12 @@ public class ProfileListWidgetProvider extends AppWidgetProvider {
 
 	    doOnUpdate(context, appWidgetManager, appWidgetId);
 	    if (isLargeLayout)
-	    	appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_profile_list);
+	    {
+			if (!GlobalData.applicationWidgetListGridLayout)
+				appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_profile_list);
+			else
+				appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_profile_grid);
+	    }
 	}	
 	
 	private void updateWidgets(Context context) {
