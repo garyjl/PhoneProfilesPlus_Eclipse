@@ -161,6 +161,10 @@
 		    android:key="applicationWidgetListHeader"
 		    android:title="@string/phone_profiles_pref_applicationHeader"
 		    android:defaultValue="true" />
+		<CheckBoxPreference 
+		    android:key="applicationWidgetListGridLayout"
+		    android:title="@string/phone_profiles_pref_applicationGridLayout"
+		    android:defaultValue="false" />
 		<ListPreference android:title="@string/phone_profiles_pref_applicationWidgetBackground"
 	           android:summary="25%"
 	           android:key="applicationWidgetListBackground"
