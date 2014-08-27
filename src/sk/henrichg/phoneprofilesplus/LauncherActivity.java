@@ -27,6 +27,8 @@ public class LauncherActivity extends Activity {
 		
 		if (!GlobalData.getApplicationStarted(getBaseContext()))
 			GlobalData.grantRoot(true);
+		else
+			GlobalData.grantRoot(false);
 		
 		Profile profile = dataWrapper.getActivatedProfile();
 		
