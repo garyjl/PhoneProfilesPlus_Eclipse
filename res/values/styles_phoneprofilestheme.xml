@@ -64,7 +64,8 @@
 	    <item name="actionEventsRunIcon">@drawable/ic_action_events_run</item>
 	    <item name="actionEventsStopIcon">@drawable/ic_action_events_stop</item>
 	    <item name="actionEventsRestartIcon">@drawable/ic_action_events_restart</item>
-	    	    
+        <item name="actionHelpIcon">@drawable/ic_action_help</item>
+	    	    	    
         <item name="actionModeCloseButtonStyle">@style/NoCloseButton</item>
         <item name="android:actionModeCloseButtonStyle">@style/NoCloseButton</item>
         

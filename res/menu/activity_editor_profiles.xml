@@ -38,9 +38,14 @@
         android:orderInCategory="240"
         android:showAsAction="never"
 	    android:icon="?attr/actionImportExportIcon" />
+	<item android:id="@+id/menu_help"
+        android:title="@string/menu_help"
+        android:orderInCategory="250"
+        henrichg:showAsAction="never"
+	    android:icon="?attr/actionHelpIcon" />    
 	<item android:id="@+id/menu_exit"
         android:title="@string/menu_exit"
-        android:orderInCategory="250"
+        android:orderInCategory="260"
         henrichg:showAsAction="never"
 	    android:icon="?attr/actionExitIcon" />
 </menu>

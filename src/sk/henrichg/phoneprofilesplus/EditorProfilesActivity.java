@@ -21,6 +21,7 @@ import sk.henrichg.phoneprofilesplus.PreferenceListFragment.OnPreferenceAttached
 import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnRedrawProfileListFragment;
 import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnRestartProfilePreferences;
 
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -48,6 +49,7 @@ import android.widget.Toast;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -589,6 +591,16 @@ public class EditorProfilesActivity extends ActionBarActivity
 
 			importData();
 			
+			return true;
+		case R.id.menu_help:
+			try {
+			    Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/henrichg/PhoneProfilesPlus/wiki"));
+			    startActivity(myIntent);
+			} catch (ActivityNotFoundException e) {
+			    //Toast.makeText(this, "No application can handle this request."
+			    //    + " Please install a webbrowser",  Toast.LENGTH_LONG).show();
+			    e.printStackTrace();
+			}			
 			return true;
 		case R.id.menu_exit:
 			//Log.d("EditorProfilesActivity.onOptionsItemSelected", "menu_exit");

@@ -73,5 +73,6 @@
     <attr name="actionEventsRunIcon" format="reference" />
     <attr name="actionEventsStopIcon" format="reference" />
     <attr name="actionEventsRestartIcon" format="reference" />
+    <attr name="actionHelpIcon" format="reference" />
     
 </resources>

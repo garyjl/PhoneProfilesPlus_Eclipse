@@ -375,7 +375,6 @@
 	<string name="phone_profiles_pref_applicationEventBackgroundProfile">Default profile</string>
     <string name="profile_preference_profile_end_no_activate">No activate</string>
     <string name="profile_preference_profile_not_set">Profile not set</string>
-    			
 	<string name="event_type_screen">Screen</string>
 	<string name="pref_event_screen_eventType">Event type</string>
 	<string name="array_event_pref_eventScreenEventType_screenOn">Screen On</string>
@@ -384,13 +383,13 @@
 	<string name="event_preferences_screen_enabled">Enable screen</string>
 	<string name="event_preferences_screen_event_type">Event type</string>
 	<string name="event_preferences_delayStart">Delay (min)</string>
-
     <string name="profile_preferences_duration">Duration (min)</string>
     <string name="profile_preferences_afterDurationDo">After duration do</string>
     <string name="array_pref_afterProfileDurationDo_nothing">Nothing</string>
     <string name="array_pref_afterProfileDurationDo_undoProfile">Undo the profile</string>
     <string name="array_pref_afterProfileDurationDo_backgroundProfile">Activate Default profile</string>
-
     <string name="phone_profiles_pref_applicationGridLayout">Grid layout</string>
+
+    <string name="menu_help">Help</string>
     			
 </resources>
