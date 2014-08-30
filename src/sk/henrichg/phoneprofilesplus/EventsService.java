@@ -158,21 +158,40 @@ public class EventsService extends IntentService
 		}
 
 		// when no events are running, activate background profile
-		if (GlobalData.getGlobalEventsRuning(context) && (!GlobalData.getEventsBlocked(context)))
+		if (GlobalData.getGlobalEventsRuning(context))
 		{
-			List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
-			if (eventTimelineList.size() == 0)
+			if (!GlobalData.getEventsBlocked(context))
 			{
-				long profileId = Long.valueOf(GlobalData.applicationBackgroundProfile); 
-				if (profileId != GlobalData.PROFILE_NO_ACTIVATE)
+				List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
+				if (eventTimelineList.size() == 0)
 				{
-					Profile profile = dataWrapper.getActivatedProfile();
-					long activatedProfileId = 0;
-					if (profile != null)
-						activatedProfileId = profile._id;
-					if (activatedProfileId != profileId)
-						dataWrapper.activateProfileFromEvent(profileId, interactive, "");
+					long profileId = Long.valueOf(GlobalData.applicationBackgroundProfile); 
+					if (profileId != GlobalData.PROFILE_NO_ACTIVATE)
+					{
+						Profile profile = dataWrapper.getActivatedProfile();
+						long activatedProfileId = 0;
+						if (profile != null)
+							activatedProfileId = profile._id;
+						if (activatedProfileId != profileId)
+							dataWrapper.activateProfileFromEvent(profileId, interactive, "");
+					}
+					else
+						dataWrapper.activateProfileFromEvent(0, interactive, "");
 				}
+			}
+			else
+			{
+				Profile profile = dataWrapper.getActivatedProfile();
+				long profileId = 0;
+				if (profile != null)
+					profileId = profile._id;
+				else
+				{
+					profileId = Long.valueOf(GlobalData.applicationBackgroundProfile);
+					if (profileId == GlobalData.PROFILE_NO_ACTIVATE)
+						profileId = 0;
+				}
+				dataWrapper.activateProfileFromEvent(profileId, interactive, "");
 			}
 		}
 		

@@ -922,49 +922,57 @@ public class DataWrapper {
 			// pause all events
 			pauseAllEvents(false, true);
 		}
-		
+			
 		databaseHandler.activateProfile(profile);
 		setProfileActive(profile);
 		
-		activateProfileHelper.execute(profile, interactive, eventNotificationSound);
-		
-		if ((startupSource != GlobalData.STARTUP_SOURCE_SERVICE) && 
-			(startupSource != GlobalData.STARTUP_SOURCE_BOOT) &&
-			(startupSource != GlobalData.STARTUP_SOURCE_LAUNCHER_START))
+		if (profile != null)
 		{
-			// manual profile activation 
-
-			// set profile duration alarm
-			long profileId = 0;
-			if (activatedProfile != null)
-				profileId = activatedProfile._id;
-			GlobalData.setActivatedProfileForDuration(context, profileId);
-			ProfileDurationAlarmBroadcastReceiver.setAlarm(profile, context);
+			activateProfileHelper.execute(profile, interactive, eventNotificationSound);
+			
+			if ((startupSource != GlobalData.STARTUP_SOURCE_SERVICE) && 
+				(startupSource != GlobalData.STARTUP_SOURCE_BOOT) &&
+				(startupSource != GlobalData.STARTUP_SOURCE_LAUNCHER_START))
+			{
+				// manual profile activation 
+	
+				// set profile duration alarm
+				long profileId = 0;
+				if (activatedProfile != null)
+					profileId = activatedProfile._id;
+				GlobalData.setActivatedProfileForDuration(context, profileId);
+				ProfileDurationAlarmBroadcastReceiver.setAlarm(profile, context);
+			}
+			else
+				ProfileDurationAlarmBroadcastReceiver.removeAlarm(context);
 		}
 		else
 			ProfileDurationAlarmBroadcastReceiver.removeAlarm(context);
-		
+
 		activateProfileHelper.showNotification(profile);
 		activateProfileHelper.updateWidget();
 		
-		if (GlobalData.notificationsToast)
-		{	
-			// toast notification
-			//Context _context = activity;
-			//if (_context == null)
-			//	_context = context.getApplicationContext();
-			// create a handler to post messages to the main thread
-			if (toastHandler != null)
-			{
-				final Profile __profile = profile;
-				toastHandler.post(new Runnable() {
-					public void run() {
-						showToastAfterActivation(__profile);
-					}
-				});
+		if (profile != null)
+		{
+			if (GlobalData.notificationsToast)
+			{	
+				// toast notification
+				//Context _context = activity;
+				//if (_context == null)
+				//	_context = context.getApplicationContext();
+				// create a handler to post messages to the main thread
+				if (toastHandler != null)
+				{
+					final Profile __profile = profile;
+					toastHandler.post(new Runnable() {
+						public void run() {
+							showToastAfterActivation(__profile);
+						}
+					});
+				}
+				else
+					showToastAfterActivation(profile);
 			}
-			else
-				showToastAfterActivation(profile);
 		}
 			
 		// for startActivityForResult
