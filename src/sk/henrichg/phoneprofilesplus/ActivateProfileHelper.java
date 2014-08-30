@@ -325,26 +325,46 @@ public class ActivateProfileHelper {
 		switch (profile._volumeRingerMode) {
 		case 1:  // Ring
 			audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-			audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_OFF);
-			audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION, AudioManager.VIBRATE_SETTING_OFF);
+			try
+			{
+				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_OFF);
+				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION, AudioManager.VIBRATE_SETTING_OFF);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} 
 			Settings.System.putInt(context.getContentResolver(), "vibrate_when_ringing", 0);
 			break;
 		case 2:  // Ring & Vibrate
 			audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-			audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_ON);
-			audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION, AudioManager.VIBRATE_SETTING_ON);
+			try
+			{
+				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_ON);
+				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION, AudioManager.VIBRATE_SETTING_ON);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} 
 			Settings.System.putInt(context.getContentResolver(), "vibrate_when_ringing", 1);
 			break;
 		case 3:  // Vibrate
 			audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
-			audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_ON);
-			audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION, AudioManager.VIBRATE_SETTING_ON);
+			try
+			{
+				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_ON);
+				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION, AudioManager.VIBRATE_SETTING_ON);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} 
 			Settings.System.putInt(context.getContentResolver(), "vibrate_when_ringing", 1);
 			break;
 		case 4:  // Silent
 			audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-			audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_OFF);
-			audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION, AudioManager.VIBRATE_SETTING_OFF);
+			try
+			{
+				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_OFF);
+				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION, AudioManager.VIBRATE_SETTING_OFF);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} 
 			Settings.System.putInt(context.getContentResolver(), "vibrate_when_ringing", 0);
 			break;
 		}
