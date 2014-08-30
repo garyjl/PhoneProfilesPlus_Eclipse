@@ -149,6 +149,7 @@ public class PhoneProfilesPreferencesActivity extends ActionBarActivity
 				WifiScanAlarmBroadcastReceiver.setAlarm(getApplicationContext());
 		}
 		
+		/*
 		if (activeBackgroundProfile != GlobalData.applicationBackgroundProfile)
    		{
    			long lApplicationBackgroundProfile = Long.valueOf(GlobalData.applicationBackgroundProfile);
@@ -163,6 +164,7 @@ public class PhoneProfilesPreferencesActivity extends ActionBarActivity
    				//invalidateEditor = true;
    			}
    		}
+   		*/
 		
 		
 		// for startActivityForResult
