@@ -157,14 +157,17 @@ public class EventsService extends IntentService
 			}
 		}
 
-		// when no events are running, activate background profile
 		if (GlobalData.getGlobalEventsRuning(context))
 		{
+			// when no events are running or manula activation, activate background profile
+			// when no profile is activated
 			if (!GlobalData.getEventsBlocked(context))
 			{
+				// no manual profile activation
 				List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
 				if (eventTimelineList.size() == 0)
 				{
+					// no events running
 					long profileId = Long.valueOf(GlobalData.applicationBackgroundProfile); 
 					if (profileId != GlobalData.PROFILE_NO_ACTIVATE)
 					{
@@ -181,17 +184,15 @@ public class EventsService extends IntentService
 			}
 			else
 			{
-				Profile profile = dataWrapper.getActivatedProfile();
-				long profileId = 0;
-				if (profile != null)
-					profileId = profile._id;
-				else
+				// manual profile activation
+				long profileId = Long.valueOf(GlobalData.applicationBackgroundProfile); 
+				if (profileId != GlobalData.PROFILE_NO_ACTIVATE)
 				{
-					profileId = Long.valueOf(GlobalData.applicationBackgroundProfile);
-					if (profileId == GlobalData.PROFILE_NO_ACTIVATE)
-						profileId = 0;
+					Profile profile = dataWrapper.getActivatedProfile();
+					if (profile == null)
+						// if not profile activated, activate Default profile
+						dataWrapper.activateProfileFromEvent(profileId, interactive, "");
 				}
-				dataWrapper.activateProfileFromEvent(profileId, interactive, "");
 			}
 		}
 		

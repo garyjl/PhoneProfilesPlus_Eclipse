@@ -508,9 +508,6 @@ public class Event {
 			// event is not runnable, no pause it
 			return;
 
-		// remove delay alarm
-		removeDelayAlarm(dataWrapper, true); // for start delay
-		
 		if (GlobalData.getEventsBlocked(dataWrapper.context))
 		{
 			// blocked by manual profile activation
@@ -524,6 +521,9 @@ public class Event {
 				// forceRun event is temporary blocked
 				return;
 		}
+
+		// remove delay alarm
+		removeDelayAlarm(dataWrapper, true); // for start delay
 		
 		// search for runing event with higher priority
 		for (EventTimeline eventTimeline : eventTimelineList)
@@ -696,6 +696,18 @@ public class Event {
 		if (!this.isRunnable())
 			// event is not runnable, no pause it
 			return;
+		
+/*		if (GlobalData.getEventsBlocked(dataWrapper.context))
+		{
+			// blocked by manual profile activation
+			GlobalData.logE("Event.pauseEvent","event_id="+this._id+" events blocked");
+
+			
+			if (!_forceRun)
+				// event is not forceRun
+				return;
+		}
+*/
 
 		// unblock temporary paused event
 		dataWrapper.setEventBlocked(this, false);
