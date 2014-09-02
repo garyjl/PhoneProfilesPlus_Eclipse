@@ -654,7 +654,8 @@ public class DataWrapper {
 		{
 			//if (event.getStatusFromDB(this) == Event.ESTATUS_RUNNING)
 			//{
-				event.pauseEvent(this, eventTimelineList, false, true, noSetSystemEvent);
+				if (event.getStatusFromDB(this) != Event.ESTATUS_STOP)
+					event.pauseEvent(this, eventTimelineList, false, true, noSetSystemEvent);
 				if (event._forceRun)
 					setEventBlocked(event, blockEvents);
 			//}
