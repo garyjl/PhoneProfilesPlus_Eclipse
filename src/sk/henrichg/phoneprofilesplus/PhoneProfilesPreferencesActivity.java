@@ -20,7 +20,7 @@ public class PhoneProfilesPreferencesActivity extends ActionBarActivity
 	private String activeLanguage;
 	private String activeTheme;
 	private int wifiScanInterval;
-	private String activeBackgroundProfile;
+	//private String activeBackgroundProfile;
 
 	private boolean invalidateEditor = false;
 	 
