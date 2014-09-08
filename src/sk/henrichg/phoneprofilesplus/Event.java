@@ -638,10 +638,12 @@ public class Event {
 										boolean activateReturnProfile)
 	{
 		
-		// check whether events behind are set _fkProfileEnd or _undoProfile
-		// when true, no activate "end profile"
-		if ((eventPosition < (timeLineSize-1)) && (timeLineSize > 1))
+		if (!(eventPosition == (timeLineSize-1)))
 		{	
+			// event is not in end of timeline
+
+			// check whether events behind have set _fkProfileEnd or _undoProfile
+			// when true, no activate "end profile"
 			/*for (int i = eventPosition; i < (timeLineSize-1); i++)
 			{
 				if (_fkProfileEnd != Event.PROFILE_END_NO_ACTIVATE)
