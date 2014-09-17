@@ -9,6 +9,12 @@ import android.media.AudioManager;
 
 public class PhoneCallBroadcastReceiver extends PhoneCallReceiver {
 
+	private static AudioManager audioManager = null;
+	
+	private static int savedMode = AudioManager.MODE_NORMAL;
+	private static boolean savedSpeakerphone = false;
+	private static boolean speakerphoneSelected = false;
+	
 	public static final String BROADCAST_RECEIVER_TYPE = "phoneCall";
 	
 	public static final int CALL_EVENT_UNDEFINED = 0; 
@@ -58,6 +64,11 @@ public class PhoneCallBroadcastReceiver extends PhoneCallReceiver {
 	
 	private void callStarted(boolean incoming, String phoneNumber)
 	{
+		if (audioManager == null )
+			audioManager = (AudioManager)savedContext.getSystemService(Context.AUDIO_SERVICE);
+
+		savedMode = audioManager.getMode();
+		
 		DataWrapper dataWrapper = new DataWrapper(savedContext, false, false, 0);
 		if (incoming)
 			doCallEvent(CALL_EVENT_INCOMING_CALL_RINGING, phoneNumber, dataWrapper);
@@ -76,17 +87,26 @@ public class PhoneCallBroadcastReceiver extends PhoneCallReceiver {
 			doCallEvent(CALL_EVENT_OUTGOING_CALL_ANSWERED, phoneNumber, dataWrapper);
 		
 		int speakerPhone = dataWrapper.getDatabaseHandler().getActiveProfileSpeakerphone();
+
 		if (speakerPhone != 0)
 		{
+
+			if (audioManager == null )
+				audioManager = (AudioManager)savedContext.getSystemService(Context.AUDIO_SERVICE);
+			
 	        try {
 	            Thread.sleep(500); // Delay 0,5 seconds to handle better turning on loudspeaker
 	        } catch (InterruptedException e) {
 	        }
 		
 	        //Activate loudspeaker
-	        AudioManager audioManager = (AudioManager)savedContext.getSystemService(Context.AUDIO_SERVICE);
 	        audioManager.setMode(AudioManager.MODE_IN_CALL);
+
+	        savedSpeakerphone = audioManager.isSpeakerphoneOn();
 	        audioManager.setSpeakerphoneOn(speakerPhone == 1);
+	        
+	        speakerphoneSelected = true;
+	        
 		}
 		
 		dataWrapper.invalidateDataWrapper();
@@ -95,11 +115,16 @@ public class PhoneCallBroadcastReceiver extends PhoneCallReceiver {
 	private void callEnded(boolean incoming, String phoneNumber)
 	{
     	//Deactivate loudspeaker
-        AudioManager audioManager = (AudioManager)savedContext.getSystemService(Context.AUDIO_SERVICE);
-    	if (audioManager.isSpeakerphoneOn())
+		if (audioManager == null )
+			audioManager = (AudioManager)savedContext.getSystemService(Context.AUDIO_SERVICE);
+		
+    	//if (audioManager.isSpeakerphoneOn())
+       	if (speakerphoneSelected)
     	{
-    	    audioManager.setSpeakerphoneOn(false);
-    		audioManager.setMode(AudioManager.MODE_NORMAL); 
+    	    audioManager.setSpeakerphoneOn(savedSpeakerphone);
+    		audioManager.setMode(savedMode); 
+    		
+    		speakerphoneSelected = false;
         }
     	
 		DataWrapper dataWrapper = new DataWrapper(savedContext, false, false, 0);
@@ -115,16 +140,21 @@ public class PhoneCallBroadcastReceiver extends PhoneCallReceiver {
     	callStarted(true, number);
     }
 
+    protected void onOutgoingCallStarted(String number, Date start)
+    {
+    	//callStarted(false, number);
+    }
+    
     protected void onIncomingCallAnswered(String number, Date start)
     {
     	callAnswered(true, number);
     }
 
-    protected void onOutgoingCallStarted(String number, Date start)
-    {
-    	callStarted(false, number);
-    }
-
+	protected void onOutgoingCallAnswered(String number, Date start)
+	{
+    	callAnswered(false, number);
+	}
+    
     protected void onIncomingCallEnded(String number, Date start, Date end)
     {
     	callEnded(true, number);
@@ -139,5 +169,5 @@ public class PhoneCallBroadcastReceiver extends PhoneCallReceiver {
     {
     	callEnded(true, number);
     }
-    
+
 }

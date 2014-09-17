@@ -1427,7 +1427,7 @@ public class DataWrapper {
 					else
 					if (event._eventPreferencesCall._callEvent == EventPreferencesCall.CALL_EVENT_OUTGOING_CALL_STARTED)
 					{
-						if (callEventType == PhoneCallBroadcastReceiver.CALL_EVENT_OUTGOING_CALL_STARTED)
+						if (callEventType == PhoneCallBroadcastReceiver.CALL_EVENT_OUTGOING_CALL_ANSWERED)
 							eventStart = eventStart && true;
 						else
 							callPassed = false;
