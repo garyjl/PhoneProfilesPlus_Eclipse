@@ -328,6 +328,11 @@ public class ActivateProfileHelper {
 			try
 			{
 				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_OFF);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} 
+			try
+			{
 				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION, AudioManager.VIBRATE_SETTING_OFF);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -339,6 +344,11 @@ public class ActivateProfileHelper {
 			try
 			{
 				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_ON);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} 
+			try
+			{
 				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION, AudioManager.VIBRATE_SETTING_ON);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -350,6 +360,11 @@ public class ActivateProfileHelper {
 			try
 			{
 				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_ON);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} 
+			try
+			{
 				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION, AudioManager.VIBRATE_SETTING_ON);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -361,6 +376,11 @@ public class ActivateProfileHelper {
 			try
 			{
 				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER, AudioManager.VIBRATE_SETTING_OFF);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} 
+			try
+			{
 				audioManager.setVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION, AudioManager.VIBRATE_SETTING_OFF);
 			} catch (Exception e) {
 				e.printStackTrace();
