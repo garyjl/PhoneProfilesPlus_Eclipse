@@ -1,5 +1,7 @@
 package sk.henrichg.phoneprofilesplus;
 
+import java.util.Arrays;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -52,7 +54,7 @@ public class EventPreferencesWifi extends EventPreferences {
 	{
 		this._enabled = preferences.getBoolean(PREF_EVENT_WIFI_ENABLED, false);
 		this._SSID = preferences.getString(PREF_EVENT_WIFI_SSID, "");
-		this._connectionType = Integer.parseInt(preferences.getString(PREF_EVENT_WIFI_CONNECTION_TYPE, "0"));
+		this._connectionType = Integer.parseInt(preferences.getString(PREF_EVENT_WIFI_CONNECTION_TYPE, "1"));
 	}
 	
 	@Override
@@ -65,10 +67,15 @@ public class EventPreferencesWifi extends EventPreferences {
 		else
 		{
 			descr = descr + context.getString(R.string.pref_event_wifi_connectionType);
-			String[] connectionListTypes = context.getResources().getStringArray(R.array.eventWifiConnectionTypeArray);
-			descr = descr + ": " + connectionListTypes[this._connectionType] + "; ";
-			descr = descr + context.getString(R.string.pref_event_wifi_ssid);
-			descr = descr + ": " + this._SSID;
+			String[] connectionListTypeNames = context.getResources().getStringArray(R.array.eventWifiConnectionTypeArray);
+			String[] connectionListTypes = context.getResources().getStringArray(R.array.eventWifiConnectionTypeValues);
+			int index = Arrays.asList(connectionListTypes).indexOf(Integer.toString(this._connectionType));
+			//if (index != -1)
+			//{
+				descr = descr + ": " + connectionListTypeNames[index] + "; ";
+				descr = descr + context.getString(R.string.pref_event_wifi_ssid);
+				descr = descr + ": " + this._SSID;
+			//}
 		}
 		
 		return descr;
