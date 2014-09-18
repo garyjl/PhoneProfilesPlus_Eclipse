@@ -565,7 +565,25 @@ public class Event {
 					// remove event from timeline
 					eventTimelineList.remove(eventTimeline);
 					dataWrapper.getDatabaseHandler().deleteEventTimeline(eventTimeline);
+
+					if (eventPosition < (timeLineSize-1))
+					{
+						if (eventPosition > 0)
+						{
+							EventTimeline _eventTimeline = eventTimelineList.get(eventPosition-1);
+							Event event = dataWrapper.getEventById(_eventTimeline._fkEvent);
+							if (event != null)
+								eventTimelineList.get(eventPosition)._fkProfileEndActivated = event._fkProfileStart;
+							else
+								eventTimelineList.get(eventPosition)._fkProfileEndActivated = 0;
+						}
+						else
+						{
+							eventTimelineList.get(eventPosition)._fkProfileEndActivated = eventTimeline._fkProfileEndActivated;
+						}
+					}
 					
+					/*
 					if ((eventPosition == 0) && (timeLineSize > 1))
 					{
 						// event is in start of timeline
@@ -590,6 +608,7 @@ public class Event {
 						// event is in middle of timeline 
 						// do nothing
 					}
+					*/
 				}
 			}
 	//////////////////////////////////
@@ -736,7 +755,27 @@ public class Event {
 			eventTimelineList.remove(eventTimeline);
 			dataWrapper.getDatabaseHandler().deleteEventTimeline(eventTimeline);
 	
+			if (eventPosition < (timeLineSize-1))
+			{
+				if (eventPosition > 0)
+				{
+					EventTimeline _eventTimeline = eventTimelineList.get(eventPosition-1);
+					Event event = dataWrapper.getEventById(_eventTimeline._fkEvent);
+					if (event != null)
+						eventTimelineList.get(eventPosition)._fkProfileEndActivated = event._fkProfileStart;
+					else
+						eventTimelineList.get(eventPosition)._fkProfileEndActivated = 0;
+				}
+				else
+				{
+					eventTimelineList.get(eventPosition)._fkProfileEndActivated = eventTimeline._fkProfileEndActivated;
+				}
+			}
+
+			doActivateEndProfile(dataWrapper, eventPosition, timeLineSize, 
+									eventTimelineList, eventTimeline, activateReturnProfile);				
 			
+			/*
 			if ((eventPosition == 0) && (timeLineSize > 1))
 			{
 				// event is in start of timeline
@@ -767,6 +806,7 @@ public class Event {
 				doActivateEndProfile(dataWrapper, eventPosition, timeLineSize, 
 									eventTimelineList, eventTimeline, activateReturnProfile);				
 			}
+			*/
 		}
 
 		if (!noSetSystemEvent)

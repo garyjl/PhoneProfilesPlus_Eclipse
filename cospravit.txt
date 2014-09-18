@@ -1,181 +1,56 @@
-Event preferences: WiFi location
-1. parametre:
-	a) SSID
-	b) mod pripojene (pripojene, v blizkosti)
-	a) interval skenovania (minuty) - povolene len pre mod spojenia "v blizkosti"
-	c) skenuj len ak je zanuta WiFi - povolene len pre mod spojenia "v blizkosti" 
-1.1 ukoncenie eventu bude na:
-    - opustenie SSID (mod pripojenia "v blizkosti"
-    - odpojenie od SSID (mod pripojenia "pripojene")
-2. bude sa dat povolit, len ak device ma Wifi
-3. mod spojenia "pripojene"
-3.1. nakonfigurovat receiever - do ReceiversService
+Start eventu:
+1. ak je uz event v timeline, cize uz bezi
+   - odmaze sa - toto zaisti, ze ak event znovaspustim (co je dovolene), tak mevzniknnu duplikaty eventu v timeline
+   - ak je event prvy v timeline
+     - TOTO JE CELE ZLE
+	   - poposuvaju sa _fkProfileEndActivated po timeline smerom k prvemu (???)
+	   - po poposuvani ma prvy event v timeline _fkProfileEndActivated nastaveny na _fkProfileStart vymazaneho eventu
+	     takze treba nastavit fkProfileEndActivated na _fkProfileEndActivated vymazaneho eventu
+     - MA SA SPRAVIT
+       - nic neposuvame, len updatneme end profile prveho na ten, co ho mal ten odmazany 
+   - ak je event v strede timeline - TOTO JE NOVE
+     - nic neposuvame, len updatneme end profile toho co bol za vymazanym na start profil eventu pred nim 
+   - ak je event na konci timeline
+     - netreba robit nic
+2. ak je prvy v timeline
+   - do timeline sa da do _fkProfileEndActivated prave aktivovany profil
+2. ak uz v timeline nieco je
+   - do timeline sa da do _fkProfileEndActivated _fkProfileStart posledneho eventu v timeline
+3. event sa proda na koniec timeline
 
-		IntentFilter intentFilter = new IntentFilter();
-		intentFilter.addAction(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
-		registerReceiver(broadcastReceiver, intentFilter);
-		
-3.2. v receiveri:
+End eventu:
+1. ak je uz event v timeline, cize uz bezi, odmaze sa 
+   - ak je event prvy v timeline
+     - TOTO JE CELE ZLE
+	   - poposuvaju sa _fkProfileEndActivated po timeline smerom k prvemu (???)
+	   - po poposuvani ma prvy event v timeline _fkProfileEndActivated nastaveny na _fkProfileStart vymazaneho eventu
+	     takze treba nastavit fkProfileEndActivated na _fkProfileEndActivated vymazaneho eventu
+     - MA SA SPRAVIT
+       - nic neposuvame, len updatneme end profile prveho na ten, co ho mal ten odmazany 
+   - ak je event v strede timeline - TOTO JE NOVE
+     - nic neposuvame, len updatneme end profile toho co bol za vymazanym na start profil eventu pred nim 
+   - ak je event na konci timeline
+     - netreba robit nic
+2. aktivujeme _fkProfileEndActivated eventu, co skoncil, ale len ak je na konci timeline
 
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			SupplicantState supState;
-	        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-	        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-	        supState = wifiInfo.getSupplicantState();	
-	        
-	        if (supState.equals(SupplicantState.COMPLETED)) {
-	            //logger.d("wifi enabled and connected");
-	        } else {
-	            if (supState.equals(SupplicantState.SCANNING)) {
-	                //logger.d("wifi scanning");
-	            } else if (supState.equals(SupplicantState.DISCONNECTED)) {
-	                //logger.d("wifi disonnected");
-	            } else {
-	                //logger.d("wifi connecting");
-	            }
-	        }
-		}
-				   
-4. mod spojenia "v blizkosti"
-4.1. alarm na interval skenovania
-    a) zapne sa v DataWrapper.firstStartEvents() ak ma device Wifi
-       - asi by sa mal zapnut len ak je daky event s "wifi location" povoleny
-       - cize by ho mal zapnut samotny class EventPreferences na status start/pause a vypnut na status stop
-       - teda ako kedysi battery preferences 
-    b) vypne sa v EditorProfilesActivity.onOptionsItemSelected() na R.id.menu_exit
-4.2. v ReceiversService
-        - static WifiManager wifi;
-        - metoda, co vratit wifi, ak nie je inicializovana tak:
-			wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-      	- receiver = new WiFiScanReceiver(this);
-	    - registerReceiver(receiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
-4.3. v receiveri intervalu skenovania (AlarmManager):
-    a) testne sa, ci uz sa skenuje
-    b) ak sa neskenuje:
-    	ba) zapne sa wifi ak je vypnuta - odpamata sa, ze sa wifi zapla
-    	bb) zavolat staticku metodu z ReceiversService, co vrati wifi
-	    bc) spusti sa skenovanie:
-	    	// 1. zapiseme, ze sa spustil scan
-	    	// 2. spustime scan:      
-	      	wifi.startScan();
-4.4. WifiScanReceiver:
-      public class WiFiScanReceiver extends BroadcastReceiver
-      {
-          ReceiversService receiversService;
 
-	      public WiFiScanReceiver(ReceiversService receiversService)
-	      {
-	          super();
-	          this.receiversService = receiversService;
-	      }
-	
-	      @Override
-	      public void onReceive(Context c, Intent intent)
-	      {
-	          List<ScanResult> results = receiversService.wifi.getScanResults();
+--------------------------------------------------------------------------
 
-			  // 1. vypne sa wifi, ak sa pri starte skenovania zapinala	  
+Vymazavanie eventu z timeline:
 
-			  // 2. zapiseme najdene SSID do shared preferences ako retazec SSID oddelenych |	          		
-	          for (ScanResult result : results)
-	          {
-	          		// result.SSID = najdene SSID
-	          }
-			
-			  // 3. standardnym sposobom zavolame EventsService
-			  // 4. zapiseme, ze uz je doskenovane	          
-	          
-	      }
-      } 
-4.5. zanutie/vypnutie wifi
-   a) ak ma airplane mode zapnuty, brat event preference ako nezaskrtnute
-   b) ak ma vypnutu wifi, zapnut ju a potom vypnut
-- kukni WifiManager.isScanAlwaysAvailable() (API 18) - toto by mohlo scanovat aj ked wifi nie je zanuta
-
-5. Ak nema zapnute WiFi:
-   a) skontrolovat, ci ma airplane mode - ak ma, nerobit nic
-   b) ak nema a nema zapnute wifi - zapnut
-   c) ci zapnut wifi dat ako preference aplikacie
-   d) ak ma zapnute zapinanie v preferences:
-      - spravit do WifiScanAlarmBroadcastReceiver metodu na zapinanie wifi
-      - dat to do WifiScanAlarmBroadcastReceiver.setAlarm()  
-      - kuknut, ci ma dake eventy s wifi
-      - ak nema wifi zapnutu, zapnut
-      - do EventPreferencesWifi.setSystemPauseEvent a setSystemRunningEvent pridat
-        pre connectionType = CTYPE_CONNECTED
-        
-------------------------------------------
-
-Ako ukoncovat udalosti, ak sa prekryvaju:
-- Problem je, ze ak skonci skor udalost, ktora nie je posledna v timeline, nenaaktivuje sa jej "end profile".
-- Predpoklada sa totiz, ze udalost, ktora je na konci timeline stale trva, takze sa nema preco
-  aktivovat "end profile" pre udalost, ktora je nad nou.
-- Cize ak je v timeline poradie udalosti:
-  1. V OSK
-  2. V OSK v kancli
-  A prva skonci "V OSK", tak sa neaktivuje profil "Vonku". Potom skonci udalost "V OSK v kancli",
-  ale ta nema "end profile" nastaveny. Takze zostane nastaveny profil "Praca".
-- TOTO JE ZLE !!!! Co tak spravit to, ze ak ziadna udalost za tou, co sa ukoncuje ma nastaveny "end profile" na "None" a
-  aj "undo profile" nezaskrtnuty, tak sa spravi "end profile" udalost, ktora sa prave ukoncuje.
-       
--------------------------------------------
-
-Background profile
-- restart events terazfunguje takto:
-1. natvrdo zapuzovat vsetko - nastavovat system event, pauzovat natvrdo, aj ked je zapauzovany
-2. spustat eventy v poradi podla timeline
-3. spustit, co este nie je spustene
-- Problem je, ze ak je v timeline daky event s vyssou prioritou, nestartne sa novy (pridany) event s nizsou.
-- Ide mi o tzv.: background event, ktory by bezal, ak ziaden event nebezi.
-- Moj aj Fabianov navrh je, pridat moznost si nastavit background profile.
-- Cize ak skonci posledny event, spravi sa jeho "end activation" a potom sa aktivuje background profile.
-- Na to uz peeference mam, cize ho len pridam do application preferences, bude tam noznost aj "Neaktivovat".
-- LauncherActivity - tu riesim aktivaciu profilu pri starte. Aktivuje profil, ktory je v db nastavena ako aktivovany.
-  - toto je ale dost kontroverzna funkcia, lebo sa tu netestuje, ci uz je daky profil aktivovany cez firstStartEvents().
-  - sposobi to, ze sa zbytocne profil aktivuje, lebo aj tak sa prepise spustenym eventom cez firstStartEvents().
-  - cize toto vyhodit, je to uplne zbytocne.
-- Background profile akativovat: v EventsService, ak ziadny event sa nenastartuje.
-- Treba vyriesit, ze ak uzivatel background profile vymaze, musi sa preferences nastavit na -999.   
-
--------------------------------------------------      
-Screen event preferences
-- je tam parameter_delay
-- v EventsService testovat broadcastReceiverType
-- ak to bude ScreenOnOffBroadcastReceiver.BROADCAST_RECEIVER_TYPE, prechadzat eventy
-  a na screen preferences enabled vytvorit alarm a ukoncit service.
-- podobne ako je to pre broadcastReceiverType 
-  CalendarProviderChangedBroadcastReceiver.BROADCAST_RECEIVER_TYPE 
-- Nezabudnut volat doEndService(intent); a dataWrapper.invalidateDataWrapper();
-- alarm rusit, ak sa event zapauzuje
-                
-----------------------------------------------
-Event start delay
-- pozdrzanie spustenie o cas v minutach
-- Do doEventService() to spravit
-  - pre statePause == false 
-	  1. nove event preference - boolean isInDelay - urcuje, ci je event v delay
-	  2. nove event preference - int delayMinutes - ucuje cas (v minutach) pozdrzania startu eventu
-	  3. Ak vsetky event preferences budu passed a isInDelay je false, nastavi sa na true a 
-	     vytvori sa alarm s casom sysdate+delayMinutes
-	  4. Ak nie su vsetky event preferences passed a isInDelay je true, nastavi sa na false a 
-	     zrusi sa alarm
-	  3. Ak vsetky event preferences budu passed a isInDelay je true, nerobi sa nic, cize caka sa
-	     na alarm
-	  5. Ak pride alarm na delay, vykona sa normalny start eventu
-  pre statePause == true
-      1. zrusit alarm
-- Podmienkou je, aby doEventService() vedelo, ci receiver je z alarmu. Cize dat to ako parameter.  
-- Mozeme potom spravit novy indikator spustenia - ak bude event v delay, dat pause indikator
-  oranzovy.
-
--------------------------
-kazde 4 sekundy sa vola restartEvents
-Kedy je volany:
-- rucny restart eventov (tl. v Aktivatore a Editore)
-- povolenie/zakazanie eventu v Editore
-- vymazanie eventu
-- editovanie eventu
-- import dat
-  
+P0  - E1 P1 P0, E2 P2 P1, E3 P3 P2, E4 P4 P3
+P0  -           E2 P2 P1, E3 P3 P2, E4 P4 P3
+-------------------------------------------- 
+P0  -           E2 P2 P0, E3 P3 P2, E4 P4 P3 - nic neposuvame, len updatneme end profile prveho na ten, co ho mal ten odmazany
+P0  -           E2 P2 P0, E3 P3 P1, E4 P4 P2 - po starom, cele zle!!!
+============================================
+P0  - E1 P1 P0, E2 P2 P1, E3 P3 P2, E4 P4 P3
+P0  - E1 P1 P0,         , E3 P3 P2, E4 P4 P3
+--------------------------------------------
+P0  - E1 P1 P0,         , E3 P3 P1, E4 P4 P3 - nic neposuvame, len updatneme end profile toho co bol za vymazanym na start profil eventu pred nim
+============================================
+P0  - E1 P1 P0, E2 P2 P1, E3 P3 P2, E4 P4 P3
+P0  - E1 P1 P0, E2 P2 P1, E3 P3 P2,         
+--------------------------------------------
+P0  - E1 P1 P0, E2 P2 P1, E3 P3 P2,          - nic nerobime
 
