@@ -70,12 +70,9 @@ public class EventPreferencesWifi extends EventPreferences {
 			String[] connectionListTypeNames = context.getResources().getStringArray(R.array.eventWifiConnectionTypeArray);
 			String[] connectionListTypes = context.getResources().getStringArray(R.array.eventWifiConnectionTypeValues);
 			int index = Arrays.asList(connectionListTypes).indexOf(Integer.toString(this._connectionType));
-			//if (index != -1)
-			//{
-				descr = descr + ": " + connectionListTypeNames[index] + "; ";
-				descr = descr + context.getString(R.string.pref_event_wifi_ssid);
-				descr = descr + ": " + this._SSID;
-			//}
+			descr = descr + ": " + connectionListTypeNames[index] + "; ";
+			descr = descr + context.getString(R.string.pref_event_wifi_ssid);
+			descr = descr + ": " + this._SSID;
 		}
 		
 		return descr;

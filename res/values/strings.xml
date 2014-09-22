@@ -377,8 +377,6 @@
     <string name="profile_preference_profile_not_set">Profile not set</string>
 	<string name="event_type_screen">Screen</string>
 	<string name="pref_event_screen_eventType">Event type</string>
-	<string name="array_event_pref_eventScreenEventType_screenOn">Screen On</string>
-	<string name="array_event_pref_eventScreenEventType_screenOff">Screen Off</string>
 	<string name="event_preferences_category_eventScreenParameters">Screen parameters</string>
 	<string name="event_preferences_screen_enabled">Enable screen</string>
 	<string name="event_preferences_screen_event_type">Event type</string>
@@ -391,5 +389,11 @@
     <string name="phone_profiles_pref_applicationGridLayout">Grid layout</string>
 
     <string name="menu_help">Help</string>
-    			
+
+	<string name="array_event_pref_eventScreenEventType_screenOn">Screen On</string>
+	<string name="array_event_pref_eventScreenEventType_screenOff">Screen Off</string>
+    <string name="array_event_pref_eventScreenEventType_whenUnlocked">End when unlocked</string>
+    <string name="pref_event_screen_whenUnlocked">End when unlocked</string>
+    <string name="event_preferences_screen_when_unlocked">End when unlocked</string>
+    				
 </resources>

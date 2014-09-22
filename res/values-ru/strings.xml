@@ -375,22 +375,20 @@
 	<string name="phone_profiles_pref_applicationEventBackgroundProfile">Профиль по умолчанию</string>
     <string name="profile_preference_profile_end_no_activate">Не активируй</string>
     <string name="profile_preference_profile_not_set">Профиль не выбран</string>
-
 	<string name="event_type_screen">Экран</string>
 	<string name="pref_event_screen_eventType">Тип события</string>
-	<string name="array_event_pref_eventScreenEventType_screenOn">Включение</string>
-	<string name="array_event_pref_eventScreenEventType_screenOff">Выключение</string>
 	<string name="event_preferences_category_eventScreenParameters">Параметры экрана</string>
 	<string name="event_preferences_screen_enabled">Активировать</string>
 	<string name="event_preferences_screen_event_type">Тип события</string>
 	<string name="event_preferences_delayStart">задержка (минут)</string>
-
     <string name="profile_preferences_duration">Продолжительность (минут)</string>
     <string name="profile_preferences_afterDurationDo">После продолжительности сделать</string>
     <string name="array_pref_afterProfileDurationDo_nothing">Ничего</string>
     <string name="array_pref_afterProfileDurationDo_undoProfile">Аннулировать профиль</string>
     <string name="array_pref_afterProfileDurationDo_backgroundProfile">Активировать профиль по умолчанию</string>
-
     <string name="phone_profiles_pref_applicationGridLayout">Компоновка-сетка</string>
-    				
+
+	<string name="array_event_pref_eventScreenEventType_screenOn">Включение</string>
+	<string name="array_event_pref_eventScreenEventType_screenOff">Выключение</string>
+					
 </resources>

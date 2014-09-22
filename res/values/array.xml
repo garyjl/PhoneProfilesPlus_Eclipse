@@ -447,12 +447,12 @@
     <item>0</item>
 </string-array>
 <string-array name="eventScreenEventTypeArray">
-	<item>@string/array_event_pref_eventScreenEventType_screenOn</item>    
 	<item>@string/array_event_pref_eventScreenEventType_screenOff</item>    
+   	<item>@string/array_event_pref_eventScreenEventType_screenOn</item>    
 </string-array>
 <string-array name="eventScreenEventTypeValues">
-    <item>0</item>
     <item>1</item>
+    <item>0</item>
 </string-array>
 <string-array name="afterProfileDurationDoArray">
 	<item>@string/array_pref_afterProfileDurationDo_nothing</item>

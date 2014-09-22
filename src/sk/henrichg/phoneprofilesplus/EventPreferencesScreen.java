@@ -1,28 +1,37 @@
 package sk.henrichg.phoneprofilesplus;
 
+import java.util.Arrays;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
+import android.preference.Preference;
 import android.preference.PreferenceManager;
+import android.preference.Preference.OnPreferenceChangeListener;
 
 public class EventPreferencesScreen extends EventPreferences {
 
 	public int _eventType;
+	public boolean _whenUnlocked;
 	
 	public static final int ETYPE_SCREENON = 0;
 	public static final int ETYPE_SCREENOFF = 1;
 	
 	static final String PREF_EVENT_SCREEN_ENABLED = "eventScreenEnabled";
 	static final String PREF_EVENT_SCREEN_EVENT_TYPE = "eventScreenEventType";
+	static final String PREF_EVENT_SCREEN_WHEN_UNLOCKED = "eventScreenWhenUnlocked";
 	
 	public EventPreferencesScreen(Event event, 
 									boolean enabled,
-									int eventType)
+									int eventType,
+									boolean whenUnlocked)
 	{
 		super(event, enabled);
 	
 		this._eventType = eventType;
+		this._whenUnlocked = whenUnlocked;
 	}
 	
 	@Override
@@ -30,6 +39,7 @@ public class EventPreferencesScreen extends EventPreferences {
 	{
 		this._enabled = ((EventPreferencesScreen)fromEvent._eventPreferencesScreen)._enabled;
 		this._eventType = ((EventPreferencesScreen)fromEvent._eventPreferencesScreen)._eventType;
+		this._whenUnlocked = ((EventPreferencesScreen)fromEvent._eventPreferencesScreen)._whenUnlocked;
 	}
 	
 	@Override
@@ -38,6 +48,7 @@ public class EventPreferencesScreen extends EventPreferences {
 		Editor editor = preferences.edit();
         editor.putBoolean(PREF_EVENT_SCREEN_ENABLED, _enabled);
 		editor.putString(PREF_EVENT_SCREEN_EVENT_TYPE, String.valueOf(this._eventType));
+        editor.putBoolean(PREF_EVENT_SCREEN_WHEN_UNLOCKED, _whenUnlocked);
 		editor.commit();
 	}
 	
@@ -45,7 +56,8 @@ public class EventPreferencesScreen extends EventPreferences {
 	public void saveSharedPrefereces(SharedPreferences preferences)
 	{
 		this._enabled = preferences.getBoolean(PREF_EVENT_SCREEN_ENABLED, false);
-		this._eventType = Integer.parseInt(preferences.getString(PREF_EVENT_SCREEN_EVENT_TYPE, "0"));
+		this._eventType = Integer.parseInt(preferences.getString(PREF_EVENT_SCREEN_EVENT_TYPE, "1"));
+		this._whenUnlocked = preferences.getBoolean(PREF_EVENT_SCREEN_WHEN_UNLOCKED, false);
 	}
 	
 	@Override
@@ -57,8 +69,12 @@ public class EventPreferencesScreen extends EventPreferences {
 			descr = descr + context.getString(R.string.event_preferences_not_enabled);
 		else
 		{
-			String[] eventListTypes = context.getResources().getStringArray(R.array.eventScreenEventTypeArray);
-			descr = descr + eventListTypes[this._eventType];
+			String[] eventListTypeNames = context.getResources().getStringArray(R.array.eventScreenEventTypeArray);
+			String[] eventListTypes = context.getResources().getStringArray(R.array.eventScreenEventTypeValues);
+			int index = Arrays.asList(eventListTypes).indexOf(Integer.toString(this._eventType));
+			descr = descr + eventListTypeNames[index];
+			if ((this._eventType == 1) && (this._whenUnlocked))
+				descr = descr + "; " + context.getString(R.string.pref_event_screen_whenUnlocked); 
 		}
 		
 		return descr;
@@ -89,6 +105,46 @@ public class EventPreferencesScreen extends EventPreferences {
 	public void setAllSummary(PreferenceManager prefMng, Context context)
 	{
 		setSummary(prefMng, PREF_EVENT_SCREEN_EVENT_TYPE, Integer.toString(_eventType), context);
+		
+		setWhenUnlockedEnabled(prefMng, _eventType);
+	}
+	
+	@Override
+	public void checkPreferences(PreferenceManager prefMng, Context context)
+	{
+		final Preference eventTypePreference = prefMng.findPreference(PREF_EVENT_SCREEN_EVENT_TYPE);
+		final PreferenceManager _prefMng = prefMng;
+		
+		eventTypePreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                String sNewValue = (String)newValue;
+                int iNewValue;
+                if (sNewValue.isEmpty())
+                	iNewValue = 100;
+                else
+                	iNewValue = Integer.parseInt(sNewValue);
+                
+                //Log.e("EventPreferencesScreen.checkPreferences.whenUnlockedPreference","iNewValue="+iNewValue);
+                
+                setWhenUnlockedEnabled(_prefMng, iNewValue);
+                
+                return true;
+            }
+        });
+	}
+	
+	private void setWhenUnlockedEnabled(PreferenceManager prefMng, int value)
+	{
+		final CheckBoxPreference whenUnlockedPreference = (CheckBoxPreference)prefMng.findPreference(PREF_EVENT_SCREEN_WHEN_UNLOCKED);
+
+		whenUnlockedPreference.setEnabled(value == 1);
+
+		if (value == 0)
+		{
+			whenUnlockedPreference.setChecked(false);
+		}
+		
 	}
 	
 	@Override

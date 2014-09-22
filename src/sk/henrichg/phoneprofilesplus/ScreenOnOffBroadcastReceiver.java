@@ -26,6 +26,9 @@ public class ScreenOnOffBroadcastReceiver extends WakefulBroadcastReceiver {
 			else
 			if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF))
 				GlobalData.logE("@@@ ScreenOnOffBroadcastReceiver.onReceive","screen off");
+			else
+			if (intent.getAction().equals(Intent.ACTION_USER_PRESENT))
+				GlobalData.logE("@@@ ScreenOnOffBroadcastReceiver.onReceive","screen unlock");
 
 			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
 			

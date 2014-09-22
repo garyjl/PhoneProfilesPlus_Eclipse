@@ -371,22 +371,20 @@
 	<string name="phone_profiles_pref_applicationEventBackgroundProfile">Predvolený profil</string>
     <string name="profile_preference_profile_end_no_activate">Neaktivovať</string>
     <string name="profile_preference_profile_not_set">Nevybraný žiadny profil</string>
-
 	<string name="event_type_screen">Obrazovka</string>
 	<string name="pref_event_screen_eventType">Typ udalosti</string>
-	<string name="array_event_pref_eventScreenEventType_screenOn">Zapnutá</string>
-	<string name="array_event_pref_eventScreenEventType_screenOff">Vypnutá</string>
 	<string name="event_preferences_category_eventScreenParameters">Parametre obrazovky</string>
 	<string name="event_preferences_screen_enabled">Použi obrazovku</string>
 	<string name="event_preferences_screen_event_type">Typ udalosti</string>
 	<string name="event_preferences_delayStart">Pozdržanie (min.)</string>
-
     <string name="profile_preferences_duration">Trvanie (min.)</string>
     <string name="profile_preferences_afterDurationDo">Po uplynutí trvania urob</string>
     <string name="array_pref_afterProfileDurationDo_nothing">Nič</string>
     <string name="array_pref_afterProfileDurationDo_undoProfile">Vráť späť profil</string>
     <string name="array_pref_afterProfileDurationDo_backgroundProfile">Aktivuj predvolený profil</string>
-			
     <string name="phone_profiles_pref_applicationGridLayout">Mriežkové rozloženie</string>
+
+    <string name="array_event_pref_eventScreenEventType_screenOn">Zapla sa</string>
+	<string name="array_event_pref_eventScreenEventType_screenOff">Vypla sa</string>
     				
 </resources>

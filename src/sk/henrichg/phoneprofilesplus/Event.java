@@ -181,7 +181,7 @@ public class Event {
 
 	private void createEventPreferencesScreen()
 	{
-       	this._eventPreferencesScreen = new EventPreferencesScreen(this, false, 0);
+       	this._eventPreferencesScreen = new EventPreferencesScreen(this, false, 1, false);
 	}
 	
 	public void createEventPreferences()

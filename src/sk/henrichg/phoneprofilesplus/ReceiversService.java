@@ -42,6 +42,7 @@ public class ReceiversService extends Service {
 		IntentFilter intentFilter5 = new IntentFilter();
 		intentFilter5.addAction(Intent.ACTION_SCREEN_ON);
 		intentFilter5.addAction(Intent.ACTION_SCREEN_OFF);
+		intentFilter5.addAction(Intent.ACTION_USER_PRESENT);
 		registerReceiver(screenOnOffReceiver, intentFilter5);
 		
 		// receivers for system date and time change

@@ -225,5 +225,9 @@
             android:entries="@array/eventScreenEventTypeArray"
             android:entryValues="@array/eventScreenEventTypeValues"
             android:dependency="eventScreenEnabled" />        
+		<CheckBoxPreference 
+		    android:key="eventScreenWhenUnlocked"
+		    android:title="@string/event_preferences_screen_when_unlocked"
+		    android:defaultValue="false" />
 	</PreferenceCategory>
 </PreferenceScreen>    
