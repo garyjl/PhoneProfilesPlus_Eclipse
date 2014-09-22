@@ -1323,30 +1323,32 @@ public class DataWrapper {
 				int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
 				int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
 				batteryPct = level / (float)scale;	
+
+				GlobalData.logE("DataWrapper.doEventService","batteryPct="+batteryPct);
+
+				batteryPassed = (isCharging == event._eventPreferencesBattery._charging);
+
+				if (batteryPassed)
+				{
+					if ((batteryPct >= (event._eventPreferencesBattery._levelLow / (float)100)) && 
+					    (batteryPct <= (event._eventPreferencesBattery._levelHight / (float)100))) 
+					{
+						eventStart = eventStart && true;
+					}
+					else
+					{
+						batteryPassed = false;
+						eventStart = eventStart && false;
+					}
+				}
 			}
 			else
 			{
+				batteryPassed = false;
 				isCharging = false;
 				batteryPct = -1.0f;
 			}
 			
-			GlobalData.logE("DataWrapper.doEventService","batteryPct="+batteryPct);
-
-			batteryPassed = (isCharging == event._eventPreferencesBattery._charging);
-			
-			if (batteryPassed)
-			{
-				if ((batteryPct >= (event._eventPreferencesBattery._levelLow / (float)100)) && 
-				    (batteryPct <= (event._eventPreferencesBattery._levelHight / (float)100))) 
-				{
-					eventStart = eventStart && true;
-				}
-				else
-				{
-					batteryPassed = false;
-					eventStart = eventStart && false;
-				}
-			}
 		}
 
 		if (event._eventPreferencesCall._enabled)

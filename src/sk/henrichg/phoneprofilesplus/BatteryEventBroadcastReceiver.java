@@ -27,36 +27,40 @@ public class BatteryEventBroadcastReceiver extends WakefulBroadcastReceiver {
 		{
 			int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
 			GlobalData.logE("BatteryEventBroadcastReceiver.onReceive","status="+status);
-			boolean _isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
-			                     status == BatteryManager.BATTERY_STATUS_FULL;
-			GlobalData.logE("BatteryEventBroadcastReceiver.onReceive","isCharging="+isCharging);
 			
-			int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-			//int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-			
-			if ((isCharging != _isCharging) || (batteryLevel != level))
+			if (status != -1)
 			{
-				GlobalData.logE("@@@ BatteryEventBroadcastReceiver.onReceive","xxx");
-
-				GlobalData.logE("BatteryEventBroadcastReceiver.onReceive","state changed");
-				GlobalData.logE("BatteryEventBroadcastReceiver.onReceive","batteryLevel="+batteryLevel);
-				GlobalData.logE("BatteryEventBroadcastReceiver.onReceive","level="+level);
+				boolean _isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
+				                     status == BatteryManager.BATTERY_STATUS_FULL;
 				GlobalData.logE("BatteryEventBroadcastReceiver.onReceive","isCharging="+isCharging);
-				GlobalData.logE("BatteryEventBroadcastReceiver.onReceive","_isCharging="+_isCharging);
 				
-				isCharging = _isCharging;
-				batteryLevel = level;
+				int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+				//int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
 				
-				DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
-				batteryEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_BATTERY) > 0;
-				dataWrapper.invalidateDataWrapper();
-	
-				if (batteryEventsExists)
+				if ((isCharging != _isCharging) || (batteryLevel != level))
 				{
-					// start service
-					Intent eventsServiceIntent = new Intent(context, EventsService.class);
-					eventsServiceIntent.putExtra(GlobalData.EXTRA_BROADCAST_RECEIVER_TYPE, BROADCAST_RECEIVER_TYPE);
-					startWakefulService(context, eventsServiceIntent);
+					GlobalData.logE("@@@ BatteryEventBroadcastReceiver.onReceive","xxx");
+	
+					GlobalData.logE("BatteryEventBroadcastReceiver.onReceive","state changed");
+					GlobalData.logE("BatteryEventBroadcastReceiver.onReceive","batteryLevel="+batteryLevel);
+					GlobalData.logE("BatteryEventBroadcastReceiver.onReceive","level="+level);
+					GlobalData.logE("BatteryEventBroadcastReceiver.onReceive","isCharging="+isCharging);
+					GlobalData.logE("BatteryEventBroadcastReceiver.onReceive","_isCharging="+_isCharging);
+					
+					isCharging = _isCharging;
+					batteryLevel = level;
+					
+					DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
+					batteryEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_BATTERY) > 0;
+					dataWrapper.invalidateDataWrapper();
+		
+					if (batteryEventsExists)
+					{
+						// start service
+						Intent eventsServiceIntent = new Intent(context, EventsService.class);
+						eventsServiceIntent.putExtra(GlobalData.EXTRA_BROADCAST_RECEIVER_TYPE, BROADCAST_RECEIVER_TYPE);
+						startWakefulService(context, eventsServiceIntent);
+					}
 				}
 			}
 		}
