@@ -73,8 +73,13 @@ public class EventPreferencesScreen extends EventPreferences {
 			String[] eventListTypes = context.getResources().getStringArray(R.array.eventScreenEventTypeValues);
 			int index = Arrays.asList(eventListTypes).indexOf(Integer.toString(this._eventType));
 			descr = descr + eventListTypeNames[index];
-			if ((this._eventType == 1) && (this._whenUnlocked))
-				descr = descr + "; " + context.getString(R.string.pref_event_screen_whenUnlocked); 
+			if (this._whenUnlocked)
+			{
+				if (this._eventType == 0)
+					descr = descr + "; " + context.getString(R.string.pref_event_screen_startWhenUnlocked);
+				else
+					descr = descr + "; " + context.getString(R.string.pref_event_screen_endWhenUnlocked);
+			}
 		}
 		
 		return descr;
@@ -106,7 +111,7 @@ public class EventPreferencesScreen extends EventPreferences {
 	{
 		setSummary(prefMng, PREF_EVENT_SCREEN_EVENT_TYPE, Integer.toString(_eventType), context);
 		
-		setWhenUnlockedEnabled(prefMng, _eventType);
+		setWhenUnlockedTitle(prefMng, _eventType);
 	}
 	
 	@Override
@@ -127,24 +132,21 @@ public class EventPreferencesScreen extends EventPreferences {
                 
                 //Log.e("EventPreferencesScreen.checkPreferences.whenUnlockedPreference","iNewValue="+iNewValue);
                 
-                setWhenUnlockedEnabled(_prefMng, iNewValue);
+                setWhenUnlockedTitle(_prefMng, iNewValue);
                 
                 return true;
             }
         });
 	}
 	
-	private void setWhenUnlockedEnabled(PreferenceManager prefMng, int value)
+	private void setWhenUnlockedTitle(PreferenceManager prefMng, int value)
 	{
 		final CheckBoxPreference whenUnlockedPreference = (CheckBoxPreference)prefMng.findPreference(PREF_EVENT_SCREEN_WHEN_UNLOCKED);
 
-		whenUnlockedPreference.setEnabled(value == 1);
-
 		if (value == 0)
-		{
-			whenUnlockedPreference.setChecked(false);
-		}
-		
+			whenUnlockedPreference.setTitle(R.string.event_preferences_screen_start_when_unlocked);
+		else
+			whenUnlockedPreference.setTitle(R.string.event_preferences_screen_end_when_unlocked);
 	}
 	
 	@Override

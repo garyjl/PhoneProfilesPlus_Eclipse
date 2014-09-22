@@ -1638,26 +1638,28 @@ public class DataWrapper {
 			
 			PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
 			boolean isScreenOn = pm.isScreenOn();
+			boolean keyguardShowing = false;
+
+			if (event._eventPreferencesScreen._whenUnlocked)
+			{
+				KeyguardManager kgMgr = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+				keyguardShowing = kgMgr.inKeyguardRestrictedInputMode();
+				Log.e("DataWrapper.doEventService", "keyguardShowing="+keyguardShowing);
+			}
 			
 			if (event._eventPreferencesScreen._eventType == EventPreferencesScreen.ETYPE_SCREENON)
 			{
-				screenPassed = isScreenOn;
+				if (event._eventPreferencesScreen._whenUnlocked)
+					screenPassed = isScreenOn && (!keyguardShowing);
+				else
+					screenPassed = isScreenOn;
 			}
 			else
 			{
 				if (event._eventPreferencesScreen._whenUnlocked)
-				{
-					KeyguardManager kgMgr = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
-					boolean keyguardShowing = kgMgr.inKeyguardRestrictedInputMode();
-					
-					Log.e("DataWrapper.doEventService", "keyguardShowing="+keyguardShowing);
-					
 					screenPassed = (!isScreenOn) || keyguardShowing;
-				}
 				else
-				{
 					screenPassed = !isScreenOn;
-				}
 			}
 					
 			eventStart = eventStart && screenPassed;
