@@ -321,7 +321,13 @@
 	        android:enabled="true" 
 	        android:exported="false">
         </receiver>
-        				
+		<receiver android:name=".BluetoothConnectionBroadcastReceiver" >
+	        <intent-filter>
+		        <action android:name="android.bluetooth.device.action.ACL_CONNECTED" />
+		        <action android:name="android.bluetooth.device.action.ACL_DISCONNECTED" />
+		        <action android:name="android.bluetooth.device.action.ACL_DISCONNECT_REQUESTED" />           
+	        </intent-filter>  
+    	</receiver>        				
 	</application>
 
 </manifest>

@@ -237,11 +237,11 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		return preferences.getBoolean(GlobalData.PREF_EVENT_WIFI_START_SCAN, false);
 	}
 
-	static public void setStartScan(Context context, boolean eventsBlocked)
+	static public void setStartScan(Context context, boolean startScan)
 	{
 		SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
 		Editor editor = preferences.edit();
-		editor.putBoolean(GlobalData.PREF_EVENT_WIFI_START_SCAN, eventsBlocked);
+		editor.putBoolean(GlobalData.PREF_EVENT_WIFI_START_SCAN, startScan);
 		editor.commit();
 	}
 

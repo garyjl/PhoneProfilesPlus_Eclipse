@@ -1,5 +1,7 @@
 package sk.henrichg.phoneprofilesplus;
 import android.app.Service;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.WifiManager;
@@ -14,6 +16,7 @@ public class ReceiversService extends Service {
 	private final WifiConnectionBroadcastReceiver wifiConnectionReceiver = new WifiConnectionBroadcastReceiver();
 	private final WifiScanBroadcastReceiver wifiScanReceiver = new WifiScanBroadcastReceiver();
 	private final ScreenOnOffBroadcastReceiver screenOnOffReceiver = new ScreenOnOffBroadcastReceiver();
+	private final BluetoothScanBroadcastReceiver bluetoothScanReceiver = new BluetoothScanBroadcastReceiver();
 	
 	@Override
     public void onCreate()
@@ -45,6 +48,11 @@ public class ReceiversService extends Service {
 		intentFilter5.addAction(Intent.ACTION_USER_PRESENT);
 		registerReceiver(screenOnOffReceiver, intentFilter5);
 		
+		IntentFilter intentFilter6 = new IntentFilter();		
+		intentFilter6.addAction(BluetoothDevice.ACTION_FOUND);
+		intentFilter6.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+		registerReceiver(bluetoothScanReceiver, intentFilter6);		
+		
 		// receivers for system date and time change
 		// events must by restarted
 		IntentFilter intentFilter99 = new IntentFilter();
@@ -62,6 +70,7 @@ public class ReceiversService extends Service {
 		unregisterReceiver(wifiConnectionReceiver);
 		unregisterReceiver(wifiScanReceiver);
 		unregisterReceiver(screenOnOffReceiver);
+		unregisterReceiver(bluetoothScanReceiver);		
 		
 		unregisterReceiver(restartEventsReceiver);
     }

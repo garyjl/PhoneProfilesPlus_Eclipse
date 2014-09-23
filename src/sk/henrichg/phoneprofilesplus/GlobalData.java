@@ -30,7 +30,7 @@ public class GlobalData extends Application {
 
 	static String PACKAGE_NAME;
 	
-	public static boolean logIntoLogCat = false;
+	public static boolean logIntoLogCat = true;
 	public static boolean logIntoFile = false;
 /*	public static String logFilterTags = "@@@ BatteryEventBroadcastReceiver|"+
 										 "@@@ CalendarProviderChangedBroadcastReceiver|"+
@@ -49,8 +49,7 @@ public class GlobalData extends Application {
 										 "@@@ EventsService|"+
 										 "@@@ Event"
 			;*/
-	public static String logFilterTags = "Event.startEvent|"+
-										 "Event.pauseEvent"
+	public static String logFilterTags = "BluetoothConnectionBroadcastReceiver"
 			;
 	
 	
@@ -173,6 +172,8 @@ public class GlobalData extends Application {
     public static final String PREF_APPLICATION_BACKGROUND_PROFILE = "applicationBackgroundProfile";
     public static final String PREF_APPLICATION_ACTIVATOR_GRID_LAYOUT= "applicationActivatorGridLayout";
     public static final String PREF_APPLICATION_WIDGET_LIST_GRID_LAYOUT= "applicationWidgetListGridLayout";
+    public static final String PREF_APPLICATION_EVENT_BLUETOOTH_SCAN_INTERVAL = "applicationEventBluetoothScanInterval";
+    public static final String PREF_APPLICATION_EVENT_BLUETOOTH_ENABLE_BLUETOOTH = "applicationEventBluetoothEnableBluetooth";
 
     public static final int HARDWARE_CHECK_NOT_ALLOWED = 0;
     public static final int HARDWARE_CHECK_ALLOWED = 1;
@@ -195,6 +196,8 @@ public class GlobalData extends Application {
 	static final String PREF_EVENT_HEADSET_BLUETOOTH = "eventHeadsetBluetooth";
 	static final String PREF_EVENT_WIFI_START_SCAN = "eventWifiStartScan";
 	static final String PREF_EVENT_WIFI_ENABLED_FOR_SCAN = "eventWifiEnabledForScan"; 
+	static final String PREF_EVENT_BLUETOOTH_START_SCAN = "eventBluetoothStartScan";
+	static final String PREF_EVENT_BLUETOOTH_ENABLED_FOR_SCAN = "eventBluetoothEnabledForScan"; 
 	
     public static boolean applicationStartOnBoot;
     public static boolean applicationActivate;
@@ -230,6 +233,8 @@ public class GlobalData extends Application {
     public static String applicationBackgroundProfile;
     public static boolean applicationActivatorGridLayout;
     public static boolean applicationWidgetListGridLayout;
+    public static int applicationEventBluetoothScanInterval;
+    public static boolean applicationEventBluetoothEnableBluetooth;
     
 	public void onCreate()
 	{
@@ -417,6 +422,8 @@ public class GlobalData extends Application {
 	    applicationBackgroundProfile = preferences.getString(PREF_APPLICATION_BACKGROUND_PROFILE, "-999");
 	    applicationActivatorGridLayout = preferences.getBoolean(PREF_APPLICATION_ACTIVATOR_GRID_LAYOUT, false);
 	    applicationWidgetListGridLayout = preferences.getBoolean(PREF_APPLICATION_WIDGET_LIST_GRID_LAYOUT, false);
+	    applicationEventBluetoothScanInterval = Integer.valueOf(preferences.getString(PREF_APPLICATION_EVENT_BLUETOOTH_SCAN_INTERVAL, "10"));
+	    applicationEventBluetoothEnableBluetooth = preferences.getBoolean(PREF_APPLICATION_EVENT_BLUETOOTH_ENABLE_BLUETOOTH, true);
 	}
 	
 	private static String getVolumeLevelString(int percentage, int maxValue)

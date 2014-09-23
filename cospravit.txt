@@ -56,3 +56,39 @@ P0  - E1 P1 P0, E2 P2 P1, E3 P3 P2,          - nic nerobime
 
 ----------------------------------------------------------------------------
 
+Bluetooth
+
+Pravdepodobne budeme musiet rozlisovat bluetooth profile:
+
+Primo zisiti, aky profil je pripojeny sa da len pre 
+A2DP        = Advanced Audio Distribution
+HEADSET     = Headset
+HEALTH      = Health Thermometer 
+
+Toto nejde zistit, ci je pripojene. Zjavne to tu funguje inac
+GATT        = Bluetooth Low Energy
+GATT_SERVER = Bluetooth Low Energy
+
+Spravme to tak, ze cez broadcast receiver si zistim, co sa pripojilo/odpojilo.
+Na toto uz mam receiver BluetoothConnectionBroadcastReceiver.
+Ten mi bude ukladat zariadenia, ktore sa pripojili.
+Bude to List<BluetoothDevice>. 
+Ak sa pripoji, pohladam jeho adresu v liste a ak tam nie je, pridame do listu.
+List inicializujeme pri prvom starte aplikacie. 
+!!! Tu moze byt problem, ze nedostanem pri starte ak prave bude nieco pripojene. !!!
+
+Potom spravime scanner. Na to uz mam receiver BluetoothScanAlarmBroadcastReceiver. 
+Ten bude vyuzivat zoznam pripojenych zariadeni z receivera BluetoothConnectionBroadcastReceiver.
+Scanner bude scanovat bluetooth zariadenia.
+Ak scanujeme zariadenie, ktore uz je v zozname pripojenych, nezapnemam scan. Ako pri Wifi.
+Na scanovanie este treba spravit receiver na prijem najdeneho zariadenia.
+Aj tu budeme ukladat zoznam do scanResults.
+Tu je problem v tom, ze tu nedostavame naraz cely zoznam, ale postupne jedno zariadenie za druhym.
+Cize treba vymysliet mechanizmus dvoch zoznamov. 
+Jeden bude temporary, ktory sa vymaze na zaciatku scanu a postupne sa bude naplnat.
+Druhy sa po ukonceni scanu naplni tym temporary a tenot sa bude pouzivat podobne ako scanResult pri Wifi.
+
+
+Ak sa odpoji, pohladam jeho adresu a ak tam je, vymazem ho z listu.
+
+

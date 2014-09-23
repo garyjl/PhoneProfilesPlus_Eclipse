@@ -48,6 +48,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public static final int ETYPE_WIFICONNECTED = 6;
 	public static final int ETYPE_WIFIINFRONT = 7;
 	public static final int ETYPE_SCREEN = 8;
+	public static final int ETYPE_BLUETOOTHCONNECTED = 9;
+	public static final int ETYPE_BLUETOOTHINFRONT = 10;
 	
 	// Profiles Table Columns names
 	private static final String KEY_ID = "id";
@@ -2931,6 +2933,40 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 	}
 	
+	public boolean isBluetoothNameScanned(String bluetoothName)
+	{
+		final String countQuery;
+		String eventTypeChecked = KEY_E_STATUS + "!=0" + " AND ";  //  only not stopped events
+
+//TODO  dorob, ked budu polozky		
+/*		eventTypeChecked = eventTypeChecked + KEY_E_BLUETOOTH_ENABLED + "=1" + " AND " + 
+												KEY_E_BLUETOOTH_CONNECTION_TYPE + "=1" + " AND " +
+												KEY_E_BLUETOOTH_NAME + "=\"" + bluetoothName + "\"";
+*/
+		
+		countQuery = "SELECT  count(*) FROM " + TABLE_EVENTS + 
+	    		     " WHERE " + eventTypeChecked;
+
+		//SQLiteDatabase db = this.getReadableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+		
+		Cursor cursor = db.rawQuery(countQuery, null);
+		
+		int r;
+		
+		if (cursor != null)
+		{
+			cursor.moveToFirst();
+			r = Integer.parseInt(cursor.getString(0));
+		}
+		else
+			r = 0;
+
+		cursor.close();
+		//db.close();
+		
+		return r != 0;
+	}
 	
 	
 // EVENT TIMELINE ------------------------------------------------------------------
