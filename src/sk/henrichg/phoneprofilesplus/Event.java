@@ -40,6 +40,7 @@ public class Event {
 	public EventPreferencesCalendar _eventPreferencesCalendar;
 	public EventPreferencesWifi _eventPreferencesWifi;
 	public EventPreferencesScreen _eventPreferencesScreen;
+	public EventPreferencesBluetooth _eventPreferencesBluetooth;
 
 	public static final int ESTATUS_STOP = 0;
 	public static final int ESTATUS_PAUSE = 1;
@@ -183,7 +184,12 @@ public class Event {
 	{
        	this._eventPreferencesScreen = new EventPreferencesScreen(this, false, 1, false);
 	}
-	
+
+	private void createEventPreferencesBluetooth()
+	{
+       	this._eventPreferencesBluetooth = new EventPreferencesBluetooth(this, false, "", 0);
+	}
+
 	public void createEventPreferences()
 	{
 		//Log.e("Event.createEventPreferences","type="+_type);
@@ -194,6 +200,7 @@ public class Event {
 		createEventPreferencesCalendar();
 		createEventPreferencesWiFi();
 		createEventPreferencesScreen();
+		createEventPreferencesBluetooth();
 	}
 	
 	public void copyEventPreferences(Event fromEvent)
@@ -212,6 +219,8 @@ public class Event {
 			createEventPreferencesWiFi();
 		if (this._eventPreferencesScreen == null)
 			createEventPreferencesScreen();
+		if (this._eventPreferencesBluetooth == null)
+			createEventPreferencesBluetooth();
 		this._eventPreferencesTime.copyPreferences(fromEvent);
 		this._eventPreferencesBattery.copyPreferences(fromEvent);
 		this._eventPreferencesCall.copyPreferences(fromEvent);
@@ -219,6 +228,7 @@ public class Event {
 		this._eventPreferencesCalendar.copyPreferences(fromEvent);
 		this._eventPreferencesWifi.copyPreferences(fromEvent);
 		this._eventPreferencesScreen.copyPreferences(fromEvent);
+		this._eventPreferencesBluetooth.copyPreferences(fromEvent);
 	}
 	
 	public boolean isRunnable()
@@ -230,7 +240,8 @@ public class Event {
 			  this._eventPreferencesPeripherals._enabled ||
 			  this._eventPreferencesCalendar._enabled ||
 			  this._eventPreferencesWifi._enabled ||
-			  this._eventPreferencesScreen._enabled))
+			  this._eventPreferencesScreen._enabled ||
+			  this._eventPreferencesBluetooth._enabled))
 			runnable = false;
 		if (this._eventPreferencesTime._enabled)
 			runnable = runnable && this._eventPreferencesTime.isRunable();
@@ -246,6 +257,8 @@ public class Event {
 			runnable = runnable && this._eventPreferencesWifi.isRunable();
 		if (this._eventPreferencesScreen._enabled)
 			runnable = runnable && this._eventPreferencesScreen.isRunable();
+		if (this._eventPreferencesBluetooth._enabled)
+			runnable = runnable && this._eventPreferencesBluetooth.isRunable();
 		return runnable;
 	}
 	
@@ -268,6 +281,7 @@ public class Event {
         this._eventPreferencesCalendar.loadSharedPrefereces(preferences);
         this._eventPreferencesWifi.loadSharedPrefereces(preferences);
         this._eventPreferencesScreen.loadSharedPrefereces(preferences);
+        this._eventPreferencesBluetooth.loadSharedPrefereces(preferences);
 		editor.commit();
 	}
 
@@ -296,6 +310,7 @@ public class Event {
 		this._eventPreferencesCalendar.saveSharedPrefereces(preferences);
 		this._eventPreferencesWifi.saveSharedPrefereces(preferences);
 		this._eventPreferencesScreen.saveSharedPrefereces(preferences);
+		this._eventPreferencesBluetooth.saveSharedPrefereces(preferences);
 		
 		if (!this.isRunnable())
 			this._status = ESTATUS_STOP;
@@ -376,6 +391,7 @@ public class Event {
 		_eventPreferencesCalendar.setSummary(prefMng, key, preferences, context);
 		_eventPreferencesWifi.setSummary(prefMng, key, preferences, context);
 		_eventPreferencesScreen.setSummary(prefMng, key, preferences, context);
+		_eventPreferencesBluetooth.setSummary(prefMng, key, preferences, context);
 	}
 	
 	public void setAllSummary(PreferenceManager prefMng, Context context)
@@ -393,6 +409,7 @@ public class Event {
 		_eventPreferencesCalendar.setAllSummary(prefMng, context);
 		_eventPreferencesWifi.setAllSummary(prefMng, context);
 		_eventPreferencesScreen.setAllSummary(prefMng, context);
+		_eventPreferencesBluetooth.setAllSummary(prefMng, context);
 	}
 	
 	public String getPreferecesDescription(Context context)
@@ -410,6 +427,8 @@ public class Event {
 		description = _eventPreferencesCall.getPreferencesDescription(description, context);
 		description = description + "\n";
 		description = _eventPreferencesWifi.getPreferencesDescription(description, context);
+		description = description + "\n";
+		description = _eventPreferencesBluetooth.getPreferencesDescription(description, context);
 		description = description + "\n";
 		description = _eventPreferencesPeripherals.getPreferencesDescription(description, context);
 		description = description + "\n";
@@ -438,6 +457,8 @@ public class Event {
 			canActivate = canActivate || this._eventPreferencesWifi.activateReturnProfile();
 		if (this._eventPreferencesScreen._enabled)
 			canActivate = canActivate || this._eventPreferencesScreen.activateReturnProfile();
+		if (this._eventPreferencesBluetooth._enabled)
+			canActivate = canActivate || this._eventPreferencesBluetooth.activateReturnProfile();
 		
 		return canActivate;
 	}
@@ -893,6 +914,7 @@ public class Event {
 			_eventPreferencesCalendar.setSystemRunningEvent(context);
 			_eventPreferencesWifi.setSystemRunningEvent(context);
 			_eventPreferencesScreen.setSystemRunningEvent(context);
+			_eventPreferencesBluetooth.setSystemRunningEvent(context);
 		}
 		else
 		if (forStatus == ESTATUS_RUNNING)
@@ -906,6 +928,7 @@ public class Event {
 			_eventPreferencesCalendar.setSystemPauseEvent(context);
 			_eventPreferencesWifi.setSystemPauseEvent(context);
 			_eventPreferencesScreen.setSystemPauseEvent(context);
+			_eventPreferencesBluetooth.setSystemPauseEvent(context);
 		}
 		else
 		if (forStatus == ESTATUS_STOP)
@@ -919,6 +942,7 @@ public class Event {
 			_eventPreferencesCalendar.removeSystemEvent(context);
 			_eventPreferencesWifi.removeSystemEvent(context);
 			_eventPreferencesScreen.removeSystemEvent(context);
+			_eventPreferencesBluetooth.removeSystemEvent(context);
 		}
 	}
 	

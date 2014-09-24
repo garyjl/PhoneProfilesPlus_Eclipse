@@ -464,5 +464,13 @@
     <item>1</item>
     <item>2</item>
 </string-array>
+<string-array name="eventBluetoothConnectionTypeArray">
+	<item>@string/array_event_pref_bluetoothConnectionType_connected</item>    
+	<item>@string/array_event_pref_bluetoothConnectionType_inFront</item>    
+</string-array>
+<string-array name="eventBluetoothConnectionTypeValues">
+    <item>0</item>
+    <item>1</item>
+</string-array>
 
 </resources>

@@ -187,6 +187,7 @@ public class EventPreferencesFragment extends PreferenceListFragment
 		event._eventPreferencesPeripherals.checkPreferences(prefMng, context);
 		event._eventPreferencesWifi.checkPreferences(prefMng, context);
 		event._eventPreferencesScreen.checkPreferences(prefMng, context);
+		event._eventPreferencesBluetooth.checkPreferences(prefMng, context);
 
         preferences.registerOnSharedPreferenceChangeListener(this);  
         

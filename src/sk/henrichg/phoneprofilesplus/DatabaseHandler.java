@@ -2933,7 +2933,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 	}
 	
-	public boolean isBluetoothNameScanned(String bluetoothName)
+	public boolean isBluetoothAdapterNameScanned(String bluetoothName)
 	{
 		final String countQuery;
 		String eventTypeChecked = KEY_E_STATUS + "!=0" + " AND ";  //  only not stopped events
