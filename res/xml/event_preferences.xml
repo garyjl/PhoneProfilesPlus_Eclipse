@@ -197,6 +197,28 @@
             android:dependency="eventWiFiEnabled" />
 	</PreferenceCategory>
     <PreferenceCategory
+        android:summary="@string/event_preferences_category_eventBluetoothParameters"
+        android:title="@string/event_preferences_category_eventBluetoothParameters" >
+		<CheckBoxPreference 
+		    android:key="eventBluetoothEnabled"
+		    android:title="@string/event_preferences_bluetooth_enabled"
+		    android:defaultValue="false" />
+		<ListPreference android:title="@string/event_preferences_bluetooth_connection_type"
+            android:summary="@string/array_event_pref_bluetoothConnectionType_connected"
+            android:key="eventBluetoothConnectionType"
+            android:defaultValue="0"
+            android:entries="@array/eventBluetoothConnectionTypeArray"
+            android:entryValues="@array/eventBluetoothConnectionTypeValues"
+            android:dependency="eventBluetoothEnabled" />
+		<EditTextPreference
+            android:key="eventBluetoothAdapterNAME"
+            android:summary="@string/event_preferences_bluetooth_adapter_name"
+            android:title="@string/event_preferences_bluetooth_adapter_name"
+            android:inputType="textNoSuggestions"
+            android:selectAllOnFocus="true"
+            android:dependency="eventBluetoothEnabled" />
+	</PreferenceCategory>
+    <PreferenceCategory
         android:summary="@string/event_preferences_category_eventPeripheralParameters"
         android:title="@string/event_preferences_category_eventPeripheralParameters" >
 		<CheckBoxPreference 
@@ -219,9 +241,9 @@
 		    android:title="@string/event_preferences_screen_enabled"
 		    android:defaultValue="false" />
 		<ListPreference android:title="@string/event_preferences_screen_event_type"
-            android:summary="@string/array_event_pref_eventScreenEventType_screenOn"
+            android:summary="@string/array_event_pref_eventScreenEventType_screenOff"
             android:key="eventScreenEventType"
-            android:defaultValue="0"
+            android:defaultValue="1"
             android:entries="@array/eventScreenEventTypeArray"
             android:entryValues="@array/eventScreenEventTypeValues"
             android:dependency="eventScreenEnabled" />        
