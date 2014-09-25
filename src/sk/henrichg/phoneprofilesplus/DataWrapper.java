@@ -10,6 +10,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.KeyguardManager;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -1275,6 +1277,7 @@ public class DataWrapper {
 		boolean calendarPassed = true;
 		boolean wifiPassed = true;
 		boolean screenPassed = true;
+		boolean bluetoothPassed = true;
 		
 		boolean isCharging = false;
 		float batteryPct = 100.0f;
@@ -1666,6 +1669,65 @@ public class DataWrapper {
 					
 			eventStart = eventStart && screenPassed;
 		}
+
+		if (event._eventPreferencesBluetooth._enabled)
+		{
+			bluetoothPassed = false;
+
+			BluetoothAdapter bluetooth = (BluetoothAdapter) BluetoothAdapter.getDefaultAdapter(); 
+			boolean isBluetoothEnabled = bluetooth.isEnabled();
+
+			if (isBluetoothEnabled)
+			{
+				GlobalData.logE("DataWrapper.doEventService","bluetoothEnabled=true");
+
+				GlobalData.logE("@@@ DataWrapper.doEventService","-- eventAdapterName="+event._eventPreferencesBluetooth._adapterName);
+
+				if (BluetoothConnectionBroadcastReceiver.isBluetoothConnected(event._eventPreferencesBluetooth._adapterName))
+				{
+					bluetoothPassed = true;
+					GlobalData.logE("@@@ DataWrapper.doEventService","bluetooth connected");
+				}
+				else
+					GlobalData.logE("@@@ DataWrapper.doEventService","bluetooth not connected");
+			}
+			if (event._eventPreferencesBluetooth._connectionType == EventPreferencesBluetooth.CTYPE_INFRONT)
+			{
+				if (!bluetoothPassed)
+				{	
+					/*
+					isBluetoothEnabled = isBluetoothEnabled || BluetoothScanAlarmBroadcastReceiver.getBluetoothEnabledForScan(context);
+					if (isBluetoothEnabled)
+					{
+					*/
+						GlobalData.logE("DataWrapper.doEventService","bluetoothEnabled=true");
+	
+						
+						if (BluetoothScanAlarmBroadcastReceiver.scanResults != null)
+						{
+							//GlobalData.logE("@@@ DataWrapper.doEventService","-- eventAdapterName="+event._eventPreferencesBluetooth._adapterName);
+	
+							for (BluetoothDevice device : BluetoothScanAlarmBroadcastReceiver.scanResults)
+					        {
+								if (device.getName().equals(event._eventPreferencesBluetooth._adapterName))
+								{
+									GlobalData.logE("@@@ DataWrapper.doEventService","bluetooth found");
+									//GlobalData.logE("@@@ DataWrapper.doEventService","bluetoothAdapterName="+device.getName());
+									//GlobalData.logE("@@@ DataWrapper.doEventService","bluetoothAddress="+device.getAddress());
+									bluetoothPassed = true;
+									break;
+								}
+					        }
+						}
+						if (!bluetoothPassed)
+							GlobalData.logE("@@@ DataWrapper.doEventService","bluetooth not found");
+						
+					//}
+				}
+			}
+
+			eventStart = eventStart && bluetoothPassed;
+		}
 		
 		GlobalData.logE("DataWrapper.doEventService","timePassed="+timePassed);
 		GlobalData.logE("DataWrapper.doEventService","batteryPassed="+batteryPassed);
@@ -1674,6 +1736,7 @@ public class DataWrapper {
 		GlobalData.logE("DataWrapper.doEventService","calendarPassed="+calendarPassed);
 		GlobalData.logE("DataWrapper.doEventService","wifiPassed="+wifiPassed);
 		GlobalData.logE("DataWrapper.doEventService","screenPassed="+screenPassed);
+		GlobalData.logE("DataWrapper.doEventService","bluetoothPassed="+bluetoothPassed);
 
 		GlobalData.logE("DataWrapper.doEventService","eventStart="+eventStart);
 		GlobalData.logE("DataWrapper.doEventService","restartEvent="+restartEvent);
@@ -1686,7 +1749,8 @@ public class DataWrapper {
 			peripheralPassed && 
 			calendarPassed &&
 			wifiPassed &&
-			screenPassed)
+			screenPassed &&
+			bluetoothPassed)
 		{
 			// podmienky sedia, vykoname, co treba
 
@@ -1717,7 +1781,7 @@ public class DataWrapper {
 					// called not for delay alarm
 					if (!event._isInDelay)
 						// if not delay alarm is set, set it
-						event.setDelayAlarm(this, true); // for start delay
+						event.setDelayAlarm(this, true, false); // for start delay
 					if (!event._isInDelay)
 					{
 						// no delay alarm is set
@@ -1748,7 +1812,8 @@ public class DataWrapper {
 				peripheralPassed && 
 				calendarPassed &&
 				wifiPassed &&
-				screenPassed);
+				screenPassed &&
+				bluetoothPassed);
 	}
 	
 	public Profile filterProfileWithBatteryEvents(Profile profile)

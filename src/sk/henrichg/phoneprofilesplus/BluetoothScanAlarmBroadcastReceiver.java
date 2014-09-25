@@ -62,7 +62,7 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
 					isBluetoothEnabled = isBluetoothEnabled || GlobalData.applicationEventBluetoothEnableBluetooth;
 					if (isBluetoothEnabled)
 				    {
-						boolean connected = BluetoothConnectionBroadcastReceiver.isBluetoothConnected();
+						boolean connected = BluetoothConnectionBroadcastReceiver.isBluetoothConnected("");
 						if (connected)
 						{
 							GlobalData.logE("@@@ BluetoothScanAlarmBroadcastReceiver.onReceive","bluetooth is connected");

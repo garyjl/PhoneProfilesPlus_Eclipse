@@ -947,8 +947,32 @@ public class Event {
 	}
 	
 	@SuppressLint("SimpleDateFormat")
-	public void setDelayAlarm(DataWrapper dataWrapper, boolean forStart)
+	public void setDelayAlarm(DataWrapper dataWrapper, 
+							  boolean forStart,
+							  boolean ignoreGlobalPref)
 	{
+		if ((!GlobalData.getGlobalEventsRuning(dataWrapper.context)) && (!ignoreGlobalPref))
+			// events are globally stopped
+			return;
+		
+		if (!this.isRunnable())
+			// event is not runnable, no pause it
+			return;
+
+		if (GlobalData.getEventsBlocked(dataWrapper.context))
+		{
+			// blocked by manual profile activation
+			GlobalData.logE("Event.setDelayAlarm","event_id="+this._id+" events blocked");
+
+			
+			if (!_forceRun)
+				// event is not forceRun
+				return;
+			if (_blocked)
+				// forceRun event is temporary blocked
+				return;
+		}
+		
 		removeDelayAlarm(dataWrapper, forStart);
 		
 		if (this._delayStart > 0)

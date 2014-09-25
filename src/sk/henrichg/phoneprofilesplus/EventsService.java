@@ -249,6 +249,12 @@ public class EventsService extends IntentService
 		else
 		if (broadcastReceiverType.equals(ScreenOnOffBroadcastReceiver.BROADCAST_RECEIVER_TYPE))
 			ScreenOnOffBroadcastReceiver.completeWakefulIntent(intent);
+		else
+		if (broadcastReceiverType.equals(BluetoothConnectionBroadcastReceiver.BROADCAST_RECEIVER_TYPE))
+			BluetoothConnectionBroadcastReceiver.completeWakefulIntent(intent);
+		else
+		if (broadcastReceiverType.equals(BluetoothScanBroadcastReceiver.BROADCAST_RECEIVER_TYPE))
+			BluetoothScanBroadcastReceiver.completeWakefulIntent(intent);
 	}
 	
 }

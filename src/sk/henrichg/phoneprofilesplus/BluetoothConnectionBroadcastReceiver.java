@@ -116,14 +116,24 @@ public class BluetoothConnectionBroadcastReceiver extends WakefulBroadcastReceiv
 		}
 	}
 
-	public static boolean isBluetoothConnected()
+	public static boolean isBluetoothConnected(String adapterName)
 	{
-		return (connectedDevices != null) && (connectedDevices.size() > 0);
+		if (adapterName.isEmpty())
+			return (connectedDevices != null) && (connectedDevices.size() > 0);
+		else
+		{
+			for (BluetoothDevice _device : connectedDevices)
+			{
+				if (_device.getName().equals(adapterName))
+					return true;
+			}
+			return false;
+		}
 	}
 	
 	public static boolean isAdapterNameScanned(DataWrapper dataWrapper)
 	{
-		if (isBluetoothConnected())
+		if (isBluetoothConnected(""))
 		{
 			for (BluetoothDevice _device : connectedDevices)
 			{
