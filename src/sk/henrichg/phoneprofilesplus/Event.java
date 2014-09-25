@@ -521,6 +521,9 @@ public class Event {
 							boolean ignoreGlobalPref,
 							boolean interactive)
 	{
+		// remove delay alarm
+		removeDelayAlarm(dataWrapper, true); // for start delay
+		
 		if ((!GlobalData.getGlobalEventsRuning(dataWrapper.context)) && (!ignoreGlobalPref))
 			// events are globally stopped
 			return;
@@ -543,9 +546,6 @@ public class Event {
 				return;
 		}
 
-		// remove delay alarm
-		removeDelayAlarm(dataWrapper, true); // for start delay
-		
 		// search for runing event with higher priority
 		for (EventTimeline eventTimeline : eventTimelineList)
 		{
@@ -731,6 +731,9 @@ public class Event {
 							boolean ignoreGlobalPref,
 							boolean noSetSystemEvent)
 	{
+		// remove delay alarm
+		removeDelayAlarm(dataWrapper, true); // for start delay
+
 		if ((!GlobalData.getGlobalEventsRuning(dataWrapper.context)) && (!ignoreGlobalPref))
 			// events are globally stopped
 			return;
@@ -754,9 +757,6 @@ public class Event {
 		// unblock temporary paused event
 		dataWrapper.setEventBlocked(this, false);
 
-		// remove delay alarm
-		removeDelayAlarm(dataWrapper, true); // for start delay
-		
 		GlobalData.logE("Event.pauseEvent","event_id="+this._id+"-----------------------------------");
 		
 		int timeLineSize = eventTimelineList.size();
@@ -864,6 +864,9 @@ public class Event {
 							boolean ignoreGlobalPref,
 							boolean saveEventStatus)
 	{
+		// remove delay alarm
+		removeDelayAlarm(dataWrapper, true); // for start delay
+
 		if ((!GlobalData.getGlobalEventsRuning(dataWrapper.context)) && (!ignoreGlobalPref))
 			// events are globally stopped
 			return;
