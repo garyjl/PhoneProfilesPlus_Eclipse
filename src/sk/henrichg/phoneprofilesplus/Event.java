@@ -983,12 +983,13 @@ public class Event {
 
 		GlobalData.logE("@@@ Event.setDelayAlarm","event_id="+this._id+"-----------------------------------");
 		GlobalData.logE("@@@ Event.setDelayAlarm","-- event_name="+this._name);
+		GlobalData.logE("@@@ Event.setDelayAlarm","-- delay="+this._delayStart);
 		
 		if (this._delayStart > 0)
 		{
 			// delay for start is > 0
 			// set alarm
-			
+
 			Calendar now = Calendar.getInstance();
 			long alarmTime = now.getTimeInMillis() + 1000 * 60 * this._delayStart;
 					
