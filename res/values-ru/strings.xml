@@ -390,5 +390,17 @@
 
 	<string name="array_event_pref_eventScreenEventType_screenOn">Включение</string>
 	<string name="array_event_pref_eventScreenEventType_screenOff">Выключение</string>
-					
+
+    <string name="event_type_bluetooth">Bluetooth</string>
+    <string name="event_preferences_category_eventBluetoothParameters">Параметры Bluetooth</string>
+    <string name="event_preferences_bluetooth_enabled">Активировать</string>
+    <string name="event_preferences_bluetooth_adapter_name">Bluetooth name</string>
+    <string name="pref_event_bluetooth_adapterName">BT name</string>
+    <string name="pref_event_bluetooth_connectionType">Подключение</string>
+	<string name="array_event_pref_bluetoothConnectionType_connected">Подключен</string>    
+	<string name="array_event_pref_bluetoothConnectionType_inFront">В передней</string>
+	<string name="event_preferences_bluetooth_connection_type">Подключение</string>
+	<string name="phone_profiles_pref_applicationEventBluetoothScanInterval">Bluetooth интервал опроса (мин)</string>
+	<string name="phone_profiles_pref_applicationEventBluetoothEnableBluetooth">Активировать Bluetooth</string>
+							
 </resources>

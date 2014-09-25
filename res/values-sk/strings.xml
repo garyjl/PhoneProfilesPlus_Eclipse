@@ -386,5 +386,17 @@
 
     <string name="array_event_pref_eventScreenEventType_screenOn">Zapla sa</string>
 	<string name="array_event_pref_eventScreenEventType_screenOff">Vypla sa</string>
-    				
+
+    <string name="event_type_bluetooth">Bluetooth</string>
+    <string name="event_preferences_category_eventBluetoothParameters">Parametre Bluetooth</string>
+    <string name="event_preferences_bluetooth_enabled">Použi Bluetooth</string>
+    <string name="event_preferences_bluetooth_adapter_name">Meno Bluetooth</string>
+    <string name="pref_event_bluetooth_adapterName">Meno BT</string>
+    <string name="pref_event_bluetooth_connectionType">Pripojenie</string>
+	<string name="array_event_pref_bluetoothConnectionType_connected">Pripojené</string>    
+	<string name="array_event_pref_bluetoothConnectionType_inFront">V okolí</string>
+	<string name="event_preferences_bluetooth_connection_type">Typ pripojenia</string>
+	<string name="phone_profiles_pref_applicationEventBluetoothScanInterval">Interval skenovania Bluetooth (min.)</string>
+	<string name="phone_profiles_pref_applicationEventBluetoothEnableBluetooth">Povoľ Bluetooth</string>
+						
 </resources>

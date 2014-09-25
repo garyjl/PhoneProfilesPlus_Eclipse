@@ -385,5 +385,17 @@
 
 	<string name="array_event_pref_eventScreenEventType_screenOn">Zapnula se</string>
 	<string name="array_event_pref_eventScreenEventType_screenOff">Vypnula se</string>
-    
+
+    <string name="event_type_bluetooth">Bluetooth</string>
+    <string name="event_preferences_category_eventBluetoothParameters">Parametre Bluetooth</string>
+    <string name="event_preferences_bluetooth_enabled">Použij Bluetooth</string>
+    <string name="event_preferences_bluetooth_adapter_name">Jméno Bluetooth</string>
+    <string name="pref_event_bluetooth_adapterName">Jméno BT</string>
+    <string name="pref_event_bluetooth_connectionType">Připojení</string>
+	<string name="array_event_pref_bluetoothConnectionType_connected">Připojené</string>    
+	<string name="array_event_pref_bluetoothConnectionType_inFront">V okolí</string>
+	<string name="event_preferences_bluetooth_connection_type">Typ připojení</string>
+	<string name="phone_profiles_pref_applicationEventBluetoothScanInterval">Interval skenování Bluetooth (min.)</string>
+	<string name="phone_profiles_pref_applicationEventBluetoothEnableBluetooth">Povol Bluetooth</string>
+		
 </resources>
