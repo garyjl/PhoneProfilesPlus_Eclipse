@@ -10,6 +10,7 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.preference.TwoStatePreference;
+import android.util.Log;
 
 public class PhoneProfilesPreferencesFragment extends PreferenceListFragment 
                                               implements SharedPreferences.OnSharedPreferenceChangeListener
@@ -36,7 +37,7 @@ public class PhoneProfilesPreferencesFragment extends PreferenceListFragment
 		prefMng.setSharedPreferencesMode(Activity.MODE_PRIVATE);
 		
 		preferences = prefMng.getSharedPreferences();
-			
+
 		addPreferencesFromResource(R.xml.phone_profiles_preferences);
 
         preferences.registerOnSharedPreferenceChangeListener(this);  
@@ -132,7 +133,7 @@ public class PhoneProfilesPreferencesFragment extends PreferenceListFragment
 		 else {
 			// For all other preferences, set the summary to the value's
 			// simple string representation.
-		    //Log.e("PhoneProfilesPreferencesFragment.setSummary",key+"="+stringValue);
+		    Log.e("PhoneProfilesPreferencesFragment.setSummary",key+"="+stringValue);
 			//preference.setSummary(preference.toString());
 			 preference.setSummary(stringValue);
 		}
@@ -176,6 +177,8 @@ public class PhoneProfilesPreferencesFragment extends PreferenceListFragment
 	    setSummary(GlobalData.PREF_APPLICATION_BACKGROUND_PROFILE);
 	    setSummary(GlobalData.PREF_APPLICATION_ACTIVATOR_GRID_LAYOUT);
 	    setSummary(GlobalData.PREF_APPLICATION_WIDGET_LIST_GRID_LAYOUT);
+	    setSummary(GlobalData.PREF_APPLICATION_EVENT_BLUETOOTH_SCAN_INTERVAL);
+	    setSummary(GlobalData.PREF_APPLICATION_EVENT_BLUETOOTH_ENABLE_BLUETOOTH);
 	    
 		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_WIFI, preferencesActivity.getBaseContext()) 
 					!= GlobalData.HARDWARE_CHECK_ALLOWED)
@@ -183,7 +186,14 @@ public class PhoneProfilesPreferencesFragment extends PreferenceListFragment
 			prefMng.findPreference(GlobalData.PREF_APPLICATION_EVENT_WIFI_SCAN_INTERVAL).setEnabled(false);
 			prefMng.findPreference(GlobalData.PREF_APPLICATION_EVENT_WIFI_ENABLE_WIFI).setEnabled(false);
 		}
-	    
+
+		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_BLUETOOTH, preferencesActivity.getBaseContext()) 
+					!= GlobalData.HARDWARE_CHECK_ALLOWED)
+		{
+			prefMng.findPreference(GlobalData.PREF_APPLICATION_EVENT_BLUETOOTH_SCAN_INTERVAL).setEnabled(false);
+			prefMng.findPreference(GlobalData.PREF_APPLICATION_EVENT_BLUETOOTH_ENABLE_BLUETOOTH).setEnabled(false);
+		}
+		
 	}
 	
 	@Override

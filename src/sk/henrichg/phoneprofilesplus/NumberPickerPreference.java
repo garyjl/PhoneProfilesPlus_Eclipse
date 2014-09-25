@@ -30,8 +30,11 @@ import android.widget.NumberPicker;
  */
 
 public class NumberPickerPreference extends DialogPreference {
-    private int mMin, mMax;
-
+	
+	private String value;
+	
+	private int mMin, mMax;
+    
     private String mMaxExternalKey, mMinExternalKey;
 
     private NumberPicker mNumberPicker;
@@ -52,15 +55,13 @@ public class NumberPickerPreference extends DialogPreference {
 
     @Override
     protected View onCreateDialogView() {
-        int max = mMax;
-        int min = mMin;
 
         // External values
         if (mMaxExternalKey != null) {
-            max = getSharedPreferences().getInt(mMaxExternalKey, mMax);
+            mMax = getSharedPreferences().getInt(mMaxExternalKey, mMax);
         }
         if (mMinExternalKey != null) {
-            min = getSharedPreferences().getInt(mMinExternalKey, mMin);
+        	mMin = getSharedPreferences().getInt(mMinExternalKey, mMin);
         }
 
         LayoutInflater inflater =
@@ -70,10 +71,9 @@ public class NumberPickerPreference extends DialogPreference {
         mNumberPicker = (NumberPicker) view.findViewById(R.id.number_picker);
 
         // Initialize state
-        mNumberPicker.setMaxValue(max);
-        mNumberPicker.setMinValue(min);
-        //mNumberPicker.setValue(getPersistedInt(min));
-        mNumberPicker.setValue(Integer.valueOf(getPersistedString(String.valueOf(min))));
+        mNumberPicker.setMaxValue(mMax);
+        mNumberPicker.setMinValue(mMin);
+        mNumberPicker.setValue(Integer.valueOf(value));
         mNumberPicker.setWrapSelectorWheel(false);
 
         /*
@@ -107,5 +107,27 @@ public class NumberPickerPreference extends DialogPreference {
     		}
         }
     }
+    
+    @Override 
+    protected Object onGetDefaultValue(TypedArray ta, int index)
+    {
+        String defaultValue = ta.getString(index);
+        return defaultValue;
+    }
+
+    @Override
+    protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
+
+        if(restoreValue)
+        {
+            value = getPersistedString(value);
+        }
+        else
+        {
+        	value = (String)defaultValue;
+            persistString(value);
+        }
+        
+    }    
 
 }
