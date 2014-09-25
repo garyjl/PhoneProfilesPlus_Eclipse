@@ -724,6 +724,8 @@ public class DataWrapper {
 		
 		WifiScanAlarmBroadcastReceiver.initialize(context);
 		WifiScanAlarmBroadcastReceiver.setAlarm(context);
+		BluetoothScanAlarmBroadcastReceiver.initialize(context);
+		BluetoothScanAlarmBroadcastReceiver.setAlarm(context);
 		SearchCalendarEventsBroadcastReceiver.setAlarm(context);
 		
 		
@@ -1945,6 +1947,8 @@ public class DataWrapper {
 					restartEvents(true, true);
 					// rescan wifi
 					WifiScanAlarmBroadcastReceiver.sendBroadcast(_activity.getBaseContext());
+					// rescan bluetooth
+					BluetoothScanAlarmBroadcastReceiver.sendBroadcast(_activity.getBaseContext());
 					
 					if (GlobalData.applicationClose && (!(_activity instanceof EditorProfilesActivity)))
 						_activity.finish();
@@ -1962,6 +1966,8 @@ public class DataWrapper {
 			restartEvents(true, true);
 			// rescan wifi
 			WifiScanAlarmBroadcastReceiver.sendBroadcast(activity.getBaseContext());
+			// rescan bluetooth
+			BluetoothScanAlarmBroadcastReceiver.sendBroadcast(activity.getBaseContext());
 			
 			if (GlobalData.applicationClose)
 				activity.finish();

@@ -31,40 +31,88 @@ public class BluetoothConnectionBroadcastReceiver extends WakefulBroadcastReceiv
 			
 			String action = intent.getAction();
 			BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-			
-			if (action.equals(BluetoothDevice.ACTION_ACL_CONNECTED)) 
+
+			if (action.equals(BluetoothDevice.ACTION_ACL_CONNECTED) ||
+				action.equals(BluetoothDevice.ACTION_ACL_DISCONNECTED) ||
+			    action.equals(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED))
 			{
-				GlobalData.logE("@@@ BluetoothConnectionBroadcastReceiver.onReceive","Received: Bluetooth Connected");
-				boolean found = false;
-				for (BluetoothDevice _device : connectedDevices)
+				boolean connected = action.equals(BluetoothDevice.ACTION_ACL_CONNECTED);
+			
+				if (connected) 
 				{
-					if (_device.getAddress().equals(device.getAddress()))
+					GlobalData.logE("@@@ BluetoothConnectionBroadcastReceiver.onReceive","Received: Bluetooth Connected");
+					boolean found = false;
+					for (BluetoothDevice _device : connectedDevices)
 					{
-						found = true;
-						break;
+						if (_device.getAddress().equals(device.getAddress()))
+						{
+							found = true;
+							break;
+						}
 					}
-				}
-				if (!found)
-					connectedDevices.add(device);
-		    }
-		    if (action.equals(BluetoothDevice.ACTION_ACL_DISCONNECTED) ||
-		    	action.equals(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED))
-		    {
-		    	GlobalData.logE("BluetoothConnectionBroadcastReceiver.onReceive","Received: Bluetooth Disconnected");
-		    	int index = 0;
-		    	boolean found = false;
-				for (BluetoothDevice _device : connectedDevices)
+					if (!found)
+						connectedDevices.add(device);
+			    }
+				else
+			    {
+			    	GlobalData.logE("@@@ BluetoothConnectionBroadcastReceiver.onReceive","Received: Bluetooth Disconnected");
+			    	int index = 0;
+			    	boolean found = false;
+					for (BluetoothDevice _device : connectedDevices)
+					{
+						if (_device.getAddress().equals(device.getAddress()))
+						{
+							found = true;
+							break;
+						}
+						++index;
+					}
+					if (found)
+						connectedDevices.remove(index);
+			    }
+				
+				
+				if (connected)
 				{
-					if (_device.getAddress().equals(device.getAddress()))
-					{
-						found = true;
-						break;
-					}
-					++index;
+	        		if (!GlobalData.getEventsBlocked(context))
+	        		{
+		        		if (BluetoothScanAlarmBroadcastReceiver.scanResults == null)
+		        		{
+		        			// no bluetooth scan data, rescan
+							BluetoothScanAlarmBroadcastReceiver.sendBroadcast(context);
+		        		}
+	        		}
 				}
-				if (found)
-					connectedDevices.remove(index);
-		    }		
+				
+    			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
+    			boolean bluetoothEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_BLUETOOTHCONNECTED) > 0;
+    			dataWrapper.invalidateDataWrapper();
+    	
+    			if (bluetoothEventsExists)
+    			{
+	        		GlobalData.logE("@@@ BluetoothConnectionBroadcastReceiver.onReceive","bluetoothEventsExists="+bluetoothEventsExists);
+
+    				// start service
+    				Intent eventsServiceIntent = new Intent(context, EventsService.class);
+    				eventsServiceIntent.putExtra(GlobalData.EXTRA_BROADCAST_RECEIVER_TYPE, BROADCAST_RECEIVER_TYPE);
+    				startWakefulService(context, eventsServiceIntent);
+    			}
+    			
+	        	if (!connected)
+	        	{
+	        		if ((!BluetoothScanAlarmBroadcastReceiver.getBluetoothEnabledForScan(context)) &&
+			        	(!GlobalData.getEventsBlocked(context)))
+			        {
+						// rescan bluetooth
+						BluetoothScanAlarmBroadcastReceiver.sendBroadcast(context);
+			        }
+	        		else
+	        		{
+	        			BluetoothScanAlarmBroadcastReceiver.setBluetoothEnabledForScan(context, false);
+	        		}
+	        	}
+				
+			}    
 		}
 	}
 

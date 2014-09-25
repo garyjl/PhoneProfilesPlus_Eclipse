@@ -94,12 +94,12 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
 						{
 					        lock(context, bluetooth); // lock wakeLock and wifiLock, then scan.
 					                       // unlock() is then called at the end of the onReceive function of WifiScanBroadcastReceiver
+					    	initTmpScanResults();
 		    				setStartScan(context, bluetooth.startDiscovery());
 						}
 				    }
 				    else
 				    {
-				    	initTmpScanResults();
 	    				setStartScan(context, false);
 	    				setBluetoothEnabledForScan(context, false);
 				    }
@@ -200,7 +200,7 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
 
     	try {
             //wakeLock.acquire();
-		//	GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.lock","xxx");
+		//	GlobalData.logE("@@@ BluetoothScanAlarmBroadcastReceiver.lock","xxx");
         } catch(Exception e) {
             Log.e("BluetoothScanAlarmBroadcastReceiver.lock", "Error getting Lock: "+e.getMessage());
         }
@@ -211,7 +211,7 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
     	
         /*if ((wakeLock != null) && (wakeLock.isHeld()))
             wakeLock.release();*/
-		//GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.unlock","xxx");
+		//GlobalData.logE("@@@ BluetoothScanAlarmBroadcastReceiver.unlock","xxx");
     }
     
     public static void sendBroadcast(Context context)

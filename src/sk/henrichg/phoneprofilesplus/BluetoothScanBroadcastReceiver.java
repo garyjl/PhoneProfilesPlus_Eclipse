@@ -33,8 +33,6 @@ public class BluetoothScanBroadcastReceiver extends WakefulBroadcastReceiver {
 			{
 				GlobalData.logE("@@@ BluetoothScanBroadcastReceiver.onReceive","xxx");
 
-				//BluetoothScanAlarmBroadcastReceiver.scanResults = WifiScanAlarmBroadcastReceiver.wifi.getScanResults();
-				
 				String action = intent.getAction();
 				
 				// When discovery finds a device
@@ -76,7 +74,7 @@ public class BluetoothScanBroadcastReceiver extends WakefulBroadcastReceiver {
 
 					if (BluetoothScanAlarmBroadcastReceiver.getBluetoothEnabledForScan(context))
 					{
-						GlobalData.logE("@@@ BluetoothScanBroadcastReceiver.onReceive","disable wifi");
+						GlobalData.logE("@@@ BluetoothScanBroadcastReceiver.onReceive","disable bluetooth");
 						BluetoothScanAlarmBroadcastReceiver.bluetooth.disable();
 					}
 
@@ -85,14 +83,14 @@ public class BluetoothScanBroadcastReceiver extends WakefulBroadcastReceiver {
 						return;
 					
 					/*
-					boolean wifiEventsExists = false;
+					boolean bluetoothEventsExists = false;
 					
 					DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
-					wifiEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_WIFIINFRONT) > 0;
-					GlobalData.logE("WifiScanBroadcastReceiver.onReceive","wifiEventsExists="+wifiEventsExists);
+					bluetoothEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_BLUETOOTHINFRONT) > 0;
+					GlobalData.logE("BluetoothScanBroadcastReceiver.onReceive","bluetoothEventsExists="+bluetoothEventsExists);
 					dataWrapper.invalidateDataWrapper();
 		
-					if (wifiEventsExists)
+					if (bluetoothEventsExists)
 					{*/
 						// start service
 						Intent eventsServiceIntent = new Intent(context, EventsService.class);

@@ -20,6 +20,7 @@ public class PhoneProfilesPreferencesActivity extends ActionBarActivity
 	private String activeLanguage;
 	private String activeTheme;
 	private int wifiScanInterval;
+	private int bluetoothScanInterval;
 	//private String activeBackgroundProfile;
 
 	private boolean invalidateEditor = false;
@@ -48,7 +49,8 @@ public class PhoneProfilesPreferencesActivity extends ActionBarActivity
         activeTheme = preferences.getString(GlobalData.PREF_APPLICATION_THEME, "light");
         showEditorPrefIndicator = preferences.getBoolean(GlobalData.PREF_APPLICATION_EDITOR_PREF_INDICATOR, true);
         showEditorHeader = preferences.getBoolean(GlobalData.PREF_APPLICATION_EDITOR_HEADER, true);
-        wifiScanInterval = Integer.valueOf(preferences.getString(GlobalData.PREF_APPLICATION_EVENT_WIFI_SCAN_INTERVAL, "5"));
+        wifiScanInterval = Integer.valueOf(preferences.getString(GlobalData.PREF_APPLICATION_EVENT_WIFI_SCAN_INTERVAL, "10"));
+        bluetoothScanInterval = Integer.valueOf(preferences.getString(GlobalData.PREF_APPLICATION_EVENT_BLUETOOTH_SCAN_INTERVAL, "10"));
 		
 		if (savedInstanceState == null) {
 			PhoneProfilesPreferencesFragment fragment = new PhoneProfilesPreferencesFragment();
@@ -147,6 +149,12 @@ public class PhoneProfilesPreferencesActivity extends ActionBarActivity
 		{
 			if (WifiScanAlarmBroadcastReceiver.isAlarmSet(getApplicationContext()))
 				WifiScanAlarmBroadcastReceiver.setAlarm(getApplicationContext());
+		}
+
+		if (bluetoothScanInterval != GlobalData.applicationEventBluetoothScanInterval)
+		{
+			if (BluetoothScanAlarmBroadcastReceiver.isAlarmSet(getApplicationContext()))
+				BluetoothScanAlarmBroadcastReceiver.setAlarm(getApplicationContext());
 		}
 		
 		/*

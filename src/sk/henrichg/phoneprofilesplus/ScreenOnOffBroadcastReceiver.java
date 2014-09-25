@@ -36,10 +36,8 @@ public class ScreenOnOffBroadcastReceiver extends WakefulBroadcastReceiver {
 			{
 				// send broadcast for one wifi scan
 				boolean wifiEventsExists = false;
-				
 				wifiEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_WIFIINFRONT) > 0;
 				GlobalData.logE("ScreenOnOffBroadcastReceiver.onReceive","wifiEventsExists="+wifiEventsExists);
-	
 				if (wifiEventsExists && (!GlobalData.getEventsBlocked(context)))
 				{
 					//if (WifiScanAlarmBroadcastReceiver.isAlarmSet(context))
@@ -47,6 +45,19 @@ public class ScreenOnOffBroadcastReceiver extends WakefulBroadcastReceiver {
 					//	// alarm is set = wifi scanning is ON
 						// rescan wifi
 						WifiScanAlarmBroadcastReceiver.sendBroadcast(context);
+					//}
+				}
+				// send broadcast for one bluetooth scan
+				boolean bluetoothEventsExists = false;
+				bluetoothEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_BLUETOOTHINFRONT) > 0;
+				GlobalData.logE("ScreenOnOffBroadcastReceiver.onReceive","bluetoothEventsExists="+bluetoothEventsExists);
+				if (bluetoothEventsExists && (!GlobalData.getEventsBlocked(context)))
+				{
+					//if (BluetoothScanAlarmBroadcastReceiver.isAlarmSet(context))
+					//{	
+					//	// alarm is set = bluetooth scanning is ON
+						// rescan bluetooth
+						BluetoothScanAlarmBroadcastReceiver.sendBroadcast(context);
 					//}
 				}
 			}
