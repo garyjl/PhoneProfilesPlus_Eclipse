@@ -31,7 +31,7 @@ public class GlobalData extends Application {
 	static String PACKAGE_NAME;
 	
 	public static boolean logIntoLogCat = true;
-	public static boolean logIntoFile = false;
+	public static boolean logIntoFile = true;
 /*	public static String logFilterTags = "@@@ BatteryEventBroadcastReceiver|"+
 										 "@@@ CalendarProviderChangedBroadcastReceiver|"+
 										 "@@@ EventsCalendarBroadcastReceiver|"+
@@ -49,7 +49,7 @@ public class GlobalData extends Application {
 										 "@@@ EventsService|"+
 										 "@@@ Event"
 			;*/
-	public static String logFilterTags = "BluetoothConnectionBroadcastReceiver"
+	public static String logFilterTags = "@@@ Event"
 			;
 	
 	

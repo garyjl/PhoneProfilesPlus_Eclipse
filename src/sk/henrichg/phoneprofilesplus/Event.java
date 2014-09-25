@@ -558,7 +558,8 @@ public class Event {
 		if (_forceRun)
 			GlobalData.setForceRunEventRunning(dataWrapper.context, true);
 		
-		GlobalData.logE("Event.startEvent","event_id="+this._id+"-----------------------------------");
+		GlobalData.logE("@@@ Event.startEvent","event_id="+this._id+"-----------------------------------");
+		GlobalData.logE("@@@ Event.startEvent","-- event_name="+this._name);
 		
 		EventTimeline eventTimeline;		
 		
@@ -757,7 +758,8 @@ public class Event {
 		// unblock temporary paused event
 		dataWrapper.setEventBlocked(this, false);
 
-		GlobalData.logE("Event.pauseEvent","event_id="+this._id+"-----------------------------------");
+		GlobalData.logE("@@@ Event.pauseEvent","event_id="+this._id+"-----------------------------------");
+		GlobalData.logE("@@@ Event.pauseEvent","-- event_name="+this._name);
 		
 		int timeLineSize = eventTimelineList.size();
 		
@@ -871,7 +873,8 @@ public class Event {
 			// events are globally stopped
 			return;
 
-		GlobalData.logE("Event.stopEvent","event_id="+this._id+"-----------------------------------");
+		GlobalData.logE("@@@ Event.stopEvent","event_id="+this._id+"-----------------------------------");
+		GlobalData.logE("@@@ Event.stopEvent","-- event_name="+this._name);
 		
 		//if (this._status == ESTATUS_RUNNING)
 		//{
@@ -954,6 +957,8 @@ public class Event {
 							  boolean forStart,
 							  boolean ignoreGlobalPref)
 	{
+		removeDelayAlarm(dataWrapper, forStart);
+
 		if ((!GlobalData.getGlobalEventsRuning(dataWrapper.context)) && (!ignoreGlobalPref))
 			// events are globally stopped
 			return;
@@ -975,8 +980,9 @@ public class Event {
 				// forceRun event is temporary blocked
 				return;
 		}
-		
-		removeDelayAlarm(dataWrapper, forStart);
+
+		GlobalData.logE("@@@ Event.setDelayAlarm","event_id="+this._id+"-----------------------------------");
+		GlobalData.logE("@@@ Event.setDelayAlarm","-- event_name="+this._name);
 		
 		if (this._delayStart > 0)
 		{
@@ -989,9 +995,9 @@ public class Event {
 		    SimpleDateFormat sdf = new SimpleDateFormat("EE d.MM.yyyy HH:mm:ss:S");
 		    String result = sdf.format(alarmTime);
 		    if (forStart)
-		    	GlobalData.logE("@@@ Event.setDelayAlarm","startTime="+result);
+		    	GlobalData.logE("Event.setDelayAlarm","startTime="+result);
 		    else
-		    	GlobalData.logE("@@@ Event.setDelayAlarm","endTime="+result);
+		    	GlobalData.logE("Event.setDelayAlarm","endTime="+result);
 		    
 		    Intent intent = new Intent(dataWrapper.context, EventDelayBroadcastReceiver.class);
 		    intent.putExtra(GlobalData.EXTRA_EVENT_ID, this._id);
@@ -1024,7 +1030,7 @@ public class Event {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(dataWrapper.context.getApplicationContext(), (int) this._id, intent, PendingIntent.FLAG_NO_CREATE);
         if (pendingIntent != null)
         {
-       		GlobalData.logE("@@@ Event.removeDelayAlarm","alarm found");
+       		GlobalData.logE("Event.removeDelayAlarm","alarm found");
         		
         	alarmManager.cancel(pendingIntent);
         	pendingIntent.cancel();
