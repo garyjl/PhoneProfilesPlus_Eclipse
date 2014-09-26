@@ -12,7 +12,7 @@ public class BluetoothConnectionBroadcastReceiver extends WakefulBroadcastReceiv
 
 	public static final String BROADCAST_RECEIVER_TYPE = "bluetoothConnection";
 	
-	public static List<BluetoothDevice> connectedDevices = null;
+	public static List<BluetoothDeviceData> connectedDevices = null;
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -27,7 +27,7 @@ public class BluetoothConnectionBroadcastReceiver extends WakefulBroadcastReceiv
 		if (GlobalData.getGlobalEventsRuning(context))
 		{
 			if (connectedDevices == null)
-				connectedDevices = new ArrayList<BluetoothDevice>();
+				connectedDevices = new ArrayList<BluetoothDeviceData>();
 			
 			String action = intent.getAction();
 			BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
@@ -42,25 +42,25 @@ public class BluetoothConnectionBroadcastReceiver extends WakefulBroadcastReceiv
 				{
 					GlobalData.logE("@@@ BluetoothConnectionBroadcastReceiver.onReceive","Received: Bluetooth Connected");
 					boolean found = false;
-					for (BluetoothDevice _device : connectedDevices)
+					for (BluetoothDeviceData _device : connectedDevices)
 					{
-						if (_device.getAddress().equals(device.getAddress()))
+						if (_device.address.equals(device.getAddress()))
 						{
 							found = true;
 							break;
 						}
 					}
 					if (!found)
-						connectedDevices.add(device);
+						connectedDevices.add(new BluetoothDeviceData(device.getName(), device.getAddress()));
 			    }
 				else
 			    {
 			    	GlobalData.logE("@@@ BluetoothConnectionBroadcastReceiver.onReceive","Received: Bluetooth Disconnected");
 			    	int index = 0;
 			    	boolean found = false;
-					for (BluetoothDevice _device : connectedDevices)
+					for (BluetoothDeviceData _device : connectedDevices)
 					{
-						if (_device.getAddress().equals(device.getAddress()))
+						if (_device.address.equals(device.getAddress()))
 						{
 							found = true;
 							break;
@@ -122,9 +122,9 @@ public class BluetoothConnectionBroadcastReceiver extends WakefulBroadcastReceiv
 			return (connectedDevices != null) && (connectedDevices.size() > 0);
 		else
 		{
-			for (BluetoothDevice _device : connectedDevices)
+			for (BluetoothDeviceData _device : connectedDevices)
 			{
-				if (_device.getName().equals(adapterName))
+				if (_device.name.equals(adapterName))
 					return true;
 			}
 			return false;
@@ -135,10 +135,10 @@ public class BluetoothConnectionBroadcastReceiver extends WakefulBroadcastReceiv
 	{
 		if (isBluetoothConnected(""))
 		{
-			for (BluetoothDevice _device : connectedDevices)
+			for (BluetoothDeviceData _device : connectedDevices)
 			{
 				//TODO dorob isBluetoothAdapterNameNameScanned ked budu polozky
-				if (dataWrapper.getDatabaseHandler().isBluetoothAdapterNameScanned(_device.getName()))
+				if (dataWrapper.getDatabaseHandler().isBluetoothAdapterNameScanned(_device.name))
 					return true;
 			}
 			return false;

@@ -210,12 +210,10 @@
             android:entries="@array/eventBluetoothConnectionTypeArray"
             android:entryValues="@array/eventBluetoothConnectionTypeValues"
             android:dependency="eventBluetoothEnabled" />
-		<EditTextPreference
+		<sk.henrichg.phoneprofilesplus.BluetoothNamePreference
             android:key="eventBluetoothAdapterNAME"
             android:summary="@string/event_preferences_bluetooth_adapter_name"
             android:title="@string/event_preferences_bluetooth_adapter_name"
-            android:inputType="textNoSuggestions"
-            android:selectAllOnFocus="true"
             android:dependency="eventBluetoothEnabled" />
 	</PreferenceCategory>
     <PreferenceCategory

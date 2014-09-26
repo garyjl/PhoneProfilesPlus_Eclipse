@@ -98,7 +98,7 @@ public class NumberPickerPreference extends DialogPreference {
         if (positiveResult) {
         	mNumberPicker.clearFocus();
 
-        	String value = String.valueOf(mNumberPicker.getValue());
+        	value = String.valueOf(mNumberPicker.getValue());
         	
     		if (callChangeListener(value))
     		{
@@ -111,8 +111,8 @@ public class NumberPickerPreference extends DialogPreference {
     @Override 
     protected Object onGetDefaultValue(TypedArray ta, int index)
     {
-        String defaultValue = ta.getString(index);
-        return defaultValue;
+		super.onGetDefaultValue(ta, index);
+        return ta.getString(index);
     }
 
     @Override

@@ -41,18 +41,18 @@ public class BluetoothScanBroadcastReceiver extends WakefulBroadcastReceiver {
 	                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 	            	
 	            	if (BluetoothScanAlarmBroadcastReceiver.tmpScanResults == null)
-	            		BluetoothScanAlarmBroadcastReceiver.tmpScanResults = new ArrayList<BluetoothDevice>();
+	            		BluetoothScanAlarmBroadcastReceiver.tmpScanResults = new ArrayList<BluetoothDeviceData>();
 					boolean found = false;
-					for (BluetoothDevice _device : BluetoothScanAlarmBroadcastReceiver.tmpScanResults)
+					for (BluetoothDeviceData _device : BluetoothScanAlarmBroadcastReceiver.tmpScanResults)
 					{
-						if (_device.getAddress().equals(device.getAddress()))
+						if (_device.address.equals(device.getAddress()))
 						{
 							found = true;
 							break;
 						}
 					}
 					if (!found)
-						BluetoothScanAlarmBroadcastReceiver.tmpScanResults.add(device);
+						BluetoothScanAlarmBroadcastReceiver.tmpScanResults.add(new BluetoothDeviceData(device.getName(), device.getAddress()));
 	            }
 	            else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action))
 	            {

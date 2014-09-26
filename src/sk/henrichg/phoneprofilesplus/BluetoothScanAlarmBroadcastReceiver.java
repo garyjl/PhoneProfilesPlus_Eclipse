@@ -24,8 +24,8 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
 
 	public static BluetoothAdapter bluetooth = null;
 
-	public static List<BluetoothDevice> tmpScanResults = null;
-	public static List<BluetoothDevice> scanResults = null;
+	public static List<BluetoothDeviceData> tmpScanResults = null;
+	public static List<BluetoothDeviceData> scanResults = null;
 	
 	public void onReceive(Context context, Intent intent) {
 		
@@ -35,7 +35,7 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
 			bluetooth = (BluetoothAdapter) BluetoothAdapter.getDefaultAdapter();
 		
 		if (scanResults == null)
-			scanResults = new ArrayList<BluetoothDevice>();
+			scanResults = new ArrayList<BluetoothDeviceData>();
 		
 		// disabled for firstStartEvents
 		//if (!GlobalData.getApplicationStarted(context))
@@ -239,7 +239,7 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		if (tmpScanResults != null)
 			tmpScanResults.clear();
 		else
-			tmpScanResults = new ArrayList<BluetoothDevice>();
+			tmpScanResults = new ArrayList<BluetoothDeviceData>();
 	}
 
 	static public boolean getBluetoothEnabledForScan(Context context)

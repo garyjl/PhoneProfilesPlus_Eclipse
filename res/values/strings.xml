@@ -409,5 +409,6 @@
 	<string name="phone_profiles_pref_applicationEventBluetoothScanInterval">Bluetooth scan interval (min)</string>
 	<string name="phone_profiles_pref_applicationEventBluetoothEnableBluetooth">Enable Bluetooth</string>
 	
-    				
+	<string name="bluetooth_name_pref_dlg_rescan_button">Rescan</string>
+					
 </resources>
