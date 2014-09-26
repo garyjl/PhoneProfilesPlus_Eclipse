@@ -250,6 +250,7 @@
 		<CheckBoxPreference 
 		    android:key="eventScreenWhenUnlocked"
 		    android:title="@string/event_preferences_screen_start_when_unlocked"
-		    android:defaultValue="false" />
+		    android:defaultValue="false"
+            android:dependency="eventScreenEnabled" />
 	</PreferenceCategory>
 </PreferenceScreen>    
