@@ -49,9 +49,7 @@ public class GlobalData extends Application {
 										 "@@@ EventsService|"+
 										 "@@@ Event"
 			;*/
-	public static String logFilterTags = "@@@ Event|"+
-			"BluetoothScanBroadcastReceiver|"+
-			"BluetoothScanAlarmBroadcastReceiver"
+	public static String logFilterTags = "@@@ Event"
 			;
 	
 	

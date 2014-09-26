@@ -188,12 +188,10 @@
             android:entries="@array/eventWifiConnectionTypeArray"
             android:entryValues="@array/eventWifiConnectionTypeValues"
             android:dependency="eventWiFiEnabled" />
-		<EditTextPreference
+		<sk.henrichg.phoneprofilesplus.WifiSSIDPreference
             android:key="eventWiFiSSID"
             android:summary="@string/event_preferences_wifi_ssid"
             android:title="@string/event_preferences_wifi_ssid"
-            android:inputType="textNoSuggestions"
-            android:selectAllOnFocus="true"
             android:dependency="eventWiFiEnabled" />
 	</PreferenceCategory>
     <PreferenceCategory

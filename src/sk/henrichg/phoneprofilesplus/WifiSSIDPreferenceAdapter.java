@@ -1,6 +1,5 @@
 package sk.henrichg.phoneprofilesplus;
 
-import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,14 +8,14 @@ import android.widget.BaseAdapter;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-public class BluetoothNamePreferenceAdapter extends BaseAdapter 
+public class WifiSSIDPreferenceAdapter extends BaseAdapter 
 {
-	BluetoothNamePreference preference;
+	WifiSSIDPreference preference;
 	
     private LayoutInflater inflater;
     //private Context context;
 
-    public BluetoothNamePreferenceAdapter(Context context, BluetoothNamePreference preference) 
+    public WifiSSIDPreferenceAdapter(Context context, WifiSSIDPreference preference) 
     {
     	this.preference = preference;
     	
@@ -26,11 +25,11 @@ public class BluetoothNamePreferenceAdapter extends BaseAdapter
     }
 
 	public int getCount() {
-		return preference.bluetoothList.size();
+		return preference.SSIDList.size();
 	}
 
 	public Object getItem(int position) {
-		return preference.bluetoothList.get(position); 
+		return preference.SSIDList.get(position); 
 	}
 
 	public long getItemId(int position) {
@@ -38,15 +37,15 @@ public class BluetoothNamePreferenceAdapter extends BaseAdapter
 	}
     
 	static class ViewHolder {
-		  TextView bluetoothName;
+		  TextView SSIDName;
 		  RadioButton radioBtn;
 		  int position;
 		}
 	
     public View getView(int position, View convertView, ViewGroup parent)
     {
-        // BluetoothDevice to display
-        BluetoothDeviceData bluetoothDevice = preference.bluetoothList.get(position);
+        // SSID to display
+        WifiSSIDData wifiSSID = preference.SSIDList.get(position);
         //System.out.println(String.valueOf(position));
 
 		ViewHolder holder;
@@ -54,10 +53,10 @@ public class BluetoothNamePreferenceAdapter extends BaseAdapter
 		View vi = convertView;
 		if (convertView == null)
 		{
-      		vi = inflater.inflate(R.layout.bluetooth_name_preference_list_item, parent, false);
+      		vi = inflater.inflate(R.layout.wifi_ssid_preference_list_item, parent, false);
       		holder = new ViewHolder();
-  			holder.bluetoothName = (TextView)vi.findViewById(R.id.bluetooth_name_pref_dlg_item_label);
-	        holder.radioBtn = (RadioButton)vi.findViewById(R.id.bluetooth_name_pref_dlg_item_radiobtn);
+  			holder.SSIDName = (TextView)vi.findViewById(R.id.wifi_ssid_pref_dlg_item_label);
+	        holder.radioBtn = (RadioButton)vi.findViewById(R.id.wifi_ssid_pref_dlg_item_radiobtn);
   			vi.setTag(holder);        
 		}
 		else
@@ -65,18 +64,18 @@ public class BluetoothNamePreferenceAdapter extends BaseAdapter
 			holder = (ViewHolder)vi.getTag();
 		}
 		
-		holder.bluetoothName.setText(bluetoothDevice.name);
+		holder.SSIDName.setText(wifiSSID.ssid);
 
 		holder.radioBtn.setTag(position);
-    	holder.radioBtn.setChecked(bluetoothDevice.name.equals(preference.getBluetoothName()));
+    	holder.radioBtn.setChecked(wifiSSID.ssid.equals(preference.getSSID()));
     	holder.radioBtn.setOnClickListener(new View.OnClickListener()
     	{
             public void onClick(View v) {
             	RadioButton rb = (RadioButton) v;
             	
             	int index = (Integer)rb.getTag();
-            	String bluetoothName = preference.bluetoothList.get(index).name;
-            	preference.setBluetoothName(bluetoothName);
+            	String ssid = preference.SSIDList.get(index).ssid;
+            	preference.setSSID(ssid);
             }
         });
     	

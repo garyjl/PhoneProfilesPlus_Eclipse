@@ -410,5 +410,6 @@
 	<string name="phone_profiles_pref_applicationEventBluetoothEnableBluetooth">Enable Bluetooth</string>
 	
 	<string name="bluetooth_name_pref_dlg_rescan_button">Rescan</string>
-					
+	<string name="wifi_ssid_pref_dlg_rescan_button">Rescan</string>
+						
 </resources>

@@ -97,6 +97,7 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 						else
 							isWifiEnabled = enableWifi(dataWrapper, wifi);
 						
+						
 						if (isWifiEnabled && ((!GlobalData.getEventsBlocked(context)) || GlobalData.getForceOneWifiScan(context)))
 						{
 					        lock(context, wifi); // lock wakeLock and wifiLock, then scan.
