@@ -58,7 +58,7 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 				wifiEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_WIFIINFRONT) > 0;
 				GlobalData.logE("WifiScanAlarmBroadcastReceiver.onReceive","wifiEventsExists="+wifiEventsExists);
 	
-				if (wifiEventsExists)
+				if (wifiEventsExists || GlobalData.getForceOneWifiScan(context))
 				{
 					boolean isWifiEnabled = wifi.getWifiState() == WifiManager.WIFI_STATE_ENABLED;
 					isWifiEnabled = isWifiEnabled || GlobalData.applicationEventWifiEnableWifi;
@@ -97,7 +97,7 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 						else
 							isWifiEnabled = enableWifi(dataWrapper, wifi);
 						
-						if (isWifiEnabled && (!GlobalData.getEventsBlocked(context)))
+						if (isWifiEnabled && ((!GlobalData.getEventsBlocked(context)) || GlobalData.getForceOneWifiScan(context)))
 						{
 					        lock(context, wifi); // lock wakeLock and wifiLock, then scan.
 					                       // unlock() is then called at the end of the onReceive function of WifiScanBroadcastReceiver
@@ -263,22 +263,22 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 	@SuppressLint("NewApi")
 	private static boolean enableWifi(DataWrapper dataWrapper, WifiManager wifi)
     {
-    	if (GlobalData.applicationEventWifiEnableWifi)
-    	{
-    		boolean isAirplaneMode;
-        	if (android.os.Build.VERSION.SDK_INT >= 17)
-        		isAirplaneMode = Settings.Global.getInt(dataWrapper.context.getContentResolver(), Global.AIRPLANE_MODE_ON, 0) != 0;
-        	else
-        		isAirplaneMode = Settings.System.getInt(dataWrapper.context.getContentResolver(), Settings.System.AIRPLANE_MODE_ON, 0) != 0;
-    		if (!isAirplaneMode)
-    		{
-				boolean isWifiEnabled = wifi.getWifiState() == WifiManager.WIFI_STATE_ENABLED;
-		    	if (android.os.Build.VERSION.SDK_INT >= 18)
-		    		isWifiEnabled = isWifiEnabled || (wifi.isScanAlwaysAvailable());
-		    	if (!isWifiEnabled)
-		    	{
+		boolean isAirplaneMode;
+    	if (android.os.Build.VERSION.SDK_INT >= 17)
+    		isAirplaneMode = Settings.Global.getInt(dataWrapper.context.getContentResolver(), Global.AIRPLANE_MODE_ON, 0) != 0;
+    	else
+    		isAirplaneMode = Settings.System.getInt(dataWrapper.context.getContentResolver(), Settings.System.AIRPLANE_MODE_ON, 0) != 0;
+		if (!isAirplaneMode)
+		{
+			boolean isWifiEnabled = wifi.getWifiState() == WifiManager.WIFI_STATE_ENABLED;
+	    	if (android.os.Build.VERSION.SDK_INT >= 18)
+	    		isWifiEnabled = isWifiEnabled || (wifi.isScanAlwaysAvailable());
+	    	if (!isWifiEnabled)
+	    	{
+	        	if (GlobalData.applicationEventWifiEnableWifi)
+	        	{
 					boolean wifiEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_WIFIINFRONT) > 0;
-
+	
 					if (wifiEventsExists)
 					{
 			        	GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.enableWifi","enable");
@@ -286,10 +286,13 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 						setWifiEnabledForScan(dataWrapper.context, true);
 						return true;
 					}
-		    	}
-		    	else
-		    		return true;
-    		}
+	        	}
+	    	}
+	    	else
+	    	{
+				setWifiEnabledForScan(dataWrapper.context, true);
+	    		return true;
+	    	}
     	}
 
     	setWifiEnabledForScan(dataWrapper.context, false);

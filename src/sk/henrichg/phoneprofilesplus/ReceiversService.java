@@ -49,6 +49,7 @@ public class ReceiversService extends Service {
 		registerReceiver(screenOnOffReceiver, intentFilter5);
 		
 		IntentFilter intentFilter6 = new IntentFilter();		
+		intentFilter6.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
 		intentFilter6.addAction(BluetoothDevice.ACTION_FOUND);
 		intentFilter6.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
 		registerReceiver(bluetoothScanReceiver, intentFilter6);		

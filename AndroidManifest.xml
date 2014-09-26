@@ -328,6 +328,10 @@
 		        <action android:name="android.bluetooth.device.action.ACL_DISCONNECT_REQUESTED" />           
 	        </intent-filter>  
     	</receiver>        				
+        <receiver android:name=".BluetoothScanAlarmBroadcastReceiver"
+	        android:enabled="true" 
+	        android:exported="false">
+        </receiver>
 	</application>
 
 </manifest>

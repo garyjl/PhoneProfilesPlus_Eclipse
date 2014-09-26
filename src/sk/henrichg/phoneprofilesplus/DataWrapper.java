@@ -724,6 +724,9 @@ public class DataWrapper {
 
 		removeAllEventDelays();
 		
+		GlobalData.setForceOneWifiScan(context, false);
+		GlobalData.setForceOneBluetoothScan(context, false);
+		
 		WifiScanAlarmBroadcastReceiver.initialize(context);
 		WifiScanAlarmBroadcastReceiver.setAlarm(context);
 		BluetoothScanAlarmBroadcastReceiver.initialize(context);

@@ -34,14 +34,22 @@ public class BluetoothScanBroadcastReceiver extends WakefulBroadcastReceiver {
 				GlobalData.logE("@@@ BluetoothScanBroadcastReceiver.onReceive","xxx");
 
 				String action = intent.getAction();
+
+				GlobalData.logE("@@@ BluetoothScanBroadcastReceiver.onReceive","action="+action);
 				
-				// When discovery finds a device
-	            if (BluetoothDevice.ACTION_FOUND.equals(action))
+	            if (BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action))
 	            {
-	                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-	            	
 	            	if (BluetoothScanAlarmBroadcastReceiver.tmpScanResults == null)
 	            		BluetoothScanAlarmBroadcastReceiver.tmpScanResults = new ArrayList<BluetoothDeviceData>();
+	            	else
+	            		BluetoothScanAlarmBroadcastReceiver.tmpScanResults.clear();
+	            }
+	            else if (BluetoothDevice.ACTION_FOUND.equals(action))
+	            {
+					// When discovery finds a device
+
+	            	BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+	            	
 					boolean found = false;
 					for (BluetoothDeviceData _device : BluetoothScanAlarmBroadcastReceiver.tmpScanResults)
 					{
@@ -52,14 +60,21 @@ public class BluetoothScanBroadcastReceiver extends WakefulBroadcastReceiver {
 						}
 					}
 					if (!found)
+					{
 						BluetoothScanAlarmBroadcastReceiver.tmpScanResults.add(new BluetoothDeviceData(device.getName(), device.getAddress()));
+						GlobalData.logE("@@@ BluetoothScanBroadcastReceiver.onReceive","deviceName="+device.getName());
+					}
 	            }
 	            else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action))
 	            {
 					BluetoothScanAlarmBroadcastReceiver.unlock();
 					
 					BluetoothScanAlarmBroadcastReceiver.scanResults.clear();
-					BluetoothScanAlarmBroadcastReceiver.scanResults.addAll(BluetoothScanAlarmBroadcastReceiver.tmpScanResults);
+					for (BluetoothDeviceData device : BluetoothScanAlarmBroadcastReceiver.tmpScanResults)
+					{
+						BluetoothScanAlarmBroadcastReceiver.scanResults.add(new BluetoothDeviceData(device.name, device.address));
+					}
+					//BluetoothScanAlarmBroadcastReceiver.scanResults.addAll(BluetoothScanAlarmBroadcastReceiver.tmpScanResults);
 					BluetoothScanAlarmBroadcastReceiver.tmpScanResults.clear();
 
 					/*
@@ -81,32 +96,25 @@ public class BluetoothScanBroadcastReceiver extends WakefulBroadcastReceiver {
 					if (!GlobalData.getApplicationStarted(context))
 						// application is not started
 						return;
-					
-					/*
-					boolean bluetoothEventsExists = false;
-					
-					DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
-					bluetoothEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_BLUETOOTHINFRONT) > 0;
-					GlobalData.logE("BluetoothScanBroadcastReceiver.onReceive","bluetoothEventsExists="+bluetoothEventsExists);
-					dataWrapper.invalidateDataWrapper();
-		
-					if (bluetoothEventsExists)
-					{*/
+
+					if (!GlobalData.getForceOneBluetoothScan(context)) // not start service for force scan
+					{
 						// start service
 						Intent eventsServiceIntent = new Intent(context, EventsService.class);
 						eventsServiceIntent.putExtra(GlobalData.EXTRA_BROADCAST_RECEIVER_TYPE, BROADCAST_RECEIVER_TYPE);
 						startWakefulService(context, eventsServiceIntent);
-					//}
-	            
+					}
+
+					BluetoothScanAlarmBroadcastReceiver.unlock();
+					BluetoothScanAlarmBroadcastReceiver.setStartScan(context, false);
+					GlobalData.setForceOneBluetoothScan(context, false);
+					
 	            }				
 				
 			}
 
 		}
 		
-		BluetoothScanAlarmBroadcastReceiver.unlock();
-		BluetoothScanAlarmBroadcastReceiver.setStartScan(context, false);
-
 		GlobalData.logE("@@@ BluetoothScanBroadcastReceiver.onReceive","----- end");
 		
 	}
