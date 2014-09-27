@@ -37,6 +37,8 @@ public class WifiSSIDPreference extends DialogPreference {
 	private ListView SSIDListView;
 	private WifiSSIDPreferenceAdapter listAdapter;
 	
+	private AsyncTask<Void, Integer, Void> rescanAsincTask; 
+	
     public WifiSSIDPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         
@@ -92,6 +94,9 @@ public class WifiSSIDPreference extends DialogPreference {
 
     @Override
     protected void onDialogClosed(boolean positiveResult) {
+    	if (!rescanAsincTask.isCancelled())
+    		rescanAsincTask.cancel(true);
+    	
     	if (!isWifiEnabled)
     		wifiManager.setWifiEnabled(false);
     	
@@ -144,7 +149,7 @@ public class WifiSSIDPreference extends DialogPreference {
     {
     	final boolean _forRescan = forRescan;
     	
-		new AsyncTask<Void, Integer, Void>() {
+    	rescanAsincTask = new AsyncTask<Void, Integer, Void>() {
 
 			@Override
 			protected void onPreExecute()
@@ -167,6 +172,13 @@ public class WifiSSIDPreference extends DialogPreference {
 				    }
 				}
 				
+				if (isCancelled())
+				{
+					if (!isWifiEnabled)
+			    		wifiManager.setWifiEnabled(false);
+					return null;
+				}
+				
 				SSIDList.clear();
 				
 				List<WifiConfiguration> wifiConfigurationList = wifiManager.getConfiguredNetworks();
@@ -185,6 +197,9 @@ public class WifiSSIDPreference extends DialogPreference {
 		        {
 		        	for (int i = 0; i < 5 * 10; i++) // 10 seconds for wifi scan
 		        	{
+		        		if (isCancelled())
+		        			break;
+		        		
 				        try {
 				        	Thread.sleep(200);
 					    } catch (InterruptedException e) {
@@ -195,6 +210,13 @@ public class WifiSSIDPreference extends DialogPreference {
 		        	}
 		        	GlobalData.setForceOneWifiScan(context, false);
 		        }
+		        
+				if (isCancelled())
+				{
+					if (!isWifiEnabled)
+			    		wifiManager.setWifiEnabled(false);
+					return null;
+				}
 
 		        if (WifiScanAlarmBroadcastReceiver.scanResults != null)
 		        {
@@ -242,7 +264,9 @@ public class WifiSSIDPreference extends DialogPreference {
 				}
 			}
 			
-		}.execute();
+		};
+		
+		rescanAsincTask.execute();
     }
     
 }

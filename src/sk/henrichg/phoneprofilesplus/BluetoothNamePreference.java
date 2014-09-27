@@ -39,6 +39,8 @@ public class BluetoothNamePreference extends DialogPreference {
 	private ListView bluetoothListView;
 	private BluetoothNamePreferenceAdapter listAdapter;
 	
+	private AsyncTask<Void, Integer, Void> rescanAsincTask; 
+	
     public BluetoothNamePreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         
@@ -94,6 +96,10 @@ public class BluetoothNamePreference extends DialogPreference {
 
     @Override
     protected void onDialogClosed(boolean positiveResult) {
+    	
+    	if (!rescanAsincTask.isCancelled())
+    		rescanAsincTask.cancel(true);
+    	
     	if (!isBluetoothEnabled)
     		bluetooth.disable();
     	
@@ -146,7 +152,7 @@ public class BluetoothNamePreference extends DialogPreference {
     {
     	final boolean _forRescan = forRescan;
     	
-		new AsyncTask<Void, Integer, Void>() {
+		rescanAsincTask = new AsyncTask<Void, Integer, Void>() {
 
 			@Override
 			protected void onPreExecute()
@@ -169,6 +175,13 @@ public class BluetoothNamePreference extends DialogPreference {
 				    }
 				}
 				
+				if (isCancelled())
+				{
+					if (!isBluetoothEnabled)
+			    		bluetooth.disable();
+					return null;
+				}
+				
 				bluetoothList.clear();
 				
 		        Set<BluetoothDevice> boundedDeviced = bluetooth.getBondedDevices();
@@ -184,6 +197,9 @@ public class BluetoothNamePreference extends DialogPreference {
 		        {
 		        	for (int i = 0; i < 5 * 20; i++) // 20 seconds for bluetooth scan
 		        	{
+		        		if (isCancelled())
+		        			break;
+		        		
 				        try {
 				        	Thread.sleep(200);
 					    } catch (InterruptedException e) {
@@ -195,6 +211,13 @@ public class BluetoothNamePreference extends DialogPreference {
 		        	GlobalData.setForceOneBluetoothScan(context, false);
 		        }
 
+				if (isCancelled())
+				{
+					if (!isBluetoothEnabled)
+			    		bluetooth.disable();
+					return null;
+				}
+		        
 		        if (BluetoothScanAlarmBroadcastReceiver.scanResults != null)
 		        {
 			        for (BluetoothDeviceData device : BluetoothScanAlarmBroadcastReceiver.scanResults)
@@ -243,7 +266,9 @@ public class BluetoothNamePreference extends DialogPreference {
 				}
 			}
 			
-		}.execute();
+		};
+		
+		rescanAsincTask.execute();
     }
     
 }
