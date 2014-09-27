@@ -292,7 +292,7 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
 			        	bluetooth.enable();
 						setBluetoothEnabledForScan(dataWrapper.context, true);
 				        try {
-				        	Thread.sleep(1000);
+				        	Thread.sleep(1500);
 					    } catch (InterruptedException e) {
 					        System.out.println(e);
 					    }
