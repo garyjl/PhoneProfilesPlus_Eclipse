@@ -37,7 +37,7 @@ public class WifiSSIDPreference extends DialogPreference {
 	private ListView SSIDListView;
 	private WifiSSIDPreferenceAdapter listAdapter;
 	
-	private AsyncTask<Void, Integer, Void> rescanAsincTask; 
+	private AsyncTask<Void, Integer, Void> rescanAsyncTask; 
 	
     public WifiSSIDPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -94,8 +94,8 @@ public class WifiSSIDPreference extends DialogPreference {
 
     @Override
     protected void onDialogClosed(boolean positiveResult) {
-    	if (!rescanAsincTask.isCancelled())
-    		rescanAsincTask.cancel(true);
+    	if (!rescanAsyncTask.isCancelled())
+    		rescanAsyncTask.cancel(true);
     	
     	if (!isWifiEnabled)
     		wifiManager.setWifiEnabled(false);
@@ -149,7 +149,7 @@ public class WifiSSIDPreference extends DialogPreference {
     {
     	final boolean _forRescan = forRescan;
     	
-    	rescanAsincTask = new AsyncTask<Void, Integer, Void>() {
+    	rescanAsyncTask = new AsyncTask<Void, Integer, Void>() {
 
 			@Override
 			protected void onPreExecute()
@@ -266,7 +266,7 @@ public class WifiSSIDPreference extends DialogPreference {
 			
 		};
 		
-		rescanAsincTask.execute();
+		rescanAsyncTask.execute();
     }
     
 }

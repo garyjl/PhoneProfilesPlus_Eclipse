@@ -39,7 +39,7 @@ public class BluetoothNamePreference extends DialogPreference {
 	private ListView bluetoothListView;
 	private BluetoothNamePreferenceAdapter listAdapter;
 	
-	private AsyncTask<Void, Integer, Void> rescanAsincTask; 
+	private AsyncTask<Void, Integer, Void> rescanAsyncTask; 
 	
     public BluetoothNamePreference(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -97,8 +97,8 @@ public class BluetoothNamePreference extends DialogPreference {
     @Override
     protected void onDialogClosed(boolean positiveResult) {
     	
-    	if (!rescanAsincTask.isCancelled())
-    		rescanAsincTask.cancel(true);
+    	if (!rescanAsyncTask.isCancelled())
+    		rescanAsyncTask.cancel(true);
     	
     	if (!isBluetoothEnabled)
     		bluetooth.disable();
@@ -152,7 +152,7 @@ public class BluetoothNamePreference extends DialogPreference {
     {
     	final boolean _forRescan = forRescan;
     	
-		rescanAsincTask = new AsyncTask<Void, Integer, Void>() {
+		rescanAsyncTask = new AsyncTask<Void, Integer, Void>() {
 
 			@Override
 			protected void onPreExecute()
@@ -268,7 +268,7 @@ public class BluetoothNamePreference extends DialogPreference {
 			
 		};
 		
-		rescanAsincTask.execute();
+		rescanAsyncTask.execute();
     }
     
 }
