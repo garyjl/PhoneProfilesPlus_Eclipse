@@ -68,7 +68,7 @@ public class BluetoothNamePreferenceAdapter extends BaseAdapter
 		holder.bluetoothName.setText(bluetoothDevice.name);
 
 		holder.radioBtn.setTag(position);
-    	holder.radioBtn.setChecked(bluetoothDevice.name.equals(preference.getBluetoothName()));
+		holder.radioBtn.setChecked(bluetoothDevice.name.equals(preference.getBluetoothName()));
     	holder.radioBtn.setOnClickListener(new View.OnClickListener()
     	{
             public void onClick(View v) {

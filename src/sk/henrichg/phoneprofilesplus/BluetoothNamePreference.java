@@ -182,7 +182,7 @@ public class BluetoothNamePreference extends DialogPreference {
 				
 		        if (_forRescan)
 		        {
-		        	for (int i = 0; i < 5 * 13; i++) // 12+1 seconds for bluetooth scan
+		        	for (int i = 0; i < 5 * 20; i++) // 20 seconds for bluetooth scan
 		        	{
 				        try {
 				        	Thread.sleep(200);
@@ -199,17 +199,20 @@ public class BluetoothNamePreference extends DialogPreference {
 		        {
 			        for (BluetoothDeviceData device : BluetoothScanAlarmBroadcastReceiver.scanResults)
 			        {
-			        	boolean exists = false;
-			        	for (BluetoothDeviceData _device : bluetoothList)
+			        	if (!device.name.isEmpty())
 			        	{
-			        		if (_device.name.equals(device.name))
-			        		{
-			        			exists = true;
-			        			break;
-			        		}
+				        	boolean exists = false;
+				        	for (BluetoothDeviceData _device : bluetoothList)
+				        	{
+				        		if (_device.name.equals(device.name))
+				        		{
+				        			exists = true;
+				        			break;
+				        		}
+				        	}
+				        	if (!exists)
+				        		bluetoothList.add(new BluetoothDeviceData(device.name, device.address));
 			        	}
-			        	if (!exists)
-			        		bluetoothList.add(new BluetoothDeviceData(device.name, device.address));
 			        }
 		        }
 

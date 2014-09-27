@@ -68,7 +68,7 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 				    {
 						ConnectivityManager connManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 						NetworkInfo networkInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-						if (networkInfo.isConnected())
+						if (networkInfo.isConnected() && (!GlobalData.getForceOneWifiScan(context)))
 						{
 							GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.onReceive","wifi is connected");
 	
@@ -290,10 +290,7 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 	        	}
 	    	}
 	    	else
-	    	{
-				setWifiEnabledForScan(dataWrapper.context, true);
 	    		return true;
-	    	}
     	}
 
     	setWifiEnabledForScan(dataWrapper.context, false);
