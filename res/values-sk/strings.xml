@@ -398,5 +398,8 @@
 	<string name="event_preferences_bluetooth_connection_type">Typ pripojenia</string>
 	<string name="phone_profiles_pref_applicationEventBluetoothScanInterval">Interval skenovania Bluetooth (min.)</string>
 	<string name="phone_profiles_pref_applicationEventBluetoothEnableBluetooth">Povoľ Bluetooth</string>
-						
+
+	<string name="bluetooth_name_pref_dlg_rescan_button">Preskenovať</string>
+	<string name="wifi_ssid_pref_dlg_rescan_button">Preskenovať</string>
+								
 </resources>

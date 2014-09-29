@@ -396,5 +396,8 @@
 	<string name="event_preferences_bluetooth_connection_type">Verbindungstyp</string>
 	<string name="phone_profiles_pref_applicationEventBluetoothScanInterval">Bluetooth-Scan-Intervall (Minuten)</string>
 	<string name="phone_profiles_pref_applicationEventBluetoothEnableBluetooth">Bluetooth aktivieren</string>
-											    
+				
+	<string name="bluetooth_name_pref_dlg_rescan_button">Neu scannen</string>
+	<string name="wifi_ssid_pref_dlg_rescan_button">Neu scannen</string>
+	
 </resources>

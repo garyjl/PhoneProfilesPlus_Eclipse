@@ -403,4 +403,7 @@
 	<string name="phone_profiles_pref_applicationEventBluetoothScanInterval">Bluetooth интервал опроса (мин)</string>
 	<string name="phone_profiles_pref_applicationEventBluetoothEnableBluetooth">Активировать Bluetooth</string>
 							
+	<string name="bluetooth_name_pref_dlg_rescan_button">Пересканировать</string>
+	<string name="wifi_ssid_pref_dlg_rescan_button">Пересканировать</string>
+		
 </resources>
