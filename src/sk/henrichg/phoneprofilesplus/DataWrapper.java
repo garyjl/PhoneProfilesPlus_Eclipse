@@ -11,7 +11,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.KeyguardManager;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -2116,7 +2115,11 @@ public class DataWrapper {
 
 	public String getSSID(WifiManager wifiManager, ScanResult result)
 	{
-		String SSID = result.SSID.replace("\"", ""); 
+		String SSID;
+		if (result.SSID == null)
+			SSID = "";
+		else
+			SSID = result.SSID.replace("\"", ""); 
 		
 		if (SSID.isEmpty())
 		{

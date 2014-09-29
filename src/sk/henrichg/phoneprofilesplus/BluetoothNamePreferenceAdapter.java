@@ -1,6 +1,5 @@
 package sk.henrichg.phoneprofilesplus;
 
-import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
