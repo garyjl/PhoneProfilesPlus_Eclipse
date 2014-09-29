@@ -304,8 +304,9 @@ public class ProfilePreferencesFragment extends PreferenceListFragment
 			
 			//Log.d("ProfilePreferencesFragment.onActivityResult", picturePath);
 			
-			// nastavime image identifikatoru na ziskanu cestu ku obrazku
-			changedImageViewPreference.setImageIdentifierAndType(picturePath, false);
+			if (changedImageViewPreference != null)
+				// nastavime image identifikatoru na ziskanu cestu ku obrazku
+				changedImageViewPreference.setImageIdentifierAndType(picturePath, false);
 			
 		}
 	}
