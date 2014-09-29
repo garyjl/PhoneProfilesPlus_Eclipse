@@ -2087,7 +2087,10 @@ public class DataWrapper {
 
 	public String getSSID(WifiManager wifiManager, WifiInfo wifiInfo)
 	{
-		String SSID = wifiInfo.getSSID().replace("\"", ""); 
+		String SSID = wifiInfo.getSSID();
+		if (SSID == null)
+			SSID = "";
+		SSID = SSID.replace("\"", ""); 
 		
 		if (SSID.isEmpty())
 		{
