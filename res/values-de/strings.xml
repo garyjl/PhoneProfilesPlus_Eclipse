@@ -385,10 +385,10 @@
 	<string name="array_event_pref_eventScreenEventType_screenOn">Bildschirm an</string>
 	<string name="array_event_pref_eventScreenEventType_screenOff">Bildschirm aus</string>
 
-    <string name="pref_event_screen_startWhenUnlocked">Start when unlocked</string>
-    <string name="pref_event_screen_endWhenUnlocked">End when unlocked</string>
-    <string name="event_preferences_screen_start_when_unlocked">Start when unlocked</string>
-    <string name="event_preferences_screen_end_when_unlocked">End when unlocked</string>
+    <string name="pref_event_screen_startWhenUnlocked">Starten wenn entsperrt</string>
+    <string name="pref_event_screen_endWhenUnlocked">Beenden wenn entsperrt</string>
+    <string name="event_preferences_screen_start_when_unlocked">Starten wenn entsperrt</string>
+    <string name="event_preferences_screen_end_when_unlocked">Beenden wenn entsperrt</string>
 		
     <string name="event_type_bluetooth">Bluetooth</string>
     <string name="event_preferences_category_eventBluetoothParameters">Bluetoothparameter</string>
