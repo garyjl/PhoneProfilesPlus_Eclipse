@@ -10,7 +10,6 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.preference.TwoStatePreference;
-import android.util.Log;
 
 public class PhoneProfilesPreferencesFragment extends PreferenceListFragment 
                                               implements SharedPreferences.OnSharedPreferenceChangeListener
@@ -133,7 +132,7 @@ public class PhoneProfilesPreferencesFragment extends PreferenceListFragment
 		 else {
 			// For all other preferences, set the summary to the value's
 			// simple string representation.
-		    Log.e("PhoneProfilesPreferencesFragment.setSummary",key+"="+stringValue);
+		    //Log.e("PhoneProfilesPreferencesFragment.setSummary",key+"="+stringValue);
 			//preference.setSummary(preference.toString());
 			 preference.setSummary(stringValue);
 		}

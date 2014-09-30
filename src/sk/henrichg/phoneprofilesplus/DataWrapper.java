@@ -32,7 +32,6 @@ import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.telephony.PhoneNumberUtils;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.widget.Toast;
 
 public class DataWrapper {
@@ -1651,7 +1650,7 @@ public class DataWrapper {
 			{
 				KeyguardManager kgMgr = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
 				keyguardShowing = kgMgr.inKeyguardRestrictedInputMode();
-				Log.e("DataWrapper.doEventService", "keyguardShowing="+keyguardShowing);
+				//Log.e("DataWrapper.doEventService", "keyguardShowing="+keyguardShowing);
 			}
 			
 			if (event._eventPreferencesScreen._eventType == EventPreferencesScreen.ETYPE_SCREENON)
