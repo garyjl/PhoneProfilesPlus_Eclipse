@@ -386,6 +386,11 @@
 
     <string name="array_event_pref_eventScreenEventType_screenOn">Zapla sa</string>
 	<string name="array_event_pref_eventScreenEventType_screenOff">Vypla sa</string>
+	
+    <string name="pref_event_screen_startWhenUnlocked">Štart keď je odomknuté</string>
+    <string name="pref_event_screen_endWhenUnlocked">Koniec keď je odomknuté</string>
+    <string name="event_preferences_screen_start_when_unlocked">Štart keď je odomknuté</string>
+    <string name="event_preferences_screen_end_when_unlocked">Koniec keď je odomknuté</string>
 
     <string name="event_type_bluetooth">Bluetooth</string>
     <string name="event_preferences_category_eventBluetoothParameters">Parametre Bluetooth</string>

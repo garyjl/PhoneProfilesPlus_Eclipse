@@ -392,6 +392,7 @@
 
 	<string name="array_event_pref_eventScreenEventType_screenOn">Screen On</string>
 	<string name="array_event_pref_eventScreenEventType_screenOff">Screen Off</string>
+	
     <string name="pref_event_screen_startWhenUnlocked">Start when unlocked</string>
     <string name="pref_event_screen_endWhenUnlocked">End when unlocked</string>
     <string name="event_preferences_screen_start_when_unlocked">Start when unlocked</string>
