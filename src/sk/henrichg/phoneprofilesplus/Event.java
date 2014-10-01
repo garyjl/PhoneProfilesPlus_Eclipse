@@ -536,6 +536,9 @@ public class Event {
 		{
 			// blocked by manual profile activation
 			GlobalData.logE("Event.startEvent","event_id="+this._id+" events blocked");
+			
+			GlobalData.logE("Event.startEvent","event_id="+this._id+" forceRun="+_forceRun);
+			GlobalData.logE("Event.startEvent","event_id="+this._id+" blocked="+_blocked);
 
 			
 			if (!_forceRun)

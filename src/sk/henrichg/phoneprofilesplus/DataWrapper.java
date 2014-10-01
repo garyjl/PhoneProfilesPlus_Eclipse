@@ -654,13 +654,15 @@ public class DataWrapper {
 		
 		for (Event event : getEventList())
 		{
-			//if (event.getStatusFromDB(this) == Event.ESTATUS_RUNNING)
-			//{
-				if (event.getStatusFromDB(this) != Event.ESTATUS_STOP)
-					event.pauseEvent(this, eventTimelineList, false, true, noSetSystemEvent);
+			int status = event.getStatusFromDB(this);
+			if (status != Event.ESTATUS_STOP)
+				event.pauseEvent(this, eventTimelineList, false, true, noSetSystemEvent);
+			if (status == Event.ESTATUS_RUNNING)
+			{
+				// block only running events
 				if (event._forceRun)
 					setEventBlocked(event, blockEvents);
-			//}
+			}
 		}
 
 		GlobalData.setEventsBlocked(context, blockEvents);
@@ -1421,7 +1423,8 @@ public class DataWrapper {
 				{
 					if (event._eventPreferencesCall._callEvent == EventPreferencesCall.CALL_EVENT_RINGING)
 					{
-						if (callEventType == PhoneCallBroadcastReceiver.CALL_EVENT_INCOMING_CALL_RINGING)
+						if ((callEventType == PhoneCallBroadcastReceiver.CALL_EVENT_INCOMING_CALL_RINGING) ||
+							((callEventType == PhoneCallBroadcastReceiver.CALL_EVENT_INCOMING_CALL_ANSWERED)))
 							eventStart = eventStart && true;
 						else
 							callPassed = false;

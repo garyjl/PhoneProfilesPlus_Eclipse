@@ -162,7 +162,7 @@ public class EventsService extends IntentService
 		{
 			// when no events are running or manula activation, activate background profile
 			// when no profile is activated
-			if (!GlobalData.getEventsBlocked(context))
+			if ((!GlobalData.getEventsBlocked(context)) || (GlobalData.getForceRunEventRunning(context)))
 			{
 				// no manual profile activation
 				List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
