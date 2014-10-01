@@ -22,12 +22,6 @@ public class HeadsetConnectionBroadcastReceiver extends WakefulBroadcastReceiver
 	public void onReceive(Context context, Intent intent) {
 		GlobalData.logE("#### HeadsetConnectionBroadcastReceiver.onReceive","xxx");
 
-		if (!GlobalData.getApplicationStarted(context))
-			// application is not started
-			return;
-
-		GlobalData.loadPreferences(context);
-
 		boolean broadcast = false;
 		
 		boolean connectedHeadphones = false;
@@ -76,7 +70,13 @@ public class HeadsetConnectionBroadcastReceiver extends WakefulBroadcastReceiver
 			editor.putBoolean(GlobalData.PREF_EVENT_HEADSET_BLUETOOTH, bluetoothHeadset);
 			editor.commit();
         }
-		
+
+		if (!GlobalData.getApplicationStarted(context))
+			// application is not started
+			return;
+
+		GlobalData.loadPreferences(context);
+        
 		if (GlobalData.getGlobalEventsRuning(context))
 		{
 	        if (broadcast)

@@ -17,6 +17,8 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 		
 			if (GlobalData.getApplicationStarted(context))
 			{
+				GlobalData.setApplicationStarted(context, false);
+				
 				GlobalData.loadPreferences(context);
 				
 				GlobalData.grantRoot(true);
@@ -52,6 +54,8 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 					dataWrapper.firstStartEvents(true, false);
 				else
 				{
+					GlobalData.setApplicationStarted(context, true);
+					
 					if (GlobalData.applicationActivate)
 					{
 						Profile profile = dataWrapper.getDatabaseHandler().getActivatedProfile();

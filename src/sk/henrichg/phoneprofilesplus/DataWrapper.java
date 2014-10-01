@@ -1511,15 +1511,6 @@ public class DataWrapper {
 				boolean headsetMicrophone = preferences.getBoolean(GlobalData.PREF_EVENT_HEADSET_MICROPHONE, false);
 				boolean bluetoothHeadset = preferences.getBoolean(GlobalData.PREF_EVENT_HEADSET_BLUETOOTH, false);
 				
-				if (!headsetConnected)
-				{
-					AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
-					if (audioManager.isWiredHeadsetOn())
-					{
-						headsetConnected = true;
-					}
-				}
-				
 				if (headsetConnected)
 				{
 					if ((event._eventPreferencesPeripherals._peripheralType == EventPreferencesPeripherals.PERIPHERAL_TYPE_WIRED_HEADSET) 
