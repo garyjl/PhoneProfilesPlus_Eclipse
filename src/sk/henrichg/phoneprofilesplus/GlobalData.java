@@ -32,7 +32,7 @@ public class GlobalData extends Application {
 	
 	public static boolean logIntoLogCat = true;
 	public static boolean logIntoFile = true;
-	public static String logFilterTags = //"@@@ BatteryEventBroadcastReceiver|"+
+/*	public static String logFilterTags = //"@@@ BatteryEventBroadcastReceiver|"+
 										 //"@@@ CalendarProviderChangedBroadcastReceiver|"+
 										 //"@@@ EventsCalendarBroadcastReceiver|"+
 										 //"@@@ EventsTimeBroadcastReceiver|"+
@@ -47,10 +47,10 @@ public class GlobalData extends Application {
 										 //"@@@ BootUpReceiver|"+
 										 //"@@@ PackageReplacedReceiver|"+
 										 //"@@@ EventsService|"+
-										 //"@@@ Event"
+										 //"@@@ Event" */
 			;
-	/*public static String logFilterTags = "@@@ Event"
-			;*/
+	public static String logFilterTags = "@@@ Event"
+			;
 	
 	
 	public static final String EXPORT_PATH = "/PhoneProfilesPlus";
