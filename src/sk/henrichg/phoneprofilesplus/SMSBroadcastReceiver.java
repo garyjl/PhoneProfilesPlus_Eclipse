@@ -86,6 +86,9 @@ public class SMSBroadcastReceiver extends WakefulBroadcastReceiver {
 	
 	
 	// Register an observer for listening outgoing sms events.
+	/**
+	 * @author khoanguyen
+	 */
 	static public void registerContentObserver(Context context)
 	{
 		if (observer != null)
