@@ -263,7 +263,7 @@ public class DataWrapper {
 		profileList = null;
 	}
 	
-	private Profile getActivatedProfileFromDB()
+	public Profile getActivatedProfileFromDB()
 	{
 		Profile profile = getDatabaseHandler().getActivatedProfile();
 		if (forGUI && (profile != null))

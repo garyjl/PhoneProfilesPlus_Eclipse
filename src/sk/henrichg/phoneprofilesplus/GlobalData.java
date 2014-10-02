@@ -49,10 +49,7 @@ public class GlobalData extends Application {
 										 //"@@@ EventsService|"+
 										 //"@@@ Event" */
 			;
-	public static String logFilterTags = "@@@ Event|"+
-			"doEventService|"+
-			"startEvent|"+
-			"HeadsetConnectionBroadcastReceiver"
+	public static String logFilterTags = "@@@ Event|"
 			;
 	
 	
