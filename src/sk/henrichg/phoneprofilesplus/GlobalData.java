@@ -49,7 +49,8 @@ public class GlobalData extends Application {
 										 //"@@@ EventsService|"+
 										 //"@@@ Event" */
 			;
-	public static String logFilterTags = "@@@ Event|"
+	public static String logFilterTags = "@@@ Event|"+
+			"SMSBroadcastReceiver"
 			;
 	
 	
