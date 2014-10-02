@@ -1286,6 +1286,10 @@ public class DataWrapper {
 		float batteryPct = 100.0f;
 		
 		boolean phoneNumberFinded = false;
+
+		GlobalData.logE("DataWrapper.doEventService","--- start --------------------------");
+		GlobalData.logE("DataWrapper.doEventService","------- event._id="+event._id);
+		GlobalData.logE("DataWrapper.doEventService","------- event._name="+event._name);
 		
 		if (event._eventPreferencesTime._enabled)
 		{
@@ -1809,6 +1813,8 @@ public class DataWrapper {
 				event.pauseEvent(this, eventTimelineList, true, false, false);
 			}
 		}
+
+		GlobalData.logE("DataWrapper.doEventService","--- end --------------------------");
 		
 		return (timePassed && 
 				batteryPassed && 
