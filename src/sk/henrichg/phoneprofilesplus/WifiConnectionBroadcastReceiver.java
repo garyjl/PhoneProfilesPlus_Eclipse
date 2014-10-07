@@ -34,7 +34,8 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 
 		        	if (info.getState() == NetworkInfo.State.CONNECTED)
 			        {
-		        		if (!GlobalData.getEventsBlocked(context))
+		        		if ((!WifiScanAlarmBroadcastReceiver.getWifiEnabledForScan(context)) &&
+				        	(!GlobalData.getEventsBlocked(context)))
 		        		{
 			        		if (WifiScanAlarmBroadcastReceiver.scanResults == null)
 			        		{

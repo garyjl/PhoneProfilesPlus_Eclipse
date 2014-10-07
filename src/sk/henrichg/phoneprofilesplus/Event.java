@@ -781,19 +781,22 @@ public class Event {
 			eventTimelineList.remove(eventTimeline);
 			dataWrapper.getDatabaseHandler().deleteEventTimeline(eventTimeline);
 	
-			if (eventPosition < (timeLineSize-1))
+			if (eventPosition < (timeLineSize-1)) // event is not in end of timeline and no only one event in timeline
 			{
-				if (eventPosition > 0)
+				if (eventPosition > 0)  // event is not in start of timeline
 				{
+					// get event prior deleted event 
 					EventTimeline _eventTimeline = eventTimelineList.get(eventPosition-1);
 					Event event = dataWrapper.getEventById(_eventTimeline._fkEvent);
+					// set _fkProfileEndActivated for event behind deleted event with _fkProfileStart of deleted event  
 					if (event != null)
 						eventTimelineList.get(eventPosition)._fkProfileEndActivated = event._fkProfileStart;
 					else
 						eventTimelineList.get(eventPosition)._fkProfileEndActivated = 0;
 				}
-				else
+				else // event is in start of timeline
 				{
+					// set _fkProfileEndActivated of first event with _fkProfileEndActivated of deleted event
 					eventTimelineList.get(eventPosition)._fkProfileEndActivated = eventTimeline._fkProfileEndActivated;
 				}
 			}

@@ -74,7 +74,8 @@ public class BluetoothConnectionBroadcastReceiver extends WakefulBroadcastReceiv
 	
 				if (connected)
 				{
-	        		if (!GlobalData.getEventsBlocked(context))
+	        		if ((!BluetoothScanAlarmBroadcastReceiver.getBluetoothEnabledForScan(context)) &&
+			        	(!GlobalData.getEventsBlocked(context)))
 	        		{
 		        		if (BluetoothScanAlarmBroadcastReceiver.scanResults == null)
 		        		{
