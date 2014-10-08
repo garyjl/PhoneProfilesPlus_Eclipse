@@ -8,12 +8,17 @@ import android.preference.PreferenceManager;
 
 public class EventPreferencesSMS extends EventPreferences {
 
+	public int _smsEvent;
 	public String _contacts;
 	public int _contactListType;
 	
 	static final String PREF_EVENT_SMS_ENABLED = "eventSMSEnabled";
+	static final String PREF_EVENT_SMS_EVENT = "eventSMSEvent";
 	static final String PREF_EVENT_SMS_CONTACTS = "eventSMSContacts";
 	static final String PREF_EVENT_SMS_CONTACT_LIST_TYPE = "eventSMSContactListType";
+	
+	static final int SMS_EVENT_INCOMING = 0;
+	static final int SMS_EVENT_OUTGOING = 1;
 	
 	static final int CONTACT_LIST_TYPE_WHITE_LIST = 0;
 	static final int CONTACT_LIST_TYPE_BLACK_LIST = 1;
@@ -21,11 +26,13 @@ public class EventPreferencesSMS extends EventPreferences {
 	
 	public EventPreferencesSMS(Event event, 
 									boolean enabled,
+									int smsEvent,
 									String contacts,
 									int contactListType)
 	{
 		super(event, enabled);
 		
+		this._smsEvent = smsEvent;
 		this._contacts = contacts;
 		this._contactListType = contactListType;
 	}
@@ -34,6 +41,7 @@ public class EventPreferencesSMS extends EventPreferences {
 	public void copyPreferences(Event fromEvent)
 	{
 		this._enabled = ((EventPreferencesSMS)fromEvent._eventPreferencesSMS)._enabled;
+		this._smsEvent = ((EventPreferencesSMS)fromEvent._eventPreferencesSMS)._smsEvent;
 		this._contacts = ((EventPreferencesSMS)fromEvent._eventPreferencesSMS)._contacts;
 		this._contactListType = ((EventPreferencesSMS)fromEvent._eventPreferencesSMS)._contactListType;
 	}
@@ -43,6 +51,7 @@ public class EventPreferencesSMS extends EventPreferences {
 	{
 		Editor editor = preferences.edit();
         editor.putBoolean(PREF_EVENT_SMS_ENABLED, _enabled);
+		editor.putString(PREF_EVENT_SMS_EVENT, String.valueOf(this._smsEvent));
 		editor.putString(PREF_EVENT_SMS_CONTACTS, this._contacts);
 		editor.putString(PREF_EVENT_SMS_CONTACT_LIST_TYPE, String.valueOf(this._contactListType));
 		editor.commit();
@@ -52,6 +61,7 @@ public class EventPreferencesSMS extends EventPreferences {
 	public void saveSharedPrefereces(SharedPreferences preferences)
 	{
 		this._enabled = preferences.getBoolean(PREF_EVENT_SMS_ENABLED, false);
+		this._smsEvent = Integer.parseInt(preferences.getString(PREF_EVENT_SMS_EVENT, "0"));
 		this._contacts = preferences.getString(PREF_EVENT_SMS_CONTACTS, ""); 
 		this._contactListType = Integer.parseInt(preferences.getString(PREF_EVENT_SMS_CONTACT_LIST_TYPE, "0"));
 	}
@@ -65,6 +75,9 @@ public class EventPreferencesSMS extends EventPreferences {
 			descr = descr + context.getString(R.string.event_preferences_not_enabled);
 		else
 		{
+			descr = descr + context.getString(R.string.pref_event_sms_event);
+			String[] smsEvents = context.getResources().getStringArray(R.array.eventSMSEventsArray);
+			descr = descr + ": " + smsEvents[this._smsEvent] + "; ";
 			descr = descr + context.getString(R.string.pref_event_sms_contactListType);
 			String[] cntactListTypes = context.getResources().getStringArray(R.array.eventSMSContactListTypeArray);
 			descr = descr + ": " + cntactListTypes[this._contactListType];
@@ -76,7 +89,7 @@ public class EventPreferencesSMS extends EventPreferences {
 	@Override
 	public void setSummary(PreferenceManager prefMng, String key, String value, Context context)
 	{
-		if (key.equals(PREF_EVENT_SMS_CONTACT_LIST_TYPE))
+		if (key.equals(PREF_EVENT_SMS_EVENT) || key.equals(PREF_EVENT_SMS_CONTACT_LIST_TYPE))
 		{	
 			ListPreference listPreference = (ListPreference)prefMng.findPreference(key);
 			int index = listPreference.findIndexOfValue(value);
@@ -88,7 +101,7 @@ public class EventPreferencesSMS extends EventPreferences {
 	@Override
 	public void setSummary(PreferenceManager prefMng, String key, SharedPreferences preferences, Context context)
 	{
-		if (key.equals(PREF_EVENT_SMS_CONTACT_LIST_TYPE))
+		if (key.equals(PREF_EVENT_SMS_EVENT) || key.equals(PREF_EVENT_SMS_CONTACT_LIST_TYPE))
 		{
 			setSummary(prefMng, key, preferences.getString(key, ""), context);
 		}
@@ -97,6 +110,7 @@ public class EventPreferencesSMS extends EventPreferences {
 	@Override
 	public void setAllSummary(PreferenceManager prefMng, Context context)
 	{
+		setSummary(prefMng, PREF_EVENT_SMS_EVENT, Integer.toString(_smsEvent), context);
 		setSummary(prefMng, PREF_EVENT_SMS_CONTACT_LIST_TYPE, Integer.toString(_contactListType), context);
 	}
 	
