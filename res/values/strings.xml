@@ -387,17 +387,13 @@
     <string name="array_pref_afterProfileDurationDo_undoProfile">Undo the profile</string>
     <string name="array_pref_afterProfileDurationDo_backgroundProfile">Activate Default profile</string>
     <string name="phone_profiles_pref_applicationGridLayout">Grid layout</string>
-
     <string name="menu_help">Help</string>
-
 	<string name="array_event_pref_eventScreenEventType_screenOn">Screen On</string>
 	<string name="array_event_pref_eventScreenEventType_screenOff">Screen Off</string>
-	
     <string name="pref_event_screen_startWhenUnlocked">Start when unlocked</string>
     <string name="pref_event_screen_endWhenUnlocked">End when unlocked</string>
     <string name="event_preferences_screen_start_when_unlocked">Start when unlocked</string>
     <string name="event_preferences_screen_end_when_unlocked">End when unlocked</string>
-    
     <string name="event_type_bluetooth">Bluetooth</string>
     <string name="event_preferences_category_eventBluetoothParameters">Bluetooth parameters</string>
     <string name="event_preferences_bluetooth_enabled">Enable Bluetooth</string>
@@ -409,8 +405,11 @@
 	<string name="event_preferences_bluetooth_connection_type">Connection type</string>
 	<string name="phone_profiles_pref_applicationEventBluetoothScanInterval">Bluetooth scan interval (min)</string>
 	<string name="phone_profiles_pref_applicationEventBluetoothEnableBluetooth">Enable Bluetooth</string>
-	
 	<string name="bluetooth_name_pref_dlg_rescan_button">Rescan</string>
 	<string name="wifi_ssid_pref_dlg_rescan_button">Rescan</string>
-						
+
+    <string name="event_type_sms">SMS</string>
+    <string name="pref_event_sms_contactListType">List</string> 
+    
+    								
 </resources>
