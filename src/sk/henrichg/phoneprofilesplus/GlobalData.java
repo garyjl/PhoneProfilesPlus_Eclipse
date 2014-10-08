@@ -202,6 +202,9 @@ public class GlobalData extends Application {
 	static final String PREF_EVENT_WIFI_ENABLED_FOR_SCAN = "eventWifiEnabledForScan"; 
 	static final String PREF_EVENT_BLUETOOTH_START_SCAN = "eventBluetoothStartScan";
 	static final String PREF_EVENT_BLUETOOTH_ENABLED_FOR_SCAN = "eventBluetoothEnabledForScan"; 
+	static final String PREF_EVENT_SMS_EVENT_TYPE = "eventSMSEventType";
+	static final String PREF_EVENT_SMS_PHONE_NUMBER = "eventSMSPhoneNumber";
+	static final String PREF_EVENT_SMS_DATE = "eventSMSDate";
 	
     public static boolean applicationStartOnBoot;
     public static boolean applicationActivate;

@@ -1,9 +1,12 @@
 package sk.henrichg.phoneprofilesplus;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
@@ -47,6 +50,15 @@ public class SMSBroadcastReceiver extends WakefulBroadcastReceiver {
 		GlobalData.logE("SMSBroadcastReceiver.onReceive","from="+origin);
 		GlobalData.logE("SMSBroadcastReceiver.onReceive","message="+body);
 
+		SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+		Editor editor = preferences.edit();
+		editor.putInt(GlobalData.PREF_EVENT_CALL_EVENT_TYPE, EventPreferencesSMS.SMS_EVENT_INCOMING);
+		editor.putString(GlobalData.PREF_EVENT_CALL_PHONE_NUMBER, origin);
+        Calendar now = Calendar.getInstance();
+		long time = now.getTimeInMillis(); 
+		editor.putLong(GlobalData.PREF_EVENT_SMS_DATE, time);
+		editor.commit();
+		
 		startService(context);
 	}
 	
@@ -128,6 +140,12 @@ public class SMSBroadcastReceiver extends WakefulBroadcastReceiver {
 					GlobalData.logE("SMSBroadcastReceiver.ContentObserver.onChange","date="+date);
 					GlobalData.logE("SMSBroadcastReceiver.ContentObserver.onChange","message="+message);
 					
+					SharedPreferences preferences = _context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+					Editor editor = preferences.edit();
+					editor.putInt(GlobalData.PREF_EVENT_CALL_EVENT_TYPE, EventPreferencesSMS.SMS_EVENT_OUTGOING);
+					editor.putString(GlobalData.PREF_EVENT_CALL_PHONE_NUMBER, to);
+					editor.putLong(GlobalData.PREF_EVENT_SMS_DATE, date.getTime());
+					editor.commit();
 				}
 				cursor.close();
 				
