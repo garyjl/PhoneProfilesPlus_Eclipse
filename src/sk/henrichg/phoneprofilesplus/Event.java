@@ -442,8 +442,8 @@ public class Event {
 		description = _eventPreferencesBattery.getPreferencesDescription(description, context);
 		description = description + "\n";
 		description = _eventPreferencesCall.getPreferencesDescription(description, context);
-		description = description + "\n";
-		description = _eventPreferencesSMS.getPreferencesDescription(description, context);
+		//description = description + "\n";
+		//description = _eventPreferencesSMS.getPreferencesDescription(description, context);
 		description = description + "\n";
 		description = _eventPreferencesWifi.getPreferencesDescription(description, context);
 		description = description + "\n";
