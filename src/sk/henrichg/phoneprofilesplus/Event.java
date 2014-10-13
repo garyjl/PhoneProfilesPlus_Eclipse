@@ -903,11 +903,10 @@ public class Event {
 		GlobalData.logE("@@@ Event.stopEvent","event_id="+this._id+"-----------------------------------");
 		GlobalData.logE("@@@ Event.stopEvent","-- event_name="+this._name);
 		
-		//if (this._status == ESTATUS_RUNNING)
-		//{
-		//	// event zrovna bezi, zapauzujeme ho
+		if (this._status != ESTATUS_STOP)
+		{
 			pauseEvent(dataWrapper, eventTimelineList, activateReturnProfile, ignoreGlobalPref, true);
-		//}
+		}
 	
 		setSystemEvent(dataWrapper.context, ESTATUS_STOP);
 		
