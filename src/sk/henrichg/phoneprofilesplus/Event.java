@@ -407,7 +407,7 @@ public class Event {
 		_eventPreferencesWifi.setSummary(prefMng, key, preferences, context);
 		_eventPreferencesScreen.setSummary(prefMng, key, preferences, context);
 		_eventPreferencesBluetooth.setSummary(prefMng, key, preferences, context);
-		_eventPreferencesSMS.setSummary(prefMng, key, preferences, context);
+		//_eventPreferencesSMS.setSummary(prefMng, key, preferences, context);
 	}
 	
 	public void setAllSummary(PreferenceManager prefMng, Context context)
@@ -426,7 +426,7 @@ public class Event {
 		_eventPreferencesWifi.setAllSummary(prefMng, context);
 		_eventPreferencesScreen.setAllSummary(prefMng, context);
 		_eventPreferencesBluetooth.setAllSummary(prefMng, context);
-		_eventPreferencesSMS.setAllSummary(prefMng, context);
+		//_eventPreferencesSMS.setAllSummary(prefMng, context);
 	}
 	
 	public String getPreferecesDescription(Context context)
