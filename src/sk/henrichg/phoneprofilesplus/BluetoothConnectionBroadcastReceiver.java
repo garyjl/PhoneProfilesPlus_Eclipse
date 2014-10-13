@@ -77,11 +77,12 @@ public class BluetoothConnectionBroadcastReceiver extends WakefulBroadcastReceiv
 	        		if ((!BluetoothScanAlarmBroadcastReceiver.getBluetoothEnabledForScan(context)) &&
 			        	(!GlobalData.getEventsBlocked(context)))
 	        		{
-		        		if (BluetoothScanAlarmBroadcastReceiver.scanResults == null)
-		        		{
-		        			// no bluetooth scan data, rescan
+		        		//if (BluetoothScanAlarmBroadcastReceiver.scanResults == null)
+		        		//{
+		        		//	// no bluetooth scan data, rescan
+							// rescan bluetooth for update scanResults after connect
 							BluetoothScanAlarmBroadcastReceiver.sendBroadcast(context);
-		        		}
+		        		//}
 	        		}
 				}
 				
@@ -104,7 +105,7 @@ public class BluetoothConnectionBroadcastReceiver extends WakefulBroadcastReceiv
 	        		if ((!BluetoothScanAlarmBroadcastReceiver.getBluetoothEnabledForScan(context)) &&
 			        	(!GlobalData.getEventsBlocked(context)))
 			        {
-						// rescan bluetooth
+						// rescan bluetooth for update scanResults after disconnect
 						BluetoothScanAlarmBroadcastReceiver.sendBroadcast(context);
 			        }
 	        		else

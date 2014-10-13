@@ -37,11 +37,12 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 		        		if ((!WifiScanAlarmBroadcastReceiver.getWifiEnabledForScan(context)) &&
 				        	(!GlobalData.getEventsBlocked(context)))
 		        		{
-			        		if (WifiScanAlarmBroadcastReceiver.scanResults == null)
-			        		{
-			        			// no wifi scan data, rescan
+			        		//if (WifiScanAlarmBroadcastReceiver.scanResults == null)
+			        		//{
+			        		//	// no wifi scan data, rescan
+								// rescan wifi for update scanResults after connect
 								WifiScanAlarmBroadcastReceiver.sendBroadcast(context);
-			        		}
+			        		//}
 		        		}
 			        }
 	        		
@@ -64,7 +65,7 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 		        		if ((!WifiScanAlarmBroadcastReceiver.getWifiEnabledForScan(context)) &&
 				        	(!GlobalData.getEventsBlocked(context)))
 				        {
-							// rescan wifi
+							// rescan wifi for update scanResults after disconnect
 							WifiScanAlarmBroadcastReceiver.sendBroadcast(context);
 				        }
 		        		else

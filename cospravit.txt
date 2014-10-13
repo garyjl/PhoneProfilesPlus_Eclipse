@@ -404,3 +404,6 @@ Stale nemam vyriesene ako zadavat tie geofences
    Cize nemazat geofences ak zmazem event. Uzivatel vyberie zo spinnera 1 lokaciu. Ak uzivatel vyberie lokaciu
    nastavi sa na nu mapa, aj Edit text sa nastavi na jeho meno.
 6. Vedla comboboxu bude button na vymazanie geofenze, ktory je prave zobrazeny.
+
+-------------------------------------
+
