@@ -40,12 +40,17 @@ public class SMSBroadcastReceiver extends WakefulBroadcastReceiver {
 		
 	    if (intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED"))
 	    {
-			GlobalData.logE("SMSBroadcastReceiver.onReceive","received");
+			GlobalData.logE("SMSBroadcastReceiver.onReceive","SMS received");
 	    }
 	    else
 	    if(intent.getAction().equals("android.provider.Telephony.SMS_SENT"))
 	    {
 			GlobalData.logE("SMSBroadcastReceiver.onReceive","sent");
+	    }
+	    else
+	    if (intent.getAction().equals("android.provider.Telephony.WAP_PUSH_RECEIVED"))
+	    {
+			GlobalData.logE("SMSBroadcastReceiver.onReceive","MMS received");
 	    }
 
 		GlobalData.logE("SMSBroadcastReceiver.onReceive","from="+origin);
