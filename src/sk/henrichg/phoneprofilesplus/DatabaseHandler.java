@@ -26,7 +26,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static SQLiteDatabase writableDb;	
     
 	// Database Version
-	private static final int DATABASE_VERSION = 1140;
+	private static final int DATABASE_VERSION = 1141;
 
 	// Database Name
 	private static final String DATABASE_NAME = "phoneProfilesManager";
@@ -143,6 +143,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_E_SMS_EVENT = "smsEvent";
 	private static final String KEY_E_SMS_CONTACTS = "smsContacts";
 	private static final String KEY_E_SMS_CONTACT_LIST_TYPE = "smsContactListType";
+	private static final String KEY_E_SMS_START_TIME = "smsStartTime";
 	
 	private static final String KEY_ET_ID = "id";
 	private static final String KEY_ET_EORDER = "eorder";
@@ -302,7 +303,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_E_SMS_ENABLED + " INTEGER,"
 	            + KEY_E_SMS_EVENT + " INTEGER,"
 	            + KEY_E_SMS_CONTACTS + " TEXT,"
-	            + KEY_E_SMS_CONTACT_LIST_TYPE + " INTEGER"
+	            + KEY_E_SMS_CONTACT_LIST_TYPE + " INTEGER,"
+	            + KEY_E_SMS_START_TIME + " INTEGER"
 				+ ")";
 		db.execSQL(CREATE_EVENTS_TABLE);
 
@@ -825,6 +827,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_SMS_EVENT + "=0");
 			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_SMS_CONTACTS + "=\"\"");
 			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_SMS_CONTACT_LIST_TYPE + "=0");
+		}
+
+		if (oldVersion < 1141)
+		{
+			// pridame nove stlpce
+			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_SMS_START_TIME + " INTEGER");
+			
+			// updatneme zaznamy
+			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_SMS_START_TIME + "=0");
 		}
 		
 	}
@@ -2426,7 +2437,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				                 new String[] { KEY_E_SMS_ENABLED,
 												KEY_E_SMS_EVENT, 
 												KEY_E_SMS_CONTACTS,
-												KEY_E_SMS_CONTACT_LIST_TYPE
+												KEY_E_SMS_CONTACT_LIST_TYPE,
+												KEY_E_SMS_START_TIME
 												}, 
 				                 KEY_E_ID + "=?",
 				                 new String[] { String.valueOf(event._id) }, null, null, null, null);
@@ -2442,6 +2454,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				eventPreferences._smsEvent = Integer.parseInt(cursor.getString(1));
 				eventPreferences._contacts = cursor.getString(2);
 				eventPreferences._contactListType = Integer.parseInt(cursor.getString(3));
+				eventPreferences._startTime = Long.parseLong(cursor.getString(4));
 			}
 			cursor.close();
 		}
@@ -2653,6 +2666,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_E_SMS_EVENT, eventPreferences._smsEvent);
 		values.put(KEY_E_SMS_CONTACTS, eventPreferences._contacts);
 		values.put(KEY_E_SMS_CONTACT_LIST_TYPE, eventPreferences._contactListType);
+		values.put(KEY_E_SMS_START_TIME, eventPreferences._startTime);
 
 		// updating row
 		int r = db.update(TABLE_EVENTS, values, KEY_E_ID + " = ?",
@@ -3110,6 +3124,66 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		//db.close();
 		
 		return r != 0;
+	}
+	
+	public int updateSMSStartTimes(Event event)
+	{
+		//SQLiteDatabase db = this.getWritableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put(KEY_E_SMS_START_TIME, event._eventPreferencesSMS._startTime);
+
+		int r = 0;
+		
+		db.beginTransaction();
+		
+		try {
+			// updating row
+			r = db.update(TABLE_EVENTS, values, KEY_E_ID + " = ?",
+				new String[] { String.valueOf(event._id) });
+		
+			db.setTransactionSuccessful();
+
+		} catch (Exception e){
+			//Error in between database transaction
+			Log.e("DatabaseHandler.updateSMSStartTimes", e.toString());
+			r = 0;
+		} finally {
+			db.endTransaction();
+		}	
+		
+        //db.close();
+        
+		return r;
+		
+	}
+
+	public void setSMSStartTimes(Event event)
+	{
+		//SQLiteDatabase db = this.getReadableDatabase();
+		SQLiteDatabase db = getMyWritableDatabase();
+
+		Cursor cursor = db.query(TABLE_EVENTS, 
+				                 new String[] {  
+												KEY_E_SMS_START_TIME
+												}, 
+				                 KEY_E_ID + "=?",
+				                 new String[] { String.valueOf(event._id) }, null, null, null, null);
+		if (cursor != null)
+		{
+			cursor.moveToFirst();
+
+			if (cursor.getCount() > 0)
+			{
+				event._eventPreferencesSMS._startTime = Long.parseLong(cursor.getString(0));
+			}
+	
+			cursor.close();
+		}
+		
+		//db.close();
+
 	}
 	
 	
@@ -3722,6 +3796,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 											values.put(KEY_E_SMS_EVENT, 0);
 											values.put(KEY_E_SMS_CONTACTS, "");
 											values.put(KEY_E_SMS_CONTACT_LIST_TYPE, 0);
+										}
+
+										if (exportedDBObj.getVersion() < 1141)
+										{
+											values.put(KEY_E_SMS_START_TIME, 0);
 										}
 										
 										// Inserting Row do db z SQLiteOpenHelper

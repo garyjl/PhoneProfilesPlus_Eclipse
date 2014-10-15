@@ -1281,6 +1281,7 @@ public class DataWrapper {
 		boolean wifiPassed = true;
 		boolean screenPassed = true;
 		boolean bluetoothPassed = true;
+		boolean smsPassed = true;
 		
 		boolean isCharging = false;
 		float batteryPct = 100.0f;
@@ -1736,6 +1737,107 @@ public class DataWrapper {
 
 			eventStart = eventStart && bluetoothPassed;
 		}
+
+		if (event._eventPreferencesSMS._enabled)
+		{
+			
+			SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+			int callEventType = preferences.getInt(GlobalData.PREF_EVENT_SMS_EVENT_TYPE, EventPreferencesSMS.SMS_EVENT_UNDEFINED);
+			String phoneNumber = preferences.getString(GlobalData.PREF_EVENT_SMS_PHONE_NUMBER, "");
+			long startTime = preferences.getLong(GlobalData.PREF_EVENT_SMS_DATE, 0);
+
+			if (callEventType != EventPreferencesSMS.SMS_EVENT_UNDEFINED)
+			{
+			
+				// save sms date into event
+				if (event.getStatus() != Event.ESTATUS_RUNNING)
+				{
+					event._eventPreferencesSMS._startTime = startTime;
+					getDatabaseHandler().updateSMSStartTimes(event);
+				}
+				
+				// compute start datetime
+	   			long endAlarmTime = event._eventPreferencesSMS.computeAlarm();
+	
+	   		    String alarmTimeS = DateFormat.getDateFormat(context).format(endAlarmTime) +
+		    	  		     " " + DateFormat.getTimeFormat(context).format(endAlarmTime);
+	   		    GlobalData.logE("DataWrapper.doEventService","endAlarmTime="+alarmTimeS);
+				
+				Calendar now = Calendar.getInstance();
+				long nowAlarmTime = now.getTimeInMillis();
+	   		    alarmTimeS = DateFormat.getDateFormat(context).format(nowAlarmTime) +
+	   	  		     " " + DateFormat.getTimeFormat(context).format(nowAlarmTime);
+			    GlobalData.logE("DataWrapper.doEventService","nowAlarmTime="+alarmTimeS);
+	
+				smsPassed = ((nowAlarmTime >= startTime) && (nowAlarmTime <= endAlarmTime));
+				
+				if (smsPassed)
+				{
+					if (event._eventPreferencesSMS._contactListType != EventPreferencesCall.CONTACT_LIST_TYPE_NOT_USE)
+					{
+						// find phone number
+						String[] splits = event._eventPreferencesSMS._contacts.split("\\|");
+						for (int i = 0; i < splits.length; i++)
+						{
+							String [] splits2 = splits[i].split("#");
+		
+							// get phone number from contacts
+							String[] projection = new String[] { ContactsContract.Contacts._ID, ContactsContract.Contacts.HAS_PHONE_NUMBER };
+							String selection = ContactsContract.Contacts.HAS_PHONE_NUMBER + "='1' and " + ContactsContract.Contacts._ID + "=?";
+							String[] selectionArgs = new String[] { splits2[0] };
+							Cursor mCursor = context.getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, projection, selection, selectionArgs, null);
+							while (mCursor.moveToNext()) 
+							{
+								if (Integer.parseInt(mCursor.getString(mCursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) 
+								{
+									String[] projection2 = new String[] { ContactsContract.CommonDataKinds.Phone._ID, ContactsContract.CommonDataKinds.Phone.NUMBER };
+									String selection2 = ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=?" + " and " + ContactsContract.CommonDataKinds.Phone._ID + "=?";
+									String[] selection2Args = new String[] { splits2[0],splits2[1] };
+									Cursor phones = context.getContentResolver().query( ContactsContract.CommonDataKinds.Phone.CONTENT_URI, projection2, selection2, selection2Args, null);
+									while (phones.moveToNext()) 
+									{
+										String _phoneNumber = phones.getString(phones.getColumnIndex( ContactsContract.CommonDataKinds.Phone.NUMBER));
+										//Log.e("DataWrapper.doEventService","_phoneNumber="+_phoneNumber);
+										//Log.e("DataWrapper.doEventService","phoneNumber="+phoneNumber);
+										if (PhoneNumberUtils.compare(_phoneNumber, phoneNumber))
+										{
+											phoneNumberFinded = true;
+											break;
+										}
+									}
+									phones.close();
+								}
+								if (phoneNumberFinded)
+									break;
+							}
+							mCursor.close();
+							if (phoneNumberFinded)
+								break;
+						}
+						if (event._eventPreferencesSMS._contactListType == EventPreferencesCall.CONTACT_LIST_TYPE_BLACK_LIST)
+							phoneNumberFinded = !phoneNumberFinded;
+					}
+					else
+						phoneNumberFinded = true;
+	
+					//Log.e("DataWrapper.doEventService","phoneNumberFinded="+phoneNumberFinded);
+					
+					if (phoneNumberFinded)
+					{
+						if (event._eventPreferencesSMS._smsEvent == callEventType)
+						{
+							eventStart = eventStart && true;
+							smsPassed = true;
+						}
+					}
+					else
+						smsPassed = false;
+				}
+				
+			}
+			else
+				smsPassed = false;
+		}
 		
 		GlobalData.logE("DataWrapper.doEventService","timePassed="+timePassed);
 		GlobalData.logE("DataWrapper.doEventService","batteryPassed="+batteryPassed);
@@ -1745,6 +1847,7 @@ public class DataWrapper {
 		GlobalData.logE("DataWrapper.doEventService","wifiPassed="+wifiPassed);
 		GlobalData.logE("DataWrapper.doEventService","screenPassed="+screenPassed);
 		GlobalData.logE("DataWrapper.doEventService","bluetoothPassed="+bluetoothPassed);
+		GlobalData.logE("DataWrapper.doEventService","smsPassed="+smsPassed);
 
 		GlobalData.logE("DataWrapper.doEventService","eventStart="+eventStart);
 		GlobalData.logE("DataWrapper.doEventService","restartEvent="+restartEvent);
@@ -1758,7 +1861,8 @@ public class DataWrapper {
 			calendarPassed &&
 			wifiPassed &&
 			screenPassed &&
-			bluetoothPassed)
+			bluetoothPassed &&
+			smsPassed)
 		{
 			// podmienky sedia, vykoname, co treba
 
@@ -1823,7 +1927,8 @@ public class DataWrapper {
 				calendarPassed &&
 				wifiPassed &&
 				screenPassed &&
-				bluetoothPassed);
+				bluetoothPassed &&
+				smsPassed);
 	}
 	
 	public Profile filterProfileWithBatteryEvents(Profile profile)

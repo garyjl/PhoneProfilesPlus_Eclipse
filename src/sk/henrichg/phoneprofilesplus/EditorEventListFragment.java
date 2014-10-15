@@ -638,6 +638,7 @@ public class EditorEventListFragment extends Fragment {
 			boolean isInDelay = dataWrapper.getDatabaseHandler().getEventInDelay(event);
 			event._isInDelay = isInDelay;
 			dataWrapper.getDatabaseHandler().setEventCalendarTimes(event);
+			dataWrapper.getDatabaseHandler().setSMSStartTimes(event);
 		}
 		updateListView(null, false);
 	}

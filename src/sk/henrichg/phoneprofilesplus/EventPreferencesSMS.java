@@ -1,6 +1,15 @@
 package sk.henrichg.phoneprofilesplus;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.TimeZone;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.ListPreference;
@@ -11,12 +20,14 @@ public class EventPreferencesSMS extends EventPreferences {
 	public int _smsEvent;
 	public String _contacts;
 	public int _contactListType;
+	public long _startTime;
 	
 	static final String PREF_EVENT_SMS_ENABLED = "eventSMSEnabled";
 	static final String PREF_EVENT_SMS_EVENT = "eventSMSEvent";
 	static final String PREF_EVENT_SMS_CONTACTS = "eventSMSContacts";
 	static final String PREF_EVENT_SMS_CONTACT_LIST_TYPE = "eventSMSContactListType";
 	
+	static final int SMS_EVENT_UNDEFINED = -1; 
 	static final int SMS_EVENT_INCOMING = 0;
 	static final int SMS_EVENT_OUTGOING = 1;
 	
@@ -35,6 +46,8 @@ public class EventPreferencesSMS extends EventPreferences {
 		this._smsEvent = smsEvent;
 		this._contacts = contacts;
 		this._contactListType = contactListType;
+		
+		this._startTime = 0;
 	}
 	
 	@Override
@@ -44,6 +57,8 @@ public class EventPreferencesSMS extends EventPreferences {
 		this._smsEvent = ((EventPreferencesSMS)fromEvent._eventPreferencesSMS)._smsEvent;
 		this._contacts = ((EventPreferencesSMS)fromEvent._eventPreferencesSMS)._contacts;
 		this._contactListType = ((EventPreferencesSMS)fromEvent._eventPreferencesSMS)._contactListType;
+		
+		this._startTime = 0;
 	}
 	
 	@Override
@@ -131,21 +146,94 @@ public class EventPreferencesSMS extends EventPreferences {
 		return true;
 	}
 	
+	public long computeAlarm()
+	{
+		GlobalData.logE("EventPreferencesSMS.computeAlarm","xxx");
+
+		Calendar calEndTime = Calendar.getInstance();
+
+		int gmtOffset = TimeZone.getDefault().getRawOffset();
+		
+		calEndTime.setTimeInMillis((_startTime - gmtOffset) + (5 * 1000));
+		calEndTime.set(Calendar.SECOND, 0);
+		calEndTime.set(Calendar.MILLISECOND, 0);
+
+		long alarmTime;
+		alarmTime = calEndTime.getTimeInMillis();
+	    
+	    return alarmTime;
+	}
+	
 	@Override
 	public void setSystemRunningEvent(Context context)
 	{
 		// set alarm for state PAUSE
+
+		// this alarm generates broadcast, that change state into RUNNING;
+		// from broadcast will by called EventsService
+
+		removeAlarm(context);
 	}
 
 	@Override
 	public void setSystemPauseEvent(Context context)
 	{
 		// set alarm for state RUNNING
+
+		// this alarm generates broadcast, that change state into PAUSE;
+		// from broadcast will by called EventsService
+		
+		removeAlarm(context);
+
+		if (!(isRunable() && _enabled)) 
+			return;
+		
+		setAlarm(computeAlarm(), context);
 	}
 	
 	@Override
 	public void removeSystemEvent(Context context)
 	{
+		removeAlarm(context);
+		
+		GlobalData.logE("EventPreferencesSMS.removeSystemEvent","xxx");
 	}
 
+	public void removeAlarm(Context context)
+	{
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
+
+		Intent intent = new Intent(context, EventsSMSBroadcastReceiver.class);
+	    
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), (int) _event._id, intent, PendingIntent.FLAG_NO_CREATE);
+        if (pendingIntent != null)
+        {
+       		GlobalData.logE("EventPreferencesSMS.removeAlarm","alarm found");
+        		
+        	alarmManager.cancel(pendingIntent);
+        	pendingIntent.cancel();
+        }
+	}
+	
+	@SuppressLint("SimpleDateFormat")
+	private void setAlarm(long alarmTime, Context context)
+	{
+	    SimpleDateFormat sdf = new SimpleDateFormat("EE d.MM.yyyy HH:mm:ss:S");
+	    String result = sdf.format(alarmTime);
+    	GlobalData.logE("EventPreferencesSMS.setAlarm","endTime="+result);
+	    
+	    Intent intent = new Intent(context, EventsSMSBroadcastReceiver.class);
+	    intent.putExtra(GlobalData.EXTRA_EVENT_ID, _event._id);
+	    
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), (int) _event._id, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
+
+        //alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, alarmTime, 24 * 60 * 60 * 1000 , pendingIntent);
+        //alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, alarmTime, 24 * 60 * 60 * 1000 , pendingIntent);
+
+	}
+	
 }

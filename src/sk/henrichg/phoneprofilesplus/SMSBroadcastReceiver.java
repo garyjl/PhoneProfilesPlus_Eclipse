@@ -52,8 +52,8 @@ public class SMSBroadcastReceiver extends WakefulBroadcastReceiver {
 
 		SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
 		Editor editor = preferences.edit();
-		editor.putInt(GlobalData.PREF_EVENT_CALL_EVENT_TYPE, EventPreferencesSMS.SMS_EVENT_INCOMING);
-		editor.putString(GlobalData.PREF_EVENT_CALL_PHONE_NUMBER, origin);
+		editor.putInt(GlobalData.PREF_EVENT_SMS_EVENT_TYPE, EventPreferencesSMS.SMS_EVENT_INCOMING);
+		editor.putString(GlobalData.PREF_EVENT_SMS_PHONE_NUMBER, origin);
         Calendar now = Calendar.getInstance();
 		long time = now.getTimeInMillis(); 
 		editor.putLong(GlobalData.PREF_EVENT_SMS_DATE, time);
@@ -73,7 +73,7 @@ public class SMSBroadcastReceiver extends WakefulBroadcastReceiver {
 		if (GlobalData.getGlobalEventsRuning(context))
 		{
 			GlobalData.logE("@@@ SMSBroadcastReceiver.startService","xxx");
-/*
+
 			boolean smsEventsExists = false;
 			
 			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
@@ -88,7 +88,6 @@ public class SMSBroadcastReceiver extends WakefulBroadcastReceiver {
 				eventsServiceIntent.putExtra(GlobalData.EXTRA_BROADCAST_RECEIVER_TYPE, BROADCAST_RECEIVER_TYPE);
 				startWakefulService(context, eventsServiceIntent);
 			}
-*/			
 		}
 	}
 
@@ -142,8 +141,8 @@ public class SMSBroadcastReceiver extends WakefulBroadcastReceiver {
 					
 					SharedPreferences preferences = _context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
 					Editor editor = preferences.edit();
-					editor.putInt(GlobalData.PREF_EVENT_CALL_EVENT_TYPE, EventPreferencesSMS.SMS_EVENT_OUTGOING);
-					editor.putString(GlobalData.PREF_EVENT_CALL_PHONE_NUMBER, to);
+					editor.putInt(GlobalData.PREF_EVENT_SMS_EVENT_TYPE, EventPreferencesSMS.SMS_EVENT_OUTGOING);
+					editor.putString(GlobalData.PREF_EVENT_SMS_PHONE_NUMBER, to);
 					editor.putLong(GlobalData.PREF_EVENT_SMS_DATE, date.getTime());
 					editor.commit();
 				}

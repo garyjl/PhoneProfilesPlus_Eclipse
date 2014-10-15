@@ -413,6 +413,10 @@
     <string name="pref_event_sms_contactListType">List</string> 
     <string name="array_event_pref_incomming_sms">Incomming sms</string>
     <string name="array_event_pref_outgoing_sms">Outgoing sms</string>
+    <string name="event_preferences_category_eventSMSParameters">SMS parameters</string>
+    <string name="event_preferences_sms_enabled">Enable SMS</string>
+    <string name="event_preferences_sms_contacts">Contacts</string>
+    <string name="event_preferences_sms_event">SMS event</string>
     
     								
 </resources>
