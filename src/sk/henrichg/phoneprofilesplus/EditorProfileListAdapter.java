@@ -339,7 +339,11 @@ public class EditorProfileListAdapter extends BaseAdapter
         	holder.profileName.setTypeface(null, Typeface.NORMAL);
         }
       
-        holder.profileName.setText(profile._name);
+		String profileName = dataWrapper.getProfileNameWithManualIndicator(profile, 
+				profile._checked &&
+				(!GlobalData.applicationEditorHeader));
+		holder.profileName.setText(profileName);
+		
         if (profile.getIsIconResourceID())
         {
         	holder.profileIcon.setImageResource(0);

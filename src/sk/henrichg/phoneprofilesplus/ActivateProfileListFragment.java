@@ -222,7 +222,7 @@ public class ActivateProfileListFragment extends Fragment {
 					return;
 				}
     	        
-    	        fragment.profileListAdapter = new ActivateProfileListAdapter(fragment, fragment.profileList);
+    	        fragment.profileListAdapter = new ActivateProfileListAdapter(fragment, fragment.profileList, dataWrapper);
 
     	        AbsListView absListView;
     			if (!GlobalData.applicationActivatorGridLayout)
@@ -316,7 +316,7 @@ public class ActivateProfileListFragment extends Fragment {
 		}
 		else
 		{
-			activeProfileName.setText(dataWrapper.getProfileNameWithManualIndicator(profile));
+			activeProfileName.setText(dataWrapper.getProfileNameWithManualIndicator(profile, true));
 	        if (profile.getIsIconResourceID())
 	        {
 				int res = getResources().getIdentifier(profile.getIconIdentifier(), "drawable", getActivity().getPackageName());

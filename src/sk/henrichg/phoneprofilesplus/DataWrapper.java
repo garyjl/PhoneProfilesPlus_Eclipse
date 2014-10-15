@@ -2194,30 +2194,58 @@ public class DataWrapper {
 			return true;
 	}
 	
-	public String getProfileNameWithManualIndicator(Profile profile)
+	public String getProfileNameWithManualIndicator(Profile profile, boolean addEventName)
 	{
 		if (profile == null)
 			return "";
 		
+		String name;
+		
 		if (!GlobalData.getEventsBlocked(context))
-			return profile._name;
+			name = profile._name;
 		else
 		{
 			if (GlobalData.getForceRunEventRunning(context))
 			{
-	   			/*if (android.os.Build.VERSION.SDK_INT >= 16)
-	   				return "\u23E9 " + profile._name;
-	   			else*/
-	   				return "[\u00BB] " + profile._name;
+   				name = "[\u00BB] " + profile._name;
 			}
 			else
 			{
-	   			/*if (android.os.Build.VERSION.SDK_INT >= 16)
-	   				return "\uD83D\uDC46 " + profile._name;
-	   			else */
-	   				return "[M] " + profile._name;
+   				name = "[M] " + profile._name;
 			}
 		}
+
+		if (addEventName)
+		{
+			String eventName = getLastStartedEventName();
+			if (!eventName.isEmpty())
+				name = name + " [" + eventName + "]";
+		}
+		
+		return name;
+	}
+	
+	public String getLastStartedEventName()
+	{
+		List<EventTimeline> eventTimelineList = getEventTimelineList();
+		
+		if (eventTimelineList.size() > 0)
+		{
+			EventTimeline eventTimeLine = eventTimelineList.get(eventTimelineList.size()-1);
+			long event_id = eventTimeLine._fkEvent;
+			Event event = getEventById(event_id);
+			if (event != null)
+			{
+				if (!GlobalData.getEventsBlocked(context))
+					return event._name;
+				else
+					return "";
+			}
+			else
+				return "";
+		}
+		else
+			return "";
 	}
 
 	public String getSSID(WifiManager wifiManager, WifiInfo wifiInfo)

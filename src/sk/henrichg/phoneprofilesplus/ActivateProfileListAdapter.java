@@ -17,11 +17,13 @@ public class ActivateProfileListAdapter extends BaseAdapter
 
 	private List<Profile> profileList;
 	private Fragment fragment;
+	private DataWrapper dataWrapper;
 	
-	public ActivateProfileListAdapter(Fragment f, List<Profile> pl)
+	public ActivateProfileListAdapter(Fragment f, List<Profile> pl, DataWrapper dataWrapper)
 	{
 		fragment = f;
 		profileList = pl;
+		this.dataWrapper = dataWrapper;
 	}   
 	
 	public void release()
@@ -187,7 +189,13 @@ public class ActivateProfileListAdapter extends BaseAdapter
 			holder.profileName.setTypeface(null, Typeface.NORMAL);
 		}
       
-		holder.profileName.setText(profile._name);
+		String profileName = dataWrapper.getProfileNameWithManualIndicator(profile, 
+									(!GlobalData.applicationActivatorGridLayout) && 
+									profile._checked &&
+									(!GlobalData.applicationActivatorHeader));
+		holder.profileName.setText(profileName);
+		
+		
 		if (profile.getIsIconResourceID())
 		{
 			holder.profileIcon.setImageResource(0);

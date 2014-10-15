@@ -76,7 +76,7 @@ public class ActivateProfileActivity extends ActionBarActivity {
 		{
 			//popupWidth = Math.round(popupWidth / 100f * 70f);
 			//popupMaxHeight = Math.round(popupMaxHeight / 100f * 90f);
-			popupWidth = popupWidth / 100f * 70f;
+			popupWidth = popupWidth / 100f * 80f;
 			popupMaxHeight = popupMaxHeight / 100f * 90f;
 		}
 
