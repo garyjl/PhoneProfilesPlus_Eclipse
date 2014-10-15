@@ -2,8 +2,6 @@ package sk.henrichg.phoneprofilesplus;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
 
 public class RestartEventsFromNotificationActivity extends Activity
 {
@@ -18,7 +16,7 @@ public class RestartEventsFromNotificationActivity extends Activity
 		
 		dataWrapper = new DataWrapper(getBaseContext(), false, false, 0);
 	 
-		Log.e("RestartEventsFromNotificationActivity,onCreate","xxx");
+		//Log.e("RestartEventsFromNotificationActivity,onCreate","xxx");
 	}
 
 	@Override
