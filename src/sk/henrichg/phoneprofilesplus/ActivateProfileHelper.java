@@ -676,110 +676,113 @@ public class ActivateProfileHelper {
 	{
 		if (GlobalData.notificationStatusBar)
 		{	
-				// close showed notification
-				//notificationManager.cancel(GlobalData.NOTIFICATION_ID);
+			// close showed notification
+			//notificationManager.cancel(GlobalData.NOTIFICATION_ID);
 
-				// vytvorenie intentu na aktivitu, ktora sa otvori na kliknutie na notifikaciu
-				Intent intent = new Intent(context, LauncherActivity.class);
-				// nastavime, ze aktivita sa spusti z notifikacnej listy
-				intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_NOTIFICATION);
-				PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+			// vytvorenie intentu na aktivitu, ktora sa otvori na kliknutie na notifikaciu
+			Intent intent = new Intent(context, LauncherActivity.class);
+			// nastavime, ze aktivita sa spusti z notifikacnej listy
+			intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_NOTIFICATION);
+			PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+			
+			// vytvorenie intentu na restart events
+			Intent intentRE = new Intent(context, RestartEventsFromNotificationActivity.class);
+			PendingIntent pIntentRE = PendingIntent.getActivity(context, 0, intentRE, PendingIntent.FLAG_CANCEL_CURRENT);
+			
+			// vytvorenie samotnej notifikacie
+			NotificationCompat.Builder notificationBuilder;
+	        RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.notification_drawer);
+
+			boolean isIconResourceID;
+			String iconIdentifier;
+			String profileName;
+			Bitmap iconBitmap;
+			Bitmap preferencesIndicator;
+			
+			if (profile != null)
+			{
+				isIconResourceID = profile.getIsIconResourceID();
+				iconIdentifier = profile.getIconIdentifier();
+				profileName = dataWrapper.getProfileNameWithManualIndicator(profile, true);
+				iconBitmap = profile._iconBitmap;
+				preferencesIndicator = profile._preferencesIndicator;
+			}
+			else
+			{
+				isIconResourceID = true;
+				iconIdentifier = GlobalData.PROFILE_ICON_DEFAULT;
+				profileName = context.getResources().getString(R.string.profiles_header_profile_name_no_activated);
+				iconBitmap = null;
+				preferencesIndicator = null;
+			}
+	        
+			if (isIconResourceID)
+	        {
+	        	notificationBuilder = new NotificationCompat.Builder(context)
+	        		.setContentIntent(pIntent);
 				
-				// vytvorenie intentu na restart events
-				Intent intentRE = new Intent(context, RestartEventsFromNotificationActivity.class);
-				PendingIntent pIntentRE = PendingIntent.getActivity(context, 0, intentRE, PendingIntent.FLAG_CANCEL_CURRENT);
-				
-				// vytvorenie samotnej notifikacie
-				NotificationCompat.Builder notificationBuilder;
-		        RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.notification_drawer);
 
-				boolean isIconResourceID;
-				String iconIdentifier;
-				String profileName;
-				Bitmap iconBitmap;
-				Bitmap preferencesIndicator;
-				
-				if (profile != null)
-				{
-					isIconResourceID = profile.getIsIconResourceID();
-					iconIdentifier = profile.getIconIdentifier();
-					profileName = dataWrapper.getProfileNameWithManualIndicator(profile, true);
-					iconBitmap = profile._iconBitmap;
-					preferencesIndicator = profile._preferencesIndicator;
-				}
-				else
-				{
-					isIconResourceID = true;
-					iconIdentifier = GlobalData.PROFILE_ICON_DEFAULT;
-					profileName = context.getResources().getString(R.string.profiles_header_profile_name_no_activated);
-					iconBitmap = null;
-					preferencesIndicator = null;
-				}
-		        
-				if (isIconResourceID)
-		        {
-		        	notificationBuilder = new NotificationCompat.Builder(context)
-		        		.setContentIntent(pIntent);
-					
-
-		        	int iconSmallResource;
-		    		if (GlobalData.notificationStatusBarStyle.equals("0"))
-		    		{
-						//notificationBuilder.setSmallIcon(0);
-		    			iconSmallResource = context.getResources().getIdentifier(iconIdentifier, "drawable", context.getPackageName());
-						notificationBuilder.setSmallIcon(iconSmallResource);
-				        //contentView.setImageViewResource(R.id.notification_activated_profile_icon, 0);
-				        contentView.setImageViewResource(R.id.notification_activated_profile_icon, iconSmallResource);
-		    		}
-		    		else
-		    		{
-						//notificationBuilder.setSmallIcon(0);
-		    			//contentView.setImageViewBitmap(R.id.notification_activated_profile_icon, null);
-		    			iconSmallResource = context.getResources().getIdentifier(iconIdentifier+"_notify", "drawable", context.getPackageName());
-						notificationBuilder.setSmallIcon(iconSmallResource);
-		    			int iconLargeResource = context.getResources().getIdentifier(iconIdentifier, "drawable", context.getPackageName());
-		    			Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(), iconLargeResource);
-		    			contentView.setImageViewBitmap(R.id.notification_activated_profile_icon, largeIcon);
-		    		}
-		        }
-		        else
-		        {
-		        	int iconSmallResource;
-		    		if (GlobalData.notificationStatusBarStyle.equals("0"))
-		    			iconSmallResource = R.drawable.ic_profile_default;
-		    		else
-		    			iconSmallResource = R.drawable.ic_profile_default_notify;
-		        			
-		        	notificationBuilder = new NotificationCompat.Builder(context)
-	        			.setContentIntent(pIntent);
-	        	
-		        	//notificationBuilder.setSmallIcon(0);
-		        	notificationBuilder.setSmallIcon(iconSmallResource);
-
+	        	int iconSmallResource;
+	    		if (GlobalData.notificationStatusBarStyle.equals("0"))
+	    		{
+					//notificationBuilder.setSmallIcon(0);
+	    			iconSmallResource = context.getResources().getIdentifier(iconIdentifier, "drawable", context.getPackageName());
+					notificationBuilder.setSmallIcon(iconSmallResource);
+			        //contentView.setImageViewResource(R.id.notification_activated_profile_icon, 0);
+			        contentView.setImageViewResource(R.id.notification_activated_profile_icon, iconSmallResource);
+	    		}
+	    		else
+	    		{
+					//notificationBuilder.setSmallIcon(0);
 	    			//contentView.setImageViewBitmap(R.id.notification_activated_profile_icon, null);
-	    			contentView.setImageViewBitmap(R.id.notification_activated_profile_icon, iconBitmap);
+	    			iconSmallResource = context.getResources().getIdentifier(iconIdentifier+"_notify", "drawable", context.getPackageName());
+					notificationBuilder.setSmallIcon(iconSmallResource);
+	    			int iconLargeResource = context.getResources().getIdentifier(iconIdentifier, "drawable", context.getPackageName());
+	    			Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(), iconLargeResource);
+	    			contentView.setImageViewBitmap(R.id.notification_activated_profile_icon, largeIcon);
+	    		}
+	        }
+	        else
+	        {
+	        	int iconSmallResource;
+	    		if (GlobalData.notificationStatusBarStyle.equals("0"))
+	    			iconSmallResource = R.drawable.ic_profile_default;
+	    		else
+	    			iconSmallResource = R.drawable.ic_profile_default_notify;
+	        			
+	        	notificationBuilder = new NotificationCompat.Builder(context)
+        			.setContentIntent(pIntent);
+        	
+	        	//notificationBuilder.setSmallIcon(0);
+	        	notificationBuilder.setSmallIcon(iconSmallResource);
 
-		        }
+    			//contentView.setImageViewBitmap(R.id.notification_activated_profile_icon, null);
+    			contentView.setImageViewBitmap(R.id.notification_activated_profile_icon, iconBitmap);
 
-				
-		        Notification notification = notificationBuilder.build();
-				
-		        contentView.setTextViewText(R.id.notification_activated_profile_name, profileName);
+	        }
 
-		        //contentView.setImageViewBitmap(R.id.notification_activated_profile_pref_indicator, 
-		        //		ProfilePreferencesIndicator.paint(profile, context));
-		        if ((preferencesIndicator != null) && (GlobalData.notificationPrefIndicator))
-		        	contentView.setImageViewBitmap(R.id.notification_activated_profile_pref_indicator, preferencesIndicator);
-		        else
-		        	contentView.setImageViewResource(R.id.notification_activated_profile_pref_indicator, R.drawable.ic_empty);
-		        
-		        contentView.setOnClickPendingIntent(R.id.notification_activated_profile_restart_events, pIntentRE);
-		        
-		        notification.contentView = contentView;
-		        
-				//notification.flags |= Notification.FLAG_NO_CLEAR; 
-				notification.flags |= Notification.FLAG_ONGOING_EVENT;
-				notificationManager.notify(GlobalData.NOTIFICATION_ID, notification);
+			
+	        Notification notification = notificationBuilder.build();
+			
+	        contentView.setTextViewText(R.id.notification_activated_profile_name, profileName);
+
+	        //contentView.setImageViewBitmap(R.id.notification_activated_profile_pref_indicator, 
+	        //		ProfilePreferencesIndicator.paint(profile, context));
+	        if ((preferencesIndicator != null) && (GlobalData.notificationPrefIndicator))
+	        	contentView.setImageViewBitmap(R.id.notification_activated_profile_pref_indicator, preferencesIndicator);
+	        else
+	        	contentView.setImageViewResource(R.id.notification_activated_profile_pref_indicator, R.drawable.ic_empty);
+	        
+	        contentView.setOnClickPendingIntent(R.id.notification_activated_profile_restart_events, pIntentRE);
+	        
+	        notification.contentView = contentView;
+	        
+	        if (GlobalData.notificationStatusBarPermanent)
+	        {
+	        	//notification.flags |= Notification.FLAG_NO_CLEAR; 
+	        	notification.flags |= Notification.FLAG_ONGOING_EVENT;
+	        }
+			notificationManager.notify(GlobalData.NOTIFICATION_ID, notification);
 		}
 		else
 		{

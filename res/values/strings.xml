@@ -418,6 +418,6 @@
     <string name="event_preferences_sms_contacts">Contacts</string>
     <string name="event_preferences_sms_event">SMS event</string>
     <string name="toast_events_restarted">Events restarted</string>
-    
+    <string name="phone_profiles_pref_notificationStatusBarPermanent">Ongoing notification</string>
     								
 </resources>

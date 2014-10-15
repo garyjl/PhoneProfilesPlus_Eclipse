@@ -136,6 +136,10 @@
 		    android:key="notificationStatusBar"
 		    android:title="@string/phone_profiles_pref_notificationStatusBar"
 		    android:defaultValue="true" />
+		<CheckBoxPreference 
+		    android:key="notificationStatusBarPermanent"
+		    android:title="@string/phone_profiles_pref_notificationStatusBarPermanent"
+		    android:defaultValue="true" />
 		<ListPreference android:title="@string/phone_profiles_pref_notificationStatusBarStyle"
 	           android:summary="@string/phone_profiles_pref_notificationStatusBarStyle_android"
 	           android:key="notificationStatusBarStyle"
