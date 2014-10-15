@@ -714,13 +714,13 @@ public class ActivateProfileHelper {
 				iconBitmap = null;
 				preferencesIndicator = null;
 			}
-	        
+
+        	notificationBuilder = new NotificationCompat.Builder(context)
+    				.setContentIntent(pIntent);
+        	notificationBuilder.setTicker(profileName);
+			
 			if (isIconResourceID)
 	        {
-	        	notificationBuilder = new NotificationCompat.Builder(context)
-	        		.setContentIntent(pIntent);
-				
-
 	        	int iconSmallResource;
 	    		if (GlobalData.notificationStatusBarStyle.equals("0"))
 	    		{
@@ -749,9 +749,6 @@ public class ActivateProfileHelper {
 	    		else
 	    			iconSmallResource = R.drawable.ic_profile_default_notify;
 	        			
-	        	notificationBuilder = new NotificationCompat.Builder(context)
-        			.setContentIntent(pIntent);
-        	
 	        	//notificationBuilder.setSmallIcon(0);
 	        	notificationBuilder.setSmallIcon(iconSmallResource);
 
