@@ -182,7 +182,7 @@
 		    android:title="@string/event_preferences_sms_enabled"
 		    android:defaultValue="false" />
 		<ListPreference android:title="@string/event_preferences_sms_event"
-            android:summary="@string/array_event_pref_incomming_sms"
+            android:summary="@string/array_event_pref_incoming_sms"
             android:key="eventSMSEvent"
             android:defaultValue="0"
             android:entries="@array/eventSMSEventsArray"
