@@ -1265,7 +1265,7 @@ public class DataWrapper {
 		
 	}
 
-	@SuppressLint("NewApi")
+	@SuppressLint({ "NewApi", "SimpleDateFormat" })
 	public boolean doEventService(Event event, boolean statePause, 
 									boolean restartEvent, boolean interactive,
 									boolean forDelayAlarm)
