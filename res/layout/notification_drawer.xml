@@ -51,17 +51,17 @@
 	    
 	    	    	
 	    <ImageView
-	        android:id="@+id/notification_activated_profile_activated"
+	        android:id="@+id/notification_activated_profile_restart_events"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_alignParentBottom="true"
+	        android:layout_centerVertical="true"
 	        android:layout_alignParentRight="true"
 	        android:adjustViewBounds="true"
-	        android:contentDescription="@string/empty_string"
-	        android:maxHeight="20dp"
-	        android:maxWidth="20dp"
+	        android:contentDescription="@string/menu_restart_events"
+	        android:maxHeight="48dp"
+	        android:maxWidth="48dp"
 	        android:scaleType="centerCrop"
-	        android:src="@drawable/ic_launcher" />
+	        android:src="@drawable/ic_action_events_restart_dark" />
 
 	</RelativeLayout>
 	

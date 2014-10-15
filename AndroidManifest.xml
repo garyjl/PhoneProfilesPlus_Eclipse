@@ -80,10 +80,6 @@
             android:theme="@style/PopupTheme"
             android:configChanges="locale|layoutDirection"
             android:launchMode="singleTask" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".EditorProfilesActivity"
@@ -123,10 +119,6 @@
             android:taskAffinity="sk.henrichg.phoneprofilesplus.empty"
             android:excludeFromRecents="true"
             android:theme="@style/EmptyActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".SetBrightnessWindowAttributesActivity"
@@ -134,10 +126,6 @@
             android:taskAffinity="sk.henrichg.phoneprofilesplus.empty"
             android:excludeFromRecents="true"
             android:theme="@style/EmptyActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".UpgradePPHelperActivity"
@@ -145,12 +133,7 @@
             android:taskAffinity="sk.henrichg.phoneprofilesplus.empty"
             android:excludeFromRecents="true"
             android:theme="@style/EmptyActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
         </activity>
-        
         <activity android:name=".RemoteExportDataActivity"
             android:label="@string/empty_string" 
             android:taskAffinity="sk.henrichg.phoneprofilesplus.empty"
@@ -161,6 +144,13 @@
 		        <category android:name="android.intent.category.DEFAULT"/>
 		    </intent-filter>
 		</activity>
+        <activity
+            android:name=".RestartEventsFromNotificationActivity"
+            android:label="@string/empty_string" 
+            android:taskAffinity="sk.henrichg.phoneprofilesplus.empty"
+            android:excludeFromRecents="true"
+            android:theme="@style/EmptyActivity" >
+        </activity>
         
         <receiver
             android:name=".IconWidgetProvider"

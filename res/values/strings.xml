@@ -417,6 +417,7 @@
     <string name="event_preferences_sms_enabled">Enable SMS</string>
     <string name="event_preferences_sms_contacts">Contacts</string>
     <string name="event_preferences_sms_event">SMS event</string>
+    <string name="toast_events_restarted">Events restarted</string>
     
     								
 </resources>

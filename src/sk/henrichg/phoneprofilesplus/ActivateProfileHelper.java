@@ -678,11 +678,16 @@ public class ActivateProfileHelper {
 		{	
 				// close showed notification
 				//notificationManager.cancel(GlobalData.NOTIFICATION_ID);
+
 				// vytvorenie intentu na aktivitu, ktora sa otvori na kliknutie na notifikaciu
 				Intent intent = new Intent(context, LauncherActivity.class);
 				// nastavime, ze aktivita sa spusti z notifikacnej listy
 				intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_NOTIFICATION);
 				PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+				
+				// vytvorenie intentu na restart events
+				Intent intentRE = new Intent(context, RestartEventsFromNotificationActivity.class);
+				PendingIntent pIntentRE = PendingIntent.getActivity(context, 0, intentRE, PendingIntent.FLAG_CANCEL_CURRENT);
 				
 				// vytvorenie samotnej notifikacie
 				NotificationCompat.Builder notificationBuilder;
@@ -767,6 +772,8 @@ public class ActivateProfileHelper {
 		        	contentView.setImageViewBitmap(R.id.notification_activated_profile_pref_indicator, preferencesIndicator);
 		        else
 		        	contentView.setImageViewResource(R.id.notification_activated_profile_pref_indicator, R.drawable.ic_empty);
+		        
+		        contentView.setOnClickPendingIntent(R.id.notification_activated_profile_restart_events, pIntentRE);
 		        
 		        notification.contentView = contentView;
 		        

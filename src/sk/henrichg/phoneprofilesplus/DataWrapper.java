@@ -2108,6 +2108,8 @@ public class DataWrapper {
 		Intent intent = new Intent();
 		intent.setAction(RestartEventsBroadcastReceiver.INTENT_RESTART_EVENTS);
 		context.sendBroadcast(intent);
+		
+		
 	}
 	
 	public void restartEventsWithAlert(Activity activity)
@@ -2140,6 +2142,11 @@ public class DataWrapper {
 					WifiScanAlarmBroadcastReceiver.sendBroadcast(_activity.getBaseContext());
 					// rescan bluetooth
 					BluetoothScanAlarmBroadcastReceiver.sendBroadcast(_activity.getBaseContext());
+
+					Toast msg = Toast.makeText(context, 
+							context.getResources().getString(R.string.toast_events_restarted), 
+							Toast.LENGTH_SHORT);
+					msg.show();
 					
 					if (GlobalData.applicationClose && (!(_activity instanceof EditorProfilesActivity)))
 						_activity.finish();
@@ -2159,6 +2166,11 @@ public class DataWrapper {
 			WifiScanAlarmBroadcastReceiver.sendBroadcast(activity.getBaseContext());
 			// rescan bluetooth
 			BluetoothScanAlarmBroadcastReceiver.sendBroadcast(activity.getBaseContext());
+			
+			Toast msg = Toast.makeText(context, 
+					context.getResources().getString(R.string.toast_events_restarted), 
+					Toast.LENGTH_SHORT);
+			msg.show();
 			
 			if (GlobalData.applicationClose)
 				activity.finish();
