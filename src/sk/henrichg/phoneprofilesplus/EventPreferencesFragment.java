@@ -8,7 +8,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.PreferenceManager;
+import android.preference.RingtonePreference;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.view.ActionMode.Callback;
@@ -179,6 +181,9 @@ public class EventPreferencesFragment extends PreferenceListFragment
    	
     	// get preference resource id from EventPreference
 		addPreferencesFromResource(R.xml.event_preferences);
+		
+		RingtonePreference notificationSoundPreference = (RingtonePreference)prefMng.findPreference(Event.PREF_EVENT_NOTIFICATION_SOUND);
+		notificationSoundPreference.setEnabled(GlobalData.notificationStatusBar);
 		
 		event._eventPreferencesTime.checkPreferences(prefMng, context);
 		event._eventPreferencesBattery.checkPreferences(prefMng, context);

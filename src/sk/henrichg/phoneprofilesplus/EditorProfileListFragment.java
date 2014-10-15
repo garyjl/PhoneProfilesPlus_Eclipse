@@ -545,7 +545,7 @@ public class EditorProfileListFragment extends Fragment {
 						//Profile profile = databaseHandler.getActivatedProfile();
 						Profile profile = profileListAdapter.getActivatedProfile();
 						updateHeader(profile);
-						activateProfileHelper.showNotification(profile);
+						activateProfileHelper.showNotification(profile, "");
 						activateProfileHelper.updateWidget();
 						
 						onStartProfilePreferencesCallback.onStartProfilePreferences(null, EDIT_MODE_DELETE, filterType);

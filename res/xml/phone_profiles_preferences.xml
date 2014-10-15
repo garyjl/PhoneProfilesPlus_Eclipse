@@ -139,7 +139,16 @@
 		<CheckBoxPreference 
 		    android:key="notificationStatusBarPermanent"
 		    android:title="@string/phone_profiles_pref_notificationStatusBarPermanent"
-		    android:defaultValue="true" />
+		    android:defaultValue="true"
+            android:disableDependentsState="true" />
+ 		<sk.henrichg.phoneprofilesplus.NumberPickerPreference
+            android:key="notificationStatusBarCancel"
+            android:summary="@string/phone_profiles_pref_notificationStatusBarCancel"
+            android:title="@string/phone_profiles_pref_notificationStatusBarCancel" 
+            android:defaultValue="10"
+            henrichg:min="0"
+            henrichg:max="300"
+            android:dependency="notificationStatusBarPermanent" />
 		<ListPreference android:title="@string/phone_profiles_pref_notificationStatusBarStyle"
 	           android:summary="@string/phone_profiles_pref_notificationStatusBarStyle_android"
 	           android:key="notificationStatusBarStyle"

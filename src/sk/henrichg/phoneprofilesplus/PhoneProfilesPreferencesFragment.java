@@ -161,6 +161,8 @@ public class PhoneProfilesPreferencesFragment extends PreferenceListFragment
 	    setSummary(GlobalData.PREF_APPLICATION_EDITOR_HEADER);
 	    setSummary(GlobalData.PREF_NOTIFICATION_TOAST);
 	    setSummary(GlobalData.PREF_NOTIFICATION_STATUS_BAR);
+	    setSummary(GlobalData.PREF_NOTIFICATION_STATUS_BAR_PERMANENT);
+	    setSummary(GlobalData.PREF_NOTIFICATION_STATUS_BAR_CANCEL);
 	    setSummary(GlobalData.PREF_NOTIFICATION_STATUS_BAR_STYLE);
 	    setSummary(GlobalData.PREF_APPLICATION_WIDGET_LIST_PREF_INDICATOR);
 	    setSummary(GlobalData.PREF_APPLICATION_WIDGET_LIST_HEADER);

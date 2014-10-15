@@ -868,7 +868,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 				boolean restart = data.getBooleanExtra(GlobalData.EXTRA_RESET_EDITOR, false); 
 	
 				DataWrapper dataWrapper = getDataWrapper();
-				dataWrapper.getActivateProfileHelper().showNotification(dataWrapper.getActivatedProfileFromDB());
+				dataWrapper.getActivateProfileHelper().showNotification(dataWrapper.getActivatedProfileFromDB(), "");
 				dataWrapper.getActivateProfileHelper().updateWidget();
 				
 				if (restart)
@@ -1083,7 +1083,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 					dataWrapper.invalidateProfileList();
 					dataWrapper.invalidateEventList();
 					
-					dataWrapper.getActivateProfileHelper().showNotification(null);
+					dataWrapper.getActivateProfileHelper().showNotification(null, "");
 					dataWrapper.getActivateProfileHelper().updateWidget();
 					
 					GlobalData.setEventsBlocked(getBaseContext(), false);
@@ -1557,7 +1557,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 
 			Profile activeProfile = fragment.dataWrapper.getActivatedProfile();
 			fragment.updateHeader(activeProfile);
-			fragment.dataWrapper.getActivateProfileHelper().showNotification(activeProfile);
+			fragment.dataWrapper.getActivateProfileHelper().showNotification(activeProfile, "");
 			fragment.dataWrapper.getActivateProfileHelper().updateWidget();
 			
 		}

@@ -680,7 +680,7 @@ public class Event {
 			{
 				ActivateProfileHelper activateProfileHelper = dataWrapper.getActivateProfileHelper();
 				activateProfileHelper.initialize(dataWrapper, null, dataWrapper.context);
-				activateProfileHelper.showNotification(dataWrapper.getActivatedProfile());
+				activateProfileHelper.showNotification(dataWrapper.getActivatedProfile(), "");
 				activateProfileHelper.updateWidget();
 			}
 			

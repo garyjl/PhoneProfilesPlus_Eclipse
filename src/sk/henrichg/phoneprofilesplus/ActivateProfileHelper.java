@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Calendar;
+import java.text.SimpleDateFormat;
 
 import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.execution.Command;
@@ -11,6 +13,7 @@ import com.stericson.RootTools.execution.CommandCapture;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -441,7 +444,7 @@ public class ActivateProfileHelper {
 		}
 
 		// event notification
-		if (!eventNotificationSound.isEmpty())
+		/*if (!eventNotificationSound.isEmpty())
 		{
 			audioManager.setMode(AudioManager.MODE_NORMAL);
 			final String _eventNotificationSound = eventNotificationSound;
@@ -464,7 +467,7 @@ public class ActivateProfileHelper {
 					}				
 				}
 			});
-		}
+		}*/
 		
 		// nahodenie radio preferences
 		if (PhoneProfilesHelper.isPPHelperInstalled(context, 0))
@@ -672,7 +675,7 @@ public class ActivateProfileHelper {
 	}
 	
 	//@SuppressWarnings("deprecation")
-	public void showNotification(Profile profile)
+	public void showNotification(Profile profile, String eventNotificationSound)
 	{
 		if (GlobalData.notificationStatusBar)
 		{	
@@ -761,6 +764,8 @@ public class ActivateProfileHelper {
 
 	        }
 
+			Uri ringtoneUri=Uri.parse(eventNotificationSound);
+			notificationBuilder.setSound(ringtoneUri);
 			
 	        Notification notification = notificationBuilder.build();
 			
@@ -782,6 +787,10 @@ public class ActivateProfileHelper {
 	        	//notification.flags |= Notification.FLAG_NO_CLEAR; 
 	        	notification.flags |= Notification.FLAG_ONGOING_EVENT;
 	        }
+	        else
+	        {
+	        	setAlarmForNotificationCancel();
+	        }
 			notificationManager.notify(GlobalData.NOTIFICATION_ID, notification);
 		}
 		else
@@ -789,10 +798,30 @@ public class ActivateProfileHelper {
 			notificationManager.cancel(GlobalData.NOTIFICATION_ID);
 		}
 	}
-	
+
 	public void removeNotification()
 	{
 		notificationManager.cancel(GlobalData.NOTIFICATION_ID);
+	}
+
+	private void setAlarmForNotificationCancel()
+	{
+		if (GlobalData.notificationStatusBarCancel.isEmpty() || GlobalData.notificationStatusBarCancel.equals("0"))
+			return;
+		
+	    Intent intent = new Intent(context, NotificationCancelAlarmBroadcastReceiver.class);
+	    
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
+
+        Calendar now = Calendar.getInstance();
+        long time = now.getTimeInMillis() + Integer.valueOf(GlobalData.notificationStatusBarCancel) * 1000;
+        alarmManager.set(AlarmManager.RTC_WAKEUP, time, pendingIntent);
+
+        //alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, alarmTime, 24 * 60 * 60 * 1000 , pendingIntent);
+        //alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, alarmTime, 24 * 60 * 60 * 1000 , pendingIntent);
+
 	}
 	
 	public void updateWidget()

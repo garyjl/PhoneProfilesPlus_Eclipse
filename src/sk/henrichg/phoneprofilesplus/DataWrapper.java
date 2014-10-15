@@ -960,7 +960,7 @@ public class DataWrapper {
 		else
 			ProfileDurationAlarmBroadcastReceiver.removeAlarm(context);
 
-		activateProfileHelper.showNotification(profile);
+		activateProfileHelper.showNotification(profile, eventNotificationSound);
 		activateProfileHelper.updateWidget();
 		
 		if (profile != null)
@@ -1248,7 +1248,7 @@ public class DataWrapper {
 		}
 		else
 		{
-			activateProfileHelper.showNotification(profile);
+			activateProfileHelper.showNotification(profile, eventNotificationSound);
 			activateProfileHelper.updateWidget();
 
 			// for startActivityForResult
