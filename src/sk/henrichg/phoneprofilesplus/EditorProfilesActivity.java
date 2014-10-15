@@ -843,7 +843,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 			if ((resultCode == RESULT_OK) && (data != null))
 			{
 				// redraw list fragment after finish EventPreferencesFragmentActivity
-				long event_id = data.getLongExtra(GlobalData.EXTRA_EVENT_ID, 0);
+				long event_id = data.getLongExtra(GlobalData.EXTRA_EVENT_ID, 0L);
 				int newEventMode = data.getIntExtra(GlobalData.EXTRA_NEW_EVENT_MODE, EditorEventListFragment.EDIT_MODE_UNDEFINED);
 				
 				//Log.e("EditorProfilesActivity.onActivityResult","event_id="+event_id);
@@ -1611,7 +1611,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 			{
 				Bundle arguments = new Bundle();
 				if (editMode == EditorEventListFragment.EDIT_MODE_INSERT)
-					arguments.putLong(GlobalData.EXTRA_EVENT_ID, 0);
+					arguments.putLong(GlobalData.EXTRA_EVENT_ID, 0L);
 				else
 					arguments.putLong(GlobalData.EXTRA_EVENT_ID, event._id);
 				arguments.putInt(GlobalData.EXTRA_NEW_EVENT_MODE, editMode);
@@ -1641,7 +1641,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 			{
 				Intent intent = new Intent(getBaseContext(), EventPreferencesFragmentActivity.class);
 				if (editMode == EditorEventListFragment.EDIT_MODE_INSERT)
-					intent.putExtra(GlobalData.EXTRA_EVENT_ID, 0);
+					intent.putExtra(GlobalData.EXTRA_EVENT_ID, 0L);
 				else
 					intent.putExtra(GlobalData.EXTRA_EVENT_ID, event._id);
 				intent.putExtra(GlobalData.EXTRA_NEW_EVENT_MODE, editMode);
