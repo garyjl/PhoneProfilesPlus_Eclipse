@@ -155,8 +155,8 @@ public class EventPreferencesSMS extends EventPreferences {
 		int gmtOffset = TimeZone.getDefault().getRawOffset();
 		
 		calEndTime.setTimeInMillis((_startTime - gmtOffset) + (5 * 1000));
-		calEndTime.set(Calendar.SECOND, 0);
-		calEndTime.set(Calendar.MILLISECOND, 0);
+		//calEndTime.set(Calendar.SECOND, 0);
+		//calEndTime.set(Calendar.MILLISECOND, 0);
 
 		long alarmTime;
 		alarmTime = calEndTime.getTimeInMillis();
@@ -172,6 +172,8 @@ public class EventPreferencesSMS extends EventPreferences {
 		// this alarm generates broadcast, that change state into RUNNING;
 		// from broadcast will by called EventsService
 
+		GlobalData.logE("EventPreferencesSMS.setSystemRunningEvent","xxx");
+		
 		removeAlarm(context);
 	}
 
@@ -182,6 +184,8 @@ public class EventPreferencesSMS extends EventPreferences {
 
 		// this alarm generates broadcast, that change state into PAUSE;
 		// from broadcast will by called EventsService
+
+		GlobalData.logE("EventPreferencesSMS.setSystemPauseEvent","xxx");
 		
 		removeAlarm(context);
 

@@ -1,5 +1,6 @@
 package sk.henrichg.phoneprofilesplus;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -1742,12 +1743,15 @@ public class DataWrapper {
 		{
 			
 			SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
-			int callEventType = preferences.getInt(GlobalData.PREF_EVENT_SMS_EVENT_TYPE, EventPreferencesSMS.SMS_EVENT_UNDEFINED);
+			int smsEventType = preferences.getInt(GlobalData.PREF_EVENT_SMS_EVENT_TYPE, EventPreferencesSMS.SMS_EVENT_UNDEFINED);
 			String phoneNumber = preferences.getString(GlobalData.PREF_EVENT_SMS_PHONE_NUMBER, "");
 			long startTime = preferences.getLong(GlobalData.PREF_EVENT_SMS_DATE, 0);
 
-			if (callEventType != EventPreferencesSMS.SMS_EVENT_UNDEFINED)
+   		    GlobalData.logE("DataWrapper.doEventService","smsEventType="+smsEventType);
+			
+			if (smsEventType != EventPreferencesSMS.SMS_EVENT_UNDEFINED)
 			{
+	   		    GlobalData.logE("DataWrapper.doEventService","phoneNumber="+phoneNumber);
 			
 				// save sms date into event
 				if (event.getStatus() != Event.ESTATUS_RUNNING)
@@ -1755,24 +1759,31 @@ public class DataWrapper {
 					event._eventPreferencesSMS._startTime = startTime;
 					getDatabaseHandler().updateSMSStartTimes(event);
 				}
+
+				// comute start time
+		        int gmtOffset = TimeZone.getDefault().getRawOffset();
+		        startTime = startTime - gmtOffset; 
 				
-				// compute start datetime
+	   		    SimpleDateFormat sdf = new SimpleDateFormat("EE d.MM.yyyy HH:mm:ss:S");
+	   		    String alarmTimeS = sdf.format(startTime);
+	   		    GlobalData.logE("DataWrapper.doEventService","startTime="+alarmTimeS);
+				
+				// compute end datetime
 	   			long endAlarmTime = event._eventPreferencesSMS.computeAlarm();
-	
-	   		    String alarmTimeS = DateFormat.getDateFormat(context).format(endAlarmTime) +
-		    	  		     " " + DateFormat.getTimeFormat(context).format(endAlarmTime);
+	   		    alarmTimeS = sdf.format(endAlarmTime);
 	   		    GlobalData.logE("DataWrapper.doEventService","endAlarmTime="+alarmTimeS);
 				
 				Calendar now = Calendar.getInstance();
 				long nowAlarmTime = now.getTimeInMillis();
-	   		    alarmTimeS = DateFormat.getDateFormat(context).format(nowAlarmTime) +
-	   	  		     " " + DateFormat.getTimeFormat(context).format(nowAlarmTime);
+	   		    alarmTimeS = sdf.format(nowAlarmTime);
 			    GlobalData.logE("DataWrapper.doEventService","nowAlarmTime="+alarmTimeS);
 	
 				smsPassed = ((nowAlarmTime >= startTime) && (nowAlarmTime <= endAlarmTime));
 				
 				if (smsPassed)
 				{
+		   		    GlobalData.logE("DataWrapper.doEventService","start time passed");
+					
 					if (event._eventPreferencesSMS._contactListType != EventPreferencesCall.CONTACT_LIST_TYPE_NOT_USE)
 					{
 						// find phone number
@@ -1824,7 +1835,7 @@ public class DataWrapper {
 					
 					if (phoneNumberFinded)
 					{
-						if (event._eventPreferencesSMS._smsEvent == callEventType)
+						if (event._eventPreferencesSMS._smsEvent == smsEventType)
 						{
 							eventStart = eventStart && true;
 							smsPassed = true;

@@ -2,6 +2,7 @@ package sk.henrichg.phoneprofilesplus;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import android.content.Context;
 import android.content.Intent;
@@ -54,9 +55,12 @@ public class SMSBroadcastReceiver extends WakefulBroadcastReceiver {
 		Editor editor = preferences.edit();
 		editor.putInt(GlobalData.PREF_EVENT_SMS_EVENT_TYPE, EventPreferencesSMS.SMS_EVENT_INCOMING);
 		editor.putString(GlobalData.PREF_EVENT_SMS_PHONE_NUMBER, origin);
-        Calendar now = Calendar.getInstance();
-		long time = now.getTimeInMillis(); 
+        
+		Calendar now = Calendar.getInstance();
+        int gmtOffset = TimeZone.getDefault().getRawOffset();
+		long time = now.getTimeInMillis() + gmtOffset;
 		editor.putLong(GlobalData.PREF_EVENT_SMS_DATE, time);
+
 		editor.commit();
 		
 		startService(context);
@@ -143,7 +147,9 @@ public class SMSBroadcastReceiver extends WakefulBroadcastReceiver {
 					Editor editor = preferences.edit();
 					editor.putInt(GlobalData.PREF_EVENT_SMS_EVENT_TYPE, EventPreferencesSMS.SMS_EVENT_OUTGOING);
 					editor.putString(GlobalData.PREF_EVENT_SMS_PHONE_NUMBER, to);
-					editor.putLong(GlobalData.PREF_EVENT_SMS_DATE, date.getTime());
+			        int gmtOffset = TimeZone.getDefault().getRawOffset();
+					long time = date.getTime() + gmtOffset;
+					editor.putLong(GlobalData.PREF_EVENT_SMS_DATE, time);
 					editor.commit();
 				}
 				cursor.close();
