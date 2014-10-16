@@ -171,7 +171,7 @@ public class SMSBroadcastReceiver extends WakefulBroadcastReceiver {
 						return;
 					}
 					int dateColumn = cursor.getColumnIndex("date");
-					int bodyColumn = cursor.getColumnIndex("body");
+					//int bodyColumn = cursor.getColumnIndex("body");
 					int addressColumn = cursor.getColumnIndex("address");
 
 					String to = cursor.getString(addressColumn);
