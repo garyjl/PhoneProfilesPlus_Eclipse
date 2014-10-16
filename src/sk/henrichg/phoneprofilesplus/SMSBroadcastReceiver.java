@@ -272,10 +272,10 @@ public class SMSBroadcastReceiver extends WakefulBroadcastReceiver {
 			        					long time = now.getTimeInMillis() + gmtOffset;
 			        					editor.putLong(GlobalData.PREF_EVENT_SMS_DATE, time);
 			        					editor.commit();
+			        					
+			            				startService(_context);
 		                            }
 		                        	while (addrCur.moveToPrevious());
-		                        	
-		            				startService(_context);
 	                        	}
 	                        }	                    	
 	                    }                	
