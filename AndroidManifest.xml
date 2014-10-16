@@ -334,12 +334,12 @@
 			    <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
 			</intent-filter>
 		</receiver>
-<!--		<receiver android:name=".SMSBroadcastReceiver"  android:enabled="true">
+		<receiver android:name=".SMSBroadcastReceiver"  android:enabled="true">
 			<intent-filter android:priority="1000">
 			   <action android:name="android.provider.Telephony.WAP_PUSH_RECEIVED" />
 			   <data android:mimeType="application/vnd.wap.mms-message" />
     		</intent-filter>
-		</receiver>   -->
+		</receiver>
 		<receiver android:name=".EventsSMSBroadcastReceiver"
 	        android:enabled="true" 
 	        android:exported="false">

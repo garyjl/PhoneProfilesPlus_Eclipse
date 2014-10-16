@@ -61,7 +61,8 @@ public class ReceiversService extends Service {
 		intentFilter99.addAction(Intent.ACTION_TIME_CHANGED);
 	    registerReceiver(restartEventsReceiver, intentFilter99);
 		
-	    SMSBroadcastReceiver.registerContentObserver(this);
+	    SMSBroadcastReceiver.registerSMSContentObserver(this);
+	    SMSBroadcastReceiver.registerMMSContentObserver(this);
 	    
 	}
 	 
@@ -77,7 +78,8 @@ public class ReceiversService extends Service {
 		
 		unregisterReceiver(restartEventsReceiver);
 		
-	    SMSBroadcastReceiver.unregisterContentObserver(this);
+	    SMSBroadcastReceiver.unregisterSMSContentObserver(this);
+	    SMSBroadcastReceiver.unregisterMMSContentObserver(this);
     }
 	 
 	@Override

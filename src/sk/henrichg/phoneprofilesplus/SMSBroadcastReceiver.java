@@ -19,56 +19,91 @@ public class SMSBroadcastReceiver extends WakefulBroadcastReceiver {
 
 	public static final String BROADCAST_RECEIVER_TYPE = "SMS";
 	
-	private static ContentObserver observer;
+	private static ContentObserver smsObserver;
+	private static ContentObserver mmsObserver;
+	private static int mmsCount;
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		
 		GlobalData.logE("#### SMSBroadcastReceiver.onReceive","xxx");
 
-	    String origin = "";
-	    String body = "";
+		boolean smsMmsReceived = false;
 		
-		Bundle extras = intent.getExtras();
-		Object[] pdus = (Object[]) extras.get("pdus");
-		for (Object pdu : pdus)
-		{
-			SmsMessage msg = SmsMessage.createFromPdu((byte[]) pdu);
-		    origin = msg.getOriginatingAddress();
-		    body = msg.getMessageBody();
-		}	    
+	    String origin = "";
+	    //String body = "";
 		
 	    if (intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED"))
 	    {
 			GlobalData.logE("SMSBroadcastReceiver.onReceive","SMS received");
+
+			smsMmsReceived = true;
+			
+			Bundle extras = intent.getExtras();
+			Object[] pdus = (Object[]) extras.get("pdus");
+			for (Object pdu : pdus)
+			{
+				SmsMessage msg = SmsMessage.createFromPdu((byte[]) pdu);
+			    origin = msg.getOriginatingAddress();
+			    //body = msg.getMessageBody();
+			}
+			
+			
 	    }
-	    else
+	    /*else
 	    if(intent.getAction().equals("android.provider.Telephony.SMS_SENT"))
 	    {
 			GlobalData.logE("SMSBroadcastReceiver.onReceive","sent");
-	    }
+	    }*/
 	    else
-	    if (intent.getAction().equals("android.provider.Telephony.WAP_PUSH_RECEIVED"))
+	    if (intent.getAction().equals("android.provider.Telephony.WAP_PUSH_RECEIVED") &&
+	    	intent.getType().equals("application/vnd.wap.mms-message"))
 	    {
 			GlobalData.logE("SMSBroadcastReceiver.onReceive","MMS received");
+
+			smsMmsReceived = true;
+	    
+			Bundle bundle = intent.getExtras();
+            if (bundle != null)
+            {
+                byte[] buffer = bundle.getByteArray("data");
+                String incomingNumber = new String(buffer);
+                int indx = incomingNumber.indexOf("/TYPE");
+
+                if(indx>0 && (indx-15)>0){
+                    int newIndx = indx - 15;
+                    incomingNumber = incomingNumber.substring(newIndx, indx);
+                    indx = incomingNumber.indexOf("+");
+                    if(indx>0){
+                    	origin = incomingNumber.substring(indx);
+                    }
+                }
+                /*int transactionId = bundle.getInt("transactionId");
+                int pduType = bundle.getInt("pduType");
+                byte[] buffer2 = bundle.getByteArray("header");      
+                String header = new String(buffer2);*/
+            }
 	    }
 
-		GlobalData.logE("SMSBroadcastReceiver.onReceive","from="+origin);
-		GlobalData.logE("SMSBroadcastReceiver.onReceive","message="+body);
-
-		SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
-		Editor editor = preferences.edit();
-		editor.putInt(GlobalData.PREF_EVENT_SMS_EVENT_TYPE, EventPreferencesSMS.SMS_EVENT_INCOMING);
-		editor.putString(GlobalData.PREF_EVENT_SMS_PHONE_NUMBER, origin);
-        
-		Calendar now = Calendar.getInstance();
-        int gmtOffset = TimeZone.getDefault().getRawOffset();
-		long time = now.getTimeInMillis() + gmtOffset;
-		editor.putLong(GlobalData.PREF_EVENT_SMS_DATE, time);
-
-		editor.commit();
-		
-		startService(context);
+	    if (smsMmsReceived)
+	    {
+			GlobalData.logE("SMSBroadcastReceiver.onReceive","from="+origin);
+			//GlobalData.logE("SMSBroadcastReceiver.onReceive","message="+body);
+	
+			SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+			Editor editor = preferences.edit();
+			editor.putInt(GlobalData.PREF_EVENT_SMS_EVENT_TYPE, EventPreferencesSMS.SMS_EVENT_INCOMING);
+			editor.putString(GlobalData.PREF_EVENT_SMS_PHONE_NUMBER, origin);
+	        
+			Calendar now = Calendar.getInstance();
+	        int gmtOffset = TimeZone.getDefault().getRawOffset();
+			long time = now.getTimeInMillis() + gmtOffset;
+			editor.putLong(GlobalData.PREF_EVENT_SMS_DATE, time);
+	
+			editor.commit();
+			
+			startService(context);
+	    }
 	}
 	
 	private static void startService(Context context)
@@ -109,18 +144,18 @@ public class SMSBroadcastReceiver extends WakefulBroadcastReceiver {
 	/**
 	 * @author khoanguyen
 	 */
-	static public void registerContentObserver(Context context)
+	static public void registerSMSContentObserver(Context context)
 	{
-		if (observer != null)
+		if (smsObserver != null)
 			return;
 
 		final Context _context = context;
 		
-		observer = new ContentObserver(null)
+		smsObserver = new ContentObserver(null)
 		{
 			public void onChange(boolean selfChange)
 			{
-				GlobalData.logE("SMSBroadcastReceiver.ContentObserver.onChange","xxx");
+				GlobalData.logE("SMSBroadcastReceiver.smsObserver.onChange","xxx");
 
 				// read outgoing sms from db
 				Cursor cursor = _context.getContentResolver().query(Uri.parse(CONTENT_SMS), null, null, null, null);
@@ -132,7 +167,7 @@ public class SMSBroadcastReceiver extends WakefulBroadcastReceiver {
 					// is sent successfully (available in SENT box).
 					if (protocol != null || type != MESSAGE_TYPE_SENT)
 					{
-						GlobalData.logE("SMSBroadcastReceiver.ContentObserver.onChange","no SMS in SENT box");
+						GlobalData.logE("SMSBroadcastReceiver.smsObserver.onChange","no SMS in SENT box");
 						return;
 					}
 					int dateColumn = cursor.getColumnIndex("date");
@@ -141,12 +176,12 @@ public class SMSBroadcastReceiver extends WakefulBroadcastReceiver {
 
 					String to = cursor.getString(addressColumn);
 					Date date = new Date(cursor.getLong(dateColumn));
-					String message = cursor.getString(bodyColumn);
+					//String message = cursor.getString(bodyColumn);
 					
-					GlobalData.logE("SMSBroadcastReceiver.ContentObserver.onChange","sms sent");
-					GlobalData.logE("SMSBroadcastReceiver.ContentObserver.onChange","to="+to);
-					GlobalData.logE("SMSBroadcastReceiver.ContentObserver.onChange","date="+date);
-					GlobalData.logE("SMSBroadcastReceiver.ContentObserver.onChange","message="+message);
+					GlobalData.logE("SMSBroadcastReceiver.smsObserver.onChange","sms sent");
+					GlobalData.logE("SMSBroadcastReceiver.smsObserver.onChange","to="+to);
+					GlobalData.logE("SMSBroadcastReceiver.smsObserver.onChange","date="+date);
+					//GlobalData.logE("SMSBroadcastReceiver.smsObserver.onChange","message="+message);
 					
 					SharedPreferences preferences = _context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
 					Editor editor = preferences.edit();
@@ -163,12 +198,99 @@ public class SMSBroadcastReceiver extends WakefulBroadcastReceiver {
 			}
 		};
 		
-		context.getContentResolver().registerContentObserver(Uri.parse(CONTENT_SMS), true, observer);
+		context.getContentResolver().registerContentObserver(Uri.parse(CONTENT_SMS), true, smsObserver);
 	}
 		
-	public static void unregisterContentObserver(Context context)
+	public static void unregisterSMSContentObserver(Context context)
 	{
-		if (observer != null)
-			context.getContentResolver().unregisterContentObserver(observer);		
+		if (smsObserver != null)
+			context.getContentResolver().unregisterContentObserver(smsObserver);		
 	}
+
+	static public void registerMMSContentObserver(Context context)
+	{
+		if (mmsObserver != null)
+			return;
+
+        Uri uriMMSURI = Uri.parse("content://mms");
+        Cursor mmsCur = context.getContentResolver().query(uriMMSURI, null, "msg_box = 4", null, "_id");
+        if (mmsCur != null && mmsCur.getCount() > 0) {
+           mmsCount = mmsCur.getCount();
+        }
+		
+		final Context _context = context;
+		
+		mmsObserver = new ContentObserver(null)
+		{
+			public void onChange(boolean selfChange)
+			{
+				GlobalData.logE("SMSBroadcastReceiver.mmsObserver.onChange","xxx");
+
+				// read outgoing mms from db
+                Uri uriMMSURI = Uri.parse("content://mms/");
+                Cursor mmsCur = _context.getContentResolver().query(uriMMSURI, null, "msg_box = 4 or msg_box = 1", null,"_id");
+
+                int currMMSCount = 0;
+                if (mmsCur != null && mmsCur.getCount() > 0) {
+                   currMMSCount = mmsCur.getCount();
+                }
+
+                if (currMMSCount > mmsCount)
+                {
+                    mmsCount = currMMSCount;
+                	
+	                if (mmsCur.moveToLast())
+	                {
+	                    int type = Integer.parseInt(mmsCur.getString(mmsCur.getColumnIndex("m_type")));
+	                    if (type == 128) {
+	                       // Outgoing MMS
+
+          					GlobalData.logE("SMSBroadcastReceiver.mmsObserver.onChange","mms sent");
+	                    	
+	                    	int id = Integer.parseInt(mmsCur.getString(mmsCur.getColumnIndex("_id")));
+	                    	
+	                    	// Get Address
+	                        Uri uriAddrPart = Uri.parse("content://mms/"+id+"/addr");
+	                        Cursor addrCur = _context.getContentResolver().query(uriAddrPart, null, "type=151", null, "_id");
+	                        if (addrCur != null)
+	                        {
+	                        	if (addrCur.moveToLast())
+	                        	{   
+		                        	do
+		                        	{
+		                        		int addColIndx = addrCur.getColumnIndex("address");
+		                        		String to = addrCur.getString(addColIndx);
+		                              
+			        					GlobalData.logE("SMSBroadcastReceiver.mmsObserver.onChange","to="+to);
+			        					
+			        					SharedPreferences preferences = _context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+			        					Editor editor = preferences.edit();
+			        					editor.putInt(GlobalData.PREF_EVENT_SMS_EVENT_TYPE, EventPreferencesSMS.SMS_EVENT_OUTGOING);
+			        					editor.putString(GlobalData.PREF_EVENT_SMS_PHONE_NUMBER, to);
+			        					Calendar now = Calendar.getInstance();
+			        			        int gmtOffset = TimeZone.getDefault().getRawOffset();
+			        					long time = now.getTimeInMillis() + gmtOffset;
+			        					editor.putLong(GlobalData.PREF_EVENT_SMS_DATE, time);
+			        					editor.commit();
+		                            }
+		                        	while (addrCur.moveToPrevious());
+		                        	
+		            				startService(_context);
+	                        	}
+	                        }	                    	
+	                    }                	
+	                }
+                }
+			}
+		};
+		
+		context.getContentResolver().registerContentObserver(Uri.parse("content://mms-sms"), true, mmsObserver);
+	}
+		
+	public static void unregisterMMSContentObserver(Context context)
+	{
+		if (mmsObserver != null)
+			context.getContentResolver().unregisterContentObserver(mmsObserver);		
+	}
+
 }
