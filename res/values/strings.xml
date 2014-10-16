@@ -420,5 +420,6 @@
     <string name="toast_events_restarted">Events restarted</string>
     <string name="phone_profiles_pref_notificationStatusBarPermanent">Ongoing notification</string>
     <string name="phone_profiles_pref_notificationStatusBarCancel">Cancel after (sec)</string>
+	<string name="event_name_background_profile">Default profile</string>
     								
 </resources>

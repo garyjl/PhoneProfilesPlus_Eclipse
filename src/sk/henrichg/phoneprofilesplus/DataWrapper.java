@@ -2245,7 +2245,13 @@ public class DataWrapper {
 				return "";
 		}
 		else
-			return "";
+		{
+			long profileId = Long.valueOf(GlobalData.applicationBackgroundProfile); 
+			if ((!GlobalData.getEventsBlocked(context)) && (profileId != GlobalData.PROFILE_NO_ACTIVATE))
+				return context.getString(R.string.event_name_background_profile);
+			else
+				return "";
+		}
 	}
 
 	public String getSSID(WifiManager wifiManager, WifiInfo wifiInfo)
