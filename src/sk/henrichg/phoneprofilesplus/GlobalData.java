@@ -30,7 +30,7 @@ public class GlobalData extends Application {
 
 	static String PACKAGE_NAME;
 	
-	public static boolean logIntoLogCat = false;
+	public static boolean logIntoLogCat = true;
 	public static boolean logIntoFile = false;
 /*	public static String logFilterTags = //"@@@ BatteryEventBroadcastReceiver|"+
 										 //"@@@ CalendarProviderChangedBroadcastReceiver|"+
@@ -50,8 +50,7 @@ public class GlobalData extends Application {
 										 //"@@@ Event" */
 			;
 	public static String logFilterTags = "@@@ Event|"+
-			"DataWrapper|"+
-			"EventPreferencesSMS"
+			"SMSBroadcastReceiver"
 			;
 	
 	

@@ -1,16 +1,12 @@
 package sk.henrichg.phoneprofilesplus;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.TimeZone;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.database.ContentObserver;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.telephony.SmsMessage;
@@ -19,9 +15,9 @@ public class SMSBroadcastReceiver extends WakefulBroadcastReceiver {
 
 	public static final String BROADCAST_RECEIVER_TYPE = "SMS";
 	
-	private static ContentObserver smsObserver;
-	private static ContentObserver mmsObserver;
-	private static int mmsCount;
+	//private static ContentObserver smsObserver;
+	//private static ContentObserver mmsObserver;
+	//private static int mmsCount;
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -92,7 +88,7 @@ public class SMSBroadcastReceiver extends WakefulBroadcastReceiver {
 	
 			SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
 			Editor editor = preferences.edit();
-			editor.putInt(GlobalData.PREF_EVENT_SMS_EVENT_TYPE, EventPreferencesSMS.SMS_EVENT_INCOMING);
+			//editor.putInt(GlobalData.PREF_EVENT_SMS_EVENT_TYPE, EventPreferencesSMS.SMS_EVENT_INCOMING);
 			editor.putString(GlobalData.PREF_EVENT_SMS_PHONE_NUMBER, origin);
 	        
 			Calendar now = Calendar.getInstance();
@@ -135,15 +131,14 @@ public class SMSBroadcastReceiver extends WakefulBroadcastReceiver {
 		}
 	}
 
+/*	
 	private static final String CONTENT_SMS = "content://sms";
 	// Constant from Android SDK
 	private static final int MESSAGE_TYPE_SENT = 2;
 	
 	
 	// Register an observer for listening outgoing sms events.
-	/**
-	 * @author khoanguyen
-	 */
+	// @author khoanguyen
 	static public void registerSMSContentObserver(Context context)
 	{
 		if (smsObserver != null)
@@ -207,6 +202,7 @@ public class SMSBroadcastReceiver extends WakefulBroadcastReceiver {
 			context.getContentResolver().unregisterContentObserver(smsObserver);		
 	}
 
+	// not working with with Hangouts :-/
 	static public void registerMMSContentObserver(Context context)
 	{
 		if (mmsObserver != null)
@@ -235,13 +231,18 @@ public class SMSBroadcastReceiver extends WakefulBroadcastReceiver {
                    currMMSCount = mmsCur.getCount();
                 }
 
+				GlobalData.logE("SMSBroadcastReceiver.mmsObserver.onChange","mmsCount="+mmsCount);
+				GlobalData.logE("SMSBroadcastReceiver.mmsObserver.onChange","currMMSCount="+currMMSCount);
+                
                 if (currMMSCount > mmsCount)
                 {
-                    mmsCount = currMMSCount;
-                	
 	                if (mmsCur.moveToLast())
 	                {
+	                	// 132 (RETRIEVE CONF) 130 (NOTIF IND) 128 (SEND REQ)
 	                    int type = Integer.parseInt(mmsCur.getString(mmsCur.getColumnIndex("m_type")));
+
+	    				GlobalData.logE("SMSBroadcastReceiver.mmsObserver.onChange","type="+type);
+	                    
 	                    if (type == 128) {
 	                       // Outgoing MMS
 
@@ -281,6 +282,9 @@ public class SMSBroadcastReceiver extends WakefulBroadcastReceiver {
 	                    }                	
 	                }
                 }
+                
+                mmsCount = currMMSCount;
+                
 			}
 		};
 		
@@ -292,5 +296,5 @@ public class SMSBroadcastReceiver extends WakefulBroadcastReceiver {
 		if (mmsObserver != null)
 			context.getContentResolver().unregisterContentObserver(mmsObserver);		
 	}
-
+*/
 }

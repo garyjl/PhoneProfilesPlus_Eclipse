@@ -1743,14 +1743,14 @@ public class DataWrapper {
 		{
 			
 			SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
-			int smsEventType = preferences.getInt(GlobalData.PREF_EVENT_SMS_EVENT_TYPE, EventPreferencesSMS.SMS_EVENT_UNDEFINED);
+			//int smsEventType = preferences.getInt(GlobalData.PREF_EVENT_SMS_EVENT_TYPE, EventPreferencesSMS.SMS_EVENT_UNDEFINED);
 			String phoneNumber = preferences.getString(GlobalData.PREF_EVENT_SMS_PHONE_NUMBER, "");
 			long startTime = preferences.getLong(GlobalData.PREF_EVENT_SMS_DATE, 0);
 
-   		    GlobalData.logE("DataWrapper.doEventService","smsEventType="+smsEventType);
+   		    //GlobalData.logE("DataWrapper.doEventService","smsEventType="+smsEventType);
 			
-			if (smsEventType != EventPreferencesSMS.SMS_EVENT_UNDEFINED)
-			{
+			//if (smsEventType != EventPreferencesSMS.SMS_EVENT_UNDEFINED)
+			//{
 	   		    GlobalData.logE("DataWrapper.doEventService","phoneNumber="+phoneNumber);
 			
 				// save sms date into event
@@ -1835,19 +1835,19 @@ public class DataWrapper {
 					
 					if (phoneNumberFinded)
 					{
-						if (event._eventPreferencesSMS._smsEvent == smsEventType)
-						{
+						//if (event._eventPreferencesSMS._smsEvent == smsEventType)
+						//{
 							eventStart = eventStart && true;
 							smsPassed = true;
-						}
+						//}
 					}
 					else
 						smsPassed = false;
 				}
 				
-			}
-			else
-				smsPassed = false;
+			//}
+			//else
+			//	smsPassed = false;
 		}
 		
 		GlobalData.logE("DataWrapper.doEventService","timePassed="+timePassed);

@@ -181,13 +181,13 @@
 		    android:key="eventSMSEnabled"
 		    android:title="@string/event_preferences_sms_enabled"
 		    android:defaultValue="false" />
-		<ListPreference android:title="@string/event_preferences_sms_event"
+<!-- 		<ListPreference android:title="@string/event_preferences_sms_event"
             android:summary="@string/array_event_pref_incoming_sms"
             android:key="eventSMSEvent"
             android:defaultValue="0"
             android:entries="@array/eventSMSEventsArray"
             android:entryValues="@array/eventSMSEventsValues"
-            android:dependency="eventSMSEnabled" />        
+            android:dependency="eventSMSEnabled" />  -->        
 		<sk.henrichg.phoneprofilesplus.ContactsMultiSelectDialogPreference
             android:key="eventSMSContacts"
             android:defaultValue=""

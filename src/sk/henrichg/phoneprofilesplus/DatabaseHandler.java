@@ -140,7 +140,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_E_BLUETOOTH_ADAPTER_NAME = "bluetoothAdapterName";
 	private static final String KEY_E_BLUETOOTH_CONNECTION_TYPE = "bluetoothConnectionType";
 	private static final String KEY_E_SMS_ENABLED = "smsEnabled";
-	private static final String KEY_E_SMS_EVENT = "smsEvent";
+	//private static final String KEY_E_SMS_EVENT = "smsEvent";
 	private static final String KEY_E_SMS_CONTACTS = "smsContacts";
 	private static final String KEY_E_SMS_CONTACT_LIST_TYPE = "smsContactListType";
 	private static final String KEY_E_SMS_START_TIME = "smsStartTime";
@@ -301,7 +301,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_E_BLUETOOTH_ADAPTER_NAME + " TEXT,"
 				+ KEY_E_BLUETOOTH_CONNECTION_TYPE + " INTEGER,"
 				+ KEY_E_SMS_ENABLED + " INTEGER,"
-	            + KEY_E_SMS_EVENT + " INTEGER,"
+	            //+ KEY_E_SMS_EVENT + " INTEGER,"
 	            + KEY_E_SMS_CONTACTS + " TEXT,"
 	            + KEY_E_SMS_CONTACT_LIST_TYPE + " INTEGER,"
 	            + KEY_E_SMS_START_TIME + " INTEGER"
@@ -818,13 +818,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		{
 			// pridame nove stlpce
 			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_SMS_ENABLED + " INTEGER");
-			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_SMS_EVENT + " INTEGER");
+			//db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_SMS_EVENT + " INTEGER");
 			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_SMS_CONTACTS + " TEXT");
 			db.execSQL("ALTER TABLE " + TABLE_EVENTS + " ADD COLUMN " + KEY_E_SMS_CONTACT_LIST_TYPE + " INTEGER");
 			
 			// updatneme zaznamy
 			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_SMS_ENABLED + "=0");
-			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_SMS_EVENT + "=0");
+			//db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_SMS_EVENT + "=0");
 			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_SMS_CONTACTS + "=\"\"");
 			db.execSQL("UPDATE " + TABLE_EVENTS + " SET " + KEY_E_SMS_CONTACT_LIST_TYPE + "=0");
 		}
@@ -2435,7 +2435,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private void getEventPreferencesSMS(Event event, SQLiteDatabase db) {
 		Cursor cursor = db.query(TABLE_EVENTS, 
 				                 new String[] { KEY_E_SMS_ENABLED,
-												KEY_E_SMS_EVENT, 
+												//KEY_E_SMS_EVENT, 
 												KEY_E_SMS_CONTACTS,
 												KEY_E_SMS_CONTACT_LIST_TYPE,
 												KEY_E_SMS_START_TIME
@@ -2451,10 +2451,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				EventPreferencesSMS eventPreferences = (EventPreferencesSMS)event._eventPreferencesSMS;
 		
 				eventPreferences._enabled = (Integer.parseInt(cursor.getString(0)) == 1);
-				eventPreferences._smsEvent = Integer.parseInt(cursor.getString(1));
-				eventPreferences._contacts = cursor.getString(2);
-				eventPreferences._contactListType = Integer.parseInt(cursor.getString(3));
-				eventPreferences._startTime = Long.parseLong(cursor.getString(4));
+				//eventPreferences._smsEvent = Integer.parseInt(cursor.getString(1));
+				eventPreferences._contacts = cursor.getString(1);
+				eventPreferences._contactListType = Integer.parseInt(cursor.getString(2));
+				eventPreferences._startTime = Long.parseLong(cursor.getString(3));
 			}
 			cursor.close();
 		}
@@ -2663,7 +2663,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		//Log.e("DatabaseHandler.updateEventPreferencesSMS","type="+event._type);
 		
 		values.put(KEY_E_SMS_ENABLED, (eventPreferences._enabled) ? 1 : 0);
-		values.put(KEY_E_SMS_EVENT, eventPreferences._smsEvent);
+		//values.put(KEY_E_SMS_EVENT, eventPreferences._smsEvent);
 		values.put(KEY_E_SMS_CONTACTS, eventPreferences._contacts);
 		values.put(KEY_E_SMS_CONTACT_LIST_TYPE, eventPreferences._contactListType);
 		values.put(KEY_E_SMS_START_TIME, eventPreferences._startTime);
@@ -3793,7 +3793,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 										if (exportedDBObj.getVersion() < 1140)
 										{
 											values.put(KEY_E_SMS_ENABLED, 0);
-											values.put(KEY_E_SMS_EVENT, 0);
+											//values.put(KEY_E_SMS_EVENT, 0);
 											values.put(KEY_E_SMS_CONTACTS, "");
 											values.put(KEY_E_SMS_CONTACT_LIST_TYPE, 0);
 										}
