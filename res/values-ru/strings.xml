@@ -253,11 +253,6 @@
     <string name="array_pref_launcher_activator">Активатор</string>
     <string name="array_pref_launcher_editor">Редактор</string>
     <string name="profile_preferences_deviceLocationServicePrefs">(I) Настройки местоположения</string>
-    <string name="event_preferences_battery_level">Заряд батареи</string>
-    <string name="event_preferences_battery_detectorType">Что определять</string>
-    <string name="array_pref_event_battery_detector_type_low_level">Низкий уровень заряда</string>
-    <string name="array_pref_event_battery_detector_type_hight_level">Высокий уровень заряда</string>
-    <string name="array_pref_event_battery_detector_type_plug">Процесс заряда</string>
     <string name="event_type_battery">Батарея</string>
     <string name="profile_preferences_volumeSpeakerPhone">Громкоговоритель</string>
     <string name="event_preferences_notificationSound">Звук уведомлений</string>

@@ -136,7 +136,6 @@
     <string name="array_pref_value_light">light</string>
     <string name="array_pref_value_dark">dark</string>
     <string name="array_pref_value_dlight">dlight</string>
-    <string name="phone_preferences_actionmode_title">Uložiť zmeny?</string>
     <string name="phone_preferences_actionmode_save">Uložiť</string>
     <string name="phone_preferences_actionmode_cancel">Zrušiť</string>
     <string name="profile_preferences_showInActivator">Zobrazuj v Aktivátore</string>
