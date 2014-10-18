@@ -48,8 +48,9 @@
         <item name="actionProfilePrefCancel">@drawable/ic_action_profile_pref_cancel_dark</item>
         <item name="actionProfileToolBackground">@drawable/abc_item_background_holo_dark</item>
         <item name="actionProfileButtonTextStyle">@style/TextAppearance.AppCompat.Widget.ActionMode.Title</item> 
-        <item name="navigationDrawerBackground">?attr/colorPrimary</item> 
+        <item name="navigationDrawerBackground">@color/background_material_dark</item> 
         <item name="navigationDrawerText">@color/navigationDrawerTextColor_phoneprofiletheme_dark</item>
+        <item name="navigationDrawerSubText">@color/navigationDrawerSubTextColor_phoneprofiletheme_dark</item>
         <item name="navigationDrawerSelector">@drawable/editor_drawer_selector_dark</item>
         <item name="filterStatusBarBackground">@color/filterStatusBarBackground_phoneprofilestheme_dark</item> 
         <item name="editorDrawerSpinner">@style/editorDrawerSpinnerStyle</item> 

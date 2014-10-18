@@ -46,7 +46,7 @@
         android:layout_width="240dp"
         android:layout_height="match_parent" 
 	    android:layout_gravity="start"
-	    android:background="?attr/navigationDrawerBackground"  >
+	    android:background="?attr/navigationDrawerBackground" >
 		
 		<LinearLayout 
 	        android:id="@+id/editor_drawer_order_root"

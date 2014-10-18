@@ -18,7 +18,7 @@
     
     <TextView
         android:id="@+id/editor_drawer_list_item_title"
-        style="?attr/spinnerDropDownItemStyle"
+        android:textColor="?attr/navigationDrawerText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -29,7 +29,7 @@
     
  	<TextView
         android:id="@+id/editor_drawer_list_item_subtitle"
-        style="?attr/spinnerDropDownItemStyle"
+        android:textColor="?attr/navigationDrawerSubText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/editor_drawer_list_item_title"
