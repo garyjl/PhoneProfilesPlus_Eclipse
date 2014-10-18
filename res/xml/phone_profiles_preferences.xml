@@ -111,9 +111,9 @@
 	           android:entries="@array/laucherArray"
 	           android:entryValues="@array/launcherValues" />        
 		<ListPreference android:title="@string/phone_profiles_pref_applicationTheme"
-	           android:summary="@string/phone_profiles_pref_applicationTheme_light"
+	           android:summary="@string/phone_profiles_pref_applicationTheme_dlight"
 	           android:key="applicationTheme"
-	           android:defaultValue="light"
+	           android:defaultValue="dlight"
 	           android:entries="@array/themeArray"
 	           android:entryValues="@array/themeValues" />        
 		<ListPreference android:title="@string/phone_profiles_pref_applicationLanguage"

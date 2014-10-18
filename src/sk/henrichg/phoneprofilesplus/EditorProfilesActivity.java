@@ -999,6 +999,15 @@ public class EditorProfilesActivity extends ActionBarActivity
 	                    prefEdit.putLong(key, ((Long) v).longValue());
 	                else if (v instanceof String)
 	                    prefEdit.putString(key, ((String) v));
+	                
+	                if (what == 1)
+	                {
+	                	if (key.equals(GlobalData.PREF_APPLICATION_THEME))
+	                	{
+	                		if (((String)v).equals("light"))
+	    	                    prefEdit.putString(key, "dlight");
+	                	}
+	                }
 	            }
 	            prefEdit.commit();
 	        res = true;         

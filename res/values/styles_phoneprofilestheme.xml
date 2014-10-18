@@ -30,6 +30,7 @@
         <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_phoneprofilestheme</item>
         <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Phoneprofilestheme</item>
  -->        
+ 
         <item name="actionNewProfileIcon">@drawable/ic_action_new_profile</item>
         <item name="actionDeleteAllIcon">@drawable/ic_action_delete_all</item>
         <item name="actionSettingsIcon">@drawable/ic_action_settings</item>
@@ -47,7 +48,7 @@
         <item name="actionProfilePrefSave">@drawable/ic_action_profile_pref_save</item>
         <item name="actionProfilePrefCancel">@drawable/ic_action_profile_pref_cancel</item>
         <item name="actionProfileToolBackground">@drawable/abc_item_background_holo_light</item>
-        <item name="actionProfileButtonTextStyle">@style/TextAppearance.AppCompat.Widget.ActionBar.Title</item> 
+        <item name="actionProfileButtonTextStyle">@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle</item> 
         <item name="navigationDrawerBackground">@color/background_material_light</item> 
         <item name="navigationDrawerText">@color/navigationDrawerTextColor_phoneprofiletheme</item>
         <item name="navigationDrawerSubText">@color/navigationDrawerSubTextColor_phoneprofiletheme</item>

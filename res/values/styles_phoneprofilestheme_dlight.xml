@@ -30,6 +30,12 @@
         <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_phoneprofilestheme</item>
         <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Phoneprofilestheme</item>
  -->        
+
+ 		<!-- customize the color palette -->
+    	<item name="colorPrimary">@color/profile_all_primary</item>
+    	<item name="colorPrimaryDark">@color/profile_all_primaryDark</item>
+<!--      	<item name="colorAccent">@color/profile_all_accent</item> -->
+
         <item name="actionNewProfileIcon">@drawable/ic_action_new_profile_dark</item>
         <item name="actionDeleteAllIcon">@drawable/ic_action_delete_all_dark</item>
         <item name="actionSettingsIcon">@drawable/ic_action_settings_dark</item>
@@ -47,7 +53,7 @@
         <item name="actionProfilePrefSave">@drawable/ic_action_profile_pref_save_dark</item>
         <item name="actionProfilePrefCancel">@drawable/ic_action_profile_pref_cancel_dark</item>
         <item name="actionProfileToolBackground">@drawable/abc_item_background_holo_light</item>
-        <item name="actionProfileButtonTextStyle">@style/TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse</item> 
+        <item name="actionProfileButtonTextStyle">@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle.Inverse</item> 
         <item name="navigationDrawerBackground">@color/background_material_light</item> 
         <item name="navigationDrawerText">@color/navigationDrawerTextColor_phoneprofiletheme</item>
         <item name="navigationDrawerSubText">@color/navigationDrawerSubTextColor_phoneprofiletheme</item>
