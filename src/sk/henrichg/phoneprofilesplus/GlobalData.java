@@ -406,7 +406,7 @@ public class GlobalData extends Application {
 	    applicationClose = preferences.getBoolean(PREF_APPLICATION_CLOSE, true);
 	    applicationLongClickActivation = preferences.getBoolean(PREF_APPLICATION_LONG_PRESS_ACTIVATION, false);
 	    applicationLanguage = preferences.getString(PREF_APPLICATION_LANGUAGE, "system");
-	    applicationTheme = preferences.getString(PREF_APPLICATION_THEME, "dlight");
+	    applicationTheme = preferences.getString(PREF_APPLICATION_THEME, "material");
 	    applicationActivatorPrefIndicator = preferences.getBoolean(PREF_APPLICATION_ACTIVATOR_PREF_INDICATOR, true);
 	    applicationEditorPrefIndicator = preferences.getBoolean(PREF_APPLICATION_EDITOR_PREF_INDICATOR, true);
 	    applicationActivatorHeader = preferences.getBoolean(PREF_APPLICATION_ACTIVATOR_HEADER, true);
@@ -440,7 +440,12 @@ public class GlobalData extends Application {
 	    applicationEventBluetoothEnableBluetooth = preferences.getBoolean(PREF_APPLICATION_EVENT_BLUETOOTH_ENABLE_BLUETOOTH, true);
 
 		if (applicationTheme.equals("light"))
-            applicationTheme = "dlight";
+		{
+            applicationTheme = "material";
+    		Editor editor = preferences.edit();
+    		editor.putString(PREF_APPLICATION_THEME, applicationTheme);
+    		editor.commit();
+		}
 	}
 	
 	private static String getVolumeLevelString(int percentage, int maxValue)

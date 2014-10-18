@@ -46,7 +46,7 @@ public class PhoneProfilesPreferencesActivity extends ActionBarActivity
 		
         preferences = getBaseContext().getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, MODE_PRIVATE);
         activeLanguage = preferences.getString(GlobalData.PREF_APPLICATION_LANGUAGE, "system");
-        activeTheme = preferences.getString(GlobalData.PREF_APPLICATION_THEME, "light");
+        activeTheme = preferences.getString(GlobalData.PREF_APPLICATION_THEME, "material");
         showEditorPrefIndicator = preferences.getBoolean(GlobalData.PREF_APPLICATION_EDITOR_PREF_INDICATOR, true);
         showEditorHeader = preferences.getBoolean(GlobalData.PREF_APPLICATION_EDITOR_HEADER, true);
         wifiScanInterval = Integer.valueOf(preferences.getString(GlobalData.PREF_APPLICATION_EVENT_WIFI_SCAN_INTERVAL, "10"));

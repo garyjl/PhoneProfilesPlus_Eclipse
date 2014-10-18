@@ -19,7 +19,7 @@
 
 <resources>
 
-    <style name="Theme.Phoneprofilestheme_dlight" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.Phoneprofilesthemex" parent="@style/Theme.AppCompat.Light">
 <!--         <item name="android:actionBarItemBackground">@drawable/selectable_background_phoneprofilestheme</item>
         <item name="android:popupMenuStyle">@style/PopupMenu.Phoneprofilestheme</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Phoneprofilestheme</item>
@@ -30,13 +30,13 @@
         <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_phoneprofilestheme</item>
         <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Phoneprofilestheme</item>
  -->        
-
-        <item name="actionNewProfileIcon">@drawable/ic_action_new_profile_dark</item>
-        <item name="actionDeleteAllIcon">@drawable/ic_action_delete_all_dark</item>
-        <item name="actionSettingsIcon">@drawable/ic_action_settings_dark</item>
-        <item name="actionImportExportIcon">@drawable/ic_action_import_export_dark</item>
-        <item name="actionExitIcon">@drawable/ic_action_exit_dark</item>
-        <item name="actionEditProfilesIcon">@drawable/ic_action_edit_profiles_dark</item>
+ 
+        <item name="actionNewProfileIcon">@drawable/ic_action_new_profile</item>
+        <item name="actionDeleteAllIcon">@drawable/ic_action_delete_all</item>
+        <item name="actionSettingsIcon">@drawable/ic_action_settings</item>
+        <item name="actionImportExportIcon">@drawable/ic_action_import_export</item>
+        <item name="actionExitIcon">@drawable/ic_action_exit</item>
+        <item name="actionEditProfilesIcon">@drawable/ic_action_edit_profiles</item>
         <item name="activityPopupBackground">@color/activityPopupBackground_phoneprofilestheme</item>
         <item name="cardShape">@drawable/card</item>
         <item name="headerCardShape">@drawable/header_card</item>
@@ -45,40 +45,33 @@
         <item name="actionActivateIcon">@drawable/ic_action_activate</item>
         <item name="actionDuplicateIcon">@drawable/ic_action_duplicate</item>
         <item name="actionDeleteIcon">@drawable/ic_action_delete</item>
-        <item name="actionProfilePrefSave">@drawable/ic_action_profile_pref_save_dark</item>
-        <item name="actionProfilePrefCancel">@drawable/ic_action_profile_pref_cancel_dark</item>
+        <item name="actionProfilePrefSave">@drawable/ic_action_profile_pref_save</item>
+        <item name="actionProfilePrefCancel">@drawable/ic_action_profile_pref_cancel</item>
         <item name="actionProfileToolBackground">@drawable/abc_item_background_holo_light</item>
-        <item name="actionProfileButtonTextStyle">@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle.Inverse</item> 
+        <item name="actionProfileButtonTextStyle">@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle</item> 
         <item name="navigationDrawerBackground">@color/background_material_light</item> 
         <item name="navigationDrawerText">@color/navigationDrawerTextColor_phoneprofiletheme</item>
         <item name="navigationDrawerSubText">@color/navigationDrawerSubTextColor_phoneprofiletheme</item>
         <item name="navigationDrawerSelector">@drawable/editor_drawer_selector</item>
-        <item name="filterStatusBarBackground">@color/filterStatusBarBackground_phoneprofilestheme</item>
+        <item name="filterStatusBarBackground">@color/filterStatusBarBackground_phoneprofilestheme</item> 
         <item name="editorDrawerSpinner">@style/editorDrawerSpinnerStyle</item> 
-	    <item name="actionEventRunIcon">@drawable/ic_action_event_run_dark</item>
-	    <item name="actionEventStopIcon">@drawable/ic_action_event_stop_dark</item>
-	    <item name="actionGlobalEventRunIcon">@drawable/ic_action_global_event_run_dark</item>
-	    <item name="actionGlobalEventStopIcon">@drawable/ic_action_global_event_stop_dark</item>
-        <item name="actionDefaultProfileIcon">@drawable/ic_action_default_profile_dark</item> 
+	    <item name="actionEventRunIcon">@drawable/ic_action_event_run</item>
+	    <item name="actionEventStopIcon">@drawable/ic_action_event_stop</item>
+	    <item name="actionGlobalEventRunIcon">@drawable/ic_action_global_event_run</item>
+	    <item name="actionGlobalEventStopIcon">@drawable/ic_action_global_event_stop</item>
+        <item name="actionDefaultProfileIcon">@drawable/ic_action_default_profile</item> 
         <item name="preferenceDialogBackground">@color/preferenceDialogBackgroud</item>
         <item name="editItemMenuIcon">@drawable/ic_profile_item_edit_menu</item> 
         <item name="applicationSettingsLanguageIcon">@drawable/ic_settings_language</item> 
-	    <item name="actionEventsRunIcon">@drawable/ic_action_events_run_dark</item>
-	    <item name="actionEventsStopIcon">@drawable/ic_action_events_stop_dark</item>
-	    <item name="actionEventsRestartIcon">@drawable/ic_action_events_restart_dark</item>
-        <item name="actionHelpIcon">@drawable/ic_action_help_dark</item>
+	    <item name="actionEventsRunIcon">@drawable/ic_action_events_run</item>
+	    <item name="actionEventsStopIcon">@drawable/ic_action_events_stop</item>
+	    <item name="actionEventsRestartIcon">@drawable/ic_action_events_restart</item>
+        <item name="actionHelpIcon">@drawable/ic_action_help</item>
 	    	    	    
         <item name="actionModeCloseButtonStyle">@style/NoCloseButton</item>
         <item name="android:actionModeCloseButtonStyle">@style/NoCloseButton</item>
         
     </style>
-
-<!-- 
-    
-    <style name="actionModeTextStyle" parent="@style/TextAppearance.Sherlock.Widget.ActionMode.Title">
-        <item name="android:textColor">?android:color/white</item>
-    </style>
--->
     
 <!-- 
     <style name="ActionBar.Solid.Phoneprofilestheme" parent="@style/Widget.Sherlock.Light.ActionBar.Solid">

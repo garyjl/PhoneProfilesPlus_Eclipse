@@ -478,8 +478,8 @@ public class EditorProfilesActivity extends ActionBarActivity
 			if (GlobalData.getGlobalEventsRuning(getBaseContext()))
 			{
 				menuItem.setTitle(R.string.menu_stop_events);
-	      	    if (GlobalData.applicationTheme.equals("light"))
-	      	    	menuItem.setIcon(R.drawable.ic_action_events_stop);
+	      	    if (GlobalData.applicationTheme.equals("material"))
+	      	    	menuItem.setIcon(R.drawable.ic_action_events_stop_dark);
 	      	    else
 	         	if (GlobalData.applicationTheme.equals("dark"))
 	      	    	menuItem.setIcon(R.drawable.ic_action_events_stop_dark);
@@ -490,8 +490,8 @@ public class EditorProfilesActivity extends ActionBarActivity
 			else
 			{
 				menuItem.setTitle(R.string.menu_run_events);
-	      	    if (GlobalData.applicationTheme.equals("light"))
-	      	    	menuItem.setIcon(R.drawable.ic_action_events_run);
+	      	    if (GlobalData.applicationTheme.equals("material"))
+	      	    	menuItem.setIcon(R.drawable.ic_action_events_run_dark);
 	      	    else
 	         	if (GlobalData.applicationTheme.equals("dark"))
 	      	    	menuItem.setIcon(R.drawable.ic_action_events_run_dark);
@@ -1005,7 +1005,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	                	if (key.equals(GlobalData.PREF_APPLICATION_THEME))
 	                	{
 	                		if (((String)v).equals("light"))
-	    	                    prefEdit.putString(key, "dlight");
+	    	                    prefEdit.putString(key, "material");
 	                	}
 	                }
 	            }

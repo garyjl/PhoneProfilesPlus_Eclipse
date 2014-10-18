@@ -261,7 +261,7 @@ public class EditorEventListAdapter extends BaseAdapter
 
         if (eventStatus == Event.ESTATUS_RUNNING)
         {
-	       	if (GlobalData.applicationTheme.equals("light"))
+	       	if (GlobalData.applicationTheme.equals("material"))
 	       		holder.listItemRoot.setBackgroundResource(R.drawable.header_card);
 	       	else
 	       	if (GlobalData.applicationTheme.equals("dark"))
@@ -272,7 +272,7 @@ public class EditorEventListAdapter extends BaseAdapter
         }
         else
         {
-	       	if (GlobalData.applicationTheme.equals("light"))
+	       	if (GlobalData.applicationTheme.equals("material"))
 	       		holder.listItemRoot.setBackgroundResource(R.drawable.card);
 	       	else
 	       	if (GlobalData.applicationTheme.equals("dark"))

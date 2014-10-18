@@ -59,7 +59,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Phoneprofilestheme_dlight"
+        android:theme="@style/Theme.Phoneprofilestheme_material"
         android:configChanges="locale|layoutDirection"
         android:name="sk.henrichg.phoneprofilesplus.GlobalData" >
 
@@ -77,7 +77,7 @@
         <activity
             android:name=".ActivateProfileActivity"
             android:label="@string/title_activity_activator"
-            android:theme="@style/PopupTheme"
+            android:theme="@style/PopupTheme_material"
             android:configChanges="locale|layoutDirection"
             android:launchMode="singleTask" >
         </activity>
@@ -106,7 +106,7 @@
             android:name=".ShortcutCreatorActivity"
             android:label="@string/title_activity_shortcut_creator"
             android:icon="@drawable/ic_shortcut"
-            android:theme="@style/PopupTheme"
+            android:theme="@style/PopupTheme_material"
             android:configChanges="locale|layoutDirection" >
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />

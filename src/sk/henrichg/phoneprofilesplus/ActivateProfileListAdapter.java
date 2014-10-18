@@ -166,7 +166,7 @@ public class ActivateProfileListAdapter extends BaseAdapter
 
 		if (profile._checked && (!GlobalData.applicationActivatorHeader))
 		{
-			if (GlobalData.applicationTheme.equals("light"))
+			if (GlobalData.applicationTheme.equals("material"))
 				holder.listItemRoot.setBackgroundResource(R.drawable.header_card);
 			else
          	if (GlobalData.applicationTheme.equals("dark"))
@@ -178,7 +178,7 @@ public class ActivateProfileListAdapter extends BaseAdapter
 		}
 		else
 		{
-			if (GlobalData.applicationTheme.equals("light"))
+			if (GlobalData.applicationTheme.equals("material"))
 				holder.listItemRoot.setBackgroundResource(R.drawable.card);
 			else
          	if (GlobalData.applicationTheme.equals("dark"))

@@ -130,10 +130,10 @@
     <string name="alert_title_delete_all_events">Vymazať všetky udalosti</string>
     <string name="alert_message_delete_all_events">Ste si istí?</string>
     <string name="phone_profiles_pref_applicationTheme">Téma aplikácie</string>
-    <string name="phone_profiles_pref_applicationTheme_dlight">Svetlá téma</string>
+    <string name="phone_profiles_pref_applicationTheme_material">Material téma</string>
     <string name="phone_profiles_pref_applicationTheme_dark">Tmavá téma</string>
-<!--     <string name="phone_profiles_pref_applicationTheme_dlight">Svetlá s tmavým titulkom</string>   -->
-    <string name="array_pref_value_light">light</string>
+    <string name="phone_profiles_pref_applicationTheme_dlight">Svetlá s tmavým titulkom</string>
+    <string name="array_pref_value_material">material</string>
     <string name="array_pref_value_dark">dark</string>
     <string name="array_pref_value_dlight">dlight</string>
     <string name="phone_preferences_actionmode_save">Uložiť</string>

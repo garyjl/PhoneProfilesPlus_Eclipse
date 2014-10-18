@@ -68,13 +68,13 @@ public class GUIData {
 	
 	public static void setTheme(Activity activity, boolean forPopup)
 	{
-		if (GlobalData.applicationTheme.equals("light"))
+		if (GlobalData.applicationTheme.equals("material"))
 		{
-			//Log.d("EditorProfilesActivity.setTheme","light");
+			//Log.d("EditorProfilesActivity.setTheme","material");
 			if (forPopup)
-				activity.setTheme(R.style.PopupTheme);
+				activity.setTheme(R.style.PopupTheme_material);
 			else
-				activity.setTheme(R.style.Theme_Phoneprofilestheme);
+				activity.setTheme(R.style.Theme_Phoneprofilestheme_material);
 		}
 		else
 		if (GlobalData.applicationTheme.equals("dark"))
