@@ -47,7 +47,7 @@
         <item name="actionProfilePrefSave">@drawable/ic_action_profile_pref_save</item>
         <item name="actionProfilePrefCancel">@drawable/ic_action_profile_pref_cancel</item>
         <item name="actionProfileToolBackground">@drawable/abc_item_background_holo_light</item>
-        <item name="actionProfileButtonTextStyle">@style/TextAppearance.AppCompat.Widget.ActionMode.Title</item> 
+        <item name="actionProfileButtonTextStyle">@style/TextAppearance.AppCompat.Widget.ActionBar.Title</item> 
         <item name="navigationDrawerBackground">@color/background_material_light</item> 
         <item name="navigationDrawerText">@color/navigationDrawerTextColor_phoneprofiletheme</item>
         <item name="navigationDrawerSubText">@color/navigationDrawerSubTextColor_phoneprofiletheme</item>
