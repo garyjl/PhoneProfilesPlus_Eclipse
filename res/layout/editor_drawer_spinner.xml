@@ -6,4 +6,4 @@
   android:layout_height="wrap_content"
   android:padding="5dp"
   style="?attr/editorDrawerSpinner"
-  />
+  android:textSize="15sp"  />
