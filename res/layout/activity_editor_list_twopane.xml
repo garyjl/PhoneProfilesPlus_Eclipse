@@ -87,6 +87,7 @@
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
         	android:layout_alignParentBottom="true"
+	        android:layout_marginBottom="5dp"
         	android:orientation="vertical" >
 
 		    <TextView
@@ -97,13 +98,14 @@
 		        android:paddingLeft="10dp"
 		        android:ellipsize="end"
 		        android:singleLine="true"
-		        android:textSize="17sp"
+		        android:textSize="15sp"
 		        android:text="@string/editor_drawer_order_label" />
 		    
 			<Spinner
 	        	android:id="@+id/editor_drawer_order"
 	        	android:layout_width="match_parent"
 	        	android:layout_height="wrap_content"
+		        android:layout_marginLeft="5dp"
 	        	style="?attr/actionDropDownStyle"
 	        	android:entries="@array/drawerOrderEvents" />
 		
