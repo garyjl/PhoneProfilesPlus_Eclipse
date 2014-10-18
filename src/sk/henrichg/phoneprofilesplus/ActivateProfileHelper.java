@@ -671,6 +671,7 @@ public class ActivateProfileHelper {
 	}
 	
 	//@SuppressWarnings("deprecation")
+	@SuppressLint("InlinedApi")
 	public void showNotification(Profile profile, String eventNotificationSound)
 	{
 		if (GlobalData.notificationStatusBar)
@@ -717,6 +718,12 @@ public class ActivateProfileHelper {
 
         	notificationBuilder = new NotificationCompat.Builder(context)
     				.setContentIntent(pIntent);
+        	
+        	//if (android.os.Build.VERSION.SDK_INT >= 14)
+        	//	notificationBuilder.setPriority(Notification.PRIORITY_HIGH); // for heads-up in Android 5.0
+        	if (android.os.Build.VERSION.SDK_INT >= 21)
+        		notificationBuilder.setVisibility(Notification.VISIBILITY_PUBLIC);
+        	
         	notificationBuilder.setTicker(profileName);
 			
 			if (isIconResourceID)

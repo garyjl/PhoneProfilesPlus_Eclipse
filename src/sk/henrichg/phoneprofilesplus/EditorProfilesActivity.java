@@ -26,7 +26,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceScreen;
-import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -285,13 +285,25 @@ public class EditorProfilesActivity extends ActionBarActivity
         
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the sliding drawer and the action bar app icon
-        int drawerIconId;
+        /*int drawerIconId;
         if (GlobalData.applicationTheme.equals("light"))
         	drawerIconId = R.drawable.ic_drawer;
         else
-        	drawerIconId = R.drawable.ic_drawer_dark;
+        	drawerIconId = R.drawable.ic_drawer_dark;*/
         
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.editor_drawer_open, R.string.editor_drawer_open)
+        {
+        	 
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+            }
+ 
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+        };
+
+        /*drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
 								                drawerIconId, 
 								                R.string.editor_drawer_open,
 								                R.string.editor_drawer_close) 
@@ -304,7 +316,7 @@ public class EditorProfilesActivity extends ActionBarActivity
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
             }
-        };
+        };*/
  
         drawerLayout.setDrawerListener(drawerToggle);
         
