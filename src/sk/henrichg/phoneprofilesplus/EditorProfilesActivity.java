@@ -23,6 +23,7 @@ import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnRestartProfile
 
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceScreen;
@@ -32,6 +33,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -40,6 +42,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -136,6 +139,8 @@ public class EditorProfilesActivity extends ActionBarActivity
 		createContactsCache();
 		
 		setContentView(R.layout.activity_editor_list_onepane);
+
+		//setWindowContentOverlayCompat();
 		
 	/*	// add profile list into list container
 		EditorProfileListFragment fragment = new EditorProfileListFragment();
@@ -506,7 +511,8 @@ public class EditorProfilesActivity extends ActionBarActivity
 		menuItem = menu.findItem(R.id.menu_pphelper_install);
 		if (menuItem != null)
 		{
-			menuItem.setVisible(GlobalData.isRooted(true) && (!isPPHInstalled));
+			//menuItem.setVisible(GlobalData.isRooted(true) && (!isPPHInstalled));
+			menuItem.setVisible(!isPPHInstalled);
 			
 			if (PhoneProfilesHelper.PPHelperVersion != -1)
 			{
@@ -520,7 +526,8 @@ public class EditorProfilesActivity extends ActionBarActivity
 		menuItem = menu.findItem(R.id.menu_pphelper_uninstall);
 		if (menuItem != null)
 		{
-			menuItem.setVisible(GlobalData.isRooted(true) && (PhoneProfilesHelper.PPHelperVersion != -1));
+			//menuItem.setVisible(GlobalData.isRooted(true) && (PhoneProfilesHelper.PPHelperVersion != -1));
+			menuItem.setVisible(PhoneProfilesHelper.PPHelperVersion != -1);
 		}
 
 		menuItem = menu.findItem(R.id.menu_restart_events);
@@ -1789,7 +1796,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 			if (GlobalData.getEventsBlocked(getBaseContext()))
 				eventsRunStopIndicator.setBackgroundColor(0xFFffb000);
 			else
-				eventsRunStopIndicator.setBackgroundColor(0x99009900);
+				eventsRunStopIndicator.setBackgroundColor(0xFF009900);
 		}
 		else
 			eventsRunStopIndicator.setBackgroundColor(0xFFFF0000);
@@ -1811,5 +1818,28 @@ public class EditorProfilesActivity extends ActionBarActivity
 				((EditorEventListFragment)fragment).refreshGUI();
 		}
 	}
-	
+
+	private void setWindowContentOverlayCompat() {
+	    if (android.os.Build.VERSION.SDK_INT >= 20) {
+	        // Get the content view
+	        View contentView = findViewById(android.R.id.content);
+
+	        // Make sure it's a valid instance of a FrameLayout
+	        if (contentView instanceof FrameLayout) {
+	            TypedValue tv = new TypedValue();
+
+	            // Get the windowContentOverlay value of the current theme
+	            if (getTheme().resolveAttribute(
+	                    android.R.attr.windowContentOverlay, tv, true)) {
+
+	                // If it's a valid resource, set it as the foreground drawable
+	                // for the content view
+	                if (tv.resourceId != 0) {
+	                    ((FrameLayout) contentView).setForeground(
+	                            getResources().getDrawable(tv.resourceId));
+	                }
+	            }
+	        }
+	    }
+	}	
 }

@@ -9,6 +9,5 @@
     <color name="activityCardSelected_phoneprofilestheme_dark">#4033b5e5</color>
     <color name="navigationDrawerTextColor_phoneprofiletheme_dark">#ffffffff</color>
     <color name="navigationDrawerSubTextColor_phoneprofiletheme_dark">#80ffffff</color>
-    <color name="filterStatusBarBackground_phoneprofilestheme_dark">#FF202020</color>
     <color name="preferenceDialogBackgroud_dark">#FF000000</color>
 </resources>

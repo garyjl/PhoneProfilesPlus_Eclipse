@@ -23,14 +23,14 @@ public class BootUpReceiver extends BroadcastReceiver {
 			// dislabled for firstStartEvents
 			//GlobalData.setApplicationStarted(context, true);
 			
-			GlobalData.grantRoot(true);
+			//GlobalData.grantRoot(true);
 
 			// start PPHelper
 			//PhoneProfilesHelper.startPPHelper(context);
 			
 			// show notification about upgrade PPHelper
-			if (GlobalData.isRooted(false))
-			{
+			//if (GlobalData.isRooted(false))
+			//{
 				if (!PhoneProfilesHelper.isPPHelperInstalled(context, PhoneProfilesHelper.PPHELPER_CURRENT_VERSION))
 				{
 					// proper PPHelper version is not installed
@@ -40,7 +40,7 @@ public class BootUpReceiver extends BroadcastReceiver {
 						PhoneProfilesHelper.showPPHelperUpgradeNotification(context);							
 					}
 				}
-			}
+			//}
 			
 			// start ReceiverService
 			context.startService(new Intent(context.getApplicationContext(), ReceiversService.class));

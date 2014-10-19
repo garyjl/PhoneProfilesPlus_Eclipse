@@ -20,6 +20,8 @@
 <resources>
 
     <style name="Theme.Phoneprofilestheme_dark" parent="@style/Theme.AppCompat">
+        <item name="android:windowContentOverlay">@null</item>        
+        
 <!--         <item name="android:actionBarItemBackground">@drawable/selectable_background_phoneprofilestheme_dark</item>
         <item name="android:popupMenuStyle">@style/PopupMenu.Phoneprofilestheme_dark</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Phoneprofilestheme_dark</item>
@@ -57,7 +59,7 @@
         <item name="navigationDrawerText">@color/navigationDrawerTextColor_phoneprofiletheme_dark</item>
         <item name="navigationDrawerSubText">@color/navigationDrawerSubTextColor_phoneprofiletheme_dark</item>
         <item name="navigationDrawerSelector">@drawable/editor_drawer_selector_dark</item>
-        <item name="filterStatusBarBackground">@color/filterStatusBarBackground_phoneprofilestheme_dark</item> 
+        <item name="filterStatusBarBackground">@color/profile_all_primary_dark</item> 
         <item name="editorDrawerSpinner">@style/editorDrawerSpinnerStyle</item> 
 	    <item name="actionEventRunIcon">@drawable/ic_action_event_run_dark</item>
 	    <item name="actionEventStopIcon">@drawable/ic_action_event_stop_dark</item>

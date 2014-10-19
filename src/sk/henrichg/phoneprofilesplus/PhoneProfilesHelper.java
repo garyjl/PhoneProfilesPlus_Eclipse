@@ -89,6 +89,8 @@ public class PhoneProfilesHelper {
 			return false;
 		}
 		
+		GlobalData.grantRoot(false);
+		
 	    AssetManager assetManager = activity.getBaseContext().getAssets();
 	    String[] files = null;
 	    try {
@@ -298,6 +300,8 @@ public class PhoneProfilesHelper {
             Log.e("PhoneProfilesHelper.doUninstallPPHelper", "Device is not rooted");
 			return false;
 		}
+		
+		GlobalData.grantRoot(false);
 		
 	    String destinationFile = "PhoneProfilesHelper.apk"; 
 		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2)

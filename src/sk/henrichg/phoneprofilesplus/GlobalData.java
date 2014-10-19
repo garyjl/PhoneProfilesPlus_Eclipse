@@ -49,8 +49,9 @@ public class GlobalData extends Application {
 										 //"@@@ EventsService|"+
 										 //"@@@ Event" */
 			;
-	public static String logFilterTags = "@@@ Event|"+
-			"SMSBroadcastReceiver"
+/*	public static String logFilterTags = "@@@ Event"
+			;*/
+	public static String logFilterTags = "GlobalData.grantRoot"
 			;
 	
 	
@@ -970,22 +971,26 @@ public class GlobalData extends Application {
 		}
 	}
 	
+	static private boolean rootChecking = false;
 	static private boolean rootChecked = false;
 	static private boolean rooted = false;
+	static private boolean grantChecking = false;
 	static private boolean grantChecked = false;
 	static private boolean rootGranted = false;
-	static private boolean settingsBinaryExists = false;
+	static private boolean settingsBinaryChecking = false;
 	static private boolean settingsBinaryChecked = false;
+	static private boolean settingsBinaryExists = false;
 
 	
 	static boolean isRooted(boolean onlyCheckFlags)
 	{
-		if (!rootChecked)
+		if ((!rootChecked) && (!rootChecking))
 		{
 			settingsBinaryExists = false;
 			settingsBinaryChecked = false;
 			if (!onlyCheckFlags)
 			{
+				rootChecking = true;
 				if (RootTools.isRootAvailable())
 				{
 					// zariadenie je rootnute
@@ -997,6 +1002,7 @@ public class GlobalData extends Application {
 					rootChecked = true;
 					rooted = false;
 				}
+				rootChecking = false;
 			}
 			else
 			{
@@ -1009,13 +1015,20 @@ public class GlobalData extends Application {
 	
 	static boolean grantRoot(boolean force)
 	{
-		if ((!grantChecked) || force)
+		GlobalData.logE("GlobalData.grantRoot", "grantChecked="+grantChecked);
+		GlobalData.logE("GlobalData.grantRoot", "force="+force);
+		
+
+		if (((!grantChecked) || force) && (!grantChecking))
 		{
 			settingsBinaryExists = false;
 			settingsBinaryChecked = false;
+			GlobalData.logE("GlobalData.grantRoot", "start isAccessGiven");
+			grantChecking = true;
 			if (RootTools.isAccessGiven())
 			{
 				// root grantnuty
+				GlobalData.logE("GlobalData.grantRoot", "root granted");
 				rootChecked = true;
 				rooted = true;
 				grantChecked = true;
@@ -1024,22 +1037,24 @@ public class GlobalData extends Application {
 			else
 			{
 				// grant odmietnuty
+				GlobalData.logE("GlobalData.grantRoot", "root NOT granted");
 				rootChecked = true;
 				rooted = false;
 				grantChecked = true;
 				rootGranted = false;
 			}
+			grantChecking = false;
 		}
-		if (rootGranted)
-			settingsBinaryExists();
 		return rootGranted;
 	}
 	
 	static boolean settingsBinaryExists()
 	{
-		if (!settingsBinaryChecked)
+		if ((!settingsBinaryChecked) && (!settingsBinaryChecking))
 		{
+			settingsBinaryChecking = true;
 			settingsBinaryExists = RootTools.findBinary("settings");
+			settingsBinaryChecking = false;
 			settingsBinaryChecked = true;
 		}
 		return settingsBinaryExists;

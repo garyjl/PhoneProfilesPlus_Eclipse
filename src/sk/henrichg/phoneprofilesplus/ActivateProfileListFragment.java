@@ -355,7 +355,7 @@ public class ActivateProfileListFragment extends Fragment {
 			if (GlobalData.getEventsBlocked(getActivity().getBaseContext()))
 				eventsRunStopIndicator.setBackgroundColor(0xFFffb000);
 			else
-				eventsRunStopIndicator.setBackgroundColor(0x99009900);
+				eventsRunStopIndicator.setBackgroundColor(0xFF009900);
 		}
 		else
 			eventsRunStopIndicator.setBackgroundColor(0xFFFF0000);

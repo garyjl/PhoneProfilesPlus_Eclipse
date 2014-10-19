@@ -21,14 +21,14 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 				
 				GlobalData.loadPreferences(context);
 				
-				GlobalData.grantRoot(true);
+				//GlobalData.grantRoot(true);
 
 				// start PPHelper
 				//PhoneProfilesHelper.startPPHelper(context);
 				
 				// show notification about upgrade PPHelper
-				if (GlobalData.isRooted(false))
-				{
+				//if (GlobalData.isRooted(false))
+				//{
 					if (!PhoneProfilesHelper.isPPHelperInstalled(context, PhoneProfilesHelper.PPHELPER_CURRENT_VERSION))
 					{
 						// proper PPHelper version is not installed
@@ -38,7 +38,7 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 							PhoneProfilesHelper.showPPHelperUpgradeNotification(context);							
 						}
 					}
-				}
+				//}
 				
 				// start ReceiverService
 				context.startService(new Intent(context.getApplicationContext(), ReceiversService.class));

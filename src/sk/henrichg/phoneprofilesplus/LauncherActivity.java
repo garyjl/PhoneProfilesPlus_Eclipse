@@ -25,10 +25,11 @@ public class LauncherActivity extends Activity {
 	{
 		super.onStart();
 		
-		if (!GlobalData.getApplicationStarted(getBaseContext()))
+		/*if (!GlobalData.getApplicationStarted(getBaseContext()))
 			GlobalData.grantRoot(true);
 		else
 			GlobalData.grantRoot(false);
+		*/
 		
 		Profile profile = dataWrapper.getActivatedProfile();
 		
@@ -43,6 +44,9 @@ public class LauncherActivity extends Activity {
 			if (!GlobalData.getApplicationStarted(getBaseContext()))
 			{
 				// aplikacia este nie je nastartovana
+
+				// start ReceiverService
+				startService(new Intent(getApplicationContext(), ReceiversService.class));
 				
 				// startneme eventy
 				if (GlobalData.getGlobalEventsRuning(getBaseContext()))
@@ -69,11 +73,6 @@ public class LauncherActivity extends Activity {
 						profile = null;
 					}
 				}
-				
-				// start PPHelper
-				//PhoneProfilesHelper.startPPHelper(getBaseContext());
-				// start ReceiverService
-				startService(new Intent(getApplicationContext(), ReceiversService.class));
 			}
 		//}
 		//Log.e("LauncherActivity.onStart", "actProfile="+String.valueOf(actProfile));
