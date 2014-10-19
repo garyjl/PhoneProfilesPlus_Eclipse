@@ -268,7 +268,7 @@ public class PhoneProfilesHelper {
 				boolean OK = doInstallPPHelper(_activity);
 				if (OK)
 				{
-			    	restartAndroid(_activity, _finishActivity);
+			    	restartAndroid(_activity, 1, _finishActivity);
 				}
 				else
 					installUnInstallPPhelperErrorDialog(_activity, 1, _finishActivity);
@@ -375,7 +375,11 @@ public class PhoneProfilesHelper {
 		dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				boolean OK = doUninstallPPHelper(_activity);
-				if (!OK)
+				if (OK)
+				{
+			    	restartAndroid(_activity, 2, false);
+				}
+				else
 					installUnInstallPPhelperErrorDialog(_activity, 2, false);
 			}
 		});
@@ -383,14 +387,22 @@ public class PhoneProfilesHelper {
 		dialogBuilder.show();
 	}
 	
-	static private void restartAndroid(Activity activity, boolean finishActivity)
+	static private void restartAndroid(Activity activity, int installUninstall, boolean finishActivity)
 	{
 		final Activity _activity = activity;
 		final boolean _finishActivity = finishActivity;
 		
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
-		dialogBuilder.setTitle(activity.getResources().getString(R.string.phoneprofilehepler_reboot_title));
-		dialogBuilder.setMessage(activity.getResources().getString(R.string.phoneprofilehepler_reboot_message));
+		if (installUninstall == 1)
+		{
+			dialogBuilder.setTitle(activity.getResources().getString(R.string.phoneprofilehepler_reboot_title));
+			dialogBuilder.setMessage(activity.getResources().getString(R.string.phoneprofilehepler_reboot_message));
+		}
+		else
+		{
+			dialogBuilder.setTitle(activity.getResources().getString(R.string.phoneprofilehepler_reboot_title_uninstall));
+			dialogBuilder.setMessage(activity.getResources().getString(R.string.phoneprofilehepler_reboot_message_uninstall));
+		}
 		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
 		
 		dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
@@ -449,28 +461,28 @@ public class PhoneProfilesHelper {
         return OK;
     }	
 	
-	static private void installUnInstallPPhelperErrorDialog(Activity activity, int importExport, boolean finishActivity)
+	static private void installUnInstallPPhelperErrorDialog(Activity activity, int installUninstall, boolean finishActivity)
 	{
 		final Activity _activity = activity;
 		final boolean _finishActivity = finishActivity;
 		
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
 		String resString;
-		if (importExport == 1)
+		if (installUninstall == 1)
 			resString = activity.getResources().getString(R.string.phoneprofilehepler_install_title);
 		else
 			resString = activity.getResources().getString(R.string.phoneprofilehepler_uninstall_title);
 		dialogBuilder.setTitle(resString);
 		if (!errorNoRoot)
 		{
-			if (importExport == 1)
+			if (installUninstall == 1)
 				resString = activity.getResources().getString(R.string.phoneprofilehepler_install_error);
 			else
 				resString = activity.getResources().getString(R.string.phoneprofilehepler_uninstall_error);
 		}
 		else
 		{
-			if (importExport == 1)
+			if (installUninstall == 1)
 				resString = activity.getResources().getString(R.string.phoneprofilehepler_install_error_no_root);
 			else
 				resString = activity.getResources().getString(R.string.phoneprofilehepler_uninstall_error_no_root);
