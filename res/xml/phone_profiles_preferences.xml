@@ -113,7 +113,7 @@
 		<ListPreference android:title="@string/phone_profiles_pref_applicationTheme"
 	           android:summary="@string/phone_profiles_pref_applicationTheme_dlight"
 	           android:key="applicationTheme"
-	           android:defaultValue="dlight"
+	           android:defaultValue="material"
 	           android:entries="@array/themeArray"
 	           android:entryValues="@array/themeValues" />        
 		<ListPreference android:title="@string/phone_profiles_pref_applicationLanguage"

@@ -53,16 +53,8 @@ public class ActivateProfileActivity extends ActionBarActivity {
 
 		// action bar height
 		TypedValue tv = new TypedValue();
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-		{
-			if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
-		        actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
-		}
-		else 
-		if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
-		{
-			actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
-		}
+		if (getTheme().resolveAttribute(android.support.v7.appcompat.R.attr.actionBarSize, tv, true))
+	        actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
 		
 		// set max. dimensions for display orientation
 		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
