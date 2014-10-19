@@ -422,5 +422,8 @@
     <string name="phone_profiles_pref_notificationStatusBarPermanent">Ongoing notification</string>
     <string name="phone_profiles_pref_notificationStatusBarCancel">Cancel after (sec)</string>
 	<string name="event_name_background_profile">Default profile</string>
-    								
+
+    <string name="phoneprofilehepler_install_error_no_root">PPHelper installation requires ROOT</string>
+    <string name="phoneprofilehepler_uninstall_error_no_root">PPHelper uninstallation requires ROOT</string>
+										
 </resources>

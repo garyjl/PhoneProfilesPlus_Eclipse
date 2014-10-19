@@ -34,6 +34,8 @@ public class PhoneProfilesHelper {
 
 	public static final int PPHELPER_CURRENT_VERSION = 18;
 	
+	private static boolean errorNoRoot = false;
+	
 	static public boolean isPPHelperInstalled(Context context, int minVersion)
 	{
 		// get package version
@@ -82,14 +84,21 @@ public class PhoneProfilesHelper {
 	private static boolean doInstallPPHelper(Activity activity)
 	{
 		boolean OK = true;
+        errorNoRoot = false;
 
 		if (!GlobalData.isRooted(false))
 		{
             Log.e("PhoneProfilesHelper.doInstallPPHelper", "Device is not rooted");
+            errorNoRoot = true;
 			return false;
 		}
-		
-		GlobalData.grantRoot(false);
+
+		if (!GlobalData.grantRoot(false))
+		{
+            Log.e("PhoneProfilesHelper.doInstallPPHelper", "Grant root failed");
+            errorNoRoot = true;
+			return false;
+		}
 		
 	    AssetManager assetManager = activity.getBaseContext().getAssets();
 	    String[] files = null;
@@ -294,14 +303,21 @@ public class PhoneProfilesHelper {
 	static private boolean doUninstallPPHelper(Activity activity)
 	{
 		boolean OK = false;
+        errorNoRoot = false;
 
 		if (!GlobalData.isRooted(false))
 		{
             Log.e("PhoneProfilesHelper.doUninstallPPHelper", "Device is not rooted");
+            errorNoRoot = true;
 			return false;
 		}
-		
-		GlobalData.grantRoot(false);
+
+		if (!GlobalData.grantRoot(false))
+		{
+            Log.e("PhoneProfilesHelper.doUninstallPPHelper", "Grant root failed");
+            errorNoRoot = true;
+			return false;
+		}
 		
 	    String destinationFile = "PhoneProfilesHelper.apk"; 
 		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -445,10 +461,20 @@ public class PhoneProfilesHelper {
 		else
 			resString = activity.getResources().getString(R.string.phoneprofilehepler_uninstall_title);
 		dialogBuilder.setTitle(resString);
-		if (importExport == 1)
-			resString = activity.getResources().getString(R.string.phoneprofilehepler_install_error);
+		if (!errorNoRoot)
+		{
+			if (importExport == 1)
+				resString = activity.getResources().getString(R.string.phoneprofilehepler_install_error);
+			else
+				resString = activity.getResources().getString(R.string.phoneprofilehepler_uninstall_error);
+		}
 		else
-			resString = activity.getResources().getString(R.string.phoneprofilehepler_uninstall_error);
+		{
+			if (importExport == 1)
+				resString = activity.getResources().getString(R.string.phoneprofilehepler_install_error_no_root);
+			else
+				resString = activity.getResources().getString(R.string.phoneprofilehepler_uninstall_error_no_root);
+		}
 		dialogBuilder.setMessage(resString + "!");
 		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
 		
