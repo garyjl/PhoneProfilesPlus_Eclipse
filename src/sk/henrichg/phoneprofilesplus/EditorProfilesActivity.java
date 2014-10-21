@@ -276,7 +276,8 @@ public class EditorProfilesActivity extends ActionBarActivity
 		
         // Pass string arrays to EditorDrawerListAdapter
 		// use action bar themed context
-        drawerAdapter = new EditorDrawerListAdapter(drawerListView, getSupportActionBar().getThemedContext(), drawerItemsTitle, drawerItemsSubtitle, drawerItemsIcon);
+        //drawerAdapter = new EditorDrawerListAdapter(drawerListView, getSupportActionBar().getThemedContext(), drawerItemsTitle, drawerItemsSubtitle, drawerItemsIcon);
+        drawerAdapter = new EditorDrawerListAdapter(drawerListView, getBaseContext(), drawerItemsTitle, drawerItemsSubtitle, drawerItemsIcon);
         
         // Set the MenuListAdapter to the ListView
         drawerListView.setAdapter(drawerAdapter);
@@ -483,26 +484,10 @@ public class EditorProfilesActivity extends ActionBarActivity
 			if (GlobalData.getGlobalEventsRuning(getBaseContext()))
 			{
 				menuItem.setTitle(R.string.menu_stop_events);
-	      	    if (GlobalData.applicationTheme.equals("material"))
-	      	    	menuItem.setIcon(R.drawable.ic_action_events_stop_dark);
-	      	    else
-	         	if (GlobalData.applicationTheme.equals("dark"))
-	      	    	menuItem.setIcon(R.drawable.ic_action_events_stop_dark);
-	         	else
-	         	if (GlobalData.applicationTheme.equals("dlight"))
-	      	    	menuItem.setIcon(R.drawable.ic_action_events_stop_dark);
 			}
 			else
 			{
 				menuItem.setTitle(R.string.menu_run_events);
-	      	    if (GlobalData.applicationTheme.equals("material"))
-	      	    	menuItem.setIcon(R.drawable.ic_action_events_run_dark);
-	      	    else
-	         	if (GlobalData.applicationTheme.equals("dark"))
-	      	    	menuItem.setIcon(R.drawable.ic_action_events_run_dark);
-	         	else
-	         	if (GlobalData.applicationTheme.equals("dlight"))
-	      	    	menuItem.setIcon(R.drawable.ic_action_events_run_dark);
 			}
 		}
 		

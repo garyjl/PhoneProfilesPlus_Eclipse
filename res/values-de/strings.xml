@@ -129,7 +129,7 @@
     <string name="alert_title_delete_all_events">Alle Ereignisse löschen</string> 
     <string name="alert_message_delete_all_events">Sicher?</string> 
     <string name="phone_profiles_pref_applicationTheme">App-Thema</string> 
-    <string name="phone_profiles_pref_applicationTheme_material">Material</string> 
+    <string name="phone_profiles_pref_applicationTheme_material">Farbig</string> 
     <string name="phone_profiles_pref_applicationTheme_dark">Dunkel</string> 
     <string name="phone_profiles_pref_applicationTheme_dlight">Hell mit dunklem Titel</string> 
     <string name="array_pref_value_material">material</string> 

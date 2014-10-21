@@ -425,7 +425,8 @@ public class EditorEventListFragment extends Fragment {
 	
 	public void showEditMenu(View view)
 	{
-		Context context = ((ActionBarActivity)getActivity()).getSupportActionBar().getThemedContext();
+		//Context context = ((ActionBarActivity)getActivity()).getSupportActionBar().getThemedContext();
+		Context context = view.getContext();
 		PopupMenu popup = new PopupMenu(context, view);
 		Menu menu = popup.getMenu();
 		getActivity().getMenuInflater().inflate(R.menu.event_list_item_edit, menu);
@@ -440,18 +441,10 @@ public class EditorEventListFragment extends Fragment {
 	        if (event.getStatusFromDB(dataWrapper) == Event.ESTATUS_STOP)
 	        {
 	        	menuItem.setTitle(R.string.event_list_item_menu_run);
-	           	if (GlobalData.applicationTheme.equals("dark"))
-	        		menuItem.setIcon(R.drawable.ic_action_event_run_dark);
-	           	else
-	           		menuItem.setIcon(R.drawable.ic_action_event_run);
 	        }
 	        else
 	        {
 	        	menuItem.setTitle(R.string.event_list_item_menu_stop);
-	           	if (GlobalData.applicationTheme.equals("dark"))
-	           		menuItem.setIcon(R.drawable.ic_action_event_stop_dark);
-	           	else
-	           		menuItem.setIcon(R.drawable.ic_action_event_stop);
 	        }
         }
         else

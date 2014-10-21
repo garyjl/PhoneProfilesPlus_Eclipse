@@ -130,7 +130,7 @@
     <string name="alert_title_delete_all_events">Удалить все события</string>
     <string name="alert_message_delete_all_events">Вы уверены?</string>
     <string name="phone_profiles_pref_applicationTheme">Тема приложения</string>
-    <string name="phone_profiles_pref_applicationTheme_material">Material</string>
+    <string name="phone_profiles_pref_applicationTheme_material">Цветная</string>
     <string name="phone_profiles_pref_applicationTheme_dark">Тёмная</string>
     <string name="phone_profiles_pref_applicationTheme_dlight">Светлая с тёмной строкой</string>
     <string name="array_pref_value_material">material</string>

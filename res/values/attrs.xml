@@ -40,19 +40,12 @@
 				
 	<!-- theme dependent drawables -->
     <attr name="actionNewProfileIcon" format="reference" />
-    <attr name="actionDeleteAllIcon" format="reference" />
-    <attr name="actionSettingsIcon" format="reference" />
-    <attr name="actionImportExportIcon" format="reference" />
-    <attr name="actionExitIcon" format="reference" />
     <attr name="actionEditProfilesIcon" format="reference" />
     <attr name="activityPopupBackground" format="reference" />
     <attr name="cardShape" format="reference" />
     <attr name="headerCardShape" format="reference" />
     <attr name="cardSelector" format="reference" />
     <attr name="dragHandleIcon" format="reference" />
-    <attr name="actionActivateIcon" format="reference" />
-    <attr name="actionDuplicateIcon" format="reference" />
-    <attr name="actionDeleteIcon" format="reference" />
     <attr name="actionProfilePrefSave" format="reference" />
     <attr name="actionProfilePrefCancel" format="reference" />
     <attr name="actionProfileToolBackground" format="reference" />
@@ -63,17 +56,9 @@
     <attr name="navigationDrawerSelector" format="reference"/>
     <attr name="filterStatusBarBackground" format="reference" />
     <attr name="editorDrawerSpinner" format="reference" />
-    <attr name="actionEventRunIcon" format="reference" />
-    <attr name="actionEventStopIcon" format="reference" />
-    <attr name="actionGlobalEventRunIcon" format="reference" />
-    <attr name="actionGlobalEventStopIcon" format="reference" />
-    <attr name="actionDefaultProfileIcon" format="reference" />
     <attr name="preferenceDialogBackground" format="reference" />
     <attr name="editItemMenuIcon" format="reference" />
     <attr name="applicationSettingsLanguageIcon" format="reference" />
-    <attr name="actionEventsRunIcon" format="reference" />
-    <attr name="actionEventsStopIcon" format="reference" />
     <attr name="actionEventsRestartIcon" format="reference" />
-    <attr name="actionHelpIcon" format="reference" />
     
 </resources>
