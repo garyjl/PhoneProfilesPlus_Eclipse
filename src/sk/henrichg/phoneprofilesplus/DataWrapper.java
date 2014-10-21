@@ -2194,28 +2194,29 @@ public class DataWrapper {
 			return true;
 	}
 	
-	public String getProfileNameWithManualIndicator(Profile profile, boolean addEventName)
+	public String getProfileNameWithManualIndicator(Profile profile, boolean addIndicators)
 	{
 		if (profile == null)
 			return "";
 		
-		String name;
+		String name = profile._name;
 		
-		if (!GlobalData.getEventsBlocked(context))
-			name = profile._name;
-		else
+		if (GlobalData.getEventsBlocked(context))
 		{
-			if (GlobalData.getForceRunEventRunning(context))
+			if (addIndicators)
 			{
-   				name = "[\u00BB] " + profile._name;
-			}
-			else
-			{
-   				name = "[M] " + profile._name;
+				if (GlobalData.getForceRunEventRunning(context))
+				{
+	   				name = "[\u00BB] " + name;
+				}
+				else
+				{
+	   				name = "[M] " + name;
+				}
 			}
 		}
 
-		if (addEventName)
+		if (addIndicators)
 		{
 			String eventName = getLastStartedEventName();
 			if (!eventName.isEmpty())
