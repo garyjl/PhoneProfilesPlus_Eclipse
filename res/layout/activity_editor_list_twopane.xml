@@ -23,7 +23,8 @@
 	        android:layout_alignParentTop="true"
 	        android:ellipsize="end"
 	        android:singleLine="true"
-	        android:textAppearance="?android:attr/textAppearanceSmall" />    
+	        android:textAppearance="?android:attr/textAppearanceSmall"
+	        android:textColor="@android:color/white" />    
 
 	    <LinearLayout 
 	        android:id="@+id/editor_list_run_stop_indicator"
