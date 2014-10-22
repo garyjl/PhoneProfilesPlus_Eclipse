@@ -33,7 +33,6 @@ public class ActivateProfileListFragment extends Fragment {
 	private TextView activeProfileName;
 	private ImageView activeProfileIcon;
 	private ImageView profilePrefIndicatorImageView;
-	private LinearLayout eventsRunStopIndicator;
 	
 	private WeakReference<LoadProfileListAsyncTask> asyncTaskContext;
 	
@@ -100,7 +99,6 @@ public class ActivateProfileListFragment extends Fragment {
 		{
 			profilePrefIndicatorImageView = (ImageView)view.findViewById(R.id.act_prof_activated_profile_pref_indicator);
 		}
-		eventsRunStopIndicator = (LinearLayout)view.findViewById(R.id.act_prof_run_stop_indicator);
 		
 		AbsListView absListView;
 		if (!GlobalData.applicationActivatorGridLayout)
@@ -150,7 +148,7 @@ public class ActivateProfileListFragment extends Fragment {
 		else
 		{
 			absListView.setAdapter(profileListAdapter);
-			setEventsRunStopIndicator();
+			((ActivateProfileActivity)getActivity()).setEventsRunStopIndicator();
 			
 			doOnStart();
 		}
@@ -231,7 +229,7 @@ public class ActivateProfileListFragment extends Fragment {
     				absListView = fragment.gridView;
     			absListView.setAdapter(fragment.profileListAdapter);
     			
-    			fragment.setEventsRunStopIndicator();
+				((ActivateProfileActivity)fragment.getActivity()).setEventsRunStopIndicator();
     	        
 				fragment.doOnStart();
             }
@@ -348,25 +346,12 @@ public class ActivateProfileListFragment extends Fragment {
 		dataWrapper.activateProfile(profile._id, startupSource, getActivity(), "");
 	}
 
-    public void setEventsRunStopIndicator()
-    {
-		if (GlobalData.getGlobalEventsRuning(getActivity().getBaseContext()))
-		{
-			if (GlobalData.getEventsBlocked(getActivity().getBaseContext()))
-				eventsRunStopIndicator.setBackgroundColor(0xFFffb000);
-			else
-				eventsRunStopIndicator.setBackgroundColor(0xFF009900);
-		}
-		else
-			eventsRunStopIndicator.setBackgroundColor(0xFFFF0000);
-    }
-	
 	public void refreshGUI()
 	{
 		if ((dataWrapper == null) || (profileListAdapter == null))
 			return;
 		
-		setEventsRunStopIndicator();
+		((ActivateProfileActivity)getActivity()).setEventsRunStopIndicator();
 		
 		Profile profileFromAdapter = profileListAdapter.getActivatedProfile();
 		if (profileFromAdapter != null)

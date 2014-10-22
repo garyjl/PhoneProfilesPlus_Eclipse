@@ -43,6 +43,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -75,7 +76,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 
 	private static EditorProfilesActivity instance;
 
-	private LinearLayout eventsRunStopIndicator;
+	private ImageView eventsRunStopIndicator;
 	
 	private static boolean savedInstanceStateChanged; 
 	
@@ -390,7 +391,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	    navigationAdapter.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
 	*/	
 
-		eventsRunStopIndicator = (LinearLayout)findViewById(R.id.editor_list_run_stop_indicator);
+		eventsRunStopIndicator = (ImageView)findViewById(R.id.editor_list_run_stop_indicator);
         
 		// set drawer item and order
         //Log.e("EditorProfilesActivity.onCreate","applicationEditorSaveEditorState="+GlobalData.applicationEditorSaveEditorState);
@@ -1780,12 +1781,12 @@ public class EditorProfilesActivity extends ActionBarActivity
 		if (GlobalData.getGlobalEventsRuning(getBaseContext()))
 		{
 			if (GlobalData.getEventsBlocked(getBaseContext()))
-				eventsRunStopIndicator.setBackgroundColor(0xFFffb000);
+				eventsRunStopIndicator.setImageResource(R.drawable.ic_run_events_indicator_manual_activation);
 			else
-				eventsRunStopIndicator.setBackgroundColor(0xFF009900);
+				eventsRunStopIndicator.setImageResource(R.drawable.ic_run_events_indicator_running);
 		}
 		else
-			eventsRunStopIndicator.setBackgroundColor(0xFFFF0000);
+			eventsRunStopIndicator.setImageResource(R.drawable.ic_run_events_indicator_stoppped);
     }
 	
 	public void refreshGUI()

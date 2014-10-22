@@ -20,7 +20,8 @@
 <resources>
 
     <style name="Theme.Phoneprofilestheme_material" parent="@style/Theme.AppCompat.Light.DarkActionBar">
-
+		<item name="android:windowContentOverlay">@null</item>
+        
  		<!-- customize the color palette -->
     	<item name="colorPrimary">@color/profile_all_primary</item>
     	<item name="colorPrimaryDark">@color/profile_all_primaryDark</item>

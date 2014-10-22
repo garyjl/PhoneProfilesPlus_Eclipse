@@ -14,6 +14,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 public class ActivateProfileActivity extends ActionBarActivity {
 
@@ -23,6 +25,7 @@ public class ActivateProfileActivity extends ActionBarActivity {
 	private float popupMaxHeight;
 	private float popupHeight;
 	private int actionBarHeight;
+	private ImageView eventsRunStopIndicator;
 
 	@SuppressWarnings({ "deprecation" })
 	@Override
@@ -81,8 +84,8 @@ public class ActivateProfileActivity extends ActionBarActivity {
 		if (GlobalData.applicationActivatorHeader)
 			popupHeight = popupHeight + 64f * scale;
 		
-		// add global events on/off indicator
-		popupHeight = popupHeight + 3f * scale;
+		// add toolbar height
+		popupHeight = popupHeight + 25f * scale;
 
 		DataWrapper dataWrapper = new DataWrapper(getBaseContext(), false, false, 0);
 		int profileCount = dataWrapper.getDatabaseHandler().getProfilesCount(true);
@@ -132,6 +135,8 @@ public class ActivateProfileActivity extends ActionBarActivity {
 		getSupportActionBar().setTitle(R.string.title_activity_activator);
         getSupportActionBar().setElevation(0);
 
+		eventsRunStopIndicator = (ImageView)findViewById(R.id.act_prof_run_stop_indicator);
+        
     //-----------------------------------------------------------------------------------------		
 		
 		//Log.d("PhoneProfileActivity.onCreate", "xxxx");
@@ -248,4 +253,17 @@ public class ActivateProfileActivity extends ActionBarActivity {
 		}
 	}
 	
+    public void setEventsRunStopIndicator()
+    {
+		if (GlobalData.getGlobalEventsRuning(getBaseContext()))
+		{
+			if (GlobalData.getEventsBlocked(getBaseContext()))
+				eventsRunStopIndicator.setImageResource(R.drawable.ic_run_events_indicator_manual_activation);
+			else
+				eventsRunStopIndicator.setImageResource(R.drawable.ic_run_events_indicator_running);
+		}
+		else
+			eventsRunStopIndicator.setImageResource(R.drawable.ic_run_events_indicator_stoppped);
+    }
+
 }

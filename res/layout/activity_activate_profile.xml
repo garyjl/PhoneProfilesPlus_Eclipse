@@ -1,8 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activate_profile_list"
-    android:name="sk.henrichg.phoneprofilesplus.ActivateProfileListFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ActivateProfileActivity" />
+    android:orientation="vertical"
+    tools:context=".ActivatorActivity" >
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/act_prof_tollbar"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:background="?attr/colorPrimary"
+        android:elevation="3dp" >
+
+		<RelativeLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent" >
+        
+		    <ImageView
+		        android:id="@+id/act_prof_run_stop_indicator"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentRight="true"
+		        android:layout_centerVertical="true"
+		        android:layout_marginRight="10dp"
+		        android:adjustViewBounds="true"
+		        android:contentDescription="@string/empty_string"
+		        android:maxHeight="15dp"
+		        android:maxWidth="50dp"
+		        android:scaleType="centerCrop"
+		        android:src="@drawable/ic_run_events_indicator_stoppped" />
+		    
+		</RelativeLayout>
+        
+    </android.support.v7.widget.Toolbar>
+    
+
+	<fragment 
+	    android:id="@+id/activate_profile_list"
+	    android:name="sk.henrichg.phoneprofilesplus.ActivateProfileListFragment"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    tools:context=".ActivateProfileActivity" />
+
+</LinearLayout>	    
