@@ -947,6 +947,15 @@ public class EditorProfilesActivity extends ActionBarActivity
 	    return super.dispatchKeyEvent(event);
 	}
 	
+	@Override
+	public void onBackPressed()
+	{
+        if (drawerLayout.isDrawerOpen(drawerRoot))
+            drawerLayout.closeDrawer(drawerRoot);
+        else
+        	super.onBackPressed();
+	}
+	
 	private void importExportErrorDialog(int importExport)
 	{
 		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
