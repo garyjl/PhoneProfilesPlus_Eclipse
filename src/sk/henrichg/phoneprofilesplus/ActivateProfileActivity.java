@@ -130,6 +130,7 @@ public class ActivateProfileActivity extends ActionBarActivity {
 		//getSupportActionBar().setHomeButtonEnabled(true);
 		//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setTitle(R.string.title_activity_activator);
+        getSupportActionBar().setElevation(0);
 
     //-----------------------------------------------------------------------------------------		
 		

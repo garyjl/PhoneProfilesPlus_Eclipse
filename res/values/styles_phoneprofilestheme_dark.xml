@@ -20,7 +20,6 @@
 <resources>
 
     <style name="Theme.Phoneprofilestheme_dark" parent="@style/Theme.AppCompat">
-        <item name="android:windowContentOverlay">@null</item>
                 
      	<item name="colorPrimary">@color/profile_all_primary_dark</item>
     	<item name="colorPrimaryDark">@color/profile_all_primaryDark_dark</item> 
