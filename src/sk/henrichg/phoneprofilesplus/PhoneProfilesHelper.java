@@ -6,8 +6,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import sk.henrichg.phoneprofilesplus.R;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -508,6 +510,7 @@ public class PhoneProfilesHelper {
 		dialogBuilder.show();
 	}
 
+	@SuppressLint("InlinedApi")
 	static public void showPPHelperUpgradeNotification(Context context)
 	{
 		NotificationCompat.Builder mBuilder =   new NotificationCompat.Builder(context)
@@ -518,6 +521,10 @@ public class PhoneProfilesHelper {
 		Intent intent = new Intent(context, UpgradePPHelperActivity.class);
 		PendingIntent pi = PendingIntent.getActivity(context, 0, intent, Intent.FLAG_ACTIVITY_NEW_TASK);
 		mBuilder.setContentIntent(pi);
+    	if (android.os.Build.VERSION.SDK_INT >= 16)
+    		mBuilder.setPriority(Notification.PRIORITY_MAX);
+    	if (android.os.Build.VERSION.SDK_INT >= 21)
+    		mBuilder.setVisibility(Notification.VISIBILITY_PUBLIC);
 		NotificationManager mNotificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
 		mNotificationManager.notify(0, mBuilder.build());		
 	}
