@@ -75,7 +75,7 @@
     <string name="profile_preferences_soundAlarmChange">Alarmton ändern</string> 
     <string name="profile_preferences_soundAlarm">Alarmton</string> 
     <string name="profile_preferences_deviceAirplaneMode">Flugzeugmodus</string> 
-    <string name="profile_preferences_deviceWiFi">WiFi</string> 
+    <string name="profile_preferences_deviceWiFi">Wi-Fi</string> 
     <string name="profile_preferences_deviceBluetooth">BlueTooth</string>
     <string name="profile_preferences_deviceNFC">NFC</string> 
     <string name="profile_preferences_deviceScreenTimeout">Beleuchtungsdauer</string> 
@@ -354,9 +354,9 @@
     <string name="array_event_pref_priorityUpperMedium">Obere Mitte</string>
     <string name="array_event_pref_priorityHigher">Höher</string>
     <string name="array_event_pref_priorityHighest">Am höchsten</string>
- 	<string name="event_type_wifi">WiFi</string>
-    <string name="event_preferences_category_eventWifiParameters">WiFiparameter</string>
-    <string name="event_preferences_wifi_enabled">WiFi aktivieren</string>
+ 	<string name="event_type_wifi">Wi-Fi</string>
+    <string name="event_preferences_category_eventWifiParameters">Wi-Fiparameter</string>
+    <string name="event_preferences_wifi_enabled">Wi-Fi aktivieren</string>
     <string name="event_preferences_wifi_ssid">SSID</string>
     <string name="pref_event_wifi_ssid">SSID</string>
     <string name="pref_event_wifi_connectionType">Verbindung</string>
@@ -364,8 +364,8 @@
 	<string name="array_event_pref_wifiConnectionType_inFront">Verfügbar</string>
 	<string name="event_preferences_wifi_connection_type">Verbindungstyp</string>
 	<string name="phone_profiles_pref_category_event">Ereignisse</string>
-	<string name="phone_profiles_pref_applicationEventWifiScanInterval">WiFi-Scan-Intervall (Minuten)</string>
-	<string name="phone_profiles_pref_applicationEventWifiEnableWifi">WiFi aktivieren</string>
+	<string name="phone_profiles_pref_applicationEventWifiScanInterval">Wi-Fi-Scan-Intervall (Minuten)</string>
+	<string name="phone_profiles_pref_applicationEventWifiEnableWifi">Wi-Fi-Scan aktivieren</string>
 	<string name="phone_profiles_pref_applicationEventBackgroundProfile">Standard-Profil</string>
     <string name="profile_preference_profile_end_no_activate">Nicht aktivieren</string>
     <string name="profile_preference_profile_not_set">Profil nicht ausgewählt</string> 
@@ -400,7 +400,7 @@
 	<string name="array_event_pref_bluetoothConnectionType_inFront">Verfügbar</string>
 	<string name="event_preferences_bluetooth_connection_type">Verbindungstyp</string>
 	<string name="phone_profiles_pref_applicationEventBluetoothScanInterval">Bluetooth-Scan-Intervall (Minuten)</string>
-	<string name="phone_profiles_pref_applicationEventBluetoothEnableBluetooth">Bluetooth aktivieren</string>
+	<string name="phone_profiles_pref_applicationEventBluetoothEnableBluetooth">Bluetooth-Scan aktivieren</string>
 				
 	<string name="bluetooth_name_pref_dlg_rescan_button">Neu scannen</string>
 	<string name="wifi_ssid_pref_dlg_rescan_button">Neu scannen</string>

@@ -355,8 +355,8 @@
     <string name="array_event_pref_priorityUpperMedium">Умеренно высокой</string>
     <string name="array_event_pref_priorityHigher">Высшее</string>
     <string name="array_event_pref_priorityHighest">Наивысший</string>
-    <string name="event_type_wifi">WiFi</string>
-    <string name="event_preferences_category_eventWifiParameters">Параметры WiFi</string>
+    <string name="event_type_wifi">Wi-Fi</string>
+    <string name="event_preferences_category_eventWifiParameters">Параметры Wi-Fi</string>
     <string name="event_preferences_wifi_enabled">Активировать</string>
     <string name="event_preferences_wifi_ssid">SSID</string>
     <string name="pref_event_wifi_ssid">SSID</string>
@@ -365,8 +365,8 @@
 	<string name="array_event_pref_wifiConnectionType_inFront">В передней</string>
 	<string name="event_preferences_wifi_connection_type">Подключение</string>
 	<string name="phone_profiles_pref_category_event">События</string>
-	<string name="phone_profiles_pref_applicationEventWifiScanInterval">WiFi интервал опроса (мин)</string>
-	<string name="phone_profiles_pref_applicationEventWifiEnableWifi">Активировать WiFi</string>    
+	<string name="phone_profiles_pref_applicationEventWifiScanInterval">Интервал сканирования Wi-Fi (мин)</string>
+	<string name="phone_profiles_pref_applicationEventWifiEnableWifi">Активировать сканирование Wi-Fi</string>    
 	<string name="phone_profiles_pref_applicationEventBackgroundProfile">Профиль по умолчанию</string>
     <string name="profile_preference_profile_end_no_activate">Не активируй</string>
     <string name="profile_preference_profile_not_set">Профиль не выбран</string>
@@ -400,9 +400,9 @@
 	<string name="array_event_pref_bluetoothConnectionType_connected">Подключен</string>    
 	<string name="array_event_pref_bluetoothConnectionType_inFront">В передней</string>
 	<string name="event_preferences_bluetooth_connection_type">Подключение</string>
-	<string name="phone_profiles_pref_applicationEventBluetoothScanInterval">Bluetooth интервал опроса (мин)</string>
-	<string name="phone_profiles_pref_applicationEventBluetoothEnableBluetooth">Активировать Bluetooth</string>
-							
+	<string name="phone_profiles_pref_applicationEventBluetoothScanInterval">Интервал сканирования опроса (мин)</string>
+	<string name="phone_profiles_pref_applicationEventBluetoothEnableBluetooth">Активировать сканирование Bluetooth</string>
+								
 	<string name="bluetooth_name_pref_dlg_rescan_button">Пересканировать</string>
 	<string name="wifi_ssid_pref_dlg_rescan_button">Пересканировать</string>
 		

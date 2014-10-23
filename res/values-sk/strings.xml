@@ -355,9 +355,9 @@
     <string name="array_event_pref_priorityUpperMedium">Stredne vysoká</string>
     <string name="array_event_pref_priorityHigher">Vyššia</string>
     <string name="array_event_pref_priorityHighest">Najvyššia</string>
-    <string name="event_type_wifi">WiFi</string>
-    <string name="event_preferences_category_eventWifiParameters">Parametre WiFi</string>
-    <string name="event_preferences_wifi_enabled">Použi WiFi</string>
+    <string name="event_type_wifi">Wi-Fi</string>
+    <string name="event_preferences_category_eventWifiParameters">Parametre Wi-Fi</string>
+    <string name="event_preferences_wifi_enabled">Použi Wi-Fi</string>
     <string name="event_preferences_wifi_ssid">SSID</string>
     <string name="pref_event_wifi_ssid">SSID</string>
     <string name="pref_event_wifi_connectionType">Pripojenie</string>
@@ -365,8 +365,8 @@
 	<string name="array_event_pref_wifiConnectionType_inFront">V okolí</string>
 	<string name="event_preferences_wifi_connection_type">Typ pripojenia</string>
 	<string name="phone_profiles_pref_category_event">Udalosti</string>
-	<string name="phone_profiles_pref_applicationEventWifiScanInterval">Interval skenovania WiFi (min.)</string>
-	<string name="phone_profiles_pref_applicationEventWifiEnableWifi">Povoľ WiFi</string>    
+	<string name="phone_profiles_pref_applicationEventWifiScanInterval">Interval skenovania Wi-Fi (min.)</string>
+	<string name="phone_profiles_pref_applicationEventWifiEnableWifi">Povoľ skenovanie Wi-Fi</string>    
 	<string name="phone_profiles_pref_applicationEventBackgroundProfile">Predvolený profil</string>
     <string name="profile_preference_profile_end_no_activate">Neaktivovať</string>
     <string name="profile_preference_profile_not_set">Nevybraný žiadny profil</string>
@@ -401,7 +401,7 @@
 	<string name="array_event_pref_bluetoothConnectionType_inFront">V okolí</string>
 	<string name="event_preferences_bluetooth_connection_type">Typ pripojenia</string>
 	<string name="phone_profiles_pref_applicationEventBluetoothScanInterval">Interval skenovania Bluetooth (min.)</string>
-	<string name="phone_profiles_pref_applicationEventBluetoothEnableBluetooth">Povoľ Bluetooth</string>
+	<string name="phone_profiles_pref_applicationEventBluetoothEnableBluetooth">Povoľ slenovanie Bluetooth</string>
 
 	<string name="bluetooth_name_pref_dlg_rescan_button">Preskenovať</string>
 	<string name="wifi_ssid_pref_dlg_rescan_button">Preskenovať</string>

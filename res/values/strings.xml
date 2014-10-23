@@ -360,9 +360,9 @@
     <string name="array_event_pref_priorityUpperMedium">Upper medium</string>
     <string name="array_event_pref_priorityHigher">Higher</string>
     <string name="array_event_pref_priorityHighest">Highest</string>
-    <string name="event_type_wifi">WiFi</string>
-    <string name="event_preferences_category_eventWifiParameters">WiFi parameters</string>
-    <string name="event_preferences_wifi_enabled">Enable WiFi</string>
+    <string name="event_type_wifi">Wi-Fi</string>
+    <string name="event_preferences_category_eventWifiParameters">Wi-Fi parameters</string>
+    <string name="event_preferences_wifi_enabled">Enable Wi-Fi</string>
     <string name="event_preferences_wifi_ssid">SSID</string>
     <string name="pref_event_wifi_ssid">SSID</string>
     <string name="pref_event_wifi_connectionType">Connection</string>
@@ -370,8 +370,8 @@
 	<string name="array_event_pref_wifiConnectionType_inFront">In front</string>
 	<string name="event_preferences_wifi_connection_type">Connection type</string>
 	<string name="phone_profiles_pref_category_event">Events</string>
-	<string name="phone_profiles_pref_applicationEventWifiScanInterval">WiFi scan interval (min)</string>
-	<string name="phone_profiles_pref_applicationEventWifiEnableWifi">Enable WiFi</string>
+	<string name="phone_profiles_pref_applicationEventWifiScanInterval">Wi-Fi scan interval (min)</string>
+	<string name="phone_profiles_pref_applicationEventWifiEnableWifi">Enable Wi-Fi scanning</string>
 	<string name="phone_profiles_pref_applicationEventBackgroundProfile">Default profile</string>
     <string name="profile_preference_profile_end_no_activate">No activate</string>
     <string name="profile_preference_profile_not_set">Profile not set</string>
@@ -404,7 +404,7 @@
 	<string name="array_event_pref_bluetoothConnectionType_inFront">In front</string>
 	<string name="event_preferences_bluetooth_connection_type">Connection type</string>
 	<string name="phone_profiles_pref_applicationEventBluetoothScanInterval">Bluetooth scan interval (min)</string>
-	<string name="phone_profiles_pref_applicationEventBluetoothEnableBluetooth">Enable Bluetooth</string>
+	<string name="phone_profiles_pref_applicationEventBluetoothEnableBluetooth">Enable Bluetooth scan</string>
 	<string name="bluetooth_name_pref_dlg_rescan_button">Rescan</string>
 	<string name="wifi_ssid_pref_dlg_rescan_button">Rescan</string>
 

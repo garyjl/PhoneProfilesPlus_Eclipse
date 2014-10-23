@@ -31,27 +31,23 @@ public class GlobalData extends Application {
 	static String PACKAGE_NAME;
 	
 	public static boolean logIntoLogCat = true;
-	public static boolean logIntoFile = false;
-/*	public static String logFilterTags = //"@@@ BatteryEventBroadcastReceiver|"+
+	public static boolean logIntoFile = true;
+	public static String logFilterTags = //"@@@ BatteryEventBroadcastReceiver|"+
 										 //"@@@ CalendarProviderChangedBroadcastReceiver|"+
 										 //"@@@ EventsCalendarBroadcastReceiver|"+
 										 //"@@@ EventsTimeBroadcastReceiver|"+
-										 "HeadsetConnectionBroadcastReceiver"
+										 //"HeadsetConnectionBroadcastReceiver"
 										 //"@@@ SearchCalendarEventsBroadcastReceiver|"+
-										 //"@@@ WifiConnectionBroadcastReceiver|"+
-										 //"@@@ WifiScanAlarmBroadcastReceiver|"+
-										 //"@@@ WifiScanBroadcastReceiver|"+
+										 "@@@ WifiConnectionBroadcastReceiver|"+
+										 "@@@ WifiScanAlarmBroadcastReceiver|"+
+										 "@@@ WifiScanBroadcastReceiver"
 										 //"@@@ ScreenOnOffBroadcastReceiver|"+
 										 //"@@@ RestartEventsBroadcastReceiver|"+
 										 //"@@@ EventDelayBroadcastReceiver|"+
 										 //"@@@ BootUpReceiver|"+
 										 //"@@@ PackageReplacedReceiver|"+
 										 //"@@@ EventsService|"+
-										 //"@@@ Event" */
-			;
-/*	public static String logFilterTags = "@@@ Event"
-			;*/
-	public static String logFilterTags = "GlobalData.grantRoot"
+										 //"@@@ Event"
 			;
 	
 	
