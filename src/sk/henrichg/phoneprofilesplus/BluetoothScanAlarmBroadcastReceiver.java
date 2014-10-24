@@ -97,14 +97,10 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
 						
 						if (isBluetoothEnabled && ((!GlobalData.getEventsBlocked(context)) || GlobalData.getForceOneBluetoothScan(context)))
 						{
-					        lock(context, bluetooth); // lock wakeLock and wifiLock, then scan.
-					                       // unlock() is then called at the end of the onReceive function of WifiScanBroadcastReceiver
-					    	initTmpScanResults();
-		    				setStartScan(context, bluetooth.startDiscovery());
-
-		    				boolean discovering = bluetooth.isDiscovering();
-					      	GlobalData.logE("@@@ BluetoothScanAlarmBroadcastReceiver.onReceive","discovering="+discovering);
-
+							if (!getBluetoothEnabledForScan(context))
+								startScan(context);
+							else
+								setStartScan(context, true);
 						}
 				    }
 				    else
@@ -200,7 +196,7 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
         return (pendingIntent != null);
 	}
 
-    private static void lock(Context context, BluetoothAdapter bluetooth)
+    public static void lock(Context context)
     {
 		 // initialise the locks
 		/*if (wakeLock == null)
@@ -241,6 +237,14 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		Editor editor = preferences.edit();
 		editor.putBoolean(GlobalData.PREF_EVENT_BLUETOOTH_START_SCAN, startScan);
 		editor.commit();
+	}
+	
+	static public void startScan(Context context)
+	{
+		initTmpScanResults();
+		boolean startScan = bluetooth.startDiscovery();
+		setStartScan(context, startScan);
+      	GlobalData.logE("@@@ BluetoothScanAlarmBroadcastReceiver.onReceive","scanStarted="+startScan);
 	}
 	
 	static public void initTmpScanResults()
@@ -290,17 +294,15 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
 			        	GlobalData.logE("@@@ BluetoothScanAlarmBroadcastReceiver.enableBluetooth","enable");
 			        	bluetooth.enable();
 						setBluetoothEnabledForScan(dataWrapper.context, true);
-				        try {
-				        	Thread.sleep(1500);
-					    } catch (InterruptedException e) {
-					        System.out.println(e);
-					    }
 						return true;
 					}
 	        	}
 	    	}
 	    	else
+	    	{
+	        	setBluetoothEnabledForScan(dataWrapper.context, false);
 	    		return true;
+	    	}
     	}
 
     	setBluetoothEnabledForScan(dataWrapper.context, false);

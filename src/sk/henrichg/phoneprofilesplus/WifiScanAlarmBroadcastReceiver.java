@@ -97,12 +97,12 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 						else
 							isWifiEnabled = enableWifi(dataWrapper, wifi);
 						
-						
 						if (isWifiEnabled && ((!GlobalData.getEventsBlocked(context)) || GlobalData.getForceOneWifiScan(context)))
 						{
-					        lock(context, wifi); // lock wakeLock and wifiLock, then scan.
-					                       // unlock() is then called at the end of the onReceive function of WifiScanBroadcastReceiver
-		    				setStartScan(context, wifi.startScan());
+							if (!getWifiEnabledForScan(context))
+								startScan(context);
+							else
+								setStartScan(context, true);
 						}
 				    }
 				    else
@@ -110,8 +110,6 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 	    				setStartScan(context, false);
 	        			setWifiEnabledForScan(context, false);
 				    }
-	
-			      	GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.onReceive","scanStarted="+getStartScan(context));
 				}
 				else
 					removeAlarm(context);
@@ -198,7 +196,7 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
         return (pendingIntent != null);
 	}
 
-    private static void lock(Context context, WifiManager wifi)
+    public static void lock(Context context)
     {
 		 // initialise the locks
 		if (wifiLock == null)
@@ -245,6 +243,13 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		editor.putBoolean(GlobalData.PREF_EVENT_WIFI_START_SCAN, startScan);
 		editor.commit();
 	}
+	
+	static public void startScan(Context context)
+	{
+		boolean startScan = wifi.startScan();
+		setStartScan(context, startScan);
+      	GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.onReceive","scanStarted="+startScan);
+	}
 
 	static public boolean getWifiEnabledForScan(Context context)
 	{
@@ -290,7 +295,10 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 	        	}
 	    	}
 	    	else
+	    	{
+	        	setWifiEnabledForScan(dataWrapper.context, false);
 	    		return true;
+	    	}
     	}
 
     	setWifiEnabledForScan(dataWrapper.context, false);

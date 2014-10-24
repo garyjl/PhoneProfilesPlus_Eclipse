@@ -30,8 +30,8 @@ public class GlobalData extends Application {
 
 	static String PACKAGE_NAME;
 	
-	public static boolean logIntoLogCat = true;
-	public static boolean logIntoFile = true;
+	public static boolean logIntoLogCat = false;
+	public static boolean logIntoFile = false;
 	public static String logFilterTags = //"@@@ BatteryEventBroadcastReceiver|"+
 										 //"@@@ CalendarProviderChangedBroadcastReceiver|"+
 										 //"@@@ EventsCalendarBroadcastReceiver|"+
@@ -40,7 +40,12 @@ public class GlobalData extends Application {
 										 //"@@@ SearchCalendarEventsBroadcastReceiver|"+
 										 "@@@ WifiConnectionBroadcastReceiver|"+
 										 "@@@ WifiScanAlarmBroadcastReceiver|"+
-										 "@@@ WifiScanBroadcastReceiver"
+										 "@@@ WifiScanBroadcastReceiver|"+
+										 "@@@ WifiStateChangedBroadcastReceiver|"+
+										 "@@@ BluetoothConnectionBroadcastReceiver|"+
+										 "@@@ BluetoothScanAlarmBroadcastReceiver|"+
+										 "@@@ BluetoothScanBroadcastReceiver|"+
+										 "@@@ BluetoothStateChangedBroadcastReceiver"
 										 //"@@@ ScreenOnOffBroadcastReceiver|"+
 										 //"@@@ RestartEventsBroadcastReceiver|"+
 										 //"@@@ EventDelayBroadcastReceiver|"+
@@ -205,6 +210,8 @@ public class GlobalData extends Application {
 	static final String PREF_EVENT_SMS_EVENT_TYPE = "eventSMSEventType";
 	static final String PREF_EVENT_SMS_PHONE_NUMBER = "eventSMSPhoneNumber";
 	static final String PREF_EVENT_SMS_DATE = "eventSMSDate";
+	static final String PREF_EVENT_WIFI_LAST_STATE = "eventWifiLastState";
+	static final String PREF_EVENT_BLUETOOTH_LAST_STATE = "eventBluetoothLastState";
 	
     public static boolean applicationStartOnBoot;
     public static boolean applicationActivate;

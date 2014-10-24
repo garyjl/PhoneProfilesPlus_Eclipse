@@ -6,6 +6,9 @@ import java.util.List;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.net.NetworkInfo;
 import android.support.v4.content.WakefulBroadcastReceiver;
 
 public class BluetoothConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
@@ -32,7 +35,6 @@ public class BluetoothConnectionBroadcastReceiver extends WakefulBroadcastReceiv
 		
 			if (connected) 
 			{
-				GlobalData.logE("@@@ BluetoothConnectionBroadcastReceiver.onReceive","Received: Bluetooth Connected");
 				boolean found = false;
 				for (BluetoothDeviceData _device : connectedDevices)
 				{
@@ -47,7 +49,6 @@ public class BluetoothConnectionBroadcastReceiver extends WakefulBroadcastReceiv
 		    }
 			else
 		    {
-		    	GlobalData.logE("@@@ BluetoothConnectionBroadcastReceiver.onReceive","Received: Bluetooth Disconnected");
 		    	int index = 0;
 		    	boolean found = false;
 				for (BluetoothDeviceData _device : connectedDevices)
@@ -69,49 +70,63 @@ public class BluetoothConnectionBroadcastReceiver extends WakefulBroadcastReceiv
 	
 			GlobalData.loadPreferences(context);
 			
+			SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+			int lastState = preferences.getInt(GlobalData.PREF_EVENT_BLUETOOTH_LAST_STATE, -1);
+			int currState = -1;
+	    	if (connected)
+	    		currState = 1;
+	    	if (!connected)
+	    		currState = 0;
+			Editor editor = preferences.edit();
+			editor.putInt(GlobalData.PREF_EVENT_BLUETOOTH_LAST_STATE, currState);
+			editor.commit();
+			
 			if (GlobalData.getGlobalEventsRuning(context))
 			{
 	
-				if (connected)
-				{
-	        		if ((!BluetoothScanAlarmBroadcastReceiver.getBluetoothEnabledForScan(context)) &&
-			        	(!GlobalData.getEventsBlocked(context)))
-	        		{
-		        		//if (BluetoothScanAlarmBroadcastReceiver.scanResults == null)
-		        		//{
-		        		//	// no bluetooth scan data, rescan
-							// rescan bluetooth for update scanResults after connect
-							BluetoothScanAlarmBroadcastReceiver.sendBroadcast(context);
-		        		//}
-	        		}
-				}
-				
-				DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
-				boolean bluetoothEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_BLUETOOTHCONNECTED) > 0;
-				dataWrapper.invalidateDataWrapper();
-		
-				if (bluetoothEventsExists)
-				{
-	        		GlobalData.logE("@@@ BluetoothConnectionBroadcastReceiver.onReceive","bluetoothEventsExists="+bluetoothEventsExists);
-	
-					// start service
-					Intent eventsServiceIntent = new Intent(context, EventsService.class);
-					eventsServiceIntent.putExtra(GlobalData.EXTRA_BROADCAST_RECEIVER_TYPE, BROADCAST_RECEIVER_TYPE);
-					startWakefulService(context, eventsServiceIntent);
-				}
-				
-	        	if (!connected)
+	        	if (lastState != currState)
 	        	{
-	        		if ((!BluetoothScanAlarmBroadcastReceiver.getBluetoothEnabledForScan(context)) &&
-			        	(!GlobalData.getEventsBlocked(context)))
-			        {
-						// rescan bluetooth for update scanResults after disconnect
-						BluetoothScanAlarmBroadcastReceiver.sendBroadcast(context);
-			        }
-	        		else
-	        		{
-	        			BluetoothScanAlarmBroadcastReceiver.setBluetoothEnabledForScan(context, false);
-	        		}
+					GlobalData.logE("@@@ BluetoothConnectionBroadcastReceiver.onReceive","connected"+connected);
+					
+					if (!BluetoothScanAlarmBroadcastReceiver.getBluetoothEnabledForScan(context))
+					{
+						if (connected)
+						{
+							if (!GlobalData.getEventsBlocked(context))
+			        		{
+				        		//if (BluetoothScanAlarmBroadcastReceiver.scanResults == null)
+				        		//{
+				        		//	// no bluetooth scan data, rescan
+									// rescan bluetooth for update scanResults after connect
+									//BluetoothScanAlarmBroadcastReceiver.sendBroadcast(context);
+				        		//}
+			        		}
+						}
+						
+						DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
+						boolean bluetoothEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_BLUETOOTHCONNECTED) > 0;
+						dataWrapper.invalidateDataWrapper();
+				
+						if (bluetoothEventsExists)
+						{
+			        		GlobalData.logE("@@@ BluetoothConnectionBroadcastReceiver.onReceive","bluetoothEventsExists="+bluetoothEventsExists);
+			
+							// start service
+							Intent eventsServiceIntent = new Intent(context, EventsService.class);
+							eventsServiceIntent.putExtra(GlobalData.EXTRA_BROADCAST_RECEIVER_TYPE, BROADCAST_RECEIVER_TYPE);
+							startWakefulService(context, eventsServiceIntent);
+						}
+						
+			        	if (!connected)
+			        	{
+		        			BluetoothScanAlarmBroadcastReceiver.setBluetoothEnabledForScan(context, false);
+					    	if (!GlobalData.getEventsBlocked(context))
+					        {
+								// rescan bluetooth for update scanResults after disconnect
+								//BluetoothScanAlarmBroadcastReceiver.sendBroadcast(context);
+					        }
+			        	}
+					}
 	        	}
 			}
 		}

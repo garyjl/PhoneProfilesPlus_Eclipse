@@ -13,9 +13,11 @@ public class ReceiversService extends Service {
 	private final BatteryEventBroadcastReceiver batteryEventReceiver = new BatteryEventBroadcastReceiver();
 	private final HeadsetConnectionBroadcastReceiver headsetPlugReceiver = new HeadsetConnectionBroadcastReceiver();
 	private final RestartEventsBroadcastReceiver restartEventsReceiver = new RestartEventsBroadcastReceiver();
+	private final WifiStateChangedBroadcastReceiver wifiStateChangedReceiver = new WifiStateChangedBroadcastReceiver();
 	private final WifiConnectionBroadcastReceiver wifiConnectionReceiver = new WifiConnectionBroadcastReceiver();
 	private final WifiScanBroadcastReceiver wifiScanReceiver = new WifiScanBroadcastReceiver();
 	private final ScreenOnOffBroadcastReceiver screenOnOffReceiver = new ScreenOnOffBroadcastReceiver();
+	private final BluetoothStateChangedBroadcastReceiver bluetoothStateChangedReceiver = new BluetoothStateChangedBroadcastReceiver();
 	private final BluetoothScanBroadcastReceiver bluetoothScanReceiver = new BluetoothScanBroadcastReceiver();
 	
 	@Override
@@ -31,13 +33,14 @@ public class ReceiversService extends Service {
         }		
 		registerReceiver(headsetPlugReceiver, intentFilter2);
 		
+		IntentFilter intentFilter7 = new IntentFilter();
+		intentFilter7.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+		registerReceiver(wifiStateChangedReceiver, intentFilter7);
 		
 		IntentFilter intentFilter3 = new IntentFilter();
-		//intentFilter3.addAction(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION); //WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
 		intentFilter3.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
 		registerReceiver(wifiConnectionReceiver, intentFilter3);
 		
-
 		IntentFilter intentFilter4 = new IntentFilter();
 		intentFilter4.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
 		registerReceiver(wifiScanReceiver, intentFilter4);
@@ -52,7 +55,11 @@ public class ReceiversService extends Service {
 		intentFilter6.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
 		intentFilter6.addAction(BluetoothDevice.ACTION_FOUND);
 		intentFilter6.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-		registerReceiver(bluetoothScanReceiver, intentFilter6);		
+		registerReceiver(bluetoothScanReceiver, intentFilter6);
+		
+		IntentFilter intentFilter8 = new IntentFilter();		
+		intentFilter8.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+		registerReceiver(bluetoothStateChangedReceiver, intentFilter8);
 		
 		// receivers for system date and time change
 		// events must by restarted
@@ -71,9 +78,11 @@ public class ReceiversService extends Service {
 	{
 		unregisterReceiver(batteryEventReceiver);
 		unregisterReceiver(headsetPlugReceiver);
+		unregisterReceiver(wifiStateChangedReceiver);
 		unregisterReceiver(wifiConnectionReceiver);
 		unregisterReceiver(wifiScanReceiver);
 		unregisterReceiver(screenOnOffReceiver);
+		unregisterReceiver(bluetoothStateChangedReceiver);
 		unregisterReceiver(bluetoothScanReceiver);		
 		
 		unregisterReceiver(restartEventsReceiver);
