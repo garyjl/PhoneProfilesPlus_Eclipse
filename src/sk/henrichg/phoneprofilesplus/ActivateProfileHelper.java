@@ -317,6 +317,31 @@ public class ActivateProfileHelper {
 			audioManager.setStreamVolume(AudioManager.STREAM_VOICE_CALL, profile.getVolumeVoiceValue(), 0);
 			//Settings.System.putInt(getContentResolver(), Settings.System.VOLUME_VOICE, profile.getVolumeVoiceValue());
 	}
+
+	private static final int ZENMODE_ALL = 0;
+	private static final int ZENMODE_PRIORITY = 1;
+	private static final int ZENMODE_NONE = 2;
+	
+	private void setZenMode(int mode)
+	{
+    	if (android.os.Build.VERSION.SDK_INT >= 21)
+    	{
+			if (GlobalData.grantRoot(false))
+			{
+				// zariadenie je rootnute
+				String command1;
+				command1 = "settings put global zen_mode " + mode;
+				CommandCapture command = new CommandCapture(0, command1);
+				try {
+					RootTools.getShell(true).add(command);
+					commandWait(command);
+					RootTools.closeAllShells();
+				} catch (Exception e) {
+					Log.e("ActivateProfileHelper.setZenMode", "Error on run su");
+				}
+			}
+    	}
+	}
 	
 	@SuppressWarnings("deprecation")
 	public void setRingerMode(Profile profile, AudioManager audioManager)
@@ -338,6 +363,7 @@ public class ActivateProfileHelper {
 				e.printStackTrace();
 			} 
 			Settings.System.putInt(context.getContentResolver(), "vibrate_when_ringing", 0);
+			setZenMode(ZENMODE_ALL);
 			break;
 		case 2:  // Ring & Vibrate
 			audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
@@ -354,6 +380,7 @@ public class ActivateProfileHelper {
 				e.printStackTrace();
 			} 
 			Settings.System.putInt(context.getContentResolver(), "vibrate_when_ringing", 1);
+			setZenMode(ZENMODE_ALL);
 			break;
 		case 3:  // Vibrate
 			audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
@@ -370,6 +397,7 @@ public class ActivateProfileHelper {
 				e.printStackTrace();
 			} 
 			Settings.System.putInt(context.getContentResolver(), "vibrate_when_ringing", 1);
+			setZenMode(ZENMODE_ALL);
 			break;
 		case 4:  // Silent
 			audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
@@ -386,6 +414,7 @@ public class ActivateProfileHelper {
 				e.printStackTrace();
 			} 
 			Settings.System.putInt(context.getContentResolver(), "vibrate_when_ringing", 0);
+			setZenMode(ZENMODE_PRIORITY);
 			break;
 		}
 	}

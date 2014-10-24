@@ -407,25 +407,19 @@ Stale nemam vyriesene ako zadavat tie geofences
 
 -------------------------------------
 
-SMS event:
-- receiver zapise do shared preferences: 
-  - ci bola sms prijata alebo doslana 
-  - kto poslal alebo komu bola poslana sms
-  - datum a cas prijatia/odoslania
-- EventPreferenceSMS bude mat tieto polia:
-  - _smsEvent
-  - _contacts
-  - _contactListType
-  - _startTime - iterne pole, nebude v preferences screen 
-- Ak pride/odide sms, receiver zapise veci do shared preferences a zavola service.
-- EventPreferencesSMS.setSystemRunningEvent() vygeneruje alarm, s casom _startTime + 5 sekund
-- EventPreferencesSMS.setSystemPauseEvent() alarm zrusi
-- EventPreferencesSMS.removeSystemEvent() alarm zrusi
-- vytvori sa novy alarm receiver pre SMS, ktory zavola service, co sposobi ukoncenie eventu
-- DataWrapper.doEventService() bude testovat:
-  - _smsEvent s event typom v shared preferences
-  - _ci je aktualny cas medzi _startTime a _startTime + 5 sekund
-- DatabaseHandler - treba pridat metodu na update polozky "smsStartTime"
+System.Settings:
+notifications_use_ring_volume ---+--> ze by na odlinkovanie zvonenia a notifikacii?
+unlink_volumes_together ---------+
+mute_streams_affected
+mode_ringer_streams_affected
+
+System.Global:
+heads_up_notifications_enabled
+
+zen_mode ==== !!!!! TOTO JE ONO !!! 
+0 -> ALL      - mode_ringer = 2  
+1 -> Priority - mode_ringer = 2
+2 -> NONE     - mode_ringer = 0
  
    
 
