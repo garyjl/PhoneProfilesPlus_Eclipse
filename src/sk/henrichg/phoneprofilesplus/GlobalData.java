@@ -38,11 +38,11 @@ public class GlobalData extends Application {
 										 //"@@@ EventsTimeBroadcastReceiver|"+
 										 //"HeadsetConnectionBroadcastReceiver"
 										 //"@@@ SearchCalendarEventsBroadcastReceiver|"+
-										 "@@@ WifiConnectionBroadcastReceiver|"+
-										 "@@@ WifiScanAlarmBroadcastReceiver|"+
-										 "@@@ WifiScanBroadcastReceiver|"+
-										 "@@@ WifiStateChangedBroadcastReceiver|"+
-										 "@@@ ActivateProfileHelper"
+										 //"@@@ WifiConnectionBroadcastReceiver|"+
+										 //"@@@ WifiScanAlarmBroadcastReceiver|"+
+										 //"@@@ WifiScanBroadcastReceiver|"+
+										 //"@@@ WifiStateChangedBroadcastReceiver|"+
+										 //"@@@ ActivateProfileHelper"
 										 //"@@@ BluetoothConnectionBroadcastReceiver|"+
 										 //"@@@ BluetoothScanAlarmBroadcastReceiver|"+
 										 //"@@@ BluetoothScanBroadcastReceiver|"+
@@ -53,7 +53,8 @@ public class GlobalData extends Application {
 										 //"@@@ BootUpReceiver|"+
 										 //"@@@ PackageReplacedReceiver|"+
 										 //"@@@ EventsService|"+
-										 //"@@@ Event"
+										 "@@@ Event|"+
+										 ""
 			;
 	
 	
@@ -908,6 +909,8 @@ public class GlobalData extends Application {
 		{
 			if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_NFC))
 			{
+				logE("GlobalData.hardwareCheck","NFC=presented");
+				
 				// device ma nfc
 				if (PhoneProfilesHelper.isPPHelperInstalled(context, 7))
 				{
@@ -924,6 +927,10 @@ public class GlobalData extends Application {
 							featurePresented = HARDWARE_CHECK_UPGRADE_PPHELPER;
 					}
 				}
+			}
+			else
+			{
+				logE("GlobalData.hardwareCheck","NFC=not presented");
 			}
 		}
 		else
