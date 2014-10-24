@@ -416,10 +416,12 @@ mode_ringer_streams_affected
 System.Global:
 heads_up_notifications_enabled
 
-zen_mode ==== !!!!! TOTO JE ONO !!! 
+zen_mode ==== !!!!! TOTO JE ONO A FUNGUJE TO !!!
+Len je problem, vyzaduje to root :-/ Hadam to Google opravi a ringer modom sa to bude dat menit, alebo daju dake ine api na to.
 0 -> ALL      - mode_ringer = 2  
 1 -> Priority - mode_ringer = 2
 2 -> NONE     - mode_ringer = 0
+
  
    
 
