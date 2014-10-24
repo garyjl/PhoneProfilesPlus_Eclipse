@@ -30,8 +30,8 @@ public class GlobalData extends Application {
 
 	static String PACKAGE_NAME;
 	
-	public static boolean logIntoLogCat = false;
-	public static boolean logIntoFile = false;
+	public static boolean logIntoLogCat = true;
+	public static boolean logIntoFile = true;
 	public static String logFilterTags = //"@@@ BatteryEventBroadcastReceiver|"+
 										 //"@@@ CalendarProviderChangedBroadcastReceiver|"+
 										 //"@@@ EventsCalendarBroadcastReceiver|"+
@@ -42,10 +42,11 @@ public class GlobalData extends Application {
 										 "@@@ WifiScanAlarmBroadcastReceiver|"+
 										 "@@@ WifiScanBroadcastReceiver|"+
 										 "@@@ WifiStateChangedBroadcastReceiver|"+
-										 "@@@ BluetoothConnectionBroadcastReceiver|"+
-										 "@@@ BluetoothScanAlarmBroadcastReceiver|"+
-										 "@@@ BluetoothScanBroadcastReceiver|"+
-										 "@@@ BluetoothStateChangedBroadcastReceiver"
+										 "@@@ ActivateProfileHelper"
+										 //"@@@ BluetoothConnectionBroadcastReceiver|"+
+										 //"@@@ BluetoothScanAlarmBroadcastReceiver|"+
+										 //"@@@ BluetoothScanBroadcastReceiver|"+
+										 //"@@@ BluetoothStateChangedBroadcastReceiver"
 										 //"@@@ ScreenOnOffBroadcastReceiver|"+
 										 //"@@@ RestartEventsBroadcastReceiver|"+
 										 //"@@@ EventDelayBroadcastReceiver|"+

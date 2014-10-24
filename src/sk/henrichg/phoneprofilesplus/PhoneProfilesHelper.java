@@ -524,7 +524,10 @@ public class PhoneProfilesHelper {
     	if (android.os.Build.VERSION.SDK_INT >= 16)
     		mBuilder.setPriority(Notification.PRIORITY_MAX);
     	if (android.os.Build.VERSION.SDK_INT >= 21)
+    	{
+    		mBuilder.setCategory(Notification.CATEGORY_RECOMMENDATION);
     		mBuilder.setVisibility(Notification.VISIBILITY_PUBLIC);
+    	}
 		NotificationManager mNotificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
 		mNotificationManager.notify(0, mBuilder.build());		
 	}

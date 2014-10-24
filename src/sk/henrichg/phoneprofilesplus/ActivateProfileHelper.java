@@ -321,6 +321,7 @@ public class ActivateProfileHelper {
 	@SuppressWarnings("deprecation")
 	public void setRingerMode(Profile profile, AudioManager audioManager)
 	{
+		GlobalData.logE("@@@ ActivateProfileHelper.setRingerMode", "ringerMode="+audioManager.getRingerMode());
 		switch (profile._volumeRingerMode) {
 		case 1:  // Ring
 			audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
@@ -411,7 +412,7 @@ public class ActivateProfileHelper {
 		context.startService(volumeServiceIntent);*/
 		AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
 		// nahodenie ringer modu - aby sa mohli nastavit hlasitosti
-		setRingerMode(profile, audioManager);
+		//setRingerMode(profile, audioManager);
 		setVolumes(profile, audioManager);
 		// nahodenie ringer modu - hlasitosti zmenia silent/vibrate
 		setRingerMode(profile, audioManager);
@@ -722,7 +723,10 @@ public class ActivateProfileHelper {
         	//if (android.os.Build.VERSION.SDK_INT >= 16)
         	//	notificationBuilder.setPriority(Notification.PRIORITY_HIGH); // for heads-up in Android 5.0
         	if (android.os.Build.VERSION.SDK_INT >= 21)
+        	{
+        		notificationBuilder.setCategory(Notification.CATEGORY_STATUS);
         		notificationBuilder.setVisibility(Notification.VISIBILITY_PUBLIC);
+        	}
         	
         	notificationBuilder.setTicker(profileName);
 			
