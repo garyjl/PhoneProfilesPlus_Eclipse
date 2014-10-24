@@ -62,13 +62,9 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 				        {
 			        		if (!GlobalData.getEventsBlocked(context))
 			        		{
-				        		//GlobalData.logE("@@@ WifiConnectionBroadcastReceiver.onReceive","rescan");
-				        		//if (WifiScanAlarmBroadcastReceiver.scanResults == null)
-				        		//{
-				        		//	// no wifi scan data, rescan
-									// rescan wifi for update scanResults after connect
-									//WifiScanAlarmBroadcastReceiver.sendBroadcast(context);
-				        		//}
+				        		GlobalData.logE("@@@ WifiConnectionBroadcastReceiver.onReceive","rescan");
+								// rescan wifi for update scanResults after connect
+								WifiScanAlarmBroadcastReceiver.sendBroadcast(context);
 			        		}
 				        }
 		        		
@@ -86,16 +82,20 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 		    				startWakefulService(context, eventsServiceIntent);
 		    			}
 		    			
-			        	if (info.getState() == NetworkInfo.State.DISCONNECTED)
+			        	if ((info.getState() == NetworkInfo.State.DISCONNECTED) && (lastState == 1))
 			        	{
-		        			WifiScanAlarmBroadcastReceiver.setWifiEnabledForScan(context, false);
 			        		if (!GlobalData.getEventsBlocked(context))
 					        {
-				        		//GlobalData.logE("@@@ WifiConnectionBroadcastReceiver.onReceive","rescan");
+				        		GlobalData.logE("@@@ WifiConnectionBroadcastReceiver.onReceive","rescan");
 								// rescan wifi for update scanResults after disconnect
-								//WifiScanAlarmBroadcastReceiver.sendBroadcast(context);
+								WifiScanAlarmBroadcastReceiver.sendBroadcast(context);
 					        }
 			        	}
+	        		}
+	        		else
+	        		{
+			        	if ((info.getState() == NetworkInfo.State.DISCONNECTED) && (lastState == 1))
+		        			WifiScanAlarmBroadcastReceiver.setWifiEnabledForScan(context, false);
 	        		}
 	        	}
 			}
