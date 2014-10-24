@@ -25,7 +25,7 @@ public class CalendarsMultiSelectDialogPreference extends DialogPreference
 	Context _context = null;
 	String value = "";
 	
-	List<Calendar> calendarList = null;	
+	List<CalendarEvent> calendarList = null;	
 	
 	// Layout widgets.
 	private ListView listView = null;
@@ -49,7 +49,7 @@ public class CalendarsMultiSelectDialogPreference extends DialogPreference
 		
 		_context = context;
 		
-		calendarList = new ArrayList<Calendar>();
+		calendarList = new ArrayList<CalendarEvent>();
 
 	}
 
@@ -65,7 +65,7 @@ public class CalendarsMultiSelectDialogPreference extends DialogPreference
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View item, int position, long id) 
             {
-                Calendar calendar = (Calendar)listAdapter.getItem(position);
+                CalendarEvent calendar = (CalendarEvent)listAdapter.getItem(position);
                 calendar.toggleChecked();
                 CalendarViewHolder viewHolder = (CalendarViewHolder) item.getTag();
                 viewHolder.checkBox.setChecked(calendar.checked);
@@ -111,7 +111,7 @@ public class CalendarsMultiSelectDialogPreference extends DialogPreference
 				    displayName = cur.getString(PROJECTION_DISPLAY_NAME_INDEX);
 				    color = cur.getInt(PROJECTION_COLOR_INDEX);
 				              
-					Calendar aCalendar = new Calendar();
+					CalendarEvent aCalendar = new CalendarEvent();
 					aCalendar.calendarId = calID;
 					aCalendar.name = displayName;
 					aCalendar.color = color;
@@ -150,7 +150,7 @@ public class CalendarsMultiSelectDialogPreference extends DialogPreference
 				value = "";
 				if (calendarList != null)
 				{
-					for (Calendar calendar : calendarList)
+					for (CalendarEvent calendar : calendarList)
 					{
 						if (calendar.checked)
 						{
@@ -193,7 +193,7 @@ public class CalendarsMultiSelectDialogPreference extends DialogPreference
 		if (calendarList != null)
 		{
 			String[] splits = value.split("\\|");
-			for (Calendar calendar : calendarList)
+			for (CalendarEvent calendar : calendarList)
 			{
 				calendar.checked = false;
 				for (int i = 0; i < splits.length; i++)

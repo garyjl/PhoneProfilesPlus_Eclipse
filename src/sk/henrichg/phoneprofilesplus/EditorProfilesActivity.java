@@ -553,9 +553,9 @@ public class EditorProfilesActivity extends ActionBarActivity
 				dataWrapper.pauseAllEvents(true, false);
 				GlobalData.setGlobalEventsRuning(getBaseContext(), false);
 				// stop Wifi scanner
-				WifiScanAlarmBroadcastReceiver.removeAlarm(getBaseContext());
+				WifiScanAlarmBroadcastReceiver.removeAlarm(getBaseContext(), false);
 				// stop bluetooth scanner
-				BluetoothScanAlarmBroadcastReceiver.removeAlarm(getBaseContext());
+				BluetoothScanAlarmBroadcastReceiver.removeAlarm(getBaseContext(), false);
 			}
 			else
 			{
@@ -622,7 +622,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 			getDataWrapper().getActivateProfileHelper().removeNotification();
 			
 			SearchCalendarEventsBroadcastReceiver.removeAlarm(getApplicationContext());
-			WifiScanAlarmBroadcastReceiver.removeAlarm(getApplicationContext());
+			WifiScanAlarmBroadcastReceiver.removeAlarm(getApplicationContext(), false);
 			stopService(new Intent(getApplicationContext(), ReceiversService.class));
 			
 			finish();

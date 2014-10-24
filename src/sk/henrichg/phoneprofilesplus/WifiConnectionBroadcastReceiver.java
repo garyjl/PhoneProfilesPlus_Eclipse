@@ -60,6 +60,7 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 	        		{
 			        	if ((info.getState() == NetworkInfo.State.CONNECTED) && (lastState == 0))
 				        {
+			        		WifiScanAlarmBroadcastReceiver.removeAlarm(context, true);
 			        		if (!GlobalData.getEventsBlocked(context))
 			        		{
 				        		GlobalData.logE("@@@ WifiConnectionBroadcastReceiver.onReceive","rescan");
@@ -88,7 +89,7 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 					        {
 				        		GlobalData.logE("@@@ WifiConnectionBroadcastReceiver.onReceive","rescan");
 								// rescan wifi for update scanResults after disconnect
-								WifiScanAlarmBroadcastReceiver.sendBroadcast(context);
+				        		WifiScanAlarmBroadcastReceiver.setAlarm(context, true);
 					        }
 			        	}
 	        		}

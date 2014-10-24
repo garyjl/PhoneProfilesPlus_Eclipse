@@ -136,16 +136,16 @@ public class EventPreferencesWifi extends EventPreferences {
 	public void setSystemRunningEvent(Context context)
 	{
 		if ((_connectionType == CTYPE_INFRONT) && 
-			(!WifiScanAlarmBroadcastReceiver.isAlarmSet(context)))
-			WifiScanAlarmBroadcastReceiver.setAlarm(context);
+			(!WifiScanAlarmBroadcastReceiver.isAlarmSet(context, false)))
+			WifiScanAlarmBroadcastReceiver.setAlarm(context, false);
 	}
 
 	@Override
 	public void setSystemPauseEvent(Context context)
 	{
 		if ((_connectionType == CTYPE_INFRONT) && 
-			(!WifiScanAlarmBroadcastReceiver.isAlarmSet(context)))
-			WifiScanAlarmBroadcastReceiver.setAlarm(context);
+			(!WifiScanAlarmBroadcastReceiver.isAlarmSet(context, false)))
+			WifiScanAlarmBroadcastReceiver.setAlarm(context, false);
 	}
 	
 	@Override

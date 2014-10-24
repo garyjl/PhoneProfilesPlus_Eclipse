@@ -147,14 +147,14 @@ public class PhoneProfilesPreferencesActivity extends ActionBarActivity
 		
 		if (wifiScanInterval != GlobalData.applicationEventWifiScanInterval)
 		{
-			if (WifiScanAlarmBroadcastReceiver.isAlarmSet(getApplicationContext()))
-				WifiScanAlarmBroadcastReceiver.setAlarm(getApplicationContext());
+			if (WifiScanAlarmBroadcastReceiver.isAlarmSet(getApplicationContext(), false))
+				WifiScanAlarmBroadcastReceiver.setAlarm(getApplicationContext(), false);
 		}
 
 		if (bluetoothScanInterval != GlobalData.applicationEventBluetoothScanInterval)
 		{
-			if (BluetoothScanAlarmBroadcastReceiver.isAlarmSet(getApplicationContext()))
-				BluetoothScanAlarmBroadcastReceiver.setAlarm(getApplicationContext());
+			if (BluetoothScanAlarmBroadcastReceiver.isAlarmSet(getApplicationContext(), false))
+				BluetoothScanAlarmBroadcastReceiver.setAlarm(getApplicationContext(), false);
 		}
 		
 		/*

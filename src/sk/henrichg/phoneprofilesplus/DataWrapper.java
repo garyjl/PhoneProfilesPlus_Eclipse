@@ -729,9 +729,9 @@ public class DataWrapper {
 		GlobalData.setForceOneBluetoothScan(context, false);
 		
 		WifiScanAlarmBroadcastReceiver.initialize(context);
-		WifiScanAlarmBroadcastReceiver.setAlarm(context);
+		WifiScanAlarmBroadcastReceiver.setAlarm(context, false);
 		BluetoothScanAlarmBroadcastReceiver.initialize(context);
-		BluetoothScanAlarmBroadcastReceiver.setAlarm(context);
+		BluetoothScanAlarmBroadcastReceiver.setAlarm(context, false);
 		SearchCalendarEventsBroadcastReceiver.setAlarm(context);
 		
 		

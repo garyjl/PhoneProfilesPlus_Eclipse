@@ -13,12 +13,12 @@ import android.widget.TextView;
 
 public class CalendarsMultiselectPreferenceAdapter extends BaseAdapter 
 {
-	List<Calendar> calendarList = null;	
+	List<CalendarEvent> calendarList = null;	
 	
     private LayoutInflater inflater;
     //private Context context;
 
-    public CalendarsMultiselectPreferenceAdapter(Context context, List<Calendar> calendarList) 
+    public CalendarsMultiselectPreferenceAdapter(Context context, List<CalendarEvent> calendarList) 
     {
     	this.calendarList = calendarList;
     	
@@ -42,7 +42,7 @@ public class CalendarsMultiselectPreferenceAdapter extends BaseAdapter
     public View getView(int position, View convertView, ViewGroup parent)
     {
         // Calendar to display
-        Calendar calendar = calendarList.get(position);
+        CalendarEvent calendar = calendarList.get(position);
         //System.out.println(String.valueOf(position));
 
         // The child views in each row.
@@ -69,7 +69,7 @@ public class CalendarsMultiselectPreferenceAdapter extends BaseAdapter
             checkBox.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     CheckBox cb = (CheckBox) v;
-                    Calendar calendar = (Calendar) cb.getTag();
+                    CalendarEvent calendar = (CalendarEvent) cb.getTag();
                     calendar.checked = cb.isChecked();
                 }
             });

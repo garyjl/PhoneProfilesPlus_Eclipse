@@ -92,6 +92,7 @@ public class BluetoothConnectionBroadcastReceiver extends WakefulBroadcastReceiv
 					{
 						if (connected)
 						{
+			        		BluetoothScanAlarmBroadcastReceiver.removeAlarm(context, true);
 							if (!GlobalData.getEventsBlocked(context))
 			        		{
 								// rescan bluetooth for update scanResults after connect
@@ -118,7 +119,7 @@ public class BluetoothConnectionBroadcastReceiver extends WakefulBroadcastReceiv
 					    	if (!GlobalData.getEventsBlocked(context))
 					        {
 								// rescan bluetooth for update scanResults after disconnect
-								BluetoothScanAlarmBroadcastReceiver.sendBroadcast(context);
+				        		BluetoothScanAlarmBroadcastReceiver.setAlarm(context, true);
 					        }
 			        	}
 					}

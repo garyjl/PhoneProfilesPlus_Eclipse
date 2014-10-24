@@ -1,12 +1,12 @@
 package sk.henrichg.phoneprofilesplus;
 
-public class Calendar {
+public class CalendarEvent {
 	public long calendarId = 0;
     public String name = "";
     public int color = 0;
     public boolean checked = false;
 
-    public Calendar() {
+    public CalendarEvent() {
     }
 
     public String toString() {
