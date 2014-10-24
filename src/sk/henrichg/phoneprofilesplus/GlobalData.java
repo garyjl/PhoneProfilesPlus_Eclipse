@@ -54,7 +54,7 @@ public class GlobalData extends Application {
 										 //"@@@ PackageReplacedReceiver|"+
 										 //"@@@ EventsService|"+
 										 "@@@ Event|"+
-										 ""
+										 "GlobalData.hardwareCheck"
 			;
 	
 	
