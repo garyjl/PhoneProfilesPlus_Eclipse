@@ -38,10 +38,10 @@ public class GlobalData extends Application {
 										 //"@@@ EventsTimeBroadcastReceiver|"+
 										 //"HeadsetConnectionBroadcastReceiver"
 										 //"@@@ SearchCalendarEventsBroadcastReceiver|"+
-										 //"@@@ WifiConnectionBroadcastReceiver|"+
-										 //"@@@ WifiScanAlarmBroadcastReceiver|"+
-										 //"@@@ WifiScanBroadcastReceiver|"+
-										 //"@@@ WifiStateChangedBroadcastReceiver|"+
+										 "@@@ WifiConnectionBroadcastReceiver|"+
+										 "@@@ WifiScanAlarmBroadcastReceiver|"+
+										 "@@@ WifiScanBroadcastReceiver|"+
+										 "@@@ WifiStateChangedBroadcastReceiver|"+
 										 //"@@@ ActivateProfileHelper"
 										 //"@@@ BluetoothConnectionBroadcastReceiver|"+
 										 //"@@@ BluetoothScanAlarmBroadcastReceiver|"+

@@ -154,8 +154,8 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 
 		        long alarmTime = calendar.getTimeInMillis(); 
 		        		
-			    //SimpleDateFormat sdf = new SimpleDateFormat("EE d.MM.yyyy HH:mm:ss:S");
-				//GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.setAlarm","oneshot="+oneshot+"; alarmTime="+sdf.format(alarmTime));
+			    SimpleDateFormat sdf = new SimpleDateFormat("EE d.MM.yyyy HH:mm:ss:S");
+				GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.setAlarm","oneshot="+oneshot+"; alarmTime="+sdf.format(alarmTime));
 		        
 				PendingIntent alarmIntent = PendingIntent.getBroadcast(context.getApplicationContext(), 1, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 		        alarmMgr.set(AlarmManager.RTC_WAKEUP, alarmTime, alarmIntent);

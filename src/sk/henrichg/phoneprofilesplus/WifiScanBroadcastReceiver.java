@@ -2,6 +2,7 @@ package sk.henrichg.phoneprofilesplus;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.support.v4.content.WakefulBroadcastReceiver;
 
@@ -37,15 +38,15 @@ public class WifiScanBroadcastReceiver extends WakefulBroadcastReceiver {
 				WifiScanAlarmBroadcastReceiver.scanResults = WifiScanAlarmBroadcastReceiver.wifi.getScanResults();
 				WifiScanAlarmBroadcastReceiver.unlock();
 
-				/*
+				
 				if (WifiScanAlarmBroadcastReceiver.scanResults != null)
 				{
 					for (ScanResult result : WifiScanAlarmBroadcastReceiver.scanResults)
 					{
-						GlobalData.logE("WifiScanBroadcastReceiver.onReceive","result.SSID="+result.SSID);
+						GlobalData.logE("@@@ WifiScanBroadcastReceiver.onReceive","result.SSID="+result.SSID);
 					}
 				}
-				*/
+				
 
 				if (WifiScanAlarmBroadcastReceiver.getWifiEnabledForScan(context))
 				{
