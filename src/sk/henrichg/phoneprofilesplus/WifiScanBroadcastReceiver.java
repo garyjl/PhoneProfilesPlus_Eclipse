@@ -2,6 +2,7 @@ package sk.henrichg.phoneprofilesplus;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.support.v4.content.WakefulBroadcastReceiver;
@@ -28,8 +29,7 @@ public class WifiScanBroadcastReceiver extends WakefulBroadcastReceiver {
 		if (GlobalData.getGlobalEventsRuning(context))
 		{
 
-			boolean scanStarted = (WifiScanAlarmBroadcastReceiver.getStartScan(context));// ||
-            //(WifiScanAlarmBroadcastReceiver.scanResults == null);
+			boolean scanStarted = (WifiScanAlarmBroadcastReceiver.getStartScan(context));
 			
 			if (scanStarted)
 			{
@@ -52,6 +52,7 @@ public class WifiScanBroadcastReceiver extends WakefulBroadcastReceiver {
 				{
 					GlobalData.logE("@@@ WifiScanBroadcastReceiver.onReceive","disable wifi");
 					WifiScanAlarmBroadcastReceiver.wifi.setWifiEnabled(false);
+        			WifiScanAlarmBroadcastReceiver.setWifiEnabledForScan(context, false);
 				}
 
 				if (!GlobalData.getForceOneWifiScan(context)) // not start service for force scan
@@ -62,14 +63,13 @@ public class WifiScanBroadcastReceiver extends WakefulBroadcastReceiver {
 					startWakefulService(context, eventsServiceIntent);
 				}
 
-				WifiScanAlarmBroadcastReceiver.unlock();
 				WifiScanAlarmBroadcastReceiver.setStartScan(context, false);
 				GlobalData.setForceOneWifiScan(context, false);
-
+				
 			}
 
 		}
-		
+
 		GlobalData.logE("@@@ WifiScanBroadcastReceiver.onReceive","----- end");
 		
 	}

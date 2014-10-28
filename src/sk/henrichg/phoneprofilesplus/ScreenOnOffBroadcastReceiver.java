@@ -44,6 +44,7 @@ public class ScreenOnOffBroadcastReceiver extends WakefulBroadcastReceiver {
 					//{	
 					//	// alarm is set = wifi scanning is ON
 						// rescan wifi
+            			GlobalData.setForceOneWifiScan(context, true);
 						WifiScanAlarmBroadcastReceiver.sendBroadcast(context);
 					//}
 				}
@@ -57,6 +58,7 @@ public class ScreenOnOffBroadcastReceiver extends WakefulBroadcastReceiver {
 					//{	
 					//	// alarm is set = bluetooth scanning is ON
 						// rescan bluetooth
+	            		GlobalData.setForceOneBluetoothScan(context, true);
 						BluetoothScanAlarmBroadcastReceiver.sendBroadcast(context);
 					//}
 				}

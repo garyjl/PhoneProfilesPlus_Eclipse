@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.os.PowerManager.WakeLock;
 import android.provider.Settings;
 import android.provider.Settings.Global;
 import android.util.Log;
@@ -23,6 +24,7 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
 	public static final String BROADCAST_RECEIVER_TYPE = "bluetoothScanAlarm";
 
 	public static BluetoothAdapter bluetooth = null;
+//    private static WakeLock wakeLock = null;
 
 	public static List<BluetoothDeviceData> tmpScanResults = null;
 	public static List<BluetoothDeviceData> scanResults = null;
@@ -123,7 +125,8 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
 	
 	public static void initialize(Context context)
 	{
-		bluetooth = (BluetoothAdapter) BluetoothAdapter.getDefaultAdapter();
+		if (bluetooth == null)
+			bluetooth = (BluetoothAdapter) BluetoothAdapter.getDefaultAdapter();
 		
     	unlock();
     	setStartScan(context, false);
@@ -154,7 +157,7 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		        long alarmTime = calendar.getTimeInMillis(); 
 		        		
 			    //SimpleDateFormat sdf = new SimpleDateFormat("EE d.MM.yyyy HH:mm:ss:S");
-				//GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.setAlarm","oneshot="+oneshot+"; alarmTime="+sdf.format(alarmTime));
+				//GlobalData.logE("@@@ BluetoothScanAlarmBroadcastReceiver.setAlarm","oneshot="+oneshot+"; alarmTime="+sdf.format(alarmTime));
 		        
 				PendingIntent alarmIntent = PendingIntent.getBroadcast(context.getApplicationContext(), 1, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 		        alarmMgr.set(AlarmManager.RTC_WAKEUP, alarmTime, alarmIntent);
@@ -197,8 +200,6 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
         }
         else
        		GlobalData.logE("@@@ BluetoothScanAlarmBroadcastReceiver.removeAlarm","oneshot="+oneshot+"; alarm not found");
-        
-        initialize(context);
     }
 	
 	public static boolean isAlarmSet(Context context, boolean oneshot)
@@ -223,10 +224,11 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		 // initialise the locks
 		/*if (wakeLock == null)
 	        wakeLock = ((PowerManager) context.getSystemService(Context.POWER_SERVICE))
-	                        .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "WifiScanWakeLock");*/			
+	                        .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "BluetoothScanWakeLock");*/			
 
     	try {
-            //wakeLock.acquire();
+    		//if (!wakeLock.isHeld())
+            //	wakeLock.acquire();
 		//	GlobalData.logE("@@@ BluetoothScanAlarmBroadcastReceiver.lock","xxx");
         } catch(Exception e) {
             Log.e("BluetoothScanAlarmBroadcastReceiver.lock", "Error getting Lock: "+e.getMessage());
@@ -264,9 +266,20 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
 	static public void startScan(Context context)
 	{
 		initTmpScanResults();
+		lock(context); // lock wakeLock, then scan.
+        			// unlock() is then called at the end of the onReceive function of BluetoothScanBroadcastReceiver
 		boolean startScan = bluetooth.startDiscovery();
-		setStartScan(context, startScan);
       	GlobalData.logE("@@@ BluetoothScanAlarmBroadcastReceiver.onReceive","scanStarted="+startScan);
+		if (!startScan)
+		{
+			unlock();
+			if (getBluetoothEnabledForScan(context))
+			{
+				GlobalData.logE("@@@ BluetoothScanAlarmBroadcastReceiver.onReceive","disable bluetooth");
+				bluetooth.disable();
+			}
+		}
+		setStartScan(context, startScan);
 	}
 	
 	static public void initTmpScanResults()
@@ -295,35 +308,38 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
 	@SuppressLint("NewApi")
 	private static boolean enableBluetooth(DataWrapper dataWrapper, BluetoothAdapter bluetooth)
     {
-		boolean isAirplaneMode;
-    	if (android.os.Build.VERSION.SDK_INT >= 17)
-    		isAirplaneMode = Settings.Global.getInt(dataWrapper.context.getContentResolver(), Global.AIRPLANE_MODE_ON, 0) != 0;
-    	else
-    		isAirplaneMode = Settings.System.getInt(dataWrapper.context.getContentResolver(), Settings.System.AIRPLANE_MODE_ON, 0) != 0;
-		if (!isAirplaneMode)
-		{
-			boolean isBluetoothEnabled = bluetooth.isEnabled();
-			GlobalData.logE("@@@ BluetoothScanAlarmBroadcastReceiver.enableBluetooth","isBluetoothEnabled="+isBluetoothEnabled);
-
-			if (!isBluetoothEnabled)
-	    	{
-	        	if (GlobalData.applicationEventBluetoothEnableBluetooth)
-	        	{
-					boolean bluetoothEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_BLUETOOTHINFRONT) > 0;
-	
-					if (bluetoothEventsExists)
-					{
-			        	GlobalData.logE("@@@ BluetoothScanAlarmBroadcastReceiver.enableBluetooth","enable");
-			        	bluetooth.enable();
-						setBluetoothEnabledForScan(dataWrapper.context, true);
-						return true;
-					}
-	        	}
-	    	}
+    	if ((!GlobalData.getEventsBlocked(dataWrapper.context)) || GlobalData.getForceOneBluetoothScan(dataWrapper.context))
+    	{
+			boolean isAirplaneMode;
+	    	if (android.os.Build.VERSION.SDK_INT >= 17)
+	    		isAirplaneMode = Settings.Global.getInt(dataWrapper.context.getContentResolver(), Global.AIRPLANE_MODE_ON, 0) != 0;
 	    	else
-	    	{
-	        	setBluetoothEnabledForScan(dataWrapper.context, false);
-	    		return true;
+	    		isAirplaneMode = Settings.System.getInt(dataWrapper.context.getContentResolver(), Settings.System.AIRPLANE_MODE_ON, 0) != 0;
+			if (!isAirplaneMode)
+			{
+				boolean isBluetoothEnabled = bluetooth.isEnabled();
+				GlobalData.logE("@@@ BluetoothScanAlarmBroadcastReceiver.enableBluetooth","isBluetoothEnabled="+isBluetoothEnabled);
+	
+				if (!isBluetoothEnabled)
+		    	{
+		        	if (GlobalData.applicationEventBluetoothEnableBluetooth)
+		        	{
+						boolean bluetoothEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_BLUETOOTHINFRONT) > 0;
+		
+						if (bluetoothEventsExists)
+						{
+				        	GlobalData.logE("@@@ BluetoothScanAlarmBroadcastReceiver.enableBluetooth","enable");
+				        	bluetooth.enable();
+							setBluetoothEnabledForScan(dataWrapper.context, true);
+							return true;
+						}
+		        	}
+		    	}
+		    	else
+		    	{
+		        	setBluetoothEnabledForScan(dataWrapper.context, false);
+		    		return true;
+		    	}
 	    	}
     	}
 

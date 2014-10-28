@@ -31,8 +31,6 @@ public class WifiStateChangedBroadcastReceiver extends BroadcastReceiver {
 				if (WifiScanAlarmBroadcastReceiver.getStartScan(context) && 
 					((!GlobalData.getEventsBlocked(context)) || GlobalData.getForceOneWifiScan(context)))
 				{
-					WifiScanAlarmBroadcastReceiver.lock(context); // lock wakeLock and wifiLock, then scan.
-			                       // unlock() is then called at the end of the onReceive function of WifiScanBroadcastReceiver
 					WifiScanAlarmBroadcastReceiver.startScan(context);
 				}
     		}

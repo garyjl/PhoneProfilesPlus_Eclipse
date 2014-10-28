@@ -90,7 +90,7 @@ public class BluetoothConnectionBroadcastReceiver extends WakefulBroadcastReceiv
 					
 					if (!BluetoothScanAlarmBroadcastReceiver.getBluetoothEnabledForScan(context))
 					{
-						if (connected)
+					/*	if (connected)
 						{
 			        		BluetoothScanAlarmBroadcastReceiver.removeAlarm(context, true);
 							if (!GlobalData.getEventsBlocked(context))
@@ -98,7 +98,7 @@ public class BluetoothConnectionBroadcastReceiver extends WakefulBroadcastReceiv
 								// rescan bluetooth for update scanResults after connect
 								BluetoothScanAlarmBroadcastReceiver.sendBroadcast(context);
 			        		}
-						}
+						}  */
 						
 						DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
 						boolean bluetoothEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_BLUETOOTHCONNECTED) > 0;
@@ -114,19 +114,14 @@ public class BluetoothConnectionBroadcastReceiver extends WakefulBroadcastReceiv
 							startWakefulService(context, eventsServiceIntent);
 						}
 
-			        	if (!connected)
+			        /*	if (!connected)
 			        	{
 					    	if (!GlobalData.getEventsBlocked(context))
 					        {
 								// rescan bluetooth for update scanResults after disconnect
 				        		BluetoothScanAlarmBroadcastReceiver.setAlarm(context, true);
 					        }
-			        	}
-					}
-					else
-					{
-			        	if (!connected)
-		        			BluetoothScanAlarmBroadcastReceiver.setBluetoothEnabledForScan(context, false);
+			        	}  */
 					}
 	        	}
 			}

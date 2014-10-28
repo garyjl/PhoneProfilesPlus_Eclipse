@@ -58,7 +58,7 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 	
 	        		if (!WifiScanAlarmBroadcastReceiver.getWifiEnabledForScan(context))
 	        		{
-			        	if ((info.getState() == NetworkInfo.State.CONNECTED) && (lastState == 0))
+			        /*	if ((info.getState() == NetworkInfo.State.CONNECTED) && (lastState == 0))
 				        {
 			        		WifiScanAlarmBroadcastReceiver.removeAlarm(context, true);
 			        		if (!GlobalData.getEventsBlocked(context))
@@ -67,7 +67,7 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 								// rescan wifi for update scanResults after connect
 								WifiScanAlarmBroadcastReceiver.sendBroadcast(context);
 			        		}
-				        }
+				        }  */
 		        		
 		    			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
 		    			boolean wifiEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_WIFICONNECTED) > 0;
@@ -83,7 +83,7 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 		    				startWakefulService(context, eventsServiceIntent);
 		    			}
 		    			
-			        	if ((info.getState() == NetworkInfo.State.DISCONNECTED) && (lastState == 1))
+			        /*	if ((info.getState() == NetworkInfo.State.DISCONNECTED) && (lastState == 1))
 			        	{
 			        		if (!GlobalData.getEventsBlocked(context))
 					        {
@@ -91,12 +91,7 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 								// rescan wifi for update scanResults after disconnect
 				        		WifiScanAlarmBroadcastReceiver.setAlarm(context, true);
 					        }
-			        	}
-	        		}
-	        		else
-	        		{
-			        	if ((info.getState() == NetworkInfo.State.DISCONNECTED) && (lastState == 1))
-		        			WifiScanAlarmBroadcastReceiver.setWifiEnabledForScan(context, false);
+			        	}  */
 	        		}
 	        	}
 			}

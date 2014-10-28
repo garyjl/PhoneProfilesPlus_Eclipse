@@ -37,8 +37,6 @@ public class BluetoothStateChangedBroadcastReceiver extends BroadcastReceiver {
 					((!GlobalData.getEventsBlocked(context)) || GlobalData.getForceOneBluetoothScan(context)))
 				{
 	        		GlobalData.logE("@@@ BluetoothStateChangedBroadcastReceiver.onReceive","startScan");
-					BluetoothScanAlarmBroadcastReceiver.lock(context); // lock wakeLock, then scan.
-			                       // unlock() is then called at the end of the onReceive function of BluetoothScanBroadcastReceiver
 					BluetoothScanAlarmBroadcastReceiver.startScan(context);
 				}
     		}

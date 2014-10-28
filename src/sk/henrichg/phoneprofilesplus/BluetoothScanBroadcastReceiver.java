@@ -30,8 +30,7 @@ public class BluetoothScanBroadcastReceiver extends WakefulBroadcastReceiver {
 		if (GlobalData.getGlobalEventsRuning(context))
 		{
 
-			boolean scanStarted = (BluetoothScanAlarmBroadcastReceiver.getStartScan(context));// ||
-            //(BluetoothScanAlarmBroadcastReceiver.scanResults == null);
+			boolean scanStarted = (BluetoothScanAlarmBroadcastReceiver.getStartScan(context));
 			
 			if (scanStarted)
 			{
@@ -98,6 +97,7 @@ public class BluetoothScanBroadcastReceiver extends WakefulBroadcastReceiver {
 					{
 						GlobalData.logE("@@@ BluetoothScanBroadcastReceiver.onReceive","disable bluetooth");
 						BluetoothScanAlarmBroadcastReceiver.bluetooth.disable();
+	        			BluetoothScanAlarmBroadcastReceiver.setBluetoothEnabledForScan(context, false);
 					}
 
 					if (!GlobalData.getForceOneBluetoothScan(context)) // not start service for force scan
@@ -108,7 +108,6 @@ public class BluetoothScanBroadcastReceiver extends WakefulBroadcastReceiver {
 						startWakefulService(context, eventsServiceIntent);
 					}
 
-					BluetoothScanAlarmBroadcastReceiver.unlock();
 					BluetoothScanAlarmBroadcastReceiver.setStartScan(context, false);
 					GlobalData.setForceOneBluetoothScan(context, false);
 					
@@ -117,7 +116,7 @@ public class BluetoothScanBroadcastReceiver extends WakefulBroadcastReceiver {
 			}
 
 		}
-		
+
 		GlobalData.logE("@@@ BluetoothScanBroadcastReceiver.onReceive","----- end");
 		
 	}

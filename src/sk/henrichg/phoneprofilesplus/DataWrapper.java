@@ -2139,8 +2139,10 @@ public class DataWrapper {
 					// a odblokuj forceRun eventy
 					restartEvents(true, true);
 					// rescan wifi
+        			GlobalData.setForceOneWifiScan(context, true);
 					WifiScanAlarmBroadcastReceiver.sendBroadcast(_activity.getBaseContext());
 					// rescan bluetooth
+            		GlobalData.setForceOneBluetoothScan(context, true);
 					BluetoothScanAlarmBroadcastReceiver.sendBroadcast(_activity.getBaseContext());
 
 					Toast msg = Toast.makeText(context, 
