@@ -65,7 +65,6 @@ public class BluetoothNamePreference extends DialogPreference {
         rescanButton.setOnClickListener(new View.OnClickListener()
     	{
             public void onClick(View v) {
-            	GlobalData.setForceOneBluetoothScan(context, true);
                 refreshListView(true);
             }
         });
@@ -190,7 +189,13 @@ public class BluetoothNamePreference extends DialogPreference {
 		        }
 		        
 				if (_forRescan)
-	            	BluetoothScanAlarmBroadcastReceiver.sendBroadcast(context);
+				{
+	            	GlobalData.setForceOneBluetoothScan(context, true);
+	            	//BluetoothScanAlarmBroadcastReceiver.sendBroadcast(context);
+					if (!isBluetoothEnabled)
+						BluetoothScanAlarmBroadcastReceiver.setBluetoothEnabledForScan(context, true);
+	            	BluetoothScanAlarmBroadcastReceiver.startScan(context);
+				}
 				
 		        if (_forRescan)
 		        {
@@ -208,14 +213,12 @@ public class BluetoothNamePreference extends DialogPreference {
 			        		break;
 		        	}
 		        	GlobalData.setForceOneBluetoothScan(context, false);
+	            	BluetoothScanAlarmBroadcastReceiver.setBluetoothEnabledForScan(context, false);
+	            	BluetoothScanAlarmBroadcastReceiver.setStartScan(context, false);
 		        }
 
-				if (isCancelled())
-				{
-					if (!isBluetoothEnabled)
-			    		bluetooth.disable();
-					return null;
-				}
+				if (!isBluetoothEnabled)
+		    		bluetooth.disable();
 		        
 		        if (BluetoothScanAlarmBroadcastReceiver.scanResults != null)
 		        {
@@ -238,9 +241,6 @@ public class BluetoothNamePreference extends DialogPreference {
 			        }
 		        }
 
-				if (!isBluetoothEnabled)
-		    		bluetooth.disable();
-		        
 		        return null;
 			}
 			

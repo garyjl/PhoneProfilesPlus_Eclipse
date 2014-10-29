@@ -41,5 +41,9 @@ public class BluetoothStateChangedBroadcastReceiver extends BroadcastReceiver {
 				}
     		}
         }
+		
+		//if (bluetoothState == BluetoothAdapter.STATE_OFF)
+		//	BluetoothScanAlarmBroadcastReceiver.setStartScan(context, false);
+		
 	}
 }

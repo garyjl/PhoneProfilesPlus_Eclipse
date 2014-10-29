@@ -35,6 +35,7 @@ public class WifiScanBroadcastReceiver extends WakefulBroadcastReceiver {
 			{
 				GlobalData.logE("@@@ WifiScanBroadcastReceiver.onReceive","xxx");
 
+				WifiScanAlarmBroadcastReceiver.wifiConfigurationList = WifiScanAlarmBroadcastReceiver.wifi.getConfiguredNetworks();
 				WifiScanAlarmBroadcastReceiver.scanResults = WifiScanAlarmBroadcastReceiver.wifi.getScanResults();
 				WifiScanAlarmBroadcastReceiver.unlock();
 
@@ -55,7 +56,12 @@ public class WifiScanBroadcastReceiver extends WakefulBroadcastReceiver {
         			WifiScanAlarmBroadcastReceiver.setWifiEnabledForScan(context, false);
 				}
 
-				if (!GlobalData.getForceOneWifiScan(context)) // not start service for force scan
+				WifiScanAlarmBroadcastReceiver.setStartScan(context, false);
+
+				boolean forceOneScan = GlobalData.getForceOneWifiScan(context); 
+				GlobalData.setForceOneWifiScan(context, false);
+				
+				if (!forceOneScan) // not start service for force scan
 				{
 					// start service
 					Intent eventsServiceIntent = new Intent(context, EventsService.class);
@@ -63,9 +69,6 @@ public class WifiScanBroadcastReceiver extends WakefulBroadcastReceiver {
 					startWakefulService(context, eventsServiceIntent);
 				}
 
-				WifiScanAlarmBroadcastReceiver.setStartScan(context, false);
-				GlobalData.setForceOneWifiScan(context, false);
-				
 			}
 
 		}

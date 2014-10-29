@@ -1,5 +1,7 @@
 package sk.henrichg.phoneprofilesplus;
 
+import java.util.Calendar;
+
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -55,16 +57,13 @@ public class SearchCalendarEventsBroadcastReceiver extends WakefulBroadcastRecei
  			
  		Intent intent = new Intent(context, SearchCalendarEventsBroadcastReceiver.class);
  			
- 		/*
 		Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.add(Calendar.SECOND, 10);
-        */
+        calendar.add(Calendar.SECOND, 5);
+        long alarmTime = calendar.getTimeInMillis(); 
          
 		PendingIntent alarmIntent = PendingIntent.getBroadcast(context.getApplicationContext(), 0, intent, 0);
-		alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-										5 * 1000,
-										//AlarmManager.INTERVAL_DAY,
+		alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+										alarmTime,
 										AlarmManager.INTERVAL_DAY,
 										alarmIntent);
 	}

@@ -131,6 +131,11 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
     	unlock();
     	setStartScan(context, false);
     	setBluetoothEnabledForScan(context, false);
+
+    	SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+		Editor editor = preferences.edit();
+		editor.putInt(GlobalData.PREF_EVENT_BLUETOOTH_LAST_STATE, -1);
+		editor.commit();
 	}
 	
 	public static void setAlarm(Context context, boolean oneshot)
@@ -166,9 +171,16 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
 	 		{
 				removeAlarm(context, false);
 
+				Calendar calendar = Calendar.getInstance();
+		        calendar.add(Calendar.SECOND, 5);
+		        long alarmTime = calendar.getTimeInMillis(); 
+
+			    //SimpleDateFormat sdf = new SimpleDateFormat("EE d.MM.yyyy HH:mm:ss:S");
+				//GlobalData.logE("@@@ BluetoothScanAlarmBroadcastReceiver.setAlarm","oneshot="+oneshot+"; alarmTime="+sdf.format(alarmTime));
+		        
 				PendingIntent alarmIntent = PendingIntent.getBroadcast(context.getApplicationContext(), 0, intent, 0);
-				alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-												5 * 1000,
+				alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+												alarmTime,
 												GlobalData.applicationEventBluetoothScanInterval * 60 * 1000, 
 												alarmIntent);
 	 		}
@@ -296,11 +308,11 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		return preferences.getBoolean(GlobalData.PREF_EVENT_BLUETOOTH_ENABLED_FOR_SCAN, false);
 	}
 
-	static public void setBluetoothEnabledForScan(Context context, boolean eventsBlocked)
+	static public void setBluetoothEnabledForScan(Context context, boolean setEnabled)
 	{
 		SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
 		Editor editor = preferences.edit();
-		editor.putBoolean(GlobalData.PREF_EVENT_BLUETOOTH_ENABLED_FOR_SCAN, eventsBlocked);
+		editor.putBoolean(GlobalData.PREF_EVENT_BLUETOOTH_ENABLED_FOR_SCAN, setEnabled);
 		editor.commit();
 	}
 	

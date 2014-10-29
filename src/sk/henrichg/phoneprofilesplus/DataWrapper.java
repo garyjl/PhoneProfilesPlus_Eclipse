@@ -727,14 +727,13 @@ public class DataWrapper {
 		
 		GlobalData.setForceOneWifiScan(context, false);
 		GlobalData.setForceOneBluetoothScan(context, false);
-		
+
 		WifiScanAlarmBroadcastReceiver.initialize(context);
 		WifiScanAlarmBroadcastReceiver.setAlarm(context, false);
 		BluetoothScanAlarmBroadcastReceiver.initialize(context);
 		BluetoothScanAlarmBroadcastReceiver.setAlarm(context, false);
 		SearchCalendarEventsBroadcastReceiver.setAlarm(context);
-		
-		
+
 		//restartEvents(true, unblockEventsRun);
 		Intent intent = new Intent();
 		intent.setAction(RestartEventsBroadcastReceiver.INTENT_RESTART_EVENTS);
@@ -2135,15 +2134,17 @@ public class DataWrapper {
 				public void onClick(DialogInterface dialog, int which) {
 					// remove all event delay alarms
 					removeAllEventDelays();
+
+					// rescan wifi
+        			//GlobalData.setForceOneWifiScan(context, true);
+					WifiScanAlarmBroadcastReceiver.sendBroadcast(_activity.getBaseContext());
+					// rescan bluetooth
+            		//GlobalData.setForceOneBluetoothScan(context, true);
+					BluetoothScanAlarmBroadcastReceiver.sendBroadcast(_activity.getBaseContext());
+					
 					// ignoruj manualnu aktivaciu profilu
 					// a odblokuj forceRun eventy
 					restartEvents(true, true);
-					// rescan wifi
-        			GlobalData.setForceOneWifiScan(context, true);
-					WifiScanAlarmBroadcastReceiver.sendBroadcast(_activity.getBaseContext());
-					// rescan bluetooth
-            		GlobalData.setForceOneBluetoothScan(context, true);
-					BluetoothScanAlarmBroadcastReceiver.sendBroadcast(_activity.getBaseContext());
 
 					Toast msg = Toast.makeText(context, 
 							context.getResources().getString(R.string.toast_events_restarted), 
@@ -2266,10 +2267,9 @@ public class DataWrapper {
 		
 		if (SSID.isEmpty())
 		{
-			List<WifiConfiguration> wifiConfigurationList = wifiManager.getConfiguredNetworks();
-			if (wifiConfigurationList != null)
+			if (WifiScanAlarmBroadcastReceiver.wifiConfigurationList != null)
 			{
-				for (WifiConfiguration wifiConfiguration : wifiConfigurationList)
+				for (WifiConfiguration wifiConfiguration : WifiScanAlarmBroadcastReceiver.wifiConfigurationList)
 				{
 					if (wifiConfiguration.BSSID.equals(wifiInfo.getBSSID()))
 						return wifiConfiguration.SSID.replace("\"", "");
@@ -2296,10 +2296,9 @@ public class DataWrapper {
 		
 		if (SSID.isEmpty())
 		{
-			List<WifiConfiguration> wifiConfigurationList = wifiManager.getConfiguredNetworks();
-			if (wifiConfigurationList != null)
+			if (WifiScanAlarmBroadcastReceiver.wifiConfigurationList != null)
 			{
-				for (WifiConfiguration wifiConfiguration : wifiConfigurationList)
+				for (WifiConfiguration wifiConfiguration : WifiScanAlarmBroadcastReceiver.wifiConfigurationList)
 				{
 					if ((wifiConfiguration.BSSID != null) && 
 						(wifiConfiguration.BSSID.equals(result.BSSID)))

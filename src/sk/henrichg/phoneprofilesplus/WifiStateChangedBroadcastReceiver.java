@@ -3,6 +3,7 @@ package sk.henrichg.phoneprofilesplus;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 
 public class WifiStateChangedBroadcastReceiver extends BroadcastReceiver {
@@ -35,5 +36,9 @@ public class WifiStateChangedBroadcastReceiver extends BroadcastReceiver {
 				}
     		}
         }
+		
+		//if (wifiState == WifiManager.WIFI_STATE_DISABLED)
+		//	WifiScanAlarmBroadcastReceiver.setStartScan(context, false);
+		
 	}
 }

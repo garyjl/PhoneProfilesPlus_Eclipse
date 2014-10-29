@@ -16,6 +16,7 @@ import android.content.SharedPreferences.Editor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
+import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiManager.WifiLock;
@@ -34,6 +35,7 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
     //private static WakeLock wakeLock = null;
 
 	public static List<ScanResult> scanResults = null;
+	public static List<WifiConfiguration> wifiConfigurationList = null;
 	
 	@SuppressLint("NewApi")
 	public void onReceive(Context context, Intent intent) {
@@ -132,6 +134,11 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
     	unlock();
     	setStartScan(context, false);
     	setWifiEnabledForScan(context, false);
+
+		SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+		Editor editor = preferences.edit();
+		editor.putInt(GlobalData.PREF_EVENT_WIFI_LAST_STATE, -1);
+		editor.commit();
 	}
 	
 	public static void setAlarm(Context context, boolean oneshot)
@@ -152,9 +159,7 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 				removeAlarm(context, true);
 
 				Calendar calendar = Calendar.getInstance();
-		        //calendar.setTimeInMillis(System.currentTimeMillis());
 		        calendar.add(Calendar.SECOND, 60); // 1 minute
-
 		        long alarmTime = calendar.getTimeInMillis(); 
 		        		
 			    SimpleDateFormat sdf = new SimpleDateFormat("EE d.MM.yyyy HH:mm:ss:S");
@@ -167,9 +172,16 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 	 		{
 				removeAlarm(context, false);
 
+				Calendar calendar = Calendar.getInstance();
+		        calendar.add(Calendar.SECOND, 5);
+		        long alarmTime = calendar.getTimeInMillis(); 
+		        		
+			    SimpleDateFormat sdf = new SimpleDateFormat("EE d.MM.yyyy HH:mm:ss:S");
+				GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.setAlarm","oneshot="+oneshot+"; alarmTime="+sdf.format(alarmTime));
+				
 				PendingIntent alarmIntent = PendingIntent.getBroadcast(context.getApplicationContext(), 0, intent, 0);
-				alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-												5 * 1000,
+				alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+												alarmTime,
 												GlobalData.applicationEventWifiScanInterval * 60 * 1000, 
 												alarmIntent);
 	 		}
@@ -294,11 +306,11 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		return preferences.getBoolean(GlobalData.PREF_EVENT_WIFI_ENABLED_FOR_SCAN, false);
 	}
 
-	static public void setWifiEnabledForScan(Context context, boolean eventsBlocked)
+	static public void setWifiEnabledForScan(Context context, boolean setEnabled)
 	{
 		SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
 		Editor editor = preferences.edit();
-		editor.putBoolean(GlobalData.PREF_EVENT_WIFI_ENABLED_FOR_SCAN, eventsBlocked);
+		editor.putBoolean(GlobalData.PREF_EVENT_WIFI_ENABLED_FOR_SCAN, setEnabled);
 		editor.commit();
 	}
 	

@@ -28,8 +28,8 @@ public class BluetoothConnectionBroadcastReceiver extends WakefulBroadcastReceiv
 		BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
 		if (action.equals(BluetoothDevice.ACTION_ACL_CONNECTED) ||
-			action.equals(BluetoothDevice.ACTION_ACL_DISCONNECTED) ||
-		    action.equals(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED))
+			action.equals(BluetoothDevice.ACTION_ACL_DISCONNECTED)/* ||
+		    action.equals(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED)*/)
 		{
 			boolean connected = action.equals(BluetoothDevice.ACTION_ACL_CONNECTED);
 		
@@ -90,16 +90,6 @@ public class BluetoothConnectionBroadcastReceiver extends WakefulBroadcastReceiv
 					
 					if (!BluetoothScanAlarmBroadcastReceiver.getBluetoothEnabledForScan(context))
 					{
-					/*	if (connected)
-						{
-			        		BluetoothScanAlarmBroadcastReceiver.removeAlarm(context, true);
-							if (!GlobalData.getEventsBlocked(context))
-			        		{
-								// rescan bluetooth for update scanResults after connect
-								BluetoothScanAlarmBroadcastReceiver.sendBroadcast(context);
-			        		}
-						}  */
-						
 						DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
 						boolean bluetoothEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_BLUETOOTHCONNECTED) > 0;
 						dataWrapper.invalidateDataWrapper();
@@ -113,18 +103,13 @@ public class BluetoothConnectionBroadcastReceiver extends WakefulBroadcastReceiv
 							eventsServiceIntent.putExtra(GlobalData.EXTRA_BROADCAST_RECEIVER_TYPE, BROADCAST_RECEIVER_TYPE);
 							startWakefulService(context, eventsServiceIntent);
 						}
-
-			        /*	if (!connected)
-			        	{
-					    	if (!GlobalData.getEventsBlocked(context))
-					        {
-								// rescan bluetooth for update scanResults after disconnect
-				        		BluetoothScanAlarmBroadcastReceiver.setAlarm(context, true);
-					        }
-			        	}  */
 					}
 	        	}
 			}
+			
+			//if ((!connected)  && (lastState != currState))
+			//	BluetoothScanAlarmBroadcastReceiver.setStartScan(context, false);
+			
 		}
 	}
 

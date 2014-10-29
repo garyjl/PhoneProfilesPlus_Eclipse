@@ -47,7 +47,7 @@ public class GlobalData extends Application {
 										 //"@@@ BluetoothScanAlarmBroadcastReceiver|"+
 										 //"@@@ BluetoothScanBroadcastReceiver|"+
 										 //"@@@ BluetoothStateChangedBroadcastReceiver"
-										 //"@@@ ScreenOnOffBroadcastReceiver|"+
+										 "@@@ ScreenOnOffBroadcastReceiver|"+
 										 //"@@@ RestartEventsBroadcastReceiver|"+
 										 //"@@@ EventDelayBroadcastReceiver|"+
 										 //"@@@ BootUpReceiver|"+

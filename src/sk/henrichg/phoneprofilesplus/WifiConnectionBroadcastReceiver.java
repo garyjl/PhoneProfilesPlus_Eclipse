@@ -15,7 +15,7 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		GlobalData.logE("#### WifiConnectionBroadcastReceiver.onReceive","xxx");
-	
+
 		if (!GlobalData.getApplicationStarted(context))
 			// application is not started
 			return;
@@ -45,7 +45,7 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 	    	}
 	    	else
 	    		return;
-			
+
 			if (GlobalData.getGlobalEventsRuning(context))
 			{
 	    		GlobalData.logE("WifiConnectionBroadcastReceiver.onReceive","state="+info.getState());
@@ -58,17 +58,6 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 	
 	        		if (!WifiScanAlarmBroadcastReceiver.getWifiEnabledForScan(context))
 	        		{
-			        /*	if ((info.getState() == NetworkInfo.State.CONNECTED) && (lastState == 0))
-				        {
-			        		WifiScanAlarmBroadcastReceiver.removeAlarm(context, true);
-			        		if (!GlobalData.getEventsBlocked(context))
-			        		{
-				        		GlobalData.logE("@@@ WifiConnectionBroadcastReceiver.onReceive","rescan");
-								// rescan wifi for update scanResults after connect
-								WifiScanAlarmBroadcastReceiver.sendBroadcast(context);
-			        		}
-				        }  */
-		        		
 		    			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
 		    			boolean wifiEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_WIFICONNECTED) > 0;
 		    			dataWrapper.invalidateDataWrapper();
@@ -82,19 +71,13 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 		    				eventsServiceIntent.putExtra(GlobalData.EXTRA_BROADCAST_RECEIVER_TYPE, BROADCAST_RECEIVER_TYPE);
 		    				startWakefulService(context, eventsServiceIntent);
 		    			}
-		    			
-			        /*	if ((info.getState() == NetworkInfo.State.DISCONNECTED) && (lastState == 1))
-			        	{
-			        		if (!GlobalData.getEventsBlocked(context))
-					        {
-				        		GlobalData.logE("@@@ WifiConnectionBroadcastReceiver.onReceive","rescan");
-								// rescan wifi for update scanResults after disconnect
-				        		WifiScanAlarmBroadcastReceiver.setAlarm(context, true);
-					        }
-			        	}  */
 	        		}
 	        	}
 			}
+			
+			//if ((info.getState() == NetworkInfo.State.DISCONNECTED) && (lastState != currState))
+			//	WifiScanAlarmBroadcastReceiver.setStartScan(context, false);
+			
         }
 	}
 }

@@ -100,16 +100,18 @@ public class BluetoothScanBroadcastReceiver extends WakefulBroadcastReceiver {
 	        			BluetoothScanAlarmBroadcastReceiver.setBluetoothEnabledForScan(context, false);
 					}
 
-					if (!GlobalData.getForceOneBluetoothScan(context)) // not start service for force scan
+					BluetoothScanAlarmBroadcastReceiver.setStartScan(context, false);
+
+					boolean forceOneScan = GlobalData.getForceOneBluetoothScan(context); 
+					GlobalData.setForceOneBluetoothScan(context, false);
+					
+					if (!forceOneScan) // not start service for force scan
 					{
 						// start service
 						Intent eventsServiceIntent = new Intent(context, EventsService.class);
 						eventsServiceIntent.putExtra(GlobalData.EXTRA_BROADCAST_RECEIVER_TYPE, BROADCAST_RECEIVER_TYPE);
 						startWakefulService(context, eventsServiceIntent);
 					}
-
-					BluetoothScanAlarmBroadcastReceiver.setStartScan(context, false);
-					GlobalData.setForceOneBluetoothScan(context, false);
 					
 	            }				
 				

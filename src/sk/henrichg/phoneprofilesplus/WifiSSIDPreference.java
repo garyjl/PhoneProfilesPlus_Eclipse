@@ -10,6 +10,7 @@ import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -64,7 +65,6 @@ public class WifiSSIDPreference extends DialogPreference {
         rescanButton.setOnClickListener(new View.OnClickListener()
     	{
             public void onClick(View v) {
-            	GlobalData.setForceOneWifiScan(context, true);
                 refreshListView(true);
             }
         });
@@ -181,21 +181,27 @@ public class WifiSSIDPreference extends DialogPreference {
 				
 				SSIDList.clear();
 				
-				List<WifiConfiguration> wifiConfigurationList = wifiManager.getConfiguredNetworks();
-				if (wifiConfigurationList != null)
+				WifiScanAlarmBroadcastReceiver.wifiConfigurationList = wifiManager.getConfiguredNetworks();
+				if (WifiScanAlarmBroadcastReceiver.wifiConfigurationList != null)
 				{
-					for (WifiConfiguration wifiConfiguration : wifiConfigurationList)
+					for (WifiConfiguration wifiConfiguration : WifiScanAlarmBroadcastReceiver.wifiConfigurationList)
 					{
 			        	SSIDList.add(new WifiSSIDData(wifiConfiguration.SSID.replace("\"", ""), wifiConfiguration.BSSID));
 					}
 				}
 				
 				if (_forRescan)
-	            	WifiScanAlarmBroadcastReceiver.sendBroadcast(context);
+				{
+	            	GlobalData.setForceOneWifiScan(context, true);
+	            	//WifiScanAlarmBroadcastReceiver.sendBroadcast(context);
+					if (!isWifiEnabled)
+						WifiScanAlarmBroadcastReceiver.setWifiEnabledForScan(context, true);
+	            	WifiScanAlarmBroadcastReceiver.startScan(context);
+				}
 				
 		        if (_forRescan)
 		        {
-		        	for (int i = 0; i < 5 * 10; i++) // 10 seconds for wifi scan
+		        	for (int i = 0; i < 5 * 60; i++) // 60 seconds for wifi scan
 		        	{
 		        		if (isCancelled())
 		        			break;
@@ -209,15 +215,13 @@ public class WifiSSIDPreference extends DialogPreference {
 			        		break;
 		        	}
 		        	GlobalData.setForceOneWifiScan(context, false);
+	            	WifiScanAlarmBroadcastReceiver.setWifiEnabledForScan(context, false);
+		        	WifiScanAlarmBroadcastReceiver.setStartScan(context, false);
 		        }
-		        
-				if (isCancelled())
-				{
-					if (!isWifiEnabled)
-			    		wifiManager.setWifiEnabled(false);
-					return null;
-				}
 
+				if (!isWifiEnabled)
+		    		wifiManager.setWifiEnabled(false);
+		        
 		        if (WifiScanAlarmBroadcastReceiver.scanResults != null)
 		        {
 			        for (ScanResult scanResult : WifiScanAlarmBroadcastReceiver.scanResults)
@@ -237,9 +241,6 @@ public class WifiSSIDPreference extends DialogPreference {
 			        }
 		        }
 
-				if (!isWifiEnabled)
-		    		wifiManager.setWifiEnabled(false);
-		        
 		        return null;
 			}
 			
