@@ -28,6 +28,15 @@ public class WifiStateChangedBroadcastReceiver extends BroadcastReceiver {
 
     		if (wifiState == WifiManager.WIFI_STATE_ENABLED)
     		{
+    			// refresh configured networks list 
+				WifiScanAlarmBroadcastReceiver.wifiConfigurationList = WifiScanAlarmBroadcastReceiver.wifi.getConfiguredNetworks();
+				if (WifiScanAlarmBroadcastReceiver.wifiConfigurationList == null)
+					GlobalData.logE("@@@ WifiStateChangedBroadcastReceiver.onReceive","wifiConfigurationList=null");
+				else
+					GlobalData.logE("@@@ WifiStateChangedBroadcastReceiver.onReceive",
+											"wifiConfigurationList="+WifiScanAlarmBroadcastReceiver.wifiConfigurationList.size());
+				
+    			
     			// start scan
 				if (WifiScanAlarmBroadcastReceiver.getStartScan(context) && 
 					((!GlobalData.getEventsBlocked(context)) || GlobalData.getForceOneWifiScan(context)))

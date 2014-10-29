@@ -139,6 +139,13 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		Editor editor = preferences.edit();
 		editor.putInt(GlobalData.PREF_EVENT_WIFI_LAST_STATE, -1);
 		editor.commit();
+		
+		if (wifi.getWifiState() == WifiManager.WIFI_STATE_ENABLED)
+		{
+			WifiScanAlarmBroadcastReceiver.wifiConfigurationList = null;
+			WifiScanAlarmBroadcastReceiver.wifiConfigurationList = WifiScanAlarmBroadcastReceiver.wifi.getConfiguredNetworks();
+		}
+			
 	}
 	
 	public static void setAlarm(Context context, boolean oneshot)
