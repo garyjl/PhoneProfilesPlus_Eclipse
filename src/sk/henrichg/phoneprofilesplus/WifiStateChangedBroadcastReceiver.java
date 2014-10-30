@@ -14,6 +14,9 @@ public class WifiStateChangedBroadcastReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		GlobalData.logE("#### WifiStateChangedBroadcastReceiver.onReceive","xxx");
 	
+		if (WifiScanAlarmBroadcastReceiver.wifi == null)
+			WifiScanAlarmBroadcastReceiver.wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+		
 		if (!GlobalData.getApplicationStarted(context))
 			// application is not started
 			return;
@@ -28,7 +31,7 @@ public class WifiStateChangedBroadcastReceiver extends BroadcastReceiver {
 
     		if (wifiState == WifiManager.WIFI_STATE_ENABLED)
     		{
-    			// refresh configured networks list 
+    			// refresh configured networks list
 				WifiScanAlarmBroadcastReceiver.wifiConfigurationList = WifiScanAlarmBroadcastReceiver.wifi.getConfiguredNetworks();
 				if (WifiScanAlarmBroadcastReceiver.wifiConfigurationList == null)
 					GlobalData.logE("@@@ WifiStateChangedBroadcastReceiver.onReceive","wifiConfigurationList=null");

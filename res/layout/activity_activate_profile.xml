@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="25dp"
         android:background="?attr/colorPrimary"
-        android:elevation="3dp" >
+        android:elevation="8dp" >
 
 		<RelativeLayout
 		    android:layout_width="match_parent"
