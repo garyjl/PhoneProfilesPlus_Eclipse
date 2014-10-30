@@ -23,17 +23,13 @@ import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnRestartProfile
 
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceScreen;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,9 +38,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -52,6 +46,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
@@ -181,7 +177,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 					arguments.putInt(GlobalData.EXTRA_PREFERENCES_STARTUP_SOURCE, GlobalData.PREFERENCES_STARTUP_SOURCE_FRAGMENT);
 					ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 					fragment.setArguments(arguments);
-					getSupportFragmentManager().beginTransaction()
+					getFragmentManager().beginTransaction()
 							.replace(R.id.editor_detail_container, fragment, "ProfilePreferencesFragment").commit();
 		    	}
 		    	if (resetMode == RESET_PREFERENCE_FRAGMENT_RESET_EVENT)
@@ -195,16 +191,16 @@ public class EditorProfilesActivity extends ActionBarActivity
 					arguments.putInt(GlobalData.EXTRA_PREFERENCES_STARTUP_SOURCE, GlobalData.PREFERENCES_STARTUP_SOURCE_FRAGMENT);
 					EventPreferencesFragment fragment = new EventPreferencesFragment();
 					fragment.setArguments(arguments);
-					getSupportFragmentManager().beginTransaction()
+					getFragmentManager().beginTransaction()
 							.replace(R.id.editor_detail_container, fragment, "EventPreferencesFragment").commit();
 		    	}
 		    	else
 		    	if (resetMode == RESET_PREFERENCE_FRAGMENT_REMOVE)
 		    	{
-					Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
+					Fragment fragment = getFragmentManager().findFragmentById(R.id.editor_detail_container);
 					if (fragment != null)
 					{
-						getSupportFragmentManager().beginTransaction()
+						getFragmentManager().beginTransaction()
 							.remove(fragment).commit();
 					}
 		    	}
@@ -219,7 +215,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 		else
 		{
 			mTwoPane = false;
-			FragmentManager fragmentManager = getSupportFragmentManager();
+			FragmentManager fragmentManager = getFragmentManager();
 			Fragment fragment = fragmentManager.findFragmentByTag("ProfilePreferencesFragment");
 			if (fragment != null)
 				fragmentManager.beginTransaction()
@@ -647,7 +643,7 @@ public class EditorProfilesActivity extends ActionBarActivity
  
     private void selectDrawerItem(int position, boolean removePreferences) {
  
-		Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
+		Fragment fragment = getFragmentManager().findFragmentById(R.id.editor_list_container);
 		if (position == 0) position = 2;
     	if ((position != drawerSelectedItem) || (fragment == null))
     	{
@@ -668,7 +664,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	    	    arguments = new Bundle();
 	   		    arguments.putInt(EditorProfileListFragment.FILTER_TYPE_ARGUMENT, profilesFilterType);
 	   		    fragment.setArguments(arguments);
-	    		getSupportFragmentManager().beginTransaction()
+	    		getFragmentManager().beginTransaction()
 	    			.replace(R.id.editor_list_container, fragment, "EditorProfileListFragment").commit();
 	    		if (removePreferences)
 	    			onStartProfilePreferences(null, EditorProfileListFragment.EDIT_MODE_EDIT, profilesFilterType);
@@ -679,7 +675,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	    	    arguments = new Bundle();
 	   		    arguments.putInt(EditorProfileListFragment.FILTER_TYPE_ARGUMENT, profilesFilterType);
 	   		    fragment.setArguments(arguments);
-	    		getSupportFragmentManager().beginTransaction()
+	    		getFragmentManager().beginTransaction()
 	    			.replace(R.id.editor_list_container, fragment, "EditorProfileListFragment").commit();
 	    		if (removePreferences)
 	    			onStartProfilePreferences(null, EditorProfileListFragment.EDIT_MODE_EDIT, profilesFilterType);
@@ -690,7 +686,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	    	    arguments = new Bundle();
 	   		    arguments.putInt(EditorProfileListFragment.FILTER_TYPE_ARGUMENT, profilesFilterType);
 	   		    fragment.setArguments(arguments);
-	    		getSupportFragmentManager().beginTransaction()
+	    		getFragmentManager().beginTransaction()
 	    			.replace(R.id.editor_list_container, fragment, "EditorProfileListFragment").commit();
 	    		if (removePreferences)
 	    			onStartProfilePreferences(null, EditorProfileListFragment.EDIT_MODE_EDIT, profilesFilterType);
@@ -702,7 +698,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	   		    arguments.putInt(EditorEventListFragment.FILTER_TYPE_ARGUMENT, eventsFilterType);
 	   		    arguments.putInt(EditorEventListFragment.ORDER_TYPE_ARGUMENT, eventsOrderType);
 	   		    fragment.setArguments(arguments);
-	    		getSupportFragmentManager().beginTransaction()
+	    		getFragmentManager().beginTransaction()
 	    			.replace(R.id.editor_list_container, fragment, "EditorEventListFragment").commit();
 	    		if (removePreferences)
 	    			onStartEventPreferences(null, EditorEventListFragment.EDIT_MODE_EDIT, eventsFilterType, eventsOrderType);
@@ -714,7 +710,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	   		    arguments.putInt(EditorEventListFragment.FILTER_TYPE_ARGUMENT, eventsFilterType);
 	   		    arguments.putInt(EditorEventListFragment.ORDER_TYPE_ARGUMENT, eventsOrderType);
 	   		    fragment.setArguments(arguments);
-	    		getSupportFragmentManager().beginTransaction()
+	    		getFragmentManager().beginTransaction()
 	    			.replace(R.id.editor_list_container, fragment, "EditorEventListFragment").commit();
 	    		if (removePreferences)
 	    			onStartEventPreferences(null, EditorEventListFragment.EDIT_MODE_EDIT, eventsFilterType, eventsOrderType);
@@ -726,7 +722,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	   		    arguments.putInt(EditorEventListFragment.FILTER_TYPE_ARGUMENT, eventsFilterType);
 	   		    arguments.putInt(EditorEventListFragment.ORDER_TYPE_ARGUMENT, eventsOrderType);
 	   		    fragment.setArguments(arguments);
-	    		getSupportFragmentManager().beginTransaction()
+	    		getFragmentManager().beginTransaction()
 	    			.replace(R.id.editor_list_container, fragment, "EditorEventListFragment").commit();
 	    		if (removePreferences)
 	    			onStartEventPreferences(null, EditorEventListFragment.EDIT_MODE_EDIT, eventsFilterType, eventsOrderType);
@@ -738,7 +734,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	   		    arguments.putInt(EditorEventListFragment.FILTER_TYPE_ARGUMENT, eventsFilterType);
 	   		    arguments.putInt(EditorEventListFragment.FILTER_TYPE_ARGUMENT, eventsFilterType);
 	   		    fragment.setArguments(arguments);
-	    		getSupportFragmentManager().beginTransaction()
+	    		getFragmentManager().beginTransaction()
 	    			.replace(R.id.editor_list_container, fragment, "EditorEventListFragment").commit();
 	    		if (removePreferences)
 	    			onStartEventPreferences(null, EditorEventListFragment.EDIT_MODE_EDIT, eventsFilterType, eventsOrderType);
@@ -795,7 +791,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 		}
 		setStatusBarTitle();
 		
-		Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
+		Fragment fragment = getFragmentManager().findFragmentById(R.id.editor_list_container);
 		if ((fragment != null) && (fragment instanceof EditorEventListFragment))
 		{
 			((EditorEventListFragment)fragment).changeListOrder(eventsOrderType);
@@ -814,7 +810,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	{
 		if (requestCode == GlobalData.REQUEST_CODE_ACTIVATE_PROFILE)
 		{
-			EditorProfileListFragment fragment = (EditorProfileListFragment)getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
+			EditorProfileListFragment fragment = (EditorProfileListFragment)getFragmentManager().findFragmentById(R.id.editor_list_container);
 			if (fragment != null)
 				fragment.doOnActivityResult(requestCode, resultCode, data);
 		}
@@ -897,13 +893,13 @@ public class EditorProfilesActivity extends ActionBarActivity
 			// send other activity results into preference fragment
 			if (drawerSelectedItem <= COUNT_DRAWER_PROFILE_ITEMS)
 			{
-				ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
+				ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getFragmentManager().findFragmentById(R.id.editor_detail_container);
 				if (fragment != null)
 					fragment.doOnActivityResult(requestCode, resultCode, data);
 			}
 			else
 			{
-				EventPreferencesFragment fragment = (EventPreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
+				EventPreferencesFragment fragment = (EventPreferencesFragment)getFragmentManager().findFragmentById(R.id.editor_detail_container);
 				if (fragment != null)
 					fragment.doOnActivityResult(requestCode, resultCode, data);
 			}
@@ -917,7 +913,7 @@ public class EditorProfilesActivity extends ActionBarActivity
     		if (mTwoPane) {
 	    		if (drawerSelectedItem <= COUNT_DRAWER_PROFILE_ITEMS)
 	    		{
-		    		ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
+		    		ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getFragmentManager().findFragmentById(R.id.editor_detail_container);
 		    		if ((fragment != null) && (fragment.isActionModeActive()))
 		    		{
 	    	        	fragment.finishActionMode(ProfilePreferencesFragment.BUTTON_CANCEL);
@@ -928,7 +924,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	    		}
 	    		else
 	    		{
-		    		EventPreferencesFragment fragment = (EventPreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
+		    		EventPreferencesFragment fragment = (EventPreferencesFragment)getFragmentManager().findFragmentById(R.id.editor_detail_container);
 		    		if ((fragment != null) && (fragment.isActionModeActive()))
 		    		{
 	    	        	fragment.finishActionMode(EventPreferencesFragment.BUTTON_CANCEL);
@@ -1358,7 +1354,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 				if ((editModeProfile != EditorProfileListFragment.EDIT_MODE_INSERT) &&
 				    (editModeProfile != EditorProfileListFragment.EDIT_MODE_DUPLICATE))
 				{
-					FragmentManager fragmentManager = getSupportFragmentManager();
+					FragmentManager fragmentManager = getFragmentManager();
 					Fragment fragment = fragmentManager.findFragmentByTag("ProfilePreferencesFragment");
 					if (fragment != null)
 					{
@@ -1383,7 +1379,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 				if ((editModeEvent != EditorProfileListFragment.EDIT_MODE_INSERT) &&
 				    (editModeEvent != EditorProfileListFragment.EDIT_MODE_DUPLICATE))
 				{
-					FragmentManager fragmentManager = getSupportFragmentManager();
+					FragmentManager fragmentManager = getFragmentManager();
 					Fragment fragment = fragmentManager.findFragmentByTag("EventPreferencesFragment");
 					if (fragment != null)
 					{
@@ -1481,15 +1477,15 @@ public class EditorProfilesActivity extends ActionBarActivity
 				arguments.putInt(GlobalData.EXTRA_PREFERENCES_STARTUP_SOURCE, GlobalData.PREFERENCES_STARTUP_SOURCE_FRAGMENT);
 				ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 				fragment.setArguments(arguments);
-				getSupportFragmentManager().beginTransaction()
+				getFragmentManager().beginTransaction()
 					.replace(R.id.editor_detail_container, fragment, "ProfilePreferencesFragment").commit();
 			}
 			else
 			{
-				Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
+				Fragment fragment = getFragmentManager().findFragmentById(R.id.editor_detail_container);
 				if (fragment != null)
 				{
-					getSupportFragmentManager().beginTransaction()
+					getFragmentManager().beginTransaction()
 						.remove(fragment).commit();
 				}
 			}
@@ -1525,15 +1521,15 @@ public class EditorProfilesActivity extends ActionBarActivity
 				arguments.putInt(GlobalData.EXTRA_PREFERENCES_STARTUP_SOURCE, GlobalData.PREFERENCES_STARTUP_SOURCE_FRAGMENT);
 				ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 				fragment.setArguments(arguments);
-				getSupportFragmentManager().beginTransaction()
+				getFragmentManager().beginTransaction()
 						.replace(R.id.editor_detail_container, fragment, "ProfilePreferencesFragment").commit();
 			}
 			else
 			{
-				Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
+				Fragment fragment = getFragmentManager().findFragmentById(R.id.editor_detail_container);
 				if (fragment != null)
 				{
-					getSupportFragmentManager().beginTransaction()
+					getFragmentManager().beginTransaction()
 						.remove(fragment).commit();
 				}
 			}
@@ -1565,7 +1561,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	public void onRedrawProfileListFragment(Profile profile, int newProfileMode) {
 		// redraw headeru list fragmentu, notifikacie a widgetov
 		
-		EditorProfileListFragment fragment = (EditorProfileListFragment)getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
+		EditorProfileListFragment fragment = (EditorProfileListFragment)getFragmentManager().findFragmentById(R.id.editor_list_container);
 		if (fragment != null)
 		{
 			//Log.e("EditorProfilesActivity.onRedrawProfileListFragment","profile._showInActivator="+profile._showInActivator);
@@ -1588,7 +1584,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 
 	public void onFinishProfilePreferencesActionMode() {
 		//if (mTwoPane) {
-			Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
+			Fragment fragment = getFragmentManager().findFragmentById(R.id.editor_detail_container);
 			if (fragment != null)
 			{
 				if (fragment instanceof ProfilePreferencesFragment)
@@ -1605,7 +1601,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	
 	public void onFinishEventPreferencesActionMode() {
 		//if (mTwoPane) {
-			Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
+			Fragment fragment = getFragmentManager().findFragmentById(R.id.editor_detail_container);
 			if (fragment != null)
 			{
 				if (fragment instanceof ProfilePreferencesFragment)
@@ -1640,15 +1636,15 @@ public class EditorProfilesActivity extends ActionBarActivity
 				arguments.putInt(GlobalData.EXTRA_PREFERENCES_STARTUP_SOURCE, GlobalData.PREFERENCES_STARTUP_SOURCE_FRAGMENT);
 				EventPreferencesFragment fragment = new EventPreferencesFragment();
 				fragment.setArguments(arguments);
-				getSupportFragmentManager().beginTransaction()
+				getFragmentManager().beginTransaction()
 					.replace(R.id.editor_detail_container, fragment, "EventPreferencesFragment").commit();
 			}
 			else
 			{
-				Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
+				Fragment fragment = getFragmentManager().findFragmentById(R.id.editor_detail_container);
 				if (fragment != null)
 				{
-					getSupportFragmentManager().beginTransaction()
+					getFragmentManager().beginTransaction()
 						.remove(fragment).commit();
 				}
 			}
@@ -1674,7 +1670,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 
 	public void onRedrawEventListFragment(Event event, int newEventMode) {
 		// redraw headeru list fragmentu, notifikacie a widgetov
-		EditorEventListFragment fragment = (EditorEventListFragment)getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
+		EditorEventListFragment fragment = (EditorEventListFragment)getFragmentManager().findFragmentById(R.id.editor_list_container);
 		if (fragment != null)
 		{
 			// update event, this rewrite event in eventList
@@ -1699,15 +1695,15 @@ public class EditorProfilesActivity extends ActionBarActivity
 				arguments.putInt(GlobalData.EXTRA_PREFERENCES_STARTUP_SOURCE, GlobalData.PREFERENCES_STARTUP_SOURCE_FRAGMENT);
 				EventPreferencesFragment fragment = new EventPreferencesFragment();
 				fragment.setArguments(arguments);
-				getSupportFragmentManager().beginTransaction()
+				getFragmentManager().beginTransaction()
 						.replace(R.id.editor_detail_container, fragment, "EventPreferencesFragment").commit();
 			}
 			else
 			{
-				Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_detail_container);
+				Fragment fragment = getFragmentManager().findFragmentById(R.id.editor_detail_container);
 				if (fragment != null)
 				{
-					getSupportFragmentManager().beginTransaction()
+					getFragmentManager().beginTransaction()
 						.remove(fragment).commit();
 				}
 			}
@@ -1768,7 +1764,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	
 	private DataWrapper getDataWrapper()
 	{
-		Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
+		Fragment fragment = getFragmentManager().findFragmentById(R.id.editor_list_container);
 		if (fragment != null)
 		{
 			//Log.e("EditorProfilesActivity.getDataWrapper","COUNT_DRAWER_PROFILE_ITEMS="+COUNT_DRAWER_PROFILE_ITEMS);
@@ -1800,7 +1796,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	{
 		setEventsRunStopIndicator();
 		
-		Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.editor_list_container);
+		Fragment fragment = getFragmentManager().findFragmentById(R.id.editor_list_container);
 		if (fragment != null)
 		{
 			//Log.e("EditorProfilesActivity.getDataWrapper","COUNT_DRAWER_PROFILE_ITEMS="+COUNT_DRAWER_PROFILE_ITEMS);
@@ -1813,6 +1809,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 		}
 	}
 
+	/*
 	private void setWindowContentOverlayCompat() {
 	    if (android.os.Build.VERSION.SDK_INT >= 20) {
 	        // Get the content view
@@ -1835,5 +1832,6 @@ public class EditorProfilesActivity extends ActionBarActivity
 	            }
 	        }
 	    }
-	}	
+	}
+	*/	
 }

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.support.v7.app.ActionBarActivity;
@@ -19,7 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
  
-public class EventPreferencesFragment extends PreferenceListFragment 
+public class EventPreferencesFragment extends PreferenceFragment 
 										implements SharedPreferences.OnSharedPreferenceChangeListener
 {
 	private DataWrapper dataWrapper;

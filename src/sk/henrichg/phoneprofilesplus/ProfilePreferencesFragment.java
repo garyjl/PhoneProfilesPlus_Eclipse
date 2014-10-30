@@ -11,6 +11,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.ListPreference;
+import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
@@ -22,7 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
  
-public class ProfilePreferencesFragment extends PreferenceListFragment 
+public class ProfilePreferencesFragment extends PreferenceFragment 
 										implements SharedPreferences.OnSharedPreferenceChangeListener
 {
 	private DataWrapper dataWrapper;

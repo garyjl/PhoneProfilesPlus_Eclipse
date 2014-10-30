@@ -54,7 +54,7 @@ public class PhoneProfilesPreferencesActivity extends ActionBarActivity
 		
 		if (savedInstanceState == null) {
 			PhoneProfilesPreferencesFragment fragment = new PhoneProfilesPreferencesFragment();
-			getSupportFragmentManager().beginTransaction()
+			getFragmentManager().beginTransaction()
 					.replace(R.id.activity_phone_profiles_preferences_container, fragment, "PhoneProfilesPreferencesFragment").commit();
 		}
 		
@@ -85,7 +85,7 @@ public class PhoneProfilesPreferencesActivity extends ActionBarActivity
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
-		PhoneProfilesPreferencesFragment fragment = (PhoneProfilesPreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.activity_phone_profiles_preferences_container);
+		PhoneProfilesPreferencesFragment fragment = (PhoneProfilesPreferencesFragment)getFragmentManager().findFragmentById(R.id.activity_phone_profiles_preferences_container);
 		if (fragment != null)
 			fragment.doOnActivityResult(requestCode, resultCode, data);
 	}

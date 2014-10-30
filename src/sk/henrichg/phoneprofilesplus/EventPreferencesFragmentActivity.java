@@ -4,10 +4,10 @@ import sk.henrichg.phoneprofilesplus.PreferenceListFragment.OnPreferenceAttached
 import sk.henrichg.phoneprofilesplus.EventPreferencesFragment.OnRedrawEventListFragment;
 import sk.henrichg.phoneprofilesplus.EventPreferencesFragment.OnRestartEventPreferences;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceScreen;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -47,7 +47,7 @@ public class EventPreferencesFragmentActivity extends ActionBarActivity
 			arguments.putInt(GlobalData.EXTRA_PREFERENCES_STARTUP_SOURCE, GlobalData.PREFERENCES_STARTUP_SOURCE_ACTIVITY);
 			EventPreferencesFragment fragment = new EventPreferencesFragment();
 			fragment.setArguments(arguments);
-			getSupportFragmentManager().beginTransaction()
+			getFragmentManager().beginTransaction()
 					.replace(R.id.activity_event_preferences_container, fragment, "EventPreferencesFragment").commit();
 		}
 		
@@ -66,7 +66,7 @@ public class EventPreferencesFragmentActivity extends ActionBarActivity
 		
 		//Log.e("EventPreferencesFragmentActivity.finish","xxx");
 
-		EventPreferencesFragment fragment = (EventPreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.activity_event_preferences_container);
+		EventPreferencesFragment fragment = (EventPreferencesFragment)getFragmentManager().findFragmentById(R.id.activity_event_preferences_container);
 		if (fragment != null)
 			event_id = fragment.event_id;
 		
@@ -105,7 +105,7 @@ public class EventPreferencesFragmentActivity extends ActionBarActivity
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
-		EventPreferencesFragment fragment = (EventPreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.activity_event_preferences_container);
+		EventPreferencesFragment fragment = (EventPreferencesFragment)getFragmentManager().findFragmentById(R.id.activity_event_preferences_container);
 		if (fragment != null)
 			fragment.doOnActivityResult(requestCode, resultCode, data);
 	}
@@ -114,7 +114,7 @@ public class EventPreferencesFragmentActivity extends ActionBarActivity
 	public boolean dispatchKeyEvent(KeyEvent event) {
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
             // handle your back button code here
-        	EventPreferencesFragment fragment = (EventPreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.activity_event_preferences_container);
+        	EventPreferencesFragment fragment = (EventPreferencesFragment)getFragmentManager().findFragmentById(R.id.activity_event_preferences_container);
         	//Log.e("EventPreferencesFragmentActivity.dispatchKeyEvent","fragment="+fragment);
         	//Log.e("EventPreferencesFragmentActivity.dispatchKeyEvent","isActionModeActive="+fragment.isActionModeActive());
     		if ((fragment != null) && (fragment.isActionModeActive()))
@@ -138,15 +138,15 @@ public class EventPreferencesFragmentActivity extends ActionBarActivity
 			arguments.putInt(GlobalData.EXTRA_PREFERENCES_STARTUP_SOURCE, GlobalData.PREFERENCES_STARTUP_SOURCE_ACTIVITY);
 			EventPreferencesFragment fragment = new EventPreferencesFragment();
 			fragment.setArguments(arguments);
-			getSupportFragmentManager().beginTransaction()
+			getFragmentManager().beginTransaction()
 					.replace(R.id.activity_event_preferences_container, fragment, "EventPreferencesFragment").commit();
 		}
 		else
 		{
-			Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.activity_event_preferences_container);
+			Fragment fragment = getFragmentManager().findFragmentById(R.id.activity_event_preferences_container);
 			if (fragment != null)
 			{
-				getSupportFragmentManager().beginTransaction()
+				getFragmentManager().beginTransaction()
 					.remove(fragment).commit();
 			}
 		}

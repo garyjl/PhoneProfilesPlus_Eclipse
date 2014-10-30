@@ -424,9 +424,6 @@ Len je problem, vyzaduje to root :-/ Hadam to Google opravi a ringer modom sa to
 
 ----------------------------------------
 
-1. Lizatko konvertuje notifikacne ikony na biele, berie z ikony len alfa kanal.
-   Cize nastavenie: ci farebne alebo natibne ikony v Lizatku nema zmysel.
-   Zaroven treba zmenit aj ikonu pre notifikaciu upgrade PPHelpera
 
       
 

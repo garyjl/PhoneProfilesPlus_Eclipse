@@ -2,10 +2,10 @@ package sk.henrichg.phoneprofilesplus;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.app.Fragment;
 import android.content.Intent;
 import android.content.res.Configuration;
 
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.TypedValue;
 import android.view.Display;
@@ -246,7 +246,7 @@ public class ActivateProfileActivity extends ActionBarActivity {
 
 	public void refreshGUI()
 	{
-		Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.activate_profile_list);
+		Fragment fragment = getFragmentManager().findFragmentById(R.id.activate_profile_list);
 		if (fragment != null)
 		{
 			((ActivateProfileListFragment)fragment).refreshGUI();

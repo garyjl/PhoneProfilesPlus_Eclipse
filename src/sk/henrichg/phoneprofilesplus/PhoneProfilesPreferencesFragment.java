@@ -9,17 +9,18 @@ import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceCategory;
+import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.TwoStatePreference;
 
-public class PhoneProfilesPreferencesFragment extends PreferenceListFragment 
+public class PhoneProfilesPreferencesFragment extends PreferenceFragment 
                                               implements SharedPreferences.OnSharedPreferenceChangeListener
 {
 
 	private PreferenceManager prefMng;
 	private SharedPreferences preferences;
 	private static Activity preferencesActivity = null;
-	
+
 	@Override
     public void onCreate(Bundle savedInstanceState) {
 		

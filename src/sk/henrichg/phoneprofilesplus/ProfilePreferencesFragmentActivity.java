@@ -54,7 +54,7 @@ public class ProfilePreferencesFragmentActivity extends ActionBarActivity
 				arguments.putInt(GlobalData.EXTRA_PREFERENCES_STARTUP_SOURCE, GlobalData.PREFERENCES_STARTUP_SOURCE_ACTIVITY);
 			ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 			fragment.setArguments(arguments);
-			getSupportFragmentManager().beginTransaction()
+			getFragmentManager().beginTransaction()
 					.replace(R.id.activity_profile_preferences_container, fragment, "ProfilePreferencesFragment").commit();
 		}
 		
@@ -73,7 +73,7 @@ public class ProfilePreferencesFragmentActivity extends ActionBarActivity
 		
 		//Log.e("ProfilePreferencesFragmentActivity.finish","xxx");
 
-		ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.activity_profile_preferences_container);
+		ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getFragmentManager().findFragmentById(R.id.activity_profile_preferences_container);
 		if (fragment != null)
 			profile_id = fragment.profile_id;
 		
@@ -112,7 +112,7 @@ public class ProfilePreferencesFragmentActivity extends ActionBarActivity
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
-		ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.activity_profile_preferences_container);
+		ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getFragmentManager().findFragmentById(R.id.activity_profile_preferences_container);
 		if (fragment != null)
 			fragment.doOnActivityResult(requestCode, resultCode, data);
 	}
@@ -121,7 +121,7 @@ public class ProfilePreferencesFragmentActivity extends ActionBarActivity
 	public boolean dispatchKeyEvent(KeyEvent event) {
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
             // handle your back button code here
-        	ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.activity_profile_preferences_container);
+        	ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getFragmentManager().findFragmentById(R.id.activity_profile_preferences_container);
     		if ((fragment != null) && (fragment.isActionModeActive()))
     		{
     			fragment.finishActionMode(ProfilePreferencesFragment.BUTTON_CANCEL);
@@ -146,15 +146,15 @@ public class ProfilePreferencesFragmentActivity extends ActionBarActivity
 				arguments.putInt(GlobalData.EXTRA_PREFERENCES_STARTUP_SOURCE, GlobalData.PREFERENCES_STARTUP_SOURCE_ACTIVITY);
 			ProfilePreferencesFragment fragment = new ProfilePreferencesFragment();
 			fragment.setArguments(arguments);
-			getSupportFragmentManager().beginTransaction()
+			getFragmentManager().beginTransaction()
 					.replace(R.id.activity_profile_preferences_container, fragment, "ProfilePreferencesFragment").commit();
 		}
 		else
 		{
-			ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getSupportFragmentManager().findFragmentById(R.id.activity_profile_preferences_container);
+			ProfilePreferencesFragment fragment = (ProfilePreferencesFragment)getFragmentManager().findFragmentById(R.id.activity_profile_preferences_container);
 			if (fragment != null)
 			{
-				getSupportFragmentManager().beginTransaction()
+				getFragmentManager().beginTransaction()
 					.remove(fragment).commit();
 			}
 		}
