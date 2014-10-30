@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.preference.TwoStatePreference;
 
@@ -163,7 +164,18 @@ public class PhoneProfilesPreferencesFragment extends PreferenceListFragment
 	    setSummary(GlobalData.PREF_NOTIFICATION_STATUS_BAR);
 	    setSummary(GlobalData.PREF_NOTIFICATION_STATUS_BAR_PERMANENT);
 	    setSummary(GlobalData.PREF_NOTIFICATION_STATUS_BAR_CANCEL);
-	    setSummary(GlobalData.PREF_NOTIFICATION_STATUS_BAR_STYLE);
+	    
+    	if (android.os.Build.VERSION.SDK_INT >= 21)
+    	{
+    		// for Android 5.0, color notification icon is not supported
+    		Preference preference = prefMng.findPreference(GlobalData.PREF_NOTIFICATION_STATUS_BAR_STYLE);
+    		String prefCatKey = preference.getDependency();
+    		PreferenceCategory preferenceCategory = (PreferenceCategory) findPreference(prefCatKey);
+    		preferenceCategory.removePreference(preference);
+    	}
+    	else
+    		setSummary(GlobalData.PREF_NOTIFICATION_STATUS_BAR_STYLE);
+	    
 	    setSummary(GlobalData.PREF_APPLICATION_WIDGET_LIST_PREF_INDICATOR);
 	    setSummary(GlobalData.PREF_APPLICATION_WIDGET_LIST_HEADER);
 	    setSummary(GlobalData.PREF_APPLICATION_WIDGET_LIST_BACKGROUND);

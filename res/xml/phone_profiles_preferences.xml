@@ -127,7 +127,8 @@
     
     <PreferenceCategory
         android:title="@string/phone_profiles_pref_category_notifications"
-        android:summary="@string/phone_profiles_pref_category_notifications" >
+        android:summary="@string/phone_profiles_pref_category_notifications"
+        android:key="categoryNotifications" >
 		<CheckBoxPreference 
 		    android:key="notificationsToast"
 		    android:title="@string/phone_profiles_pref_notificationsToast"
@@ -154,7 +155,8 @@
 	           android:key="notificationStatusBarStyle"
 	           android:defaultValue="1"
 	           android:entries="@array/notificationIconStyleArray"
-	           android:entryValues="@array/notificationIconStyleValues" />        
+	           android:entryValues="@array/notificationIconStyleValues"
+	           android:dependency="categoryNotifications" />        
 		<CheckBoxPreference 
 		    android:key="notificationPrefIndicator"
 		    android:title="@string/phone_profiles_pref_notificationPrefIndicator"
