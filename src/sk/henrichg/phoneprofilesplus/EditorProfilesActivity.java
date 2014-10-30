@@ -875,10 +875,6 @@ public class EditorProfilesActivity extends ActionBarActivity
 			{
 				boolean restart = data.getBooleanExtra(GlobalData.EXTRA_RESET_EDITOR, false); 
 	
-				DataWrapper dataWrapper = getDataWrapper();
-				dataWrapper.getActivateProfileHelper().showNotification(dataWrapper.getActivatedProfileFromDB(), "");
-				dataWrapper.getActivateProfileHelper().updateWidget();
-				
 				if (restart)
 				{
 					// refresh activity for special changes

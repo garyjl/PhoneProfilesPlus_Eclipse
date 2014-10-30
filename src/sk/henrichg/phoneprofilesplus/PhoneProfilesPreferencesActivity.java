@@ -106,6 +106,12 @@ public class PhoneProfilesPreferencesActivity extends ActionBarActivity
 	protected void onStop()
 	{
 		super.onStop();
+
+		DataWrapper dataWrapper =  new DataWrapper(this.getBaseContext(), true, false, 0);
+		dataWrapper.getActivateProfileHelper().initialize(dataWrapper, this, getBaseContext());
+		dataWrapper.getActivateProfileHelper().showNotification(dataWrapper.getActivatedProfileFromDB(), "");
+		dataWrapper.getActivateProfileHelper().updateWidget();
+		dataWrapper.invalidateDataWrapper();
 	}
 	
 	@Override
