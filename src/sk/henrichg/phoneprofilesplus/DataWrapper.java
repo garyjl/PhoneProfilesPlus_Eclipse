@@ -1594,10 +1594,10 @@ public class DataWrapper {
 				{
 					WifiInfo wifiInfo = wifiManager.getConnectionInfo();
 					
-					GlobalData.logE("@@@ DataWrapper.doEventService","wifiSSID="+getSSID(wifiManager, wifiInfo));
+					GlobalData.logE("@@@ DataWrapper.doEventService","wifiSSID="+getSSID(wifiInfo));
 					GlobalData.logE("@@@ DataWrapper.doEventService","wifiBSSID="+wifiInfo.getBSSID());
 					
-					wifiPassed = compareSSID(wifiManager, wifiInfo, event._eventPreferencesWifi._SSID);
+					wifiPassed = compareSSID(wifiInfo, event._eventPreferencesWifi._SSID);
 					if (wifiPassed)
 						GlobalData.logE("@@@ DataWrapper.doEventService","wifi connected");
 					else
@@ -1627,7 +1627,7 @@ public class DataWrapper {
 	
 							for (ScanResult result : WifiScanAlarmBroadcastReceiver.scanResults)
 					        {
-								if (compareSSID(wifiManager, result, event._eventPreferencesWifi._SSID))
+								if (compareSSID(result, event._eventPreferencesWifi._SSID))
 								{
 									GlobalData.logE("@@@ DataWrapper.doEventService","wifi found");
 									//GlobalData.logE("@@@ DataWrapper.doEventService","wifiSSID="+getSSID(wifiManager, result));
@@ -2258,7 +2258,7 @@ public class DataWrapper {
 		}
 	}
 
-	public String getSSID(WifiManager wifiManager, WifiInfo wifiInfo)
+	public static String getSSID(WifiInfo wifiInfo)
 	{
 		String SSID = wifiInfo.getSSID();
 		if (SSID == null)
@@ -2280,13 +2280,13 @@ public class DataWrapper {
 		return SSID; 
 	}
 	
-	public boolean compareSSID(WifiManager wifiManager, WifiInfo wifiInfo, String SSID)
+	public static boolean compareSSID(WifiInfo wifiInfo, String SSID)
 	{
 		String ssid2 = "\"" + SSID + "\"";
-		return (getSSID(wifiManager, wifiInfo).equals(SSID) || getSSID(wifiManager, wifiInfo).equals(ssid2));
+		return (getSSID(wifiInfo).equals(SSID) || getSSID(wifiInfo).equals(ssid2));
 	}
 
-	public String getSSID(WifiManager wifiManager, ScanResult result)
+	public static String getSSID(ScanResult result)
 	{
 		String SSID;
 		if (result.SSID == null)
@@ -2310,10 +2310,10 @@ public class DataWrapper {
 		return SSID; 
 	}
 	
-	public boolean compareSSID(WifiManager wifiManager, ScanResult result, String SSID)
+	public static boolean compareSSID(ScanResult result, String SSID)
 	{
 		String ssid2 = "\"" + SSID + "\"";
-		return (getSSID(wifiManager, result).equals(SSID) || getSSID(wifiManager, result).equals(ssid2));
+		return (getSSID(result).equals(SSID) || getSSID(result).equals(ssid2));
 	}
 	
 	

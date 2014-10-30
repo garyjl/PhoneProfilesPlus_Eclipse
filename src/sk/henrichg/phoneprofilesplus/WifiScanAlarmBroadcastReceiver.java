@@ -83,7 +83,7 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		        			setWifiEnabledForScan(context, false);
 							
 							WifiInfo wifiInfo = wifi.getConnectionInfo();
-			    			String SSID = dataWrapper.getSSID(wifi, wifiInfo);
+			    			String SSID = DataWrapper.getSSID(wifiInfo);
 			    			boolean isSSIDScanned = dataWrapper.getDatabaseHandler().isSSIDScanned(SSID); 
 			    			
 			    			if (isSSIDScanned)

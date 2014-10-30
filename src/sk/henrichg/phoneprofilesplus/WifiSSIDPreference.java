@@ -226,18 +226,20 @@ public class WifiSSIDPreference extends DialogPreference {
 		        {
 			        for (ScanResult scanResult : WifiScanAlarmBroadcastReceiver.scanResults)
 			        {
-			        	String ssid = scanResult.SSID.replace("\"", "");
-			        	boolean exists = false;
-			        	for (WifiSSIDData ssidData : SSIDList)
+			        	if (!DataWrapper.getSSID(scanResult).isEmpty())
 			        	{
-			        		if (ssidData.ssid.equals(ssid))
-			        		{
-			        			exists = true;
-			        			break;
-			        		}
+				        	boolean exists = false;
+				        	for (WifiSSIDData ssidData : SSIDList)
+				        	{
+				        		if (DataWrapper.compareSSID(scanResult, ssidData.ssid))
+				        		{
+				        			exists = true;
+				        			break;
+				        		}
+				        	}
+				        	if (!exists)
+				        		SSIDList.add(new WifiSSIDData(DataWrapper.getSSID(scanResult), scanResult.BSSID));
 			        	}
-			        	if (!exists)
-			        		SSIDList.add(new WifiSSIDData(ssid, scanResult.BSSID));
 			        }
 		        }
 
