@@ -151,9 +151,9 @@
     <string name="event_preferences_eventName">Název události</string>
     <string name="event_preferences_eventType">Typ události</string>
     <string name="event_preferences_eventProfileStart">Aktivovat profil</string>
-    <string name="widget_label_icon">PhoneProfiles-ikona</string>
-    <string name="widget_label_one_row">PhoneProfiles-jednořádkový</string>
-    <string name="widget_label_list">PhoneProfiles-seznam</string>
+    <string name="widget_label_icon">PhoneProfilesPlus-ikona</string>
+    <string name="widget_label_one_row">PhoneProfilesPlus-jednořádkový</string>
+    <string name="widget_label_list">PhoneProfilesPlus-seznam</string>
     <string name="phone_profiles_pref_category_widget_list">Miniaplikace-Seznam</string>
     <string name="phone_profiles_pref_applicationWidgetBackground">Neprůhlednost pozadí</string>
     <string name="phone_profiles_pref_applicationWidgetLightnessB">Světlost pozadí</string>

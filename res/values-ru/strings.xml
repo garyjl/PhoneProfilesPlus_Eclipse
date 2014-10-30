@@ -151,9 +151,9 @@
     <string name="event_preferences_eventName">Название события</string>
     <string name="event_preferences_eventType">Тип события</string>
     <string name="event_preferences_eventProfileStart">Активировать профиль</string>
-    <string name="widget_label_icon">PhoneProfiles (иконка)</string>
-    <string name="widget_label_one_row">PhoneProfiles (один ряд)</string>
-    <string name="widget_label_list">PhoneProfiles (список)</string>
+    <string name="widget_label_icon">PhoneProfilesPlus (иконка)</string>
+    <string name="widget_label_one_row">PhoneProfilesPlus (один ряд)</string>
+    <string name="widget_label_list">PhoneProfilesPlus (список)</string>
     <string name="phone_profiles_pref_category_widget_list">Виджет &#171;Список&#187;</string>
     <string name="phone_profiles_pref_applicationWidgetBackground">Непрозрачность фона</string>
     <string name="phone_profiles_pref_applicationWidgetLightnessB">Светлость фона</string>
