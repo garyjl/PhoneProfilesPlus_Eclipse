@@ -514,7 +514,7 @@ public class PhoneProfilesHelper {
 	static public void showPPHelperUpgradeNotification(Context context)
 	{
 		NotificationCompat.Builder mBuilder =   new NotificationCompat.Builder(context)
-        	.setSmallIcon(R.drawable.ic_launcher) // notification icon
+        	.setSmallIcon(R.drawable.ic_pphelper_upgrade_notify) // notification icon
         	.setContentTitle(context.getString(R.string.pphelper_upgrade_notification_title)) // title for notification
         	.setContentText(context.getString(R.string.pphelper_upgrade_notification_text)) // message for notification
         	.setAutoCancel(true); // clear notification after click
