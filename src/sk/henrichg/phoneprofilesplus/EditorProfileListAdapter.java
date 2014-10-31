@@ -363,9 +363,9 @@ public class EditorProfileListAdapter extends BaseAdapter
         }
 
         if (profile._showInActivator)
-        	holder.profileShowInActivator.setImageResource(R.drawable.ic_profile_activated);
+        	holder.profileShowInActivator.setImageResource(R.drawable.ic_profile_show_in_activator_on);
         else
-        	holder.profileShowInActivator.setImageResource(R.drawable.ic_profile_deactivated);
+        	holder.profileShowInActivator.setImageResource(R.drawable.ic_profile_show_in_activator_off);
         
 		if (GlobalData.applicationEditorPrefIndicator)
 		{
