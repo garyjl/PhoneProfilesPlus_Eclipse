@@ -30,7 +30,7 @@ public class PhoneProfilesPreferencesActivity extends ActionBarActivity
 	public void onCreate(Bundle savedInstanceState) {
 
 		// must by called before super.onCreate() for PreferenceActivity
-		GUIData.setTheme(this, false);
+		GUIData.setTheme(this, false, false);
 		GUIData.setLanguage(getBaseContext());
 		
 		super.onCreate(savedInstanceState);

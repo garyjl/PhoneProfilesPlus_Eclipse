@@ -123,7 +123,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
-		GUIData.setTheme(this, false);
+		GUIData.setTheme(this, false, true);
 		GUIData.setLanguage(getBaseContext());
 
 		super.onCreate(savedInstanceState);

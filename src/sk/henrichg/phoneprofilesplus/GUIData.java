@@ -66,33 +66,63 @@ public class GUIData {
 		return Collator.getInstance(appLocale);
 	}
 	
-	public static void setTheme(Activity activity, boolean forPopup)
+	public static void setTheme(Activity activity, boolean forPopup, boolean withToolbar)
 	{
 		if (GlobalData.applicationTheme.equals("material"))
 		{
 			//Log.d("EditorProfilesActivity.setTheme","material");
 			if (forPopup)
-				activity.setTheme(R.style.PopupTheme_material);
+			{
+				if (withToolbar)
+					activity.setTheme(R.style.PopupTheme_withToolbar_material);
+				else
+					activity.setTheme(R.style.PopupTheme_material);
+			}
 			else
-				activity.setTheme(R.style.Theme_Phoneprofilestheme_material);
+			{
+				if (withToolbar)
+					activity.setTheme(R.style.Theme_Phoneprofilestheme_withToolbar_material);
+				else
+					activity.setTheme(R.style.Theme_Phoneprofilestheme_material);
+			}
 		}
 		else
 		if (GlobalData.applicationTheme.equals("dark"))
 		{
 			//Log.d("EditorProfilesActivity.setTheme","dark");
 			if (forPopup)
-				activity.setTheme(R.style.PopupTheme_dark);
+			{
+				if (withToolbar)
+					activity.setTheme(R.style.PopupTheme_withToolbar_dark);
+				else
+					activity.setTheme(R.style.PopupTheme_dark);
+			}
 			else
-				activity.setTheme(R.style.Theme_Phoneprofilestheme_dark);
+			{
+				if (withToolbar)
+					activity.setTheme(R.style.Theme_Phoneprofilestheme_withToolbar_dark);
+				else
+					activity.setTheme(R.style.Theme_Phoneprofilestheme_dark);
+			}
 		}
 		else
 		if (GlobalData.applicationTheme.equals("dlight"))
 		{
 			//Log.d("EditorProfilesActivity.setTheme","dark");
 			if (forPopup)
-				activity.setTheme(R.style.PopupTheme_dlight);
+			{
+				if (withToolbar)
+					activity.setTheme(R.style.PopupTheme_withToolbar_dlight);
+				else
+					activity.setTheme(R.style.PopupTheme_dlight);
+			}
 			else
-				activity.setTheme(R.style.Theme_Phoneprofilestheme_dlight);
+			{
+				if (withToolbar)
+					activity.setTheme(R.style.Theme_Phoneprofilestheme_withToolbar_dlight);
+				else
+					activity.setTheme(R.style.Theme_Phoneprofilestheme_dlight);
+			}
 		}
 	}
 	

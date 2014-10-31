@@ -23,7 +23,7 @@ public class ProfilePreferencesFragmentActivity extends ActionBarActivity
     public void onCreate(Bundle savedInstanceState) {
 		
 		// must by called before super.onCreate() for PreferenceActivity
-		GUIData.setTheme(this, false); // must by called before super.onCreate()
+		GUIData.setTheme(this, false, false); // must by called before super.onCreate()
 		GUIData.setLanguage(getBaseContext());
 
 		super.onCreate(savedInstanceState);

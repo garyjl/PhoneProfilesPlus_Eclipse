@@ -35,7 +35,7 @@ public class ActivateProfileActivity extends ActionBarActivity {
 		
 		instance = this;
 		
-		GUIData.setTheme(this, true);
+		GUIData.setTheme(this, true, true);
 		GUIData.setLanguage(getBaseContext());
 		
 	// set window dimensions ----------------------------------------------------------

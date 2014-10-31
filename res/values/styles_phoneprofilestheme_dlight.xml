@@ -20,8 +20,7 @@
 <resources>
 
     <style name="Theme.Phoneprofilestheme_dlight" parent="@style/Base.Theme.Phoneprofilestheme_dlight">
-		<item name="android:windowContentOverlay">@null</item>
-		<item name="toolbarBackground">@drawable/toolbar_background_dark</item>
+		<item name="toolbarBackground">@drawable/toolbar_background_dlight</item>
 	</style>
 
 </resources>

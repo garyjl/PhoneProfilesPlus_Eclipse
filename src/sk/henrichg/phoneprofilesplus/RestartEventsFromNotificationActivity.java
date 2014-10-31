@@ -28,7 +28,7 @@ public class RestartEventsFromNotificationActivity extends Activity
 
 		// set theme and language for dialog alert ;-)
 		// not working on Android 2.3.x
-		GUIData.setTheme(this, true);
+		GUIData.setTheme(this, true, false);
 		GUIData.setLanguage(getBaseContext());
 		
 		dataWrapper.restartEventsWithAlert(this);

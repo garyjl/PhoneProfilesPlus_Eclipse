@@ -24,7 +24,7 @@ public class ShortcutCreatorActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		GUIData.setTheme(this, true);
+		GUIData.setTheme(this, true, false);
 		GUIData.setLanguage(getBaseContext());
 
 		dataWrapper = new DataWrapper(getBaseContext(), true, false, 0);
