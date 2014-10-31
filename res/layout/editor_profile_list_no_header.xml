@@ -4,8 +4,7 @@
     android:id="@+id/layout_profiles_list_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="?attr/activityPopupBackground" >
+    android:orientation="vertical" >
 
     <com.mobeta.android.dslv.DragSortListView
         android:id="@+id/editor_profiles_list"

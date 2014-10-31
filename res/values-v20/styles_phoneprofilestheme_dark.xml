@@ -20,6 +20,7 @@
 <resources>
 
     <style name="Theme.Phoneprofilestheme_dark" parent="@style/Base.Theme.Phoneprofilestheme_dark">
+		<item name="toolbarBackground">?attr/colorPrimary</item>
     </style>
 
 </resources>

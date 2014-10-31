@@ -20,6 +20,7 @@
 <resources>
 
     <style name="Theme.Phoneprofilestheme_material" parent="@style/Base.Theme.Phoneprofilestheme_material">
+		<item name="toolbarBackground">?attr/colorPrimary</item>
     </style>
 
 </resources>

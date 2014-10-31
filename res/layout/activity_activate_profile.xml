@@ -4,13 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ActivatorActivity" >
+    tools:context=".ActivatorActivity"
+    android:background="?attr/activityPopupBackground" >
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/act_prof_tollbar"
         android:layout_width="match_parent"
         android:layout_height="25dp"
-        android:background="?attr/colorPrimary"
+        android:paddingBottom="3dp"
+        android:background="?attr/toolbarBackground"
         android:elevation="8dp" >
 
 		<RelativeLayout

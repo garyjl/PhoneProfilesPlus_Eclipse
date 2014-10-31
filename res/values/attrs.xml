@@ -60,5 +60,6 @@
     <attr name="editItemMenuIcon" format="reference" />
     <attr name="applicationSettingsLanguageIcon" format="reference" />
     <attr name="actionEventsRestartIcon" format="reference" />
+    <attr name="toolbarBackground" format="reference" />
     
 </resources>
