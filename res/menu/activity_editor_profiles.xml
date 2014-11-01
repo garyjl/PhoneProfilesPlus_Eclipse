@@ -33,10 +33,10 @@
         android:title="@string/menu_import"
         android:orderInCategory="240"
         android:showAsAction="never" />
-	<item android:id="@+id/menu_help"
+<!-- 	<item android:id="@+id/menu_help"
         android:title="@string/menu_help"
         android:orderInCategory="250"
-        henrichg:showAsAction="never" />    
+        henrichg:showAsAction="never" />  -->    
 	<item android:id="@+id/menu_exit"
         android:title="@string/menu_exit"
         android:orderInCategory="260"

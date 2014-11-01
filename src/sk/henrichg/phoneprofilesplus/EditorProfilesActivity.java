@@ -606,7 +606,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 			importData();
 			
 			return true;
-		case R.id.menu_help:
+		/*case R.id.menu_help:
 			try {
 			    Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/henrichg/PhoneProfilesPlus/wiki"));
 			    startActivity(myIntent);
@@ -615,7 +615,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 			    //    + " Please install a webbrowser",  Toast.LENGTH_LONG).show();
 			    e.printStackTrace();
 			}			
-			return true;
+			return true;*/
 		case R.id.menu_exit:
 			//Log.d("EditorProfilesActivity.onOptionsItemSelected", "menu_exit");
 
