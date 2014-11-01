@@ -1,8 +1,11 @@
 package sk.henrichg.phoneprofilesplus;
  
+import sk.henrichg.phoneprofilesplus.EventPreferencesFragment.OnShowActionModeInEventPreferences;
 import sk.henrichg.phoneprofilesplus.PreferenceListFragment.OnPreferenceAttachedListener;
+import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnHideActionModeInProfilePreferences;
 import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnRedrawProfileListFragment;
 import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnRestartProfilePreferences;
+import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnShowActionModeInProfilePreferences;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +17,9 @@ import android.view.MenuItem;
 public class ProfilePreferencesFragmentActivity extends ActionBarActivity
 												implements OnPreferenceAttachedListener,
 	                                                       OnRestartProfilePreferences,
-	                                                       OnRedrawProfileListFragment
+	                                                       OnRedrawProfileListFragment,
+	                                                       OnShowActionModeInProfilePreferences,
+	                                                       OnHideActionModeInProfilePreferences
 {
 	private long profile_id = 0;
 	int newProfileMode = EditorProfileListFragment.EDIT_MODE_UNDEFINED;
@@ -165,6 +170,16 @@ public class ProfilePreferencesFragmentActivity extends ActionBarActivity
 	}
 	
 	public void onPreferenceAttached(PreferenceScreen root, int xmlId) {
+	}
+
+	@Override
+	public void onHideActionModeInProfilePreferences() {
+		
+	}
+
+	@Override
+	public void onShowActionModeInProfilePreferences() {
+		
 	}
 
 }

@@ -55,9 +55,31 @@ public class ProfilePreferencesFragment extends PreferenceFragment
 	static final int BUTTON_CANCEL = 1;
 	static final int BUTTON_SAVE = 2;
 	
+	private OnShowActionModeInProfilePreferences onShowActionModeInProfilePreferencesCallback = sDummyOnShowActionModeInProfilePreferencesCallback;
+	private OnHideActionModeInProfilePreferences onHideActionModeInProfilePreferencesCallback = sDummyOnHideActionModeInProfilePreferencesCallback;
 	private OnRestartProfilePreferences onRestartProfilePreferencesCallback = sDummyOnRestartProfilePreferencesCallback;
 	private OnRedrawProfileListFragment onRedrawProfileListFragmentCallback = sDummyOnRedrawProfileListFragmentCallback;
 
+	// invokes when action mode shows
+	public interface OnShowActionModeInProfilePreferences {
+		public void onShowActionModeInProfilePreferences();
+	}
+
+	private static OnShowActionModeInProfilePreferences sDummyOnShowActionModeInProfilePreferencesCallback = new OnShowActionModeInProfilePreferences() {
+		public void onShowActionModeInProfilePreferences() {
+		}
+	};
+
+	// invokes when action mode hides
+	public interface OnHideActionModeInProfilePreferences {
+		public void onHideActionModeInProfilePreferences();
+	}
+
+	private static OnHideActionModeInProfilePreferences sDummyOnHideActionModeInProfilePreferencesCallback = new OnHideActionModeInProfilePreferences() {
+		public void onHideActionModeInProfilePreferences() {
+		}
+	};
+	
 	// invokes when restart of profile preferences fragment needed (undo preference changes)
 	public interface OnRestartProfilePreferences {
 		/**
@@ -88,6 +110,18 @@ public class ProfilePreferencesFragment extends PreferenceFragment
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 
+		if (!(activity instanceof OnShowActionModeInProfilePreferences)) {
+			throw new IllegalStateException(
+					"Activity must implement fragment's callbacks.");
+		}
+		onShowActionModeInProfilePreferencesCallback = (OnShowActionModeInProfilePreferences) activity;
+		
+		if (!(activity instanceof OnHideActionModeInProfilePreferences)) {
+			throw new IllegalStateException(
+					"Activity must implement fragment's callbacks.");
+		}
+		onHideActionModeInProfilePreferencesCallback = (OnHideActionModeInProfilePreferences) activity;
+		
 		if (!(activity instanceof OnRestartProfilePreferences)) {
 			throw new IllegalStateException(
 					"Activity must implement fragment's callbacks.");
@@ -107,6 +141,8 @@ public class ProfilePreferencesFragment extends PreferenceFragment
 		super.onDetach();
 
 		// Reset the active callbacks interface to the dummy implementation.
+		onShowActionModeInProfilePreferencesCallback = sDummyOnShowActionModeInProfilePreferencesCallback;
+		onHideActionModeInProfilePreferencesCallback = sDummyOnHideActionModeInProfilePreferencesCallback;
 		onRestartProfilePreferencesCallback = sDummyOnRestartProfilePreferencesCallback;
 		onRedrawProfileListFragmentCallback = sDummyOnRedrawProfileListFragmentCallback;
 	}
@@ -774,6 +810,7 @@ public class ProfilePreferencesFragment extends PreferenceFragment
 		if (actionMode != null)
 			actionMode.finish();
 		
+		
     	actionModeButtonClicked = BUTTON_UNDEFINED;
     	
     	LayoutInflater inflater = LayoutInflater.from(getActivity());
@@ -781,6 +818,8 @@ public class ProfilePreferencesFragment extends PreferenceFragment
 
         actionMode = ((ActionBarActivity)getActivity()).startSupportActionMode(actionModeCallback);
         actionMode.setCustomView(actionView); 
+        
+        onShowActionModeInProfilePreferencesCallback.onShowActionModeInProfilePreferences();        
         
         actionMode.getCustomView().findViewById(R.id.profile_preferences_action_menu_cancel).setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -828,6 +867,9 @@ public class ProfilePreferencesFragment extends PreferenceFragment
 			actionModeButtonClicked = _button;
 			actionMode.finish();
 		}
+		
+        onHideActionModeInProfilePreferencesCallback.onHideActionModeInProfilePreferences();        
+		
 	}
 
 	static public Activity getPreferencesActivity()

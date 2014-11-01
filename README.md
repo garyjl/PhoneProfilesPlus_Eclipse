@@ -10,4 +10,5 @@ Required
 - DragSortListView - https://github.com/bauerca/drag-sort-listview
 - RootTools - https://code.google.com/p/roottools/
 - DashClock API - https://code.google.com/p/dashclock/wiki/API
+- FloatingActionButton - https://github.com/makovkastar/FloatingActionButton
 

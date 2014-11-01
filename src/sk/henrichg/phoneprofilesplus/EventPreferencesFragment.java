@@ -50,9 +50,31 @@ public class EventPreferencesFragment extends PreferenceFragment
 	static final int BUTTON_CANCEL = 1;
 	static final int BUTTON_SAVE = 2;
 	
+	private OnShowActionModeInEventPreferences onShowActionModeInEventPreferencesCallback = sDummyOnShowActionModeInEventPreferencesCallback;
+	private OnHideActionModeInEventPreferences onHideActionModeInEventPreferencesCallback = sDummyOnHideActionModeInEventPreferencesCallback;
 	private OnRestartEventPreferences onRestartEventPreferencesCallback = sDummyOnRestartEventPreferencesCallback;
 	private OnRedrawEventListFragment onRedrawEventListFragmentCallback = sDummyOnRedrawEventListFragmentCallback;
 
+	// invokes when action mode shows
+	public interface OnShowActionModeInEventPreferences {
+		public void onShowActionModeInEventPreferences();
+	}
+
+	private static OnShowActionModeInEventPreferences sDummyOnShowActionModeInEventPreferencesCallback = new OnShowActionModeInEventPreferences() {
+		public void onShowActionModeInEventPreferences() {
+		}
+	};
+	
+	// invokes when action mode hides
+	public interface OnHideActionModeInEventPreferences {
+		public void onHideActionModeInEventPreferences();
+	}
+
+	private static OnHideActionModeInEventPreferences sDummyOnHideActionModeInEventPreferencesCallback = new OnHideActionModeInEventPreferences() {
+		public void onHideActionModeInEventPreferences() {
+		}
+	};
+	
 	// invokes when restart of event preferences fragment needed (undo preference changes)
 	public interface OnRestartEventPreferences {
 		/**
@@ -83,6 +105,18 @@ public class EventPreferencesFragment extends PreferenceFragment
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 
+		if (!(activity instanceof OnShowActionModeInEventPreferences)) {
+			throw new IllegalStateException(
+					"Activity must implement fragment's callbacks.");
+		}
+		onShowActionModeInEventPreferencesCallback = (OnShowActionModeInEventPreferences) activity;
+		
+		if (!(activity instanceof OnHideActionModeInEventPreferences)) {
+			throw new IllegalStateException(
+					"Activity must implement fragment's callbacks.");
+		}
+		onHideActionModeInEventPreferencesCallback = (OnHideActionModeInEventPreferences) activity;
+		
 		if (!(activity instanceof OnRestartEventPreferences)) {
 			throw new IllegalStateException(
 					"Activity must implement fragment's callbacks.");
@@ -102,6 +136,8 @@ public class EventPreferencesFragment extends PreferenceFragment
 		super.onDetach();
 
 		// Reset the active callbacks interface to the dummy implementation.
+		onShowActionModeInEventPreferencesCallback = sDummyOnShowActionModeInEventPreferencesCallback;
+		onHideActionModeInEventPreferencesCallback = sDummyOnHideActionModeInEventPreferencesCallback;
 		onRestartEventPreferencesCallback = sDummyOnRestartEventPreferencesCallback;
 		onRedrawEventListFragmentCallback = sDummyOnRedrawEventListFragmentCallback;
 	}
@@ -429,6 +465,8 @@ public class EventPreferencesFragment extends PreferenceFragment
         actionMode = ((ActionBarActivity)getActivity()).startSupportActionMode(actionModeCallback);
         actionMode.setCustomView(actionView); 
         
+        onShowActionModeInEventPreferencesCallback.onShowActionModeInEventPreferences();        
+        
         actionMode.getCustomView().findViewById(R.id.event_preferences_action_menu_cancel).setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				
@@ -475,6 +513,9 @@ public class EventPreferencesFragment extends PreferenceFragment
 			actionModeButtonClicked = _button;
 			actionMode.finish();
 		}
+		
+        onHideActionModeInEventPreferencesCallback.onHideActionModeInEventPreferences();        
+		
 	}
 
 	static public Activity getPreferencesActivity()

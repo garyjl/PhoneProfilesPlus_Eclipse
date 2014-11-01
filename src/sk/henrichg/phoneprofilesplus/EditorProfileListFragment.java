@@ -14,6 +14,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+
+import com.melnykov.fab.FloatingActionButton;
 import com.mobeta.android.dslv.DragSortListView;
 
 import android.view.LayoutInflater;
@@ -22,6 +24,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -40,6 +43,7 @@ public class EditorProfileListFragment extends Fragment {
 	private DragSortListView listView;
 	private TextView activeProfileName;
 	private ImageView activeProfileIcon;
+	public FloatingActionButton fabButton;
 	private DatabaseHandler databaseHandler;
 	
 	private WeakReference<LoadProfileListAsyncTask> asyncTaskContext;
@@ -191,7 +195,14 @@ public class EditorProfileListFragment extends Fragment {
 		activeProfileIcon = (ImageView)view.findViewById(R.id.activated_profile_icon);
 		listView = (DragSortListView)view.findViewById(R.id.editor_profiles_list);
 		listView.setEmptyView(view.findViewById(R.id.editor_profiles_list_empty));
+		
+		View footerView =  ((LayoutInflater)getActivity().getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE))
+				.inflate(R.layout.editor_list_footer, null, false);
+        listView.addFooterView(footerView);		
 
+        fabButton = (FloatingActionButton)view.findViewById(R.id.editor_profiles_list_fab);
+        fabButton.attachToListView(listView);
+        
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -226,6 +237,13 @@ public class EditorProfileListFragment extends Fragment {
             }
         });
 
+        fabButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startProfilePreferencesActivity(null);
+			}
+		});
+        
 		if (profileList == null)
 		{
 			//Log.e("EditorProfileListFragment.doOnViewCreated", "getProfileList");
@@ -375,12 +393,12 @@ public class EditorProfileListFragment extends Fragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		
 		switch (item.getItemId()) {
-		case R.id.menu_new_profile:
+		/*case R.id.menu_new_profile:
 			//Log.d("PhoneProfileActivity.onOptionsItemSelected", "menu_new_profile");
 
 			startProfilePreferencesActivity(null);
 			
-			return true;
+			return true;*/
 		case R.id.menu_delete_all_profiles:
 			//Log.d("EditorProfileListFragment.onOptionsItemSelected", "menu_delete_all_profiles");
 			

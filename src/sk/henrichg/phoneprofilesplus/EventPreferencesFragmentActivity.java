@@ -1,5 +1,7 @@
 package sk.henrichg.phoneprofilesplus;
  
+import sk.henrichg.phoneprofilesplus.EventPreferencesFragment.OnHideActionModeInEventPreferences;
+import sk.henrichg.phoneprofilesplus.EventPreferencesFragment.OnShowActionModeInEventPreferences;
 import sk.henrichg.phoneprofilesplus.PreferenceListFragment.OnPreferenceAttachedListener;
 import sk.henrichg.phoneprofilesplus.EventPreferencesFragment.OnRedrawEventListFragment;
 import sk.henrichg.phoneprofilesplus.EventPreferencesFragment.OnRestartEventPreferences;
@@ -15,7 +17,9 @@ import android.view.MenuItem;
 public class EventPreferencesFragmentActivity extends ActionBarActivity
 												implements OnPreferenceAttachedListener,
 	                                                       OnRestartEventPreferences,
-	                                                       OnRedrawEventListFragment
+	                                                       OnRedrawEventListFragment,
+	                                                       OnShowActionModeInEventPreferences,
+	                                                       OnHideActionModeInEventPreferences
 {
 	
 	private long event_id = 0; 
@@ -157,6 +161,16 @@ public class EventPreferencesFragmentActivity extends ActionBarActivity
 	}
 	
 	public void onPreferenceAttached(PreferenceScreen root, int xmlId) {
+	}
+
+	@Override
+	public void onHideActionModeInEventPreferences() {
+		
+	}
+
+	@Override
+	public void onShowActionModeInEventPreferences() {
+		
 	}
 
 }

@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import com.melnykov.fab.FloatingActionButton;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
@@ -19,6 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -30,6 +33,7 @@ public class EditorEventListFragment extends Fragment {
 	private List<Event> eventList;
 	private EditorEventListAdapter eventListAdapter;
 	private ListView listView;
+	public FloatingActionButton fabButton;
 	private DatabaseHandler databaseHandler;
 	
 	private WeakReference<LoadEventListAsyncTask> asyncTaskContext;
@@ -177,6 +181,13 @@ public class EditorEventListFragment extends Fragment {
 		listView = (ListView)view.findViewById(R.id.editor_events_list);
 		listView.setEmptyView(view.findViewById(R.id.editor_events_list_empty));
 		
+		View footerView =  ((LayoutInflater)getActivity().getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE))
+				.inflate(R.layout.editor_list_footer, null, false);
+        listView.addFooterView(footerView);		
+
+        fabButton = (FloatingActionButton)view.findViewById(R.id.editor_events_list_fab);
+        fabButton.attachToListView(listView);
+        
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -189,6 +200,13 @@ public class EditorEventListFragment extends Fragment {
 			
 		}); 
 
+		fabButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startEventPreferencesActivity(null);
+			}
+		});
+		
 		if (eventList == null)
 		{
 			LoadEventListAsyncTask asyncTask = new LoadEventListAsyncTask(this, orderType);
@@ -297,12 +315,12 @@ public class EditorEventListFragment extends Fragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		
 		switch (item.getItemId()) {
-		case R.id.menu_new_event:
+		/*case R.id.menu_new_event:
 			//Log.e("EditorEventListFragment.onOptionsItemSelected", "menu_new_event");
 
 			startEventPreferencesActivity(null);
 			
-			return true;
+			return true;*/
 		case R.id.menu_delete_all_events:
 			//Log.d("EditorEventListFragment.onOptionsItemSelected", "menu_delete_all_events");
 			

@@ -15,11 +15,15 @@ import sk.henrichg.phoneprofilesplus.EditorEventListFragment.OnFinishEventPrefer
 import sk.henrichg.phoneprofilesplus.EditorEventListFragment.OnStartEventPreferences;
 import sk.henrichg.phoneprofilesplus.EditorProfileListFragment.OnFinishProfilePreferencesActionMode;
 import sk.henrichg.phoneprofilesplus.EditorProfileListFragment.OnStartProfilePreferences;
+import sk.henrichg.phoneprofilesplus.EventPreferencesFragment.OnHideActionModeInEventPreferences;
 import sk.henrichg.phoneprofilesplus.EventPreferencesFragment.OnRedrawEventListFragment;
 import sk.henrichg.phoneprofilesplus.EventPreferencesFragment.OnRestartEventPreferences;
+import sk.henrichg.phoneprofilesplus.EventPreferencesFragment.OnShowActionModeInEventPreferences;
 import sk.henrichg.phoneprofilesplus.PreferenceListFragment.OnPreferenceAttachedListener;
+import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnHideActionModeInProfilePreferences;
 import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnRedrawProfileListFragment;
 import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnRestartProfilePreferences;
+import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnShowActionModeInProfilePreferences;
 
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -67,7 +71,11 @@ public class EditorProfilesActivity extends ActionBarActivity
                                                OnStartEventPreferences,
                                                OnRestartEventPreferences,
                                                OnRedrawEventListFragment,
-                                               OnFinishEventPreferencesActionMode
+                                               OnFinishEventPreferencesActionMode,
+                                               OnShowActionModeInProfilePreferences,
+                                               OnShowActionModeInEventPreferences,
+                                               OnHideActionModeInProfilePreferences,
+                                               OnHideActionModeInEventPreferences
 {
 
 	private static EditorProfilesActivity instance;
@@ -1588,9 +1596,13 @@ public class EditorProfilesActivity extends ActionBarActivity
 			if (fragment != null)
 			{
 				if (fragment instanceof ProfilePreferencesFragment)
+				{
 					((ProfilePreferencesFragment)fragment).finishActionMode(EventPreferencesFragment.BUTTON_CANCEL);
+				}
 				else
+				{
 					((EventPreferencesFragment)fragment).finishActionMode(EventPreferencesFragment.BUTTON_CANCEL);
+				}
 			}
 		//}
 	}
@@ -1731,6 +1743,71 @@ public class EditorProfilesActivity extends ActionBarActivity
 			}
 		}
 	}
+	
+	@Override
+	public void onShowActionModeInEventPreferences() {
+		Fragment fragment = getFragmentManager().findFragmentById(R.id.editor_list_container);
+		if (fragment != null)
+		{
+			if (fragment instanceof EditorProfileListFragment)
+			{
+				((EditorProfileListFragment)fragment).fabButton.show();
+			}
+			else
+			{
+				((EditorEventListFragment)fragment).fabButton.show();
+			}
+		}
+	}
+
+	@Override
+	public void onShowActionModeInProfilePreferences() {
+		Fragment fragment = getFragmentManager().findFragmentById(R.id.editor_list_container);
+		if (fragment != null)
+		{
+			if (fragment instanceof EditorProfileListFragment)
+			{
+				((EditorProfileListFragment)fragment).fabButton.hide();
+			}
+			else
+			{
+				((EditorEventListFragment)fragment).fabButton.hide();
+			}
+		}
+	}
+	
+	@Override
+	public void onHideActionModeInEventPreferences() {
+		Fragment fragment = getFragmentManager().findFragmentById(R.id.editor_list_container);
+		if (fragment != null)
+		{
+			if (fragment instanceof EditorProfileListFragment)
+			{
+				((EditorProfileListFragment)fragment).fabButton.show();
+			}
+			else
+			{
+				((EditorEventListFragment)fragment).fabButton.show();
+			}
+		}
+	}
+
+	@Override
+	public void onHideActionModeInProfilePreferences() {
+		Fragment fragment = getFragmentManager().findFragmentById(R.id.editor_list_container);
+		if (fragment != null)
+		{
+			if (fragment instanceof EditorProfileListFragment)
+			{
+				((EditorProfileListFragment)fragment).fabButton.show();
+			}
+			else
+			{
+				((EditorEventListFragment)fragment).fabButton.show();
+			}
+		}
+	}
+	
 	
 	public static ApplicationsCache getApplicationsCache()
 	{
