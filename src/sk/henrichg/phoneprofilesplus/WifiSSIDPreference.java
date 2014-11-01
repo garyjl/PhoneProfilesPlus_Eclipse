@@ -61,6 +61,12 @@ public class WifiSSIDPreference extends DialogPreference {
         SSIDName = (EditText) view.findViewById(R.id.wifi_ssid_pref_dlg_bt_name);
         SSIDName.setText(value);
         
+    	if (android.os.Build.VERSION.SDK_INT >= 20)
+    	{
+	        View buttonSeparator = view.findViewById(R.id.wifi_ssid_pref_dlg_button_separator);
+	        buttonSeparator.setVisibility(View.GONE);
+    	}
+        
         rescanButton = (Button) view.findViewById(R.id.wifi_ssid_pref_dlg_rescan);
         rescanButton.setOnClickListener(new View.OnClickListener()
     	{

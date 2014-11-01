@@ -39,6 +39,7 @@
 	        	android:inputType="textNoSuggestions" />
 	    
 			<View
+			    android:id="@+id/bluetooth_name_pref_dlg_button_separator"
 			    android:layout_width="fill_parent"
 			    android:layout_height="1dip"
 			    android:background="?android:attr/dividerHorizontal" />

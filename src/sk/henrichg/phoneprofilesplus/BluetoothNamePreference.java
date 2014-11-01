@@ -60,6 +60,12 @@ public class BluetoothNamePreference extends DialogPreference {
         
         bluetoothName = (EditText) view.findViewById(R.id.bluetooth_name_pref_dlg_bt_name);
         bluetoothName.setText(value);
+
+    	if (android.os.Build.VERSION.SDK_INT >= 20)
+    	{
+	        View buttonSeparator = view.findViewById(R.id.bluetooth_name_pref_dlg_button_separator);
+	        buttonSeparator.setVisibility(View.GONE);
+    	}
         
         rescanButton = (Button) view.findViewById(R.id.bluetooth_name_pref_dlg_rescan);
         rescanButton.setOnClickListener(new View.OnClickListener()
