@@ -381,15 +381,12 @@
 	<string name="array_pref_afterProfileDurationDo_undoProfile">Profil rückgängig machen</string>
 	<string name="array_pref_afterProfileDurationDo_backgroundProfile">Standard-Profil aktivieren</string>
     <string name="phone_profiles_pref_applicationGridLayout">Gitter-Layout</string>
-
 	<string name="array_event_pref_eventScreenEventType_screenOn">Bildschirm an</string>
 	<string name="array_event_pref_eventScreenEventType_screenOff">Bildschirm aus</string>
-
     <string name="pref_event_screen_startWhenUnlocked">Starten wenn entsperrt</string>
     <string name="pref_event_screen_endWhenUnlocked">Beenden wenn entsperrt</string>
     <string name="event_preferences_screen_start_when_unlocked">Starten wenn entsperrt</string>
     <string name="event_preferences_screen_end_when_unlocked">Beenden wenn entsperrt</string>
-		
     <string name="event_type_bluetooth">Bluetooth</string>
     <string name="event_preferences_category_eventBluetoothParameters">Bluetoothparameter</string>
     <string name="event_preferences_bluetooth_enabled">Bluetooth aktivieren</string>
@@ -401,8 +398,23 @@
 	<string name="event_preferences_bluetooth_connection_type">Verbindungstyp</string>
 	<string name="phone_profiles_pref_applicationEventBluetoothScanInterval">Bluetooth-Scan-Intervall (Minuten)</string>
 	<string name="phone_profiles_pref_applicationEventBluetoothEnableBluetooth">Bluetooth-Scan aktivieren</string>
-				
 	<string name="bluetooth_name_pref_dlg_rescan_button">Neu scannen</string>
 	<string name="wifi_ssid_pref_dlg_rescan_button">Neu scannen</string>
-	
+
+  	<string name="event_type_sms">SMS</string>
+    <string name="pref_event_sms_contactListType">Liste</string> 
+    <string name="event_preferences_category_eventSMSParameters">SMS-Parameter</string>
+    <string name="event_preferences_sms_enabled">SMS aktivieren</string>
+    <string name="event_preferences_sms_contacts">Kontakte</string>
+
+    <string name="toast_events_restarted">Ereignisse neu gestartet</string>
+    <string name="phone_profiles_pref_notificationStatusBarPermanent">Dauerhafte Benachrichtigung</string>
+    <string name="phone_profiles_pref_notificationStatusBarCancel">Beenden nach (sek)</string>
+	<string name="event_name_background_profile">Standard-Profil</string>
+
+    <string name="phoneprofilehepler_install_error_no_root">PPHelfer-Installation benötigt root</string>
+    <string name="phoneprofilehepler_uninstall_error_no_root">PPHelfer-Deinstallation benötigt root</string>
+    <string name="phoneprofilehepler_reboot_title_uninstall">PPHelfer-Deinstallation</string>
+    <string name="phoneprofilehepler_reboot_message_uninstall">Neustart nötig. Jetzt neu starten?</string>
+    		
 </resources>

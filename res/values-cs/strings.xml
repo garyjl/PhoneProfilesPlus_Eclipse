@@ -382,15 +382,12 @@
     <string name="array_pref_afterProfileDurationDo_undoProfile">Vrať zpět profil</string>
     <string name="array_pref_afterProfileDurationDo_backgroundProfile">Aktivuj předvolenej profil</string>
     <string name="phone_profiles_pref_applicationGridLayout">Mřížkové rozložení</string>
-
 	<string name="array_event_pref_eventScreenEventType_screenOn">Zapnula se</string>
 	<string name="array_event_pref_eventScreenEventType_screenOff">Vypnula se</string>
-	
     <string name="pref_event_screen_startWhenUnlocked">Start když je odemčeno</string>
     <string name="pref_event_screen_endWhenUnlocked">Konec když je odemčeno</string>
     <string name="event_preferences_screen_start_when_unlocked">Start když je odemčeno</string>
     <string name="event_preferences_screen_end_when_unlocked">Konec když je odemčeno</string>
-
     <string name="event_type_bluetooth">Bluetooth</string>
     <string name="event_preferences_category_eventBluetoothParameters">Parametre Bluetooth</string>
     <string name="event_preferences_bluetooth_enabled">Použij Bluetooth</string>
@@ -402,8 +399,23 @@
 	<string name="event_preferences_bluetooth_connection_type">Typ připojení</string>
 	<string name="phone_profiles_pref_applicationEventBluetoothScanInterval">Interval skenování Bluetooth (min.)</string>
 	<string name="phone_profiles_pref_applicationEventBluetoothEnableBluetooth">Povol skenováni Bluetooth</string>
-
 	<string name="bluetooth_name_pref_dlg_rescan_button">Proskenovat</string>
 	<string name="wifi_ssid_pref_dlg_rescan_button">Proskenovat</string>
-				
+	
+	<string name="event_type_sms">SMS</string>
+	<string name="pref_event_sms_contactListType">Seznam</string>
+	<string name="event_preferences_category_eventSMSParameters">Parametry SMS</string>
+	<string name="event_preferences_sms_enabled">Použij SMS</string>
+	<string name="event_preferences_sms_contacts">Kontakty</string>
+	
+	<string name="toast_events_restarted">Události restartováno</string>
+	<string name="phone_profiles_pref_notificationStatusBarPermanent">Probíhající notifikace</string>
+	<string name="phone_profiles_pref_notificationStatusBarCancel">Zruš po (sek.)</string>
+	<string name="event_name_background_profile">Výchozí profil</string>
+
+	<string name="phoneprofilehepler_install_error_no_root">Instalace PPHelper-a vyžaduje ROOT</string>
+	<string name="phoneprofilehepler_uninstall_error_no_root">Odinsštalácia PPHelper-a vyžaduje ROOT</string>
+	<string name="phoneprofilehepler_reboot_title_uninstall">Odinstalace PPHelper-a</string>
+	<string name="phoneprofilehepler_reboot_message_uninstall">Je nutný restart zařízení. Restartovat teď?</string>
+	
 </resources>

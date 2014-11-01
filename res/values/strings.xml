@@ -409,14 +409,10 @@
 	<string name="wifi_ssid_pref_dlg_rescan_button">Rescan</string>
 
     <string name="event_type_sms">SMS</string>
-<!--     <string name="pref_event_sms_event">Event</string>  -->
     <string name="pref_event_sms_contactListType">List</string> 
-<!--     <string name="array_event_pref_incoming_sms">Incoming sms</string>
-    <string name="array_event_pref_outgoing_sms">Outgoing sms</string>  -->
     <string name="event_preferences_category_eventSMSParameters">SMS parameters</string>
     <string name="event_preferences_sms_enabled">Enable SMS</string>
     <string name="event_preferences_sms_contacts">Contacts</string>
-<!--     <string name="event_preferences_sms_event">SMS event</string>  -->
 
     <string name="toast_events_restarted">Events restarted</string>
     <string name="phone_profiles_pref_notificationStatusBarPermanent">Ongoing notification</string>
