@@ -4,7 +4,6 @@
     android:id="@+id/layout_events_list_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/activityPopupBackground"
     android:orientation="vertical" >
 
 	<FrameLayout android:layout_width="match_parent"
