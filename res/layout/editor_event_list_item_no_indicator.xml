@@ -38,8 +38,8 @@
     
 	    <ImageView
 	        android:id="@+id/event_list_item_status"
-	        android:layout_width="20dp"
-	        android:layout_height="20dp"
+	        android:layout_width="30dp"
+	        android:layout_height="30dp"
 	        android:layout_alignParentLeft="true"
 	        android:layout_alignParentTop="true"
 	        android:adjustViewBounds="true"
@@ -47,8 +47,7 @@
 	        android:scaleType="fitStart"
 	        android:src="@drawable/ic_event_status_stop"
 	        android:paddingLeft="2dp"
-	        android:paddingTop="2dp"
-	        android:layout_marginLeft="3dp" />
+	        android:paddingTop="2dp" />
 	    
 	    <TextView
 	        android:id="@+id/event_list_item_event_name"
@@ -56,8 +55,8 @@
 	        android:layout_height="wrap_content"
 	        android:layout_alignTop="@+id/event_list_item_status"
 	        android:layout_toRightOf="@+id/event_list_item_status"
-	        android:paddingLeft="20dp"
-	        android:paddingTop="0dp"
+	        android:paddingLeft="10dp"
+	        android:paddingTop="5dp"
 	        android:text="@string/event_name_default"
 	        android:textSize="15sp"
 	        android:singleLine="true" />
