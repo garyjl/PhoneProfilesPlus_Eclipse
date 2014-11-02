@@ -292,101 +292,104 @@ public class EditorProfileListAdapter extends BaseAdapter
         }
         
         final Profile profile = (Profile)getItem(position);
-
-        /*
-        switch (filterType)
+        if (profile != null)
         {
-			case DatabaseHandler.FILTER_TYPE_PROFILES_ALL:
-				vi.setVisibility(View.VISIBLE);
-				break;
-			case DatabaseHandler.FILTER_TYPE_PROFILES_SHOW_IN_ACTIVATOR:
-				if (!profile._showInActivator)
-					vi.setVisibility(View.GONE);
-				else
+	
+	        /*
+	        switch (filterType)
+	        {
+				case DatabaseHandler.FILTER_TYPE_PROFILES_ALL:
 					vi.setVisibility(View.VISIBLE);
-				break;
-			case DatabaseHandler.FILTER_TYPE_PROFILES_NO_SHOW_IN_ACTIVATOR:
-				if (profile._showInActivator)
-					vi.setVisibility(View.GONE);
-				else
-					vi.setVisibility(View.VISIBLE);
-				break;
+					break;
+				case DatabaseHandler.FILTER_TYPE_PROFILES_SHOW_IN_ACTIVATOR:
+					if (!profile._showInActivator)
+						vi.setVisibility(View.GONE);
+					else
+						vi.setVisibility(View.VISIBLE);
+					break;
+				case DatabaseHandler.FILTER_TYPE_PROFILES_NO_SHOW_IN_ACTIVATOR:
+					if (profile._showInActivator)
+						vi.setVisibility(View.GONE);
+					else
+						vi.setVisibility(View.VISIBLE);
+					break;
+	        }
+	        */
+	
+	        if (profile._checked && (!GlobalData.applicationEditorHeader))
+	        {
+	      	    if (GlobalData.applicationTheme.equals("material"))
+	      	    	holder.listItemRoot.setBackgroundResource(R.drawable.header_card);
+	      	    else
+	         	if (GlobalData.applicationTheme.equals("dark"))
+	         		holder.listItemRoot.setBackgroundResource(R.drawable.header_card_dark);
+	         	else
+	         	if (GlobalData.applicationTheme.equals("dlight"))
+	         		holder.listItemRoot.setBackgroundResource(R.drawable.header_card);
+	        	holder.profileName.setTypeface(null, Typeface.BOLD);
+	        }
+	        else
+	        {
+	        	if (GlobalData.applicationTheme.equals("material"))
+	        		holder.listItemRoot.setBackgroundResource(R.drawable.card);
+	        	else
+	        	if (GlobalData.applicationTheme.equals("dark"))
+	        		holder.listItemRoot.setBackgroundResource(R.drawable.card_dark);
+	         	else
+	         	if (GlobalData.applicationTheme.equals("dlight"))
+	         		holder.listItemRoot.setBackgroundResource(R.drawable.card);
+	        	holder.profileName.setTypeface(null, Typeface.NORMAL);
+	        }
+	      
+			String profileName = dataWrapper.getProfileNameWithManualIndicator(profile, 
+					profile._checked &&
+					(!GlobalData.applicationEditorHeader));
+			holder.profileName.setText(profileName);
+			
+	        if (profile.getIsIconResourceID())
+	        {
+	        	holder.profileIcon.setImageResource(0);
+	        	int res = vi.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", 
+	        						vi.getContext().getPackageName());
+	        	holder.profileIcon.setImageResource(res); // resource na ikonu
+	        }
+	        else
+	        {
+	        	//profileIcon.setImageBitmap(null);
+	        	//Resources resources = vi.getResources();
+	        	//int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
+	        	//int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
+	        	//Bitmap bitmap = BitmapResampler.resample(profile.getIconIdentifier(), width, height);
+	        	//profileIcon.setImageBitmap(bitmap);
+	        	holder.profileIcon.setImageBitmap(profile._iconBitmap);
+	        }
+	
+	        if (profile._showInActivator)
+	        	holder.profileShowInActivator.setImageResource(R.drawable.ic_profile_show_in_activator_on);
+	        else
+	        	holder.profileShowInActivator.setImageResource(R.drawable.ic_profile_show_in_activator_off);
+	        
+			if (GlobalData.applicationEditorPrefIndicator)
+			{
+				//profilePrefIndicatorImageView.setImageBitmap(null);
+				//Bitmap bitmap = ProfilePreferencesIndicator.paint(profile, vi.getContext());
+				//profilePrefIndicatorImageView.setImageBitmap(bitmap);
+				holder.profileIndicator.setImageBitmap(profile._preferencesIndicator);
+			}
+			
+	        holder.profileItemEditMenu.setTag(profile);
+	        final ImageView profileItemEditMenu = holder.profileItemEditMenu;
+	        holder.profileItemEditMenu.setOnClickListener(new OnClickListener() {
+	
+					public void onClick(View v) {
+						//Log.d("EditorProfileListAdapter.onClick", "delete");
+						((EditorProfileListFragment)fragment).finishProfilePreferencesActionMode();
+						((EditorProfileListFragment)fragment).showEditMenu(profileItemEditMenu);
+					}
+				}); 
+			
+			//Log.d("ProfileListAdapter.getView", profile.getName());
         }
-        */
-
-        if (profile._checked && (!GlobalData.applicationEditorHeader))
-        {
-      	    if (GlobalData.applicationTheme.equals("material"))
-      	    	holder.listItemRoot.setBackgroundResource(R.drawable.header_card);
-      	    else
-         	if (GlobalData.applicationTheme.equals("dark"))
-         		holder.listItemRoot.setBackgroundResource(R.drawable.header_card_dark);
-         	else
-         	if (GlobalData.applicationTheme.equals("dlight"))
-         		holder.listItemRoot.setBackgroundResource(R.drawable.header_card);
-        	holder.profileName.setTypeface(null, Typeface.BOLD);
-        }
-        else
-        {
-        	if (GlobalData.applicationTheme.equals("material"))
-        		holder.listItemRoot.setBackgroundResource(R.drawable.card);
-        	else
-        	if (GlobalData.applicationTheme.equals("dark"))
-        		holder.listItemRoot.setBackgroundResource(R.drawable.card_dark);
-         	else
-         	if (GlobalData.applicationTheme.equals("dlight"))
-         		holder.listItemRoot.setBackgroundResource(R.drawable.card);
-        	holder.profileName.setTypeface(null, Typeface.NORMAL);
-        }
-      
-		String profileName = dataWrapper.getProfileNameWithManualIndicator(profile, 
-				profile._checked &&
-				(!GlobalData.applicationEditorHeader));
-		holder.profileName.setText(profileName);
-		
-        if (profile.getIsIconResourceID())
-        {
-        	holder.profileIcon.setImageResource(0);
-        	int res = vi.getResources().getIdentifier(profile.getIconIdentifier(), "drawable", 
-        						vi.getContext().getPackageName());
-        	holder.profileIcon.setImageResource(res); // resource na ikonu
-        }
-        else
-        {
-        	//profileIcon.setImageBitmap(null);
-        	//Resources resources = vi.getResources();
-        	//int height = (int) resources.getDimension(android.R.dimen.app_icon_size);
-        	//int width = (int) resources.getDimension(android.R.dimen.app_icon_size);
-        	//Bitmap bitmap = BitmapResampler.resample(profile.getIconIdentifier(), width, height);
-        	//profileIcon.setImageBitmap(bitmap);
-        	holder.profileIcon.setImageBitmap(profile._iconBitmap);
-        }
-
-        if (profile._showInActivator)
-        	holder.profileShowInActivator.setImageResource(R.drawable.ic_profile_show_in_activator_on);
-        else
-        	holder.profileShowInActivator.setImageResource(R.drawable.ic_profile_show_in_activator_off);
-        
-		if (GlobalData.applicationEditorPrefIndicator)
-		{
-			//profilePrefIndicatorImageView.setImageBitmap(null);
-			//Bitmap bitmap = ProfilePreferencesIndicator.paint(profile, vi.getContext());
-			//profilePrefIndicatorImageView.setImageBitmap(bitmap);
-			holder.profileIndicator.setImageBitmap(profile._preferencesIndicator);
-		}
-		
-        holder.profileItemEditMenu.setTag(profile);
-        final ImageView profileItemEditMenu = holder.profileItemEditMenu;
-        holder.profileItemEditMenu.setOnClickListener(new OnClickListener() {
-
-				public void onClick(View v) {
-					//Log.d("EditorProfileListAdapter.onClick", "delete");
-					((EditorProfileListFragment)fragment).finishProfilePreferencesActionMode();
-					((EditorProfileListFragment)fragment).showEditMenu(profileItemEditMenu);
-				}
-			}); 
-		
-		//Log.d("ProfileListAdapter.getView", profile.getName());
       
 		return vi;
 	}
