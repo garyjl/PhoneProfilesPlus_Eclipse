@@ -19,13 +19,11 @@ import sk.henrichg.phoneprofilesplus.EventPreferencesFragment.OnHideActionModeIn
 import sk.henrichg.phoneprofilesplus.EventPreferencesFragment.OnRedrawEventListFragment;
 import sk.henrichg.phoneprofilesplus.EventPreferencesFragment.OnRestartEventPreferences;
 import sk.henrichg.phoneprofilesplus.EventPreferencesFragment.OnShowActionModeInEventPreferences;
-import sk.henrichg.phoneprofilesplus.PreferenceListFragment.OnPreferenceAttachedListener;
 import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnHideActionModeInProfilePreferences;
 import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnRedrawProfileListFragment;
 import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnRestartProfilePreferences;
 import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnShowActionModeInProfilePreferences;
 
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -53,7 +51,6 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -64,7 +61,6 @@ import android.content.res.Configuration;
 
 public class EditorProfilesActivity extends ActionBarActivity
                                     implements OnStartProfilePreferences,
-                                               OnPreferenceAttachedListener,
                                                OnRestartProfilePreferences,
                                                OnRedrawProfileListFragment,
                                                OnFinishProfilePreferencesActionMode,

@@ -1,6 +1,5 @@
 package sk.henrichg.phoneprofilesplus;
 
-import sk.henrichg.phoneprofilesplus.PreferenceListFragment.OnPreferenceAttachedListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -10,7 +9,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 
 public class PhoneProfilesPreferencesActivity extends ActionBarActivity
-											  implements OnPreferenceAttachedListener
 {
 
 	private SharedPreferences preferences;

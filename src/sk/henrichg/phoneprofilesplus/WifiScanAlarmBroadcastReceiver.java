@@ -20,8 +20,6 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiManager.WifiLock;
-import android.os.PowerManager;
-import android.os.PowerManager.WakeLock;
 import android.provider.Settings;
 import android.provider.Settings.Global;
 import android.util.Log;
@@ -148,6 +146,7 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 			
 	}
 	
+	@SuppressLint("SimpleDateFormat")
 	public static void setAlarm(Context context, boolean oneshot)
 	{
 		GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.setAlarm","oneshot="+oneshot);

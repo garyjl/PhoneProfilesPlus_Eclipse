@@ -320,7 +320,7 @@ public class ActivateProfileHelper {
 
 	private static final int ZENMODE_ALL = 0;
 	private static final int ZENMODE_PRIORITY = 1;
-	private static final int ZENMODE_NONE = 2;
+	//private static final int ZENMODE_NONE = 2;
 	
 	private void setZenMode(int mode)
 	{

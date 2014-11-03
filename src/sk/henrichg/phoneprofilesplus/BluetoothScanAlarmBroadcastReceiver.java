@@ -14,7 +14,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.os.PowerManager.WakeLock;
 import android.provider.Settings;
 import android.provider.Settings.Global;
 import android.util.Log;

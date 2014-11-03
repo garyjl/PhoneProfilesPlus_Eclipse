@@ -1,6 +1,5 @@
 package sk.henrichg.phoneprofilesplus;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.content.Intent;
@@ -15,7 +14,6 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 public class ActivateProfileActivity extends ActionBarActivity {
 

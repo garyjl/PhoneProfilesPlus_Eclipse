@@ -1,7 +1,5 @@
 package sk.henrichg.phoneprofilesplus;
  
-import sk.henrichg.phoneprofilesplus.EventPreferencesFragment.OnShowActionModeInEventPreferences;
-import sk.henrichg.phoneprofilesplus.PreferenceListFragment.OnPreferenceAttachedListener;
 import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnHideActionModeInProfilePreferences;
 import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnRedrawProfileListFragment;
 import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnRestartProfilePreferences;
@@ -15,8 +13,7 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
  
 public class ProfilePreferencesFragmentActivity extends ActionBarActivity
-												implements OnPreferenceAttachedListener,
-	                                                       OnRestartProfilePreferences,
+												implements OnRestartProfilePreferences,
 	                                                       OnRedrawProfileListFragment,
 	                                                       OnShowActionModeInProfilePreferences,
 	                                                       OnHideActionModeInProfilePreferences

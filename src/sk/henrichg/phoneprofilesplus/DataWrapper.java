@@ -33,6 +33,8 @@ import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.telephony.PhoneNumberUtils;
 import android.text.format.DateFormat;
+import android.view.Display;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 public class DataWrapper {
@@ -1264,6 +1266,7 @@ public class DataWrapper {
 		
 	}
 
+	@SuppressWarnings("deprecation")
 	@SuppressLint({ "NewApi", "SimpleDateFormat" })
 	public boolean doEventService(Event event, boolean statePause, 
 									boolean restartEvent, boolean interactive,
@@ -1649,9 +1652,17 @@ public class DataWrapper {
 		
 		if (event._eventPreferencesScreen._enabled)
 		{
-			
-			PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-			boolean isScreenOn = pm.isScreenOn();
+			boolean isScreenOn;
+	    	if (android.os.Build.VERSION.SDK_INT >= 20)
+	    	{
+	    		Display display = ((WindowManager)context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+	    		isScreenOn = display.getState() != Display.STATE_OFF;
+	    	}
+	    	else
+	    	{
+				PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+	    		isScreenOn = pm.isScreenOn();
+	    	}
 			boolean keyguardShowing = false;
 
 			if (event._eventPreferencesScreen._whenUnlocked)

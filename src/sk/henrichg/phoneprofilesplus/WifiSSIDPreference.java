@@ -2,6 +2,7 @@ package sk.henrichg.phoneprofilesplus;
 
 import java.util.ArrayList;
 import java.util.List;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.net.wifi.ScanResult;
@@ -10,7 +11,6 @@ import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -48,7 +48,8 @@ public class WifiSSIDPreference extends DialogPreference {
         SSIDList = new ArrayList<WifiSSIDData>();
     }
 
-    @Override
+    @SuppressLint("InflateParams")
+	@Override
     protected View onCreateDialogView() {
 
         LayoutInflater inflater =
