@@ -414,7 +414,7 @@
 	<string name="event_name_background_profile">Predvolený profil</string>
 
     <string name="phoneprofilehepler_install_error_no_root">Inštalácia PPHelper-a vyžaduje ROOT</string>
-    <string name="phoneprofilehepler_uninstall_error_no_root">Odinsštalácia PPHelper-a vyžaduje ROOT</string>
+    <string name="phoneprofilehepler_uninstall_error_no_root">Odinštalácia PPHelper-a vyžaduje ROOT</string>
     <string name="phoneprofilehepler_reboot_title_uninstall">Odinštalácia PPHelper-a</string>
     <string name="phoneprofilehepler_reboot_message_uninstall">Je nutný reštart zariadenia. Reštartovať teraz?</string>
 								

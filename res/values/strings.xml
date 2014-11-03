@@ -422,6 +422,6 @@
     <string name="phoneprofilehepler_install_error_no_root">PPHelper installation requires ROOT</string>
     <string name="phoneprofilehepler_uninstall_error_no_root">PPHelper uninstallation requires ROOT</string>
     <string name="phoneprofilehepler_reboot_title_uninstall">PPHelper uninstallation</string>
-    <string name="phoneprofilehepler_reboot_message_uninstall">Restart required. Restart now?</string>
+    <string name="phoneprofilehepler_reboot_message_uninstall">Restart is required. Restart now?</string>
     										
 </resources>
