@@ -32,39 +32,6 @@ public class ScreenOnOffBroadcastReceiver extends WakefulBroadcastReceiver {
 
 			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
 			
-			if (intent.getAction().equals(Intent.ACTION_SCREEN_ON))
-			{
-				// send broadcast for one wifi scan
-				boolean wifiEventsExists = false;
-				wifiEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_WIFIINFRONT) > 0;
-				GlobalData.logE("ScreenOnOffBroadcastReceiver.onReceive","wifiEventsExists="+wifiEventsExists);
-				if (wifiEventsExists && (!GlobalData.getEventsBlocked(context)))
-				{
-					//if (WifiScanAlarmBroadcastReceiver.isAlarmSet(context))
-					//{	
-					//	// alarm is set = wifi scanning is ON
-						// rescan wifi
-            			//GlobalData.setForceOneWifiScan(context, true);
-						WifiScanAlarmBroadcastReceiver.sendBroadcast(context);
-					//}
-				}
-				// send broadcast for one bluetooth scan
-				boolean bluetoothEventsExists = false;
-				bluetoothEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_BLUETOOTHINFRONT) > 0;
-				GlobalData.logE("ScreenOnOffBroadcastReceiver.onReceive","bluetoothEventsExists="+bluetoothEventsExists);
-				if (bluetoothEventsExists && (!GlobalData.getEventsBlocked(context)))
-				{
-					//if (BluetoothScanAlarmBroadcastReceiver.isAlarmSet(context))
-					//{	
-					//	// alarm is set = bluetooth scanning is ON
-						// rescan bluetooth
-	            		//GlobalData.setForceOneBluetoothScan(context, true);
-						BluetoothScanAlarmBroadcastReceiver.sendBroadcast(context);
-					//}
-				}
-			}
-			
-			
 			boolean screenEventsExists = false;
 			
 			screenEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_SCREEN) > 0;
@@ -77,6 +44,28 @@ public class ScreenOnOffBroadcastReceiver extends WakefulBroadcastReceiver {
 				Intent eventsServiceIntent = new Intent(context, EventsService.class);
 				eventsServiceIntent.putExtra(GlobalData.EXTRA_BROADCAST_RECEIVER_TYPE, BROADCAST_RECEIVER_TYPE);
 				startWakefulService(context, eventsServiceIntent);
+			}
+			
+			if (intent.getAction().equals(Intent.ACTION_SCREEN_ON))
+			{
+				// send broadcast for one wifi scan
+				boolean wifiEventsExists = false;
+				wifiEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_WIFIINFRONT) > 0;
+				GlobalData.logE("ScreenOnOffBroadcastReceiver.onReceive","wifiEventsExists="+wifiEventsExists);
+				if (wifiEventsExists && (!GlobalData.getEventsBlocked(context)))
+				{
+					// rescan wifi
+					WifiScanAlarmBroadcastReceiver.setAlarm(context, true);
+				}
+				// send broadcast for one bluetooth scan
+				boolean bluetoothEventsExists = false;
+				bluetoothEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_BLUETOOTHINFRONT) > 0;
+				GlobalData.logE("ScreenOnOffBroadcastReceiver.onReceive","bluetoothEventsExists="+bluetoothEventsExists);
+				if (bluetoothEventsExists && (!GlobalData.getEventsBlocked(context)))
+				{
+					// rescan bluetooth
+					BluetoothScanAlarmBroadcastReceiver.setAlarm(context, true);
+				}
 			}
 			
 		}

@@ -48,8 +48,12 @@ public class WifiStateChangedBroadcastReceiver extends BroadcastReceiver {
     		}
         }
 		
-		//if (wifiState == WifiManager.WIFI_STATE_DISABLED)
-		//	WifiScanAlarmBroadcastReceiver.setStartScan(context, false);
+		if (wifiState == WifiManager.WIFI_STATE_DISABLED)
+		{
+			WifiScanAlarmBroadcastReceiver.setWifiEnabledForScan(context, false);
+			WifiScanAlarmBroadcastReceiver.setStartScan(context, false);
+			GlobalData.setForceOneWifiScan(context, false);
+		}
 		
 	}
 }

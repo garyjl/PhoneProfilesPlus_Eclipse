@@ -49,15 +49,13 @@ public class WifiScanBroadcastReceiver extends WakefulBroadcastReceiver {
 					}
 				}
 				
+				WifiScanAlarmBroadcastReceiver.setStartScan(context, false);
 
 				if (WifiScanAlarmBroadcastReceiver.getWifiEnabledForScan(context))
 				{
 					GlobalData.logE("@@@ WifiScanBroadcastReceiver.onReceive","disable wifi");
 					WifiScanAlarmBroadcastReceiver.wifi.setWifiEnabled(false);
-        			WifiScanAlarmBroadcastReceiver.setWifiEnabledForScan(context, false);
 				}
-
-				WifiScanAlarmBroadcastReceiver.setStartScan(context, false);
 
 				boolean forceOneScan = GlobalData.getForceOneWifiScan(context); 
 				GlobalData.setForceOneWifiScan(context, false);
