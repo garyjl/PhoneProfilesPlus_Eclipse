@@ -424,6 +424,26 @@ Len je problem, vyzaduje to root :-/ Hadam to Google opravi a ringer modom sa to
 
 ----------------------------------------
 
-
+Wifi/bluetooth scanning
+1. WifiScanAlarmBroadcastReceiver:
+	a) kuknut, ci je pripojene ku wifi (tak ako to je teraz)
+	b) ak nie je, zavolat service na scan 
+2. service na scan
+    a) kuknut state, ako je to v WifiScanAlarmBroadcastReceiver
+    b) spustit scan alebo nastavit, aby sa scanovalo, tak ako to je v WifiScanAlarmBroadcastReceiver
+    c) v cykle cakat na getStartScan, tak ko to je v WifiSSIDPreference
+    d) po cykle nastavit vsetko na false
+3. WifiScanBroadcastReceiver nemenit
+4. WifiConnectionBroadcastReceiver nemenit
+5. WifiStateChangedBroadcastReceiver nemenit
+6. WifiSSIDPreference
+    a) povolit wifi ak je treba
+    b) netestovat, ci uz scanning bezi
+    c) nastavit setForceOneWifiScan()
+    d) zavolat scanning, ktory vola service a cakat ako teraz
+    e) cakat na ukoncenie scanningu ako teraz
+    f) nenastavovat scanning shared preferences
+   
+  
       
 

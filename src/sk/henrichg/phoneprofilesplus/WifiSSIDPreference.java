@@ -197,18 +197,10 @@ public class WifiSSIDPreference extends DialogPreference {
 					}
 				}
 
-				boolean canScan = !WifiScanAlarmBroadcastReceiver.getStartScan(context);
-				
-				if (canScan)
+				if (_forRescan)
 				{
-					if (_forRescan)
-					{
-		            	GlobalData.setForceOneWifiScan(context, true);
-		            	//WifiScanAlarmBroadcastReceiver.sendBroadcast(context);
-						if (!isWifiEnabled)
-							WifiScanAlarmBroadcastReceiver.setWifiEnabledForScan(context, true);
-		            	WifiScanAlarmBroadcastReceiver.startScan(context);
-					}
+	            	GlobalData.setForceOneWifiScan(context, true);
+	            	WifiScanAlarmBroadcastReceiver.startScanner(context);
 				}
 					
 		        if (_forRescan)
@@ -225,12 +217,6 @@ public class WifiSSIDPreference extends DialogPreference {
 					    }
 			        	if (!WifiScanAlarmBroadcastReceiver.getStartScan(context))
 			        		break;
-		        	}
-		        	if (canScan)
-		        	{
-			        	GlobalData.setForceOneWifiScan(context, false);
-		            	WifiScanAlarmBroadcastReceiver.setWifiEnabledForScan(context, false);
-			        	WifiScanAlarmBroadcastReceiver.setStartScan(context, false);
 		        	}
 		        }
 

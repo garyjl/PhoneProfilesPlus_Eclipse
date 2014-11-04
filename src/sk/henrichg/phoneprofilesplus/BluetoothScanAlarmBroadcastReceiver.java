@@ -88,27 +88,7 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
 						}
 				    }	
 					
-					bluetoothState = enableBluetooth(dataWrapper, bluetooth);
-
-					if (GlobalData.getEventsBlocked(context) && (!GlobalData.getForceOneBluetoothScan(context)))
-					{
-	    				setStartScan(context, false);
-	        			setBluetoothEnabledForScan(context, false);
-					}
-					else
-					{
-						if (bluetoothState == BluetoothAdapter.STATE_ON)
-							startScan(context);
-						else
-						if (bluetoothState == BluetoothAdapter.STATE_TURNING_ON)
-							setStartScan(context, true);
-						else
-						{
-		    				setStartScan(context, false);
-		        			setBluetoothEnabledForScan(context, false);
-		        			GlobalData.setForceOneBluetoothScan(context, false);
-					    }
-					}
+					startScanner(context);
 				}
 				else
 					removeAlarm(context, false);
@@ -290,11 +270,20 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		setStartScan(context, startScan);
 	}
 	
+	static public void startScanner(Context context)
+	{
+		Intent scanServiceIntent = new Intent(context, ScannerService.class);
+		scanServiceIntent.putExtra(GlobalData.EXTRA_SCANNER_TYPE, GlobalData.SCANNER_TYPE_BLUETOOTH);
+		context.startService(scanServiceIntent);
+	}
+	
 	static public void stopScan(Context context)
 	{
 		unlock();
-		BluetoothScanAlarmBroadcastReceiver.setBluetoothEnabledForScan(context, false);
-		BluetoothScanAlarmBroadcastReceiver.setStartScan(context, false);
+		if (getBluetoothEnabledForScan(context)) 
+			bluetooth.disable();
+		setBluetoothEnabledForScan(context, false);
+		setStartScan(context, false);
 		GlobalData.setForceOneBluetoothScan(context, false);
 	}
 	
@@ -319,39 +308,5 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		editor.putBoolean(GlobalData.PREF_EVENT_BLUETOOTH_ENABLED_FOR_SCAN, setEnabled);
 		editor.commit();
 	}
-	
-    @SuppressLint("NewApi")
-	private static int enableBluetooth(DataWrapper dataWrapper, BluetoothAdapter bluetooth)
-    {
-    	int bluetoothState = bluetooth.getState();
-    	
-    	if ((!GlobalData.getEventsBlocked(dataWrapper.context)) || GlobalData.getForceOneBluetoothScan(dataWrapper.context))
-    	{
-    		boolean isBluetoothEnabled = bluetoothState == BluetoothAdapter.STATE_ON;
-			if (!isBluetoothEnabled)
-	    	{
-	        	if (GlobalData.applicationEventBluetoothEnableBluetooth)
-	        	{
-					boolean bluetoothEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_BLUETOOTHINFRONT) > 0;
-	
-					if (bluetoothEventsExists)
-					{
-			        	GlobalData.logE("@@@ BluetoothScanAlarmBroadcastReceiver.enableBluetooth","enable");
-			        	bluetooth.enable();
-		        		setBluetoothEnabledForScan(dataWrapper.context, true);
-						return BluetoothAdapter.STATE_TURNING_ON;
-					}
-	        	}
-	    	}
-	    	else
-	    	{
-        		//setBluetoothEnabledForScan(dataWrapper.context, false);
-	    		return bluetoothState;
-	    	}
-    	}
-
-   		//setBluetoothEnabledForScan(dataWrapper.context, false);
-    	return bluetoothState;
-    }
 	
 }

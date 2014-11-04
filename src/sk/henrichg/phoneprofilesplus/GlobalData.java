@@ -46,15 +46,15 @@ public class GlobalData extends Application {
 										 //"@@@ BluetoothConnectionBroadcastReceiver|"+
 										 //"@@@ BluetoothScanAlarmBroadcastReceiver|"+
 										 //"@@@ BluetoothScanBroadcastReceiver|"+
-										 //"@@@ BluetoothStateChangedBroadcastReceiver"
-										 "@@@ ScreenOnOffBroadcastReceiver|"+
+										 //"@@@ BluetoothStateChangedBroadcastReceiver|"+
+										 //"@@@ ScreenOnOffBroadcastReceiver|"+
 										 //"@@@ RestartEventsBroadcastReceiver|"+
 										 //"@@@ EventDelayBroadcastReceiver|"+
 										 //"@@@ BootUpReceiver|"+
 										 //"@@@ PackageReplacedReceiver|"+
 										 //"@@@ EventsService|"+
 										 "@@@ Event|"+
-										 "@@@x DataWrapper"
+										 "@@@ ScannerService"
 			;
 	
 	
@@ -72,6 +72,7 @@ public class GlobalData extends Application {
 	static final String EXTRA_SECOND_SET_VOLUMES = "second_set_volumes";
 	static final String EXTRA_EVENT_NOTIFICATION_SOUND = "event_notification_sound";
 	static final String EXTRA_BROADCAST_RECEIVER_TYPE = "broadcast_receiver_type";
+	static final String EXTRA_SCANNER_TYPE = "scanner_type";
 
 	static final int STARTUP_SOURCE_NOTIFICATION = 1;
 	static final int STARTUP_SOURCE_WIDGET = 2;
@@ -190,6 +191,9 @@ public class GlobalData extends Application {
 	public static final long DEFAULT_PROFILE_ID = -999;  // source profile id
 	public static final long PROFILE_NO_ACTIVATE = -999;
 	
+	public static final String SCANNER_TYPE_WIFI = "wifi";
+	public static final String SCANNER_TYPE_BLUETOOTH = "bluetooth";
+
 	// global internal preferences
 	private static final String PREF_GLOBAL_EVENTS_RUN_STOP = "globalEventsRunStop";
 	private static final String PREF_APPLICATION_STARTED = "applicationStarted";
