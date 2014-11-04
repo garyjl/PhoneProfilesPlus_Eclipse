@@ -306,6 +306,11 @@
         <service android:name=".EventsService" >
         </service>
 
+        <service
+            android:name=".ScannerService"
+            android:exported="false" >
+        </service>
+        
         <receiver
             android:name=".EventsTimeBroadcastReceiver"
             android:enabled="true"
@@ -416,10 +421,6 @@
             android:exported="false" >
         </receiver>
 
-        <service
-            android:name=".ScannerService"
-            android:exported="false" >
-        </service>
     </application>
 
 </manifest>
