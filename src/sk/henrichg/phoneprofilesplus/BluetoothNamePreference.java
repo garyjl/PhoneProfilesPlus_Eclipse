@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
@@ -48,7 +49,8 @@ public class BluetoothNamePreference extends DialogPreference {
         bluetoothList = new ArrayList<BluetoothDeviceData>();
     }
 
-    @Override
+    @SuppressLint("InflateParams")
+	@Override
     protected View onCreateDialogView() {
 
         LayoutInflater inflater =
@@ -215,7 +217,7 @@ public class BluetoothNamePreference extends DialogPreference {
 					    } catch (InterruptedException e) {
 					        System.out.println(e);
 					    }
-			        	if (!GlobalData.getForceOneBluetoothScan(context))
+			        	if (!BluetoothScanAlarmBroadcastReceiver.getStartScan(context))
 			        		break;
 		        	}
 		        	GlobalData.setForceOneBluetoothScan(context, false);

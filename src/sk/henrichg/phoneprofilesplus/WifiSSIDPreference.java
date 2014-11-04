@@ -218,7 +218,7 @@ public class WifiSSIDPreference extends DialogPreference {
 					    } catch (InterruptedException e) {
 					        System.out.println(e);
 					    }
-			        	if (!GlobalData.getForceOneWifiScan(context))
+			        	if (!WifiScanAlarmBroadcastReceiver.getStartScan(context))
 			        		break;
 		        	}
 		        	GlobalData.setForceOneWifiScan(context, false);
