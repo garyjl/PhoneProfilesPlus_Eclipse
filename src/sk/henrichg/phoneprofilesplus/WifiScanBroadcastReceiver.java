@@ -55,6 +55,8 @@ public class WifiScanBroadcastReceiver extends WakefulBroadcastReceiver {
 				{
 					GlobalData.logE("@@@ WifiScanBroadcastReceiver.onReceive","disable wifi");
 					WifiScanAlarmBroadcastReceiver.wifi.setWifiEnabled(false);
+					// not call this, due WifiConnectionBroadcastReceiver
+					//WifiScanAlarmBroadcastReceiver.setWifiEnabledForScan(context, false);
 				}
 
 				boolean forceOneScan = GlobalData.getForceOneWifiScan(context); 

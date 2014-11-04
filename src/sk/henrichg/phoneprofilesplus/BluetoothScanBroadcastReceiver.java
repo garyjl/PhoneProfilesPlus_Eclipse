@@ -99,6 +99,8 @@ public class BluetoothScanBroadcastReceiver extends WakefulBroadcastReceiver {
 					{
 						GlobalData.logE("@@@ BluetoothScanBroadcastReceiver.onReceive","disable bluetooth");
 						BluetoothScanAlarmBroadcastReceiver.bluetooth.disable();
+						// not call this, due BluetoothConnectionBroadcastReceiver
+						//BluetoothScanAlarmBroadcastReceiver.setBluetoothEnabledForScan(context, false);
 					}
 
 					boolean forceOneScan = GlobalData.getForceOneBluetoothScan(context); 

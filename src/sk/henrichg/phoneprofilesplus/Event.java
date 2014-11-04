@@ -722,10 +722,10 @@ public class Event {
 		// activate profile only when profile not already activated
 		if (activateReturnProfile && canActivateReturnProfile())
 		{
-			Profile profile = dataWrapper.getActivatedProfile();
+			Profile activatedProfile = dataWrapper.getActivatedProfile();
 			long activatedProfileId = 0;
-			if (profile != null)
-				activatedProfileId = profile._id;
+			if (activatedProfile != null)
+				activatedProfileId = activatedProfile._id;
 			// first activate _fkProfileEnd
 			if (_fkProfileEnd != GlobalData.PROFILE_NO_ACTIVATE)
 			{
@@ -734,6 +734,10 @@ public class Event {
 					GlobalData.logE("Event.pauseEvent","activate end porfile");
 					dataWrapper.activateProfileFromEvent(_fkProfileEnd, false, "");
 					activatedProfileId = _fkProfileEnd;
+				}
+				else
+				{
+					dataWrapper.updateNotificationAndWidgets(activatedProfile, "");
 				}
 			}
 			// second activate when undoneProfile is set
@@ -745,6 +749,10 @@ public class Event {
 					GlobalData.logE("Event.pauseEvent","_fkProfileEndActivated="+eventTimeline._fkProfileEndActivated);
 					if (eventTimeline._fkProfileEndActivated != 0)
 						dataWrapper.activateProfileFromEvent(eventTimeline._fkProfileEndActivated, false, "");
+				}
+				else
+				{
+					dataWrapper.updateNotificationAndWidgets(activatedProfile, "");
 				}
 			}
 		}

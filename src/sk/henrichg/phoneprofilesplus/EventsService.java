@@ -206,7 +206,6 @@ public class EventsService extends IntentService
 		
 		dataWrapper.invalidateDataWrapper();
 
-		
 		GlobalData.logE("@@@ EventsService.onHandleIntent","-- end --------------------------------");
 		
 	}

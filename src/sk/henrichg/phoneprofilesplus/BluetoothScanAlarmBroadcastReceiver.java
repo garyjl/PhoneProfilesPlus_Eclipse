@@ -293,6 +293,14 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		setStartScan(context, startScan);
 	}
 	
+	static public void stopScan(Context context)
+	{
+		unlock();
+		BluetoothScanAlarmBroadcastReceiver.setBluetoothEnabledForScan(context, false);
+		BluetoothScanAlarmBroadcastReceiver.setStartScan(context, false);
+		GlobalData.setForceOneBluetoothScan(context, false);
+	}
+	
 	static public void initTmpScanResults()
 	{
 		if (tmpScanResults != null)
@@ -326,9 +334,9 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
 	    		isAirplaneMode = Settings.Global.getInt(dataWrapper.context.getContentResolver(), Global.AIRPLANE_MODE_ON, 0) != 0;
 	    	else
 	    		isAirplaneMode = Settings.System.getInt(dataWrapper.context.getContentResolver(), Settings.System.AIRPLANE_MODE_ON, 0) != 0;
-			if (!isAirplaneMode)
+			boolean isBluetoothEnabled = bluetooth.isEnabled();
+			if ((!isAirplaneMode) || isBluetoothEnabled)
 			{
-				boolean isBluetoothEnabled = bluetooth.isEnabled();
 				GlobalData.logE("@@@ BluetoothScanAlarmBroadcastReceiver.enableBluetooth","isBluetoothEnabled="+isBluetoothEnabled);
 	
 				if (!isBluetoothEnabled)
@@ -341,20 +349,20 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
 						{
 				        	GlobalData.logE("@@@ BluetoothScanAlarmBroadcastReceiver.enableBluetooth","enable");
 				        	bluetooth.enable();
-							setBluetoothEnabledForScan(dataWrapper.context, true);
+			        		setBluetoothEnabledForScan(dataWrapper.context, true);
 							return true;
 						}
 		        	}
 		    	}
 		    	else
 		    	{
-		        	setBluetoothEnabledForScan(dataWrapper.context, false);
+	        		//setBluetoothEnabledForScan(dataWrapper.context, false);
 		    		return true;
 		    	}
 	    	}
     	}
 
-    	setBluetoothEnabledForScan(dataWrapper.context, false);
+   		//setBluetoothEnabledForScan(dataWrapper.context, false);
     	return false;
     }
 	

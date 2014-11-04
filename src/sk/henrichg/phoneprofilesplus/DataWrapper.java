@@ -381,6 +381,12 @@ public class DataWrapper {
 		_activateProfile(getProfileById(profile_id), GlobalData.STARTUP_SOURCE_SERVICE, interactive, null, eventNotificationSound);
 	}
 	
+	public void updateNotificationAndWidgets(Profile profile, String eventNotificationSound)
+	{
+		getActivateProfileHelper().initialize(this, null, context);
+		getActivateProfileHelper().showNotification(profile, eventNotificationSound);
+	}
+	
 	
 	public void deactivateProfile()
 	{
@@ -727,12 +733,11 @@ public class DataWrapper {
 
 		removeAllEventDelays();
 		
-		GlobalData.setForceOneWifiScan(context, false);
-		GlobalData.setForceOneBluetoothScan(context, false);
-
 		WifiScanAlarmBroadcastReceiver.initialize(context);
+		GlobalData.setForceOneWifiScan(context, true);
 		WifiScanAlarmBroadcastReceiver.setAlarm(context, false);
 		BluetoothScanAlarmBroadcastReceiver.initialize(context);
+		GlobalData.setForceOneBluetoothScan(context, true);
 		BluetoothScanAlarmBroadcastReceiver.setAlarm(context, false);
 		SearchCalendarEventsBroadcastReceiver.setAlarm(context);
 
@@ -740,7 +745,7 @@ public class DataWrapper {
 		Intent intent = new Intent();
 		intent.setAction(RestartEventsBroadcastReceiver.INTENT_RESTART_EVENTS);
 		context.sendBroadcast(intent);
-
+		
 	}
 	
 	public Event getNoinitializedEvent(String name)
@@ -1626,22 +1631,25 @@ public class DataWrapper {
 						
 						if (WifiScanAlarmBroadcastReceiver.scanResults != null)
 						{
-							//GlobalData.logE("@@@ DataWrapper.doEventService","-- eventSSID="+event._eventPreferencesWifi._SSID);
+							//GlobalData.logE("@@@x DataWrapper.doEventService","scanResults != null");
+							//GlobalData.logE("@@@x DataWrapper.doEventService","-- eventSSID="+event._eventPreferencesWifi._SSID);
 	
 							for (ScanResult result : WifiScanAlarmBroadcastReceiver.scanResults)
 					        {
+								//GlobalData.logE("@@@x DataWrapper.doEventService","wifiSSID="+getSSID(result));
+								//GlobalData.logE("@@@x DataWrapper.doEventService","wifiBSSID="+result.BSSID);
 								if (compareSSID(result, event._eventPreferencesWifi._SSID))
 								{
-									GlobalData.logE("@@@ DataWrapper.doEventService","wifi found");
-									//GlobalData.logE("@@@ DataWrapper.doEventService","wifiSSID="+getSSID(wifiManager, result));
-									//GlobalData.logE("@@@ DataWrapper.doEventService","wifiBSSID="+result.BSSID);
+									GlobalData.logE("@@@x DataWrapper.doEventService","wifi found");
 									wifiPassed = true;
 									break;
 								}
 					        }
 						}
+						else
+							GlobalData.logE("@@@x DataWrapper.doEventService","scanResults == null");
 						if (!wifiPassed)
-							GlobalData.logE("@@@ DataWrapper.doEventService","wifi not found");
+							GlobalData.logE("@@@x DataWrapper.doEventService","wifi not found");
 						
 					//}
 				}
@@ -2146,13 +2154,6 @@ public class DataWrapper {
 					// remove all event delay alarms
 					removeAllEventDelays();
 
-					// rescan wifi
-        			//GlobalData.setForceOneWifiScan(context, true);
-					WifiScanAlarmBroadcastReceiver.sendBroadcast(_activity.getBaseContext());
-					// rescan bluetooth
-            		//GlobalData.setForceOneBluetoothScan(context, true);
-					BluetoothScanAlarmBroadcastReceiver.sendBroadcast(_activity.getBaseContext());
-					
 					// ignoruj manualnu aktivaciu profilu
 					// a odblokuj forceRun eventy
 					restartEvents(true, true);

@@ -48,12 +48,14 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 
 			if (GlobalData.getGlobalEventsRuning(context))
 			{
-	    		GlobalData.logE("@@@ WifiConnectionBroadcastReceiver.onReceive","state="+info.getState());
+	    		//GlobalData.logE("@@@ WifiConnectionBroadcastReceiver.onReceive","state="+info.getState());
 	
 	        	if (((info.getState() == NetworkInfo.State.CONNECTED) ||
 	        		(info.getState() == NetworkInfo.State.DISCONNECTED)) &&
 	        		(lastState != currState))
 	        	{
+		    		GlobalData.logE("@@@ WifiConnectionBroadcastReceiver.onReceive","state="+info.getState());
+
 	        		if (!WifiScanAlarmBroadcastReceiver.getWifiEnabledForScan(context))
 	        		{
 		    			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
@@ -77,9 +79,7 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
     		if ((info.getState() == NetworkInfo.State.DISCONNECTED) &&
     			(lastState != currState))
     		{
-    			WifiScanAlarmBroadcastReceiver.setWifiEnabledForScan(context, false);
-    			WifiScanAlarmBroadcastReceiver.setStartScan(context, false);
-				GlobalData.setForceOneWifiScan(context, false);
+    			WifiScanAlarmBroadcastReceiver.stopScan(context);
     		}
 			
         }

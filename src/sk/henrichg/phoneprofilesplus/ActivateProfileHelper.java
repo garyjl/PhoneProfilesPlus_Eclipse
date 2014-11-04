@@ -89,7 +89,7 @@ public class ActivateProfileHelper {
 	}
 	
 	@SuppressWarnings("deprecation")
-	private void doExecuteForRadios(Profile profile)
+	private void doExecuteForRadios(Profile profile, boolean onlyCheckForScanning)
 	{
 		// nahodenie mobilnych dat
 		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA, context) == GlobalData.HARDWARE_CHECK_ALLOWED)
@@ -118,13 +118,16 @@ public class ActivateProfileHelper {
 			}
 			if (_setMobileData)
 			{
-				setMobileData(context, _isMobileData);
-
-				try {
-		        	Thread.sleep(200);
-			    } catch (InterruptedException e) {
-			        System.out.println(e);
-			    }
+				if (!onlyCheckForScanning)
+				{
+					setMobileData(context, _isMobileData);
+	
+					try {
+			        	Thread.sleep(200);
+				    } catch (InterruptedException e) {
+				        System.out.println(e);
+				    }
+				}
 			}
 		}
 
@@ -156,7 +159,11 @@ public class ActivateProfileHelper {
 			if (profile._deviceWiFi != 0)
 			{
 				try {
-					wifiManager.setWifiEnabled(setWifiState);
+					if (!onlyCheckForScanning)
+						wifiManager.setWifiEnabled(setWifiState);
+					else
+					if (setWifiState)
+						WifiScanAlarmBroadcastReceiver.setWifiEnabledForScan(context, false);
 				} catch (Exception e) {
 					// barla pre security exception INTERACT_ACROSS_USERS - chyba ROM 
 					wifiManager.setWifiEnabled(setWifiState);
@@ -168,25 +175,36 @@ public class ActivateProfileHelper {
 		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_BLUETOOTH, context) == GlobalData.HARDWARE_CHECK_ALLOWED)
 		{
 			BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+			boolean setBluetoothState = false;
 			switch (profile._deviceBluetooth) {
 				case 1 :
-					bluetoothAdapter.enable();
+					if (!onlyCheckForScanning)
+						bluetoothAdapter.enable();
+					setBluetoothState = true;
 					break;
 				case 2 : 
-					bluetoothAdapter.disable();
+					if (!onlyCheckForScanning)
+						bluetoothAdapter.disable();
+					setBluetoothState = false;
 					break;
 				case 3 :
 					if ((bluetoothAdapter != null) && (!bluetoothAdapter.isEnabled()))
 					{
-						bluetoothAdapter.enable();
+						if (!onlyCheckForScanning)
+							bluetoothAdapter.enable();
+						setBluetoothState = true;
 					}
 					else
 					if ((bluetoothAdapter != null) && (bluetoothAdapter.isEnabled()))
 					{
-						bluetoothAdapter.disable();
+						if (!onlyCheckForScanning)
+							bluetoothAdapter.disable();
+						setBluetoothState = false;
 					}
 					break;
 			}
+			if (onlyCheckForScanning && setBluetoothState)
+				BluetoothScanAlarmBroadcastReceiver.setBluetoothEnabledForScan(context, false);
 		}
 
 		// nahodenie GPS
@@ -198,20 +216,24 @@ public class ActivateProfileHelper {
 		    
 			switch (profile._deviceGPS) {
 				case 1 :
-					setGPS(context, true);
+					if (!onlyCheckForScanning)
+						setGPS(context, true);
 					break;
 				case 2 : 
-					setGPS(context, false);
+					if (!onlyCheckForScanning)
+						setGPS(context, false);
 					break;
 				case 3 :
 				    if (!provider.contains("gps"))
 					{
-						setGPS(context, true);
+						if (!onlyCheckForScanning)
+							setGPS(context, true);
 					}
 					else
 				    if (provider.contains("gps"))
 					{
-						setGPS(context, false);
+						if (!onlyCheckForScanning)
+							setGPS(context, false);
 					}
 					break;
 			}
@@ -254,7 +276,7 @@ public class ActivateProfileHelper {
 			// switch ON airplane mode, set it before executeForRadios
 			setAirplaneMode(context, _isAirplaneMode);
 		
-		doExecuteForRadios(profile);
+		doExecuteForRadios(profile, false);
 
 		if (_setAirplaneMode && !(_isAirplaneMode))
 			// switch OFF airplane mode, set if after executeForRadios
@@ -495,7 +517,10 @@ public class ActivateProfileHelper {
 			});
 		}*/
 		
-		// nahodenie radio preferences
+		//// nahodenie radio preferences
+		// only check
+		doExecuteForRadios(profile, true);
+		// set radios
 		if (PhoneProfilesHelper.isPPHelperInstalled(context, 0))
 		{
 			// broadcast PPHelper

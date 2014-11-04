@@ -109,9 +109,7 @@ public class BluetoothConnectionBroadcastReceiver extends WakefulBroadcastReceiv
 			
 			if ((!connected) && (lastState != currState))
 			{
-    			BluetoothScanAlarmBroadcastReceiver.setBluetoothEnabledForScan(context, false);
-				BluetoothScanAlarmBroadcastReceiver.setStartScan(context, false);
-				GlobalData.setForceOneBluetoothScan(context, false);
+				BluetoothScanAlarmBroadcastReceiver.stopScan(context);
 			}
 			
 		}

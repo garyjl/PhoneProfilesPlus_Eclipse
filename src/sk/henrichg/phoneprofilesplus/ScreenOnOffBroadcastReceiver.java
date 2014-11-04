@@ -31,7 +31,7 @@ public class ScreenOnOffBroadcastReceiver extends WakefulBroadcastReceiver {
 				GlobalData.logE("@@@ ScreenOnOffBroadcastReceiver.onReceive","screen unlock");
 
 			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
-			
+
 			boolean screenEventsExists = false;
 			
 			screenEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_SCREEN) > 0;
@@ -46,6 +46,7 @@ public class ScreenOnOffBroadcastReceiver extends WakefulBroadcastReceiver {
 				startWakefulService(context, eventsServiceIntent);
 			}
 			
+			/*TODO maybe application preference will by added for this
 			if (intent.getAction().equals(Intent.ACTION_SCREEN_ON))
 			{
 				// send broadcast for one wifi scan
@@ -55,7 +56,8 @@ public class ScreenOnOffBroadcastReceiver extends WakefulBroadcastReceiver {
 				if (wifiEventsExists && (!GlobalData.getEventsBlocked(context)))
 				{
 					// rescan wifi
-					WifiScanAlarmBroadcastReceiver.setAlarm(context, true);
+					WifiScanAlarmBroadcastReceiver.sendBroadcast(context);
+					//WifiScanAlarmBroadcastReceiver.setAlarm(context, true);
 				}
 				// send broadcast for one bluetooth scan
 				boolean bluetoothEventsExists = false;
@@ -64,10 +66,11 @@ public class ScreenOnOffBroadcastReceiver extends WakefulBroadcastReceiver {
 				if (bluetoothEventsExists && (!GlobalData.getEventsBlocked(context)))
 				{
 					// rescan bluetooth
-					BluetoothScanAlarmBroadcastReceiver.setAlarm(context, true);
+					BluetoothScanAlarmBroadcastReceiver.sendBroadcast(context);
+					//BluetoothScanAlarmBroadcastReceiver.setAlarm(context, true);
 				}
 			}
-			
+			*/
 		}
 
 	}
