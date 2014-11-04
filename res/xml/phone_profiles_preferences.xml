@@ -30,6 +30,12 @@
             android:defaultValue="10"
             henrichg:min="1"
             henrichg:max="300" />
+		<ListPreference android:title="@string/phone_profiles_pref_applicationEventWifiRescan"
+	           android:summary="@string/phone_profiles_pref_applicationEventRescan_none"
+	           android:key="applicationEventWifiRescan"
+	           android:defaultValue="0"
+	           android:entries="@array/applicationEventRescanArray"
+	           android:entryValues="@array/applicationEventRescanValues" />        
 		<CheckBoxPreference 
 		    android:key="applicationEventBluetoothEnableBluetooth"
 		    android:title="@string/phone_profiles_pref_applicationEventBluetoothEnableBluetooth"
@@ -41,6 +47,12 @@
             android:defaultValue="10"
             henrichg:min="1"
             henrichg:max="300" />
+		<ListPreference android:title="@string/phone_profiles_pref_applicationEventBluetoothRescan"
+	           android:summary="@string/phone_profiles_pref_applicationEventRescan_none"
+	           android:key="applicationEventBluetoothRescan"
+	           android:defaultValue="0"
+	           android:entries="@array/applicationEventRescanArray"
+	           android:entryValues="@array/applicationEventRescanValues" />        
  	</PreferenceCategory>
     
     <PreferenceCategory

@@ -407,21 +407,25 @@
 	<string name="phone_profiles_pref_applicationEventBluetoothEnableBluetooth">Enable Bluetooth scan</string>
 	<string name="bluetooth_name_pref_dlg_rescan_button">Rescan</string>
 	<string name="wifi_ssid_pref_dlg_rescan_button">Rescan</string>
-
     <string name="event_type_sms">SMS</string>
     <string name="pref_event_sms_contactListType">List</string> 
     <string name="event_preferences_category_eventSMSParameters">SMS parameters</string>
     <string name="event_preferences_sms_enabled">Enable SMS</string>
     <string name="event_preferences_sms_contacts">Contacts</string>
-
     <string name="toast_events_restarted">Events restarted</string>
     <string name="phone_profiles_pref_notificationStatusBarPermanent">Ongoing notification</string>
     <string name="phone_profiles_pref_notificationStatusBarCancel">Cancel after (sec)</string>
 	<string name="event_name_background_profile">Default profile</string>
-
     <string name="phoneprofilehepler_install_error_no_root">PPHelper installation requires ROOT</string>
     <string name="phoneprofilehepler_uninstall_error_no_root">PPHelper uninstallation requires ROOT</string>
     <string name="phoneprofilehepler_reboot_title_uninstall">PPHelper uninstallation</string>
     <string name="phoneprofilehepler_reboot_message_uninstall">Restart is required. Restart now?</string>
+
+    <string name="phone_profiles_pref_applicationEventWifiRescan">Rescan wifi</string>
+    <string name="phone_profiles_pref_applicationEventBluetoothRescan">Rescan bluetooth</string>
+	<string name="phone_profiles_pref_applicationEventRescan_none">None</string>    
+	<string name="phone_profiles_pref_applicationEventRescan_screenOn">Screen On</string>    
+	<string name="phone_profiles_pref_applicationEventRescan_restartEvents">Restart events</string>    
+	<string name="phone_profiles_pref_applicationEventRescan_screenOnAndRestartEvents">Screen On &amp; Restart events</string>    
     										
 </resources>

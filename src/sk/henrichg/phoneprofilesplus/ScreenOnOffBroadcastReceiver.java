@@ -47,38 +47,21 @@ public class ScreenOnOffBroadcastReceiver extends WakefulBroadcastReceiver {
 			}
 			
 			
-			//TODO maybe application preference will by added for this
-			/*
 			if (intent.getAction().equals(Intent.ACTION_SCREEN_ON))
 			{
-				if (!WifiScanAlarmBroadcastReceiver.getStartScan(context))
+				if (GlobalData.applicationEventWifiRescan.equals(GlobalData.RESCAN_TYPE_SCREEN_ON) ||
+					GlobalData.applicationEventWifiRescan.equals(GlobalData.RESCAN_TYPE_SCREEN_ON_RESTART_EVENTS))
 				{
 					// send broadcast for one wifi scan
-					boolean wifiEventsExists = false;
-					wifiEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_WIFIINFRONT) > 0;
-					GlobalData.logE("ScreenOnOffBroadcastReceiver.onReceive","wifiEventsExists="+wifiEventsExists);
-					if (wifiEventsExists && (!GlobalData.getEventsBlocked(context)))
-					{
-						// rescan wifi
-						WifiScanAlarmBroadcastReceiver.sendBroadcast(context);
-						//WifiScanAlarmBroadcastReceiver.setAlarm(context, true);
-					}
+					WifiScanAlarmBroadcastReceiver.sendBroadcast(context);
 				}
-				if (!BluetoothScanAlarmBroadcastReceiver.getStartScan(context))
+				if (GlobalData.applicationEventBluetoothRescan.equals(GlobalData.RESCAN_TYPE_SCREEN_ON) ||
+					GlobalData.applicationEventBluetoothRescan.equals(GlobalData.RESCAN_TYPE_SCREEN_ON_RESTART_EVENTS))
 				{
 					// send broadcast for one bluetooth scan
-					boolean bluetoothEventsExists = false;
-					bluetoothEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_BLUETOOTHINFRONT) > 0;
-					GlobalData.logE("ScreenOnOffBroadcastReceiver.onReceive","bluetoothEventsExists="+bluetoothEventsExists);
-					if (bluetoothEventsExists && (!GlobalData.getEventsBlocked(context)))
-					{
-						// rescan bluetooth
-						BluetoothScanAlarmBroadcastReceiver.sendBroadcast(context);
-						//BluetoothScanAlarmBroadcastReceiver.setAlarm(context, true);
-					}
+					BluetoothScanAlarmBroadcastReceiver.sendBroadcast(context);
 				}
 			}
-			*/
 		}
 
 	}

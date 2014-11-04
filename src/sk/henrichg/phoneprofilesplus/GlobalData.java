@@ -182,6 +182,8 @@ public class GlobalData extends Application {
     public static final String PREF_APPLICATION_WIDGET_LIST_GRID_LAYOUT= "applicationWidgetListGridLayout";
     public static final String PREF_APPLICATION_EVENT_BLUETOOTH_SCAN_INTERVAL = "applicationEventBluetoothScanInterval";
     public static final String PREF_APPLICATION_EVENT_BLUETOOTH_ENABLE_BLUETOOTH = "applicationEventBluetoothEnableBluetooth";
+    public static final String PREF_APPLICATION_EVENT_WIFI_RESCAN = "applicationEventWifiRescan";
+    public static final String PREF_APPLICATION_EVENT_BLUETOOTH_RESCAN = "applicationEventBluetoothRescan";
 
     public static final int HARDWARE_CHECK_NOT_ALLOWED = 0;
     public static final int HARDWARE_CHECK_ALLOWED = 1;
@@ -193,6 +195,11 @@ public class GlobalData extends Application {
 	
 	public static final String SCANNER_TYPE_WIFI = "wifi";
 	public static final String SCANNER_TYPE_BLUETOOTH = "bluetooth";
+	
+	public static final String RESCAN_TYPE_NONE = "0";
+	public static final String RESCAN_TYPE_SCREEN_ON = "1";
+	public static final String RESCAN_TYPE_RESTART_EVENTS = "2";
+	public static final String RESCAN_TYPE_SCREEN_ON_RESTART_EVENTS = "3";
 
 	// global internal preferences
 	private static final String PREF_GLOBAL_EVENTS_RUN_STOP = "globalEventsRunStop";
@@ -257,6 +264,8 @@ public class GlobalData extends Application {
     public static boolean applicationWidgetListGridLayout;
     public static int applicationEventBluetoothScanInterval;
     public static boolean applicationEventBluetoothEnableBluetooth;
+    public static String applicationEventWifiRescan;
+    public static String applicationEventBluetoothRescan;
     
 	public void onCreate()
 	{
@@ -448,6 +457,8 @@ public class GlobalData extends Application {
 	    applicationWidgetListGridLayout = preferences.getBoolean(PREF_APPLICATION_WIDGET_LIST_GRID_LAYOUT, false);
 	    applicationEventBluetoothScanInterval = Integer.valueOf(preferences.getString(PREF_APPLICATION_EVENT_BLUETOOTH_SCAN_INTERVAL, "10"));
 	    applicationEventBluetoothEnableBluetooth = preferences.getBoolean(PREF_APPLICATION_EVENT_BLUETOOTH_ENABLE_BLUETOOTH, true);
+	    applicationEventWifiRescan = preferences.getString(PREF_APPLICATION_EVENT_WIFI_RESCAN, "0");
+	    applicationEventBluetoothRescan = preferences.getString(PREF_APPLICATION_EVENT_BLUETOOTH_RESCAN, "0");
 
 		if (applicationTheme.equals("light"))
 		{

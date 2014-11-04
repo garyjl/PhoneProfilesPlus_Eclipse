@@ -2130,6 +2130,34 @@ public class DataWrapper {
 		
 	}
 	
+	private void doRestartEventsWithAlert()
+	{
+		// remove all event delay alarms
+		removeAllEventDelays();
+		// ignoruj manualnu aktivaciu profilu
+		// a odblokuj forceRun eventy
+		restartEvents(true, true);
+		
+		if (GlobalData.applicationEventWifiRescan.equals(GlobalData.RESCAN_TYPE_RESTART_EVENTS) ||
+			GlobalData.applicationEventWifiRescan.equals(GlobalData.RESCAN_TYPE_SCREEN_ON_RESTART_EVENTS))
+		{
+			// rescan wifi
+			WifiScanAlarmBroadcastReceiver.sendBroadcast(context);
+		}
+		
+		if (GlobalData.applicationEventBluetoothRescan.equals(GlobalData.RESCAN_TYPE_RESTART_EVENTS) ||
+			GlobalData.applicationEventBluetoothRescan.equals(GlobalData.RESCAN_TYPE_SCREEN_ON_RESTART_EVENTS))
+		{
+			// rescan bluetooth
+			BluetoothScanAlarmBroadcastReceiver.sendBroadcast(context);
+		}
+		
+		Toast msg = Toast.makeText(context, 
+				context.getResources().getString(R.string.toast_events_restarted), 
+				Toast.LENGTH_SHORT);
+		msg.show();
+	}
+	
 	public void restartEventsWithAlert(Activity activity)
 	{
 		if (!GlobalData.getGlobalEventsRuning(context))
@@ -2151,17 +2179,7 @@ public class DataWrapper {
 			//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
 			dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
-					// remove all event delay alarms
-					removeAllEventDelays();
-
-					// ignoruj manualnu aktivaciu profilu
-					// a odblokuj forceRun eventy
-					restartEvents(true, true);
-
-					Toast msg = Toast.makeText(context, 
-							context.getResources().getString(R.string.toast_events_restarted), 
-							Toast.LENGTH_SHORT);
-					msg.show();
+					doRestartEventsWithAlert();
 					
 					if (GlobalData.applicationClose && (!(_activity instanceof EditorProfilesActivity)))
 						_activity.finish();
@@ -2172,20 +2190,7 @@ public class DataWrapper {
 		}
 		else
 		{
-			// remove all event delay alarms
-			removeAllEventDelays();
-			// ignoruj manualnu aktivaciu profilu
-			// a odblokuj forceRun eventy
-			restartEvents(true, true);
-			// rescan wifi
-			WifiScanAlarmBroadcastReceiver.sendBroadcast(activity.getBaseContext());
-			// rescan bluetooth
-			BluetoothScanAlarmBroadcastReceiver.sendBroadcast(activity.getBaseContext());
-			
-			Toast msg = Toast.makeText(context, 
-					context.getResources().getString(R.string.toast_events_restarted), 
-					Toast.LENGTH_SHORT);
-			msg.show();
+			doRestartEventsWithAlert();
 			
 			if (GlobalData.applicationClose)
 				activity.finish();

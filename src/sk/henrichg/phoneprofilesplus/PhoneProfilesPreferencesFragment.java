@@ -193,6 +193,8 @@ public class PhoneProfilesPreferencesFragment extends PreferenceFragment
 	    setSummary(GlobalData.PREF_APPLICATION_WIDGET_LIST_GRID_LAYOUT);
 	    setSummary(GlobalData.PREF_APPLICATION_EVENT_BLUETOOTH_SCAN_INTERVAL);
 	    setSummary(GlobalData.PREF_APPLICATION_EVENT_BLUETOOTH_ENABLE_BLUETOOTH);
+	    setSummary(GlobalData.PREF_APPLICATION_EVENT_WIFI_RESCAN);
+	    setSummary(GlobalData.PREF_APPLICATION_EVENT_BLUETOOTH_RESCAN);
 	    
 		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_WIFI, preferencesActivity.getBaseContext()) 
 					!= GlobalData.HARDWARE_CHECK_ALLOWED)
