@@ -196,13 +196,18 @@ public class BluetoothNamePreference extends DialogPreference {
 		        	bluetoothList.add(new BluetoothDeviceData(device.getName(), device.getAddress()));
 		        }
 		        
-				if (_forRescan)
+				boolean canScan = !BluetoothScanAlarmBroadcastReceiver.getStartScan(context);
+		        
+				if (canScan)
 				{
-	            	GlobalData.setForceOneBluetoothScan(context, true);
-	            	//BluetoothScanAlarmBroadcastReceiver.sendBroadcast(context);
-					if (!isBluetoothEnabled)
-						BluetoothScanAlarmBroadcastReceiver.setBluetoothEnabledForScan(context, true);
-	            	BluetoothScanAlarmBroadcastReceiver.startScan(context);
+					if (_forRescan)
+					{
+		            	GlobalData.setForceOneBluetoothScan(context, true);
+		            	//BluetoothScanAlarmBroadcastReceiver.sendBroadcast(context);
+						if (!isBluetoothEnabled)
+							BluetoothScanAlarmBroadcastReceiver.setBluetoothEnabledForScan(context, true);
+		            	BluetoothScanAlarmBroadcastReceiver.startScan(context);
+					}
 				}
 				
 		        if (_forRescan)
@@ -220,9 +225,12 @@ public class BluetoothNamePreference extends DialogPreference {
 			        	if (!BluetoothScanAlarmBroadcastReceiver.getStartScan(context))
 			        		break;
 		        	}
-		        	GlobalData.setForceOneBluetoothScan(context, false);
-	            	BluetoothScanAlarmBroadcastReceiver.setBluetoothEnabledForScan(context, false);
-	            	BluetoothScanAlarmBroadcastReceiver.setStartScan(context, false);
+					if (canScan)
+					{
+			        	GlobalData.setForceOneBluetoothScan(context, false);
+		            	BluetoothScanAlarmBroadcastReceiver.setBluetoothEnabledForScan(context, false);
+		            	BluetoothScanAlarmBroadcastReceiver.setStartScan(context, false);
+					}
 		        }
 
 				if (!isBluetoothEnabled)

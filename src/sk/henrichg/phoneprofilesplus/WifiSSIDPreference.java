@@ -196,16 +196,21 @@ public class WifiSSIDPreference extends DialogPreference {
 			        	SSIDList.add(new WifiSSIDData(wifiConfiguration.SSID.replace("\"", ""), wifiConfiguration.BSSID));
 					}
 				}
+
+				boolean canScan = !WifiScanAlarmBroadcastReceiver.getStartScan(context);
 				
-				if (_forRescan)
+				if (canScan)
 				{
-	            	GlobalData.setForceOneWifiScan(context, true);
-	            	//WifiScanAlarmBroadcastReceiver.sendBroadcast(context);
-					if (!isWifiEnabled)
-						WifiScanAlarmBroadcastReceiver.setWifiEnabledForScan(context, true);
-	            	WifiScanAlarmBroadcastReceiver.startScan(context);
+					if (_forRescan)
+					{
+		            	GlobalData.setForceOneWifiScan(context, true);
+		            	//WifiScanAlarmBroadcastReceiver.sendBroadcast(context);
+						if (!isWifiEnabled)
+							WifiScanAlarmBroadcastReceiver.setWifiEnabledForScan(context, true);
+		            	WifiScanAlarmBroadcastReceiver.startScan(context);
+					}
 				}
-				
+					
 		        if (_forRescan)
 		        {
 		        	for (int i = 0; i < 5 * 60; i++) // 60 seconds for wifi scan
@@ -221,9 +226,12 @@ public class WifiSSIDPreference extends DialogPreference {
 			        	if (!WifiScanAlarmBroadcastReceiver.getStartScan(context))
 			        		break;
 		        	}
-		        	GlobalData.setForceOneWifiScan(context, false);
-	            	WifiScanAlarmBroadcastReceiver.setWifiEnabledForScan(context, false);
-		        	WifiScanAlarmBroadcastReceiver.setStartScan(context, false);
+		        	if (canScan)
+		        	{
+			        	GlobalData.setForceOneWifiScan(context, false);
+		            	WifiScanAlarmBroadcastReceiver.setWifiEnabledForScan(context, false);
+			        	WifiScanAlarmBroadcastReceiver.setStartScan(context, false);
+		        	}
 		        }
 
 				if (!isWifiEnabled)
