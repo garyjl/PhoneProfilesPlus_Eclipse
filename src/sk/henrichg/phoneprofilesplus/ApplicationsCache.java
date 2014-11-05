@@ -30,6 +30,7 @@ public class ApplicationsCache {
 	
 	private ArrayList<PackInfo> applicationsList;
 	private boolean cached;
+	private boolean cancelled;
 	
 	public ApplicationsCache()
 	{
@@ -40,6 +41,8 @@ public class ApplicationsCache {
 	public void getApplicationsList(Context context)
 	{
 		if (cached) return;
+		
+		cancelled = false;
 		
 		applicationsList.clear();
 		
@@ -62,6 +65,9 @@ public class ApplicationsCache {
 				
 				applicationsList.add(newInfo);
 			}
+			
+			if (cancelled)
+				return;
 		}
 		
 		Collections.sort(applicationsList, new SortList());
@@ -101,10 +107,11 @@ public class ApplicationsCache {
 			return null;
 	}
 	
-	public void clearCache()
+	public void clearCache(boolean nullList)
 	{
 		applicationsList.clear();
-		applicationsList = null;
+		if (nullList)
+			applicationsList = null;
 		cached = false;
 	}
 	
@@ -112,4 +119,10 @@ public class ApplicationsCache {
 	{
 		return cached;
 	}
+	
+	public void cancelCaching()
+	{
+		cancelled = true;
+	}
+	
 }

@@ -455,10 +455,10 @@ public class EditorProfilesActivity extends ActionBarActivity
 		{
 			// no destroy caches on orientation change
 			if (applicationsCache != null)
-				applicationsCache.clearCache();
+				applicationsCache.clearCache(true);
 			applicationsCache = null;
 			if (contactsCache != null)
-				contactsCache.clearCache();
+				contactsCache.clearCache(true);
 			contactsCache = null;
 		}
 
@@ -1815,7 +1815,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 		if ((!savedInstanceStateChanged) || (applicationsCache == null))
 		{
 			if (applicationsCache != null)
-				applicationsCache.clearCache();
+				applicationsCache.clearCache(true);
 			applicationsCache =  new ApplicationsCache();
 		}
 	}
@@ -1830,7 +1830,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 		if ((!savedInstanceStateChanged) || (contactsCache == null))
 		{
 			if (contactsCache != null)
-				contactsCache.clearCache();
+				contactsCache.clearCache(true);
 			contactsCache =  new ContactsCache();
 		}
 	}

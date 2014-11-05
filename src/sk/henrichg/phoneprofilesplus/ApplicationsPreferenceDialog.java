@@ -12,9 +12,13 @@ import android.os.AsyncTask;
 //import android.preference.Preference.OnPreferenceChangeListener;
 import android.view.View;
 import android.content.DialogInterface.OnShowListener;
+import android.content.DialogInterface.OnDismissListener;
 
 
-public class ApplicationsPreferenceDialog extends Dialog implements OnShowListener {
+public class ApplicationsPreferenceDialog extends Dialog 
+										 implements OnShowListener,
+													OnDismissListener
+{
 
 	private ApplicationsPreference applicationsPreference;
 	private ApplicationsPreferenceAdapter applicationsPreferenceAdapter;
@@ -93,14 +97,17 @@ public class ApplicationsPreferenceDialog extends Dialog implements OnShowListen
 					listView.setAdapter(applicationsPreferenceAdapter);
 					linlaProgress.setVisibility(View.GONE);
 					ApplicationsCache applicationsCahce = EditorProfilesActivity.getApplicationsCache();
-					for (int position = 0; position < applicationsCahce.getLength()-1; position++)
+					if (applicationsCahce.isCached())
 					{
-						if (applicationsCahce.getPackageName(position).equals(packageName))
+						for (int position = 0; position < applicationsCahce.getLength()-1; position++)
 						{
-							listView.setSelection(position);
-							listView.setItemChecked(position, true);
-							listView.smoothScrollToPosition(position);
-							break;
+							if (applicationsCahce.getPackageName(position).equals(packageName))
+							{
+								listView.setSelection(position);
+								listView.setItemChecked(position, true);
+								listView.smoothScrollToPosition(position);
+								break;
+							}
 						}
 					}
 				}
@@ -111,14 +118,17 @@ public class ApplicationsPreferenceDialog extends Dialog implements OnShowListen
 		{
 			listView.setAdapter(applicationsPreferenceAdapter);
 			ApplicationsCache applicationsCahce = EditorProfilesActivity.getApplicationsCache();
-			for (int position = 0; position < applicationsCahce.getLength()-1; position++)
+			if (applicationsCahce.isCached())
 			{
-				if (applicationsCahce.getPackageName(position).equals(packageName))
+				for (int position = 0; position < applicationsCahce.getLength()-1; position++)
 				{
-					listView.setSelection(position);
-					listView.setItemChecked(position, true);
-					listView.smoothScrollToPosition(position);
-					break;
+					if (applicationsCahce.getPackageName(position).equals(packageName))
+					{
+						listView.setSelection(position);
+						listView.setItemChecked(position, true);
+						listView.smoothScrollToPosition(position);
+						break;
+					}
 				}
 			}
 		}
@@ -130,6 +140,13 @@ public class ApplicationsPreferenceDialog extends Dialog implements OnShowListen
 		String packageName = applicationsPreferenceAdapter.getApplicationPackageName(position);
 		applicationsPreference.setPackageName(packageName);
 		ApplicationsPreferenceDialog.this.dismiss();
+	}
+
+	@Override
+	public void onDismiss(DialogInterface dialog)
+	{
+		ApplicationsCache applicationsCahce = EditorProfilesActivity.getApplicationsCache();
+		applicationsCahce.cancelCaching();
 	}
 
 }

@@ -81,6 +81,9 @@ public class ContactsMultiSelectDialogPreference extends DialogPreference
 			{
 				super.onPostExecute(result);
 				
+				if (!EditorProfilesActivity.getContactsCache().isCached())
+					EditorProfilesActivity.getContactsCache().clearCache(false);
+				
 			    listView.setAdapter(listAdapter);
 				linlaProgress.setVisibility(View.GONE);
 			}
@@ -121,6 +124,14 @@ public class ContactsMultiSelectDialogPreference extends DialogPreference
 		super.onClick(dialog, which);
 	}
 
+	public void onDismiss (DialogInterface dialog)
+	{
+		EditorProfilesActivity.getContactsCache().cancelCaching();
+		
+		if (!EditorProfilesActivity.getContactsCache().isCached())
+			EditorProfilesActivity.getContactsCache().clearCache(false);
+	}
+	
 	@Override
 	protected void onSetInitialValue(boolean restoreValue, Object defaultValue)
 	{

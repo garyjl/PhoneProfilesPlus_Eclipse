@@ -11,6 +11,7 @@ public class ContactsCache {
 
 	private ArrayList<Contact> contactList;
 	private boolean cached;
+	private boolean cancelled;
 	
 	public ContactsCache()
 	{
@@ -21,6 +22,8 @@ public class ContactsCache {
 	public void getContactList(Context context)
 	{
 		if (cached) return;
+		
+		cancelled = false;
 		
 		contactList.clear();
 		
@@ -58,12 +61,21 @@ public class ContactsCache {
 							aContact.photoId = 0;
 						}
 						contactList.add(aContact);
+						
+						if (cancelled)
+							break;
 					} 
 					phones.close(); 
 				}
 			//}catch(Exception e){}
+				
+			if (cancelled)
+				break;
 		}
 		mCursor.close();
+		
+		if(cancelled)
+			return;
 		
 		cached = true;
 	}
@@ -132,10 +144,11 @@ public class ContactsCache {
 			return 0;
 	}
 
-	public void clearCache()
+	public void clearCache(boolean nullList)
 	{
 		contactList.clear();
-		contactList = null;
+		if (nullList)
+			contactList = null;
 		cached = false;
 	}
 	
@@ -143,4 +156,10 @@ public class ContactsCache {
 	{
 		return cached;
 	}
+	
+	public void cancelCaching()
+	{
+		cancelled = true;
+	}
+	
 }
