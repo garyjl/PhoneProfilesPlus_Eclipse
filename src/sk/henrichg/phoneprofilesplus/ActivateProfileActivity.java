@@ -1,6 +1,7 @@
 package sk.henrichg.phoneprofilesplus;
 
 import android.os.Bundle;
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -26,6 +27,7 @@ public class ActivateProfileActivity extends ActionBarActivity {
 	private int actionBarHeight;
 	private ImageView eventsRunStopIndicator;
 
+	@SuppressLint("NewApi")
 	@SuppressWarnings({ "deprecation" })
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -132,10 +134,13 @@ public class ActivateProfileActivity extends ActionBarActivity {
 
 		getSupportActionBar().setTitle(R.string.title_activity_activator);
         getSupportActionBar().setElevation(0);
-		
-		//Toolbar toolbar = (Toolbar)findViewById(R.id.act_prof_tollbar);
-		//setSupportActionBar(toolbar);
-		//toolbar.setTitle(R.string.title_activity_activator);
+		/*
+		Toolbar toolbar = (Toolbar)findViewById(R.id.act_prof_tollbar);
+		setSupportActionBar(toolbar);
+		toolbar.setTitle(R.string.title_activity_activator);
+    	if (android.os.Build.VERSION.SDK_INT >= 21)
+    		toolbar.setElevation(0);
+    	*/	
 
 		eventsRunStopIndicator = (ImageView)findViewById(R.id.act_prof_run_stop_indicator);
         

@@ -20,7 +20,6 @@
 <resources>
 
     <style name="Theme.Phoneprofilestheme_material" parent="@style/Base.Theme.Phoneprofilestheme_material">
-		<item name="toolbarBackground">@drawable/toolbar_background_material</item>
 	</style>
 
 </resources>

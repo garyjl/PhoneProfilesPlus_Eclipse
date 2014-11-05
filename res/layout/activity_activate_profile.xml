@@ -6,8 +6,16 @@
     android:orientation="vertical"
     tools:context=".ActivatorActivity" >
 
+<!-- 
     <android.support.v7.widget.Toolbar
         android:id="@+id/act_prof_tollbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="0dp" />
+ -->    
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/act_prof_subtollbar"
         android:layout_width="match_parent"
         android:layout_height="25dp"
         android:paddingBottom="3dp"

@@ -726,7 +726,7 @@ public class ActivateProfileHelper {
 	@SuppressLint("RtlHardcoded")
 	private void createBrightnessView(Profile profile)
 	{
-		WindowManager windowManager = (WindowManager)context.getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
+		WindowManager windowManager = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
 		if (GUIData.brightneesView != null)
 		{
 			windowManager.removeView(GUIData.brightneesView);

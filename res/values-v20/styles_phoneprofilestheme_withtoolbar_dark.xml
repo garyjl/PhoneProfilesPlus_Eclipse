@@ -19,8 +19,8 @@
 
 <resources>
 
-    <style name="Theme.Phoneprofilestheme_withToolbar_dark" parent="@style/Base.Theme.Phoneprofilestheme_dark">
-		<item name="toolbarBackground">?attr/colorPrimary</item>
+    <style name="Theme.Phoneprofilestheme_withToolbar_dark" parent="@style/Base.Theme.Phoneprofilestheme_withToolbar_dark">
+  		<item name="toolbarBackground">?attr/colorPrimary</item>
     </style>
 
 </resources>

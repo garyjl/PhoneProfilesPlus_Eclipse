@@ -20,7 +20,6 @@
 <resources>
 
     <style name="Theme.Phoneprofilestheme_dlight" parent="@style/Base.Theme.Phoneprofilestheme_dlight">
-		<item name="toolbarBackground">@drawable/toolbar_background_dlight</item>
 	</style>
 
 </resources>

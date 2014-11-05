@@ -10,9 +10,16 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
 	    android:orientation="vertical" >
-	
+<!-- 	
 	    <android.support.v7.widget.Toolbar
 	        android:id="@+id/editor_tollbar"
+	        android:layout_width="match_parent"
+	        android:layout_height="?attr/actionBarSize"
+	        android:background="?attr/colorPrimary"
+	        android:elevation="0dp" />
+ -->	    	    
+	    <android.support.v7.widget.Toolbar
+	        android:id="@+id/editor_subtollbar"
 	        android:layout_width="match_parent"
 	        android:layout_height="25dp"
         	android:paddingBottom="3dp"
