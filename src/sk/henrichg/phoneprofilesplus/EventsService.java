@@ -44,8 +44,11 @@ public class EventsService extends IntentService
 		dataWrapper = new DataWrapper(context, true, false, 0);
 		
 		// create a handler to post messages to the main thread
-	    Handler handler = new Handler(getMainLooper());
-	    dataWrapper.setToastHandler(handler);
+	    Handler toastHandler = new Handler(getMainLooper());
+	    dataWrapper.setToastHandler(toastHandler);
+	    
+	    Handler brightnessHandler = new Handler(getMainLooper());
+	    dataWrapper.getActivateProfileHelper().setBrightnessHandler(brightnessHandler);
 		
 		broadcastReceiverType = intent.getStringExtra(GlobalData.EXTRA_BROADCAST_RECEIVER_TYPE);
 		

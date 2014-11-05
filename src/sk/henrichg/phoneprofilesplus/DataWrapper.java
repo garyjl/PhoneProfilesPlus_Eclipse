@@ -77,7 +77,7 @@ public class DataWrapper {
 	{
 		toastHandler = handler;
 	}
-	
+
 	public DatabaseHandler getDatabaseHandler()
 	{
 		if (databaseHandler == null)
@@ -369,14 +369,6 @@ public class DataWrapper {
 	public void activateProfileFromEvent(long profile_id, boolean interactive, String eventNotificationSound)
 	{
 		//Log.d("PhoneProfilesService.activateProfile",profile_id+"");
-		/*
-		Intent intent = new Intent(context, BackgroundActivateProfileActivity.class);
-	    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    	intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_SERVICE);
-		intent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile_id);
-		intent.putExtra(GlobalData.EXTRA_EVENT_NOTIFICATION_SOUND, eventNotificationSound);
-	    context.startActivity(intent);
-	    */
 		getActivateProfileHelper().initialize(this, null, context);
 		_activateProfile(getProfileById(profile_id), GlobalData.STARTUP_SOURCE_SERVICE, interactive, null, eventNotificationSound);
 	}

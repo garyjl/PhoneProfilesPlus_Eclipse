@@ -767,12 +767,6 @@ public class EditorProfileListFragment extends Fragment {
 	
 	public void activateProfile(Profile profile, boolean interactive)
 	{
-		/*
-		Intent intent = new Intent(getActivity().getBaseContext(), BackgroundActivateProfileActivity.class);
-		intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, GlobalData.STARTUP_SOURCE_EDITOR);
-		intent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
-		getActivity().startActivityForResult(intent, GlobalData.REQUEST_CODE_ACTIVATE_PROFILE);
-		*/
 		dataWrapper.activateProfile(profile._id, GlobalData.STARTUP_SOURCE_EDITOR, getActivity(), "");
 	}
 

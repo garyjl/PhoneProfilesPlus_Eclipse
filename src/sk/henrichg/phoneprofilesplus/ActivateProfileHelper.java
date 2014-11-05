@@ -31,6 +31,7 @@ import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
+import android.os.Handler;
 import android.provider.Settings;
 import android.provider.Settings.Global;
 import android.support.v4.app.NotificationCompat;
@@ -49,6 +50,7 @@ public class ActivateProfileHelper {
 	
 	private Context context;
 	private NotificationManager notificationManager;
+	private Handler brightnessHandler;
 	
 	private static final String PPHELPERACTION = "sk.henrichg.phoneprofileshelper.ACTION";
 	private static final String SETRADIOACTION = "sk.henrichg.phoneprofilesplus.SetRadiosForProfile.ACTION";
@@ -84,6 +86,11 @@ public class ActivateProfileHelper {
 		dataWrapper = null;
 		context = null;
 		notificationManager = null;
+	}
+	
+	public void setBrightnessHandler(Handler handler)
+	{
+		brightnessHandler = handler;
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -439,7 +446,6 @@ public class ActivateProfileHelper {
 		}
 	}
 	
-	@SuppressLint("RtlHardcoded")
 	public void execute(Profile _profile, boolean _interactive, String eventNotificationSound)
 	{
 		// rozdelit zvonenie a notifikacie - zial je to oznacene ako @Hide :-(
@@ -607,48 +613,18 @@ public class ActivateProfileHelper {
 				Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
 				Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, profile.getDeviceBrightnessValue());
 			}
-			
-			/*
-			if ((activity != null) && (activity instanceof BackgroundActivateProfileActivity))
-			{
-				Window window = activity.getWindow();
-				LayoutParams layoutParams = window.getAttributes();
-				
-				if (profile.getDeviceBrightnessAutomatic())
-					layoutParams.screenBrightness = LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
-				else
-					layoutParams.screenBrightness = profile.getDeviceBrightnessValue() / 255.0f;
-				window.setAttributes(layoutParams);
-			}
-			else
-			{
-				Intent i = new Intent(context, SetBrightnessWindowAttributesActivity.class);
-			    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			    i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-			    context.startActivity(i);   				
-			}
-			*/
 
-			WindowManager windowManager = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
-			if (GUIData.brightneesView != null)
+			if (brightnessHandler != null)
 			{
-				windowManager.removeView(GUIData.brightneesView);
-				GUIData.brightneesView = null;
+				final Profile __profile = profile;
+				brightnessHandler.post(new Runnable() {
+					public void run() {
+						createBrightnessView(__profile);
+					}
+				});
 			}
-			WindowManager.LayoutParams params = new WindowManager.LayoutParams(
-						1, 1,
-						WindowManager.LayoutParams.TYPE_TOAST,
-						//TYPE_SYSTEM_ALERT,
-						WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-						PixelFormat.TRANSLUCENT
-					);
-			params.gravity = Gravity.RIGHT | Gravity.TOP;
-			if (profile.getDeviceBrightnessAutomatic())
-				params.screenBrightness = LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
 			else
-				params.screenBrightness = profile.getDeviceBrightnessValue() / 255.0f;
-			GUIData.brightneesView = new BrightnessView(context);
-			windowManager.addView(GUIData.brightneesView, params);
+				createBrightnessView(profile);
 		}
 		
 		// nahodenie rotate
@@ -745,6 +721,31 @@ public class ActivateProfileHelper {
 			}
 		}
 		
+	}
+	
+	@SuppressLint("RtlHardcoded")
+	private void createBrightnessView(Profile profile)
+	{
+		WindowManager windowManager = (WindowManager)context.getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
+		if (GUIData.brightneesView != null)
+		{
+			windowManager.removeView(GUIData.brightneesView);
+			GUIData.brightneesView = null;
+		}
+		WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+					1, 1,
+					WindowManager.LayoutParams.TYPE_TOAST,
+					//TYPE_SYSTEM_ALERT,
+					WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+					PixelFormat.TRANSLUCENT
+				);
+		params.gravity = Gravity.RIGHT | Gravity.TOP;
+		if (profile.getDeviceBrightnessAutomatic())
+			params.screenBrightness = LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
+		else
+			params.screenBrightness = profile.getDeviceBrightnessValue() / 255.0f;
+		GUIData.brightneesView = new BrightnessView(context);
+		windowManager.addView(GUIData.brightneesView, params);
 	}
 	
 	//@SuppressWarnings("deprecation")

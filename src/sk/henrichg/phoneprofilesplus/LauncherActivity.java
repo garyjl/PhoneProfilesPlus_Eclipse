@@ -147,34 +147,9 @@ public class LauncherActivity extends Activity {
 		super.onDestroy();
 	}	
 	
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
-	{
-		/*
-		if (requestCode == GlobalData.REQUEST_CODE_ACTIVATE_PROFILE)
-		{
-			//Log.e("LauncherActivity.onActivityResult","xxx");
-		     endOnStart();
-		}
-		*/
-	}
-	
 	private void activateProfile(Profile profile, int startupSource)
 	{
-		/*
-		Intent intent = new Intent(getBaseContext(), BackgroundActivateProfileActivity.class);
-		intent.putExtra(GlobalData.EXTRA_START_APP_SOURCE, startupSource);
-		if (profile != null)
-			intent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
-		else
-			intent.putExtra(GlobalData.EXTRA_PROFILE_ID, 0);
-		
-		//Log.e("LauncherActivity.activateProfile","finish="+finish);
-		
-		startActivityForResult(intent, GlobalData.REQUEST_CODE_ACTIVATE_PROFILE);
-		*/
-		
 		dataWrapper.activateProfile(profile._id, startupSource, this, "");
-		
 	}
 	
 }
