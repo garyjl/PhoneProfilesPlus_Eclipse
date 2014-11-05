@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.Menu;
@@ -114,6 +115,7 @@ public class ActivateProfileActivity extends ActionBarActivity {
 		// set popup window dimensions
 		getWindow().setLayout((int) (popupWidth + 0.5f), (int) (popupHeight + 0.5f));
 		
+		
 	//-----------------------------------------------------------------------------------
 
 		//Debug.startMethodTracing("phoneprofiles");
@@ -128,10 +130,12 @@ public class ActivateProfileActivity extends ActionBarActivity {
 		
 		//GlobalData.getMeasuredRunTime(nanoTimeStart, "ActivateProfileActivity.onCreate - setContnetView");
 
-		//getSupportActionBar().setHomeButtonEnabled(true);
-		//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setTitle(R.string.title_activity_activator);
         getSupportActionBar().setElevation(0);
+		
+		//Toolbar toolbar = (Toolbar)findViewById(R.id.act_prof_tollbar);
+		//setSupportActionBar(toolbar);
+		//toolbar.setTitle(R.string.title_activity_activator);
 
 		eventsRunStopIndicator = (ImageView)findViewById(R.id.act_prof_run_stop_indicator);
         

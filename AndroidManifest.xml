@@ -93,7 +93,7 @@
             android:configChanges="locale|layoutDirection"
             android:label="@string/title_activity_activator"
             android:launchMode="singleTask"
-            android:theme="@style/PopupTheme_material" >
+            android:theme="@style/PopupTheme_withToolbar_material" >
         </activity>
         <activity
             android:name=".EditorProfilesActivity"
