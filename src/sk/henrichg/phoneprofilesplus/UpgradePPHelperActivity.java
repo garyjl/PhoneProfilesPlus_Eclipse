@@ -9,7 +9,7 @@ public class UpgradePPHelperActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		//Log.d("BackgroundActivateProfileActivity.onCreate","xxx");
+		//Log.d("UpgradePPHelperActivity.onCreate","xxx");
 		
 		GlobalData.loadPreferences(getBaseContext());
 	}
@@ -19,7 +19,7 @@ public class UpgradePPHelperActivity extends Activity {
 	{
 		super.onStart();
 
-		//Log.e("BackgroundActivateProfileActivity.onStart", "startupSource="+startupSource);
+		//Log.e("UpgradePPHelperActivity.onStart", "startupSource="+startupSource);
 		
 		PhoneProfilesHelper.installPPHelper(this, true);
 	}

@@ -25,6 +25,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.PixelFormat;
 import android.location.LocationManager;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
@@ -36,8 +37,8 @@ import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.Surface;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.RemoteViews;
@@ -46,7 +47,6 @@ public class ActivateProfileHelper {
 
 	private DataWrapper dataWrapper;
 	
-	private Activity activity;
 	private Context context;
 	private NotificationManager notificationManager;
 	
@@ -70,20 +70,18 @@ public class ActivateProfileHelper {
 	{
 		this.dataWrapper = dataWrapper;
 		
-		initializeNoNotificationManager(a, c);
+		initializeNoNotificationManager(c);
 		notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
 	}
 	
-	public void initializeNoNotificationManager(Activity a, Context c)
+	public void initializeNoNotificationManager(Context c)
 	{
-		activity = a;
 		context = c;
 	}
 
 	public void deinitialize()
 	{
 		dataWrapper = null;
-		activity = null;
 		context = null;
 		notificationManager = null;
 	}
@@ -441,6 +439,7 @@ public class ActivateProfileHelper {
 		}
 	}
 	
+	@SuppressLint("RtlHardcoded")
 	public void execute(Profile _profile, boolean _interactive, String eventNotificationSound)
 	{
 		// rozdelit zvonenie a notifikacie - zial je to oznacene ako @Hide :-(
@@ -609,6 +608,7 @@ public class ActivateProfileHelper {
 				Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, profile.getDeviceBrightnessValue());
 			}
 			
+			/*
 			if ((activity != null) && (activity instanceof BackgroundActivateProfileActivity))
 			{
 				Window window = activity.getWindow();
@@ -627,6 +627,28 @@ public class ActivateProfileHelper {
 			    i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 			    context.startActivity(i);   				
 			}
+			*/
+
+			WindowManager windowManager = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
+			if (GUIData.brightneesView != null)
+			{
+				windowManager.removeView(GUIData.brightneesView);
+				GUIData.brightneesView = null;
+			}
+			WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+						1, 1,
+						WindowManager.LayoutParams.TYPE_TOAST,
+						//TYPE_SYSTEM_ALERT,
+						WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+						PixelFormat.TRANSLUCENT
+					);
+			params.gravity = Gravity.RIGHT | Gravity.TOP;
+			if (profile.getDeviceBrightnessAutomatic())
+				params.screenBrightness = LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
+			else
+				params.screenBrightness = profile.getDeviceBrightnessValue() / 255.0f;
+			GUIData.brightneesView = new BrightnessView(context);
+			windowManager.addView(GUIData.brightneesView, params);
 		}
 		
 		// nahodenie rotate

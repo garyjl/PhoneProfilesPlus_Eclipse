@@ -11,6 +11,8 @@ import android.content.res.Resources;
 
 public class GUIData {
 
+	public static BrightnessView brightneesView = null;
+	
 	public static Collator collator = null;
 	
 	// import/export

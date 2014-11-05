@@ -1097,11 +1097,6 @@ public class DataWrapper {
 		
 		boolean finish = true;
 		
-		// kvoli nastaveniu brightness
-		// pre BackgroundActivateProfileActivity nie je volana SetBrightnessWindowAttributesActivity
-		// kde sa aj sleepuje
-		boolean sleep = ((activity != null) && (activity instanceof BackgroundActivateProfileActivity));  
-
 		if (startupSource == GlobalData.STARTUP_SOURCE_ACTIVATOR)
 		{
 			finish = false;
@@ -1123,26 +1118,8 @@ public class DataWrapper {
 		
 		if (finish)
 		{
-			if (sleep)
-			{
-				Thread t = new Thread(new Runnable() {
-		            public void run() {
-		                try {
-		                    Thread.sleep(100);
-		                } catch (InterruptedException e) {
-		                    System.out.println(e);
-		                }
-		                if (activity != null)
-		                	activity.finish();
-		            }
-		        });
-				t.start();
-			}
-			else
-			{
-                if (activity != null)
-                	activity.finish();
-			}
+            if (activity != null)
+             	activity.finish();
 		}
 	}
 	
