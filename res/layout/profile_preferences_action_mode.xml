@@ -4,29 +4,31 @@
     android:layout_height="match_parent"
     android:orientation="horizontal" >
 
-    <Button
+    <ImageView
         android:id="@+id/profile_preferences_action_menu_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="5dp"
-        android:paddingRight="5dp"
-        android:text="@string/phone_preferences_actionmode_cancel"
-        android:background="?attr/actionProfileToolBackground"
-        android:drawableLeft="?attr/actionProfilePrefCancel"
-        style="?attr/actionProfileButtonTextStyle" />
-    <Button
-        android:id="@+id/profile_preferences_action_menu_save"
+        android:layout_marginLeft="3dp"
+        android:adjustViewBounds="true"
+        android:padding="10dp"
+        android:maxHeight="50dp"
+        android:maxWidth="50dp"
+        android:scaleType="centerCrop"
+        android:src="?attr/actionProfilePrefCancel"
+        android:background="?attr/actionProfileToolBackground" 
+        android:contentDescription="@string/empty_string"/>
+   
+    <TextView
+        android:id="@+id/profile_preferences_action_menu_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:paddingRight="5dp"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="7dp"
+	    android:singleLine="true"
         android:layout_toRightOf="@+id/profile_preferences_action_menu_cancel"
-        android:text="@string/phone_preferences_actionmode_save"
-        android:background="?attr/actionProfileToolBackground"
-        android:drawableLeft="?attr/actionProfilePrefSave"
+        android:text="@string/profile_name_default"
         style="?attr/actionProfileButtonTextStyle" />
     
 </RelativeLayout>

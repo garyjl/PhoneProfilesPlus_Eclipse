@@ -19,9 +19,11 @@ import android.support.v7.view.ActionMode;
 import android.support.v7.view.ActionMode.Callback;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.TextView;
  
 public class ProfilePreferencesFragment extends PreferenceFragment 
 										implements SharedPreferences.OnSharedPreferenceChangeListener
@@ -766,7 +768,9 @@ public class ProfilePreferencesFragment extends PreferenceFragment
 			 
             /** Invoked whenever the action mode is shown. This is invoked immediately after onCreateActionMode */
             public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                return false;
+        		MenuItem menuItem = menu.findItem(R.id.profile_preferences_action_mode_save);
+        		menuItem.setTitle(menuItem.getTitle() + "    ");
+                return true;
             }
  
             /** Called when user exits action mode */
@@ -778,26 +782,23 @@ public class ProfilePreferencesFragment extends PreferenceFragment
  
             /** This is called when the action mode is created. This is called by startActionMode() */
             public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                //mode.setTitle(R.string.phone_preferences_actionmode_title);
-                //getActivity().getSupportMenuInflater().inflate(R.menu.context_menu, menu);
-                return true;
+                MenuInflater inflater = mode.getMenuInflater();
+                inflater.inflate(R.menu.profile_preferences_action_mode, menu);
+            	return true;
             }
  
             /** This is called when an item in the context menu is selected */
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            /*    switch(item.getItemId()){
-                    case R.id.action1:
-                        Toast.makeText(getBaseContext(), "Selected Action1 ", Toast.LENGTH_SHORT).show();
-                        mode.finish();  // Automatically exists the action mode, when the user selects this action
-                        break;
-                    case R.id.action2:
-                        Toast.makeText(getBaseContext(), "Selected Action2 ", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.action3:
-                        Toast.makeText(getBaseContext(), "Selected Action3 ", Toast.LENGTH_SHORT).show();
-                        break;
-                }  */
-                return false;
+                switch(item.getItemId())
+                {
+                    case R.id.profile_preferences_action_mode_save:
+        				savePreferences();
+        				finishActionMode(BUTTON_SAVE);
+                        return true;
+                    default:
+        				finishActionMode(BUTTON_CANCEL);
+                        return false;                        
+                }
             }
 
         };		
@@ -815,6 +816,8 @@ public class ProfilePreferencesFragment extends PreferenceFragment
     	
     	LayoutInflater inflater = LayoutInflater.from(getActivity());
     	View actionView = inflater.inflate(R.layout.profile_preferences_action_mode, null);
+    	TextView title = (TextView)actionView.findViewById(R.id.profile_preferences_action_menu_title);
+    	title.setText(getActivity().getTitle());		
 
         actionMode = ((ActionBarActivity)getActivity()).startSupportActionMode(actionModeCallback);
         actionMode.setCustomView(actionView); 
@@ -831,17 +834,6 @@ public class ProfilePreferencesFragment extends PreferenceFragment
 			}
        	});
 
-        actionMode.getCustomView().findViewById(R.id.profile_preferences_action_menu_save).setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				
-				//Log.d("actionMode.onClick", "save");
-		
-				savePreferences();
-				
-				finishActionMode(BUTTON_SAVE);
-				
-			}
-       	});
 	}
 	
 	public boolean isActionModeActive()

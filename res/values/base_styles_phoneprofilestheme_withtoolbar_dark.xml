@@ -35,7 +35,7 @@
         <item name="actionProfilePrefSave">@drawable/ic_action_profile_pref_save_dark</item>
         <item name="actionProfilePrefCancel">@drawable/ic_action_profile_pref_cancel_dark</item>
         <item name="actionProfileToolBackground">@drawable/abc_item_background_holo_dark</item>
-        <item name="actionProfileButtonTextStyle">@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle</item> 
+        <item name="actionProfileButtonTextStyle">@style/TextAppearance.AppCompat.Widget.ActionBar.Title</item> 
         <item name="navigationDrawerBackground">@color/background_material_dark</item> 
         <item name="navigationDrawerText">@color/navigationDrawerTextColor_phoneprofiletheme_dark</item>
         <item name="navigationDrawerSubText">@color/navigationDrawerSubTextColor_phoneprofiletheme_dark</item>
@@ -49,7 +49,8 @@
 	    <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
 	    <item name="toolbarPopupMenu">@style/ThemeOverlay.AppCompat.Dark</item>
 	    	    	    	    
-        <item name="actionModeCloseButtonStyle">@style/NoCloseButton</item>
+	    <item name="android:actionModeBackground">?attr/colorPrimary</item>
+	    <item name="actionModeCloseButtonStyle">@style/NoCloseButton</item>
         <item name="android:actionModeCloseButtonStyle">@style/NoCloseButton</item>
         
     </style>
