@@ -19,7 +19,7 @@
 
 <resources>
 
-    <style name="Base.Theme.Phoneprofilestheme_withToolbar_material" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+    <style name="Base.Theme.Phoneprofilestheme_withToolbar_material" parent="@style/Theme.AppCompat.Light.NoActionBar">
         
  		<!-- customize the color palette -->
     	<item name="colorPrimary">@color/profile_all_primary</item>
@@ -47,7 +47,9 @@
         <item name="editItemMenuIcon">@drawable/ic_profile_item_edit_menu</item> 
         <item name="applicationSettingsLanguageIcon">@drawable/ic_settings_language</item> 
 	    <item name="actionEventsRestartIcon">@drawable/ic_action_events_restart_dark</item>
-	    	    	    	    
+	    <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+	    <item name="toolbarPopupMenu">@style/ThemeOverlay.AppCompat.Light</item>
+	    	    	    	    	    
         <item name="actionModeCloseButtonStyle">@style/NoCloseButton</item>
         <item name="android:actionModeCloseButtonStyle">@style/NoCloseButton</item>
         

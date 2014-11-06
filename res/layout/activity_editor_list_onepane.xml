@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" 
     android:id="@+id/editor_list_drawer_layout"
     android:layout_width="match_parent"
@@ -10,55 +11,62 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
 	    android:orientation="vertical" >
-<!-- 	
-	    <android.support.v7.widget.Toolbar
-	        android:id="@+id/editor_tollbar"
-	        android:layout_width="match_parent"
-	        android:layout_height="?attr/actionBarSize"
-	        android:background="?attr/colorPrimary"
-	        android:elevation="0dp" />
- -->	    	    
-	    <android.support.v7.widget.Toolbar
-	        android:id="@+id/editor_subtollbar"
-	        android:layout_width="match_parent"
-	        android:layout_height="25dp"
-        	android:paddingBottom="3dp"
+ 	
+	    <LinearLayout 
+	   		android:layout_width="match_parent"
+	    	android:layout_height="wrap_content"
+	        android:paddingBottom="3dp"
+	    	android:orientation="vertical"
 	        android:background="?attr/toolbarBackground"
 	        android:elevation="8dp" >
-	
-			<RelativeLayout
-			    android:layout_width="match_parent"
-			    android:layout_height="match_parent" >
-	        
-			 	<TextView
-			        android:id="@+id/editor_filter_title"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:layout_alignParentLeft="true"
-			        android:layout_centerVertical="true"
-			        android:ellipsize="end"
-			        android:singleLine="true"
-			        android:textAppearance="?android:attr/textAppearanceSmall"
-			        android:textColor="@android:color/white" />    
-			    			    
-			    <ImageView
-			        android:id="@+id/editor_list_run_stop_indicator"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:layout_alignParentRight="true"
-			        android:layout_centerVertical="true"
-			        android:layout_marginRight="10dp"
-			        android:adjustViewBounds="true"
-			        android:contentDescription="@string/empty_string"
-			        android:maxHeight="15dp"
-			        android:maxWidth="50dp"
-			        android:scaleType="centerCrop"
-			        android:src="@drawable/ic_run_events_indicator_stoppped" />
-			    
-			</RelativeLayout>
-	        
-	    </android.support.v7.widget.Toolbar>
+		    	    
+		    <android.support.v7.widget.Toolbar
+		        android:id="@+id/editor_tollbar"
+		        android:layout_width="match_parent"
+		        android:layout_height="?attr/actionBarSize"
+		        app:theme="?attr/toolbarTheme"
+	    		app:popupTheme="?attr/toolbarPopupMenu" />
+		    	    
+		    <android.support.v7.widget.Toolbar
+		        android:id="@+id/editor_subtollbar"
+		        android:layout_width="match_parent"
+		        android:layout_height="25dp"
+		        android:layout_marginTop="1dp" >
+		
+				<RelativeLayout
+				    android:layout_width="match_parent"
+				    android:layout_height="match_parent" >
+		        
+				 	<TextView
+				        android:id="@+id/editor_filter_title"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_alignParentLeft="true"
+				        android:layout_centerVertical="true"
+				        android:ellipsize="end"
+				        android:singleLine="true"
+				        android:textAppearance="?android:attr/textAppearanceSmall"
+				        android:textColor="@android:color/white" />    
+				    			    
+				    <ImageView
+				        android:id="@+id/editor_list_run_stop_indicator"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_alignParentRight="true"
+				        android:layout_centerVertical="true"
+				        android:layout_marginRight="10dp"
+				        android:adjustViewBounds="true"
+				        android:contentDescription="@string/empty_string"
+				        android:maxHeight="15dp"
+				        android:maxWidth="50dp"
+				        android:scaleType="centerCrop"
+				        android:src="@drawable/ic_run_events_indicator_stoppped" />
+				    
+				</RelativeLayout>
+		        
+		    </android.support.v7.widget.Toolbar>
 	    
+	    </LinearLayout>
 	
 		<FrameLayout 
 		    android:id="@+id/editor_list_container"

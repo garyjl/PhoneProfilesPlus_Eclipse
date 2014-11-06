@@ -32,6 +32,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -286,10 +287,12 @@ public class EditorProfilesActivity extends ActionBarActivity
         // Capture listview menu item click
         drawerListView.setOnItemClickListener(new DrawerItemClickListener());
 		
+		Toolbar toolbar = (Toolbar)findViewById(R.id.editor_tollbar);
+		setSupportActionBar(toolbar);
+        
 		 // Enable ActionBar app icon to behave as action to toggle nav drawer
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setElevation(0);
         
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the sliding drawer and the action bar app icon
@@ -750,7 +753,7 @@ public class EditorProfilesActivity extends ActionBarActivity
  
         // Get the title and icon followed by the position
         setTitle(drawerItemsTitle[drawerSelectedItem-1]);
-        setIcon(drawerItemsIcon[drawerSelectedItem-1]);
+        //setIcon(drawerItemsIcon[drawerSelectedItem-1]);
         
         // show/hide order
         if (drawerSelectedItem <= COUNT_DRAWER_PROFILE_ITEMS)
@@ -1435,9 +1438,11 @@ public class EditorProfilesActivity extends ActionBarActivity
 	     getSupportActionBar().setTitle(title);
 	 }	
 
+	 /*
 	 public void setIcon(int iconRes) {
 	     getSupportActionBar().setIcon(iconRes);
 	 }	
+	 */
 	 
 	 private void setStatusBarTitle()
 	 {

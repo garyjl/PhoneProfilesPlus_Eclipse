@@ -86,7 +86,7 @@ public class ActivateProfileActivity extends ActionBarActivity {
 			popupHeight = popupHeight + 64f * scale;
 		
 		// add toolbar height
-		popupHeight = popupHeight + 25f * scale;
+		popupHeight = popupHeight + (25f + 1f + 3f) * scale;
 
 		DataWrapper dataWrapper = new DataWrapper(getBaseContext(), false, false, 0);
 		int profileCount = dataWrapper.getDatabaseHandler().getProfilesCount(true);
@@ -132,15 +132,10 @@ public class ActivateProfileActivity extends ActionBarActivity {
 		
 		//GlobalData.getMeasuredRunTime(nanoTimeStart, "ActivateProfileActivity.onCreate - setContnetView");
 
-		getSupportActionBar().setTitle(R.string.title_activity_activator);
-        getSupportActionBar().setElevation(0);
-		/*
 		Toolbar toolbar = (Toolbar)findViewById(R.id.act_prof_tollbar);
 		setSupportActionBar(toolbar);
-		toolbar.setTitle(R.string.title_activity_activator);
-    	if (android.os.Build.VERSION.SDK_INT >= 21)
-    		toolbar.setElevation(0);
-    	*/	
+		
+		getSupportActionBar().setTitle(R.string.title_activity_activator);
 
 		eventsRunStopIndicator = (ImageView)findViewById(R.id.act_prof_run_stop_indicator);
         
