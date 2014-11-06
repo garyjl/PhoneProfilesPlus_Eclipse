@@ -438,7 +438,7 @@ public class EventPreferencesFragment extends PreferenceFragment
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 switch(item.getItemId())
                 {
-                    case R.id.profile_preferences_action_mode_save:
+                    case R.id.event_preferences_action_mode_save:
         				savePreferences();
         				finishActionMode(BUTTON_SAVE);
                         return true;
