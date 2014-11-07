@@ -54,6 +54,7 @@
 	    <item name="actionModeBackground">?attr/colorPrimary</item>
 	    <item name="actionModeCloseButtonStyle">@style/NoCloseButton</item>
         <item name="android:actionModeCloseButtonStyle">@style/NoCloseButton</item>
+        <item name="windowActionModeOverlay">true</item>
         
     </style>
 
