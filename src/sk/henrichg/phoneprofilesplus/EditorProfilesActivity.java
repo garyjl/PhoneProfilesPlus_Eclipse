@@ -1759,6 +1759,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 				((EditorEventListFragment)fragment).fabButton.show();
 			}
 		}
+		drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 	}
 
 	@Override
@@ -1775,6 +1776,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 				((EditorEventListFragment)fragment).fabButton.hide();
 			}
 		}
+		drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 	}
 	
 	@Override
@@ -1791,6 +1793,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 				((EditorEventListFragment)fragment).fabButton.show();
 			}
 		}
+		drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
 	}
 
 	@Override
@@ -1807,6 +1810,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 				((EditorEventListFragment)fragment).fabButton.show();
 			}
 		}
+		drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
 	}
 	
 	
