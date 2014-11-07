@@ -421,8 +421,8 @@
     <string name="phoneprofilehepler_reboot_title_uninstall">PPHelper uninstallation</string>
     <string name="phoneprofilehepler_reboot_message_uninstall">Restart is required. Restart now?</string>
 
-    <string name="phone_profiles_pref_applicationEventWifiRescan">Rescan wifi</string>
-    <string name="phone_profiles_pref_applicationEventBluetoothRescan">Rescan bluetooth</string>
+    <string name="phone_profiles_pref_applicationEventWifiRescan">Rescan Wi-Fi</string>
+    <string name="phone_profiles_pref_applicationEventBluetoothRescan">Rescan Bluetooth</string>
 	<string name="phone_profiles_pref_applicationEventRescan_none">None</string>    
 	<string name="phone_profiles_pref_applicationEventRescan_screenOn">Screen On</string>    
 	<string name="phone_profiles_pref_applicationEventRescan_restartEvents">Restart events</string>    

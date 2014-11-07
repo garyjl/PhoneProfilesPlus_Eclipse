@@ -401,21 +401,25 @@
 	<string name="phone_profiles_pref_applicationEventBluetoothEnableBluetooth">Активировать сканирование Bluetooth</string>
 	<string name="bluetooth_name_pref_dlg_rescan_button">Пересканировать</string>
 	<string name="wifi_ssid_pref_dlg_rescan_button">Пересканировать</string>
-
     <string name="event_type_sms">SMS</string>
     <string name="pref_event_sms_contactListType">Список</string> 
     <string name="event_preferences_category_eventSMSParameters">Параметры SMS</string>
     <string name="event_preferences_sms_enabled">Активировать</string>
     <string name="event_preferences_sms_contacts">Контакты</string>
-
     <string name="toast_events_restarted">События перезапущен</string>
     <string name="phone_profiles_pref_notificationStatusBarPermanent">Продолжающийся уведомления</string>
     <string name="phone_profiles_pref_notificationStatusBarCancel">Отменить (сек.)</string>
 	<string name="event_name_background_profile">Профиль по умолч</string>
-
     <string name="phoneprofilehepler_install_error_no_root">Инсталляция PPHelper требуется ROOT</string>
     <string name="phoneprofilehepler_uninstall_error_no_root">Деинсталляция PPHelper требуется ROOT</string>
     <string name="phoneprofilehepler_reboot_title_uninstall">Деинсталляция PPHelper</string>
     <string name="phoneprofilehepler_reboot_message_uninstall">Нужно перезагрузить. Перезапуск сейчас?</string>
-				
+
+    <string name="phone_profiles_pref_applicationEventWifiRescan">Пересканировать Wi-Fi</string>
+    <string name="phone_profiles_pref_applicationEventBluetoothRescan">Пересканировать Bluetooth</string>
+	<string name="phone_profiles_pref_applicationEventRescan_none">Нет</string>    
+	<string name="phone_profiles_pref_applicationEventRescan_screenOn">Включение экрана</string>    
+	<string name="phone_profiles_pref_applicationEventRescan_restartEvents">>Перезапуск событий</string>    
+	<string name="phone_profiles_pref_applicationEventRescan_screenOnAndRestartEvents">Включение экрана &amp; Перезапуск событий</string>    
+    
 </resources>

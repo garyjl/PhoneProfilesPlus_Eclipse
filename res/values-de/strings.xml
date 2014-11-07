@@ -400,21 +400,25 @@
 	<string name="phone_profiles_pref_applicationEventBluetoothEnableBluetooth">Bluetooth-Scan aktivieren</string>
 	<string name="bluetooth_name_pref_dlg_rescan_button">Neu scannen</string>
 	<string name="wifi_ssid_pref_dlg_rescan_button">Neu scannen</string>
-
   	<string name="event_type_sms">SMS</string>
     <string name="pref_event_sms_contactListType">Liste</string> 
     <string name="event_preferences_category_eventSMSParameters">SMS-Parameter</string>
     <string name="event_preferences_sms_enabled">SMS aktivieren</string>
     <string name="event_preferences_sms_contacts">Kontakte</string>
-
     <string name="toast_events_restarted">Ereignisse neu gestartet</string>
     <string name="phone_profiles_pref_notificationStatusBarPermanent">Dauerhafte Benachrichtigung</string>
     <string name="phone_profiles_pref_notificationStatusBarCancel">Beenden nach (sek)</string>
 	<string name="event_name_background_profile">Standard-Profil</string>
-
     <string name="phoneprofilehepler_install_error_no_root">PPHelfer-Installation benötigt root</string>
     <string name="phoneprofilehepler_uninstall_error_no_root">PPHelfer-Deinstallation benötigt root</string>
     <string name="phoneprofilehepler_reboot_title_uninstall">PPHelfer-Deinstallation</string>
     <string name="phoneprofilehepler_reboot_message_uninstall">Neustart nötig. Jetzt neu starten?</string>
-    		
+
+	<string name="phone_profiles_pref_applicationEventWifiRescan">Wi-Fi scannen</string>
+	<string name="phone_profiles_pref_applicationEventBluetoothRescan">BlueTooth scannen</string>
+	<string name="phone_profiles_pref_applicationEventRescan_none">Nichts</string>
+	<string name="phone_profiles_pref_applicationEventRescan_screenOn">Bildschirm an</string>
+	<string name="phone_profiles_pref_applicationEventRescan_restartEvents">Ereignisse neu starten</string>
+	<string name="phone_profiles_pref_applicationEventRescan_screenOnAndRestartEvents">Bildschirm an &amp; Ereignisse neu starten</string>
+     		
 </resources>

@@ -401,21 +401,25 @@
 	<string name="phone_profiles_pref_applicationEventBluetoothEnableBluetooth">Povol skenováni Bluetooth</string>
 	<string name="bluetooth_name_pref_dlg_rescan_button">Proskenovat</string>
 	<string name="wifi_ssid_pref_dlg_rescan_button">Proskenovat</string>
-	
 	<string name="event_type_sms">SMS</string>
 	<string name="pref_event_sms_contactListType">Seznam</string>
 	<string name="event_preferences_category_eventSMSParameters">Parametry SMS</string>
 	<string name="event_preferences_sms_enabled">Použij SMS</string>
 	<string name="event_preferences_sms_contacts">Kontakty</string>
-	
 	<string name="toast_events_restarted">Události restartováno</string>
 	<string name="phone_profiles_pref_notificationStatusBarPermanent">Probíhající notifikace</string>
 	<string name="phone_profiles_pref_notificationStatusBarCancel">Zruš po (sek.)</string>
 	<string name="event_name_background_profile">Výchozí profil</string>
-
 	<string name="phoneprofilehepler_install_error_no_root">Instalace PPHelper-a vyžaduje ROOT</string>
 	<string name="phoneprofilehepler_uninstall_error_no_root">Odinsštalácia PPHelper-a vyžaduje ROOT</string>
 	<string name="phoneprofilehepler_reboot_title_uninstall">Odinstalace PPHelper-a</string>
 	<string name="phoneprofilehepler_reboot_message_uninstall">Je nutný restart zařízení. Restartovat teď?</string>
 	
+    <string name="phone_profiles_pref_applicationEventWifiRescan">Proskenuj Wi-fi</string>
+    <string name="phone_profiles_pref_applicationEventBluetoothRescan">Proskenuj Bluetooth</string>
+	<string name="phone_profiles_pref_applicationEventRescan_none">Ne</string>    
+	<string name="phone_profiles_pref_applicationEventRescan_screenOn">Zapnutí obrazovky</string>    
+	<string name="phone_profiles_pref_applicationEventRescan_restartEvents">Restart událostí</string>    
+	<string name="phone_profiles_pref_applicationEventRescan_screenOnAndRestartEvents">Zapnutí obrazovky &amp; Restart událostí</string>    
+		
 </resources>
