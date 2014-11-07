@@ -98,7 +98,7 @@
     <string name="array_pref_screenTimeoutArray_never_timeout">Unendlich</string> 
     <string name="phone_profiles_pref_applicationLanguage">Sprache</string> 
     <string name="phone_profiles_pref_applicationLanguage_system">Nach Systemeinstellung</string> 
-    <string name="title_activity_shortcut_creator">Schnellstarter erstellen</string>
+    <string name="title_activity_shortcut_creator">PhoneProfilesPlus-schnellstarter</string>
     <string name="phone_profiles_pref_applicationStartOnBoot">Beim Hochfahren starten</string> 
     <string name="array_pref_value_system">system</string> 
     <string name="array_pref_value_en">en</string> 

@@ -99,7 +99,7 @@
     <string name="array_pref_screenTimeoutArray_never_timeout">Никогда не истекает</string>
     <string name="phone_profiles_pref_applicationLanguage">Язык</string>
     <string name="phone_profiles_pref_applicationLanguage_system">Системный</string>
-    <string name="title_activity_shortcut_creator">Ярлык для профиля</string>
+    <string name="title_activity_shortcut_creator">PhoneProfilesPlus-ярлык</string>
     <string name="phone_profiles_pref_applicationStartOnBoot">Запускать при загрузке телефона</string>
     <string name="array_pref_value_system">system</string>
     <string name="array_pref_value_en">en</string>

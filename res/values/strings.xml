@@ -104,7 +104,7 @@
     <string name="phone_profiles_pref_applicationLanguage_cs">Čeština</string>
     <string name="phone_profiles_pref_applicationLanguage_de">Deutsch</string>
     <string name="phone_profiles_pref_applicationLanguage_ru">Русский</string>
-    <string name="title_activity_shortcut_creator">Shortcut into profile</string>
+    <string name="title_activity_shortcut_creator">PhoneProfilesPlus-shortcut</string>
     <string name="phone_profiles_pref_applicationStartOnBoot">Start on phone boot</string>
     <string name="array_pref_value_system">system</string>
     <string name="array_pref_value_en">en</string>

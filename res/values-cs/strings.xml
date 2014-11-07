@@ -99,7 +99,7 @@
     <string name="array_pref_screenTimeoutArray_never_timeout">Nikdy nevypínat</string>
     <string name="phone_profiles_pref_applicationLanguage">Jazyk</string>
     <string name="phone_profiles_pref_applicationLanguage_system">Systémový</string>
-    <string name="title_activity_shortcut_creator">Odkaz na profil</string>
+    <string name="title_activity_shortcut_creator">PhoneProfilesPlus-odkaz</string>
     <string name="phone_profiles_pref_applicationStartOnBoot">Spustit při startu telefonu</string>
     <string name="array_pref_value_system">system</string>
     <string name="array_pref_value_en">en</string>
