@@ -49,7 +49,8 @@
 	    <item name="actionEventsRestartIcon">@drawable/ic_action_events_restart_dark</item>
 	    	    	    
 	    <item name="android:actionModeBackground">?attr/colorPrimary</item>
-        <item name="actionModeCloseButtonStyle">@style/NoCloseButton</item>
+	    <item name="actionModeBackground">?attr/colorPrimary</item>
+	    <item name="actionModeCloseButtonStyle">@style/NoCloseButton</item>
         <item name="android:actionModeCloseButtonStyle">@style/NoCloseButton</item>
         
     </style>
