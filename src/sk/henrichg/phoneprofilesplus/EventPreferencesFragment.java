@@ -2,6 +2,7 @@ package sk.henrichg.phoneprofilesplus;
  
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -451,6 +452,7 @@ public class EventPreferencesFragment extends PreferenceFragment
         };		
 	}
 	
+	@SuppressLint("InflateParams")
 	private void showActionMode()
 	{
 		eventNonEdited = false;

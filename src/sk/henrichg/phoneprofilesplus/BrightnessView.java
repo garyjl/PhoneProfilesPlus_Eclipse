@@ -2,7 +2,6 @@ package sk.henrichg.phoneprofilesplus;
 
 import android.content.Context;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 
 public class BrightnessView extends ViewGroup {
 
