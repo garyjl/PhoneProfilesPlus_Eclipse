@@ -746,6 +746,8 @@ public class ActivateProfileHelper {
 			params.screenBrightness = profile.getDeviceBrightnessValue() / 255.0f;
 		GUIData.brightneesView = new BrightnessView(context);
 		windowManager.addView(GUIData.brightneesView, params);
+		
+		RemoveBrightnessViewBroadcastReceiver.setAlarm(context);
 	}
 	
 	//@SuppressWarnings("deprecation")
