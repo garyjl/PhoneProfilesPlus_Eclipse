@@ -465,7 +465,7 @@ public class EventPreferencesFragment extends PreferenceFragment
     	LayoutInflater inflater = LayoutInflater.from(getActivity());
     	View actionView = inflater.inflate(R.layout.event_preferences_action_mode, null);
     	TextView title = (TextView)actionView.findViewById(R.id.event_preferences_action_menu_title);
-    	title.setText(getActivity().getTitle());
+       	title.setText(R.string.title_activity_event_preferences);		
 
         actionMode = ((ActionBarActivity)getActivity()).startSupportActionMode(actionModeCallback);
         actionMode.setCustomView(actionView);
