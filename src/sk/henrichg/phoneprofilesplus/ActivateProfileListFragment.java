@@ -31,7 +31,6 @@ public class ActivateProfileListFragment extends Fragment {
 	private GridView gridView = null;
 	private TextView activeProfileName;
 	private ImageView activeProfileIcon;
-	private ImageView profilePrefIndicatorImageView;
 	
 	private WeakReference<LoadProfileListAsyncTask> asyncTaskContext;
 	
@@ -94,10 +93,6 @@ public class ActivateProfileListFragment extends Fragment {
 			listView = (ListView)view.findViewById(R.id.act_prof_profiles_list);
 		else
 			gridView = (GridView)view.findViewById(R.id.act_prof_profiles_grid);
-		if (GlobalData.applicationActivatorPrefIndicator)
-		{
-			profilePrefIndicatorImageView = (ImageView)view.findViewById(R.id.act_prof_activated_profile_pref_indicator);
-		}
 		
 		AbsListView absListView;
 		if (!GlobalData.applicationActivatorGridLayout)
@@ -332,11 +327,14 @@ public class ActivateProfileListFragment extends Fragment {
 		
 		if (GlobalData.applicationActivatorPrefIndicator)
 		{
-			//profilePrefIndicatorImageView.setImageBitmap(ProfilePreferencesIndicator.paint(profile, getBaseContext()));
-			if (profile == null)
-				profilePrefIndicatorImageView.setImageResource(R.drawable.ic_empty);
-			else
-				profilePrefIndicatorImageView.setImageBitmap(profile._preferencesIndicator);
+			ImageView profilePrefIndicatorImageView = (ImageView)getActivity().findViewById(R.id.act_prof_activated_profile_pref_indicator);
+			if (profilePrefIndicatorImageView != null)
+			{
+				if (profile == null)
+					profilePrefIndicatorImageView.setImageResource(R.drawable.ic_empty);
+				else
+					profilePrefIndicatorImageView.setImageBitmap(profile._preferencesIndicator);
+			}
 		}
 	}
 
