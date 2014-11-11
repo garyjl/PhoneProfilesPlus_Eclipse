@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.stericson.RootTools.RootTools;
+import com.stericson.RootTools.execution.Shell;
+
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
@@ -32,8 +34,9 @@ public class GlobalData extends Application {
 
 	static String PACKAGE_NAME;
 	
-	public static boolean logIntoLogCat = true;
-	public static boolean logIntoFile = true;
+	private static boolean logIntoLogCat = true;
+	private static boolean logIntoFile = false;
+	private static boolean rootToolsDebug = false;
 	public static String logFilterTags = //"@@@ BatteryEventBroadcastReceiver|"+
 										 //"@@@ CalendarProviderChangedBroadcastReceiver|"+
 										 //"@@@ EventsCalendarBroadcastReceiver|"+
@@ -57,7 +60,7 @@ public class GlobalData extends Application {
 										 //"@@@ EventsService|"+
 										 //"@@@ Event|"+
 										 //"@@@ ScannerService"
-										"GlobalData.isSELinuxEnforcing"
+										"PhoneProfilesHelper.doInstallPPHelper"
 			;
 	
 	
@@ -1011,16 +1014,17 @@ public class GlobalData extends Application {
 	static private boolean settingsBinaryExists = false;
 	static private boolean isSELinuxEnforcingChecked = false;
 	static private boolean isSELinuxEnforcing = false;
-
 	
 	static boolean isRooted(boolean onlyCheckFlags)
 	{
-		RootTools.debugMode = true;
+		RootTools.debugMode = rootToolsDebug;
 
 		if ((!rootChecked) && (!rootChecking))
 		{
 			settingsBinaryExists = false;
 			settingsBinaryChecked = false;
+			isSELinuxEnforcingChecked = false;
+			isSELinuxEnforcing = false;
 			if (!onlyCheckFlags)
 			{
 				rootChecking = true;
@@ -1053,7 +1057,7 @@ public class GlobalData extends Application {
 	
 	static boolean grantRoot(boolean force)
 	{
-		RootTools.debugMode = true;
+		RootTools.debugMode = rootToolsDebug;
 		
 		GlobalData.logE("GlobalData.grantRoot", "grantChecked="+grantChecked);
 		GlobalData.logE("GlobalData.grantRoot", "force="+force);
@@ -1063,6 +1067,8 @@ public class GlobalData extends Application {
 		{
 			settingsBinaryExists = false;
 			settingsBinaryChecked = false;
+			isSELinuxEnforcingChecked = false;
+			isSELinuxEnforcing = false;
 			GlobalData.logE("GlobalData.grantRoot", "start isAccessGiven");
 			grantChecking = true;
 			if (RootTools.isAccessGiven())
@@ -1095,7 +1101,7 @@ public class GlobalData extends Application {
 	
 	static boolean settingsBinaryExists()
 	{
-		RootTools.debugMode = true;
+		RootTools.debugMode = rootToolsDebug;
 		
 		if ((!settingsBinaryChecked) && (!settingsBinaryChecking))
 		{
@@ -1121,7 +1127,7 @@ public class GlobalData extends Application {
      */
     public static boolean isSELinuxEnforcing()
     {
-		RootTools.debugMode = true;
+		RootTools.debugMode = rootToolsDebug;
     	
         if (!isSELinuxEnforcingChecked)
         {
@@ -1163,6 +1169,11 @@ public class GlobalData extends Application {
 		GlobalData.logE("GlobalData.isSELinuxEnforcing", "isSELinuxEnforcing="+isSELinuxEnforcing);
         
         return isSELinuxEnforcing;
+    }
+    
+    public static String getSELinuxEnforceCommad(String command, Shell.ShellContext context)
+    {
+    	return "su --context " + context.getValue() + " -c \"" + command + "\"  < /dev/null";    			
     }
     
 	//------------------------------------------------------------

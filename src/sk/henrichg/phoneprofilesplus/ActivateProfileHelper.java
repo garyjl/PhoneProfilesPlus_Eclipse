@@ -355,20 +355,14 @@ public class ActivateProfileHelper {
 	{
     	if (android.os.Build.VERSION.SDK_INT >= 21)
     	{
-			if (GlobalData.grantRoot(true))
+			if (GlobalData.grantRoot(false))
 			{
-				// zariadenie je rootnute
-				String command1;
-				command1 = "settings put global zen_mode " + mode;
+				String command1 = "settings put global zen_mode " + mode;
+				if (GlobalData.isSELinuxEnforcing())
+					command1 = GlobalData.getSELinuxEnforceCommad(command1, Shell.ShellContext.SYSTEM_APP);
 				CommandCapture command = new CommandCapture(0, command1);
 				try {
-					RootTools.debugMode = true;
-					if (GlobalData.isSELinuxEnforcing())
-					{
-						RootTools.getShell(true, 0, Shell.ShellContext.SYSTEM_APP, 3).add(command);
-					}
-					else
-						RootTools.getShell(true).add(command);
+					RootTools.getShell(true).add(command);
 					commandWait(command);
 					//RootTools.closeAllShells();
 				} catch (Exception e) {
@@ -504,32 +498,6 @@ public class ActivateProfileHelper {
 				Settings.System.putString(context.getContentResolver(), Settings.System.ALARM_ALERT, profile._soundAlarm);
 		}
 
-		// event notification
-		/*if (!eventNotificationSound.isEmpty())
-		{
-			audioManager.setMode(AudioManager.MODE_NORMAL);
-			final String _eventNotificationSound = eventNotificationSound;
-			final DataWrapper _dataWrapper = dataWrapper;
-		    Handler handler = new Handler(context.getMainLooper());
-			handler.post(new Runnable() {
-				public void run() {
-					MediaPlayer mp=new MediaPlayer();
-					Uri ringtoneUri=Uri.parse(_eventNotificationSound);
-					try {
-						mp.setDataSource(_dataWrapper.context, ringtoneUri);
-					    mp.setAudioStreamType(AudioManager.STREAM_NOTIFICATION);
-					    mp.prepare();
-					    mp.start();
-			        	Thread.sleep(200);
-					}
-					catch(Exception e)
-					{
-					    e.printStackTrace();
-					}				
-				}
-			});
-		}*/
-		
 		//// nahodenie radio preferences
 		// only check
 		doExecuteForRadios(profile, true);
@@ -1116,32 +1084,14 @@ public class ActivateProfileHelper {
 	    			newSet = String.format("%s,%s", provider, LocationManager.GPS_PROVIDER);
 				
 				command1 = "settings put secure location_providers_allowed \"" + newSet + "\"";
-	    		//command1 = "sqlite3 /data/data/com.android.providers.settings/databases/settings.db \'update secure set value=\"" + newSet + "\" where name=\"location_providers_allowed\";\'";
+				if (GlobalData.isSELinuxEnforcing())
+					command1 = GlobalData.getSELinuxEnforceCommad(command1, Shell.ShellContext.SYSTEM_APP);
+				
 	    		//Log.e("ActivateProfileHelper.setGPS","command1="+command1);
 				//command2 = "am broadcast -a android.location.GPS_ENABLED_CHANGE --ez state true";
 				CommandCapture command = new CommandCapture(0, command1); //, command2);
 				try {
-	    		/*	Command command = new Command(0, command1)
-	    			{
-							@Override
-							public void commandCompleted(int arg0, int arg1) {
-								
-							}
-
-							@Override
-							public void commandOutput(int arg0, String arg1) {
-								Log.e("ActivateProfileHelper.setGPS", arg1);
-							}
-
-							@Override
-							public void commandTerminated(int arg0, String arg1) {
-								
-							}
-	    			};*/	    			
-					if (GlobalData.isSELinuxEnforcing())
-						RootTools.getShell(true, 0, Shell.ShellContext.SYSTEM_APP, 3).add(command);
-					else
-						RootTools.getShell(true).add(command);
+					RootTools.getShell(true).add(command);
 					commandWait(command);
 					//RootTools.closeAllShells();
 				} catch (Exception e) {
@@ -1209,32 +1159,13 @@ public class ActivateProfileHelper {
 	    		}
 				
 				command1 = "settings put secure location_providers_allowed \"" + newSet + "\"";
-	    		//command1 = "sqlite3 /data/data/com.android.providers.settings/databases/settings.db \'update secure set value=\"" + newSet + "\" where name=\"location_providers_allowed\";\'";
+				if (GlobalData.isSELinuxEnforcing())
+					command1 = GlobalData.getSELinuxEnforceCommad(command1, Shell.ShellContext.SYSTEM_APP);
 	    		//Log.e("ActivateProfileHelper.setGPS","command1="+command1);
 				//command2 = "am broadcast -a android.location.GPS_ENABLED_CHANGE --ez state false";
 				CommandCapture command = new CommandCapture(0, command1);//, command2);
 	    		try {
-	    		/*	Command command = new Command(0, command1)
-	    			{
-							@Override
-							public void commandCompleted(int arg0, int arg1) {
-								
-							}
-
-							@Override
-							public void commandOutput(int arg0, String arg1) {
-								Log.e("ActivateProfileHelper.setGPS", arg1);
-							}
-
-							@Override
-							public void commandTerminated(int arg0, String arg1) {
-								
-							}
-	    			};	*/    			
-					if (GlobalData.isSELinuxEnforcing())
-						RootTools.getShell(true, 0, Shell.ShellContext.SYSTEM_APP, 3).add(command);
-					else
-						RootTools.getShell(true).add(command);
+					RootTools.getShell(true).add(command);
 					commandWait(command);
 					//RootTools.closeAllShells();
 				} catch (Exception e) {
@@ -1278,12 +1209,14 @@ public class ActivateProfileHelper {
 				command1 = "settings put global airplane_mode_on 0";
 				command2 = "am broadcast -a android.intent.action.AIRPLANE_MODE --ez state false";
 			}
+			if (GlobalData.isSELinuxEnforcing())
+			{
+				command1 = GlobalData.getSELinuxEnforceCommad(command1, Shell.ShellContext.SYSTEM_APP);
+				command2 = GlobalData.getSELinuxEnforceCommad(command2, Shell.ShellContext.SYSTEM_APP);
+			}
 			CommandCapture command = new CommandCapture(0, command1, command2);
 			try {
-				if (GlobalData.isSELinuxEnforcing())
-					RootTools.getShell(true, 0, Shell.ShellContext.SYSTEM_APP, 3).add(command);
-				else
-					RootTools.getShell(true).add(command);
+				RootTools.getShell(true).add(command);
 				commandWait(command);
 				//RootTools.closeAllShells();
 			} catch (Exception e) {
