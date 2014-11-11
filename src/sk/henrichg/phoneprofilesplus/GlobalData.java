@@ -1146,11 +1146,13 @@ public class GlobalData extends Application {
                     }
                 }
 
+                /*
                 // 4.4+ builds are enforcing by default, take the gamble
                 if (!enforcing)
                 {
                     enforcing = (android.os.Build.VERSION.SDK_INT >= 19);
                 }
+                */
             }
 
             isSELinuxEnforcing = enforcing;
