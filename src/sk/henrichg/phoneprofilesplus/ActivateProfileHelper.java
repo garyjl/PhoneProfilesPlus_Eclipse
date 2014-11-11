@@ -8,6 +8,8 @@ import java.util.Calendar;
 import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.execution.Command;
 import com.stericson.RootTools.execution.CommandCapture;
+import com.stericson.RootTools.execution.Shell;
+import com.stericson.RootTools.execution.Shell.ShellContext;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -353,18 +355,24 @@ public class ActivateProfileHelper {
 	{
     	if (android.os.Build.VERSION.SDK_INT >= 21)
     	{
-			if (GlobalData.grantRoot(false))
+			if (GlobalData.grantRoot(true))
 			{
 				// zariadenie je rootnute
 				String command1;
 				command1 = "settings put global zen_mode " + mode;
 				CommandCapture command = new CommandCapture(0, command1);
 				try {
-					RootTools.getShell(true).add(command);
+					RootTools.debugMode = true;
+					if (GlobalData.isSELinuxEnforcing())
+					{
+						RootTools.getShell(true, 0, Shell.ShellContext.SYSTEM_APP, 3).add(command);
+					}
+					else
+						RootTools.getShell(true).add(command);
 					commandWait(command);
-					RootTools.closeAllShells();
+					//RootTools.closeAllShells();
 				} catch (Exception e) {
-					Log.e("ActivateProfileHelper.setZenMode", "Error on run su");
+					Log.e("ActivateProfileHelper.setZenMode", e.getMessage());
 				}
 			}
     	}
@@ -1130,9 +1138,12 @@ public class ActivateProfileHelper {
 								
 							}
 	    			};*/	    			
-					RootTools.getShell(true).add(command);
+					if (GlobalData.isSELinuxEnforcing())
+						RootTools.getShell(true, 0, Shell.ShellContext.SYSTEM_APP, 3).add(command);
+					else
+						RootTools.getShell(true).add(command);
 					commandWait(command);
-					RootTools.closeAllShells();
+					//RootTools.closeAllShells();
 				} catch (Exception e) {
 					Log.e("ActivateProfileHelper.setGPS", "Error on run su: "+e.toString());
 				} 
@@ -1220,9 +1231,12 @@ public class ActivateProfileHelper {
 								
 							}
 	    			};	*/    			
-					RootTools.getShell(true).add(command);
+					if (GlobalData.isSELinuxEnforcing())
+						RootTools.getShell(true, 0, Shell.ShellContext.SYSTEM_APP, 3).add(command);
+					else
+						RootTools.getShell(true).add(command);
 					commandWait(command);
-					RootTools.closeAllShells();
+					//RootTools.closeAllShells();
 				} catch (Exception e) {
 					Log.e("ActivateProfileHelper.setGPS", "Error on run su: "+e.toString());
 				}
@@ -1266,9 +1280,12 @@ public class ActivateProfileHelper {
 			}
 			CommandCapture command = new CommandCapture(0, command1, command2);
 			try {
-				RootTools.getShell(true).add(command);
+				if (GlobalData.isSELinuxEnforcing())
+					RootTools.getShell(true, 0, Shell.ShellContext.SYSTEM_APP, 3).add(command);
+				else
+					RootTools.getShell(true).add(command);
 				commandWait(command);
-				RootTools.closeAllShells();
+				//RootTools.closeAllShells();
 			} catch (Exception e) {
 				Log.e("AirPlaneMode_SDK17.setAirplaneMode", "Error on run su");
 			}

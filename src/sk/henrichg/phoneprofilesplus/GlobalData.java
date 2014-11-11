@@ -2,8 +2,10 @@ package sk.henrichg.phoneprofilesplus;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -38,10 +40,10 @@ public class GlobalData extends Application {
 										 //"@@@ EventsTimeBroadcastReceiver|"+
 										 //"HeadsetConnectionBroadcastReceiver"
 										 //"@@@ SearchCalendarEventsBroadcastReceiver|"+
-										 "@@@ WifiConnectionBroadcastReceiver|"+
-										 "@@@ WifiScanAlarmBroadcastReceiver|"+
-										 "@@@ WifiScanBroadcastReceiver|"+
-										 "@@@ WifiStateChangedBroadcastReceiver|"+
+										 //"@@@ WifiConnectionBroadcastReceiver|"+
+										 //"@@@ WifiScanAlarmBroadcastReceiver|"+
+										 //"@@@ WifiScanBroadcastReceiver|"+
+										 //"@@@ WifiStateChangedBroadcastReceiver|"+
 										 //"@@@ ActivateProfileHelper"
 										 //"@@@ BluetoothConnectionBroadcastReceiver|"+
 										 //"@@@ BluetoothScanAlarmBroadcastReceiver|"+
@@ -53,8 +55,9 @@ public class GlobalData extends Application {
 										 //"@@@ BootUpReceiver|"+
 										 //"@@@ PackageReplacedReceiver|"+
 										 //"@@@ EventsService|"+
-										 "@@@ Event|"+
-										 "@@@ ScannerService"
+										 //"@@@ Event|"+
+										 //"@@@ ScannerService"
+										"GlobalData.isSELinuxEnforcing"
 			;
 	
 	
@@ -1006,10 +1009,14 @@ public class GlobalData extends Application {
 	static private boolean settingsBinaryChecking = false;
 	static private boolean settingsBinaryChecked = false;
 	static private boolean settingsBinaryExists = false;
+	static private boolean isSELinuxEnforcingChecked = false;
+	static private boolean isSELinuxEnforcing = false;
 
 	
 	static boolean isRooted(boolean onlyCheckFlags)
 	{
+		RootTools.debugMode = true;
+
 		if ((!rootChecked) && (!rootChecking))
 		{
 			settingsBinaryExists = false;
@@ -1028,6 +1035,11 @@ public class GlobalData extends Application {
 					rootChecked = true;
 					rooted = false;
 				}
+				/*try {
+					RootTools.closeAllShells();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}*/
 				rootChecking = false;
 			}
 			else
@@ -1041,6 +1053,8 @@ public class GlobalData extends Application {
 	
 	static boolean grantRoot(boolean force)
 	{
+		RootTools.debugMode = true;
+		
 		GlobalData.logE("GlobalData.grantRoot", "grantChecked="+grantChecked);
 		GlobalData.logE("GlobalData.grantRoot", "force="+force);
 		
@@ -1069,6 +1083,11 @@ public class GlobalData extends Application {
 				grantChecked = true;
 				rootGranted = false;
 			}
+			/*try {
+				RootTools.closeAllShells();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}*/
 			grantChecking = false;
 		}
 		return rootGranted;
@@ -1076,10 +1095,17 @@ public class GlobalData extends Application {
 	
 	static boolean settingsBinaryExists()
 	{
+		RootTools.debugMode = true;
+		
 		if ((!settingsBinaryChecked) && (!settingsBinaryChecking))
 		{
 			settingsBinaryChecking = true;
 			settingsBinaryExists = RootTools.findBinary("settings");
+			/*try {
+				RootTools.closeAllShells();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}*/
 			settingsBinaryChecking = false;
 			settingsBinaryChecked = true;
 		}
@@ -1087,6 +1113,56 @@ public class GlobalData extends Application {
 		return settingsBinaryExists;
 	}
 	
+    /**
+     * Detect if SELinux is set to enforcing, caches result
+     * 
+     * @return true if SELinux set to enforcing, or false in the case of
+     *         permissive or not present
+     */
+    public static boolean isSELinuxEnforcing()
+    {
+		RootTools.debugMode = true;
+    	
+        if (!isSELinuxEnforcingChecked)
+        {
+            boolean enforcing = false;
+
+            // First known firmware with SELinux built-in was a 4.2 (17)
+            // leak
+            if (android.os.Build.VERSION.SDK_INT >= 17)
+            {
+                // Detect enforcing through sysfs, not always present
+                File f = new File("/sys/fs/selinux/enforce");
+                if (f.exists())
+                {
+                    try {
+                        InputStream is = new FileInputStream("/sys/fs/selinux/enforce");
+                        try {
+                            enforcing = (is.read() == '1');
+                        } finally {
+                            is.close();
+                        }
+                    } catch (Exception e) {
+                    }
+                }
+
+                // 4.4+ builds are enforcing by default, take the gamble
+                if (!enforcing)
+                {
+                    enforcing = (android.os.Build.VERSION.SDK_INT >= 19);
+                }
+            }
+
+            isSELinuxEnforcing = enforcing;
+            isSELinuxEnforcingChecked = true; 
+            
+        }
+        
+		GlobalData.logE("GlobalData.isSELinuxEnforcing", "isSELinuxEnforcing="+isSELinuxEnforcing);
+        
+        return isSELinuxEnforcing;
+    }
+    
 	//------------------------------------------------------------
 	
 }
