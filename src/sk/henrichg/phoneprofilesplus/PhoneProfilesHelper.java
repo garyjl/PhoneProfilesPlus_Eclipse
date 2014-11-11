@@ -38,11 +38,16 @@ public class PhoneProfilesHelper {
 	public static final int PPHELPER_CURRENT_VERSION = 19;
 	
 	private static boolean errorNoRoot = false;
+	private static boolean nowPPHelperUninstalled = false; 
 	
 	static public boolean isPPHelperInstalled(Context context, int minVersion)
 	{
-		// get package version
 		PPHelperVersion = -1;
+
+		if (nowPPHelperUninstalled)
+			return false;
+		
+		// get package version
 		PackageInfo pinfo = null;
 		try {
 			pinfo = context.getPackageManager().getPackageInfo("sk.henrichg.phoneprofileshelper", 0);
@@ -368,6 +373,20 @@ public class PhoneProfilesHelper {
 			e.printStackTrace();
 			Log.e("PhoneProfilesHelper.doUninstallPPHelper", "PhoneProfilesHelper uninstallation failed!");
 			OK = false;
+		}
+		
+		if (OK)
+		{
+			nowPPHelperUninstalled = true;
+			
+			Context context = activity.getApplicationContext();
+			// update profiles for hardware changes
+			DatabaseHandler databaseHandler = DatabaseHandler.getInstance(context);
+			databaseHandler.updateForHardware(context);
+			// refresh GUI
+			Intent refreshIntent = new Intent();
+			refreshIntent.setAction(RefreshGUIBroadcastReceiver.INTENT_REFRESH_GUI);
+			context.sendBroadcast(refreshIntent);
 		}
 		
 		return OK;
