@@ -347,6 +347,7 @@ public class ActivateProfileHelper {
 			//Settings.System.putInt(getContentResolver(), Settings.System.VOLUME_VOICE, profile.getVolumeVoiceValue());
 	}
 
+	/*
 	private static final int ZENMODE_ALL = 0;
 	private static final int ZENMODE_PRIORITY = 1;
 	//private static final int ZENMODE_NONE = 2;
@@ -371,6 +372,7 @@ public class ActivateProfileHelper {
 			}
     	}
 	}
+	*/
 	
 	@SuppressWarnings("deprecation")
 	public void setRingerMode(Profile profile, AudioManager audioManager)
@@ -392,7 +394,7 @@ public class ActivateProfileHelper {
 				e.printStackTrace();
 			} 
 			Settings.System.putInt(context.getContentResolver(), "vibrate_when_ringing", 0);
-			setZenMode(ZENMODE_ALL);
+			//setZenMode(ZENMODE_ALL);
 			break;
 		case 2:  // Ring & Vibrate
 			audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
@@ -409,7 +411,7 @@ public class ActivateProfileHelper {
 				e.printStackTrace();
 			} 
 			Settings.System.putInt(context.getContentResolver(), "vibrate_when_ringing", 1);
-			setZenMode(ZENMODE_ALL);
+			//setZenMode(ZENMODE_ALL);
 			break;
 		case 3:  // Vibrate
 			audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
@@ -426,7 +428,7 @@ public class ActivateProfileHelper {
 				e.printStackTrace();
 			} 
 			Settings.System.putInt(context.getContentResolver(), "vibrate_when_ringing", 1);
-			setZenMode(ZENMODE_ALL);
+			//setZenMode(ZENMODE_ALL);
 			break;
 		case 4:  // Silent
 			audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
@@ -443,7 +445,7 @@ public class ActivateProfileHelper {
 				e.printStackTrace();
 			} 
 			Settings.System.putInt(context.getContentResolver(), "vibrate_when_ringing", 0);
-			setZenMode(ZENMODE_PRIORITY);
+			//setZenMode(ZENMODE_PRIORITY);
 			break;
 		}
 	}
