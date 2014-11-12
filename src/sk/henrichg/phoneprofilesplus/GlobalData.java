@@ -1127,7 +1127,7 @@ public class GlobalData extends Application {
 			settingsBinaryChecking = false;
 			settingsBinaryChecked = true;
 		}
-		GlobalData.logE("GlobalData.grantRoot", "settingsBinaryExists="+settingsBinaryExists);
+		GlobalData.logE("GlobalData.settingsBinaryExists", "settingsBinaryExists="+settingsBinaryExists);
 		return settingsBinaryExists;
 	}
 	
