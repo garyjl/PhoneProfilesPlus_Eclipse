@@ -312,23 +312,18 @@ public class EditorProfilesActivity extends ActionBarActivity
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
             }
+            
+            // this disable animation 
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) 
+            {
+                  if(drawerView!=null && drawerView == drawerRoot){
+                        super.onDrawerSlide(drawerView, 0);
+                  }else{
+                        super.onDrawerSlide(drawerView, slideOffset);
+                  }
+            }            
         };
-
-        /*drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
-								                drawerIconId, 
-								                R.string.editor_drawer_open,
-								                R.string.editor_drawer_close) 
-        {
- 
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-            }
- 
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-            }
-        };*/
- 
         drawerLayout.setDrawerListener(drawerToggle);
         
         filterStatusbarTitle = (TextView) findViewById(R.id.editor_filter_title);
