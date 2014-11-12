@@ -1201,14 +1201,14 @@ public class GlobalData extends Application {
 	    	    public void commandCompleted(int id, int exitcode) {
 	    			Log.e("GlobalData.getSUVersion","version="+toString());
 	    			suVersion = toString();
-	    			suVersionChecked = true;
 	    	    }
 	    	}
 	    	;
 			try {
-				RootTools.getShell(true).add(command);
+				RootTools.getShell(false).add(command);
 				commandWait(command);
 				//RootTools.closeAllShells();
+    			suVersionChecked = true;
 			} catch (Exception e) {
 				Log.e("GlobalData.getSUVersion", "Error on run su");
 			}
