@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.stericson.RootTools.RootTools;
+import com.stericson.RootTools.execution.Command;
+import com.stericson.RootTools.execution.CommandCapture;
 import com.stericson.RootTools.execution.Shell;
 
 import android.annotation.SuppressLint;
@@ -1014,6 +1016,8 @@ public class GlobalData extends Application {
 	static private boolean settingsBinaryExists = false;
 	static private boolean isSELinuxEnforcingChecked = false;
 	static private boolean isSELinuxEnforcing = false;
+	static private String suVersion = null;
+	static private boolean suVersionChecked = false;
 	
 	static boolean isRooted(boolean onlyCheckFlags)
 	{
@@ -1025,6 +1029,8 @@ public class GlobalData extends Application {
 			settingsBinaryChecked = false;
 			isSELinuxEnforcingChecked = false;
 			isSELinuxEnforcing = false;
+			suVersionChecked = false;
+			suVersion = null;
 			if (!onlyCheckFlags)
 			{
 				rootChecking = true;
@@ -1052,6 +1058,8 @@ public class GlobalData extends Application {
 				rooted = false;
 			}
 		}
+		if (rooted)
+			getSUVersion();
 		return rooted;
 	}
 	
@@ -1069,6 +1077,8 @@ public class GlobalData extends Application {
 			settingsBinaryChecked = false;
 			isSELinuxEnforcingChecked = false;
 			isSELinuxEnforcing = false;
+			suVersionChecked = false;
+			suVersion = null;
 			GlobalData.logE("GlobalData.grantRoot", "start isAccessGiven");
 			grantChecking = true;
 			if (RootTools.isAccessGiven())
@@ -1096,6 +1106,8 @@ public class GlobalData extends Application {
 			}*/
 			grantChecking = false;
 		}
+		if (rooted)
+			getSUVersion();
 		return rootGranted;
 	}
 	
@@ -1171,10 +1183,61 @@ public class GlobalData extends Application {
         return isSELinuxEnforcing;
     }
     
-    public static String getSELinuxEnforceCommad(String command, Shell.ShellContext context)
+    public static String getSELinuxEnforceCommand(String command, Shell.ShellContext context)
     {
-    	return "su --context " + context.getValue() + " -c \"" + command + "\"  < /dev/null";    			
+    	if ((suVersion != null) && suVersion.contains("SUPERSU"))
+    		return "su --context " + context.getValue() + " -c \"" + command + "\"  < /dev/null";
+    	else
+    		return command;
     }
+
+    public static String getSUVersion()
+    {
+    	if (!suVersionChecked)
+    	{
+	    	CommandCapture command = new CommandCapture(0, "su -v")
+	    	{
+	    		@Override
+	    	    public void commandCompleted(int id, int exitcode) {
+	    			Log.e("GlobalData.getSUVersion","version="+toString());
+	    			suVersion = toString();
+	    			suVersionChecked = true;
+	    	    }
+	    	}
+	    	;
+			try {
+				RootTools.getShell(true).add(command);
+				commandWait(command);
+				//RootTools.closeAllShells();
+			} catch (Exception e) {
+				Log.e("GlobalData.getSUVersion", "Error on run su");
+			}
+    	}
+    	return suVersion;
+    }
+    
+    
+	private static void commandWait(Command cmd) throws Exception {
+        int waitTill = 50;
+        int waitTillMultiplier = 2;
+        int waitTillLimit = 3200; //7 tries, 6350 msec
+
+        while (!cmd.isFinished() && waitTill<=waitTillLimit) {
+            synchronized (cmd) {
+                try {
+                    if (!cmd.isFinished()) {
+                        cmd.wait(waitTill);
+                        waitTill *= waitTillMultiplier;
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        if (!cmd.isFinished()){
+            Log.e("GlobaData.commandWait", "Could not finish root command in " + (waitTill/waitTillMultiplier));
+        }
+    }    
     
 	//------------------------------------------------------------
 	

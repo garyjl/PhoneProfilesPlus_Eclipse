@@ -228,11 +228,11 @@ public class PhoneProfilesHelper {
 			String command5 = "mount -o remount,ro /system";			//mounts the system partition to be read-only again
 			if (GlobalData.isSELinuxEnforcing())
 			{
-				command1 = GlobalData.getSELinuxEnforceCommad(command1, Shell.ShellContext.RECOVERY);
-				command2 = GlobalData.getSELinuxEnforceCommad(command2, Shell.ShellContext.RECOVERY);
-				command3 = GlobalData.getSELinuxEnforceCommad(command3, Shell.ShellContext.RECOVERY);
-				command4 = GlobalData.getSELinuxEnforceCommad(command4, Shell.ShellContext.RECOVERY);
-				command5 = GlobalData.getSELinuxEnforceCommad(command5, Shell.ShellContext.RECOVERY);
+				command1 = GlobalData.getSELinuxEnforceCommand(command1, Shell.ShellContext.RECOVERY);
+				command2 = GlobalData.getSELinuxEnforceCommand(command2, Shell.ShellContext.RECOVERY);
+				command3 = GlobalData.getSELinuxEnforceCommand(command3, Shell.ShellContext.RECOVERY);
+				command4 = GlobalData.getSELinuxEnforceCommand(command4, Shell.ShellContext.RECOVERY);
+				command5 = GlobalData.getSELinuxEnforceCommand(command5, Shell.ShellContext.RECOVERY);
 			}
 			CommandCapture command = new CommandCapture(0, command1, command2, command3, command4, command5);
 			try {
@@ -356,9 +356,9 @@ public class PhoneProfilesHelper {
 		String command3 = "mount -o remount,ro /system";		//mounts the system partition to be read-only again
 		if (GlobalData.isSELinuxEnforcing())
 		{
-			command1 = GlobalData.getSELinuxEnforceCommad(command1, Shell.ShellContext.RECOVERY);
-			command2 = GlobalData.getSELinuxEnforceCommad(command2, Shell.ShellContext.RECOVERY);
-			command3 = GlobalData.getSELinuxEnforceCommad(command3, Shell.ShellContext.RECOVERY);
+			command1 = GlobalData.getSELinuxEnforceCommand(command1, Shell.ShellContext.RECOVERY);
+			command2 = GlobalData.getSELinuxEnforceCommand(command2, Shell.ShellContext.RECOVERY);
+			command3 = GlobalData.getSELinuxEnforceCommand(command3, Shell.ShellContext.RECOVERY);
 		}
 		CommandCapture command = new CommandCapture(0, command1, command2, command3);
 		try {

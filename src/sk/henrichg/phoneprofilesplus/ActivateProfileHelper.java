@@ -359,7 +359,7 @@ public class ActivateProfileHelper {
 			{
 				String command1 = "settings put global zen_mode " + mode;
 				if (GlobalData.isSELinuxEnforcing())
-					command1 = GlobalData.getSELinuxEnforceCommad(command1, Shell.ShellContext.SYSTEM_APP);
+					command1 = GlobalData.getSELinuxEnforceCommand(command1, Shell.ShellContext.SYSTEM_APP);
 				CommandCapture command = new CommandCapture(0, command1);
 				try {
 					RootTools.getShell(true).add(command);
@@ -1085,7 +1085,7 @@ public class ActivateProfileHelper {
 				
 				command1 = "settings put secure location_providers_allowed \"" + newSet + "\"";
 				if (GlobalData.isSELinuxEnforcing())
-					command1 = GlobalData.getSELinuxEnforceCommad(command1, Shell.ShellContext.SYSTEM_APP);
+					command1 = GlobalData.getSELinuxEnforceCommand(command1, Shell.ShellContext.SYSTEM_APP);
 				
 	    		//Log.e("ActivateProfileHelper.setGPS","command1="+command1);
 				//command2 = "am broadcast -a android.location.GPS_ENABLED_CHANGE --ez state true";
@@ -1160,7 +1160,7 @@ public class ActivateProfileHelper {
 				
 				command1 = "settings put secure location_providers_allowed \"" + newSet + "\"";
 				if (GlobalData.isSELinuxEnforcing())
-					command1 = GlobalData.getSELinuxEnforceCommad(command1, Shell.ShellContext.SYSTEM_APP);
+					command1 = GlobalData.getSELinuxEnforceCommand(command1, Shell.ShellContext.SYSTEM_APP);
 	    		//Log.e("ActivateProfileHelper.setGPS","command1="+command1);
 				//command2 = "am broadcast -a android.location.GPS_ENABLED_CHANGE --ez state false";
 				CommandCapture command = new CommandCapture(0, command1);//, command2);
@@ -1211,8 +1211,8 @@ public class ActivateProfileHelper {
 			}
 			if (GlobalData.isSELinuxEnforcing())
 			{
-				command1 = GlobalData.getSELinuxEnforceCommad(command1, Shell.ShellContext.SYSTEM_APP);
-				command2 = GlobalData.getSELinuxEnforceCommad(command2, Shell.ShellContext.SYSTEM_APP);
+				command1 = GlobalData.getSELinuxEnforceCommand(command1, Shell.ShellContext.SYSTEM_APP);
+				command2 = GlobalData.getSELinuxEnforceCommand(command2, Shell.ShellContext.SYSTEM_APP);
 			}
 			CommandCapture command = new CommandCapture(0, command1, command2);
 			try {
