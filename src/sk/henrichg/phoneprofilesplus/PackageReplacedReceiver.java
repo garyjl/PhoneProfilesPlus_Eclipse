@@ -21,7 +21,9 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 				
 				GlobalData.loadPreferences(context);
 				
-				//GlobalData.grantRoot(true);
+				// grant root
+				Intent eventsServiceIntent = new Intent(context, GrantRootService.class);
+				context.startService(eventsServiceIntent);
 
 				// start PPHelper
 				//PhoneProfilesHelper.startPPHelper(context);

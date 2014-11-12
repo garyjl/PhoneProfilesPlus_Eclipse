@@ -31,6 +31,14 @@ public class LauncherActivity extends Activity {
 			GlobalData.grantRoot(false);
 		*/
 		
+		if (!GlobalData.getApplicationStarted(getBaseContext()))
+		{
+			// grant root
+			Intent eventsServiceIntent = new Intent(getBaseContext(), GrantRootService.class);
+			getBaseContext().startService(eventsServiceIntent);
+		}
+		
+		
 		Profile profile = dataWrapper.getActivatedProfile();
 		
 		boolean actProfile = false;

@@ -22,8 +22,10 @@ public class BootUpReceiver extends BroadcastReceiver {
 		{	
 			// dislabled for firstStartEvents
 			//GlobalData.setApplicationStarted(context, true);
-			
-			//GlobalData.grantRoot(true);
+
+			// grant root
+			Intent eventsServiceIntent = new Intent(context, GrantRootService.class);
+			context.startService(eventsServiceIntent);
 
 			// start PPHelper
 			//PhoneProfilesHelper.startPPHelper(context);

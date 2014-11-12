@@ -268,7 +268,8 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".ExecuteRadioProfilePrefsService" >
+        <service android:name=".ExecuteRadioProfilePrefsService"
+            android:exported="false" >
         </service>
 
         <receiver
@@ -280,9 +281,11 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".ExecuteVolumeProfilePrefsService" >
+        <service android:name=".ExecuteVolumeProfilePrefsService"
+            android:exported="false" >
         </service>
-        <service android:name=".ReceiversService" >
+        <service android:name=".ReceiversService"
+            android:exported="false" >
         </service>
 
         <receiver
@@ -296,11 +299,15 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".EventsService" >
+        <service android:name=".EventsService"
+            android:exported="false" >
         </service>
-
         <service
             android:name=".ScannerService"
+            android:exported="false" >
+        </service>
+        <service
+            android:name=".GrantRootService"
             android:exported="false" >
         </service>
         
