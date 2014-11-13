@@ -3,6 +3,7 @@ package sk.henrichg.phoneprofilesplus;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 public class DashClockBroadcastReceiver extends BroadcastReceiver {
 
@@ -14,6 +15,7 @@ public class DashClockBroadcastReceiver extends BroadcastReceiver {
 				PhoneProfilesDashClockExtension.getInstance();
 		if (dashClockExtension != null)
 		{
+			Log.e("DashClockBroadcastReceiver.onReceive","xxx");
 			GlobalData.loadPreferences(context);
 			dashClockExtension.updateExtension();
 		}

@@ -212,7 +212,7 @@ public class PhoneProfilesDashClockExtension extends DashClockExtension {
                 .status(status)
                 .expandedTitle(profileName)
                 .expandedBody(indicator1)
-                .contentDescription("PhoneProfiles - "+profileName)
+                .contentDescription("PhoneProfilesPlus - "+profileName)
                 .clickIntent(intent));		
 	}
 
