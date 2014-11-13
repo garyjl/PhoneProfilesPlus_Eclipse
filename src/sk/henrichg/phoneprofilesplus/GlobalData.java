@@ -79,7 +79,6 @@ public class GlobalData extends Application {
 	static final String EXTRA_PREFERENCES_STARTUP_SOURCE = "preferences_startup_source";
 	static final String EXTRA_START_SYSTEM_EVENT = "start_system_event";
 	static final String EXTRA_SECOND_SET_VOLUMES = "second_set_volumes";
-	static final String EXTRA_EVENT_NOTIFICATION_SOUND = "event_notification_sound";
 	static final String EXTRA_BROADCAST_RECEIVER_TYPE = "broadcast_receiver_type";
 	static final String EXTRA_SCANNER_TYPE = "scanner_type";
 

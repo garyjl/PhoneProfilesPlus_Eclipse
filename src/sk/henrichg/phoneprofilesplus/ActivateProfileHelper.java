@@ -463,19 +463,18 @@ public class ActivateProfileHelper {
 		//boolean radiosExecuted = false;
 		
 		// nahodenie volume
-		/*// run service for execute volumes
+		// run service for execute volumes
 		Intent volumeServiceIntent = new Intent(context, ExecuteVolumeProfilePrefsService.class);
 		volumeServiceIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
 		volumeServiceIntent.putExtra(GlobalData.EXTRA_SECOND_SET_VOLUMES, true);
-		volumeServiceIntent.putExtra(GlobalData.EXTRA_EVENT_NOTIFICATION_SOUND, eventNotificationSound);
 		//WakefulIntentService.sendWakefulWork(context, radioServiceIntent);
-		context.startService(volumeServiceIntent);*/
-		AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+		context.startService(volumeServiceIntent);
+		/*AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
 		// nahodenie ringer modu - aby sa mohli nastavit hlasitosti
-		//setRingerMode(profile, audioManager);
+		setRingerMode(profile, audioManager);
 		setVolumes(profile, audioManager);
 		// nahodenie ringer modu - hlasitosti zmenia silent/vibrate
-		setRingerMode(profile, audioManager);
+		setRingerMode(profile, audioManager);*/
 
 		// nahodenie ringtone
 		if (profile._soundRingtoneChange == 1)

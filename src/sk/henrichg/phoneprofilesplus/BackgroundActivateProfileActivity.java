@@ -10,7 +10,6 @@ public class BackgroundActivateProfileActivity extends Activity {
 	
 	private int startupSource = 0;
 	private long profile_id;
-	private String eventNotificationSound;
 	private Intent intent;
 	
 	@Override
@@ -26,8 +25,6 @@ public class BackgroundActivateProfileActivity extends Activity {
 		intent = getIntent();
 		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
 		profile_id = intent.getLongExtra(GlobalData.EXTRA_PROFILE_ID, 0);
-		eventNotificationSound = intent.getStringExtra(GlobalData.EXTRA_EVENT_NOTIFICATION_SOUND);
-		if (eventNotificationSound == null) eventNotificationSound = "";
 		//Log.d("BackgroundActivateProfileActivity.onStart", "profile_id="+profile_id);
 
 		dataWrapper.getActivateProfileHelper().initialize(dataWrapper, this, getBaseContext());
@@ -41,7 +38,7 @@ public class BackgroundActivateProfileActivity extends Activity {
 
 		//Log.e("BackgroundActivateProfileActivity.onStart", "startupSource="+startupSource);
 
-		dataWrapper.activateProfile(profile_id, startupSource, this, eventNotificationSound);
+		dataWrapper.activateProfile(profile_id, startupSource, this, "");
 		
 	}
 	
