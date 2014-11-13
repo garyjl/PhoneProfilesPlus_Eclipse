@@ -1,6 +1,7 @@
 package sk.henrichg.phoneprofilesplus;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.app.Activity;
 import android.content.Intent;
 
@@ -13,23 +14,21 @@ public class LauncherActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		overridePendingTransition(0, 0);
+		
 		dataWrapper = new DataWrapper(getBaseContext(), true, false, 0);
 		dataWrapper.getActivateProfileHelper().initialize(dataWrapper, this, getBaseContext());
 		
 		Intent intent = getIntent();
 		startupSource = intent.getIntExtra(GlobalData.EXTRA_START_APP_SOURCE, 0);
+		
+		//doOnStart();
 	}
 	
 	@Override
 	protected void onStart()
 	{
 		super.onStart();
-		
-		/*if (!GlobalData.getApplicationStarted(getBaseContext()))
-			GlobalData.grantRoot(true);
-		else
-			GlobalData.grantRoot(false);
-		*/
 		
 		if (!GlobalData.getApplicationStarted(getBaseContext()))
 		{
@@ -145,7 +144,7 @@ public class LauncherActivity extends Activity {
 		startupSource = 0;
 		
 	}
-	
+
 	@Override
 	protected void onDestroy()
 	{
@@ -154,6 +153,14 @@ public class LauncherActivity extends Activity {
 		
 		super.onDestroy();
 	}	
+	
+	@Override
+	public void finish()
+	{
+		overridePendingTransition(0, 0);
+		super.finish();
+	}
+	
 	
 	private void activateProfile(Profile profile, int startupSource)
 	{
