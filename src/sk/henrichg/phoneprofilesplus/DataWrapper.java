@@ -377,6 +377,7 @@ public class DataWrapper {
 	{
 		getActivateProfileHelper().initialize(this, null, context);
 		getActivateProfileHelper().showNotification(profile, eventNotificationSound);
+		getActivateProfileHelper().updateWidget();
 	}
 	
 	

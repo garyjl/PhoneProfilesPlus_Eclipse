@@ -678,10 +678,7 @@ public class Event {
 			}
 			else
 			{
-				ActivateProfileHelper activateProfileHelper = dataWrapper.getActivateProfileHelper();
-				activateProfileHelper.initialize(dataWrapper, null, dataWrapper.context);
-				activateProfileHelper.showNotification(dataWrapper.getActivatedProfile(), "");
-				activateProfileHelper.updateWidget();
+				dataWrapper.updateNotificationAndWidgets(activatedProfile, "");
 			}
 			
 		//}
