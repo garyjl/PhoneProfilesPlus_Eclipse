@@ -69,7 +69,7 @@ public class BluetoothConnectionBroadcastReceiver extends WakefulBroadcastReceiv
 	
 			GlobalData.loadPreferences(context);
 			
-			SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+			/*SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
 			int lastState = preferences.getInt(GlobalData.PREF_EVENT_BLUETOOTH_LAST_STATE, -1);
 			int currState = -1;
 	    	if (connected)
@@ -78,13 +78,13 @@ public class BluetoothConnectionBroadcastReceiver extends WakefulBroadcastReceiv
 	    		currState = 0;
 			Editor editor = preferences.edit();
 			editor.putInt(GlobalData.PREF_EVENT_BLUETOOTH_LAST_STATE, currState);
-			editor.commit();
+			editor.commit();*/
 			
 			if (GlobalData.getGlobalEventsRuning(context))
 			{
 	
-	        	if (lastState != currState)
-	        	{
+	        	//if (lastState != currState)
+	        	//{
 					GlobalData.logE("@@@ BluetoothConnectionBroadcastReceiver.onReceive","connected"+connected);
 					
 					if (!BluetoothScanAlarmBroadcastReceiver.getBluetoothEnabledForScan(context))
@@ -104,10 +104,11 @@ public class BluetoothConnectionBroadcastReceiver extends WakefulBroadcastReceiv
 						}
 					}
 					
-	        	}
+	        	//}
 			}
 			
-			if ((!connected) && (lastState != currState))
+			//if ((!connected) && (lastState != currState))
+			if (!connected)
 			{
 				BluetoothScanAlarmBroadcastReceiver.stopScan(context);
 			}

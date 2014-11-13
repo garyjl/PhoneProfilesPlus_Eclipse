@@ -26,13 +26,13 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 
         if (info != null)
         {
-		    int lastState = -1;
-		    int currState = -1;
+		    //int lastState = -1;
+		    //int currState = -1;
 		    
 	    	if ((info.getState() == NetworkInfo.State.CONNECTED) ||
 	        	(info.getState() == NetworkInfo.State.DISCONNECTED))
 	    	{
-				SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
+				/*SharedPreferences preferences = context.getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
 				lastState = preferences.getInt(GlobalData.PREF_EVENT_WIFI_LAST_STATE, -1);
 				currState = -1;
 		    	if (info.getState() == NetworkInfo.State.CONNECTED)
@@ -41,7 +41,7 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 		    		currState = 0;
 				Editor editor = preferences.edit();
 				editor.putInt(GlobalData.PREF_EVENT_WIFI_LAST_STATE, currState);
-				editor.commit();
+				editor.commit();*/
 	    	}
 	    	else
 	    		return;
@@ -50,9 +50,11 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 			{
 	    		//GlobalData.logE("@@@ WifiConnectionBroadcastReceiver.onReceive","state="+info.getState());
 	
-	        	if (((info.getState() == NetworkInfo.State.CONNECTED) ||
+	        	/*if (((info.getState() == NetworkInfo.State.CONNECTED) ||
 	        		(info.getState() == NetworkInfo.State.DISCONNECTED)) &&
-	        		(lastState != currState))
+	        		(lastState != currState))*/
+	        	if ((info.getState() == NetworkInfo.State.CONNECTED) ||
+	        		(info.getState() == NetworkInfo.State.DISCONNECTED))
 	        	{
 		    		GlobalData.logE("@@@ WifiConnectionBroadcastReceiver.onReceive","state="+info.getState());
 
@@ -76,8 +78,9 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 	        	}
 			}
 			
-    		if ((info.getState() == NetworkInfo.State.DISCONNECTED) &&
-    			(lastState != currState))
+    		/*if ((info.getState() == NetworkInfo.State.DISCONNECTED) &&
+    			(lastState != currState))*/
+       		if (info.getState() == NetworkInfo.State.DISCONNECTED)
     		{
     			WifiScanAlarmBroadcastReceiver.stopScan(context);
     		}

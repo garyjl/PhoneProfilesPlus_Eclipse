@@ -1595,7 +1595,7 @@ public class DataWrapper {
 					if (isWifiEnabled)
 					{
 					*/
-						GlobalData.logE("DataWrapper.doEventService","wifiStateEnabled=true");
+						GlobalData.logE("DataWrapper.doEventService","wifiStateEnabled=false");
 	
 						
 						if (WifiScanAlarmBroadcastReceiver.scanResults != null)

@@ -37,7 +37,7 @@ public class GlobalData extends Application {
 	static String PACKAGE_NAME;
 	
 	private static boolean logIntoLogCat = true;
-	private static boolean logIntoFile = false;
+	private static boolean logIntoFile = true;
 	private static boolean rootToolsDebug = false;
 	public static String logFilterTags = //"@@@ BatteryEventBroadcastReceiver|"+
 										 //"@@@ CalendarProviderChangedBroadcastReceiver|"+
@@ -45,24 +45,25 @@ public class GlobalData extends Application {
 										 //"@@@ EventsTimeBroadcastReceiver|"+
 										 //"HeadsetConnectionBroadcastReceiver"
 										 //"@@@ SearchCalendarEventsBroadcastReceiver|"+
-										 //"@@@ WifiConnectionBroadcastReceiver|"+
-										 //"@@@ WifiScanAlarmBroadcastReceiver|"+
-										 //"@@@ WifiScanBroadcastReceiver|"+
-										 //"@@@ WifiStateChangedBroadcastReceiver|"+
+										 "@@@ WifiConnectionBroadcastReceiver|"+
+										 "@@@ WifiScanAlarmBroadcastReceiver|"+
+										 "@@@ WifiScanBroadcastReceiver|"+
+										 "@@@ WifiStateChangedBroadcastReceiver|"+
 										 //"@@@ ActivateProfileHelper"
 										 //"@@@ BluetoothConnectionBroadcastReceiver|"+
 										 //"@@@ BluetoothScanAlarmBroadcastReceiver|"+
 										 //"@@@ BluetoothScanBroadcastReceiver|"+
 										 //"@@@ BluetoothStateChangedBroadcastReceiver|"+
-										 //"@@@ ScreenOnOffBroadcastReceiver|"+
+										 //"@@@ ScreenOnOffBroadcastReceiver"
 										 //"@@@ RestartEventsBroadcastReceiver|"+
 										 //"@@@ EventDelayBroadcastReceiver|"+
 										 //"@@@ BootUpReceiver|"+
 										 //"@@@ PackageReplacedReceiver|"+
-										 //"@@@ EventsService|"+
-										 //"@@@ Event|"+
+										 "@@@ DataWrapper.doEventService|"+
+										 "@@@ EventsService|"+
+										 "@@@ Event|"
 										 //"@@@ ScannerService"
-										"PhoneProfilesHelper.doInstallPPHelper"
+										//"PhoneProfilesHelper.doInstallPPHelper"
 			;
 	
 	
