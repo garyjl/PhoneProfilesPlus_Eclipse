@@ -188,12 +188,12 @@ public class WifiSSIDPreference extends DialogPreference {
 				
 				SSIDList.clear();
 				
-				WifiScanAlarmBroadcastReceiver.wifiConfigurationList = wifiManager.getConfiguredNetworks();
+				WifiScanAlarmBroadcastReceiver.fillWifiConfigurationList();
 				if (WifiScanAlarmBroadcastReceiver.wifiConfigurationList != null)
 				{
-					for (WifiConfiguration wifiConfiguration : WifiScanAlarmBroadcastReceiver.wifiConfigurationList)
+					for (WifiSSIDData wifiConfiguration : WifiScanAlarmBroadcastReceiver.wifiConfigurationList)
 					{
-			        	SSIDList.add(new WifiSSIDData(wifiConfiguration.SSID.replace("\"", ""), wifiConfiguration.BSSID));
+			        	SSIDList.add(new WifiSSIDData(wifiConfiguration.ssid.replace("\"", ""), wifiConfiguration.bssid));
 					}
 				}
 
@@ -225,7 +225,7 @@ public class WifiSSIDPreference extends DialogPreference {
 		        
 		        if (WifiScanAlarmBroadcastReceiver.scanResults != null)
 		        {
-			        for (ScanResult scanResult : WifiScanAlarmBroadcastReceiver.scanResults)
+			        for (WifiSSIDData scanResult : WifiScanAlarmBroadcastReceiver.scanResults)
 			        {
 			        	if (!DataWrapper.getSSID(scanResult).isEmpty())
 			        	{
@@ -239,7 +239,7 @@ public class WifiSSIDPreference extends DialogPreference {
 				        		}
 				        	}
 				        	if (!exists)
-				        		SSIDList.add(new WifiSSIDData(DataWrapper.getSSID(scanResult), scanResult.BSSID));
+				        		SSIDList.add(new WifiSSIDData(DataWrapper.getSSID(scanResult), scanResult.bssid));
 			        	}
 			        }
 		        }

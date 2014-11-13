@@ -1,6 +1,7 @@
 package sk.henrichg.phoneprofilesplus;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -30,14 +31,19 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 	private static WifiLock wifiLock = null;
     //private static WakeLock wakeLock = null;
 
-	public static List<ScanResult> scanResults = null;
-	public static List<WifiConfiguration> wifiConfigurationList = null;
+	public static List<WifiSSIDData> scanResults = null;
+	public static List<WifiSSIDData> wifiConfigurationList = null;
 	
 	@SuppressLint("NewApi")
 	public void onReceive(Context context, Intent intent) {
 		
 		GlobalData.logE("#### WifiScanAlarmBroadcastReceiver.onReceive","xxx");
 
+		if (scanResults == null)
+			scanResults = new ArrayList<WifiSSIDData>();
+		if (wifiConfigurationList == null)
+			wifiConfigurationList = new ArrayList<WifiSSIDData>();
+		
 		if (wifi == null)
 			wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 		
@@ -128,8 +134,7 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		
 		if (wifi.getWifiState() == WifiManager.WIFI_STATE_ENABLED)
 		{
-			WifiScanAlarmBroadcastReceiver.wifiConfigurationList = null;
-			WifiScanAlarmBroadcastReceiver.wifiConfigurationList = WifiScanAlarmBroadcastReceiver.wifi.getConfiguredNetworks();
+			fillWifiConfigurationList();
 		}
 			
 	}
@@ -325,6 +330,58 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		Editor editor = preferences.edit();
 		editor.putBoolean(GlobalData.PREF_EVENT_WIFI_ENABLED_FOR_SCAN, setEnabled);
 		editor.commit();
+	}
+
+	static public void fillWifiConfigurationList()
+	{
+		if (wifiConfigurationList == null)
+			wifiConfigurationList = new ArrayList<WifiSSIDData>();
+		
+		wifiConfigurationList.clear();
+		for (WifiConfiguration device : wifi.getConfiguredNetworks())
+		{
+			Log.e("WifiScanAlarmBroadcastReceiver.fillWifiConfigurationList","ssid="+device.SSID);
+			Log.e("WifiScanAlarmBroadcastReceiver.fillWifiConfigurationList","bssid="+device.BSSID);
+			
+			boolean found = false;
+			for (WifiSSIDData _device : wifiConfigurationList)
+			{
+				//if (_device.bssid.equals(device.BSSID))  
+				if (_device.ssid.equals(device.SSID))
+				{
+					found = true;
+					break;
+				}
+			}
+			if (!found)
+			{
+				wifiConfigurationList.add(new WifiSSIDData(device.SSID, device.BSSID));
+			}
+		}
+	}
+
+	static public void fillScanResults()
+	{
+		if (scanResults == null)
+			scanResults = new ArrayList<WifiSSIDData>();
+		
+		scanResults.clear();
+		for (ScanResult device : wifi.getScanResults())
+		{
+			boolean found = false;
+			for (WifiSSIDData _device : scanResults)
+			{
+				if (_device.bssid.equals(device.BSSID))
+				{
+					found = true;
+					break;
+				}
+			}
+			if (!found)
+			{
+				scanResults.add(new WifiSSIDData(device.SSID, device.BSSID));
+			}
+		}
 	}
 	
 }

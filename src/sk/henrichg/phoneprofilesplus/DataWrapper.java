@@ -1603,7 +1603,7 @@ public class DataWrapper {
 							//GlobalData.logE("@@@x DataWrapper.doEventService","scanResults != null");
 							//GlobalData.logE("@@@x DataWrapper.doEventService","-- eventSSID="+event._eventPreferencesWifi._SSID);
 	
-							for (ScanResult result : WifiScanAlarmBroadcastReceiver.scanResults)
+							for (WifiSSIDData result : WifiScanAlarmBroadcastReceiver.scanResults)
 					        {
 								//GlobalData.logE("@@@x DataWrapper.doEventService","wifiSSID="+getSSID(result));
 								//GlobalData.logE("@@@x DataWrapper.doEventService","wifiBSSID="+result.BSSID);
@@ -2255,10 +2255,10 @@ public class DataWrapper {
 		{
 			if (WifiScanAlarmBroadcastReceiver.wifiConfigurationList != null)
 			{
-				for (WifiConfiguration wifiConfiguration : WifiScanAlarmBroadcastReceiver.wifiConfigurationList)
+				for (WifiSSIDData wifiConfiguration : WifiScanAlarmBroadcastReceiver.wifiConfigurationList)
 				{
-					if (wifiConfiguration.BSSID.equals(wifiInfo.getBSSID()))
-						return wifiConfiguration.SSID.replace("\"", "");
+					if (wifiConfiguration.bssid.equals(wifiInfo.getBSSID()))
+						return wifiConfiguration.ssid.replace("\"", "");
 				}
 			}
 		}
@@ -2272,23 +2272,23 @@ public class DataWrapper {
 		return (getSSID(wifiInfo).equals(SSID) || getSSID(wifiInfo).equals(ssid2));
 	}
 
-	public static String getSSID(ScanResult result)
+	public static String getSSID(WifiSSIDData result)
 	{
 		String SSID;
-		if (result.SSID == null)
+		if (result.ssid == null)
 			SSID = "";
 		else
-			SSID = result.SSID.replace("\"", ""); 
+			SSID = result.ssid.replace("\"", ""); 
 		
 		if (SSID.isEmpty())
 		{
 			if (WifiScanAlarmBroadcastReceiver.wifiConfigurationList != null)
 			{
-				for (WifiConfiguration wifiConfiguration : WifiScanAlarmBroadcastReceiver.wifiConfigurationList)
+				for (WifiSSIDData wifiConfiguration : WifiScanAlarmBroadcastReceiver.wifiConfigurationList)
 				{
-					if ((wifiConfiguration.BSSID != null) && 
-						(wifiConfiguration.BSSID.equals(result.BSSID)))
-						return wifiConfiguration.SSID.replace("\"", "");
+					if ((wifiConfiguration.bssid != null) && 
+						(wifiConfiguration.bssid.equals(result.bssid)))
+						return wifiConfiguration.ssid.replace("\"", "");
 				}
 			}
 		}
@@ -2296,7 +2296,7 @@ public class DataWrapper {
 		return SSID; 
 	}
 	
-	public static boolean compareSSID(ScanResult result, String SSID)
+	public static boolean compareSSID(WifiSSIDData result, String SSID)
 	{
 		String ssid2 = "\"" + SSID + "\"";
 		return (getSSID(result).equals(SSID) || getSSID(result).equals(ssid2));
