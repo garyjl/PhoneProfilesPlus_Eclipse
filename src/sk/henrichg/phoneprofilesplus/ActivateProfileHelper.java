@@ -310,8 +310,10 @@ public class ActivateProfileHelper {
         }*/
 	}
 	
-	public void setVolumes(Profile profile, AudioManager audioManager)
+	public boolean setVolumes(Profile profile, AudioManager audioManager)
 	{
+		boolean priorityMode = false;
+
 		if (profile.getVolumeSystemChange())
 		{
 			audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, profile.getVolumeSystemValue(), 0);
@@ -320,15 +322,21 @@ public class ActivateProfileHelper {
 		}
 		if (profile.getVolumeRingtoneChange())
 		{
-			audioManager.setStreamVolume(AudioManager.STREAM_RING, profile.getVolumeRingtoneValue(), 0);
+			int volume = profile.getVolumeRingtoneValue();
+			audioManager.setStreamVolume(AudioManager.STREAM_RING, volume, 0);
 			waitForVolumeChange();
 			//Settings.System.putInt(getContentResolver(), Settings.System.VOLUME_RING, profile.getVolumeRingtoneValue());
+			if (volume > 0)
+				priorityMode = true;
 		}
 		if (profile.getVolumeNotificationChange())
 		{
-			audioManager.setStreamVolume(AudioManager.STREAM_NOTIFICATION, profile.getVolumeNotificationValue(), 0);
+			int volume = profile.getVolumeNotificationValue();
+			audioManager.setStreamVolume(AudioManager.STREAM_NOTIFICATION, volume, 0);
 			waitForVolumeChange();
 			//Settings.System.putInt(getContentResolver(), Settings.System.VOLUME_NOTIFICATION, profile.getVolumeNotificationValue());
+			if (volume > 0)
+				priorityMode = true;
 		}
 		if (profile.getVolumeMediaChange())
 		{
@@ -345,6 +353,12 @@ public class ActivateProfileHelper {
 		if (profile.getVolumeVoiceChange())
 			audioManager.setStreamVolume(AudioManager.STREAM_VOICE_CALL, profile.getVolumeVoiceValue(), 0);
 			//Settings.System.putInt(getContentResolver(), Settings.System.VOLUME_VOICE, profile.getVolumeVoiceValue());
+
+		// priority mode is for Android 5.0+ 
+    	if (android.os.Build.VERSION.SDK_INT < 21)
+    		priorityMode = false;
+		
+		return priorityMode;
 	}
 
 	/*

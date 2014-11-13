@@ -12,6 +12,7 @@ import android.media.AudioManager;
 import android.preference.DialogPreference;
 
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -46,6 +47,7 @@ public class VolumeDialogPreference extends
 	private int maximumValue = 7;
 	private int minimumValue = 0;
 	private int defaultValue = 0;
+	private int defaultRingerMode = 0;
 	private int stepSize = 1;
 
 	private String sValue = "0|1";
@@ -110,7 +112,7 @@ public class VolumeDialogPreference extends
 		else
 		if (volumeType.equalsIgnoreCase("VOICE")) 
 			defaultValue = audioManager.getStreamVolume(AudioManager.STREAM_VOICE_CALL);
-		
+		defaultRingerMode = audioManager.getRingerMode();
 		
 		typedArray.recycle();
 	}
@@ -239,23 +241,6 @@ public class VolumeDialogPreference extends
 						+ "|" + Integer.toString(noChange)
 						+ "|" + Integer.toString(defaultProfile));
 				setSummaryVDP();
-				if (volumeType.equalsIgnoreCase("RINGTONE")) 
-					audioManager.setStreamVolume(AudioManager.STREAM_RING, defaultValue, 0);
-				else
-				if (volumeType.equalsIgnoreCase("NOTIFICATION")) 
-					audioManager.setStreamVolume(AudioManager.STREAM_NOTIFICATION, defaultValue, 0);
-				else
-				if (volumeType.equalsIgnoreCase("MEDIA")) 
-					audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, defaultValue, 0);
-				else
-				if (volumeType.equalsIgnoreCase("ALARM")) 
-					audioManager.setStreamVolume(AudioManager.STREAM_ALARM, defaultValue, 0);
-				else
-				if (volumeType.equalsIgnoreCase("SYSTEM")) 
-					audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, defaultValue, 0);
-				else
-				if (volumeType.equalsIgnoreCase("VOICE")) 
-					audioManager.setStreamVolume(AudioManager.STREAM_VOICE_CALL, defaultValue, 0);
 			}
 		}
 
@@ -325,6 +310,30 @@ public class VolumeDialogPreference extends
 		else
 			prefVolumeDataSummary = String.valueOf(value) + " / " + String.valueOf(maximumValue);
 		setSummary(prefVolumeDataSummary);
+	}
+	
+	@Override
+	public void onDismiss(DialogInterface dialog)
+	{
+		audioManager.setRingerMode(defaultRingerMode);
+		if (volumeType.equalsIgnoreCase("RINGTONE")) 
+			audioManager.setStreamVolume(AudioManager.STREAM_RING, defaultValue, 0);
+		else
+		if (volumeType.equalsIgnoreCase("NOTIFICATION")) 
+			audioManager.setStreamVolume(AudioManager.STREAM_NOTIFICATION, defaultValue, 0);
+		else
+		if (volumeType.equalsIgnoreCase("MEDIA")) 
+			audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, defaultValue, 0);
+		else
+		if (volumeType.equalsIgnoreCase("ALARM")) 
+			audioManager.setStreamVolume(AudioManager.STREAM_ALARM, defaultValue, 0);
+		else
+		if (volumeType.equalsIgnoreCase("SYSTEM")) 
+			audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, defaultValue, 0);
+		else
+		if (volumeType.equalsIgnoreCase("VOICE")) 
+			audioManager.setStreamVolume(AudioManager.STREAM_VOICE_CALL, defaultValue, 0);
+		audioManager.setRingerMode(defaultRingerMode);
 	}
 	
 }

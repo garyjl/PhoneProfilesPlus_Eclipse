@@ -444,6 +444,26 @@ Wifi/bluetooth scanning
     e) cakat na ukoncenie scanningu ako teraz
     f) nenastavovat scanning shared preferences
    
-  
+-----------------------------------------------
+
+Ringer mode:
+
+ring             - ringer_mode=normal, zen_mode=all, volume>0
+   1. set ringer_mode - set zen_mode=all
+   2. set_volumes     - set vibrate when volume=0
+   3. set ringer_mode - set zen_mode=all, when volume=0 set volume=1
+ring and vibrate - ringer_mode=normal, zen_mode=all, volume>0, vibrate for calls
+   1. set ringer_mode - set zen_mode=all, vibrate for call
+   2. set_volumes     - set vibrate, when volume=0
+   3. set ringer_mode - set zen_mode=all, when volume=0 sets volume=1
+vibrate          - ringer_mode=vibrate, zen_mode=all, volume=0, vibrate for calls
+   1. set ringer_mode - set zen_mode=all, vibrate for call
+   2. set_volumes     - reset vibrate when volume>0
+   3. set ringer_mode - set zen_mode=all, set volume=0
+silent           - ringer_mode=silent, zen_mode=priority, volume=0
+   1. set ringer_mode - set zen_mode=priority, vibrate for call
+   2. set_volumes     - set vibrate, when volume=0
+   3. set ringer_mode - set zen_mode=priority, reset vibrate, volume can not by changed!!!
+
       
 
