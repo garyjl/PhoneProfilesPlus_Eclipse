@@ -80,6 +80,8 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 						WifiInfo wifiInfo = wifi.getConnectionInfo();
 		    			String SSID = DataWrapper.getSSID(wifiInfo);
 		    			boolean isSSIDScanned = dataWrapper.getDatabaseHandler().isSSIDScanned(SSID); 
+
+						GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.onReceive","connected SSID="+SSID);
 		    			
 		    			if (isSSIDScanned)
 		    			{
@@ -134,7 +136,7 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		
 		if (wifi.getWifiState() == WifiManager.WIFI_STATE_ENABLED)
 		{
-			fillWifiConfigurationList();
+			fillWifiConfigurationList(context);
 		}
 			
 	}
@@ -332,54 +334,68 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		editor.commit();
 	}
 
-	static public void fillWifiConfigurationList()
+	static public void fillWifiConfigurationList(Context context)
 	{
 		if (wifiConfigurationList == null)
 			wifiConfigurationList = new ArrayList<WifiSSIDData>();
 		
-		wifiConfigurationList.clear();
-		for (WifiConfiguration device : wifi.getConfiguredNetworks())
+		if (wifi == null)
+			wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+		
+		List<WifiConfiguration> _wifiConfigurationList = wifi.getConfiguredNetworks();
+		if (_wifiConfigurationList != null)
 		{
-			Log.e("WifiScanAlarmBroadcastReceiver.fillWifiConfigurationList","ssid="+device.SSID);
-			Log.e("WifiScanAlarmBroadcastReceiver.fillWifiConfigurationList","bssid="+device.BSSID);
-			
-			boolean found = false;
-			for (WifiSSIDData _device : wifiConfigurationList)
+			wifiConfigurationList.clear();
+			for (WifiConfiguration device : _wifiConfigurationList)
 			{
-				//if (_device.bssid.equals(device.BSSID))  
-				if (_device.ssid.equals(device.SSID))
+				Log.e("WifiScanAlarmBroadcastReceiver.fillWifiConfigurationList","ssid="+device.SSID);
+				Log.e("WifiScanAlarmBroadcastReceiver.fillWifiConfigurationList","bssid="+device.BSSID);
+				
+				boolean found = false;
+				for (WifiSSIDData _device : wifiConfigurationList)
 				{
-					found = true;
-					break;
+					//if (_device.bssid.equals(device.BSSID))  
+					if (_device.ssid.equals(device.SSID))
+					{
+						found = true;
+						break;
+					}
 				}
-			}
-			if (!found)
-			{
-				wifiConfigurationList.add(new WifiSSIDData(device.SSID, device.BSSID));
+				if (!found)
+				{
+					wifiConfigurationList.add(new WifiSSIDData(device.SSID, device.BSSID));
+				}
 			}
 		}
 	}
 
-	static public void fillScanResults()
+	static public void fillScanResults(Context context)
 	{
 		if (scanResults == null)
 			scanResults = new ArrayList<WifiSSIDData>();
 		
-		scanResults.clear();
-		for (ScanResult device : wifi.getScanResults())
+		if (wifi == null)
+			wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+		
+		List<ScanResult> _scanResults = wifi.getScanResults();
+		if (_scanResults != null)
 		{
-			boolean found = false;
-			for (WifiSSIDData _device : scanResults)
+			scanResults.clear();
+			for (ScanResult device : _scanResults)
 			{
-				if (_device.bssid.equals(device.BSSID))
+				boolean found = false;
+				for (WifiSSIDData _device : scanResults)
 				{
-					found = true;
-					break;
+					if (_device.bssid.equals(device.BSSID))
+					{
+						found = true;
+						break;
+					}
 				}
-			}
-			if (!found)
-			{
-				scanResults.add(new WifiSSIDData(device.SSID, device.BSSID));
+				if (!found)
+				{
+					scanResults.add(new WifiSSIDData(device.SSID, device.BSSID));
+				}
 			}
 		}
 	}

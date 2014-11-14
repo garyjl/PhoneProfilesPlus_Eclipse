@@ -2,7 +2,6 @@ package sk.henrichg.phoneprofilesplus;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.support.v4.content.WakefulBroadcastReceiver;
 
@@ -34,8 +33,8 @@ public class WifiScanBroadcastReceiver extends WakefulBroadcastReceiver {
 			{
 				GlobalData.logE("@@@ WifiScanBroadcastReceiver.onReceive","xxx");
 
-				WifiScanAlarmBroadcastReceiver.fillWifiConfigurationList();
-				WifiScanAlarmBroadcastReceiver.fillScanResults();
+				WifiScanAlarmBroadcastReceiver.fillWifiConfigurationList(context);
+				WifiScanAlarmBroadcastReceiver.fillScanResults(context);
 				WifiScanAlarmBroadcastReceiver.unlock();
 
 				
