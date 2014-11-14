@@ -2225,7 +2225,14 @@ public class DataWrapper {
 			if (event != null)
 			{
 				if (!GlobalData.getEventsBlocked(context))
-					return event._name;
+				{
+					Profile profile = getActivatedProfile();
+					if (event._fkProfileStart == profile._id)
+						// last started event activatees activated profile
+						return event._name;
+					else
+						return "";
+				}
 				else
 					return "";
 			}
