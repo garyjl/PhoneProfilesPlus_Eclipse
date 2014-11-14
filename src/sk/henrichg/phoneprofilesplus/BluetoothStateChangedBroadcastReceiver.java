@@ -27,17 +27,21 @@ public class BluetoothStateChangedBroadcastReceiver extends BroadcastReceiver {
 
     		if (bluetoothState == BluetoothAdapter.STATE_ON)
     		{
-        		GlobalData.logE("@@@ BluetoothStateChangedBroadcastReceiver.onReceive","state=ON");
-        		GlobalData.logE("@@@ BluetoothStateChangedBroadcastReceiver.onReceive","getStartScan="+
-        				BluetoothScanAlarmBroadcastReceiver.getStartScan(context));
-        		GlobalData.logE("@@@ BluetoothStateChangedBroadcastReceiver.onReceive","getEventsBlocked="+
-        				GlobalData.getEventsBlocked(context));
-    			// start scan
-				if (BluetoothScanAlarmBroadcastReceiver.getStartScan(context) && 
-					((!GlobalData.getEventsBlocked(context)) || GlobalData.getForceOneBluetoothScan(context)))
+				if ((!GlobalData.getEventsBlocked(context)) || GlobalData.getForceOneBluetoothScan(context))
 				{
-	        		GlobalData.logE("@@@ BluetoothStateChangedBroadcastReceiver.onReceive","startScan");
-					BluetoothScanAlarmBroadcastReceiver.startScan(context);
+					if (BluetoothScanAlarmBroadcastReceiver.getStartScan(context))
+					{
+						GlobalData.logE("@@@ BluetoothStateChangedBroadcastReceiver.onReceive","startScan");
+						BluetoothScanAlarmBroadcastReceiver.startScan(context);
+					}
+					else
+					{
+		        		GlobalData.logE("@@@ BluetoothStateChangedBroadcastReceiver.onReceive","state=ON");
+		        		GlobalData.logE("@@@ BluetoothStateChangedBroadcastReceiver.onReceive","getStartScan="+
+		        				BluetoothScanAlarmBroadcastReceiver.getStartScan(context));
+		        		GlobalData.logE("@@@ BluetoothStateChangedBroadcastReceiver.onReceive","getEventsBlocked="+
+		        				GlobalData.getEventsBlocked(context));
+					}
 				}
     		}
         }

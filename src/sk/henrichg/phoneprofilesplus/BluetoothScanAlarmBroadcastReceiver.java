@@ -69,7 +69,9 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
 
 			    			boolean isBluetoothNameScanned = BluetoothConnectionBroadcastReceiver.isAdapterNameScanned(dataWrapper);  
 			    			
-			    			if (isBluetoothNameScanned)
+							boolean noScanData = scanResults.size() == 0;
+			    			
+			    			if ((isBluetoothNameScanned) && (!noScanData))
 			    			{
 			    				// connected bluetooth name is scanned
 			    				// no scan

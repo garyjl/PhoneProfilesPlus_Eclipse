@@ -59,10 +59,10 @@ public class GlobalData extends Application {
 										 //"@@@ EventDelayBroadcastReceiver|"+
 										 //"@@@ BootUpReceiver|"+
 										 //"@@@ PackageReplacedReceiver|"+
-										 "@@@ DataWrapper.doEventService|"+
-										 "@@@ EventsService|"+
-										 "@@@ Event|"
-										 //"@@@ ScannerService"
+										 //"@@@ DataWrapper.doEventService|"+
+										 //"@@@ EventsService|"+
+										 //"@@@ Event|"
+										 "@@@ ScannerService"
 										//"PhoneProfilesHelper.doInstallPPHelper"
 			;
 	

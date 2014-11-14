@@ -15,10 +15,8 @@ public class ReceiversService extends Service {
 	private final RestartEventsBroadcastReceiver restartEventsReceiver = new RestartEventsBroadcastReceiver();
 	private final WifiStateChangedBroadcastReceiver wifiStateChangedReceiver = new WifiStateChangedBroadcastReceiver();
 	private final WifiConnectionBroadcastReceiver wifiConnectionReceiver = new WifiConnectionBroadcastReceiver();
-	private final WifiScanBroadcastReceiver wifiScanReceiver = new WifiScanBroadcastReceiver();
 	private final ScreenOnOffBroadcastReceiver screenOnOffReceiver = new ScreenOnOffBroadcastReceiver();
 	private final BluetoothStateChangedBroadcastReceiver bluetoothStateChangedReceiver = new BluetoothStateChangedBroadcastReceiver();
-	private final BluetoothScanBroadcastReceiver bluetoothScanReceiver = new BluetoothScanBroadcastReceiver();
 	
 	@Override
     public void onCreate()
@@ -41,21 +39,11 @@ public class ReceiversService extends Service {
 		intentFilter3.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
 		registerReceiver(wifiConnectionReceiver, intentFilter3);
 		
-		IntentFilter intentFilter4 = new IntentFilter();
-		intentFilter4.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
-		registerReceiver(wifiScanReceiver, intentFilter4);
-
 		IntentFilter intentFilter5 = new IntentFilter();
 		intentFilter5.addAction(Intent.ACTION_SCREEN_ON);
 		intentFilter5.addAction(Intent.ACTION_SCREEN_OFF);
 		intentFilter5.addAction(Intent.ACTION_USER_PRESENT);
 		registerReceiver(screenOnOffReceiver, intentFilter5);
-		
-		IntentFilter intentFilter6 = new IntentFilter();		
-		intentFilter6.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
-		intentFilter6.addAction(BluetoothDevice.ACTION_FOUND);
-		intentFilter6.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-		registerReceiver(bluetoothScanReceiver, intentFilter6);
 		
 		IntentFilter intentFilter8 = new IntentFilter();		
 		intentFilter8.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
@@ -80,10 +68,8 @@ public class ReceiversService extends Service {
 		unregisterReceiver(headsetPlugReceiver);
 		unregisterReceiver(wifiStateChangedReceiver);
 		unregisterReceiver(wifiConnectionReceiver);
-		unregisterReceiver(wifiScanReceiver);
 		unregisterReceiver(screenOnOffReceiver);
 		unregisterReceiver(bluetoothStateChangedReceiver);
-		unregisterReceiver(bluetoothScanReceiver);		
 		
 		unregisterReceiver(restartEventsReceiver);
 		

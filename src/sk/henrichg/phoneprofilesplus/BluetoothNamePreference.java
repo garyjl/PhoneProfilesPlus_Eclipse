@@ -27,7 +27,6 @@ public class BluetoothNamePreference extends DialogPreference {
 	private String value;
 	public List<BluetoothDeviceData> bluetoothList = null;
 	
-	BluetoothAdapter bluetooth;
 	boolean isBluetoothEnabled = false;
 	
 	Context context;
@@ -81,9 +80,10 @@ public class BluetoothNamePreference extends DialogPreference {
         listAdapter = new BluetoothNamePreferenceAdapter(context, this);
         bluetoothListView.setAdapter(listAdapter);
         
-		bluetooth = (BluetoothAdapter) BluetoothAdapter.getDefaultAdapter();
+		if (BluetoothScanAlarmBroadcastReceiver.bluetooth == null)
+			BluetoothScanAlarmBroadcastReceiver.bluetooth = (BluetoothAdapter) BluetoothAdapter.getDefaultAdapter();
 
-        isBluetoothEnabled = bluetooth.isEnabled();
+        isBluetoothEnabled = BluetoothScanAlarmBroadcastReceiver.bluetooth.isEnabled();
 		
         refreshListView(false);
         
@@ -107,7 +107,7 @@ public class BluetoothNamePreference extends DialogPreference {
     		rescanAsyncTask.cancel(true);
     	
     	if (!isBluetoothEnabled)
-    		bluetooth.disable();
+    		BluetoothScanAlarmBroadcastReceiver.bluetooth.disable();
     	
         if (positiveResult) {
 
@@ -173,7 +173,7 @@ public class BluetoothNamePreference extends DialogPreference {
 			protected Void doInBackground(Void... params) {
 				if (!isBluetoothEnabled)
 				{
-					bluetooth.enable();
+					BluetoothScanAlarmBroadcastReceiver.bluetooth.enable();
 			        try {
 			        	Thread.sleep(1500);
 				    } catch (InterruptedException e) {
@@ -184,13 +184,13 @@ public class BluetoothNamePreference extends DialogPreference {
 				if (isCancelled())
 				{
 					if (!isBluetoothEnabled)
-			    		bluetooth.disable();
+						BluetoothScanAlarmBroadcastReceiver.bluetooth.disable();
 					return null;
 				}
 				
 				bluetoothList.clear();
 				
-		        Set<BluetoothDevice> boundedDeviced = bluetooth.getBondedDevices();
+		        Set<BluetoothDevice> boundedDeviced = BluetoothScanAlarmBroadcastReceiver.bluetooth.getBondedDevices();
 		        for (BluetoothDevice device : boundedDeviced)
 		        {
 		        	bluetoothList.add(new BluetoothDeviceData(device.getName(), device.getAddress()));
@@ -220,7 +220,7 @@ public class BluetoothNamePreference extends DialogPreference {
 		        }
 
 				if (!isBluetoothEnabled)
-		    		bluetooth.disable();
+					BluetoothScanAlarmBroadcastReceiver.bluetooth.disable();
 		        
 		        if (BluetoothScanAlarmBroadcastReceiver.scanResults != null)
 		        {

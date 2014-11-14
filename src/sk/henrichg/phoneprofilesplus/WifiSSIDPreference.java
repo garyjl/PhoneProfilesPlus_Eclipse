@@ -24,7 +24,6 @@ public class WifiSSIDPreference extends DialogPreference {
 	private String value;
 	public List<WifiSSIDData> SSIDList = null;
 	
-	WifiManager wifiManager;
 	boolean isWifiEnabled = false;
 	
 	Context context;
@@ -77,10 +76,11 @@ public class WifiSSIDPreference extends DialogPreference {
         SSIDListView = (ListView) view.findViewById(R.id.wifi_ssid_pref_dlg_listview);
         listAdapter = new WifiSSIDPreferenceAdapter(context, this);
         SSIDListView.setAdapter(listAdapter);
-        
-		wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 
-        isWifiEnabled = wifiManager.getWifiState() == WifiManager.WIFI_STATE_ENABLED;
+		if (WifiScanAlarmBroadcastReceiver.wifi == null)
+			WifiScanAlarmBroadcastReceiver.wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        
+        isWifiEnabled = WifiScanAlarmBroadcastReceiver.wifi.getWifiState() == WifiManager.WIFI_STATE_ENABLED;
 		
         refreshListView(false);
         
@@ -103,7 +103,7 @@ public class WifiSSIDPreference extends DialogPreference {
     		rescanAsyncTask.cancel(true);
     	
     	if (!isWifiEnabled)
-    		wifiManager.setWifiEnabled(false);
+    		WifiScanAlarmBroadcastReceiver.wifi.setWifiEnabled(false);
     	
         if (positiveResult) {
 
@@ -169,7 +169,7 @@ public class WifiSSIDPreference extends DialogPreference {
 			protected Void doInBackground(Void... params) {
 				if (!isWifiEnabled)
 				{
-		    		wifiManager.setWifiEnabled(true);
+					WifiScanAlarmBroadcastReceiver.wifi.setWifiEnabled(true);
 			        try {
 			        	Thread.sleep(1500);
 				    } catch (InterruptedException e) {
@@ -180,7 +180,7 @@ public class WifiSSIDPreference extends DialogPreference {
 				if (isCancelled())
 				{
 					if (!isWifiEnabled)
-			    		wifiManager.setWifiEnabled(false);
+						WifiScanAlarmBroadcastReceiver.wifi.setWifiEnabled(false);
 					return null;
 				}
 				
@@ -219,7 +219,7 @@ public class WifiSSIDPreference extends DialogPreference {
 		        }
 
 				if (!isWifiEnabled)
-		    		wifiManager.setWifiEnabled(false);
+					WifiScanAlarmBroadcastReceiver.wifi.setWifiEnabled(false);
 		        
 		        if (WifiScanAlarmBroadcastReceiver.scanResults != null)
 		        {

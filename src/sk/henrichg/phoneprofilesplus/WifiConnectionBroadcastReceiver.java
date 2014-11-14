@@ -80,10 +80,10 @@ public class WifiConnectionBroadcastReceiver extends WakefulBroadcastReceiver {
 			
     		/*if ((info.getState() == NetworkInfo.State.DISCONNECTED) &&
     			(lastState != currState))*/
-       		if (info.getState() == NetworkInfo.State.DISCONNECTED)
+       		/*if (info.getState() == NetworkInfo.State.DISCONNECTED)
     		{
     			WifiScanAlarmBroadcastReceiver.stopScan(context);
-    		}
+    		}*/
 			
         }
 	}

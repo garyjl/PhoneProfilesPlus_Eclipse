@@ -58,7 +58,6 @@ public class DataWrapper {
 		setParameters(fgui, mono, monoVal); 
 		
 		databaseHandler = getDatabaseHandler();
-		//activateProfileHelper = getActivateProfileHelper();
 	}
 	
 	public void setParameters( 
@@ -726,10 +725,8 @@ public class DataWrapper {
 		removeAllEventDelays();
 		
 		WifiScanAlarmBroadcastReceiver.initialize(context);
-		GlobalData.setForceOneWifiScan(context, true);
 		WifiScanAlarmBroadcastReceiver.setAlarm(context, false);
 		BluetoothScanAlarmBroadcastReceiver.initialize(context);
-		GlobalData.setForceOneBluetoothScan(context, true);
 		BluetoothScanAlarmBroadcastReceiver.setAlarm(context, false);
 		SearchCalendarEventsBroadcastReceiver.setAlarm(context);
 

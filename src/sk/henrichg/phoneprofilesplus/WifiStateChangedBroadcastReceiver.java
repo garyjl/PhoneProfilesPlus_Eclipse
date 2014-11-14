@@ -30,28 +30,32 @@ public class WifiStateChangedBroadcastReceiver extends BroadcastReceiver {
 
     		if (wifiState == WifiManager.WIFI_STATE_ENABLED)
     		{
-    			// refresh configured networks list
-				WifiScanAlarmBroadcastReceiver.fillWifiConfigurationList(context);
-				if (WifiScanAlarmBroadcastReceiver.wifiConfigurationList == null)
-					GlobalData.logE("@@@ WifiStateChangedBroadcastReceiver.onReceive","wifiConfigurationList=null");
-				else
-					GlobalData.logE("@@@ WifiStateChangedBroadcastReceiver.onReceive",
-											"wifiConfigurationList="+WifiScanAlarmBroadcastReceiver.wifiConfigurationList.size());
-				
+    			/*
+				*/
     			
     			// start scan
-				if (WifiScanAlarmBroadcastReceiver.getStartScan(context) && 
-					((!GlobalData.getEventsBlocked(context)) || GlobalData.getForceOneWifiScan(context)))
+				if ((!GlobalData.getEventsBlocked(context)) || GlobalData.getForceOneWifiScan(context))
 				{
-					WifiScanAlarmBroadcastReceiver.startScan(context);
+					if (WifiScanAlarmBroadcastReceiver.getStartScan(context))
+						WifiScanAlarmBroadcastReceiver.startScan(context);
+					else
+					{
+		    			// refresh configured networks list
+						WifiScanAlarmBroadcastReceiver.fillWifiConfigurationList(context);
+						if (WifiScanAlarmBroadcastReceiver.wifiConfigurationList == null)
+							GlobalData.logE("@@@ WifiStateChangedBroadcastReceiver.onReceive","wifiConfigurationList=null");
+						else
+							GlobalData.logE("@@@ WifiStateChangedBroadcastReceiver.onReceive",
+													"wifiConfigurationList="+WifiScanAlarmBroadcastReceiver.wifiConfigurationList.size());
+					}
 				}
     		}
         }
 		
-		if (wifiState == WifiManager.WIFI_STATE_DISABLED)
+		/*if (wifiState == WifiManager.WIFI_STATE_DISABLED)
 		{
 			WifiScanAlarmBroadcastReceiver.stopScan(context);
-		}
+		}*/
 		
 	}
 }

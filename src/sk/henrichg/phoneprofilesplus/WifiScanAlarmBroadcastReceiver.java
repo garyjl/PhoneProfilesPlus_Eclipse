@@ -82,8 +82,10 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		    			boolean isSSIDScanned = dataWrapper.getDatabaseHandler().isSSIDScanned(SSID); 
 
 						GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.onReceive","connected SSID="+SSID);
-		    			
-		    			if (isSSIDScanned)
+
+						boolean noScanData = scanResults.size() == 0;
+						
+		    			if ((isSSIDScanned) && (!noScanData))
 		    			{
 		    				// connected SSID is scanned
 		    				// no scan
