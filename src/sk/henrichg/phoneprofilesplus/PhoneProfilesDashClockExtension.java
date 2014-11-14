@@ -90,15 +90,23 @@ public class PhoneProfilesDashClockExtension extends DashClockExtension {
 		if (profile != null)
 		{
 			maxLength = 25;
-			// volume on
-			if ((profile._volumeRingerMode == 1) || (profile._volumeRingerMode == 2))
-				indicator1 = addIntoIndicator(indicator1, "rng");
-			// vibration
-			if ((profile._volumeRingerMode == 2) || (profile._volumeRingerMode == 3))
-				indicator1 = addIntoIndicator(indicator1, "vib");
-			// volume off
-			if (profile._volumeRingerMode == 4)
-				indicator1 = addIntoIndicator(indicator1, "sil");
+			if (profile._volumeRingerMode == 5)
+			{
+				// zen mode
+				indicator1 = addIntoIndicator(indicator1, "dnd");
+			}
+			else
+			{
+				// volume on
+				if ((profile._volumeRingerMode == 1) || (profile._volumeRingerMode == 2))
+					indicator1 = addIntoIndicator(indicator1, "rng");
+				// vibration
+				if ((profile._volumeRingerMode == 2) || (profile._volumeRingerMode == 3))
+					indicator1 = addIntoIndicator(indicator1, "vib");
+				// volume off
+				if (profile._volumeRingerMode == 4)
+					indicator1 = addIntoIndicator(indicator1, "sil");
+			}
 			// volume level
 			if (profile.getVolumeAlarmChange() ||
 				profile.getVolumeMediaChange() ||

@@ -38,15 +38,23 @@ public class ProfilePreferencesIndicator {
 
 		if (profile != null)
 		{
-			// volume on
-			if ((profile._volumeRingerMode == 1) || (profile._volumeRingerMode == 2))
+			if (profile._volumeRingerMode == 5)
+			{
+				// zen mode
 				drawables[countDrawables++] = R.drawable.ic_profile_pref_volume_on;
-			// vibration
-			if ((profile._volumeRingerMode == 2) || (profile._volumeRingerMode == 3))
-				drawables[countDrawables++] = R.drawable.ic_profile_pref_vibration;
-			// volume off
-			if (profile._volumeRingerMode == 4)
-				drawables[countDrawables++] = R.drawable.ic_profile_pref_volume_off;
+			}
+			else
+			{
+				// volume on
+				if ((profile._volumeRingerMode == 1) || (profile._volumeRingerMode == 2))
+					drawables[countDrawables++] = R.drawable.ic_profile_pref_volume_on;
+				// vibration
+				if ((profile._volumeRingerMode == 2) || (profile._volumeRingerMode == 3))
+					drawables[countDrawables++] = R.drawable.ic_profile_pref_vibration;
+				// volume off
+				if (profile._volumeRingerMode == 4)
+					drawables[countDrawables++] = R.drawable.ic_profile_pref_volume_off;
+			}
 			// volume level
 			if (profile.getVolumeAlarmChange() ||
 				profile.getVolumeMediaChange() ||

@@ -114,6 +114,7 @@ public class GlobalData extends Application {
 	static final String PREF_PROFILE_NAME = "prf_pref_profileName";
 	static final String PREF_PROFILE_ICON = "prf_pref_profileIcon";
 	static final String PREF_PROFILE_VOLUME_RINGER_MODE = "prf_pref_volumeRingerMode";
+	static final String PREF_PROFILE_VOLUME_ZEN_MODE = "prf_pref_volumeZenMode";
 	static final String PREF_PROFILE_VOLUME_RINGTONE = "prf_pref_volumeRingtone";
 	static final String PREF_PROFILE_VOLUME_NOTIFICATION = "prf_pref_volumeNotification";
 	static final String PREF_PROFILE_VOLUME_MEDIA = "prf_pref_volumeMedia";
@@ -567,6 +568,7 @@ public class GlobalData extends Application {
 		profile._duration = 0;
 		profile._afterDurationDo = Profile.AFTERDURATIONDO_NOTHING;
     	profile._volumeRingerMode = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE, "1")); // ring
+    	profile._volumeZenMode = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_VOLUME_ZEN_MODE, "1")); // all
     	profile._volumeRingtone = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_RINGTONE, getVolumeLevelString(71, maximumValueRing)+"|0|0");
     	profile._volumeNotification = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_NOTIFICATION, getVolumeLevelString(86, maximumValueNotification)+"|0|0");
     	profile._volumeMedia = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_MEDIA, getVolumeLevelString(80, maximumValueMusic)+"|0|0");
@@ -644,10 +646,13 @@ public class GlobalData extends Application {
 							   profile._volumeSpeakerPhone,
 							   profile._deviceNFC,
 							   profile._duration,
-							   profile._afterDurationDo);
+							   profile._afterDurationDo,
+							   profile._volumeZenMode);
 		
 			if (profile._volumeRingerMode == 99)
 				mappedProfile._volumeRingerMode = defaultProfile._volumeRingerMode;
+			if (profile._volumeZenMode == 99)
+				mappedProfile._volumeZenMode = defaultProfile._volumeZenMode;
 			if (profile.getVolumeRingtoneDefaultProfile())
 				mappedProfile._volumeRingtone = defaultProfile._volumeRingtone;
 			if (profile.getVolumeNotificationDefaultProfile())

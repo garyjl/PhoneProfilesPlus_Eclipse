@@ -465,5 +465,13 @@ silent           - ringer_mode=silent, zen_mode=priority, volume=0
    2. set_volumes     - set vibrate, when volume=0
    3. set ringer_mode - set zen_mode=priority, reset vibrate, volume can not by changed!!!
 
-      
+OK, co tak pre Android 5.0 spravit zen mode:
+1. Do "Mod zvonenia/vybrovania" pridat "Do not disturb" mod ("Nevyrusovat") (zen mode)
+2. Ten pridat dynamicky ak je Android 5.0
+3. Pri importe, aj je tento mod v db, zmenit na mod "Silent"
+4. Pridat novy ListPreference pre zen mode ("Do not disturb type").
+5. Ten bude enablovany len ak je vybraty  zen mod
+6. Zen mod sa da nastavovat len na rootnutych zariadeniach.
+7. Cize ak nie je root, "Do not disturb type" bude disablovany
+       
 

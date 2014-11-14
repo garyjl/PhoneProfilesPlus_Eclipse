@@ -502,5 +502,31 @@
     <item>2</item>
     <item>3</item>
 </string-array>        
+<string-array name="zenModeArray">
+	<item>@string/array_pref_no_change</item>
+	<item>@string/array_pref_default_profile</item>
+	<item>@string/array_pref_zenModeArray_all</item>
+	<item>@string/array_pref_zenModeArray_priority</item>
+	<item>@string/array_pref_zenModeArray_none</item>
+</string-array>
+<string-array name="zenModeValues">
+    <item>0</item>
+    <item>99</item>
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+</string-array>
+<string-array name="zenModeDPArray">
+	<item>@string/array_pref_no_change</item>
+	<item>@string/array_pref_zenModeArray_all</item>
+	<item>@string/array_pref_zenModeArray_priority</item>
+	<item>@string/array_pref_zenModeArray_none</item>
+</string-array>
+<string-array name="zenModeDPValues">
+    <item>0</item>
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+</string-array>
 
 </resources>

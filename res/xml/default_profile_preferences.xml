@@ -3,13 +3,20 @@
                   xmlns:henrichg="http://schemas.android.com/apk/res/sk.henrichg.phoneprofilesplus" >
     <PreferenceCategory
         android:summary="@string/profile_preferences_category_volumes"
-        android:title="@string/profile_preferences_category_volumes" >
+        android:title="@string/profile_preferences_category_volumes"
+        android:key="@+id/prf_pref_volumeCategory" >
 		<ListPreference android:title="@string/profile_preferences_volumeRingerMode"
             android:summary="@string/array_pref_no_change"
             android:key="prf_pref_volumeRingerMode"
             android:defaultValue="0"
             android:entries="@array/ringerModeDPArray"
             android:entryValues="@array/ringerModeDPValues" />        
+		<ListPreference android:title="@string/profile_preferences_volumeZenMode"
+            android:summary="@string/array_pref_no_change"
+            android:key="prf_pref_volumeZenMode"
+            android:defaultValue="0"
+            android:entries="@array/zenModeDPArray"
+            android:entryValues="@array/zenModeDPValues" />        
 		<sk.henrichg.phoneprofilesplus.VolumeDialogPreference
 			android:key="prf_pref_volumeRingtone"
 			henrichg:volumeType="ringtone"

@@ -22,8 +22,6 @@ import android.database.Cursor;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.wifi.ScanResult;
-import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.BatteryManager;
@@ -164,7 +162,8 @@ public class DataWrapper {
 				  0,
 				  0,
 				  0,
-				  Profile.AFTERDURATIONDO_NOTHING
+				  Profile.AFTERDURATIONDO_NOTHING,
+				  0
 			);
 	}
 	
@@ -1972,7 +1971,8 @@ public class DataWrapper {
 							   profile._volumeSpeakerPhone,
 							   profile._deviceNFC,
 							   profile._duration,
-							   profile._afterDurationDo);
+							   profile._afterDurationDo,
+							   profile._volumeZenMode);
 		
 			List<EventTimeline> eventTimelineList = getEventTimelineList();
 			

@@ -439,56 +439,6 @@ public class EditorProfileListFragment extends Fragment {
 
 	public void duplicateProfile(Profile origProfile)
 	{
-		/*
-		Profile newProfile = new Profile(
-				   origProfile._name+"_d", 
-				   origProfile._icon, 
-				   false, 
-				   origProfile._porder,
-				   origProfile._volumeRingerMode,
-				   origProfile._volumeRingtone,
-				   origProfile._volumeNotification,
-				   origProfile._volumeMedia,
-				   origProfile._volumeAlarm,
-				   origProfile._volumeSystem,
-				   origProfile._volumeVoice,
-				   origProfile._soundRingtoneChange,
-				   origProfile._soundRingtone,
-				   origProfile._soundNotificationChange,
-				   origProfile._soundNotification,
-				   origProfile._soundAlarmChange,
-				   origProfile._soundAlarm,
-				   origProfile._deviceAirplaneMode,
-				   origProfile._deviceWiFi,
-				   origProfile._deviceBluetooth,
-				   origProfile._deviceScreenTimeout,
-				   origProfile._deviceBrightness,
-				   origProfile._deviceWallpaperChange,
-				   origProfile._deviceWallpaper,
-				   origProfile._deviceMobileData,
-				   origProfile._deviceMobileDataPrefs,
-				   origProfile._deviceGPS,
-				   origProfile._deviceRunApplicationChange,
-				   origProfile._deviceRunApplicationPackageName,
-				   origProfile._deviceAutosync,
-				   origProfile._showInActivator);
-
-		// add profile into db and set id and order
-		databaseHandler.addProfile(newProfile); 
-		// add profile into listview
-		profileListAdapter.addItem(newProfile, false);
-		
-		updateListView(newProfile, false);
-		
-		activateProfileHelper.updateWidget();
-		
-    	// generate bitmaps
-		newProfile.generateIconBitmap(getActivity().getBaseContext(), false, 0);
-		newProfile.generatePreferencesIndicator(getActivity().getBaseContext(), false, 0);
-		
-		startProfilePreferencesActivity(newProfile);
-		*/
-		
 		int editMode;
 
 		// zduplikovanie profilu

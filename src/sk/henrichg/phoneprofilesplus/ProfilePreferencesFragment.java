@@ -11,12 +11,16 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.ListPreference;
+import android.preference.Preference;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.preference.Preference.OnPreferenceChangeListener;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.view.ActionMode.Callback;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -243,7 +247,8 @@ public class ProfilePreferencesFragment extends PreferenceFragment
 						   origProfile._volumeSpeakerPhone,
 						   origProfile._deviceNFC,
 						   origProfile._duration,
-						   origProfile._afterDurationDo);
+						   origProfile._afterDurationDo,
+						   origProfile._volumeZenMode);
 			profile_id = 0;
 		}
 		else
@@ -259,6 +264,63 @@ public class ProfilePreferencesFragment extends PreferenceFragment
 			addPreferencesFromResource(R.xml.default_profile_preferences);
 		else
 			addPreferencesFromResource(R.xml.profile_preferences);
+		
+    	if (android.os.Build.VERSION.SDK_INT >= 21)
+    	{
+    		// add zen mode option to preference Ringer mode
+    		ListPreference ringerModePreference = (ListPreference) prefMng.findPreference(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE);
+    		CharSequence[] entries = ringerModePreference.getEntries();
+    		CharSequence[] entryValues = ringerModePreference.getEntryValues();
+    		
+        	CharSequence[] newEntries = new CharSequence[entries.length+1];
+        	CharSequence[] newEntryValues = new CharSequence[entries.length+1];
+    		
+    		for (int i = 0; i < entries.length; i++)
+    		{
+    			newEntries[i] = entries[i];
+    			newEntryValues[i] = entryValues[i];
+    		}
+    		
+    		newEntries[entries.length] = context.getString(R.string.array_pref_ringerModeArray_ZenMode);
+    		newEntryValues[entries.length] = "5";
+    		
+    		ringerModePreference.setEntries(newEntries);
+    		ringerModePreference.setEntryValues(newEntryValues);
+    		ringerModePreference.setValue(Integer.toString(profile._volumeRingerMode));
+
+           	Preference zenModePreference = prefMng.findPreference(GlobalData.PREF_PROFILE_VOLUME_ZEN_MODE);
+           	zenModePreference.setEnabled(profile._volumeRingerMode == 5);
+    		
+    		if (profile._volumeRingerMode != 5)
+    		{
+        		ringerModePreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+                    @Override
+                    public boolean onPreferenceChange(Preference preference, Object newValue) {
+                        String sNewValue = (String)newValue;
+                        int iNewValue;
+                        if (sNewValue.isEmpty())
+                        	iNewValue = 0;
+                        else
+                        	iNewValue = Integer.parseInt(sNewValue);
+
+                       	Preference zenModePreference = prefMng.findPreference(GlobalData.PREF_PROFILE_VOLUME_ZEN_MODE);
+                       	zenModePreference.setEnabled(iNewValue == 5);
+
+                       	return true;
+                    }
+                });
+    		
+    		}
+    	}
+    	else
+    	{
+    		// remove zen mode types from preferences screen
+    		// for Android version < 5.0 this is not supported
+    		Preference preference = prefMng.findPreference(GlobalData.PREF_PROFILE_VOLUME_ZEN_MODE);
+    		String prefCatKey = preference.getDependency();
+    		PreferenceCategory preferenceCategory = (PreferenceCategory) findPreference(prefCatKey);
+    		preferenceCategory.removePreference(preference);
+    	}
 
         preferences.registerOnSharedPreferenceChangeListener(this);  
         
@@ -395,6 +457,7 @@ public class ProfilePreferencesFragment extends PreferenceFragment
 			}
 			/*
 	        editor.remove(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE).putString(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE, Integer.toString(profile._volumeRingerMode));
+	        editor.remove(GlobalData.PREF_PROFILE_VOLUME_ZEN_MODE).putString(GlobalData.PREF_PROFILE_VOLUME_ZEN_MODE, Integer.toString(profile._volumeZenMode));
 	        editor.remove(GlobalData.PREF_PROFILE_VOLUME_RINGTONE).putString(GlobalData.PREF_PROFILE_VOLUME_RINGTONE, profile._volumeRingtone);
 	        editor.remove(GlobalData.PREF_PROFILE_VOLUME_NOTIFICATION).putString(GlobalData.PREF_PROFILE_VOLUME_NOTIFICATION, profile._volumeNotification);
 	        editor.remove(GlobalData.PREF_PROFILE_VOLUME_MEDIA).putString(GlobalData.PREF_PROFILE_VOLUME_MEDIA, profile._volumeMedia);
@@ -426,6 +489,7 @@ public class ProfilePreferencesFragment extends PreferenceFragment
 	        editor.remove(GlobalData.PREF_PROFILE_DEVICE_NFC).editor.putString(GlobalData.PREF_PROFILE_VOLUME_SPEAKER_PHONE, Integer.toString(profile._deviceNFC));
 	        */
 	        editor.putString(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE, Integer.toString(profile._volumeRingerMode));
+	        editor.putString(GlobalData.PREF_PROFILE_VOLUME_ZEN_MODE, Integer.toString(profile._volumeZenMode));
 	        editor.putString(GlobalData.PREF_PROFILE_VOLUME_RINGTONE, profile._volumeRingtone);
 	        editor.putString(GlobalData.PREF_PROFILE_VOLUME_NOTIFICATION, profile._volumeNotification);
 	        editor.putString(GlobalData.PREF_PROFILE_VOLUME_MEDIA, profile._volumeMedia);
@@ -471,6 +535,7 @@ public class ProfilePreferencesFragment extends PreferenceFragment
 	    	profile._afterDurationDo = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_AFTER_DURATION_DO, ""));
 		}
     	profile._volumeRingerMode = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE, ""));
+    	profile._volumeZenMode = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_VOLUME_ZEN_MODE, ""));
     	profile._volumeRingtone = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_RINGTONE, "");
     	profile._volumeNotification = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_NOTIFICATION, "");
     	profile._volumeMedia = preferences.getString(GlobalData.PREF_PROFILE_VOLUME_MEDIA, "");
@@ -546,9 +611,12 @@ public class ProfilePreferencesFragment extends PreferenceFragment
 		{	
 	        prefMng.findPreference(key).setSummary(value.toString());
 		}
-		if (key.equals(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE))
+		if (key.equals(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE) ||
+			key.equals(GlobalData.PREF_PROFILE_VOLUME_ZEN_MODE))
 		{
 			String sValue = value.toString();
+			Log.e("ProfilePreferencesFragment.setSummary","key="+key);
+			Log.e("ProfilePreferencesFragment.setSummary","value="+sValue);
 			ListPreference listPreference = (ListPreference)prefMng.findPreference(key);
 			int index = listPreference.findIndexOfValue(sValue);
 			CharSequence summary = (index >= 0) ? listPreference.getEntries()[index] : null;
@@ -715,6 +783,7 @@ public class ProfilePreferencesFragment extends PreferenceFragment
     	        setSummary(GlobalData.PREF_PROFILE_AFTER_DURATION_DO, profile._afterDurationDo); 
     		}
 	        setSummary(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE, profile._volumeRingerMode);
+	        setSummary(GlobalData.PREF_PROFILE_VOLUME_ZEN_MODE, profile._volumeZenMode);
 	        setSummary(GlobalData.PREF_PROFILE_SOUND_RINGTONE_CHANGE, profile._soundRingtoneChange);
 	        setSummary(GlobalData.PREF_PROFILE_SOUND_RINGTONE, profile._soundRingtone);
 	        setSummary(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION_CHANGE, profile._soundNotificationChange);

@@ -15,6 +15,7 @@ public class Profile {
 	public int _duration;
 	public int _afterDurationDo;
 	public int _volumeRingerMode;
+	public int _volumeZenMode;
 	public String _volumeRingtone;
 	public String _volumeNotification;
 	public String _volumeMedia;
@@ -97,7 +98,8 @@ public class Profile {
 			   	   int volumeSpeakerPhone,
 			   	   int deviceNFC,
 			   	   int duration,
-			   	   int afterDurationDo)
+			   	   int afterDurationDo,
+ 			   	   int volumeZenMode)
 	{
 		this._id = id;
 		this._name = name;
@@ -105,6 +107,7 @@ public class Profile {
 		this._checked = checked; 
 		this._porder = porder;
 		this._volumeRingerMode = volumeRingerMode;
+		this._volumeZenMode = volumeZenMode;
 		this._volumeRingtone = volumeRingtone;
 		this._volumeNotification = volumeNotification;
 		this._volumeMedia = volumeMedia;
@@ -179,13 +182,15 @@ public class Profile {
 			   	   int volumeSpeakerPhone,
 			   	   int deviceNFC,
 			   	   int duration,
-			   	   int afterDurationDo)
+			   	   int afterDurationDo,
+ 			   	   int volumeZenMode)
 	{
 		this._name = name;
 		this._icon = icon;
 		this._checked = checked; 
 		this._porder = porder;
 		this._volumeRingerMode = volumeRingerMode;
+		this._volumeZenMode = volumeZenMode;
 		this._volumeRingtone = volumeRingtone;
 		this._volumeNotification = volumeNotification;
 		this._volumeMedia = volumeMedia;
@@ -231,6 +236,7 @@ public class Profile {
 		this._checked = profile._checked; 
 		this._porder = profile._porder;
 		this._volumeRingerMode = profile._volumeRingerMode;
+		this._volumeZenMode = profile._volumeZenMode;
 		this._volumeRingtone = profile._volumeRingtone;
 		this._volumeNotification = profile._volumeNotification;
 		this._volumeMedia = profile._volumeMedia;
