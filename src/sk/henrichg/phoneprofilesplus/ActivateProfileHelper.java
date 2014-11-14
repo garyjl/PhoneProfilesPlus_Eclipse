@@ -361,10 +361,9 @@ public class ActivateProfileHelper {
 		return priorityMode;
 	}
 
-	/*
 	private static final int ZENMODE_ALL = 0;
 	private static final int ZENMODE_PRIORITY = 1;
-	//private static final int ZENMODE_NONE = 2;
+	private static final int ZENMODE_NONE = 2;
 	
 	private void setZenMode(int mode)
 	{
@@ -386,7 +385,6 @@ public class ActivateProfileHelper {
 			}
     	}
 	}
-	*/
 	
 	@SuppressWarnings("deprecation")
 	public void setRingerMode(Profile profile, AudioManager audioManager)
@@ -460,6 +458,19 @@ public class ActivateProfileHelper {
 			} 
 			Settings.System.putInt(context.getContentResolver(), "vibrate_when_ringing", 0);
 			//setZenMode(ZENMODE_PRIORITY);
+			break;
+		case 5: // Zen mode
+			switch (profile._volumeZenMode) {
+				case 1:
+					setZenMode(ZENMODE_ALL);
+					break;
+				case 2:
+					setZenMode(ZENMODE_PRIORITY);
+					break;
+				case 3:
+					setZenMode(ZENMODE_NONE);
+					break;
+			}
 			break;
 		}
 	}

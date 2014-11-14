@@ -1,5 +1,6 @@
 package sk.henrichg.phoneprofilesplus;
  
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -611,8 +612,7 @@ public class ProfilePreferencesFragment extends PreferenceFragment
 		{	
 	        prefMng.findPreference(key).setSummary(value.toString());
 		}
-		if (key.equals(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE) ||
-			key.equals(GlobalData.PREF_PROFILE_VOLUME_ZEN_MODE))
+		if (key.equals(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE))
 		{
 			String sValue = value.toString();
 			Log.e("ProfilePreferencesFragment.setSummary","key="+key);
@@ -621,6 +621,25 @@ public class ProfilePreferencesFragment extends PreferenceFragment
 			int index = listPreference.findIndexOfValue(sValue);
 			CharSequence summary = (index >= 0) ? listPreference.getEntries()[index] : null;
 			listPreference.setSummary(summary);
+		}
+		if (key.equals(GlobalData.PREF_PROFILE_VOLUME_ZEN_MODE))
+		{
+			if ((!GlobalData.isRooted(false)) ||
+				(!GlobalData.settingsBinaryExists()))
+			{
+				prefMng.findPreference(key).setEnabled(false);
+				prefMng.findPreference(key).setSummary(getResources().getString(R.string.profile_preferences_device_not_allowed));
+			}
+			else
+			{
+				String sValue = value.toString();
+				Log.e("ProfilePreferencesFragment.setSummary","key="+key);
+				Log.e("ProfilePreferencesFragment.setSummary","value="+sValue);
+				ListPreference listPreference = (ListPreference)prefMng.findPreference(key);
+				int index = listPreference.findIndexOfValue(sValue);
+				CharSequence summary = (index >= 0) ? listPreference.getEntries()[index] : null;
+				listPreference.setSummary(summary);
+			}
 		}
 		if (key.equals(GlobalData.PREF_PROFILE_SOUND_RINGTONE_CHANGE) ||
 				key.equals(GlobalData.PREF_PROFILE_SOUND_NOTIFICATION_CHANGE) ||
@@ -665,7 +684,6 @@ public class ProfilePreferencesFragment extends PreferenceFragment
 			int canChange = GlobalData.hardwareCheck(key, context);
 			if (canChange != GlobalData.HARDWARE_CHECK_ALLOWED)
 			{
-				prefMng.findPreference(key).setEnabled(false);
 				prefMng.findPreference(key).setEnabled(false);
 				if (canChange == GlobalData.HARDWARE_CHECK_NOT_ALLOWED)
 					prefMng.findPreference(key).setSummary(getResources().getString(R.string.profile_preferences_device_not_allowed));
@@ -873,6 +891,7 @@ public class ProfilePreferencesFragment extends PreferenceFragment
         };		
 	}
 	
+	@SuppressLint("InflateParams")
 	private void showActionMode()
 	{
 		profileNonEdited = false;

@@ -1792,7 +1792,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						
 						// remove ringer mode "Do not disturb"
 						if ((Integer.parseInt(cursor.getString(9)) == 5) &&
-							((android.os.Build.VERSION.SDK_INT < 21) || (!GlobalData.isRooted(false))))
+							((android.os.Build.VERSION.SDK_INT < 21) || 
+							 (!GlobalData.isRooted(false)) ||
+							 (!GlobalData.settingsBinaryExists())))
 						{
 							values.put(KEY_VOLUME_RINGER_MODE, 4);
 							db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
