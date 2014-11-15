@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.net.wifi.WifiManager;
+import android.os.Handler;
 
 public class ScannerService extends IntentService
 {
@@ -80,7 +81,7 @@ public class ScannerService extends IntentService
 					if (WifiScanAlarmBroadcastReceiver.getStartScan(context))
 					{
 						GlobalData.logE("@@@ ScannerService.onHandleIntent", "waiting for scan end");
-						
+
 						// wait for scan end
 				    	for (int i = 0; i < 5 * 60; i++) // 60 seconds for wifi scan
 				    	{
@@ -92,7 +93,7 @@ public class ScannerService extends IntentService
 				        	if (!WifiScanAlarmBroadcastReceiver.getStartScan(context))
 				        		break;
 				    	}
-	
+		    		    
 						GlobalData.logE("@@@ ScannerService.onHandleIntent", "scan ended");
 				    	
 				    	GlobalData.setForceOneWifiScan(context, false);
