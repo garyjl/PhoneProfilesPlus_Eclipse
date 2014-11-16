@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.net.wifi.WifiManager;
-import android.os.Handler;
 
 public class ScannerService extends IntentService
 {

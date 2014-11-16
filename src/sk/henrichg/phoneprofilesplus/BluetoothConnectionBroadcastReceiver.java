@@ -6,8 +6,6 @@ import java.util.List;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.support.v4.content.WakefulBroadcastReceiver;
 
 public class BluetoothConnectionBroadcastReceiver extends WakefulBroadcastReceiver {

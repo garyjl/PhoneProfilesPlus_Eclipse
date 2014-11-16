@@ -350,8 +350,8 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 			wifiConfigurationList.clear();
 			for (WifiConfiguration device : _wifiConfigurationList)
 			{
-				Log.e("WifiScanAlarmBroadcastReceiver.fillWifiConfigurationList","ssid="+device.SSID);
-				Log.e("WifiScanAlarmBroadcastReceiver.fillWifiConfigurationList","bssid="+device.BSSID);
+				//Log.e("WifiScanAlarmBroadcastReceiver.fillWifiConfigurationList","ssid="+device.SSID);
+				//Log.e("WifiScanAlarmBroadcastReceiver.fillWifiConfigurationList","bssid="+device.BSSID);
 				
 				boolean found = false;
 				for (WifiSSIDData _device : wifiConfigurationList)

@@ -21,7 +21,6 @@ import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.view.ActionMode.Callback;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -615,8 +614,8 @@ public class ProfilePreferencesFragment extends PreferenceFragment
 		if (key.equals(GlobalData.PREF_PROFILE_VOLUME_RINGER_MODE))
 		{
 			String sValue = value.toString();
-			Log.e("ProfilePreferencesFragment.setSummary","key="+key);
-			Log.e("ProfilePreferencesFragment.setSummary","value="+sValue);
+			//Log.e("ProfilePreferencesFragment.setSummary","key="+key);
+			//Log.e("ProfilePreferencesFragment.setSummary","value="+sValue);
 			ListPreference listPreference = (ListPreference)prefMng.findPreference(key);
 			int index = listPreference.findIndexOfValue(sValue);
 			CharSequence summary = (index >= 0) ? listPreference.getEntries()[index] : null;
@@ -633,8 +632,8 @@ public class ProfilePreferencesFragment extends PreferenceFragment
 			else
 			{
 				String sValue = value.toString();
-				Log.e("ProfilePreferencesFragment.setSummary","key="+key);
-				Log.e("ProfilePreferencesFragment.setSummary","value="+sValue);
+				//Log.e("ProfilePreferencesFragment.setSummary","key="+key);
+				//Log.e("ProfilePreferencesFragment.setSummary","value="+sValue);
 				ListPreference listPreference = (ListPreference)prefMng.findPreference(key);
 				int index = listPreference.findIndexOfValue(sValue);
 				CharSequence summary = (index >= 0) ? listPreference.getEntries()[index] : null;

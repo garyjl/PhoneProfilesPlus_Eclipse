@@ -4,7 +4,6 @@ import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
-import android.util.Log;
 
 public class ExecuteVolumeProfilePrefsService extends IntentService //WakefulIntentService 
 {
@@ -17,7 +16,7 @@ public class ExecuteVolumeProfilePrefsService extends IntentService //WakefulInt
 	//protected void doWakefulWork(Intent intent) {
 	protected void onHandleIntent(Intent intent) {
 		
-		Log.e("ExecuteVolumeProfilePrefsService.onHandleIntent","---- start");
+		//Log.e("ExecuteVolumeProfilePrefsService.onHandleIntent","---- start");
 		
 		Context context = getBaseContext();
 		
@@ -58,7 +57,7 @@ public class ExecuteVolumeProfilePrefsService extends IntentService //WakefulInt
 		aph = null;
 		dataWrapper = null;
 		
-		Log.e("ExecuteVolumeProfilePrefsService.onHandleIntent","---- end");
+		//Log.e("ExecuteVolumeProfilePrefsService.onHandleIntent","---- end");
 		
 	}
 	
