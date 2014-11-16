@@ -93,7 +93,20 @@ public class PhoneProfilesDashClockExtension extends DashClockExtension {
 			if (profile._volumeRingerMode == 5)
 			{
 				// zen mode
-				indicator1 = addIntoIndicator(indicator1, "dnd");
+				if (profile._volumeZenMode == 1)
+				{
+					indicator1 = addIntoIndicator(indicator1, "zen");
+				}
+				if (profile._volumeZenMode == 2)
+				{
+					indicator1 = addIntoIndicator(indicator1, "zen");
+					indicator1 = addIntoIndicator(indicator1, "pri");
+				}
+				if (profile._volumeZenMode == 3)
+				{
+					indicator1 = addIntoIndicator(indicator1, "zen");
+					indicator1 = addIntoIndicator(indicator1, "non");
+				}
 			}
 			else
 			{

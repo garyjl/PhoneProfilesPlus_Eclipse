@@ -41,7 +41,21 @@ public class ProfilePreferencesIndicator {
 			if (profile._volumeRingerMode == 5)
 			{
 				// zen mode
-				drawables[countDrawables++] = R.drawable.ic_profile_pref_volume_on;
+				// zen mode
+				if (profile._volumeZenMode == 1)
+				{
+					drawables[countDrawables++] = R.drawable.ic_profile_pref_zen_mode;
+				}
+				if (profile._volumeZenMode == 2)
+				{
+					drawables[countDrawables++] = R.drawable.ic_profile_pref_zen_mode;
+					drawables[countDrawables++] = R.drawable.ic_profile_pref_zenmode_priority;
+				}
+				if (profile._volumeZenMode == 3)
+				{
+					drawables[countDrawables++] = R.drawable.ic_profile_pref_zen_mode;
+					drawables[countDrawables++] = R.drawable.ic_profile_pref_zenmode_none;
+				}
 			}
 			else
 			{

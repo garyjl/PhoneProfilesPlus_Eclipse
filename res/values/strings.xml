@@ -428,8 +428,8 @@
 	<string name="phone_profiles_pref_applicationEventRescan_restartEvents">Restart events</string>    
 	<string name="phone_profiles_pref_applicationEventRescan_screenOnAndRestartEvents">Screen On &amp; Restart events</string>    
 
-	<string name="array_pref_ringerModeArray_ZenMode">Do not disturb</string>
-	<string name="profile_preferences_volumeZenMode">Do not disturb type</string>
+	<string name="array_pref_ringerModeArray_ZenMode">Zen mode</string>
+	<string name="profile_preferences_volumeZenMode">Zen mode type</string>
 	<string name="array_pref_zenModeArray_all">All</string>
 	<string name="array_pref_zenModeArray_priority">Priority</string>
 	<string name="array_pref_zenModeArray_none">None</string>

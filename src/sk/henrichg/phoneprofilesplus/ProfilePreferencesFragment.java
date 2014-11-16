@@ -289,29 +289,29 @@ public class ProfilePreferencesFragment extends PreferenceFragment
     		ringerModePreference.setEntryValues(newEntryValues);
     		ringerModePreference.setValue(Integer.toString(profile._volumeRingerMode));
 
+           	final boolean canEnableZenMode = (GlobalData.isRooted(false)) && (GlobalData.settingsBinaryExists());
+    		
            	Preference zenModePreference = prefMng.findPreference(GlobalData.PREF_PROFILE_VOLUME_ZEN_MODE);
-           	zenModePreference.setEnabled(profile._volumeRingerMode == 5);
+           	zenModePreference.setEnabled((profile._volumeRingerMode == 5) && canEnableZenMode);
     		
-    		if (profile._volumeRingerMode != 5)
-    		{
-        		ringerModePreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-                    @Override
-                    public boolean onPreferenceChange(Preference preference, Object newValue) {
-                        String sNewValue = (String)newValue;
-                        int iNewValue;
-                        if (sNewValue.isEmpty())
-                        	iNewValue = 0;
-                        else
-                        	iNewValue = Integer.parseInt(sNewValue);
+    		ringerModePreference.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    String sNewValue = (String)newValue;
+                    int iNewValue;
+                    if (sNewValue.isEmpty())
+                    	iNewValue = 0;
+                    else
+                    	iNewValue = Integer.parseInt(sNewValue);
 
-                       	Preference zenModePreference = prefMng.findPreference(GlobalData.PREF_PROFILE_VOLUME_ZEN_MODE);
-                       	zenModePreference.setEnabled(iNewValue == 5);
+                   	Preference zenModePreference = prefMng.findPreference(GlobalData.PREF_PROFILE_VOLUME_ZEN_MODE);
 
-                       	return true;
-                    }
-                });
+                   	zenModePreference.setEnabled((iNewValue == 5) && canEnableZenMode);
+
+                   	return true;
+                }
+            });
     		
-    		}
     	}
     	else
     	{
