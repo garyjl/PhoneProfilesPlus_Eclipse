@@ -74,11 +74,11 @@
     <string name="profile_preferences_soundNotification">Notification sound</string>
     <string name="profile_preferences_soundAlarmChange">Change alarm</string>
     <string name="profile_preferences_soundAlarm">Alarm sound</string>
-    <string name="profile_preferences_deviceAirplaneMode">Airplane mode</string>
+    <string name="profile_preferences_deviceAirplaneMode">(R) Airplane mode</string>
     <string name="profile_preferences_deviceWiFi">Wi-Fi</string>
     <string name="profile_preferences_deviceBluetooth">Bluetooth</string>
-    <string name="profile_preferences_deviceGPS">GPS</string>
-    <string name="profile_preferences_deviceNFC">NFC</string>
+    <string name="profile_preferences_deviceGPS">(R) GPS</string>
+    <string name="profile_preferences_deviceNFC">(H) NFC</string>
     <string name="profile_preferences_deviceScreenTimeout">Screen timeout</string>
     <string name="profile_preferences_deviceBrightness">Screen brightness</string>
     <string name="profile_preferences_deviceWallpaper">Wallpaper</string>
@@ -429,7 +429,7 @@
 	<string name="phone_profiles_pref_applicationEventRescan_screenOnAndRestartEvents">Screen On &amp; Restart events</string>    
 
 	<string name="array_pref_ringerModeArray_ZenMode">Zen mode</string>
-	<string name="profile_preferences_volumeZenMode">Zen mode type</string>
+	<string name="profile_preferences_volumeZenMode">(R) Zen mode type</string>
 	<string name="array_pref_zenModeArray_all">All</string>
 	<string name="array_pref_zenModeArray_priority">Priority</string>
 	<string name="array_pref_zenModeArray_none">None</string>

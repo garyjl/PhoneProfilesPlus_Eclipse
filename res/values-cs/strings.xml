@@ -74,11 +74,11 @@
     <string name="profile_preferences_soundNotification">Tón notifikace</string>
     <string name="profile_preferences_soundAlarmChange">Změnit tón budíka</string>
     <string name="profile_preferences_soundAlarm">Tón budíka</string>
-    <string name="profile_preferences_deviceAirplaneMode">Mód letadlo</string>
+    <string name="profile_preferences_deviceAirplaneMode">(R) Mód letadlo</string>
     <string name="profile_preferences_deviceWiFi">Wi-Fi</string>
     <string name="profile_preferences_deviceBluetooth">Bluetooth</string>
-    <string name="profile_preferences_deviceGPS">GPS</string>
-    <string name="profile_preferences_deviceNFC">NFC</string>
+    <string name="profile_preferences_deviceGPS">(R) GPS</string>
+    <string name="profile_preferences_deviceNFC">(H) NFC</string>
     <string name="profile_preferences_deviceScreenTimeout">Čas do vypnutí obrazovky</string>
     <string name="profile_preferences_deviceBrightness">Jas podsvícení obrazovky</string>
     <string name="profile_preferences_deviceWallpaper">Obrázek pozadí</string>

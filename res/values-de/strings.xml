@@ -74,10 +74,11 @@
     <string name="profile_preferences_soundNotification">Benachrichtigungston</string>
     <string name="profile_preferences_soundAlarmChange">Alarmton ändern</string> 
     <string name="profile_preferences_soundAlarm">Alarmton</string> 
-    <string name="profile_preferences_deviceAirplaneMode">Flugzeugmodus</string> 
+    <string name="profile_preferences_deviceAirplaneMode">(R) Flugzeugmodus</string> 
     <string name="profile_preferences_deviceWiFi">Wi-Fi</string> 
     <string name="profile_preferences_deviceBluetooth">BlueTooth</string>
-    <string name="profile_preferences_deviceNFC">NFC</string> 
+    <string name="profile_preferences_deviceGPS">(R) GPS</string>
+    <string name="profile_preferences_deviceNFC">(H) NFC</string> 
     <string name="profile_preferences_deviceScreenTimeout">Beleuchtungsdauer</string> 
     <string name="profile_preferences_deviceBrightness">Bildschirmhelligkeit</string> 
     <string name="profile_preferences_deviceWallpaper">Hintergrundbild</string> 
