@@ -726,28 +726,31 @@ public class ActivateProfileHelper {
 	@SuppressLint("RtlHardcoded")
 	private void createBrightnessView(Profile profile)
 	{
-		WindowManager windowManager = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
-		if (GUIData.brightneesView != null)
+		if (context != null)
 		{
-			windowManager.removeView(GUIData.brightneesView);
-			GUIData.brightneesView = null;
+			WindowManager windowManager = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
+			if (GUIData.brightneesView != null)
+			{
+				windowManager.removeView(GUIData.brightneesView);
+				GUIData.brightneesView = null;
+			}
+			WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+						1, 1,
+						WindowManager.LayoutParams.TYPE_TOAST,
+						//TYPE_SYSTEM_ALERT,
+						WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+						PixelFormat.TRANSLUCENT
+					);
+			params.gravity = Gravity.RIGHT | Gravity.TOP;
+			if (profile.getDeviceBrightnessAutomatic())
+				params.screenBrightness = LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
+			else
+				params.screenBrightness = profile.getDeviceBrightnessValue() / 255.0f;
+			GUIData.brightneesView = new BrightnessView(context);
+			windowManager.addView(GUIData.brightneesView, params);
+			
+			RemoveBrightnessViewBroadcastReceiver.setAlarm(context);
 		}
-		WindowManager.LayoutParams params = new WindowManager.LayoutParams(
-					1, 1,
-					WindowManager.LayoutParams.TYPE_TOAST,
-					//TYPE_SYSTEM_ALERT,
-					WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-					PixelFormat.TRANSLUCENT
-				);
-		params.gravity = Gravity.RIGHT | Gravity.TOP;
-		if (profile.getDeviceBrightnessAutomatic())
-			params.screenBrightness = LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
-		else
-			params.screenBrightness = profile.getDeviceBrightnessValue() / 255.0f;
-		GUIData.brightneesView = new BrightnessView(context);
-		windowManager.addView(GUIData.brightneesView, params);
-		
-		RemoveBrightnessViewBroadcastReceiver.setAlarm(context);
 	}
 	
 	//@SuppressWarnings("deprecation")
