@@ -623,21 +623,24 @@ public class ProfilePreferencesFragment extends PreferenceFragment
 		}
 		if (key.equals(GlobalData.PREF_PROFILE_VOLUME_ZEN_MODE))
 		{
-			if ((!GlobalData.isRooted(false)) ||
-				(!GlobalData.settingsBinaryExists()))
+			if (android.os.Build.VERSION.SDK_INT >= 21)
 			{
-				prefMng.findPreference(key).setEnabled(false);
-				prefMng.findPreference(key).setSummary(getResources().getString(R.string.profile_preferences_device_not_allowed));
-			}
-			else
-			{
-				String sValue = value.toString();
-				//Log.e("ProfilePreferencesFragment.setSummary","key="+key);
-				//Log.e("ProfilePreferencesFragment.setSummary","value="+sValue);
-				ListPreference listPreference = (ListPreference)prefMng.findPreference(key);
-				int index = listPreference.findIndexOfValue(sValue);
-				CharSequence summary = (index >= 0) ? listPreference.getEntries()[index] : null;
-				listPreference.setSummary(summary);
+				if ((!GlobalData.isRooted(false)) ||
+					(!GlobalData.settingsBinaryExists()))
+				{
+					prefMng.findPreference(key).setEnabled(false);
+					prefMng.findPreference(key).setSummary(getResources().getString(R.string.profile_preferences_device_not_allowed));
+				}
+				else
+				{
+					String sValue = value.toString();
+					//Log.e("ProfilePreferencesFragment.setSummary","key="+key);
+					//Log.e("ProfilePreferencesFragment.setSummary","value="+sValue);
+					ListPreference listPreference = (ListPreference)prefMng.findPreference(key);
+					int index = listPreference.findIndexOfValue(sValue);
+					CharSequence summary = (index >= 0) ? listPreference.getEntries()[index] : null;
+					listPreference.setSummary(summary);
+				}
 			}
 		}
 		if (key.equals(GlobalData.PREF_PROFILE_SOUND_RINGTONE_CHANGE) ||

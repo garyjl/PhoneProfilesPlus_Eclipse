@@ -367,7 +367,7 @@ public class ActivateProfileHelper {
 	{
     	if (android.os.Build.VERSION.SDK_INT >= 21)
     	{
-			if (GlobalData.grantRoot(false))
+			if (GlobalData.grantRoot(false) && (GlobalData.settingsBinaryExists()))
 			{
 				String command1 = "settings put global zen_mode " + mode;
 				if (GlobalData.isSELinuxEnforcing())
@@ -499,7 +499,7 @@ public class ActivateProfileHelper {
 		// nahodenie ringer modu - hlasitosti zmenia silent/vibrate
 		setRingerMode(profile, audioManager);*/
 
-		// nahodenie ringtone
+		// nahodenie  tonov
 		if (profile._soundRingtoneChange == 1)
 		{
 			if (profile._soundRingtone.isEmpty())

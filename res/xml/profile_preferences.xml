@@ -47,7 +47,8 @@
             android:key="prf_pref_volumeZenMode"
             android:defaultValue="0"
             android:entries="@array/zenModeArray"
-            android:entryValues="@array/zenModeValues" />        
+            android:entryValues="@array/zenModeValues"
+            android:dependency="@+id/prf_pref_volumeCategory" />        
 		<sk.henrichg.phoneprofilesplus.VolumeDialogPreference
 			android:key="prf_pref_volumeRingtone"
 			henrichg:volumeType="ringtone"
