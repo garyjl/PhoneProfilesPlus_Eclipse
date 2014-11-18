@@ -693,7 +693,14 @@ public class ActivateProfileHelper {
 				{
 		    		final Intent intent = new Intent(android.provider.Settings.ACTION_DATA_ROAMING_SETTINGS);
 		    		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					context.startActivity(intent);
+		    		try {
+		    			context.startActivity(intent);
+		    		} catch (Exception e) {
+						final ComponentName componentName = new ComponentName("com.android.phone", "com.android.phone.Settings");
+						//intent.addCategory(Intent.ACTION_MAIN);
+						intent.setComponent(componentName);
+						context.startActivity(intent);
+		    		}
 				}
 			}
 			
