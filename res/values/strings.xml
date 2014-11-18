@@ -428,8 +428,8 @@
 	<string name="phone_profiles_pref_applicationEventRescan_restartEvents">Restart events</string>    
 	<string name="phone_profiles_pref_applicationEventRescan_screenOnAndRestartEvents">Screen On &amp; Restart events</string>    
 
-	<string name="array_pref_ringerModeArray_ZenMode">Zen mode</string>
-	<string name="profile_preferences_volumeZenMode">(R) Zen mode type</string>
+	<string name="array_pref_ringerModeArray_ZenMode">Interruptions</string>
+	<string name="profile_preferences_volumeZenMode">(R) Interruptions type</string>
 	<string name="array_pref_zenModeArray_all">All</string>
 	<string name="array_pref_zenModeArray_priority">Priority</string>
 	<string name="array_pref_zenModeArray_none">None</string>
