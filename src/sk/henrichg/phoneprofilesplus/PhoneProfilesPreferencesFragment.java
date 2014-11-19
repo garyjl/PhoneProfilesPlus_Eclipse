@@ -28,7 +28,7 @@ public class PhoneProfilesPreferencesFragment extends PreferenceFragment
 
 		// this is really important in order to save the state across screen
 		// configuration changes for example
-		setRetainInstance(true);
+		setRetainInstance(false);
 		
 		preferencesActivity = getActivity();
         //context = getActivity().getBaseContext();

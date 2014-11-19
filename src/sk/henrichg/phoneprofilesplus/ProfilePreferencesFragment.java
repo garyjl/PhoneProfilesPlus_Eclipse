@@ -160,7 +160,7 @@ public class ProfilePreferencesFragment extends PreferenceFragment
 		
 		// this is really important in order to save the state across screen
 		// configuration changes for example
-		setRetainInstance(true);
+		setRetainInstance(false);
 		
 		preferencesActivity = getActivity();
         context = getActivity().getBaseContext();
@@ -323,15 +323,17 @@ public class ProfilePreferencesFragment extends PreferenceFragment
 	    		preferenceCategory.removePreference(preference);
     		}
     	}
-
-        preferences.registerOnSharedPreferenceChangeListener(this);  
-        
+	        
+        preferences.registerOnSharedPreferenceChangeListener(this);
         createActionModeCallback();
-        
-    	SharedPreferences preferences = getActivity().getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Activity.MODE_PRIVATE);
-    	Editor editor = preferences.edit();
-    	editor.remove(SP_ACTION_MODE_SHOWED);
-		editor.commit();
+	        
+		if (savedInstanceState == null)
+		{
+	    	SharedPreferences preferences = getActivity().getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Activity.MODE_PRIVATE);
+	    	Editor editor = preferences.edit();
+	    	editor.remove(SP_ACTION_MODE_SHOWED);
+			editor.commit();
+		}
 
 		updateSharedPreference();
 		
