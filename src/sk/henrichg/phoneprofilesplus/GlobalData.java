@@ -880,8 +880,11 @@ public class GlobalData extends Application {
 			if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY))
 			{
 				// device ma mobilne data
-				if (canSetMobileData(context))
-					featurePresented = HARDWARE_CHECK_ALLOWED;
+				if (android.os.Build.VERSION.SDK_INT < 21) // not working in Android 5.0 :-/
+				{
+					if (canSetMobileData(context))
+						featurePresented = HARDWARE_CHECK_ALLOWED;
+				}
 			}
 		}
 		else
