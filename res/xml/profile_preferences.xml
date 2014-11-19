@@ -35,7 +35,7 @@
     <PreferenceCategory
         android:summary="@string/profile_preferences_category_volumes"
         android:title="@string/profile_preferences_category_volumes"
-        android:key="@+id/prf_pref_volumeCategory"  >
+        android:key="prf_pref_volumeCategory"  >
 		<ListPreference android:title="@string/profile_preferences_volumeRingerMode"
             android:summary="@string/array_pref_no_change"
             android:key="prf_pref_volumeRingerMode"
@@ -48,7 +48,7 @@
             android:defaultValue="0"
             android:entries="@array/zenModeArray"
             android:entryValues="@array/zenModeValues"
-            android:dependency="@+id/prf_pref_volumeCategory" />        
+            android:dependency="prf_pref_volumeCategory" />        
 		<sk.henrichg.phoneprofilesplus.VolumeDialogPreference
 			android:key="prf_pref_volumeRingtone"
 			henrichg:volumeType="ringtone"
