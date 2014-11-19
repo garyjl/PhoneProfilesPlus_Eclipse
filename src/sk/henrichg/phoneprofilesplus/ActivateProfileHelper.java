@@ -857,8 +857,11 @@ public class ActivateProfileHelper {
 
 	        }
 
-			Uri ringtoneUri=Uri.parse(eventNotificationSound);
-			notificationBuilder.setSound(ringtoneUri);
+			if (!eventNotificationSound.isEmpty())
+			{
+				Uri ringtoneUri=Uri.parse(eventNotificationSound);
+				notificationBuilder.setSound(ringtoneUri);
+			}
 			
 	        Notification notification = notificationBuilder.build();
 			
