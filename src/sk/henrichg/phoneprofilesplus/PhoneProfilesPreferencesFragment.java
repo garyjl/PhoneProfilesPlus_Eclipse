@@ -170,9 +170,11 @@ public class PhoneProfilesPreferencesFragment extends PreferenceFragment
     	{
     		// for Android 5.0, color notification icon is not supported
     		Preference preference = prefMng.findPreference(GlobalData.PREF_NOTIFICATION_STATUS_BAR_STYLE);
-    		String prefCatKey = preference.getDependency();
-    		PreferenceCategory preferenceCategory = (PreferenceCategory) findPreference(prefCatKey);
-    		preferenceCategory.removePreference(preference);
+    		if (preference != null)
+    		{
+	    		PreferenceCategory preferenceCategory = (PreferenceCategory) findPreference("categoryNotifications");
+	    		preferenceCategory.removePreference(preference);
+    		}
     	}
     	else
     		setSummary(GlobalData.PREF_NOTIFICATION_STATUS_BAR_STYLE);

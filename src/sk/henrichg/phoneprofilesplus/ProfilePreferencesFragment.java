@@ -317,9 +317,11 @@ public class ProfilePreferencesFragment extends PreferenceFragment
     		// remove zen mode types from preferences screen
     		// for Android version < 5.0 this is not supported
     		Preference preference = prefMng.findPreference(GlobalData.PREF_PROFILE_VOLUME_ZEN_MODE);
-    		String prefCatKey = preference.getDependency();
-    		PreferenceCategory preferenceCategory = (PreferenceCategory) findPreference(prefCatKey);
-    		preferenceCategory.removePreference(preference);
+    		if (preference != null)
+    		{
+	    		PreferenceCategory preferenceCategory = (PreferenceCategory) findPreference("prf_pref_volumeCategory");
+	    		preferenceCategory.removePreference(preference);
+    		}
     	}
 
         preferences.registerOnSharedPreferenceChangeListener(this);  

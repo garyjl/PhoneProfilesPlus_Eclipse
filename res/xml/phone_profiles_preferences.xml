@@ -85,8 +85,7 @@
 	           android:key="notificationStatusBarStyle"
 	           android:defaultValue="1"
 	           android:entries="@array/notificationIconStyleArray"
-	           android:entryValues="@array/notificationIconStyleValues"
-	           android:dependency="categoryNotifications" />        
+	           android:entryValues="@array/notificationIconStyleValues" />        
 		<CheckBoxPreference 
 		    android:key="notificationPrefIndicator"
 		    android:title="@string/phone_profiles_pref_notificationPrefIndicator"
