@@ -52,7 +52,12 @@ public class BootUpReceiver extends BroadcastReceiver {
 			
 			// startneme eventy
 			if (GlobalData.getGlobalEventsRuning(context))
+			{
+				// must by false for avoiding starts/pause events before restart events
+				GlobalData.setApplicationStarted(context, false); 
+				
 				dataWrapper.firstStartEvents(true, false);
+			}
 			else
 			{
 				GlobalData.setApplicationStarted(context, true);
