@@ -311,6 +311,10 @@ public class ProfilePreferencesFragment extends PreferenceFragment
                 }
             });
     		
+    		// set mobile data preference title
+           	Preference mobileDataPreference = prefMng.findPreference(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA);
+           	mobileDataPreference.setTitle(R.string.profile_preferences_deviceMobileData_21);
+    		
     	}
     	else
     	{
@@ -322,6 +326,10 @@ public class ProfilePreferencesFragment extends PreferenceFragment
 	    		PreferenceCategory preferenceCategory = (PreferenceCategory) findPreference("prf_pref_volumeCategory");
 	    		preferenceCategory.removePreference(preference);
     		}
+    		
+    		// set mobile data preference title
+           	Preference mobileDataPreference = prefMng.findPreference(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA);
+           	mobileDataPreference.setTitle(R.string.profile_preferences_deviceMobileData);
     	}
 	        
         preferences.registerOnSharedPreferenceChangeListener(this);

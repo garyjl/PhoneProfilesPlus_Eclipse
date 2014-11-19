@@ -420,18 +420,18 @@
     <string name="phoneprofilehepler_uninstall_error_no_root">PPHelper uninstallation requires ROOT</string>
     <string name="phoneprofilehepler_reboot_title_uninstall">PPHelper uninstallation</string>
     <string name="phoneprofilehepler_reboot_message_uninstall">Restart is required. Restart now?</string>
-
     <string name="phone_profiles_pref_applicationEventWifiRescan">Rescan Wi-Fi</string>
     <string name="phone_profiles_pref_applicationEventBluetoothRescan">Rescan Bluetooth</string>
 	<string name="phone_profiles_pref_applicationEventRescan_none">None</string>    
 	<string name="phone_profiles_pref_applicationEventRescan_screenOn">Screen On</string>    
 	<string name="phone_profiles_pref_applicationEventRescan_restartEvents">Restart events</string>    
 	<string name="phone_profiles_pref_applicationEventRescan_screenOnAndRestartEvents">Screen On &amp; Restart events</string>    
-
 	<string name="array_pref_ringerModeArray_ZenMode">Interruptions</string>
 	<string name="profile_preferences_volumeZenMode">(R) Interruptions type</string>
 	<string name="array_pref_zenModeArray_all">All</string>
 	<string name="array_pref_zenModeArray_priority">Priority</string>
 	<string name="array_pref_zenModeArray_none">None</string>
-												
+
+    <string name="profile_preferences_deviceMobileData_21">(H) Mobile data</string>
+														
 </resources>

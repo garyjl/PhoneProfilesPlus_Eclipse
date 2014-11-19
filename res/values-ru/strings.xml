@@ -414,18 +414,18 @@
     <string name="phoneprofilehepler_uninstall_error_no_root">Деинсталляция PPHelper требуется ROOT</string>
     <string name="phoneprofilehepler_reboot_title_uninstall">Деинсталляция PPHelper</string>
     <string name="phoneprofilehepler_reboot_message_uninstall">Нужно перезагрузить. Перезапуск сейчас?</string>
-
     <string name="phone_profiles_pref_applicationEventWifiRescan">Пересканировать Wi-Fi</string>
     <string name="phone_profiles_pref_applicationEventBluetoothRescan">Пересканировать Bluetooth</string>
 	<string name="phone_profiles_pref_applicationEventRescan_none">Нет</string>    
 	<string name="phone_profiles_pref_applicationEventRescan_screenOn">Включение экрана</string>    
 	<string name="phone_profiles_pref_applicationEventRescan_restartEvents">>Перезапуск событий</string>    
 	<string name="phone_profiles_pref_applicationEventRescan_screenOnAndRestartEvents">Включение экрана &amp; Перезапуск событий</string>    
-    
 	<string name="array_pref_ringerModeArray_ZenMode">Режимы оповещения</string>
 	<string name="profile_preferences_volumeZenMode">(R) Типы режима оповещения</string>
 	<string name="array_pref_zenModeArray_all">Все</string>
 	<string name="array_pref_zenModeArray_priority">Важные</string>
 	<string name="array_pref_zenModeArray_none">Не</string>
-		
+
+    <string name="profile_preferences_deviceMobileData_21">(H) Передача данных</string>
+				
 </resources>

@@ -414,18 +414,18 @@
     <string name="phoneprofilehepler_uninstall_error_no_root">Odinštalácia PPHelper-a vyžaduje ROOT</string>
     <string name="phoneprofilehepler_reboot_title_uninstall">Odinštalácia PPHelper-a</string>
     <string name="phoneprofilehepler_reboot_message_uninstall">Je nutný reštart zariadenia. Reštartovať teraz?</string>
-
     <string name="phone_profiles_pref_applicationEventWifiRescan">Preskenuj Wi-Fi</string>
     <string name="phone_profiles_pref_applicationEventBluetoothRescan">Preskenuj Bluetooth</string>
 	<string name="phone_profiles_pref_applicationEventRescan_none">Nie</string>    
 	<string name="phone_profiles_pref_applicationEventRescan_screenOn">Zapnutie obrazovky</string>    
 	<string name="phone_profiles_pref_applicationEventRescan_restartEvents">Reštart udalostí</string>    
 	<string name="phone_profiles_pref_applicationEventRescan_screenOnAndRestartEvents">Zapnutie obrazovky &amp; Reštart udalostí</string>    
-
 	<string name="array_pref_ringerModeArray_ZenMode">Vyrušenia</string>
 	<string name="profile_preferences_volumeZenMode">(R) Typy vyrušení</string>
 	<string name="array_pref_zenModeArray_all">Všetky</string>
 	<string name="array_pref_zenModeArray_priority">Prioritné</string>
 	<string name="array_pref_zenModeArray_none">Žiadne</string>
-		
+
+    <string name="profile_preferences_deviceMobileData_21">(H) Mobilné dáta</string>
+				
 </resources>
