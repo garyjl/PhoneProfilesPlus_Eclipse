@@ -35,6 +35,7 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.provider.Settings.Global;
 import android.support.v4.app.NotificationCompat;
+import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -1069,6 +1070,8 @@ public class ActivateProfileHelper {
 		
 		        setMobileDataEnabledMethod.setAccessible(true);
 		        setMobileDataEnabledMethod.invoke(connectivityManager, enable);
+		        
+		        OK = true;
 	
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
@@ -1080,6 +1083,7 @@ public class ActivateProfileHelper {
 				e.printStackTrace();
 			}
 		}
+		
 	}
 	
 	@SuppressWarnings("deprecation")

@@ -684,6 +684,7 @@ public class ProfilePreferencesFragment extends PreferenceFragment
 			key.equals(GlobalData.PREF_PROFILE_DEVICE_WIFI) ||
 			key.equals(GlobalData.PREF_PROFILE_DEVICE_BLUETOOTH) ||
 			key.equals(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA) ||
+			key.equals(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS) ||
 			key.equals(GlobalData.PREF_PROFILE_DEVICE_GPS) ||
 			key.equals(GlobalData.PREF_PROFILE_DEVICE_NFC))
 		{
@@ -699,10 +700,6 @@ public class ProfilePreferencesFragment extends PreferenceFragment
 				else
 				if (canChange == GlobalData.HARDWARE_CHECK_UPGRADE_PPHELPER)
 					prefMng.findPreference(key).setSummary(getResources().getString(R.string.profile_preferences_upgrade_pphelper));
-				if (key.equals(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA))
-				{
-					prefMng.findPreference(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS).setEnabled(false);
-				}
 			}
 			else
 			{

@@ -879,12 +879,37 @@ public class GlobalData extends Application {
 		{	
 			if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY))
 			{
-				// device ma mobilne data
-				if (android.os.Build.VERSION.SDK_INT < 21) // not working in Android 5.0 :-/
+				if (android.os.Build.VERSION.SDK_INT >= 21)
+				{
+					if (PhoneProfilesHelper.isPPHelperInstalled(context, 22))
+					{
+						// je nainstalovany PhonProfilesHelper
+						featurePresented = HARDWARE_CHECK_ALLOWED;
+				    }
+					else
+					{
+						if (isRooted(false))
+						{
+							if (PhoneProfilesHelper.PPHelperVersion == -1)
+								featurePresented = HARDWARE_CHECK_INSTALL_PPHELPER;
+							else
+								featurePresented = HARDWARE_CHECK_UPGRADE_PPHELPER;
+						}
+					}
+				}
+				else
 				{
 					if (canSetMobileData(context))
 						featurePresented = HARDWARE_CHECK_ALLOWED;
 				}
+			}
+		}
+		else
+		if (preferenceKey.equals(PREF_PROFILE_DEVICE_MOBILE_DATA_PREFS))
+		{
+			if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY))
+			{
+				featurePresented = HARDWARE_CHECK_ALLOWED;
 			}
 		}
 		else
