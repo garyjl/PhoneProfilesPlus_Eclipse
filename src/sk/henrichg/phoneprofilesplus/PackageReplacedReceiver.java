@@ -17,8 +17,6 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 		
 			if (GlobalData.getApplicationStarted(context))
 			{
-				GlobalData.setApplicationStarted(context, false);
-				
 				GlobalData.loadPreferences(context);
 				
 				// grant root
@@ -53,7 +51,12 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 
 				// startneme eventy
 				if (GlobalData.getGlobalEventsRuning(context))
+				{
+					// must by false for avoiding starts/pause events before restart events
+					GlobalData.setApplicationStarted(context, false); 
+					
 					dataWrapper.firstStartEvents(true, false);
+				}
 				else
 				{
 					GlobalData.setApplicationStarted(context, true);

@@ -29,12 +29,12 @@ public class LauncherActivity extends Activity {
 	{
 		super.onStart();
 		
-		if (!GlobalData.getApplicationStarted(getBaseContext()))
-		{
+		//if (!GlobalData.getApplicationStarted(getBaseContext()))
+		//{
 			// grant root
 			Intent eventsServiceIntent = new Intent(getBaseContext(), GrantRootService.class);
 			getBaseContext().startService(eventsServiceIntent);
-		}
+		//}
 		
 		
 		Profile profile = dataWrapper.getActivatedProfile();

@@ -920,7 +920,7 @@ public class DataWrapper {
 		Profile activatedProfile = getActivatedProfile();
 		
 		if ((startupSource != GlobalData.STARTUP_SOURCE_SERVICE) && 
-			(startupSource != GlobalData.STARTUP_SOURCE_BOOT) &&
+			//(startupSource != GlobalData.STARTUP_SOURCE_BOOT) &&  // on boot must set as manual activation
 			(startupSource != GlobalData.STARTUP_SOURCE_LAUNCHER_START))
 		{
 			// manual profile activation 
@@ -2217,19 +2217,24 @@ public class DataWrapper {
 	{
 		List<EventTimeline> eventTimelineList = getEventTimelineList();
 		
-		if (eventTimelineList.size() > 0)
+		if (GlobalData.getGlobalEventsRuning(context))
 		{
-			EventTimeline eventTimeLine = eventTimelineList.get(eventTimelineList.size()-1);
-			long event_id = eventTimeLine._fkEvent;
-			Event event = getEventById(event_id);
-			if (event != null)
+			if (eventTimelineList.size() > 0)
 			{
-				if (!GlobalData.getEventsBlocked(context))
+				EventTimeline eventTimeLine = eventTimelineList.get(eventTimelineList.size()-1);
+				long event_id = eventTimeLine._fkEvent;
+				Event event = getEventById(event_id);
+				if (event != null)
 				{
-					Profile profile = getActivatedProfile();
-					if ((profile != null) && (event._fkProfileStart == profile._id))
-						// last started event activatees activated profile
-						return event._name;
+					if (!GlobalData.getEventsBlocked(context))
+					{
+						Profile profile = getActivatedProfile();
+						if ((profile != null) && (event._fkProfileStart == profile._id))
+							// last started event activatees activated profile
+							return event._name;
+						else
+							return "";
+					}
 					else
 						return "";
 				}
@@ -2237,16 +2242,16 @@ public class DataWrapper {
 					return "";
 			}
 			else
-				return "";
+			{
+				long profileId = Long.valueOf(GlobalData.applicationBackgroundProfile); 
+				if ((!GlobalData.getEventsBlocked(context)) && (profileId != GlobalData.PROFILE_NO_ACTIVATE))
+					return context.getString(R.string.event_name_background_profile);
+				else
+					return "";
+			}
 		}
 		else
-		{
-			long profileId = Long.valueOf(GlobalData.applicationBackgroundProfile); 
-			if ((!GlobalData.getEventsBlocked(context)) && (profileId != GlobalData.PROFILE_NO_ACTIVATE))
-				return context.getString(R.string.event_name_background_profile);
-			else
-				return "";
-		}
+			return "";
 	}
 
 	public static String getSSID(WifiInfo wifiInfo)
