@@ -63,6 +63,8 @@ public class ActivateProfileHelper {
 	private static final String PPHELPER_BLUETOOTH_CHANGE = "bluetoothChange";
 	private static final String PPHELPER_MOBILE_DATA_CHANGE = "mobileDataChange";
 	
+	public static final String ADAPTIVE_BRIGHTNESS_SETTING_NAME = "screen_auto_brightness_adj";
+	
 	public ActivateProfileHelper()
 	{
 		
@@ -609,8 +611,11 @@ public class ActivateProfileHelper {
 			if (profile.getDeviceBrightnessAutomatic())
 			{
 				Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
-				// screen_auto_brightness_adj -1.0 .. 1.0
-				Settings.System.putFloat(context.getContentResolver(), "screen_auto_brightness_adj", (profile.getDeviceBrightnessValue() - 128) / 128.0f);
+				if (android.os.Build.VERSION.SDK_INT >= 21) // for Android 5.0: adaptive brightness
+				{
+					// screen_auto_brightness_adj -1.0 .. 1.0
+					Settings.System.putFloat(context.getContentResolver(), ADAPTIVE_BRIGHTNESS_SETTING_NAME, (profile.getDeviceBrightnessValue() - 1 - 127) / 127f);
+				}
 			}
 			else
 			{
@@ -760,7 +765,8 @@ public class ActivateProfileHelper {
 				params.screenBrightness = LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
 			else
 				params.screenBrightness = profile.getDeviceBrightnessValue() / 255.0f;*/
-			params.screenBrightness = Settings.System.getInt(dataWrapper.context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, 128) / 255.0f;
+			//params.screenBrightness = Settings.System.getInt(dataWrapper.context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, 128) / 255.0f;
+			params.screenBrightness = LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
 			GUIData.brightneesView = new BrightnessView(dataWrapper.context);
 			windowManager.addView(GUIData.brightneesView, params);
 			

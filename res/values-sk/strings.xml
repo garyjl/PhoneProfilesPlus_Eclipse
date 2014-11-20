@@ -427,5 +427,6 @@
 	<string name="array_pref_zenModeArray_none">Žiadne</string>
 
     <string name="profile_preferences_deviceMobileData_21">(H) Mobilné dáta</string>
-				
+    <string name="preference_profile_adaptiveBrightness">Prispôsobenie</string>
+    				
 </resources>

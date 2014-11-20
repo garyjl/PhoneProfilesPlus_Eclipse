@@ -433,5 +433,6 @@
 	<string name="array_pref_zenModeArray_none">None</string>
 
     <string name="profile_preferences_deviceMobileData_21">(H) Mobile data</string>
+    <string name="preference_profile_adaptiveBrightness">Adaptive</string>
 														
 </resources>

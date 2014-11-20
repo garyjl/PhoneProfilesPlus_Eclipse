@@ -427,5 +427,6 @@
 	<string name="array_pref_zenModeArray_none">Не</string>
 
     <string name="profile_preferences_deviceMobileData_21">(H) Передача данных</string>
-				
+    <string name="preference_profile_adaptiveBrightness">Адаптивная</string>
+    				
 </resources>
