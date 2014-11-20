@@ -607,13 +607,17 @@ public class ActivateProfileHelper {
 			GlobalData.logE("ActivateProfileHelper.execute", "set brightness: _deviceBrightness="+profile._deviceBrightness);
 			
 			if (profile.getDeviceBrightnessAutomatic())
+			{
 				Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
+				// screen_auto_brightness_adj -1.0 .. 1.0
+				Settings.System.putFloat(context.getContentResolver(), "screen_auto_brightness_adj", (profile.getDeviceBrightnessValue() - 128) / 128.0f);
+			}
 			else
 			{
 				Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
 				Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, profile.getDeviceBrightnessValue());
 			}
-
+			
 			if (brightnessHandler != null)
 			{
 				final Profile __profile = profile;
@@ -733,9 +737,12 @@ public class ActivateProfileHelper {
 	@SuppressLint("RtlHardcoded")
 	private void createBrightnessView(Profile profile)
 	{
-		if (context != null)
-		{
-			WindowManager windowManager = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
+		//if (dataWrapper.context != null)
+		//{
+
+			RemoveBrightnessViewBroadcastReceiver.setAlarm(dataWrapper.context);
+		
+			WindowManager windowManager = (WindowManager)dataWrapper.context.getSystemService(Context.WINDOW_SERVICE);
 			if (GUIData.brightneesView != null)
 			{
 				windowManager.removeView(GUIData.brightneesView);
@@ -749,15 +756,15 @@ public class ActivateProfileHelper {
 						PixelFormat.TRANSLUCENT
 					);
 			params.gravity = Gravity.RIGHT | Gravity.TOP;
-			if (profile.getDeviceBrightnessAutomatic())
+			/*if (profile.getDeviceBrightnessAutomatic())
 				params.screenBrightness = LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
 			else
-				params.screenBrightness = profile.getDeviceBrightnessValue() / 255.0f;
-			GUIData.brightneesView = new BrightnessView(context);
+				params.screenBrightness = profile.getDeviceBrightnessValue() / 255.0f;*/
+			params.screenBrightness = Settings.System.getInt(dataWrapper.context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, 128) / 255.0f;
+			GUIData.brightneesView = new BrightnessView(dataWrapper.context);
 			windowManager.addView(GUIData.brightneesView, params);
 			
-			RemoveBrightnessViewBroadcastReceiver.setAlarm(context);
-		}
+		//}
 	}
 	
 	//@SuppressWarnings("deprecation")

@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.res.TypedArray;
 
 import android.preference.DialogPreference;
+import android.provider.Settings;
 import android.provider.Settings.SettingNotFoundException;
 
 import android.util.AttributeSet;
@@ -122,8 +123,8 @@ public class BrightnessDialogPreference extends
 		if (defaultProfile == 1)
 			noChangeChBox.setChecked(false);
 		
-		valueText.setEnabled((noChange == 0) && (defaultProfile == 0) && (automatic == 0));
-		seekBar.setEnabled((noChange == 0) && (defaultProfile == 0) && (automatic == 0));
+		valueText.setEnabled((noChange == 0) && (defaultProfile == 0)/* && (automatic == 0)*/);
+		seekBar.setEnabled((noChange == 0) && (defaultProfile == 0)/* && (automatic == 0)*/);
 		automaticChBox.setEnabled((noChange == 0) && (defaultProfile == 0));
 		
 		return view;
@@ -169,8 +170,8 @@ public class BrightnessDialogPreference extends
 		{
 			noChange = (isChecked)? 1 : 0;
 
-			valueText.setEnabled((noChange == 0) && (defaultProfile == 0) && (automatic == 0));
-			seekBar.setEnabled((noChange == 0) && (defaultProfile == 0) && (automatic == 0));
+			valueText.setEnabled((noChange == 0) && (defaultProfile == 0)/* && (automatic == 0)*/);
+			seekBar.setEnabled((noChange == 0) && (defaultProfile == 0)/* && (automatic == 0)*/);
 			automaticChBox.setEnabled((noChange == 0) && (defaultProfile == 0));
 			if (isChecked)
 				defaultProfileChBox.setChecked(false);
@@ -180,8 +181,8 @@ public class BrightnessDialogPreference extends
 		{
 			defaultProfile = (isChecked)? 1 : 0;
 
-			valueText.setEnabled((noChange == 0) && (defaultProfile == 0) && (automatic == 0));
-			seekBar.setEnabled((noChange == 0) && (defaultProfile == 0) && (automatic == 0));
+			valueText.setEnabled((noChange == 0) && (defaultProfile == 0)/* && (automatic == 0)*/);
+			seekBar.setEnabled((noChange == 0) && (defaultProfile == 0)/* && (automatic == 0)*/);
 			automaticChBox.setEnabled((noChange == 0) && (defaultProfile == 0));
 			if (isChecked)
 				noChangeChBox.setChecked(false);
@@ -191,32 +192,32 @@ public class BrightnessDialogPreference extends
 		{
 			automatic = (isChecked)? 1 : 0;
 
-			valueText.setEnabled((noChange == 0) && (defaultProfile == 0) && (automatic == 0));
-			seekBar.setEnabled((noChange == 0) && (defaultProfile == 0) && (automatic == 0));
+			valueText.setEnabled((noChange == 0) && (defaultProfile == 0)/* && (automatic == 0)*/);
+			seekBar.setEnabled((noChange == 0) && (defaultProfile == 0)/* && (automatic == 0)*/);
 		}
 		
-		int _automatic = automatic;
+		//int _automatic = automatic;
 		int _noChange = noChange;
 		int _value = value;
 		if (defaultProfile == 1)
 		{
-			_automatic = (_defaultProfile.getDeviceBrightnessAutomatic()) ? 1 : 0;
+			//_automatic = (_defaultProfile.getDeviceBrightnessAutomatic()) ? 1 : 0;
 			_noChange = (_defaultProfile.getDeviceBrightnessChange()) ? 0 : 1;
 			_value = _defaultProfile.getDeviceBrightnessValue();
 		}
 		
-		if ((_automatic == 1) || (_noChange == 1)) 
+		if (/*(_automatic == 1) || */(_noChange == 1)) 
 		{
 			Window win = ProfilePreferencesFragment.getPreferencesActivity().getWindow();
 			WindowManager.LayoutParams layoutParams = win.getAttributes();
-			layoutParams.screenBrightness = LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
+			layoutParams.screenBrightness = Settings.System.getInt(_context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, 128) / 255.0f;
 			win.setAttributes(layoutParams);
 		}
 		else
 		{
 			Window win = ProfilePreferencesFragment.getPreferencesActivity().getWindow();
 			WindowManager.LayoutParams layoutParams = win.getAttributes();
-			layoutParams.screenBrightness = (float)(_value + minimumValue) / maximumValue;;
+			layoutParams.screenBrightness = (float)(_value + minimumValue) / maximumValue;
 			win.setAttributes(layoutParams);
 		}
 		
