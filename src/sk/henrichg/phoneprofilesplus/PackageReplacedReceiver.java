@@ -17,6 +17,12 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 		
 			if (GlobalData.getApplicationStarted(context))
 			{
+				// start service for first start
+				Intent firstStartServiceIntent = new Intent(context, FirstStartService.class);
+				context.startService(firstStartServiceIntent);
+				
+				
+			/*	
 				GlobalData.loadPreferences(context);
 				
 				// grant root
@@ -80,6 +86,8 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 				}
 				
 				dataWrapper.invalidateDataWrapper();
+				
+				*/
 			}
 		}		
 	}

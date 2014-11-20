@@ -28,22 +28,25 @@ public class RemoveBrightnessViewBroadcastReceiver extends BroadcastReceiver
 	@SuppressLint("SimpleDateFormat")
 	public static void setAlarm(Context context)
 	{
-		GlobalData.logE("@@@ RemoveBrightnessViewBroadcastReceiver.setAlarm","xxx");
-
-		removeAlarm(context);
-
-		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.SECOND, 1);
-        long alarmTime = calendar.getTimeInMillis(); 
-		        		
-	    SimpleDateFormat sdf = new SimpleDateFormat("EE d.MM.yyyy HH:mm:ss:S");
-		GlobalData.logE("@@@ RemoveBrightnessViewBroadcastReceiver.setAlarm","alarmTime="+sdf.format(alarmTime));
-
-        AlarmManager alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
- 		Intent intent = new Intent(context, RemoveBrightnessViewBroadcastReceiver.class);
-		
-		PendingIntent alarmIntent = PendingIntent.getBroadcast(context.getApplicationContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        alarmMgr.set(AlarmManager.RTC, alarmTime, alarmIntent);
+		if (context != null)
+		{
+			GlobalData.logE("@@@ RemoveBrightnessViewBroadcastReceiver.setAlarm","xxx");
+	
+			removeAlarm(context);
+	
+			Calendar calendar = Calendar.getInstance();
+			calendar.add(Calendar.SECOND, 1);
+	        long alarmTime = calendar.getTimeInMillis(); 
+			        		
+		    SimpleDateFormat sdf = new SimpleDateFormat("EE d.MM.yyyy HH:mm:ss:S");
+			GlobalData.logE("@@@ RemoveBrightnessViewBroadcastReceiver.setAlarm","alarmTime="+sdf.format(alarmTime));
+	
+	        AlarmManager alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+	 		Intent intent = new Intent(context, RemoveBrightnessViewBroadcastReceiver.class);
+			
+			PendingIntent alarmIntent = PendingIntent.getBroadcast(context.getApplicationContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+	        alarmMgr.set(AlarmManager.RTC, alarmTime, alarmIntent);
+		}
 	}
 	
 	public static void removeAlarm(Context context)

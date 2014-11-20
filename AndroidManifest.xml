@@ -313,7 +313,7 @@
             android:exported="false" >
         </service>
         <service
-            android:name=".GrantRootService"
+            android:name=".FirstStartService"
             android:exported="false" >
         </service>
         

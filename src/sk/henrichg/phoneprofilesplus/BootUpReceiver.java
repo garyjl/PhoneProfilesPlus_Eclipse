@@ -20,6 +20,12 @@ public class BootUpReceiver extends BroadcastReceiver {
 		
 		if (GlobalData.applicationStartOnBoot)
 		{	
+			
+			// start service for first start
+			Intent firstStartServiceIntent = new Intent(context, FirstStartService.class);
+			context.startService(firstStartServiceIntent);
+			
+			/*
 			// dislabled for firstStartEvents
 			//GlobalData.setApplicationStarted(context, true);
 
@@ -81,6 +87,8 @@ public class BootUpReceiver extends BroadcastReceiver {
 			}
 
 			dataWrapper.invalidateDataWrapper();
+			
+			*/
 		}
 
 		GlobalData.logE("@@@ BootUpReceiver.onReceive", "#### -- end");

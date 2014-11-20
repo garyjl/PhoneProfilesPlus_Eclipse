@@ -3,6 +3,7 @@
  */
 package sk.henrichg.phoneprofilesplus;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 
@@ -85,6 +86,7 @@ public class BrightnessDialogPreference extends
 	/**
 	 * {@inheritDoc}
 	 */
+	@SuppressLint("InflateParams")
 	protected View onCreateDialogView() {
 		LayoutInflater layoutInflater = LayoutInflater.from(getContext());
 

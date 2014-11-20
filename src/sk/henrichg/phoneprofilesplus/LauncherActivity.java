@@ -29,6 +29,7 @@ public class LauncherActivity extends Activity {
 	{
 		super.onStart();
 		
+/*		
 		//if (!GlobalData.getApplicationStarted(getBaseContext()))
 		//{
 			// grant root
@@ -101,7 +102,18 @@ public class LauncherActivity extends Activity {
 			}
 			endOnStart();
 		}
+*/		
+
+		if (!GlobalData.getApplicationStarted(getBaseContext()))
+		{
+			// start service for first start
+			Intent firstStartServiceIntent = new Intent(getBaseContext(), FirstStartService.class);
+			startService(firstStartServiceIntent);
+		}
 		
+		if (startupSource == 0)
+			startupSource = GlobalData.STARTUP_SOURCE_LAUNCHER;
+		endOnStart();
 	}
 
 	private void endOnStart()
@@ -160,10 +172,10 @@ public class LauncherActivity extends Activity {
 		super.finish();
 	}
 	
-	
+/*	
 	private void activateProfile(Profile profile, int startupSource)
 	{
 		dataWrapper.activateProfile(profile._id, startupSource, this, "");
 	}
-	
+*/	
 }

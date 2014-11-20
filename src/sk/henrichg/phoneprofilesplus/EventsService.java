@@ -44,7 +44,6 @@ public class EventsService extends IntentService
 		// create a handler to post messages to the main thread
 	    Handler toastHandler = new Handler(getMainLooper());
 	    dataWrapper.setToastHandler(toastHandler);
-	    
 	    Handler brightnessHandler = new Handler(getMainLooper());
 	    dataWrapper.getActivateProfileHelper().setBrightnessHandler(brightnessHandler);
 		
