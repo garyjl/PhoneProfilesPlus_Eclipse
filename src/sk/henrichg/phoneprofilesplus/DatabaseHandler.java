@@ -14,6 +14,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
+import android.provider.Settings;
 import android.util.Log;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
@@ -25,8 +26,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static DatabaseHandler instance;
     private static SQLiteDatabase writableDb;	
     
+    Context context;
+    
 	// Database Version
-	private static final int DATABASE_VERSION = 1150;
+	private static final int DATABASE_VERSION = 1154;
 
 	// Database Name
 	private static final String DATABASE_NAME = "phoneProfilesManager";
@@ -160,6 +163,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      */	
 	private DatabaseHandler(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+		this.context = context;
 	}
 	
 	/**
@@ -847,6 +851,57 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			
 			// updatneme zaznamy
 			db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_VOLUME_ZEN_MODE + "=0");
+		}
+
+		if (oldVersion < 1154)
+		{
+			if (android.os.Build.VERSION.SDK_INT >= 21) // for Android 5.0: adaptive brightness
+			{
+				// updatneme zaznamy  
+				final String selectQuery = "SELECT " + KEY_ID + "," +
+		         		 						KEY_DEVICE_BRIGHTNESS +
+		         		 					" FROM " + TABLE_PROFILES;
+
+				int adaptiveBrightnessValue = Math.round(Settings.System.getFloat(context.getContentResolver(), 
+						ActivateProfileHelper.ADAPTIVE_BRIGHTNESS_SETTING_NAME, 0f)*127 + 127 + 1);
+
+				db.beginTransaction();
+				try {
+					
+					Cursor cursor = db.rawQuery(selectQuery, null);
+
+					// looping through all rows and adding to list
+					if (cursor.moveToFirst()) {
+						do {
+							long id = Long.parseLong(cursor.getString(0));
+							String brightness = cursor.getString(1);
+							
+							//value|noChange|automatic|defaultProfile
+							String[] splits = brightness.split("\\|");
+							
+							if (splits[2].equals("1")) // automatic is set
+							{
+								// hm, found brightness values without default profile :-/ 
+								if (splits.length == 4)
+									brightness = adaptiveBrightnessValue+"|"+splits[1]+"|"+splits[2]+"|"+splits[3];
+								else
+									brightness = adaptiveBrightnessValue+"|"+splits[1]+"|"+splits[2]+"|0";
+								
+								db.execSQL("UPDATE " + TABLE_PROFILES + 
+										     " SET " + KEY_DEVICE_BRIGHTNESS + "=\"" + brightness +"\"" +
+											"WHERE " + KEY_ID + "=" + id);
+							}
+							
+						} while (cursor.moveToNext());
+					}
+					
+					db.setTransactionSuccessful();
+			    } catch (Exception e){
+			        //Error in between database transaction 
+			    } finally {
+			    	db.endTransaction();
+		        }	
+			}
 		}
 		
 	}
@@ -3476,6 +3531,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						// cursor for profiles of destination db  
 						cursorImportDB = db.rawQuery("SELECT * FROM "+TABLE_PROFILES, null);
 						
+						int adaptiveBrightnessValue = 0; 
+						if (android.os.Build.VERSION.SDK_INT >= 21) // for Android 5.0: adaptive brightness
+						{
+							// screen_auto_brightness_adj -1.0 .. 1.0
+							adaptiveBrightnessValue = Math.round(Settings.System.getFloat(context.getContentResolver(), 
+										ActivateProfileHelper.ADAPTIVE_BRIGHTNESS_SETTING_NAME, 0f)*127 + 127 + 1);
+						}
+						
 						if (cursorExportedDB.moveToFirst()) {
 							do {
 									values.clear();
@@ -3500,6 +3563,26 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 														value = "1";
 													if (value.equals("2"))
 														value = "2";
+												}
+											}
+											if (exportedDBObj.getVersion() < 1154)
+											{
+												if (columnNamesExportedDB[i].equals(KEY_DEVICE_BRIGHTNESS))
+												{
+													if (android.os.Build.VERSION.SDK_INT >= 21) // for Android 5.0: adaptive brightness
+													{
+														//value|noChange|automatic|defaultProfile
+														String[] splits = value.split("\\|");
+														
+														if (splits[2].equals("1")) // automatic is set
+														{
+															// hm, found brightness values without default profile :-/ 
+															if (splits.length == 4)
+																value = adaptiveBrightnessValue+"|"+splits[1]+"|"+splits[2]+"|"+splits[3];
+															else
+																value = adaptiveBrightnessValue+"|"+splits[1]+"|"+splits[2]+"|0";
+														}
+													}
 												}
 											}
 											
