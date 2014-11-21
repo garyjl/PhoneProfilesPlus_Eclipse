@@ -245,6 +245,9 @@ public class BrightnessDialogPreference extends
 			_automatic = (_defaultProfile.getDeviceBrightnessAutomatic()) ? 1 : 0;
 			_noChange = (_defaultProfile.getDeviceBrightnessChange()) ? 0 : 1;
 			_value = _defaultProfile.getDeviceBrightnessValue();
+			if (_value == Profile.BRIGHTNESS_ADAPTIVE_BRIGHTNESS_NOT_SET)
+				// brightness is not set, change it to default adaptive brightness value
+				_value = Math.round(savedAdaptiveBrightness*127 + 127 + 1);
 		}
 
 		isAutomatic = (_automatic == 1);
@@ -336,7 +339,10 @@ public class BrightnessDialogPreference extends
 		}
 		else {
 			// set state
-			value = 0;
+			if (android.os.Build.VERSION.SDK_INT >= 21) // for Android 5.0: adaptive brightness
+				value = Math.round(savedAdaptiveBrightness*127 + 127 + 1);
+			else
+				value = 0;
 			noChange = 1;
 			automatic = 1;
 			defaultProfile = 0;
@@ -363,7 +369,10 @@ public class BrightnessDialogPreference extends
 				} catch (SettingNotFoundException e) {
 					value = 0;
 				}
-			}	
+			}
+			if (value == Profile.BRIGHTNESS_ADAPTIVE_BRIGHTNESS_NOT_SET)
+				// brightness is not set, change it to default adaptive brightness value
+				value = Math.round(savedAdaptiveBrightness*127 + 127 + 1);
 		} catch (Exception e) {
 			value = 0;
 		}

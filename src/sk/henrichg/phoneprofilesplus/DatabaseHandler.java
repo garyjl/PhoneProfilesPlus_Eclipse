@@ -14,7 +14,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
-import android.provider.Settings;
 import android.util.Log;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
@@ -29,7 +28,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     Context context;
     
 	// Database Version
-	private static final int DATABASE_VERSION = 1154;
+	private static final int DATABASE_VERSION = 1156;
 
 	// Database Name
 	private static final String DATABASE_NAME = "phoneProfilesManager";
@@ -853,7 +852,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_VOLUME_ZEN_MODE + "=0");
 		}
 
-		if (oldVersion < 1154)
+		if (oldVersion < 1156)
 		{
 			if (android.os.Build.VERSION.SDK_INT >= 21) // for Android 5.0: adaptive brightness
 			{
@@ -861,9 +860,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				final String selectQuery = "SELECT " + KEY_ID + "," +
 		         		 						KEY_DEVICE_BRIGHTNESS +
 		         		 					" FROM " + TABLE_PROFILES;
-
-				int adaptiveBrightnessValue = Math.round(Settings.System.getFloat(context.getContentResolver(), 
-						ActivateProfileHelper.ADAPTIVE_BRIGHTNESS_SETTING_NAME, 0f)*127 + 127 + 1);
 
 				db.beginTransaction();
 				try {
@@ -881,11 +877,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 							
 							if (splits[2].equals("1")) // automatic is set
 							{
-								// hm, found brightness values without default profile :-/ 
+								// hm, found brightness values without default profile :-/
+								/*
 								if (splits.length == 4)
 									brightness = adaptiveBrightnessValue+"|"+splits[1]+"|"+splits[2]+"|"+splits[3];
 								else
 									brightness = adaptiveBrightnessValue+"|"+splits[1]+"|"+splits[2]+"|0";
+								*/
+								if (splits.length == 4)
+									brightness = Profile.BRIGHTNESS_ADAPTIVE_BRIGHTNESS_NOT_SET+"|"+splits[1]+"|"+splits[2]+"|"+splits[3];
+								else
+									brightness = Profile.BRIGHTNESS_ADAPTIVE_BRIGHTNESS_NOT_SET+"|"+splits[1]+"|"+splits[2]+"|0";
 								
 								db.execSQL("UPDATE " + TABLE_PROFILES + 
 										     " SET " + KEY_DEVICE_BRIGHTNESS + "=\"" + brightness +"\"" +
@@ -3530,15 +3532,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 						// cursor for profiles of destination db  
 						cursorImportDB = db.rawQuery("SELECT * FROM "+TABLE_PROFILES, null);
-						
-						int adaptiveBrightnessValue = 0; 
-						if (android.os.Build.VERSION.SDK_INT >= 21) // for Android 5.0: adaptive brightness
-						{
-							// screen_auto_brightness_adj -1.0 .. 1.0
-							adaptiveBrightnessValue = Math.round(Settings.System.getFloat(context.getContentResolver(), 
-										ActivateProfileHelper.ADAPTIVE_BRIGHTNESS_SETTING_NAME, 0f)*127 + 127 + 1);
-						}
-						
+
 						if (cursorExportedDB.moveToFirst()) {
 							do {
 									values.clear();
@@ -3565,7 +3559,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 														value = "2";
 												}
 											}
-											if (exportedDBObj.getVersion() < 1154)
+											if (exportedDBObj.getVersion() < 1156)
 											{
 												if (columnNamesExportedDB[i].equals(KEY_DEVICE_BRIGHTNESS))
 												{
@@ -3577,10 +3571,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 														if (splits[2].equals("1")) // automatic is set
 														{
 															// hm, found brightness values without default profile :-/ 
-															if (splits.length == 4)
+															/*if (splits.length == 4)
 																value = adaptiveBrightnessValue+"|"+splits[1]+"|"+splits[2]+"|"+splits[3];
 															else
 																value = adaptiveBrightnessValue+"|"+splits[1]+"|"+splits[2]+"|0";
+															*/
+															if (splits.length == 4)
+																value = Profile.BRIGHTNESS_ADAPTIVE_BRIGHTNESS_NOT_SET+"|"+splits[1]+"|"+splits[2]+"|"+splits[3];
+															else
+																value = Profile.BRIGHTNESS_ADAPTIVE_BRIGHTNESS_NOT_SET+"|"+splits[1]+"|"+splits[2]+"|0";
 														}
 													}
 												}

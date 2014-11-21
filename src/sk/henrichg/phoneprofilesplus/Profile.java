@@ -54,6 +54,8 @@ public class Profile {
 	public static final int AFTERDURATIONDO_UNDOPROFILE = 1;
 	public static final int AFTERDURATIONDO_BACKGROUNPROFILE = 2;
 	
+	public static final int BRIGHTNESS_ADAPTIVE_BRIGHTNESS_NOT_SET = -99;
+	
 	
 	// Empty constructorn
 	public Profile(){
