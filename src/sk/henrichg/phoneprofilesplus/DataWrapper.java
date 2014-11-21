@@ -146,7 +146,7 @@ public class DataWrapper {
 	         	  0,
 	         	  0,
 	         	  0,
-	         	  "-1|1|1|0",
+	         	  Profile.BRIGHTNESS_ADAPTIVE_BRIGHTNESS_NOT_SET+"|1|1|0",
 	         	  0,
 				  "-|0",
 				  0,
@@ -226,7 +226,7 @@ public class DataWrapper {
 		profile._volumeAlarm = getVolumeLevelString(0, maximumValueAlarm)+"|0|0";
 		profile._volumeMedia = getVolumeLevelString(0, maximumValueMusic)+"|0|0";
 		profile._deviceWiFi = 0;
-		//profile._deviceBrightness = "-1|1|1|0";
+		//profile._deviceBrightness = Profile.BRIGHTNESS_ADAPTIVE_BRIGHTNESS_NOT_SET+"|1|1|0";
 		getDatabaseHandler().addProfile(profile);
 		profile = getNoinitializedProfile(context.getString(R.string.default_profile_name_sleep), "ic_profile_sleep", 5);
 		profile._showInActivator = true;
