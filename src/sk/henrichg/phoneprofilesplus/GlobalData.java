@@ -896,6 +896,10 @@ public class GlobalData extends Application {
 								featurePresented = HARDWARE_CHECK_UPGRADE_PPHELPER;
 						}
 					}
+					/*if (isRooted(false) && settingsBinaryExists())
+					{
+						featurePresented = HARDWARE_CHECK_ALLOWED;
+					}*/
 				}
 				else
 				{

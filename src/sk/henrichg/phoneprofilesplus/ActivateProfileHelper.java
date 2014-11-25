@@ -1000,29 +1000,36 @@ public class ActivateProfileHelper {
 	
 	private boolean isMobileData(Context context)
 	{
-		final ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-		
-		try {
-			final Class<?> connectivityManagerClass = Class.forName(connectivityManager.getClass().getName());
-			final Method getMobileDataEnabledMethod = connectivityManagerClass.getDeclaredMethod("getMobileDataEnabled");
-			getMobileDataEnabledMethod.setAccessible(true);
-			return (Boolean)getMobileDataEnabledMethod.invoke(connectivityManager);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			return false;
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
-			return false;
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-			return false;
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-			return false;
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-			return false;
+		/*if (android.os.Build.VERSION.SDK_INT >= 21)
+		{
+			return Settings.Global.getInt(context.getContentResolver(), "mobile_data", 0) == 1;
 		}
+		else
+		{*/
+			final ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+			
+			try {
+				final Class<?> connectivityManagerClass = Class.forName(connectivityManager.getClass().getName());
+				final Method getMobileDataEnabledMethod = connectivityManagerClass.getDeclaredMethod("getMobileDataEnabled");
+				getMobileDataEnabledMethod.setAccessible(true);
+				return (Boolean)getMobileDataEnabledMethod.invoke(connectivityManager);
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+				return false;
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
+				return false;
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+				return false;
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+				return false;
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+				return false;
+			}
+		//}
 		
 		/*
 		final NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -1051,46 +1058,50 @@ public class ActivateProfileHelper {
 	
 	private void setMobileData(Context context, boolean enable)
 	{
-		final ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-		boolean OK = false;
-		try {
-			final Class<?> connectivityManagerClass = Class.forName(connectivityManager.getClass().getName());
-			final Field iConnectivityManagerField = connectivityManagerClass.getDeclaredField("mService");
-			iConnectivityManagerField.setAccessible(true);
-			final Object iConnectivityManager = iConnectivityManagerField.get(connectivityManager);
-			final Class<?> iConnectivityManagerClass = Class.forName(iConnectivityManager.getClass().getName());
-			final Method setMobileDataEnabledMethod = iConnectivityManagerClass.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
-			setMobileDataEnabledMethod.setAccessible(true);
-			
-			setMobileDataEnabledMethod.invoke(iConnectivityManager, enable);
-			
-			OK = true;
-			
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (NoSuchFieldException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		}
-		
-		if (!OK)
-		{
-			try {
-		        Method setMobileDataEnabledMethod = ConnectivityManager.class.getDeclaredMethod("setMobileDataEnabled", boolean.class);
-		
-		        setMobileDataEnabledMethod.setAccessible(true);
-		        setMobileDataEnabledMethod.invoke(connectivityManager, enable);
-		        
-		        OK = true;
+    	/*if (android.os.Build.VERSION.SDK_INT >= 21) // NOT WORKING :-/
+    	{
+			if (GlobalData.grantRoot(false) && (GlobalData.settingsBinaryExists()))
+			{
+				String command1;
+				
+				if (enable)
+					command1 = "settings put global mobile_data 1";
+				else
+					command1 = "settings put global mobile_data 0";
+				if (GlobalData.isSELinuxEnforcing())
+					command1 = GlobalData.getSELinuxEnforceCommand(command1, Shell.ShellContext.SYSTEM_APP);
+				CommandCapture command = new CommandCapture(0, command1);
+				try {
+					RootTools.getShell(true).add(command);
+					commandWait(command);
+					//RootTools.closeAllShells();
+				} catch (Exception e) {
+					Log.e("ActivateProfileHelper.setMobileData", e.getMessage());
+				}
+			}
+    	}
+    	else
+    	{*/
+			final ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 	
+			boolean OK = false;
+			try {
+				final Class<?> connectivityManagerClass = Class.forName(connectivityManager.getClass().getName());
+				final Field iConnectivityManagerField = connectivityManagerClass.getDeclaredField("mService");
+				iConnectivityManagerField.setAccessible(true);
+				final Object iConnectivityManager = iConnectivityManagerField.get(connectivityManager);
+				final Class<?> iConnectivityManagerClass = Class.forName(iConnectivityManager.getClass().getName());
+				final Method setMobileDataEnabledMethod = iConnectivityManagerClass.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
+				setMobileDataEnabledMethod.setAccessible(true);
+				
+				setMobileDataEnabledMethod.invoke(iConnectivityManager, enable);
+				
+				OK = true;
+				
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch (NoSuchFieldException e) {
+				e.printStackTrace();
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
@@ -1100,8 +1111,28 @@ public class ActivateProfileHelper {
 			} catch (InvocationTargetException e) {
 				e.printStackTrace();
 			}
-		}
+			
+			if (!OK)
+			{
+				try {
+			        Method setMobileDataEnabledMethod = ConnectivityManager.class.getDeclaredMethod("setMobileDataEnabled", boolean.class);
+			
+			        setMobileDataEnabledMethod.setAccessible(true);
+			        setMobileDataEnabledMethod.invoke(connectivityManager, enable);
+			        
+			        OK = true;
 		
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				} catch (NoSuchMethodException e) {
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					e.printStackTrace();
+				}
+			}
+    	//}
 	}
 	
 	@SuppressWarnings("deprecation")
