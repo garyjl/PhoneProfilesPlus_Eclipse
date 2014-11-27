@@ -6,7 +6,8 @@ Android application - manualy and event triggered change of device settings like
 Required
 --------
 
-- ActionBarCompat
+- android-support-v4-appcompat
+- android-support-v7-appcompat
 - DragSortListView - https://github.com/bauerca/drag-sort-listview
 - RootTools - https://code.google.com/p/roottools/
 - DashClock API - https://code.google.com/p/dashclock/wiki/API
