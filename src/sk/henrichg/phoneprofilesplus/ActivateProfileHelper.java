@@ -632,14 +632,15 @@ public class ActivateProfileHelper {
 			if (brightnessHandler != null)
 			{
 				final Profile __profile = profile;
+				final Context __context = context;
 				brightnessHandler.post(new Runnable() {
 					public void run() {
-						createBrightnessView(__profile);
+						createBrightnessView(__profile, __context);
 					}
 				});
 			}
 			else
-				createBrightnessView(profile);
+				createBrightnessView(profile, context);
 		}
 		
 		// nahodenie rotate
@@ -746,14 +747,12 @@ public class ActivateProfileHelper {
 	}
 	
 	@SuppressLint("RtlHardcoded")
-	private void createBrightnessView(Profile profile)
+	private void createBrightnessView(Profile profile, Context context)
 	{
 		//if (dataWrapper.context != null)
 		//{
 
-			RemoveBrightnessViewBroadcastReceiver.setAlarm(dataWrapper.context);
-		
-			WindowManager windowManager = (WindowManager)dataWrapper.context.getSystemService(Context.WINDOW_SERVICE);
+			WindowManager windowManager = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
 			if (GUIData.brightneesView != null)
 			{
 				windowManager.removeView(GUIData.brightneesView);
@@ -771,10 +770,12 @@ public class ActivateProfileHelper {
 				params.screenBrightness = LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
 			else
 				params.screenBrightness = profile.getDeviceBrightnessValue() / 255.0f;*/
-			//params.screenBrightness = Settings.System.getInt(dataWrapper.context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, 128) / 255.0f;
+			//params.screenBrightness = Settings.System.getInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, 128) / 255.0f;
 			params.screenBrightness = LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
-			GUIData.brightneesView = new BrightnessView(dataWrapper.context);
+			GUIData.brightneesView = new BrightnessView(context);
 			windowManager.addView(GUIData.brightneesView, params);
+
+			RemoveBrightnessViewBroadcastReceiver.setAlarm(context);
 			
 		//}
 	}
