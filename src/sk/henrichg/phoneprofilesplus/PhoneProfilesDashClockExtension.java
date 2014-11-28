@@ -173,7 +173,7 @@ public class PhoneProfilesDashClockExtension extends DashClockExtension {
 				indicator1 = addIntoIndicator(indicator1, "gp0");
 			// location settings preferences
 			if (profile._deviceLocationServicePrefs == 1)
-				indicator1 = addIntoIndicator(indicator1, "lsP");
+				indicator1 = addIntoIndicator(indicator1, "loP");
 			// nfc
 			if ((profile._deviceNFC == 1) || (profile._deviceNFC == 3))
 				indicator1 = addIntoIndicator(indicator1, "nf1");
@@ -182,6 +182,11 @@ public class PhoneProfilesDashClockExtension extends DashClockExtension {
 			// screen timeout
 			if (profile._deviceScreenTimeout != 0)
 				indicator1 = addIntoIndicator(indicator1, "stm");
+			// lockscreen
+			if ((profile._deviceKeyguard == 1) || (profile._deviceKeyguard == 3))
+				indicator1 = addIntoIndicator(indicator1, "ls1");
+			if (profile._deviceKeyguard == 2)
+				indicator1 = addIntoIndicator(indicator1, "ls0");
 			// brightness/autobrightness
 			if (profile.getDeviceBrightnessChange())
 			{

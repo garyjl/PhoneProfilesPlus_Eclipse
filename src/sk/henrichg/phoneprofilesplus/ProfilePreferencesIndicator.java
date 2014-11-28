@@ -131,6 +131,11 @@ public class ProfilePreferencesIndicator {
 			// screen timeout
 			if (profile._deviceScreenTimeout != 0)
 				drawables[countDrawables++] = R.drawable.ic_profile_pref_screen_timeout;
+			// lockscreen
+			if ((profile._deviceKeyguard == 1) || (profile._deviceKeyguard == 3))
+				drawables[countDrawables++] = R.drawable.ic_profile_pref_lockscreen;
+			if (profile._deviceKeyguard == 2)
+				drawables[countDrawables++] = R.drawable.ic_profile_pref_lockscreen_off;
 			// brightness/autobrightness
 			if (profile.getDeviceBrightnessChange())
 				if (profile.getDeviceBrightnessAutomatic())

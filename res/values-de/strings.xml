@@ -432,4 +432,5 @@
   <string name="array_pref_zenModeArray_none">Keine</string>
   <string name="profile_preferences_deviceMobileData_21">(H) Mobiles Internet</string>
   <string name="preference_profile_adaptiveBrightness">Adaptiv</string>
+  <string name="profile_preferences_deviceKeyguard">Lock screen</string>
 </resources>

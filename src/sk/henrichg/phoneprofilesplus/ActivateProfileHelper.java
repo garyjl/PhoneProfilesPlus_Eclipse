@@ -476,7 +476,6 @@ public class ActivateProfileHelper {
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void execute(Profile _profile, boolean _interactive, String eventNotificationSound)
 	{
 		// rozdelit zvonenie a notifikacie - zial je to oznacene ako @Hide :-(
@@ -608,12 +607,10 @@ public class ActivateProfileHelper {
 		//getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 		switch (profile._deviceKeyguard) {
 			case 1:
-				if (ReceiversService.keyguardLock != null)
-					ReceiversService.keyguardLock.reenableKeyguard();
+				Keyguard.reenable();
 				break;
 			case 2:
-				if (ReceiversService.keyguardLock != null)
-					ReceiversService.keyguardLock.disableKeyguard();
+				Keyguard.disable();
 				break;
 		}
 		

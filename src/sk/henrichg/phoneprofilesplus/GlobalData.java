@@ -110,8 +110,6 @@ public class GlobalData extends Application {
 	
 	static final int NOTIFICATION_ID = 700420;
 	
-	static final String KEYGUARD_LOCK = "phoneProfilesPlus.keyguardLock";
-
 	static final String PREF_PROFILE_NAME = "prf_pref_profileName";
 	static final String PREF_PROFILE_ICON = "prf_pref_profileIcon";
 	static final String PREF_PROFILE_VOLUME_RINGER_MODE = "prf_pref_volumeRingerMode";
@@ -290,6 +288,8 @@ public class GlobalData extends Application {
 		
 		// initialization
 		loadPreferences(this);
+		
+		Keyguard.initialize(getApplicationContext());
 
 		//Log.d("GlobalData.onCreate", "memory usage (after create activateProfileHelper)=" + Debug.getNativeHeapAllocatedSize());
 		

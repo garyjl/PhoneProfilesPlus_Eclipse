@@ -186,8 +186,6 @@ public class ActivateProfileActivity extends ActionBarActivity {
 	{
 	//	Debug.stopMethodTracing();
 		
-		//keyguardLock.reenableKeyguard();
-
 		super.onDestroy();
 	}
 

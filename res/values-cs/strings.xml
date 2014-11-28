@@ -432,4 +432,5 @@
   <string name="array_pref_zenModeArray_none">Žádné</string>
   <string name="profile_preferences_deviceMobileData_21">(H) Mobilní data</string>
   <string name="preference_profile_adaptiveBrightness">Adaptivní</string>
+  <string name="profile_preferences_deviceKeyguard">Zámek obrazovky</string>
 </resources>
