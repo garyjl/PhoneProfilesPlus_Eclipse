@@ -610,6 +610,7 @@ public class ActivateProfileHelper {
 				Keyguard.reenable();
 				break;
 			case 2:
+				Keyguard.reenable();
 				Keyguard.disable();
 				break;
 		}
