@@ -55,8 +55,8 @@
 		        android:layout_alignParentRight="true"
 		        android:adjustViewBounds="true"
 		        android:contentDescription="@string/empty_string"
-		        android:maxHeight="30dp"
-		        android:maxWidth="30dp"
+		        android:maxHeight="20dp"
+		        android:maxWidth="20dp"
 		        android:scaleType="centerCrop"
 		        android:src="@drawable/ic_profile_activated" />
 		    
