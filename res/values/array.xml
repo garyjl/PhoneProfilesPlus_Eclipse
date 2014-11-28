@@ -528,5 +528,27 @@
     <item>2</item>
     <item>3</item>
 </string-array>
+<string-array name="keyguardArray">
+	<item>@string/array_pref_no_change</item>
+	<item>@string/array_pref_default_profile</item>
+	<item>@string/array_pref_hardwareModeArray_on</item>
+	<item>@string/array_pref_hardwareModeArray_off</item>
+</string-array>
+<string-array name="keyguardValues">
+    <item>0</item>
+    <item>99</item>
+    <item>1</item>
+    <item>2</item>
+</string-array>
+<string-array name="keyguardDPArray">
+	<item>@string/array_pref_no_change</item>
+	<item>@string/array_pref_hardwareModeArray_on</item>
+	<item>@string/array_pref_hardwareModeArray_off</item>
+</string-array>
+<string-array name="keyguardDPValues">
+    <item>0</item>
+    <item>1</item>
+    <item>2</item>
+</string-array>
 
 </resources>

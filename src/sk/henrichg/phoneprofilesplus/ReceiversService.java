@@ -1,5 +1,8 @@
 package sk.henrichg.phoneprofilesplus;
+import android.app.Activity;
+import android.app.KeyguardManager;
 import android.app.Service;
+import android.app.KeyguardManager.KeyguardLock;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -7,6 +10,7 @@ import android.net.wifi.WifiManager;
 import android.os.IBinder;
 
 
+@SuppressWarnings("deprecation")
 public class ReceiversService extends Service {
 
 	private final BatteryEventBroadcastReceiver batteryEventReceiver = new BatteryEventBroadcastReceiver();
@@ -16,6 +20,9 @@ public class ReceiversService extends Service {
 	private final WifiConnectionBroadcastReceiver wifiConnectionReceiver = new WifiConnectionBroadcastReceiver();
 	private final ScreenOnOffBroadcastReceiver screenOnOffReceiver = new ScreenOnOffBroadcastReceiver();
 	private final BluetoothStateChangedBroadcastReceiver bluetoothStateChangedReceiver = new BluetoothStateChangedBroadcastReceiver();
+	
+	public static KeyguardManager keyguardManager = null;
+	public static KeyguardLock keyguardLock = null;
 	
 	@Override
     public void onCreate()
@@ -58,6 +65,9 @@ public class ReceiversService extends Service {
 	    //SMSBroadcastReceiver.registerSMSContentObserver(this);
 	    //SMSBroadcastReceiver.registerMMSContentObserver(this);
 	    
+		keyguardManager = (KeyguardManager)getBaseContext().getSystemService(Activity.KEYGUARD_SERVICE);
+		keyguardLock = keyguardManager.newKeyguardLock(GlobalData.KEYGUARD_LOCK);
+	    
 	}
 	 
 	@Override
@@ -74,6 +84,7 @@ public class ReceiversService extends Service {
 		
 	    //SMSBroadcastReceiver.unregisterSMSContentObserver(this);
 	    //SMSBroadcastReceiver.unregisterMMSContentObserver(this);
+		
     }
 	 
 	@Override

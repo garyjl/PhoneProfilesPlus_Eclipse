@@ -162,6 +162,7 @@ public class DataWrapper {
 				  0,
 				  0,
 				  Profile.AFTERDURATIONDO_NOTHING,
+				  0,
 				  0
 			);
 	}
@@ -1993,7 +1994,8 @@ public class DataWrapper {
 							   profile._deviceNFC,
 							   profile._duration,
 							   profile._afterDurationDo,
-							   profile._volumeZenMode);
+							   profile._volumeZenMode,
+							   profile._deviceKeyguard);
 		
 			List<EventTimeline> eventTimelineList = getEventTimelineList();
 			
@@ -2018,6 +2020,8 @@ public class DataWrapper {
 						
 						if (eventProfile._volumeRingerMode != 0)
 							filteredProfile._volumeRingerMode = 0;
+						if (eventProfile._volumeZenMode != 0)
+							filteredProfile._volumeZenMode = 0;
 						if (eventProfile.getVolumeRingtoneChange())
 							filteredProfile._volumeRingtone = "0|1|0";
 						if (eventProfile.getVolumeNotificationChange())
@@ -2070,6 +2074,8 @@ public class DataWrapper {
 							filteredProfile._duration = 0;
 						if (eventProfile._afterDurationDo != 0)
 							filteredProfile._afterDurationDo = 0;
+						if (eventProfile._deviceKeyguard != 0)
+							filteredProfile._deviceKeyguard = 0;
 						
 						// last event finded
 						break;

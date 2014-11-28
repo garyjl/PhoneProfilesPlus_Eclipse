@@ -26,7 +26,7 @@ public class ActivateProfileActivity extends ActionBarActivity {
 	private float popupHeight;
 	private int actionBarHeight;
 	private ImageView eventsRunStopIndicator;
-
+	
 	@SuppressLint("NewApi")
 	@SuppressWarnings({ "deprecation" })
 	@Override
@@ -186,6 +186,8 @@ public class ActivateProfileActivity extends ActionBarActivity {
 	{
 	//	Debug.stopMethodTracing();
 		
+		//keyguardLock.reenableKeyguard();
+
 		super.onDestroy();
 	}
 

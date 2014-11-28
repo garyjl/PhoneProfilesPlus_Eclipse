@@ -181,6 +181,12 @@
             android:defaultValue="0"
             android:entries="@array/screenTimeoutDPArray"
             android:entryValues="@array/screenTimeoutDPValues" />        
+		<ListPreference android:title="@string/profile_preferences_deviceKeyguard"
+            android:summary="@string/array_pref_no_change"
+            android:key="prf_pref_deviceKeyguard"
+            android:defaultValue="0"
+            android:entries="@array/keyguardDPArray"
+            android:entryValues="@array/keyguardDPValues" />
 		<sk.henrichg.phoneprofilesplus.BrightnessDialogPreference
 			android:key="prf_pref_deviceBrightness"
 			henrichg:bNoChange="1"

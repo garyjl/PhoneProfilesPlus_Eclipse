@@ -108,8 +108,9 @@ public class GlobalData extends Application {
 	// request code for startActivityForResult with intent "phoneprofiles.intent.action.EXPORTDATA"
 	static final int REQUEST_CODE_REMOTE_EXPORT = 6250;
 	
-	// musi byt tu, pouziva to ActivateProfileHelper
 	static final int NOTIFICATION_ID = 700420;
+	
+	static final String KEYGUARD_LOCK = "phoneProfilesPlus.keyguardLock";
 
 	static final String PREF_PROFILE_NAME = "prf_pref_profileName";
 	static final String PREF_PROFILE_ICON = "prf_pref_profileIcon";
@@ -147,6 +148,7 @@ public class GlobalData extends Application {
 	static final String PREF_PROFILE_DEVICE_NFC = "prf_pref_deviceNFC";
 	static final String PREF_PROFILE_DURATION = "prf_pref_duration";
 	static final String PREF_PROFILE_AFTER_DURATION_DO = "prf_pref_afterDurationDo";
+	static final String PREF_PROFILE_DEVICE_KEYGUARD = "prf_pref_deviceKeyguard";
 	
 	static final String PROFILE_ICON_DEFAULT = "ic_profile_default";
 	
@@ -498,6 +500,7 @@ public class GlobalData extends Application {
 				x.getKey().equals(PREF_PROFILE_NAME) ||
 				x.getKey().equals(PREF_PROFILE_ICON) ||
 				x.getKey().equals(PREF_PROFILE_VOLUME_RINGER_MODE) ||
+				x.getKey().equals(PREF_PROFILE_VOLUME_ZEN_MODE) ||
 				x.getKey().equals(PREF_PROFILE_VOLUME_RINGTONE) ||
 				x.getKey().equals(PREF_PROFILE_VOLUME_NOTIFICATION) ||
 				x.getKey().equals(PREF_PROFILE_VOLUME_MEDIA) ||
@@ -529,7 +532,8 @@ public class GlobalData extends Application {
 				x.getKey().equals(PREF_PROFILE_VOLUME_SPEAKER_PHONE) ||
 				x.getKey().equals(PREF_PROFILE_DEVICE_NFC) ||
 				x.getKey().equals(PREF_PROFILE_DURATION) ||
-				x.getKey().equals(PREF_PROFILE_AFTER_DURATION_DO))
+				x.getKey().equals(PREF_PROFILE_AFTER_DURATION_DO) ||
+				x.getKey().equals(PREF_PROFILE_DEVICE_KEYGUARD))
 			{
 			    if      (x.getValue().getClass().equals(Boolean.class)) editorNew.putBoolean(x.getKey(), (Boolean)x.getValue());
 			    else if (x.getValue().getClass().equals(Float.class))   editorNew.putFloat(x.getKey(),   (Float)x.getValue());
@@ -598,6 +602,7 @@ public class GlobalData extends Application {
     	profile._deviceLocationServicePrefs = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_LOCATION_SERVICE_PREFS, "0"));
     	profile._volumeSpeakerPhone = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_VOLUME_SPEAKER_PHONE, "0"));
     	profile._deviceNFC = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_NFC, "0"));
+    	profile._deviceKeyguard = Integer.parseInt(preferences.getString(GlobalData.PREF_PROFILE_DEVICE_KEYGUARD, "0"));
     	
     	return profile;
 	}
@@ -647,7 +652,8 @@ public class GlobalData extends Application {
 							   profile._deviceNFC,
 							   profile._duration,
 							   profile._afterDurationDo,
-							   profile._volumeZenMode);
+							   profile._volumeZenMode,
+							   profile._deviceKeyguard);
 		
 			if (profile._volumeRingerMode == 99)
 				mappedProfile._volumeRingerMode = defaultProfile._volumeRingerMode;
@@ -716,6 +722,8 @@ public class GlobalData extends Application {
 				mappedProfile._volumeSpeakerPhone = defaultProfile._volumeSpeakerPhone;
 			if (profile._deviceNFC == 99)
 				mappedProfile._deviceNFC = defaultProfile._deviceNFC;
+			if (profile._deviceKeyguard == 99)
+				mappedProfile._deviceKeyguard = defaultProfile._deviceKeyguard;
 			
 			mappedProfile._iconBitmap = profile._iconBitmap;
 			mappedProfile._preferencesIndicator = profile._preferencesIndicator;

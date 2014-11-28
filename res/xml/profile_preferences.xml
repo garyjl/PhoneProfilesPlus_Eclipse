@@ -212,7 +212,13 @@
             android:key="prf_pref_deviceScreenTimeout"
             android:defaultValue="0"
             android:entries="@array/screenTimeoutArray"
-            android:entryValues="@array/screenTimeoutValues" />        
+            android:entryValues="@array/screenTimeoutValues" />
+		<ListPreference android:title="@string/profile_preferences_deviceKeyguard"
+            android:summary="@string/array_pref_no_change"
+            android:key="prf_pref_deviceKeyguard"
+            android:defaultValue="0"
+            android:entries="@array/keyguardArray"
+            android:entryValues="@array/keyguardValues" />
 		<sk.henrichg.phoneprofilesplus.BrightnessDialogPreference
 			android:key="prf_pref_deviceBrightness"
 			henrichg:bNoChange="1"

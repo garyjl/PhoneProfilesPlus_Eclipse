@@ -476,6 +476,7 @@ public class ActivateProfileHelper {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void execute(Profile _profile, boolean _interactive, String eventNotificationSound)
 	{
 		// rozdelit zvonenie a notifikacie - zial je to oznacene ako @Hide :-(
@@ -600,6 +601,19 @@ public class ActivateProfileHelper {
 		    		Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, -1);
 		    	else
 		    		Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, 18000000);
+				break;
+		}
+		
+		// zapnutie/vypnutie lockscreenu
+		//getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+		switch (profile._deviceKeyguard) {
+			case 1:
+				if (ReceiversService.keyguardLock != null)
+					ReceiversService.keyguardLock.reenableKeyguard();
+				break;
+			case 2:
+				if (ReceiversService.keyguardLock != null)
+					ReceiversService.keyguardLock.disableKeyguard();
 				break;
 		}
 		

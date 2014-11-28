@@ -474,4 +474,13 @@ OK, co tak pre Android 5.0 spravit zen mode:
 6. Zen mod sa da nastavovat len na rootnutych zariadeniach.
 7. Cize ak nie je root, "Do not disturb type" bude disablovany
        
+--------------------
 
+Ako disablovat lockscreen, 2 kroky:
+1. nastavit, ze power tlacitko nema lockovat
+  /data/system/locksettings.db - lockscreen.power_button_instantly_locks (0,1)
+  len je otazka, ci toto existuje aj na starsich androidoch ako 5.0
+2. nastavit lockscreen timeout 
+  Settings.Secure - lock_screen_lock_after_timeout (milisekundy)
+  
+  

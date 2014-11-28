@@ -28,7 +28,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     Context context;
     
 	// Database Version
-	private static final int DATABASE_VERSION = 1156;
+	private static final int DATABASE_VERSION = 1160;
 
 	// Database Name
 	private static final String DATABASE_NAME = "phoneProfilesManager";
@@ -94,6 +94,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_DEVICE_NFC = "deviceNFC";
 	private static final String KEY_DURATION = "duration";
 	private static final String KEY_AFTER_DURATION_DO = "afterDurationDo";
+	private static final String KEY_DEVICE_KEYGUARD = "deviceKeyguard";
 
 	private static final String KEY_E_ID = "id";
 	private static final String KEY_E_NAME = "name";
@@ -253,7 +254,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_DEVICE_NFC + " INTEGER,"
 				+ KEY_DURATION + " INTEGER,"
 				+ KEY_AFTER_DURATION_DO + " INTEGER,"
-				+ KEY_VOLUME_ZEN_MODE + " INTEGER"
+				+ KEY_VOLUME_ZEN_MODE + " INTEGER,"
+				+ KEY_DEVICE_KEYGUARD + " INTEGER"
 				+ ")";
 		db.execSQL(CREATE_PROFILES_TABLE);
 		
@@ -905,6 +907,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		        }	
 			}
 		}
+
+		if (oldVersion < 1160)
+		{
+			// pridame nove stlpce
+			db.execSQL("ALTER TABLE " + TABLE_PROFILES + " ADD COLUMN " + KEY_DEVICE_KEYGUARD + " INTEGER");
+			
+			// updatneme zaznamy
+			db.execSQL("UPDATE " + TABLE_PROFILES + " SET " + KEY_DEVICE_KEYGUARD + "=0");
+		}
 		
 	}
 	
@@ -959,6 +970,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_DEVICE_NFC, profile._deviceNFC);
 		values.put(KEY_DURATION, profile._duration);
 		values.put(KEY_AFTER_DURATION_DO, profile._afterDurationDo);
+		values.put(KEY_DEVICE_KEYGUARD, profile._deviceKeyguard);
 
 		// Inserting Row
 		long id = db.insert(TABLE_PROFILES, null, values);
@@ -1012,7 +1024,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 								         		KEY_DEVICE_NFC,
 								         		KEY_DURATION,
 								         		KEY_AFTER_DURATION_DO,
-								         		KEY_VOLUME_ZEN_MODE
+								         		KEY_VOLUME_ZEN_MODE,
+								         		KEY_DEVICE_KEYGUARD
 												}, 
 				                 KEY_ID + "=?",
 				                 new String[] { String.valueOf(profile_id) }, null, null, null, null);
@@ -1063,7 +1076,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						                      Integer.parseInt(cursor.getString(35)),
 						                      Integer.parseInt(cursor.getString(36)),
 						                      Integer.parseInt(cursor.getString(37)),
-						                      Integer.parseInt(cursor.getString(38))
+						                      Integer.parseInt(cursor.getString(38)),
+						                      Integer.parseInt(cursor.getString(39))
 						                      );
 			}
 	
@@ -1119,7 +1133,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						         		 KEY_DEVICE_NFC + "," +
 										 KEY_DURATION + "," +
 										 KEY_AFTER_DURATION_DO + "," +
-										 KEY_VOLUME_ZEN_MODE +
+										 KEY_VOLUME_ZEN_MODE + "," +
+										 KEY_DEVICE_KEYGUARD +
 		                     " FROM " + TABLE_PROFILES;
 
 		//SQLiteDatabase db = this.getReadableDatabase();
@@ -1170,6 +1185,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 profile._duration = Integer.parseInt(cursor.getString(36));
                 profile._afterDurationDo = Integer.parseInt(cursor.getString(37));
 				profile._volumeZenMode = Integer.parseInt(cursor.getString(38));
+				profile._deviceKeyguard = Integer.parseInt(cursor.getString(39));
 				// Adding contact to list
 				profileList.add(profile);
 			} while (cursor.moveToNext());
@@ -1226,6 +1242,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_DEVICE_NFC, profile._deviceNFC);
 		values.put(KEY_DURATION, profile._duration);
 		values.put(KEY_AFTER_DURATION_DO, profile._afterDurationDo);
+		values.put(KEY_DEVICE_KEYGUARD, profile._deviceKeyguard);
 
 		// updating row
 		int r = db.update(TABLE_PROFILES, values, KEY_ID + " = ?",
@@ -1457,7 +1474,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 								         		KEY_DEVICE_NFC,
 								         		KEY_DURATION,
 								         		KEY_AFTER_DURATION_DO,
-								         		KEY_VOLUME_ZEN_MODE
+								         		KEY_VOLUME_ZEN_MODE,
+								         		KEY_DEVICE_KEYGUARD
 												}, 
 				                 KEY_CHECKED + "=?",
 				                 new String[] { "1" }, null, null, null, null);
@@ -1508,7 +1526,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						                      Integer.parseInt(cursor.getString(35)),
 						                      Integer.parseInt(cursor.getString(36)),
 						                      Integer.parseInt(cursor.getString(37)),
-						                      Integer.parseInt(cursor.getString(38))
+						                      Integer.parseInt(cursor.getString(38)),
+						                      Integer.parseInt(cursor.getString(39))
 						                      );
 			}
 			else
@@ -1525,140 +1544,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		return profile;
 		
 	}
-/*	
-	public Profile getFirstProfile()
-	{
-		final String selectQuery = "SELECT " + KEY_ID + "," +
-						                 KEY_NAME + "," +
-						                 KEY_ICON + "," +
-						                 KEY_CHECKED + "," +
-						                 KEY_PORDER + "," +
-										 KEY_VOLUME_RINGER_MODE + "," +
-						        		 KEY_VOLUME_RINGTONE + "," +
-						        		 KEY_VOLUME_NOTIFICATION + "," +
-						        		 KEY_VOLUME_MEDIA + "," +
-						        		 KEY_VOLUME_ALARM + "," +
-						        		 KEY_VOLUME_SYSTEM + "," +
-						        		 KEY_VOLUME_VOICE + "," +
-						        		 KEY_SOUND_RINGTONE_CHANGE + "," +
-						        		 KEY_SOUND_RINGTONE + "," +
-						        		 KEY_SOUND_NOTIFICATION_CHANGE + "," +
-						        		 KEY_SOUND_NOTIFICATION + "," +
-						        		 KEY_SOUND_ALARM_CHANGE + "," +
-						        		 KEY_SOUND_ALARM + "," +
-						        		 KEY_DEVICE_AIRPLANE_MODE + "," +
-						        		 KEY_DEVICE_WIFI + "," +
-						        		 KEY_DEVICE_BLUETOOTH + "," +
-						        		 KEY_DEVICE_SCREEN_TIMEOUT + "," +
-						        		 KEY_DEVICE_BRIGHTNESS + "," +
-						        		 KEY_DEVICE_WALLPAPER_CHANGE + "," +
-						        		 KEY_DEVICE_WALLPAPER + "," +
-						        		 KEY_DEVICE_MOBILE_DATA + "," +
-						        		 KEY_DEVICE_MOBILE_DATA_PREFS + "," +
-						        		 KEY_DEVICE_GPS + "," +
-						        		 KEY_DEVICE_RUN_APPLICATION_CHANGE + "," +
-						        		 KEY_DEVICE_RUN_APPLICATION_PACKAGE_NAME + "," +
-						        		 KEY_DEVICE_AUTOSYNC + "," +
-						        		 KEY_SHOW_IN_ACTIVATOR + "," +
-						        		 KEY_DEVICE_AUTOROTATE + "," +
-						        		 KEY_DEVICE_LOCATION_SERVICE_PREFS + "," +
-						        		 KEY_VOLUME_SPEAKER_PHONE + "," +
-						        		 KEY_DEVICE_NFC + "," +
-						        		 KEY_DURATION + "," +
-								         KEY_AFTER_DURATION_DO + "," +
-								         KEY_VOLUME_ZEN_MODE +
-						    " FROM " + TABLE_PROFILES;
 
-		//SQLiteDatabase db = this.getReadableDatabase();
-		SQLiteDatabase db = getMyWritableDatabase();
-		
-		Cursor cursor = db.rawQuery(selectQuery, null);
-
-		Profile profile = null; 
-		
-		// looping through all rows and adding to list
-		if (cursor.moveToFirst()) {
-			profile = new Profile();
-			profile._id = Long.parseLong(cursor.getString(0));
-			profile._name = cursor.getString(1);
-			profile._icon = (cursor.getString(2));
-			profile._checked = ((Integer.parseInt(cursor.getString(3)) == 1) ? true : false);
-			profile._porder = (Integer.parseInt(cursor.getString(4)));
-			profile._volumeRingerMode = Integer.parseInt(cursor.getString(5));
-			profile._volumeRingtone = cursor.getString(6);
-			profile._volumeNotification = cursor.getString(7);
-			profile._volumeMedia = cursor.getString(8);
-			profile._volumeAlarm = cursor.getString(9);
-			profile._volumeSystem = cursor.getString(10);
-			profile._volumeVoice = cursor.getString(11);
-			profile._soundRingtoneChange = (Integer.parseInt(cursor.getString(12)) == 1) ? true : false;
-			profile._soundRingtone = cursor.getString(13);
-			profile._soundNotificationChange = (Integer.parseInt(cursor.getString(14)) == 1) ? true : false;
-			profile._soundNotification = cursor.getString(15);
-			profile._soundAlarmChange = (Integer.parseInt(cursor.getString(16)) == 1) ? true : false;
-			profile._soundAlarm = cursor.getString(17);
-			profile._deviceAirplaneMode = Integer.parseInt(cursor.getString(18));
-			profile._deviceWiFi = Integer.parseInt(cursor.getString(19));
-			profile._deviceBluetooth = Integer.parseInt(cursor.getString(20));
-			profile._deviceScreenTimeout = Integer.parseInt(cursor.getString(21));
-			profile._deviceBrightness = cursor.getString(22);
-			profile._deviceWallpaperChange = (Integer.parseInt(cursor.getString(23)) == 1) ? true : false;
-			profile._deviceWallpaper = cursor.getString(24);
-			profile._deviceMobileData = Integer.parseInt(cursor.getString(25));
-			profile._deviceMobileDataPrefs = (Integer.parseInt(cursor.getString(26)) == 1) ? true : false;
-			profile._deviceGPS = Integer.parseInt(cursor.getString(27));
-			profile._deviceRunApplicationChange = (Integer.parseInt(cursor.getString(28)) == 1) ? true : false;
-			profile._deviceRunApplicationPackageName = cursor.getString(29);
-			profile._deviceAutosync = Integer.parseInt(cursor.getString(30));
-			profile._showInActivator = cursor.isNull(31) ? true : ((Integer.parseInt(cursor.getString(31)) == 1) ? true : false);
-			profile._deviceAutoRotate = Integer.parseInt(cursor.getString(32));
-			profile._deviceLocationServicePrefs = Integer.parseInt(cursor.getString(33));
-			profile._speakerPhone = Integer.parseInt(cursor.getString(34));
-			profile._deviceNFC = Integer.parseInt(cursor.getString(35));
-			profile._duration = Integer.parseInt(cursor.getString(35));
-			profile._afterDurationDo = Integer.parseInt(cursor.getString(36));
-			profile._volumeZenMode = Integer.parseInt(cursor.getString(37));
-		}
-		
-		cursor.close();
-		//db.close();
-		
-		// return profile list
-		return profile;
-		
-	}
-*/
-/*
-	public int getProfilePosition(Profile profile)
-	{
-		final String selectQuery = "SELECT " + KEY_ID +
-							   " FROM " + TABLE_PROFILES + " ORDER BY " + KEY_PORDER;
-
-		//SQLiteDatabase db = this.getReadableDatabase();
-		SQLiteDatabase db = getMyWritableDatabase();
-		
-		Cursor cursor = db.rawQuery(selectQuery, null);
-		
-		// looping through all rows and adding to list
-		long lid;
-		int position = 0;
-		if (cursor.moveToFirst()) {
-			do {
-				lid = Long.parseLong(cursor.getString(0));
-				if (lid == profile._id)
-					return position;
-				position++;
-			} while (cursor.moveToNext());
-		}
-		
-		cursor.close();
-		//db.close();
-		
-		// return profile list
-		return -1;
-		
-	}
-*/	
 	public void setPOrder(List<Profile> list)
 	{
 		//SQLiteDatabase db = this.getWritableDatabase();
@@ -3648,6 +3534,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 									if (exportedDBObj.getVersion() < 1150)
 									{
 										values.put(KEY_VOLUME_ZEN_MODE, 0);
+									}
+									if (exportedDBObj.getVersion() < 1160)
+									{
+										values.put(KEY_DEVICE_KEYGUARD, 0);
 									}
 									
 									///////////////////////////////////////////////////////

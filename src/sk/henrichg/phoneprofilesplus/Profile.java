@@ -46,6 +46,7 @@ public class Profile {
 	public int _deviceAutoRotate;
 	public int _volumeSpeakerPhone;
 	public int _deviceNFC;
+	public int _deviceKeyguard;
 	
 	public Bitmap _iconBitmap;
 	public Bitmap _preferencesIndicator;
@@ -101,7 +102,8 @@ public class Profile {
 			   	   int deviceNFC,
 			   	   int duration,
 			   	   int afterDurationDo,
- 			   	   int volumeZenMode)
+ 			   	   int volumeZenMode,
+ 			   	   int deviceKeyguard)
 	{
 		this._id = id;
 		this._name = name;
@@ -142,6 +144,7 @@ public class Profile {
 		this._deviceNFC = deviceNFC;
 		this._duration = duration;
 		this._afterDurationDo = afterDurationDo;
+		this._deviceKeyguard = deviceKeyguard;
 		
 		this._iconBitmap = null;
 		this._preferencesIndicator = null;
@@ -185,7 +188,8 @@ public class Profile {
 			   	   int deviceNFC,
 			   	   int duration,
 			   	   int afterDurationDo,
- 			   	   int volumeZenMode)
+ 			   	   int volumeZenMode,
+ 			   	   int deviceKeyguard)
 	{
 		this._name = name;
 		this._icon = icon;
@@ -225,6 +229,7 @@ public class Profile {
 		this._deviceNFC = deviceNFC;
 		this._duration = duration;
 		this._afterDurationDo = afterDurationDo;
+		this._deviceKeyguard = deviceKeyguard;
 		
 		this._iconBitmap = null;
 		this._preferencesIndicator = null;
@@ -271,6 +276,7 @@ public class Profile {
 		this._deviceNFC = profile._deviceNFC;
 		this._duration = profile._duration;
 		this._afterDurationDo = profile._afterDurationDo;
+		this._deviceKeyguard = profile._deviceKeyguard;
 		
 		this._iconBitmap = profile._iconBitmap;
 		this._preferencesIndicator = profile._preferencesIndicator;
