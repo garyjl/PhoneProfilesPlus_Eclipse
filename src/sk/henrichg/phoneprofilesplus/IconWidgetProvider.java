@@ -63,7 +63,11 @@ public class IconWidgetProvider extends AppWidgetProvider {
 			}
 			
 			// priprava view-u na aktualizacia widgetu
-			RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.icon_widget);
+			RemoteViews remoteViews;
+			if (GlobalData.applicationWidgetIconHideProfileName)
+				remoteViews = new RemoteViews(context.getPackageName(), R.layout.icon_widget_no_profile_name);
+			else
+				remoteViews = new RemoteViews(context.getPackageName(), R.layout.icon_widget);
 	        if (isIconResourceID)
 	        {
 	        	//remoteViews.setImageViewResource(R.id.activate_profile_widget_icon, 0);
@@ -80,7 +84,8 @@ public class IconWidgetProvider extends AppWidgetProvider {
 	        	//remoteViews.setImageViewBitmap(R.id.activate_profile_widget_icon, bitmap);
 	        	remoteViews.setImageViewBitmap(R.id.icon_widget_icon, profile._iconBitmap);
 	        }
-			remoteViews.setTextViewText(R.id.icon_widget_name, profileName);
+			if (!GlobalData.applicationWidgetIconHideProfileName)
+				remoteViews.setTextViewText(R.id.icon_widget_name, profileName);
 			
 			// konfiguracia, ze ma spustit hlavnu aktivitu zoznamu profilov, ked kliknme na widget
 			Intent intent = new Intent(context, LauncherActivity.class);

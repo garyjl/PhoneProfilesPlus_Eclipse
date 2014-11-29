@@ -193,6 +193,7 @@ public class GlobalData extends Application {
     public static final String PREF_APPLICATION_EVENT_BLUETOOTH_ENABLE_BLUETOOTH = "applicationEventBluetoothEnableBluetooth";
     public static final String PREF_APPLICATION_EVENT_WIFI_RESCAN = "applicationEventWifiRescan";
     public static final String PREF_APPLICATION_EVENT_BLUETOOTH_RESCAN = "applicationEventBluetoothRescan";
+    public static final String PREF_APPLICATION_WIDGET_ICON_HIDE_PROFILE_NAME = "applicationWidgetIconHideProfileName";
 
     public static final int HARDWARE_CHECK_NOT_ALLOWED = 0;
     public static final int HARDWARE_CHECK_ALLOWED = 1;
@@ -275,6 +276,7 @@ public class GlobalData extends Application {
     public static boolean applicationEventBluetoothEnableBluetooth;
     public static String applicationEventWifiRescan;
     public static String applicationEventBluetoothRescan;
+    public static boolean applicationWidgetIconHideProfileName;
     
 	public void onCreate()
 	{
@@ -470,6 +472,7 @@ public class GlobalData extends Application {
 	    applicationEventBluetoothEnableBluetooth = preferences.getBoolean(PREF_APPLICATION_EVENT_BLUETOOTH_ENABLE_BLUETOOTH, true);
 	    applicationEventWifiRescan = preferences.getString(PREF_APPLICATION_EVENT_WIFI_RESCAN, "0");
 	    applicationEventBluetoothRescan = preferences.getString(PREF_APPLICATION_EVENT_BLUETOOTH_RESCAN, "0");
+	    applicationWidgetIconHideProfileName = preferences.getBoolean(PREF_APPLICATION_WIDGET_ICON_HIDE_PROFILE_NAME, false);
 
 		if (applicationTheme.equals("light"))
 		{
