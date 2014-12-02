@@ -97,28 +97,6 @@ public class ActivateProfileListAdapter extends BaseAdapter
 		return null;
 	}
 	
-	public void activateProfile(Profile profile)
-	{
-		for (Profile p : profileList)
-		{
-			p._checked = false;
-		}
-		
-		// teraz musime najst profil v profileList
-		// lebo profil nemusi byt v liste
-		int position = getItemId(profile);
-		if (position != -1)
-		{
-			// najdenemu objektu nastavime _checked
-			Profile _profile = profileList.get(position);
-			if (_profile != null)
-				_profile._checked = true;
-		}
-		
-		if (!GlobalData.applicationClose)
-			notifyDataSetChanged();
-	}
-
 	static class ViewHolder {
 		  RelativeLayout listItemRoot;
 		  ImageView profileIcon;

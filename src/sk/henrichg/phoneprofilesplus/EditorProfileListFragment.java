@@ -452,13 +452,14 @@ public class EditorProfileListFragment extends Fragment {
 	
 	public void deleteProfile(Profile profile)
 	{
-		final Profile _profile = profile;
-		final Activity activity = getActivity();
+		//final Profile _profile = profile;
+		//final Activity activity = getActivity();
 
 		if (dataWrapper.getProfileById(profile._id) == null)
 			// profile not exists
 			return;
 		
+		/*
 		class DeleteAsyncTask extends AsyncTask<Void, Integer, Integer> 
 		{
 			private ProgressDialog dialog;
@@ -523,6 +524,24 @@ public class EditorProfileListFragment extends Fragment {
 		}
 		
 		new DeleteAsyncTask().execute();
+		*/
+		
+		dataWrapper.stopEventsForProfile(profile, true);
+		dataWrapper.unlinkEventsFromProfile(profile);
+		profileListAdapter.deleteItemNoNotify(profile);
+		databaseHandler.unlinkEventsFromProfile(profile);
+		databaseHandler.deleteProfile(profile);
+
+		profileListAdapter.notifyDataSetChanged();
+		// v pripade, ze sa odmaze aktivovany profil, nastavime, ze nic nie je aktivovane
+		//Profile profile = databaseHandler.getActivatedProfile();
+		Profile _profile = profileListAdapter.getActivatedProfile();
+		updateHeader(_profile);
+		activateProfileHelper.showNotification(_profile, "");
+		activateProfileHelper.updateWidget();
+		
+		onStartProfilePreferencesCallback.onStartProfilePreferences(null, EDIT_MODE_DELETE, filterType);
+		
 	}
 
 	public void showEditMenu(View view)
@@ -589,6 +608,7 @@ public class EditorProfileListFragment extends Fragment {
 			
 			public void onClick(DialogInterface dialog, int which) {
 				
+				/*
 				class DeleteAsyncTask extends AsyncTask<Void, Integer, Integer> 
 				{
 					private ProgressDialog dialog;
@@ -644,6 +664,23 @@ public class EditorProfileListFragment extends Fragment {
 				}
 				
 				new DeleteAsyncTask().execute();
+				*/
+				
+				dataWrapper.stopAllEvents(true);
+				dataWrapper.unlinkAllEvents();
+				profileListAdapter.clearNoNotify();
+				databaseHandler.deleteAllProfiles();
+				databaseHandler.unlinkAllEvents();
+
+				profileListAdapter.notifyDataSetChanged();
+				// v pripade, ze sa odmaze aktivovany profil, nastavime, ze nic nie je aktivovane
+				//Profile profile = databaseHandler.getActivatedProfile();
+				//Profile profile = profileListAdapter.getActivatedProfile();
+				updateHeader(null);
+				activateProfileHelper.removeNotification();
+				activateProfileHelper.updateWidget();
+				
+				onStartProfilePreferencesCallback.onStartProfilePreferences(null, EDIT_MODE_DELETE, filterType);
 				
 			}
 		});
