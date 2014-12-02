@@ -211,7 +211,6 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/profile_list_widget_info" />
         </receiver>
-
         <service
             android:name=".ProfileListWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
@@ -295,18 +294,6 @@
         <service android:name=".ReceiversService"
             android:exported="false" >
         </service>
-
-        <receiver
-            android:name=".RestartEventsBroadcastReceiver"
-            android:enabled="true"
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="sk.henrichg.phoneprofilesplus.RESTART_EVENTS" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </receiver>
-
         <service android:name=".EventsService"
             android:exported="false" >
         </service>
@@ -318,7 +305,20 @@
             android:name=".FirstStartService"
             android:exported="false" >
         </service>
+        <service android:name=".KeyguardService"
+            android:exported="false" >
+        </service>
         
+        <receiver
+            android:name=".RestartEventsBroadcastReceiver"
+            android:enabled="true"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="sk.henrichg.phoneprofilesplus.RESTART_EVENTS" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
         <receiver
             android:name=".EventsTimeBroadcastReceiver"
             android:enabled="true"

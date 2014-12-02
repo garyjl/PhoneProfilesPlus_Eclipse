@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.app.KeyguardManager;
 import android.app.KeyguardManager.KeyguardLock;
 import android.content.Context;
+import android.content.Intent;
 
 @SuppressWarnings("deprecation")
 public class Keyguard {
 
+	public static Intent keyguardService = null;
 	private static KeyguardManager keyguardManager = null;
 	private static KeyguardLock keyguardLock = null;
 	

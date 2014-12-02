@@ -604,16 +604,9 @@ public class ActivateProfileHelper {
 		}
 		
 		// zapnutie/vypnutie lockscreenu
-		//getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
-		switch (profile._deviceKeyguard) {
-			case 1:
-				Keyguard.reenable();
-				break;
-			case 2:
-				Keyguard.reenable();
-				Keyguard.disable();
-				break;
-		}
+		if (Keyguard.keyguardService == null)
+			Keyguard.keyguardService = new Intent(context.getApplicationContext(), KeyguardService.class); 
+		context.startService(Keyguard.keyguardService);
 		
 		// nahodenie podsvietenia
 		if (profile.getDeviceBrightnessChange())

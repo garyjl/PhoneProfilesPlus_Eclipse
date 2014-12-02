@@ -18,6 +18,15 @@ public class ScreenOnOffBroadcastReceiver extends WakefulBroadcastReceiver {
 			return;
 
 		GlobalData.loadPreferences(context);
+
+		if (intent.getAction().equals(Intent.ACTION_SCREEN_ON) ||
+			intent.getAction().equals(Intent.ACTION_USER_PRESENT))
+		{
+			// enable/disable keyguard
+			if (Keyguard.keyguardService == null)
+				Keyguard.keyguardService = new Intent(context.getApplicationContext(), KeyguardService.class); 
+			context.startService(Keyguard.keyguardService);
+		}
 		
 		if (GlobalData.getGlobalEventsRuning(context))
 		{
@@ -31,7 +40,7 @@ public class ScreenOnOffBroadcastReceiver extends WakefulBroadcastReceiver {
 				GlobalData.logE("@@@ ScreenOnOffBroadcastReceiver.onReceive","screen unlock");
 
 			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
-
+			
 			boolean screenEventsExists = false;
 			
 			screenEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_SCREEN) > 0;

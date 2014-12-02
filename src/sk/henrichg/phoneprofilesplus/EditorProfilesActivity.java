@@ -624,6 +624,8 @@ public class EditorProfilesActivity extends ActionBarActivity
 			SearchCalendarEventsBroadcastReceiver.removeAlarm(getApplicationContext());
 			WifiScanAlarmBroadcastReceiver.removeAlarm(getApplicationContext(), false);
 			stopService(new Intent(getApplicationContext(), ReceiversService.class));
+			if (Keyguard.keyguardService != null)
+				stopService(Keyguard.keyguardService);
 			
 			Keyguard.reenable();
 				
