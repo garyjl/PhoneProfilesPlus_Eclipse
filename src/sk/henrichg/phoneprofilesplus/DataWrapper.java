@@ -2247,7 +2247,7 @@ public class DataWrapper {
 	{
 		List<EventTimeline> eventTimelineList = getEventTimelineList();
 		
-		if (GlobalData.getGlobalEventsRuning(context))
+		if (GlobalData.getGlobalEventsRuning(context) && GlobalData.getApplicationStarted(context))
 		{
 			if (eventTimelineList.size() > 0)
 			{
