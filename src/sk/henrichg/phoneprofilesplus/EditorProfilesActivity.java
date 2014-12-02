@@ -47,6 +47,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -125,6 +126,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 	
 	private static final int COUNT_DRAWER_PROFILE_ITEMS = 3; 
 	
+	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -141,6 +143,9 @@ public class EditorProfilesActivity extends ActionBarActivity
 		createContactsCache();
 		
 		setContentView(R.layout.activity_editor_list_onepane);
+		
+    	//if (android.os.Build.VERSION.SDK_INT >= 21)
+    	//	getWindow().setNavigationBarColor(R.attr.colorPrimary);
 
 		//setWindowContentOverlayCompat();
 		
