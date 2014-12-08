@@ -32,7 +32,11 @@ public class GUIData {
 		
 		if (!lang.equals("system"))
 		{
-			appLocale = new Locale(lang);
+    		String[] langSplit = lang.split("-");
+			if (langSplit.length == 1)
+				appLocale = new Locale(lang);
+			else
+				appLocale = new Locale(langSplit[0], langSplit[1]);
 		}
 		else
 		{
@@ -57,7 +61,11 @@ public class GUIData {
 		Locale appLocale;
 		if (!lang.equals("system"))
 		{
-			appLocale = new Locale(lang);
+    		String[] langSplit = lang.split("-");
+			if (langSplit.length == 1)
+				appLocale = new Locale(lang);
+			else
+				appLocale = new Locale(langSplit[0], langSplit[1]);
 		}
 		else
 		{
