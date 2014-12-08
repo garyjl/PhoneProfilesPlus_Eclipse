@@ -74,8 +74,8 @@
   <string name="profile_preferences_soundAlarmChange">Alarmton ändern</string>
   <string name="profile_preferences_soundAlarm">Alarmton</string>
   <string name="profile_preferences_deviceAirplaneMode">(R) Flugzeugmodus</string>
-  <string name="profile_preferences_deviceWiFi">WLAN</string>
-  <string name="profile_preferences_deviceBluetooth">BlueTooth</string>
+  <string name="profile_preferences_deviceWiFi">Wi-Fi</string>
+  <string name="profile_preferences_deviceBluetooth">Bluetooth</string>
   <string name="profile_preferences_deviceGPS">(R) GPS</string>
   <string name="profile_preferences_deviceNFC">(H) NFC</string>
   <string name="profile_preferences_deviceScreenTimeout">Beleuchtungsdauer</string>
@@ -98,14 +98,14 @@
   <string name="array_pref_screenTimeoutArray_never_timeout">Unendlich</string>
   <string name="phone_profiles_pref_applicationLanguage">Sprache</string>
   <string name="phone_profiles_pref_applicationLanguage_system">Nach Systemeinstellung</string>
-  <string name="phone_profiles_pref_applicationLanguage_en">Englisch</string>
-  <string name="phone_profiles_pref_applicationLanguage_sk">Slowenisch</string>
-  <string name="phone_profiles_pref_applicationLanguage_cs">Tschechisch</string>
+  <string name="phone_profiles_pref_applicationLanguage_en">English</string>
+  <string name="phone_profiles_pref_applicationLanguage_sk">Slovenčina</string>
+  <string name="phone_profiles_pref_applicationLanguage_cs">Čeština</string>
   <string name="phone_profiles_pref_applicationLanguage_de">Deutsch</string>
-  <string name="phone_profiles_pref_applicationLanguage_ru">Russisch</string>
+  <string name="phone_profiles_pref_applicationLanguage_ru">Русский</string>
   <string name="title_activity_shortcut_creator">PhoneProfilesPlus-schnellstarter</string>
   <string name="phone_profiles_pref_applicationStartOnBoot">Beim Hochfahren starten</string>
-  <string name="array_pref_value_system">System</string>
+  <string name="array_pref_value_system">system</string>
   <string name="array_pref_value_en">en</string>
   <string name="array_pref_value_sk">sk</string>
   <string name="array_pref_value_cs">cs</string>
@@ -137,8 +137,8 @@
   <string name="phone_profiles_pref_applicationTheme_material">Farbig</string>
   <string name="phone_profiles_pref_applicationTheme_dark">Dunkel</string>
   <string name="phone_profiles_pref_applicationTheme_dlight">Hell mit dunklem Titel</string>
-  <string name="array_pref_value_material">Material</string>
-  <string name="array_pref_value_dark">dunkel</string>
+  <string name="array_pref_value_material">material</string>
+  <string name="array_pref_value_dark">dark</string>
   <string name="array_pref_value_dlight">dlight</string>
   <string name="phone_preferences_actionmode_save">Speichern</string>
   <string name="phone_preferences_actionmode_cancel">Abbrechen</string>
@@ -216,11 +216,11 @@
   <string name="title_activity_editor">Editor</string>
   <string name="menu_run_events">Laufende Ereignisse aktivieren</string>
   <string name="menu_stop_events">Ereignisse anhalten</string>
-  <string name="array_pref_value_0_percent" formatted="false">0%</string>
-  <string name="array_pref_value_25_percent" formatted="false">25%</string>
-  <string name="array_pref_value_50_percent" formatted="false">50%</string>
-  <string name="array_pref_value_75_percent" formatted="false">75%</string>
-  <string name="array_pref_value_100_percent" formatted="false">100%</string>
+  <string name="array_pref_value_0_percent" formatted="false">0 %</string>
+  <string name="array_pref_value_25_percent" formatted="false">25 %</string>
+  <string name="array_pref_value_50_percent" formatted="false">50 %</string>
+  <string name="array_pref_value_75_percent" formatted="false">75 %</string>
+  <string name="array_pref_value_100_percent" formatted="false">100 %</string>
   <string name="array_pref_value_0_degrees" formatted="false">0°</string>
   <string name="array_pref_value_90_degrees" formatted="false">90°</string>
   <string name="array_pref_value_180_degrees" formatted="false">180°</string>
@@ -359,10 +359,10 @@
   <string name="array_event_pref_priorityUpperMedium">Obere Mitte</string>
   <string name="array_event_pref_priorityHigher">Höher</string>
   <string name="array_event_pref_priorityHighest">Am höchsten</string>
-  <string name="event_type_wifi">WLAN</string>
+  <string name="event_type_wifi">Wi-Fi</string>
   <string name="event_preferences_category_eventWifiParameters">Wi-Fiparameter</string>
   <string name="event_preferences_wifi_enabled">Wi-Fi aktivieren</string>
-  <string name="event_preferences_wifi_ssid">SSID (Name)</string>
+  <string name="event_preferences_wifi_ssid">SSID</string>
   <string name="pref_event_wifi_ssid">SSID</string>
   <string name="pref_event_wifi_connectionType">Verbindung</string>
   <string name="array_event_pref_wifiConnectionType_connected">Verbunden</string>
@@ -393,7 +393,7 @@
   <string name="pref_event_screen_endWhenUnlocked">Beenden wenn entsperrt</string>
   <string name="event_preferences_screen_start_when_unlocked">Starten wenn entsperrt</string>
   <string name="event_preferences_screen_end_when_unlocked">Beenden wenn entsperrt</string>
-  <string name="event_type_bluetooth">BlueTooth</string>
+  <string name="event_type_bluetooth">Bluetooth</string>
   <string name="event_preferences_category_eventBluetoothParameters">Bluetoothparameter</string>
   <string name="event_preferences_bluetooth_enabled">Bluetooth aktivieren</string>
   <string name="event_preferences_bluetooth_adapter_name">BlueTooth-Name</string>
@@ -433,5 +433,5 @@
   <string name="profile_preferences_deviceMobileData_21">(H) Mobiles Internet</string>
   <string name="preference_profile_adaptiveBrightness">Adaptiv</string>
   <string name="profile_preferences_deviceKeyguard">Sperrbildschirm</string>
-  <string name="phone_profiles_pref_applicationWidgetIconHideProfileName">Hide profile name (widget)</string>
+  <string name="phone_profiles_pref_applicationWidgetIconHideProfileName">Profilnamen verstecken (Widget)</string>
 </resources>
