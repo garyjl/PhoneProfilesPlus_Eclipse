@@ -652,7 +652,7 @@ public class DataWrapper {
 	public void pauseAllEvents(boolean noSetSystemEvent, boolean blockEvents)
 	{
 		List<EventTimeline> eventTimelineList = getEventTimelineList();
-		
+
 		for (Event event : getEventList())
 		{
 			int status = event.getStatusFromDB(this);
@@ -950,8 +950,13 @@ public class DataWrapper {
 		{
 			// manual profile activation 
 
+			ActivateProfileHelper.lockRefresh = true;
+
 			// pause all events
 			pauseAllEvents(false, true);
+			
+			ActivateProfileHelper.lockRefresh = false;
+			
 		}
 			
 		databaseHandler.activateProfile(profile);

@@ -81,6 +81,13 @@ public class EventsService extends IntentService
 
 		//GlobalData.logE("@@@ EventsService.onHandleIntent","isRestart="+isRestart);
 		GlobalData.logE("@@@ EventsService.onHandleIntent","forDelayAlarm="+forDelayAlarm);
+
+		// get running events count
+		List<EventTimeline> _etl = dataWrapper.getEventTimelineList();
+		int runningEventCount0 = _etl.size();
+
+		// no refresh notification and widgets
+		ActivateProfileHelper.lockRefresh = true;
 		
 		if (isRestart)
 		{
@@ -158,43 +165,76 @@ public class EventsService extends IntentService
 			}
 		}
 
-		if (GlobalData.getGlobalEventsRuning(context))
+		ActivateProfileHelper.lockRefresh = false;
+		
+		//////////////////
+		//// when no events are running or manual activation, 
+		//// activate background profile when no profile is activated
+		
+		// get running events count
+		List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
+		int runningEventCountE = eventTimelineList.size();
+		
+		boolean profileActivated = false;
+		Profile activatedProfile = dataWrapper.getActivatedProfile();
+		
+		if ((!GlobalData.getEventsBlocked(context)) || (GlobalData.getForceRunEventRunning(context)))
 		{
-			// when no events are running or manula activation, activate background profile
-			// when no profile is activated
-			if ((!GlobalData.getEventsBlocked(context)) || (GlobalData.getForceRunEventRunning(context)))
+			// no manual profile activation
+			if (runningEventCountE == 0)
 			{
-				// no manual profile activation
-				List<EventTimeline> eventTimelineList = dataWrapper.getEventTimelineList();
-				if (eventTimelineList.size() == 0)
-				{
-					// no events running
-					long profileId = Long.valueOf(GlobalData.applicationBackgroundProfile); 
-					if (profileId != GlobalData.PROFILE_NO_ACTIVATE)
-					{
-						Profile profile = dataWrapper.getActivatedProfile();
-						long activatedProfileId = 0;
-						if (profile != null)
-							activatedProfileId = profile._id;
-						if (activatedProfileId != profileId)
-							dataWrapper.activateProfileFromEvent(profileId, interactive, "");
-					}
-					else
-						dataWrapper.activateProfileFromEvent(0, interactive, "");
-				}
-			}
-			else
-			{
-				// manual profile activation
+				// no events running
 				long profileId = Long.valueOf(GlobalData.applicationBackgroundProfile); 
 				if (profileId != GlobalData.PROFILE_NO_ACTIVATE)
 				{
-					Profile profile = dataWrapper.getActivatedProfile();
-					if (profile == null)
-						// if not profile activated, activate Default profile
+					long activatedProfileId = 0;
+					if (activatedProfile != null)
+						activatedProfileId = activatedProfile._id;
+					if (activatedProfileId != profileId)
+					{
 						dataWrapper.activateProfileFromEvent(profileId, interactive, "");
+						profileActivated = true;
+					}
+				}
+				else
+				{
+					dataWrapper.activateProfileFromEvent(0, interactive, "");
+					profileActivated = true;
 				}
 			}
+		}
+		else
+		{
+			// manual profile activation
+			long profileId = Long.valueOf(GlobalData.applicationBackgroundProfile); 
+			if (profileId != GlobalData.PROFILE_NO_ACTIVATE)
+			{
+				if (activatedProfile == null)
+				{
+					// if not profile activated, activate Default profile
+					dataWrapper.activateProfileFromEvent(profileId, interactive, "");
+					profileActivated = true;
+				}
+			}
+		}
+		////////////////
+		
+		if (!profileActivated)
+		{
+			// no background profile activated, refresh notification and widgets for activated profile
+			
+			String eventNotificationSound = "";
+			
+			if ((!isRestart) && (runningEventCountE > runningEventCount0))
+			{
+				// only when not refresh events and running events is increased, play event notification sound
+				
+				EventTimeline eventTimeline = eventTimelineList.get(runningEventCountE-1);
+				Event event = dataWrapper.getEventById(eventTimeline._fkEvent);
+				if (event != null)
+					eventNotificationSound = event._notificationSound;
+			}
+			dataWrapper.updateNotificationAndWidgets(activatedProfile, eventNotificationSound);
 		}
 		
 		doEndService(intent);

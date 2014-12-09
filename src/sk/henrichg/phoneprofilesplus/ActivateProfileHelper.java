@@ -53,6 +53,8 @@ public class ActivateProfileHelper {
 	private NotificationManager notificationManager;
 	private Handler brightnessHandler;
 	
+	public static boolean lockRefresh = false; 
+	
 	private static final String PPHELPERACTION = "sk.henrichg.phoneprofileshelper.ACTION";
 	private static final String SETRADIOACTION = "sk.henrichg.phoneprofilesplus.SetRadiosForProfile.ACTION";
 	private static final String PPHELPER_PROCEDURE = "procedure";
@@ -789,6 +791,10 @@ public class ActivateProfileHelper {
 	@SuppressLint("InlinedApi")
 	public void showNotification(Profile profile, String eventNotificationSound)
 	{
+		if (lockRefresh)
+			// no refres notification
+			return;
+			
 		if (GlobalData.notificationStatusBar)
 		{	
 			// close showed notification
@@ -951,6 +957,10 @@ public class ActivateProfileHelper {
 	
 	public void updateWidget()
 	{
+		if (lockRefresh)
+			// no refres widgets
+			return;
+		
 		// icon widget
 		Intent intent = new Intent(context, IconWidgetProvider.class);
 		intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
