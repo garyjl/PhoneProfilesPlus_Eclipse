@@ -24,6 +24,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PixelFormat;
@@ -1361,4 +1362,38 @@ public class ActivateProfileHelper {
         }
     }	
 
+	public static int getMinimumScreenBrightnessSetting (Context context)
+	{
+		final Resources res = Resources.getSystem();
+		int id = res.getIdentifier("config_screenBrightnessSettingMinimum", "integer", "android"); // API17+
+		if (id == 0)
+		    id = res.getIdentifier("config_screenBrightnessDim", "integer", "android"); // lower API levels
+		if (id != 0) 
+		{
+		    try {
+		      return res.getInteger(id);
+		    }
+		    catch (Resources.NotFoundException e) {
+		      // ignore
+		    }
+		}
+		return 0;
+	}
+
+	public static int getMaximumScreenBrightnessSetting (Context context)
+	{
+		final Resources res = Resources.getSystem();
+		final int id = res.getIdentifier("config_screenBrightnessSettingMaximum", "integer", "android");  // API17+
+		if (id != 0)
+		{
+		    try {
+		      return res.getInteger(id);
+		    }
+		    catch (Resources.NotFoundException e) {
+		      // ignore
+		    }
+		}
+		return 255;
+	}
+	
 }
