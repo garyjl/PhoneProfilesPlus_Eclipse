@@ -129,15 +129,7 @@ public class ActivateProfileHelper {
 			if (_setMobileData)
 			{
 				if (!onlyCheckForScanning)
-				{
 					setMobileData(context, _isMobileData);
-	
-					try {
-			        	Thread.sleep(200);
-				    } catch (InterruptedException e) {
-				        System.out.println(e);
-				    }
-				}
 			}
 		}
 
@@ -145,38 +137,44 @@ public class ActivateProfileHelper {
 		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_WIFI, context) == GlobalData.HARDWARE_CHECK_ALLOWED)
 		{
 			WifiManager wifiManager = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
+			int wifiState = wifiManager.getWifiState();
+			boolean isWifiEnabled = ((wifiState == WifiManager.WIFI_STATE_ENABLED) || (wifiState == WifiManager.WIFI_STATE_ENABLING));
 			boolean setWifiState = false;
 			switch (profile._deviceWiFi) {
 				case 1 :
-					setWifiState = true;
-					break;
-				case 2 : 
-					setWifiState = false;
-					break;
-				case 3 :
-					int wifiState = wifiManager.getWifiState(); 
-					if ((wifiState == WifiManager.WIFI_STATE_DISABLED) || (wifiState == WifiManager.WIFI_STATE_DISABLING))
+					if (!isWifiEnabled)
 					{
+						isWifiEnabled = true;
 						setWifiState = true;
 					}
-					else
-					if ((wifiState == WifiManager.WIFI_STATE_ENABLED) || (wifiState == WifiManager.WIFI_STATE_ENABLING))
+					break;
+				case 2 : 
+					if (isWifiEnabled)
 					{
-						setWifiState = false;
+						isWifiEnabled = false;
+						setWifiState = true;
 					}
 					break;
+				case 3 :
+					isWifiEnabled = !isWifiEnabled;
+					setWifiState = true;
+					break;
 			}
-			if (profile._deviceWiFi != 0)
+			if (setWifiState)
 			{
 				try {
 					if (!onlyCheckForScanning)
-						wifiManager.setWifiEnabled(setWifiState);
+						wifiManager.setWifiEnabled(isWifiEnabled);
 					else
-					if (setWifiState)
+					if (isWifiEnabled)
 						WifiScanAlarmBroadcastReceiver.setWifiEnabledForScan(context, false);
 				} catch (Exception e) {
 					// barla pre security exception INTERACT_ACROSS_USERS - chyba ROM 
-					wifiManager.setWifiEnabled(setWifiState);
+					if (!onlyCheckForScanning)
+						wifiManager.setWifiEnabled(isWifiEnabled);
+					else
+					if (isWifiEnabled)
+						WifiScanAlarmBroadcastReceiver.setWifiEnabledForScan(context, false);
 				}
 			}
 		}
@@ -185,36 +183,41 @@ public class ActivateProfileHelper {
 		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_BLUETOOTH, context) == GlobalData.HARDWARE_CHECK_ALLOWED)
 		{
 			BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+			boolean isBluetoothEnabled = bluetoothAdapter.isEnabled();
 			boolean setBluetoothState = false;
 			switch (profile._deviceBluetooth) {
 				case 1 :
-					if (!onlyCheckForScanning)
-						bluetoothAdapter.enable();
-					setBluetoothState = true;
-					break;
-				case 2 : 
-					if (!onlyCheckForScanning)
-						bluetoothAdapter.disable();
-					setBluetoothState = false;
-					break;
-				case 3 :
-					if ((bluetoothAdapter != null) && (!bluetoothAdapter.isEnabled()))
+					if (!isBluetoothEnabled)
 					{
-						if (!onlyCheckForScanning)
-							bluetoothAdapter.enable();
+						isBluetoothEnabled = true;
 						setBluetoothState = true;
 					}
-					else
-					if ((bluetoothAdapter != null) && (bluetoothAdapter.isEnabled()))
+					break;
+				case 2 :
+					if (!isBluetoothEnabled)
 					{
-						if (!onlyCheckForScanning)
-							bluetoothAdapter.disable();
-						setBluetoothState = false;
+						isBluetoothEnabled = false;
+						setBluetoothState = true;
 					}
 					break;
+				case 3 :
+					isBluetoothEnabled = ! isBluetoothEnabled;
+					setBluetoothState = true;
+					break;
 			}
-			if (onlyCheckForScanning && setBluetoothState)
-				BluetoothScanAlarmBroadcastReceiver.setBluetoothEnabledForScan(context, false);
+			if (setBluetoothState)
+			{
+				if (!onlyCheckForScanning)
+				{
+					if (isBluetoothEnabled)
+						bluetoothAdapter.enable();
+					else
+						bluetoothAdapter.disable();
+				}
+				else
+				if (isBluetoothEnabled)
+					BluetoothScanAlarmBroadcastReceiver.setBluetoothEnabledForScan(context, false);
+			}
 		}
 
 		// nahodenie GPS
@@ -291,6 +294,12 @@ public class ActivateProfileHelper {
 		if (_setAirplaneMode && !(_isAirplaneMode))
 			// switch OFF airplane mode, set if after executeForRadios
 			setAirplaneMode(context, _isAirplaneMode);
+		
+		try {
+        	Thread.sleep(500);
+	    } catch (InterruptedException e) {
+	        System.out.println(e);
+	    }
 		
 	}
 	

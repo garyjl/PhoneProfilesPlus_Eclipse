@@ -2144,14 +2144,16 @@ public class DataWrapper {
 			GlobalData.applicationEventWifiRescan.equals(GlobalData.RESCAN_TYPE_SCREEN_ON_RESTART_EVENTS))
 		{
 			// rescan wifi
-			WifiScanAlarmBroadcastReceiver.sendBroadcast(context);
+			WifiScanAlarmBroadcastReceiver.setAlarm(context, true);
+			//sendBroadcast(context);
+			//setAlarm(context, true);
 		}
 		
 		if (GlobalData.applicationEventBluetoothRescan.equals(GlobalData.RESCAN_TYPE_RESTART_EVENTS) ||
 			GlobalData.applicationEventBluetoothRescan.equals(GlobalData.RESCAN_TYPE_SCREEN_ON_RESTART_EVENTS))
 		{
 			// rescan bluetooth
-			BluetoothScanAlarmBroadcastReceiver.sendBroadcast(context);
+			BluetoothScanAlarmBroadcastReceiver.setAlarm(context, true);
 		}
 		
 		Toast msg = Toast.makeText(context, 
