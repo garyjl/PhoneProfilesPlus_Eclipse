@@ -102,6 +102,13 @@ public class ActivateProfileHelper {
 	@SuppressWarnings("deprecation")
 	private void doExecuteForRadios(Profile profile, boolean onlyCheckForScanning)
 	{
+		
+		try {
+        	Thread.sleep(300);
+	    } catch (InterruptedException e) {
+	        System.out.println(e);
+	    }
+		
 		// nahodenie mobilnych dat
 		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA, context) == GlobalData.HARDWARE_CHECK_ALLOWED)
 		{
@@ -130,7 +137,14 @@ public class ActivateProfileHelper {
 			if (_setMobileData)
 			{
 				if (!onlyCheckForScanning)
+				{
 					setMobileData(context, _isMobileData);
+					try {
+			        	Thread.sleep(200);
+				    } catch (InterruptedException e) {
+				        System.out.println(e);
+				    }
+				}
 			}
 		}
 
@@ -177,6 +191,11 @@ public class ActivateProfileHelper {
 					if (isWifiEnabled)
 						WifiScanAlarmBroadcastReceiver.setWifiEnabledForScan(context, false);
 				}
+				try {
+		        	Thread.sleep(200);
+			    } catch (InterruptedException e) {
+			        System.out.println(e);
+			    }
 			}
 		}
 		
@@ -295,13 +314,6 @@ public class ActivateProfileHelper {
 		if (_setAirplaneMode && !(_isAirplaneMode))
 			// switch OFF airplane mode, set if after executeForRadios
 			setAirplaneMode(context, _isAirplaneMode);
-		
-		try {
-        	Thread.sleep(500);
-	    } catch (InterruptedException e) {
-	        System.out.println(e);
-	    }
-		
 	}
 	
 	private void waitForVolumeChange()
