@@ -85,10 +85,18 @@ public class BrightnessDialogPreference extends
 
 		typedArray.recycle();
 		
-		maximumValue = ActivateProfileHelper.getMaximumScreenBrightnessSetting(_context);
-		minimumValue = ActivateProfileHelper.getMinimumScreenBrightnessSetting(_context);
-		if (minimumValue == 0)
+		if (android.os.Build.VERSION.SDK_INT < 21) // for Android 5.0: adaptive brightness
+		{
+			maximumValue = ActivateProfileHelper.getMaximumScreenBrightnessSetting(_context);
+			minimumValue = ActivateProfileHelper.getMinimumScreenBrightnessSetting(_context);
+			if (minimumValue == 0)
+				minimumValue = 1;
+		}
+		else
+		{
+			maximumValue = 255;
 			minimumValue = 1;
+		}
 		
 		_defaultProfile = GlobalData.getDefaultProfile(_context);
 		
