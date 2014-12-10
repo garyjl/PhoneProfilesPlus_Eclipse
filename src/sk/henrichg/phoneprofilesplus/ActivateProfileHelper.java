@@ -640,22 +640,22 @@ public class ActivateProfileHelper {
 			
 			if (profile.getDeviceBrightnessAutomatic())
 			{
-				Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
+				Settings.System.putInt(context.getContentResolver(), 
+							Settings.System.SCREEN_BRIGHTNESS_MODE, 
+							Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
 				if (android.os.Build.VERSION.SDK_INT >= 21) // for Android 5.0: adaptive brightness
-				{
-					int brightness = profile.getDeviceBrightnessValue();
-					if (brightness == Profile.BRIGHTNESS_ADAPTIVE_BRIGHTNESS_NOT_SET)
-						// brightness is not set, change it to default adaptive brightness value
-						brightness = Math.round(Settings.System.getFloat(context.getContentResolver(), 
-											ActivateProfileHelper.ADAPTIVE_BRIGHTNESS_SETTING_NAME, 0f)*127 + 127 + 1);
-					// screen_auto_brightness_adj -1.0 .. 1.0
-					Settings.System.putFloat(context.getContentResolver(), ADAPTIVE_BRIGHTNESS_SETTING_NAME, (brightness - 1 - 127) / 127f);
-				}
+					Settings.System.putFloat(context.getContentResolver(), 
+							ADAPTIVE_BRIGHTNESS_SETTING_NAME, 
+							profile.getDeviceBrightnessAdaptiveValue(context));
 			}
 			else
 			{
-				Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
-				Settings.System.putInt(context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, profile.getDeviceBrightnessValue());
+				Settings.System.putInt(context.getContentResolver(), 
+							Settings.System.SCREEN_BRIGHTNESS_MODE, 
+							Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
+				Settings.System.putInt(context.getContentResolver(), 
+							Settings.System.SCREEN_BRIGHTNESS, 
+							profile.getDeviceBrightnessManualValue(context));
 			}
 			
 			if (brightnessHandler != null)

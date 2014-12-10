@@ -11,8 +11,6 @@ import android.content.res.TypedArray;
 
 import android.preference.DialogPreference;
 import android.provider.Settings;
-import android.provider.Settings.SettingNotFoundException;
-
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,8 +46,8 @@ public class BrightnessDialogPreference extends
 	private int defaultProfile = 0;
 	private int disableDefaultProfile = 0;
 	
-	private int maximumValue = 255;
-	private int minimumValue = 1;
+	private int maximumValue = 100;
+	private int minimumValue = 0;
 	private int stepSize = 1;
 
 	private String sValue = "";
@@ -84,19 +82,6 @@ public class BrightnessDialogPreference extends
 				R.styleable.BrightnessDialogPreference_bDisableDefaultProfile, 0);
 
 		typedArray.recycle();
-		
-		if (android.os.Build.VERSION.SDK_INT < 21) // for Android 5.0: adaptive brightness
-		{
-			maximumValue = ActivateProfileHelper.getMaximumScreenBrightnessSetting(_context);
-			minimumValue = ActivateProfileHelper.getMinimumScreenBrightnessSetting(_context);
-			if (minimumValue == 0)
-				minimumValue = 1;
-		}
-		else
-		{
-			maximumValue = 255;
-			minimumValue = 1;
-		}
 		
 		_defaultProfile = GlobalData.getDefaultProfile(_context);
 		
@@ -185,20 +170,18 @@ public class BrightnessDialogPreference extends
 		}
 
 		// Set the valueText text.
-		long perc = Math.round((float)value / (maximumValue - minimumValue) * 100.0);
-		valueText.setText(String.valueOf(perc));
-		
+		valueText.setText(String.valueOf(value));
 
 		if (automatic == 1)
 			Settings.System.putInt(_context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
 		else
 			Settings.System.putInt(_context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
-		Settings.System.putInt(_context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, value + minimumValue);
+		Settings.System.putInt(_context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, 
+								Profile.convertPercentsToBrightnessManualValue(value + minimumValue, _context));
 		if (android.os.Build.VERSION.SDK_INT >= 21) // for Android 5.0: adaptive brightness
 		{
-			int v = (maximumValue - minimumValue) / 2;
 			Settings.System.putFloat(_context.getContentResolver(), ActivateProfileHelper.ADAPTIVE_BRIGHTNESS_SETTING_NAME, 
-										(value + minimumValue - 1 - v) / (v * 1.0f));
+								Profile.convertPercentsToBrightnessAdaptiveValue(value + minimumValue, _context));
 		}
 		
 		Window win = ProfilePreferencesFragment.getPreferencesActivity().getWindow();
@@ -216,7 +199,7 @@ public class BrightnessDialogPreference extends
 
 		boolean isAutomatic = (automatic == 1);
 		if (android.os.Build.VERSION.SDK_INT >= 21) // for Android 5.0: adaptive brightness
-			isAutomatic = false;
+			isAutomatic = false;  // enable change value via seek bar
 		
 		if (buttonView.getId() == R.id.brightnessPrefDialogNoChange)
 		{
@@ -246,12 +229,13 @@ public class BrightnessDialogPreference extends
 
 			isAutomatic = (automatic == 1);
 			if (android.os.Build.VERSION.SDK_INT >= 21) // for Android 5.0: adaptive brightness
-				isAutomatic = false;
+				isAutomatic = false;  // enable change value via seek bar
 			
 			valueText.setEnabled((noChange == 0) && (defaultProfile == 0) && (!isAutomatic));
 			seekBar.setEnabled((noChange == 0) && (defaultProfile == 0) && (!isAutomatic));
 		}
 		
+		// get values from defaultProfile when default profile checkbox is checked
 		int _automatic = automatic;
 		int _noChange = noChange;
 		int _value = value;
@@ -260,23 +244,14 @@ public class BrightnessDialogPreference extends
 			_automatic = (_defaultProfile.getDeviceBrightnessAutomatic()) ? 1 : 0;
 			_noChange = (_defaultProfile.getDeviceBrightnessChange()) ? 0 : 1;
 			_value = _defaultProfile.getDeviceBrightnessValue();
-			if (_value == Profile.BRIGHTNESS_ADAPTIVE_BRIGHTNESS_NOT_SET)
-				// brightness is not set, change it to default adaptive brightness value
-				_value = Math.round(savedAdaptiveBrightness*127 + 127 + 1);
-		}
 
-		isAutomatic = (_automatic == 1);
-		if (android.os.Build.VERSION.SDK_INT >= 21) // for Android 5.0: adaptive brightness
-			isAutomatic = false;
+			isAutomatic = (_automatic == 1);
+			if (android.os.Build.VERSION.SDK_INT >= 21) // for Android 5.0: adaptive brightness
+				isAutomatic = false;  // enable change value via seek bar
+		}
 		
 		if ((isAutomatic) || (_noChange == 1)) 
 		{
-			/*
-			Window win = ProfilePreferencesFragment.getPreferencesActivity().getWindow();
-			WindowManager.LayoutParams layoutParams = win.getAttributes();
-			layoutParams.screenBrightness = Settings.System.getInt(_context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, 128) / 255.0f;
-			win.setAttributes(layoutParams);
-			*/
 			Settings.System.putInt(_context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, savedBrightnessMode);
 			Settings.System.putInt(_context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, savedBrightness);
 			if (android.os.Build.VERSION.SDK_INT >= 21) // for Android 5.0: adaptive brightness
@@ -289,23 +264,16 @@ public class BrightnessDialogPreference extends
 		}
 		else
 		{
-			/*
-			Window win = ProfilePreferencesFragment.getPreferencesActivity().getWindow();
-			WindowManager.LayoutParams layoutParams = win.getAttributes();
-			layoutParams.screenBrightness = (float)(_value + minimumValue) / maximumValue;
-			win.setAttributes(layoutParams);
-			*/
-			
 			if (_automatic == 1)
 				Settings.System.putInt(_context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
 			else
 				Settings.System.putInt(_context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
-			Settings.System.putInt(_context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, value);
+			Settings.System.putInt(_context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, 
+									Profile.convertPercentsToBrightnessManualValue(_value + minimumValue, _context));
 			if (android.os.Build.VERSION.SDK_INT >= 21) // for Android 5.0: adaptive brightness
 			{
-				int v = (maximumValue - minimumValue) / 2;
 				Settings.System.putFloat(_context.getContentResolver(), ActivateProfileHelper.ADAPTIVE_BRIGHTNESS_SETTING_NAME, 
-											(_value + minimumValue - 1 - v) / (v * 1.0f));
+									Profile.convertPercentsToBrightnessAdaptiveValue(_value + minimumValue, _context));
 			}
 			
 			Window win = ProfilePreferencesFragment.getPreferencesActivity().getWindow();
@@ -354,10 +322,7 @@ public class BrightnessDialogPreference extends
 		}
 		else {
 			// set state
-			if (android.os.Build.VERSION.SDK_INT >= 21) // for Android 5.0: adaptive brightness
-				value = Math.round(savedAdaptiveBrightness*127 + 127 + 1);
-			else
-				value = 0;
+			value = 50;
 			noChange = 1;
 			automatic = 1;
 			defaultProfile = 0;
@@ -378,18 +343,12 @@ public class BrightnessDialogPreference extends
 		try {
 			value = Integer.parseInt(splits[0]);
 			if (value == -1)
-			{
-				try {
-					value = android.provider.Settings.System.getInt(_context.getContentResolver(), android.provider.Settings.System.SCREEN_BRIGHTNESS);
-				} catch (SettingNotFoundException e) {
-					value = 0;
-				}
-			}
+				value = 50;
 			if (value == Profile.BRIGHTNESS_ADAPTIVE_BRIGHTNESS_NOT_SET)
 				// brightness is not set, change it to default adaptive brightness value
-				value = Math.round(savedAdaptiveBrightness*127 + 127 + 1);
+				value = Math.round(savedAdaptiveBrightness * 50 + 50);
 		} catch (Exception e) {
-			value = 0;
+			value = 50;
 		}
 		value = value - minimumValue;
 		try {
@@ -426,8 +385,7 @@ public class BrightnessDialogPreference extends
 			prefVolumeDataSummary = _context.getResources().getString(R.string.preference_profile_default_profile);
 		else
 		{
-			long perc = Math.round((float)value / (maximumValue - minimumValue) * 100.0);
-			String sValue = String.valueOf(perc) + " / 100";
+			String sValue = String.valueOf(value) + " / 100";
 			if (automatic == 1)
 			{
 				if (android.os.Build.VERSION.SDK_INT >= 21) // for Android 5.0: adaptive brightness

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.provider.Settings;
 
 public class Profile {
 	
@@ -571,6 +572,94 @@ public class Profile {
 			value = 1;
 		}
 		return (value == 1) ? true : false;
+	}
+	
+	public static int convertPercentsToBrightnessManualValue(int perc, Context context)
+	{
+		int maximumValue = ActivateProfileHelper.getMaximumScreenBrightnessSetting(context);
+		int minimumValue = ActivateProfileHelper.getMinimumScreenBrightnessSetting(context);
+
+		int value;
+
+		if (perc == BRIGHTNESS_ADAPTIVE_BRIGHTNESS_NOT_SET)
+			// brightness is not set, change it to default manual brightness value
+			value = Settings.System.getInt(context.getContentResolver(), 
+											Settings.System.SCREEN_BRIGHTNESS, 128);
+		else
+			value = Math.round((float)(maximumValue - minimumValue) / 100 * perc) + minimumValue;
+		
+		return value;
+	}
+	
+	public int getDeviceBrightnessManualValue(Context context)
+	{
+		int perc = getDeviceBrightnessValue();
+		return convertPercentsToBrightnessManualValue(perc, context);
+	}
+
+	public static float convertPercentsToBrightnessAdaptiveValue(int perc, Context context)
+	{
+		float value;
+		
+		if (perc == BRIGHTNESS_ADAPTIVE_BRIGHTNESS_NOT_SET)
+			// brightness is not set, change it to default adaptive brightness value
+			value = Settings.System.getFloat(context.getContentResolver(), 
+								ActivateProfileHelper.ADAPTIVE_BRIGHTNESS_SETTING_NAME, 0f);
+		else
+			value = (perc - 50) / 50f;
+		
+		return value;
+	}
+	
+	public float getDeviceBrightnessAdaptiveValue(Context context)
+	{
+		int perc = getDeviceBrightnessValue();
+		return convertPercentsToBrightnessAdaptiveValue(perc, context);
+	}
+	
+	public static long convertBrightnessToPercents(int value, 
+			int maxValue, int minValue, Context context)
+	{
+		long perc;
+		if (value == BRIGHTNESS_ADAPTIVE_BRIGHTNESS_NOT_SET)
+			perc = value; // keep BRIGHTNESS_ADAPTIVE_BRIGHTNESS_NOT_SET
+		else
+			perc = Math.round((float)(value-minValue) / (maxValue - minValue) * 100.0);
+		
+		return perc;
+	}
+	
+	public void setDeviceBrightnessManualValue(int value, Context context)
+	{
+		int maxValue = ActivateProfileHelper.getMaximumScreenBrightnessSetting(context);
+		int minValue = ActivateProfileHelper.getMinimumScreenBrightnessSetting(context);
+
+		long perc = convertBrightnessToPercents(value, maxValue, minValue, context);
+		
+		//value|noChange|automatic|defaultProfile
+		String[] splits = _deviceBrightness.split("\\|");
+		// hm, found brightness values without default profile :-/ 
+		if (splits.length == 4)
+			_deviceBrightness = String.valueOf(perc)+"|"+splits[1]+"|"+splits[2]+"|"+ splits[3];
+		else
+			_deviceBrightness = String.valueOf(perc)+"|"+splits[1]+"|"+splits[2]+"|0";
+	}
+	
+	public void setDeviceBrightnessAdaptiveValue(float value)
+	{
+		long perc;
+		if (value == BRIGHTNESS_ADAPTIVE_BRIGHTNESS_NOT_SET)
+			perc = Math.round(value); // keep BRIGHTNESS_ADAPTIVE_BRIGHTNESS_NOT_SET
+		else
+			perc = Math.round(value * 50 + 50);
+
+		//value|noChange|automatic|defaultProfile
+		String[] splits = _deviceBrightness.split("\\|");
+		// hm, found brightness values without default profile :-/ 
+		if (splits.length == 4)
+			_deviceBrightness = String.valueOf(perc)+"|"+splits[1]+"|"+splits[2]+"|"+ splits[3];
+		else
+			_deviceBrightness = String.valueOf(perc)+"|"+splits[1]+"|"+splits[2]+"|0";
 	}
 	
 	// getting wallpaper identifikator
