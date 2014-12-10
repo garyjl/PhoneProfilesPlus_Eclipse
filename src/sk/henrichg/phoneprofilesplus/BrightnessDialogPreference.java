@@ -185,7 +185,9 @@ public class BrightnessDialogPreference extends
 		}
 
 		// Set the valueText text.
-		valueText.setText(String.valueOf(value + minimumValue));
+		long perc = Math.round((float)value / (maximumValue - minimumValue) * 100.0);
+		valueText.setText(String.valueOf(perc));
+		
 
 		if (automatic == 1)
 			Settings.System.putInt(_context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
@@ -424,7 +426,8 @@ public class BrightnessDialogPreference extends
 			prefVolumeDataSummary = _context.getResources().getString(R.string.preference_profile_default_profile);
 		else
 		{
-			String sValue = String.valueOf(value + minimumValue) + " / " + String.valueOf(maximumValue);
+			long perc = Math.round((float)value / (maximumValue - minimumValue) * 100.0);
+			String sValue = String.valueOf(perc) + " / 100";
 			if (automatic == 1)
 			{
 				if (android.os.Build.VERSION.SDK_INT >= 21) // for Android 5.0: adaptive brightness
