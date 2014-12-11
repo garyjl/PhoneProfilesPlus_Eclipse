@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Path.FillType;
 import android.support.v4.content.WakefulBroadcastReceiver;
 
 public class BluetoothScanBroadcastReceiver extends WakefulBroadcastReceiver {
@@ -42,6 +43,8 @@ public class BluetoothScanBroadcastReceiver extends WakefulBroadcastReceiver {
 				
 	            if (BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action))
 	            {
+	            	BluetoothScanAlarmBroadcastReceiver.fillBoundedDevicesList(context);
+
 	            	if (BluetoothScanAlarmBroadcastReceiver.tmpScanResults == null)
 	            		BluetoothScanAlarmBroadcastReceiver.tmpScanResults = new ArrayList<BluetoothDeviceData>();
 	            	else

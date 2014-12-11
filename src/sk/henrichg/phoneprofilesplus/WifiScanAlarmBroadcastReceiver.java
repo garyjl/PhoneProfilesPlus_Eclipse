@@ -140,7 +140,6 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		{
 			fillWifiConfigurationList(context);
 		}
-			
 	}
 	
 	@SuppressLint("SimpleDateFormat")

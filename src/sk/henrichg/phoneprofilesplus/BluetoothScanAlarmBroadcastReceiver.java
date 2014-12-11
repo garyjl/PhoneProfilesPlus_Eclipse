@@ -3,16 +3,20 @@ package sk.henrichg.phoneprofilesplus;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiManager;
 import android.util.Log;
 
 public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
@@ -24,6 +28,7 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
 
 	public static List<BluetoothDeviceData> tmpScanResults = null;
 	public static List<BluetoothDeviceData> scanResults = null;
+	public static List<BluetoothDeviceData> boundedDevicesList = null;
 	
 	public void onReceive(Context context, Intent intent) {
 		
@@ -113,6 +118,12 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		Editor editor = preferences.edit();
 		editor.putInt(GlobalData.PREF_EVENT_BLUETOOTH_LAST_STATE, -1);
 		editor.commit();
+		
+		if (bluetooth.isEnabled())
+		{
+			fillBoundedDevicesList(context);
+		}
+		
 	}
 	
 	public static void setAlarm(Context context, boolean oneshot)
@@ -308,6 +319,21 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		Editor editor = preferences.edit();
 		editor.putBoolean(GlobalData.PREF_EVENT_BLUETOOTH_ENABLED_FOR_SCAN, setEnabled);
 		editor.commit();
+	}
+	
+	static public void fillBoundedDevicesList(Context context)
+	{
+		if (boundedDevicesList == null)
+			boundedDevicesList = new ArrayList<BluetoothDeviceData>();
+		
+		if (bluetooth == null)
+			bluetooth = (BluetoothAdapter) BluetoothAdapter.getDefaultAdapter();
+		
+        Set<BluetoothDevice> boundedDevices = BluetoothScanAlarmBroadcastReceiver.bluetooth.getBondedDevices();
+        for (BluetoothDevice device : boundedDevices)
+        {
+        	boundedDevicesList.add(new BluetoothDeviceData(device.getName(), device.getAddress()));
+        }
 	}
 	
 }

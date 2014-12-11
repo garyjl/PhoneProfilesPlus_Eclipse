@@ -24,8 +24,6 @@ public class WifiSSIDPreference extends DialogPreference {
 	private String value;
 	public List<WifiSSIDData> SSIDList = null;
 	
-	boolean isWifiEnabled = false;
-	
 	Context context;
 	
 	private LinearLayout progressLinearLayout;
@@ -77,11 +75,6 @@ public class WifiSSIDPreference extends DialogPreference {
         listAdapter = new WifiSSIDPreferenceAdapter(context, this);
         SSIDListView.setAdapter(listAdapter);
 
-		if (WifiScanAlarmBroadcastReceiver.wifi == null)
-			WifiScanAlarmBroadcastReceiver.wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-        
-        isWifiEnabled = WifiScanAlarmBroadcastReceiver.wifi.getWifiState() == WifiManager.WIFI_STATE_ENABLED;
-		
         refreshListView(false);
         
 		SSIDListView.setOnItemClickListener(new OnItemClickListener() {
@@ -101,9 +94,6 @@ public class WifiSSIDPreference extends DialogPreference {
     protected void onDialogClosed(boolean positiveResult) {
     	if (!rescanAsyncTask.isCancelled())
     		rescanAsyncTask.cancel(true);
-    	
-    	if (!isWifiEnabled)
-    		WifiScanAlarmBroadcastReceiver.wifi.setWifiEnabled(false);
     	
         if (positiveResult) {
 
@@ -167,34 +157,8 @@ public class WifiSSIDPreference extends DialogPreference {
 			
 			@Override
 			protected Void doInBackground(Void... params) {
-				if (!isWifiEnabled)
-				{
-					WifiScanAlarmBroadcastReceiver.wifi.setWifiEnabled(true);
-			        try {
-			        	Thread.sleep(1500);
-				    } catch (InterruptedException e) {
-				        System.out.println(e);
-				    }
-				}
-				
-				if (isCancelled())
-				{
-					if (!isWifiEnabled)
-						WifiScanAlarmBroadcastReceiver.wifi.setWifiEnabled(false);
-					return null;
-				}
-				
 				SSIDList.clear();
 				
-				WifiScanAlarmBroadcastReceiver.fillWifiConfigurationList(context);
-				if (WifiScanAlarmBroadcastReceiver.wifiConfigurationList != null)
-				{
-					for (WifiSSIDData wifiConfiguration : WifiScanAlarmBroadcastReceiver.wifiConfigurationList)
-					{
-			        	SSIDList.add(new WifiSSIDData(wifiConfiguration.ssid.replace("\"", ""), wifiConfiguration.bssid));
-					}
-				}
-
 				if (_forRescan)
 				{
 	            	GlobalData.setForceOneWifiScan(context, true);
@@ -218,8 +182,13 @@ public class WifiSSIDPreference extends DialogPreference {
 		        	}
 		        }
 
-				if (!isWifiEnabled)
-					WifiScanAlarmBroadcastReceiver.wifi.setWifiEnabled(false);
+				if (WifiScanAlarmBroadcastReceiver.wifiConfigurationList != null)
+				{
+					for (WifiSSIDData wifiConfiguration : WifiScanAlarmBroadcastReceiver.wifiConfigurationList)
+					{
+			        	SSIDList.add(new WifiSSIDData(wifiConfiguration.ssid.replace("\"", ""), wifiConfiguration.bssid));
+					}
+				}
 		        
 		        if (WifiScanAlarmBroadcastReceiver.scanResults != null)
 		        {

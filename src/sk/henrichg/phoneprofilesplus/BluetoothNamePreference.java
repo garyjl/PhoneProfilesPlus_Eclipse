@@ -27,8 +27,6 @@ public class BluetoothNamePreference extends DialogPreference {
 	private String value;
 	public List<BluetoothDeviceData> bluetoothList = null;
 	
-	boolean isBluetoothEnabled = false;
-	
 	Context context;
 	
 	private LinearLayout progressLinearLayout;
@@ -80,11 +78,6 @@ public class BluetoothNamePreference extends DialogPreference {
         listAdapter = new BluetoothNamePreferenceAdapter(context, this);
         bluetoothListView.setAdapter(listAdapter);
         
-		if (BluetoothScanAlarmBroadcastReceiver.bluetooth == null)
-			BluetoothScanAlarmBroadcastReceiver.bluetooth = (BluetoothAdapter) BluetoothAdapter.getDefaultAdapter();
-
-        isBluetoothEnabled = BluetoothScanAlarmBroadcastReceiver.bluetooth.isEnabled();
-		
         refreshListView(false);
         
 		bluetoothListView.setOnItemClickListener(new OnItemClickListener() {
@@ -105,9 +98,6 @@ public class BluetoothNamePreference extends DialogPreference {
     	
     	if (!rescanAsyncTask.isCancelled())
     		rescanAsyncTask.cancel(true);
-    	
-    	if (!isBluetoothEnabled)
-    		BluetoothScanAlarmBroadcastReceiver.bluetooth.disable();
     	
         if (positiveResult) {
 
@@ -171,31 +161,8 @@ public class BluetoothNamePreference extends DialogPreference {
 			
 			@Override
 			protected Void doInBackground(Void... params) {
-				if (!isBluetoothEnabled)
-				{
-					BluetoothScanAlarmBroadcastReceiver.bluetooth.enable();
-			        try {
-			        	Thread.sleep(1500);
-				    } catch (InterruptedException e) {
-				        System.out.println(e);
-				    }
-				}
-				
-				if (isCancelled())
-				{
-					if (!isBluetoothEnabled)
-						BluetoothScanAlarmBroadcastReceiver.bluetooth.disable();
-					return null;
-				}
-				
 				bluetoothList.clear();
 				
-		        Set<BluetoothDevice> boundedDeviced = BluetoothScanAlarmBroadcastReceiver.bluetooth.getBondedDevices();
-		        for (BluetoothDevice device : boundedDeviced)
-		        {
-		        	bluetoothList.add(new BluetoothDeviceData(device.getName(), device.getAddress()));
-		        }
-		        
 				if (_forRescan)
 				{
 	            	GlobalData.setForceOneBluetoothScan(context, true);
@@ -219,8 +186,13 @@ public class BluetoothNamePreference extends DialogPreference {
 		        	}
 		        }
 
-				if (!isBluetoothEnabled)
-					BluetoothScanAlarmBroadcastReceiver.bluetooth.disable();
+				if (BluetoothScanAlarmBroadcastReceiver.boundedDevicesList != null)
+				{
+			        for (BluetoothDeviceData device : BluetoothScanAlarmBroadcastReceiver.boundedDevicesList)
+			        {
+			        	bluetoothList.add(new BluetoothDeviceData(device.name, device.address));
+			        }
+				}
 		        
 		        if (BluetoothScanAlarmBroadcastReceiver.scanResults != null)
 		        {
