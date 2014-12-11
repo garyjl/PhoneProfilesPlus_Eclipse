@@ -56,8 +56,8 @@ public class ActivateProfileHelper {
 	
 	public static boolean lockRefresh = false; 
 	
-	private static final String PPHELPERACTION = "sk.henrichg.phoneprofileshelper.ACTION";
-	//private static final String SETRADIOACTION = "sk.henrichg.phoneprofilesplus.SetRadiosForProfile.ACTION";
+	public static final String	PPHELPER_ACTION_SETPROFILEPREFERENCES = "sk.henrichg.phoneprofileshelper.ACTION_SETPROFILEPREFERENCES";
+
 	private static final String PPHELPER_PROCEDURE = "procedure";
 	private static final String PPHELPER_PROCEDURE_RADIO_CHANGE = "radioChange";
 	private static final String PPHELPER_GPS_CHANGE = "GPSChange";
@@ -66,6 +66,8 @@ public class ActivateProfileHelper {
 	private static final String PPHELPER_WIFI_CHANGE = "WiFiChange";
 	private static final String PPHELPER_BLUETOOTH_CHANGE = "bluetoothChange";
 	private static final String PPHELPER_MOBILE_DATA_CHANGE = "mobileDataChange";
+
+	//private static final String SETRADIOACTION = "sk.henrichg.phoneprofilesplus.SetRadiosForProfile.ACTION";
 	
 	public static final String ADAPTIVE_BRIGHTNESS_SETTING_NAME = "screen_auto_brightness_adj";
 	
@@ -564,7 +566,7 @@ public class ActivateProfileHelper {
 		{
 			// broadcast PPHelper
 			Intent ppHelperIntent = new Intent();
-			ppHelperIntent.setAction(PPHELPERACTION);
+			ppHelperIntent.setAction(PPHELPER_ACTION_SETPROFILEPREFERENCES);
 			ppHelperIntent.putExtra(PPHELPER_PROCEDURE, PPHELPER_PROCEDURE_RADIO_CHANGE);
 			ppHelperIntent.putExtra(PPHELPER_GPS_CHANGE, profile._deviceGPS);
 			ppHelperIntent.putExtra(PPHELPER_AIRPLANE_MODE_CHANGE, profile._deviceAirplaneMode);

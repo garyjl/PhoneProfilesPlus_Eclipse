@@ -19,6 +19,9 @@ public class ScannerService extends IntentService
 	private final WifiScanBroadcastReceiver wifiScanReceiver = new WifiScanBroadcastReceiver();
 	private final BluetoothScanBroadcastReceiver bluetoothScanReceiver = new BluetoothScanBroadcastReceiver();
 	
+	private static final String	PPHELPER_ACTION_WIFISCANNERACTIVITY = "sk.henrichg.phoneprofileshelper.ACTION_WIFISCANNERACTIVITY";
+	private static final String	PPHELPER_ACTION_BLUETOOTHSCANNERACTIVITY = "sk.henrichg.phoneprofileshelper.ACTION_BLUETOOTHSCANNERACTIVITY";
+	
 	public ScannerService()
 	{
 		super("ScannerService");
