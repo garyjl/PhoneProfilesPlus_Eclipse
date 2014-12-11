@@ -171,19 +171,7 @@ public class BluetoothNamePreference extends DialogPreference {
 				
 		        if (_forRescan)
 		        {
-		        	for (int i = 0; i < 5 * 20; i++) // 20 seconds for bluetooth scan
-		        	{
-		        		if (isCancelled())
-		        			break;
-		        		
-				        try {
-				        	Thread.sleep(200);
-					    } catch (InterruptedException e) {
-					        System.out.println(e);
-					    }
-			        	if (!BluetoothScanAlarmBroadcastReceiver.getStartScan(context))
-			        		break;
-		        	}
+		        	ScannerService.waitForBluetoothScanEnd(context, this);
 		        }
 
 				if (BluetoothScanAlarmBroadcastReceiver.boundedDevicesList != null)

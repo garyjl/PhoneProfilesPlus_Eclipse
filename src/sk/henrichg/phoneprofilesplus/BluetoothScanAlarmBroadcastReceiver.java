@@ -51,56 +51,53 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		{
 			GlobalData.logE("@@@ BluetoothScanAlarmBroadcastReceiver.onReceive","xxx");
 
-			//if (!getStartScan(context))
-			//{	
-				boolean bluetoothEventsExists = false;
-				
-				DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
-				bluetoothEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_BLUETOOTHINFRONT) > 0;
-				GlobalData.logE("BluetoothScanAlarmBroadcastReceiver.onReceive","bluetoothEventsExists="+bluetoothEventsExists);
-	
-				if (bluetoothEventsExists || GlobalData.getForceOneBluetoothScan(context))
-				{
-					int bluetoothState = bluetooth.getState();
-					if (bluetoothState == BluetoothAdapter.STATE_ON)
-				    {
+			boolean bluetoothEventsExists = false;
+			
+			DataWrapper dataWrapper = new DataWrapper(context, false, false, 0);
+			bluetoothEventsExists = dataWrapper.getDatabaseHandler().getTypeEventsCount(DatabaseHandler.ETYPE_BLUETOOTHINFRONT) > 0;
+			GlobalData.logE("BluetoothScanAlarmBroadcastReceiver.onReceive","bluetoothEventsExists="+bluetoothEventsExists);
 
-						boolean connected = BluetoothConnectionBroadcastReceiver.isBluetoothConnected("");
-						if (connected && (!GlobalData.getForceOneBluetoothScan(context)))
-						{
-							GlobalData.logE("@@@ BluetoothScanAlarmBroadcastReceiver.onReceive","bluetooth is connected");
-	
-							// bluetooth is connected
+			if (bluetoothEventsExists || GlobalData.getForceOneBluetoothScan(context))
+			{
+				int bluetoothState = bluetooth.getState();
+				if (bluetoothState == BluetoothAdapter.STATE_ON)
+			    {
 
-			    			boolean isBluetoothNameScanned = BluetoothConnectionBroadcastReceiver.isAdapterNameScanned(dataWrapper);  
-			    			
-							boolean noScanData = scanResults.size() == 0;
-			    			
-			    			if ((isBluetoothNameScanned) && (!noScanData))
-			    			{
-			    				// connected bluetooth name is scanned
-			    				// no scan
-			    				
-			        			setBluetoothEnabledForScan(context, false);
-			    				setStartScan(context, false);
-			        			GlobalData.setForceOneBluetoothScan(context, false);
-	
-			    				GlobalData.logE("@@@ BluetoothScanAlarmBroadcastReceiver.onReceive","connected SSID is scanned, no start scan");
-	
-			    				dataWrapper.invalidateDataWrapper();
-			    				
-			    				return;
-			    			}
-						}
-				    }	
-					
-					startScanner(context);
-				}
-				else
-					removeAlarm(context, false);
+					boolean connected = BluetoothConnectionBroadcastReceiver.isBluetoothConnected("");
+					if (connected && (!GlobalData.getForceOneBluetoothScan(context)))
+					{
+						GlobalData.logE("@@@ BluetoothScanAlarmBroadcastReceiver.onReceive","bluetooth is connected");
+
+						// bluetooth is connected
+
+		    			boolean isBluetoothNameScanned = BluetoothConnectionBroadcastReceiver.isAdapterNameScanned(dataWrapper);  
+		    			
+						boolean noScanData = scanResults.size() == 0;
+		    			
+		    			if ((isBluetoothNameScanned) && (!noScanData))
+		    			{
+		    				// connected bluetooth name is scanned
+		    				// no scan
+		    				
+		        			setBluetoothEnabledForScan(context, false);
+		    				setStartScan(context, false);
+		        			GlobalData.setForceOneBluetoothScan(context, false);
+
+		    				GlobalData.logE("@@@ BluetoothScanAlarmBroadcastReceiver.onReceive","connected SSID is scanned, no start scan");
+
+		    				dataWrapper.invalidateDataWrapper();
+		    				
+		    				return;
+		    			}
+					}
+			    }	
 				
-				dataWrapper.invalidateDataWrapper();
-			//}
+				startScanner(context);
+			}
+			else
+				removeAlarm(context, false);
+			
+			dataWrapper.invalidateDataWrapper();
 		}
 		
 	}

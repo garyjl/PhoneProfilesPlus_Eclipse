@@ -167,19 +167,7 @@ public class WifiSSIDPreference extends DialogPreference {
 					
 		        if (_forRescan)
 		        {
-		        	for (int i = 0; i < 5 * 60; i++) // 60 seconds for wifi scan
-		        	{
-		        		if (isCancelled())
-		        			break;
-		        		
-				        try {
-				        	Thread.sleep(200);
-					    } catch (InterruptedException e) {
-					        System.out.println(e);
-					    }
-			        	if (!WifiScanAlarmBroadcastReceiver.getStartScan(context))
-			        		break;
-		        	}
+		        	ScannerService.waitForWifiScanEnd(context, this);
 		        }
 
 				if (WifiScanAlarmBroadcastReceiver.wifiConfigurationList != null)
