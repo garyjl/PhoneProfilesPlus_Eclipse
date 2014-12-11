@@ -282,6 +282,12 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		editor.putBoolean(GlobalData.PREF_EVENT_WIFI_START_SCAN, startScan);
 		editor.commit();
       	GlobalData.logE("@@@ WifiScanAlarmBroadcastReceiver.setStartScan","startScan="+startScan);
+
+      	// send broadcast about scanner activity to PPHelper
+		Intent ppHelperIntent = new Intent();
+		ppHelperIntent.setAction(ScannerService.PPHELPER_ACTION_WIFISCANNERACTIVITY);
+		ppHelperIntent.putExtra(ScannerService.PPHELPER_EXTRA_SCANNERACTIVITY, startScan);
+	    context.sendBroadcast(ppHelperIntent);
 	}
 	
 	static public void startScan(Context context)

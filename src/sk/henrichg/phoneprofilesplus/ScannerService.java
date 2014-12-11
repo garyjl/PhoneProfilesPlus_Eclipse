@@ -12,15 +12,16 @@ import android.os.AsyncTask;
 
 public class ScannerService extends IntentService
 {
-
 	Context context;
 	DataWrapper dataWrapper;
 	
 	private final WifiScanBroadcastReceiver wifiScanReceiver = new WifiScanBroadcastReceiver();
 	private final BluetoothScanBroadcastReceiver bluetoothScanReceiver = new BluetoothScanBroadcastReceiver();
-	
-	private static final String	PPHELPER_ACTION_WIFISCANNERACTIVITY = "sk.henrichg.phoneprofileshelper.ACTION_WIFISCANNERACTIVITY";
-	private static final String	PPHELPER_ACTION_BLUETOOTHSCANNERACTIVITY = "sk.henrichg.phoneprofileshelper.ACTION_BLUETOOTHSCANNERACTIVITY";
+
+	public static final String PPHELPER_ACTION_WIFISCANNERACTIVITY = "sk.henrichg.phoneprofileshelper.ACTION_WIFISCANNERACTIVITY";
+	public static final String	PPHELPER_ACTION_BLUETOOTHSCANNERACTIVITY = "sk.henrichg.phoneprofileshelper.ACTION_BLUETOOTHSCANNERACTIVITY";
+
+	public static final String PPHELPER_EXTRA_SCANNERACTIVITY = "sk.henrichg.phoneprofileshelper.EXTRA_SCANNERRUNNING";
 	
 	public ScannerService()
 	{
