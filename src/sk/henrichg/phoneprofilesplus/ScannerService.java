@@ -29,8 +29,8 @@ public class ScannerService extends IntentService
 	{
 		context = getBaseContext();
 
-		GlobalData.logE("@@@ ScannerService.onHandleIntent", "xxx");
-
+		GlobalData.logE("### ScannerService.onHandleIntent", "-- START ------------");
+		
 		String scanType = intent.getStringExtra(GlobalData.EXTRA_SCANNER_TYPE);
 		
 		if (scanType.equals(GlobalData.SCANNER_TYPE_WIFI))
@@ -180,6 +180,8 @@ public class ScannerService extends IntentService
 				GlobalData.logE("@@@ ScannerService.onHandleIntent", "getStartScan=true");
 		}
 	
+		GlobalData.logE("### ScannerService.onHandleIntent", "-- END ------------");
+		
 	}
 
     @SuppressLint("NewApi")

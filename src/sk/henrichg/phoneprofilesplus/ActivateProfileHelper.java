@@ -103,11 +103,14 @@ public class ActivateProfileHelper {
 	private void doExecuteForRadios(Profile profile, boolean onlyCheckForScanning)
 	{
 		
-		try {
-        	Thread.sleep(300);
-	    } catch (InterruptedException e) {
-	        System.out.println(e);
-	    }
+		if (!onlyCheckForScanning)
+		{
+			try {
+	        	Thread.sleep(300);
+		    } catch (InterruptedException e) {
+		        System.out.println(e);
+		    }
+		}
 		
 		// nahodenie mobilnych dat
 		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_MOBILE_DATA, context) == GlobalData.HARDWARE_CHECK_ALLOWED)
@@ -570,10 +573,14 @@ public class ActivateProfileHelper {
 		else
 		{
 			// run service for execute radios
-			Intent radioBroadcastReceiver = new Intent();
+			/*Intent radioBroadcastReceiver = new Intent();
 			radioBroadcastReceiver.setAction(SETRADIOACTION);
 			radioBroadcastReceiver.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
-		    context.sendBroadcast(radioBroadcastReceiver);
+		    context.sendBroadcast(radioBroadcastReceiver);*/
+			Intent radioServiceIntent = new Intent(context, ExecuteRadioProfilePrefsService.class);
+			radioServiceIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
+			//WakefulIntentService.sendWakefulWork(context, radioServiceIntent);
+			context.startService(radioServiceIntent);
 		}
 		
 		// nahodenie auto-sync

@@ -45,10 +45,10 @@ public class GlobalData extends Application {
 										 //"@@@ EventsTimeBroadcastReceiver|"+
 										 //"HeadsetConnectionBroadcastReceiver"
 										 //"@@@ SearchCalendarEventsBroadcastReceiver|"+
-										 "@@@ WifiConnectionBroadcastReceiver|"+
-										 "@@@ WifiScanAlarmBroadcastReceiver|"+
-										 "@@@ WifiScanBroadcastReceiver|"+
-										 "@@@ WifiStateChangedBroadcastReceiver|"+
+										 //"@@@ WifiConnectionBroadcastReceiver|"+
+										 //"@@@ WifiScanAlarmBroadcastReceiver|"+
+										 //"@@@ WifiScanBroadcastReceiver|"+
+										 //"@@@ WifiStateChangedBroadcastReceiver|"+
 										 //"@@@ ActivateProfileHelper"
 										 //"@@@ BluetoothConnectionBroadcastReceiver|"+
 										 //"@@@ BluetoothScanAlarmBroadcastReceiver|"+
@@ -62,8 +62,9 @@ public class GlobalData extends Application {
 										 //"@@@ DataWrapper.doEventService|"+
 										 //"@@@ EventsService|"+
 										 //"@@@ Event|"
-										 "@@@ ScannerService"
+										 "### ScannerService|"+
 										//"PhoneProfilesHelper.doInstallPPHelper"
+										 "ExecuteRadioProfilePrefsService"
 			;
 	
 	

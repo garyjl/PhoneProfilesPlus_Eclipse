@@ -14,6 +14,8 @@ public class ExecuteRadioProfilePrefsService extends IntentService
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		
+		GlobalData.logE("ExecuteRadioProfilePrefsService.onHandleIntent","-- START ----------");
+		
 		Context context = getBaseContext();
 		
 		GlobalData.loadPreferences(context);
@@ -34,7 +36,9 @@ public class ExecuteRadioProfilePrefsService extends IntentService
 		aph = null;
 		dataWrapper = null;
 		
-		SetRadioPrefsForProfileBroadcastReceiver.completeWakefulIntent(intent);
+		//SetRadioPrefsForProfileBroadcastReceiver.completeWakefulIntent(intent);
+
+		GlobalData.logE("ExecuteRadioProfilePrefsService.onHandleIntent","-- END ----------");
 		
 	}
 }
