@@ -284,8 +284,10 @@ public class ActivateProfileHelper {
 	public void executeForRadios(Profile profile)
 	{
 		// wait for scanning = synchronization with scanner
+		GlobalData.logE("@@@ ActivateProfileHelper.executeForRadios", "start waiting for scanner");
 		ScannerService.waitForWifiScanEnd(context, null);
 		ScannerService.waitForBluetoothScanEnd(context, null);
+		GlobalData.logE("@@@ ActivateProfileHelper.executeForRadios", "end waiting for scanner");
 		
 		boolean _isAirplaneMode = false;
 		boolean _setAirplaneMode = false;

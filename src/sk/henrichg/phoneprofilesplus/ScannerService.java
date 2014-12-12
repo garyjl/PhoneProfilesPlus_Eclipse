@@ -259,6 +259,8 @@ public class ScannerService extends IntentService
     {
     	for (int i = 0; i < 5 * 60; i++) // 60 seconds for wifi scan (Android 5.0 bug, required 5 seconds :-/) 
     	{
+        	if (!WifiScanAlarmBroadcastReceiver.getStartScan(context))
+        		break;
     		if (asyncTask != null)
     		{
         		if (asyncTask.isCancelled())
@@ -270,8 +272,6 @@ public class ScannerService extends IntentService
 		    } catch (InterruptedException e) {
 		        System.out.println(e);
 		    }
-        	if (!WifiScanAlarmBroadcastReceiver.getStartScan(context))
-        		break;
     	}
     }
     
@@ -279,6 +279,8 @@ public class ScannerService extends IntentService
     {
     	for (int i = 0; i < 5 * 20; i++) // 20 seconds for bluetooth scan
     	{
+        	if (!BluetoothScanAlarmBroadcastReceiver.getStartScan(context))
+        		break;
     		if (asyncTask != null)
     		{
         		if (asyncTask.isCancelled())
@@ -290,8 +292,6 @@ public class ScannerService extends IntentService
 		    } catch (InterruptedException e) {
 		        System.out.println(e);
 		    }
-        	if (!BluetoothScanAlarmBroadcastReceiver.getStartScan(context))
-        		break;
     	}
     }
     
