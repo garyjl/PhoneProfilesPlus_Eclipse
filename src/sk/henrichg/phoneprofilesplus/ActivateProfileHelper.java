@@ -283,12 +283,17 @@ public class ActivateProfileHelper {
 	
 	public void executeForRadios(Profile profile)
 	{
-		// wait for scanning = synchronization with scanner
-		GlobalData.logE("@@@ ActivateProfileHelper.executeForRadios", "start waiting for scanner");
-		ScannerService.waitForWifiScanEnd(context, null);
-		ScannerService.waitForBluetoothScanEnd(context, null);
-		GlobalData.logE("@@@ ActivateProfileHelper.executeForRadios", "end waiting for scanner");
+		/*
+		ScannerService.waitForWifiScanEnd();
+		ScannerService.waitForBluetoothScanEnd();
+		*/
+		// synchronization, wait for end of radio state change
+		GlobalData.logE("@@@ ActivateProfileHelper.executeForRadios", "start waiting for radio change");
+		GlobalData.waitForRadioChangeState(context);
+		GlobalData.logE("@@@ ActivateProfileHelper.executeForRadios", "end waiting for radio change");
 		
+		GlobalData.setRadioChangeState(context, true);
+
 		boolean _isAirplaneMode = false;
 		boolean _setAirplaneMode = false;
 		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE, context) == GlobalData.HARDWARE_CHECK_ALLOWED)
@@ -325,6 +330,9 @@ public class ActivateProfileHelper {
 		if (_setAirplaneMode && !(_isAirplaneMode))
 			// switch OFF airplane mode, set if after executeForRadios
 			setAirplaneMode(context, _isAirplaneMode);
+		
+		GlobalData.setRadioChangeState(context, false);
+		
 	}
 	
 	private void waitForVolumeChange()

@@ -163,10 +163,12 @@ public class WifiSSIDPreference extends DialogPreference {
 				{
 	            	GlobalData.setForceOneWifiScan(context, true);
 	            	WifiScanAlarmBroadcastReceiver.startScanner(context);
-				}
-					
-		        if (_forRescan)
-		        {
+
+	            	try {
+			        	Thread.sleep(200);
+				    } catch (InterruptedException e) {
+				        System.out.println(e);
+				    }
 		        	ScannerService.waitForWifiScanEnd(context, this);
 		        }
 

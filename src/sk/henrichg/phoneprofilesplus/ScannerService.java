@@ -35,6 +35,13 @@ public class ScannerService extends IntentService
 		context = getBaseContext();
 
 		GlobalData.logE("### ScannerService.onHandleIntent", "-- START ------------");
+
+		// synchronization, wait for end of radio state change
+		GlobalData.logE("@@@ ScannerService.onHandleIntent", "start waiting for radio change");
+		GlobalData.waitForRadioChangeState(context);
+		GlobalData.logE("@@@ ScannerService.onHandleIntent", "end waiting for radio change");
+		
+		GlobalData.setRadioChangeState(context, true);
 		
 		String scanType = intent.getStringExtra(GlobalData.EXTRA_SCANNER_TYPE);
 		GlobalData.logE("### ScannerService.onHandleIntent", "scanType="+scanType);
@@ -163,7 +170,9 @@ public class ScannerService extends IntentService
 			//else
 			//	GlobalData.logE("@@@ ScannerService.onHandleIntent", "getStartScan=true");
 		}
-	
+
+		GlobalData.setRadioChangeState(context, false);
+		
 		GlobalData.logE("### ScannerService.onHandleIntent", "-- END ------------");
 		
 	}
@@ -257,7 +266,7 @@ public class ScannerService extends IntentService
 	
     public static void waitForWifiScanEnd(Context context, AsyncTask<Void, Integer, Void> asyncTask)
     {
-    	for (int i = 0; i < 5 * 60; i++) // 60 seconds for wifi scan (Android 5.0 bug, required 5 seconds :-/) 
+    	for (int i = 0; i < 5 * 60; i++) // 60 seconds for wifi scan (Android 5.0 bug, normally required 5 seconds :-/) 
     	{
         	if (!WifiScanAlarmBroadcastReceiver.getStartScan(context))
         		break;

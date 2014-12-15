@@ -20,6 +20,7 @@ import com.stericson.RootTools.execution.Shell;
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.ActivityInfo;
@@ -154,7 +155,11 @@ public class GlobalData extends Application {
 	static final String PROFILE_ICON_DEFAULT = "ic_profile_default";
 	
 	static final String APPLICATION_PREFS_NAME = "phone_profile_preferences";
-	static final String DEFAULT_PROFILE_PREFS_NAME = "profile_preferences_default_profile"; //GlobalData.APPLICATION_PREFS_NAME;
+	static final String DEFAULT_PROFILE_PREFS_NAME = "profile_preferences_default_profile"; 
+	// for synchronization between wifi/bluetooth scanner, local radio changes and PPHelper radio changes
+	static final String RADIO_CHANGE_PREFS_NAME = "sk.henrichg.phoneprofiles.radio_change"; 
+
+	static final String PREF_RADIO_CHANGE_STATE = "sk.henrichg.phoneprofiles.radioChangeState";
 	
     public static final String PREF_APPLICATION_START_ON_BOOT = "applicationStartOnBoot";
     public static final String PREF_APPLICATION_ACTIVATE = "applicationActivate";
@@ -836,6 +841,35 @@ public class GlobalData extends Application {
 		Editor editor = preferences.edit();
 		editor.putBoolean(PREF_FORCE_ONE_WIFI_SCAN, forceScan);
 		editor.commit();
+	}
+
+	static public boolean getRadioChangeState(Context context)
+	{
+		SharedPreferences preferences = context.getSharedPreferences(GlobalData.RADIO_CHANGE_PREFS_NAME, Context.MODE_PRIVATE | Context.MODE_MULTI_PROCESS);
+		return preferences.getBoolean(GlobalData.PREF_RADIO_CHANGE_STATE, false);
+	}
+
+	static public void setRadioChangeState(Context context, boolean state)
+	{
+		SharedPreferences preferences = context.getSharedPreferences(GlobalData.RADIO_CHANGE_PREFS_NAME, Context.MODE_PRIVATE | Context.MODE_MULTI_PROCESS);
+		Editor editor = preferences.edit();
+		editor.putBoolean(GlobalData.PREF_RADIO_CHANGE_STATE, state);
+		editor.commit();
+      	GlobalData.logE("@@@ GlobalData.setRadioChangeState","state="+state);
+	}
+	
+	static public void waitForRadioChangeState(Context context)
+	{
+    	for (int i = 0; i < 5 * 60; i++) // 60 seconds for wifi scan (Android 5.0 bug, normally required 5 seconds :-/) 
+    	{
+        	if (!getRadioChangeState(context))
+        		break;
+	        try {
+	        	Thread.sleep(200);
+		    } catch (InterruptedException e) {
+		        System.out.println(e);
+		    }
+    	}
 	}
 	
 	// ----- Hardware check -------------------------------------

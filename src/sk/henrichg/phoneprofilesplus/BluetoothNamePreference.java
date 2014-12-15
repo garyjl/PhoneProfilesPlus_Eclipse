@@ -167,10 +167,12 @@ public class BluetoothNamePreference extends DialogPreference {
 				{
 	            	GlobalData.setForceOneBluetoothScan(context, true);
 	            	BluetoothScanAlarmBroadcastReceiver.startScanner(context);
-				}
-				
-		        if (_forRescan)
-		        {
+
+	            	try {
+			        	Thread.sleep(200);
+				    } catch (InterruptedException e) {
+				        System.out.println(e);
+				    }
 		        	ScannerService.waitForBluetoothScanEnd(context, this);
 		        }
 
