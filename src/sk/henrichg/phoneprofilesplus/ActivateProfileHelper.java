@@ -56,19 +56,6 @@ public class ActivateProfileHelper {
 	
 	public static boolean lockRefresh = false; 
 	
-	public static final String	PPHELPER_ACTION_SETPROFILEPREFERENCES = "sk.henrichg.phoneprofileshelper.ACTION_SETPROFILEPREFERENCES";
-
-	private static final String PPHELPER_PROCEDURE = "procedure";
-	private static final String PPHELPER_PROCEDURE_RADIO_CHANGE = "radioChange";
-	private static final String PPHELPER_GPS_CHANGE = "GPSChange";
-	private static final String PPHELPER_AIRPLANE_MODE_CHANGE = "airplaneModeChange";
-	private static final String PPHELPER_NFC_CHANGE = "NFCChange";
-	private static final String PPHELPER_WIFI_CHANGE = "WiFiChange";
-	private static final String PPHELPER_BLUETOOTH_CHANGE = "bluetoothChange";
-	private static final String PPHELPER_MOBILE_DATA_CHANGE = "mobileDataChange";
-
-	//private static final String SETRADIOACTION = "sk.henrichg.phoneprofilesplus.SetRadiosForProfile.ACTION";
-	
 	public static final String ADAPTIVE_BRIGHTNESS_SETTING_NAME = "screen_auto_brightness_adj";
 	
 	public ActivateProfileHelper()
@@ -283,17 +270,6 @@ public class ActivateProfileHelper {
 	
 	public void executeForRadios(Profile profile)
 	{
-		/*
-		ScannerService.waitForWifiScanEnd();
-		ScannerService.waitForBluetoothScanEnd();
-		*/
-		// synchronization, wait for end of radio state change
-		GlobalData.logE("@@@ ActivateProfileHelper.executeForRadios", "start waiting for radio change");
-		GlobalData.waitForRadioChangeState(context);
-		GlobalData.logE("@@@ ActivateProfileHelper.executeForRadios", "end waiting for radio change");
-		
-		GlobalData.setRadioChangeState(context, true);
-
 		boolean _isAirplaneMode = false;
 		boolean _setAirplaneMode = false;
 		if (GlobalData.hardwareCheck(GlobalData.PREF_PROFILE_DEVICE_AIRPLANE_MODE, context) == GlobalData.HARDWARE_CHECK_ALLOWED)
@@ -330,8 +306,6 @@ public class ActivateProfileHelper {
 		if (_setAirplaneMode && !(_isAirplaneMode))
 			// switch OFF airplane mode, set if after executeForRadios
 			setAirplaneMode(context, _isAirplaneMode);
-		
-		GlobalData.setRadioChangeState(context, false);
 		
 	}
 	
@@ -569,35 +543,10 @@ public class ActivateProfileHelper {
 		}
 
 		//// nahodenie radio preferences
-		// only check
-		//doExecuteForRadios(profile, true);
-		// set radios
-		if (PhoneProfilesHelper.isPPHelperInstalled(context, 0))
-		{
-			// broadcast PPHelper
-			Intent ppHelperIntent = new Intent();
-			ppHelperIntent.setAction(PPHELPER_ACTION_SETPROFILEPREFERENCES);
-			ppHelperIntent.putExtra(PPHELPER_PROCEDURE, PPHELPER_PROCEDURE_RADIO_CHANGE);
-			ppHelperIntent.putExtra(PPHELPER_GPS_CHANGE, profile._deviceGPS);
-			ppHelperIntent.putExtra(PPHELPER_AIRPLANE_MODE_CHANGE, profile._deviceAirplaneMode);
-			ppHelperIntent.putExtra(PPHELPER_NFC_CHANGE, profile._deviceNFC);
-			ppHelperIntent.putExtra(PPHELPER_WIFI_CHANGE, profile._deviceWiFi);
-			ppHelperIntent.putExtra(PPHELPER_BLUETOOTH_CHANGE, profile._deviceBluetooth);
-			ppHelperIntent.putExtra(PPHELPER_MOBILE_DATA_CHANGE, profile._deviceMobileData);
-		    context.sendBroadcast(ppHelperIntent);
-		}
-		else
-		{
-			// run service for execute radios
-			/*Intent radioBroadcastReceiver = new Intent();
-			radioBroadcastReceiver.setAction(SETRADIOACTION);
-			radioBroadcastReceiver.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
-		    context.sendBroadcast(radioBroadcastReceiver);*/
-			Intent radioServiceIntent = new Intent(context, ExecuteRadioProfilePrefsService.class);
-			radioServiceIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
-			//WakefulIntentService.sendWakefulWork(context, radioServiceIntent);
-			context.startService(radioServiceIntent);
-		}
+		// run service for execute radios
+		Intent radioServiceIntent = new Intent(context, ExecuteRadioProfilePrefsService.class);
+		radioServiceIntent.putExtra(GlobalData.EXTRA_PROFILE_ID, profile._id);
+		context.startService(radioServiceIntent);
 		
 		// nahodenie auto-sync
 		boolean _isAutosync = ContentResolver.getMasterSyncAutomatically();
