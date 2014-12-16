@@ -18,10 +18,8 @@ public class ScannerService extends IntentService
 	private final WifiScanBroadcastReceiver wifiScanReceiver = new WifiScanBroadcastReceiver();
 	private final BluetoothScanBroadcastReceiver bluetoothScanReceiver = new BluetoothScanBroadcastReceiver();
 
-	public static final String PPHELPER_ACTION_WIFISCANNERACTIVITY = "sk.henrichg.phoneprofileshelper.ACTION_WIFISCANNERACTIVITY";
-	public static final String	PPHELPER_ACTION_BLUETOOTHSCANNERACTIVITY = "sk.henrichg.phoneprofileshelper.ACTION_BLUETOOTHSCANNERACTIVITY";
-
-	public static final String PPHELPER_EXTRA_SCANNERACTIVITY = "sk.henrichg.phoneprofileshelper.EXTRA_SCANNERRUNNING";
+	public static final String PPHELPER_ACTION_RADIOCHANGESTATE = "sk.henrichg.phoneprofileshelper.ACTION_RADIOCHANGESTATE";
+	public static final String PPHELPER_EXTRA_RADIOCHANGESTATE = "sk.henrichg.phoneprofileshelper.EXTRA_RADIOCHANGESTATE";
 	
 	public ScannerService()
 	{
@@ -42,6 +40,12 @@ public class ScannerService extends IntentService
 		GlobalData.logE("@@@ ScannerService.onHandleIntent", "end waiting for radio change");
 		
 		GlobalData.setRadioChangeState(context, true);
+		
+      	// send broadcast about radio change state to PPHelper
+		Intent ppHelperIntent1 = new Intent();
+		ppHelperIntent1.setAction(ScannerService.PPHELPER_ACTION_RADIOCHANGESTATE);
+		ppHelperIntent1.putExtra(ScannerService.PPHELPER_EXTRA_RADIOCHANGESTATE, true);
+	    context.sendBroadcast(ppHelperIntent1);
 		
 		String scanType = intent.getStringExtra(GlobalData.EXTRA_SCANNER_TYPE);
 		GlobalData.logE("### ScannerService.onHandleIntent", "scanType="+scanType);
@@ -171,6 +175,12 @@ public class ScannerService extends IntentService
 			//	GlobalData.logE("@@@ ScannerService.onHandleIntent", "getStartScan=true");
 		}
 
+      	// send broadcast about radio change state to PPHelper
+		Intent ppHelperIntent2 = new Intent();
+		ppHelperIntent2.setAction(ScannerService.PPHELPER_ACTION_RADIOCHANGESTATE);
+		ppHelperIntent2.putExtra(ScannerService.PPHELPER_EXTRA_RADIOCHANGESTATE, false);
+	    context.sendBroadcast(ppHelperIntent2);
+		
 		GlobalData.setRadioChangeState(context, false);
 		
 		GlobalData.logE("### ScannerService.onHandleIntent", "-- END ------------");

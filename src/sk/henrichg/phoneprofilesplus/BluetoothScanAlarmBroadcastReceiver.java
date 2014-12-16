@@ -256,12 +256,6 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
 		Editor editor = preferences.edit();
 		editor.putBoolean(GlobalData.PREF_EVENT_BLUETOOTH_START_SCAN, startScan);
 		editor.commit();
-		
-      	// send broadcast about scanner activity to PPHelper
-		Intent ppHelperIntent = new Intent();
-		ppHelperIntent.setAction(ScannerService.PPHELPER_ACTION_BLUETOOTHSCANNERACTIVITY);
-		ppHelperIntent.putExtra(ScannerService.PPHELPER_EXTRA_SCANNERACTIVITY, startScan);
-	    context.sendBroadcast(ppHelperIntent);
 	}
 	
 	static public void startScan(Context context)
