@@ -36,13 +36,17 @@ public class ExecuteRadioProfilePrefsService extends IntentService
 		long profile_id = intent.getLongExtra(GlobalData.EXTRA_PROFILE_ID, 0);
 		Profile profile = dataWrapper.getProfileById(profile_id);
 		
+		/*
 		// synchronization, wait for end of radio state change
 		GlobalData.logE("@@@ ActivateProfileHelper.executeForRadios", "start waiting for radio change");
 		GlobalData.waitForRadioChangeState(context);
 		GlobalData.logE("@@@ ActivateProfileHelper.executeForRadios", "end waiting for radio change");
 		
 		GlobalData.setRadioChangeState(context, true);
+		*/
 		
+		synchronized (GlobalData.radioChangeStateMutex) {
+			
 		if (PhoneProfilesHelper.isPPHelperInstalled(context, 0))
 		{
 			// broadcast PPHelper
@@ -78,7 +82,9 @@ public class ExecuteRadioProfilePrefsService extends IntentService
 			}
 		}
 		
-		GlobalData.setRadioChangeState(context, false);
+		}
+		
+		//GlobalData.setRadioChangeState(context, false);
 		
 		dataWrapper.invalidateDataWrapper();
 		dataWrapper = null;

@@ -287,6 +287,8 @@ public class GlobalData extends Application {
     public static String applicationEventBluetoothRescan;
     public static boolean applicationWidgetIconHideProfileName;
     
+    public static RadioChangeStateMutex radioChangeStateMutex = new RadioChangeStateMutex();
+    
 	public void onCreate()
 	{
 	//	Debug.startMethodTracing("phoneprofiles");
@@ -844,6 +846,7 @@ public class GlobalData extends Application {
 		editor.commit();
 	}
 
+	/*
 	static public boolean getRadioChangeState(Context context)
 	{
 		SharedPreferences preferences = context.getSharedPreferences(GlobalData.RADIO_CHANGE_PREFS_NAME, Context.MODE_PRIVATE | Context.MODE_MULTI_PROCESS);
@@ -872,7 +875,7 @@ public class GlobalData extends Application {
 		    }
     	}
 	}
-	
+	*/
 	// ----- Hardware check -------------------------------------
 	
 	static int hardwareCheck(String preferenceKey, Context context)
