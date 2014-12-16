@@ -51,9 +51,11 @@ public class PhoneProfilesHelper {
 		PackageInfo pinfo = null;
 		try {
 			pinfo = context.getPackageManager().getPackageInfo("sk.henrichg.phoneprofileshelper", 0);
+			GlobalData.logE("PhoneProfilesHelper.isPPHelperInstalled", "found");
 			PPHelperVersion = pinfo.versionCode;
 		} catch (NameNotFoundException e) {
-			//e.printStackTrace();
+			GlobalData.logE("PhoneProfilesHelper.isPPHelperInstalled", "not found");
+			e.printStackTrace();
 		}
 		return PPHelperVersion >= minVersion;
 	}
