@@ -193,7 +193,7 @@ public class BluetoothNamePreference extends DialogPreference {
 				        	boolean exists = false;
 				        	for (BluetoothDeviceData _device : bluetoothList)
 				        	{
-				        		if (_device.name.equals(device.name))
+				        		if (_device.name.equalsIgnoreCase(device.name))
 				        		{
 				        			exists = true;
 				        			break;
@@ -219,7 +219,7 @@ public class BluetoothNamePreference extends DialogPreference {
 				
 				for (int position = 0; position < bluetoothList.size()-1; position++)
 				{
-					if (bluetoothList.get(position).name.equals(value))
+					if (bluetoothList.get(position).name.equalsIgnoreCase(value))
 					{
 						bluetoothListView.setSelection(position);
 						bluetoothListView.setItemChecked(position, true);

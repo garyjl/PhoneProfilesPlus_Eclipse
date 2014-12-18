@@ -124,7 +124,7 @@ public class BluetoothConnectionBroadcastReceiver extends WakefulBroadcastReceiv
 			{
 				for (BluetoothDeviceData _device : connectedDevices)
 				{
-					if (_device.name.equals(adapterName))
+					if (_device.name.equalsIgnoreCase(adapterName))
 						return true;
 				}
 			}
