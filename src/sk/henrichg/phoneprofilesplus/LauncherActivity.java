@@ -110,6 +110,18 @@ public class LauncherActivity extends Activity {
 			Intent firstStartServiceIntent = new Intent(getBaseContext(), FirstStartService.class);
 			startService(firstStartServiceIntent);
 		}
+		else
+		{
+			if (startupSource == 0)
+			{
+				// aktivita nebola spustena z notifikacie, ani z widgetu
+				// pre profil, ktory je prave aktivny, treba aktualizovat notifikaciu a widgety 
+				Profile profile = dataWrapper.getActivatedProfile();
+				dataWrapper.getActivateProfileHelper().showNotification(profile, "");
+				dataWrapper.getActivateProfileHelper().updateWidget();
+				startupSource = GlobalData.STARTUP_SOURCE_LAUNCHER;
+			}
+		}
 		
 		if (startupSource == 0)
 			startupSource = GlobalData.STARTUP_SOURCE_LAUNCHER;
