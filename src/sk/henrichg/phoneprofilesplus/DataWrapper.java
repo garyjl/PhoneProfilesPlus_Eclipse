@@ -629,7 +629,7 @@ public class DataWrapper {
 			//if ((event.getStatusFromDB(this) == Event.ESTATUS_RUNNING) &&
 			//	(event._fkProfileStart == profile._id))
 			if (event._fkProfileStart == profile._id)
-				event.pauseEvent(this, eventTimelineList, false, true, noSetSystemEvent);
+				event.pauseEvent(this, eventTimelineList, false, true, noSetSystemEvent, false);
 		}
 	}
 
@@ -657,7 +657,7 @@ public class DataWrapper {
 		{
 			int status = event.getStatusFromDB(this);
 			if (status != Event.ESTATUS_STOP)
-				event.pauseEvent(this, eventTimelineList, false, true, noSetSystemEvent);
+				event.pauseEvent(this, eventTimelineList, false, true, noSetSystemEvent, blockEvents);
 			if (status == Event.ESTATUS_RUNNING)
 			{
 				// block only running events
@@ -1939,7 +1939,7 @@ public class DataWrapper {
 			{
 				GlobalData.logE("DataWrapper.doEventService","pause event");
 				
-				event.pauseEvent(this, eventTimelineList, true, false, false);
+				event.pauseEvent(this, eventTimelineList, true, false, false, false);
 			}
 		}
 

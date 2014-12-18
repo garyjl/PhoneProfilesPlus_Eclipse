@@ -729,7 +729,8 @@ public class Event {
 							List<EventTimeline> eventTimelineList,
 							boolean activateReturnProfile, 
 							boolean ignoreGlobalPref,
-							boolean noSetSystemEvent)
+							boolean noSetSystemEvent,
+							boolean blockEvent)
 	{
 		// remove delay alarm
 		removeDelayAlarm(dataWrapper, true); // for start delay
@@ -754,8 +755,7 @@ public class Event {
 		}
 */
 
-		// unblock temporary paused event
-		dataWrapper.setEventBlocked(this, false);
+		dataWrapper.setEventBlocked(this, blockEvent);
 
 		GlobalData.logE("@@@ Event.pauseEvent","event_id="+this._id+"-----------------------------------");
 		GlobalData.logE("@@@ Event.pauseEvent","-- event_name="+this._name);
@@ -851,7 +851,7 @@ public class Event {
 		
 		if (this._status != ESTATUS_STOP)
 		{
-			pauseEvent(dataWrapper, eventTimelineList, activateReturnProfile, ignoreGlobalPref, true);
+			pauseEvent(dataWrapper, eventTimelineList, activateReturnProfile, ignoreGlobalPref, true, false);
 		}
 	
 		setSystemEvent(dataWrapper.context, ESTATUS_STOP);
