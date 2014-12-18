@@ -89,7 +89,7 @@
   <string name="array_pref_ringerModeArray_silent">Silencio</string>
   <string name="array_pref_hardwareModeArray_on">Encendido</string>
   <string name="array_pref_hardwareModeArray_off">Apagado</string>
-  <string name="array_pref_hardwareModeArray_toggle">Toggle</string>
+  <string name="array_pref_hardwareModeArray_toggle">Alternar</string>
   <string name="array_pref_screenTimeoutArray_15seconds">15 segundos</string>
   <string name="array_pref_screenTimeoutArray_30seconds">30 segundos</string>
   <string name="array_pref_screenTimeoutArray_1minute">1 minuto</string>
@@ -106,7 +106,7 @@
   <string name="phone_profiles_pref_applicationLanguage_ca">Català</string>
   <string name="phone_profiles_pref_applicationLanguage_es_ES">Español (España)</string>
   <string name="phone_profiles_pref_applicationLanguage_uk">Українська</string>
-  <string name="title_activity_shortcut_creator">PhoneProfilesPlus-shortcut</string>
+  <string name="title_activity_shortcut_creator">Acceso directo a PhoneProfilesPlus</string>
   <string name="phone_profiles_pref_applicationStartOnBoot">Iniciar al arrancar teléfono</string>
   <string name="array_pref_value_system">system</string>
   <string name="array_pref_value_en">en</string>
@@ -169,12 +169,12 @@
   <string name="phone_profiles_pref_applicationWidgetLightnessB">Brillo del fondo</string>
   <string name="phone_profiles_pref_applicationWidgetLightnessT">Brillo del texto</string>
   <string name="phone_profiles_pref_applicationWidgetLightnessI">Brillo del icono</string>
-  <string name="dashclock_extension_description">Displays active profile with preferences indicator. Opens Activator on touch.</string>
-  <string name="phone_profiles_pref_category_widget_icon_shortcut">Widget-Icon; Shortcut</string>
+  <string name="dashclock_extension_description">Muestra el perfil activo con indicador de preferencias. Abre el activador al pulsar..</string>
+  <string name="phone_profiles_pref_category_widget_icon_shortcut">Widget-icono; Acceso directo</string>
   <string name="array_pref_widgetColor_colorful">A todo color</string>
   <string name="array_pref_widgetColor_monochrome">Monocromo</string>
   <string name="phone_profiles_pref_applicationWidgetIconColor">Tipo de color de icono</string>
-  <string name="phone_profiles_pref_category_widget_one_row">Widget-single row</string>
+  <string name="phone_profiles_pref_category_widget_one_row">Widget-fila</string>
   <string name="profile_list_empty">Sin perfiles</string>
   <string name="event_list_empty">Sin eventos</string>
   <string name="event_preferences_category_eventParameters">Parámetros de evento</string>
@@ -190,13 +190,13 @@
   <string name="array_pref_event_thursday">Jueves</string>
   <string name="array_pref_event_friday">Viernes</string>
   <string name="array_pref_event_saturday">Sábado</string>
-  <string name="editor_drawer_open">Open navigation drawer</string>
-  <string name="editor_drawer_close">Close navigation drawer</string>
+  <string name="editor_drawer_open">Abrir diseño navegación</string>
+  <string name="editor_drawer_close">Cerrar diseño navegación</string>
   <string name="editor_drawer_title_profiles">Perfiles</string>
   <string name="editor_drawer_title_events">Eventos</string>
   <string name="editor_drawer_list_item_profiles_all">Todo</string>
   <string name="editor_drawer_list_item_profiles_show_in_activator">Mostrar un activador</string>
-  <string name="editor_drawer_list_item_profiles_no_show_in_activator">Not shown in Activator</string>
+  <string name="editor_drawer_list_item_profiles_no_show_in_activator">No se muestra en Activador</string>
   <string name="editor_drawer_list_item_events_all">Todo</string>
   <string name="editor_drawer_list_item_events_running">Ejecutando</string>
   <string name="editor_drawer_list_item_events_paused">Pausado</string>
@@ -211,7 +211,7 @@
   <string name="default_profile_name_work">Trabajo</string>
   <string name="default_profile_name_meeting">Reunión</string>
   <string name="default_profile_name_sleep">Sueño</string>
-  <string name="phone_profiles_pref_applicationAutoCloseDrawer">Auto-hide navig.drawer</string>
+  <string name="phone_profiles_pref_applicationAutoCloseDrawer">Ocultar automáticamente navig.drawer</string>
   <string name="import_profiles_from_phoneprofiles_alert_title">Importar datos de app.</string>
   <string name="import_profiles_from_phoneprofiles_alert_title2">Importar de PhoneProfiles</string>
   <string name="import_profiles_from_phoneprofiles_alert_message">¿Importar de PhoneProfiles?</string>
@@ -220,7 +220,7 @@
   <string name="profile_preferences_deviceAutoRotation">Rotación de pantalla</string>
   <string name="title_activity_activator">Activador</string>
   <string name="title_activity_editor">Editor</string>
-  <string name="menu_run_events">Enable run events</string>
+  <string name="menu_run_events">Habilitar ejecutar eventos</string>
   <string name="menu_stop_events">Detener eventos</string>
   <string name="array_pref_value_0_percent" formatted="false">0%</string>
   <string name="array_pref_value_25_percent" formatted="false">25%</string>
@@ -231,12 +231,12 @@
   <string name="array_pref_value_90_degrees" formatted="false">90°</string>
   <string name="array_pref_value_180_degrees" formatted="false">180°</string>
   <string name="array_pref_value_270_degrees" formatted="false">270°</string>
-  <string name="array_pref_value_auto_rotate">Auto. rotate</string>
-  <string name="array_pref_value_auto_rotate_on">Auto.rotate ON</string>
-  <string name="array_pref_value_auto_rotate_off">Auto.rotate OFF</string>
-  <string name="default_profile_name">Source profile</string>
-  <string name="menu_default_profile">Source profile</string>
-  <string name="brightness_pref_dialog_default_profile_chb">Source profile</string>
+  <string name="array_pref_value_auto_rotate">Automático. rotar</string>
+  <string name="array_pref_value_auto_rotate_on">Auto.Rotate ON</string>
+  <string name="array_pref_value_auto_rotate_off">Auto.Rotate apagado</string>
+  <string name="default_profile_name">Perfil de origen</string>
+  <string name="menu_default_profile">Perfil de origen</string>
+  <string name="brightness_pref_dialog_default_profile_chb">Perfil de origen</string>
   <string name="preference_profile_default_profile">Source profile</string>
   <string name="volume_pref_dialog_default_profile_chb">Source profile</string>
   <string name="array_pref_default_profile">Source profile</string>
@@ -309,11 +309,11 @@
   <string name="pref_event_call_contactListType">List</string>
   <string name="pref_event_call_no_contacts_selected">No contacts selected</string>
   <string name="pref_event_call_contacts_selected">Contacts selected</string>
-  <string name="event_preferences_battery_level_bad_value">Bad value</string>
-  <string name="event_preferences_eventProfileEnd">Activate profile</string>
-  <string name="menu_restart_events">Restart events</string>
-  <string name="event_preferences_ForceRun">Ignore manual activation</string>
-  <string name="manual_profile_activation_forceRun_title">Activate profile</string>
+  <string name="event_preferences_battery_level_bad_value">Valor incorrecto</string>
+  <string name="event_preferences_eventProfileEnd">Activar perfil</string>
+  <string name="menu_restart_events">Reiniciar eventos</string>
+  <string name="event_preferences_ForceRun">Ignorar la activación manual</string>
+  <string name="manual_profile_activation_forceRun_title">Activar perfil</string>
   <string name="manual_profile_activation_forceRun_message">Any event with option \"Ignore manual activation\" is running. Activate anyway?</string>
   <string name="restart_events_alert_title">Reiniciar eventos</string>
   <string name="restart_events_alert_message">¿Estás seguro?</string>

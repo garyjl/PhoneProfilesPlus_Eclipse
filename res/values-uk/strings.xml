@@ -390,7 +390,7 @@
   <string name="profile_preferences_afterDurationDo">Після тривалість зробити</string>
   <string name="array_pref_afterProfileDurationDo_nothing">Нічого</string>
   <string name="array_pref_afterProfileDurationDo_undoProfile">Анулювати профіль</string>
-  <string name="array_pref_afterProfileDurationDo_backgroundProfile">Активувати профіль за замовчуванням</string>
+  <string name="array_pref_afterProfileDurationDo_backgroundProfile">Активувати профіль за замовч</string>
   <string name="phone_profiles_pref_applicationGridLayout">Сітка</string>
   <string name="menu_help">Допомога</string>
   <string name="array_event_pref_eventScreenEventType_screenOn">Увімкнення</string>
