@@ -180,13 +180,17 @@ public class EventsService extends IntentService
 		
 		if ((!GlobalData.getEventsBlocked(context)) || (GlobalData.getForceRunEventRunning(context)))
 		{
+			GlobalData.logE("### EventsService.onHandleIntent", "no manual profile activation");
+			GlobalData.logE("### EventsService.onHandleIntent", "runningEventCountE="+runningEventCountE);
 			// no manual profile activation
 			if (runningEventCountE == 0)
 			{
+				GlobalData.logE("### EventsService.onHandleIntent", "no events running");
 				// no events running
 				long profileId = Long.valueOf(GlobalData.applicationBackgroundProfile); 
 				if (profileId != GlobalData.PROFILE_NO_ACTIVATE)
 				{
+					GlobalData.logE("### EventsService.onHandleIntent", "default profile is set");
 					long activatedProfileId = 0;
 					if (activatedProfile != null)
 						activatedProfileId = activatedProfile._id;
@@ -194,17 +198,20 @@ public class EventsService extends IntentService
 					{
 						dataWrapper.activateProfileFromEvent(profileId, interactive, "");
 						profileActivated = true;
+						GlobalData.logE("### EventsService.onHandleIntent", "activated default profile");
 					}
 				}
 				else
 				{
 					dataWrapper.activateProfileFromEvent(0, interactive, "");
 					profileActivated = true;
+					GlobalData.logE("### EventsService.onHandleIntent", "not activated profile");
 				}
 			}
 		}
 		else
 		{
+			GlobalData.logE("### EventsService.onHandleIntent", "manual profile activation");
 			// manual profile activation
 			long profileId = Long.valueOf(GlobalData.applicationBackgroundProfile); 
 			if (profileId != GlobalData.PROFILE_NO_ACTIVATE)
@@ -214,6 +221,7 @@ public class EventsService extends IntentService
 					// if not profile activated, activate Default profile
 					dataWrapper.activateProfileFromEvent(profileId, interactive, "");
 					profileActivated = true;
+					GlobalData.logE("### EventsService.onHandleIntent", "not activated profile");
 				}
 			}
 		}

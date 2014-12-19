@@ -21,6 +21,7 @@ public class FirstStartService extends IntentService {
 		//int startType = intent.getStringExtra(GlobalData.EXTRA_FIRST_START_TYPE);
 		
 		GlobalData.loadPreferences(context);
+		GUIData.setLanguage(context);
 		
 		// grant root
 		if (GlobalData.isRooted(false))
@@ -54,6 +55,7 @@ public class FirstStartService extends IntentService {
 
 		DataWrapper dataWrapper = new DataWrapper(context, true, false, 0);
 		dataWrapper.getActivateProfileHelper().initialize(dataWrapper, null, context);
+		dataWrapper.getDatabaseHandler().deleteAllEventTimelines();
 		
 		// create a handler to post messages to the main thread
 	    Handler toastHandler = new Handler(getMainLooper());

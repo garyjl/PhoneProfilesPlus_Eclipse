@@ -365,8 +365,12 @@ public class EventPreferencesFragment extends PreferenceFragment
 			dataWrapper.getDatabaseHandler().updateEvent(event);
 
 			if (event.getStatus() == Event.ESTATUS_STOP)
+			{
+				// pause event
+				event.pauseEvent(dataWrapper, eventTimelineList, true, false, false, false);
 				// stop event
 				event.stopEvent(dataWrapper, eventTimelineList, true, false, true);
+			}
 			else
 				// pause event
 				event.pauseEvent(dataWrapper, eventTimelineList, true, false, false, false);
