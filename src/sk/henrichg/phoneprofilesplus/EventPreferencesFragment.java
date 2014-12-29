@@ -150,9 +150,8 @@ public class EventPreferencesFragment extends PreferenceFragment
 		
 		super.onCreate(savedInstanceState);
 
-		// this is really important in order to save the state across screen
-		// configuration changes for example
-		setRetainInstance(true);
+		// must by false to avoid FC when rotation changes and preference dialogs are shown
+		setRetainInstance(false);
 		
 		preferencesActivity = getActivity();
         context = getActivity().getBaseContext();
@@ -213,10 +212,7 @@ public class EventPreferencesFragment extends PreferenceFragment
         preferences = prefMng.getSharedPreferences();
         
 		if (savedInstanceState == null)
-		{
         	loadPreferences();
-        	// load temporary saved event preferences 
-		}
    	
     	// get preference resource id from EventPreference
 		addPreferencesFromResource(R.xml.event_preferences);
@@ -238,10 +234,13 @@ public class EventPreferencesFragment extends PreferenceFragment
         
         createActionModeCallback();
 
-       	SharedPreferences preferences = getActivity().getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Activity.MODE_PRIVATE);
-       	Editor editor = preferences.edit();
-       	editor.remove(SP_ACTION_MODE_SHOWED);
-       	editor.commit();
+		if (savedInstanceState == null)
+		{
+	       	SharedPreferences preferences = getActivity().getSharedPreferences(GlobalData.APPLICATION_PREFS_NAME, Activity.MODE_PRIVATE);
+	       	Editor editor = preferences.edit();
+	       	editor.remove(SP_ACTION_MODE_SHOWED);
+	       	editor.commit();
+		}
 
 		updateSharedPreference();
        	

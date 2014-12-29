@@ -158,8 +158,7 @@ public class ProfilePreferencesFragment extends PreferenceFragment
 		
 		super.onCreate(savedInstanceState);
 		
-		// this is really important in order to save the state across screen
-		// configuration changes for example
+		// must by false to avoid FC when rotation changes and preference dialogs are shown
 		setRetainInstance(false);
 		
 		preferencesActivity = getActivity();
