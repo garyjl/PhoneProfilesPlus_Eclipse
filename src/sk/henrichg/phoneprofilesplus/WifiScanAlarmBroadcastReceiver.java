@@ -356,7 +356,7 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 				for (WifiSSIDData _device : wifiConfigurationList)
 				{
 					//if (_device.bssid.equals(device.BSSID))  
-					if (_device.ssid.equals(device.SSID))
+					if ((_device.ssid != null) && (_device.ssid.equals(device.SSID)))
 					{
 						found = true;
 						break;
