@@ -443,7 +443,7 @@ public class GlobalData extends Application {
 	{
 		SharedPreferences preferences = context.getSharedPreferences(APPLICATION_PREFS_NAME, Context.MODE_PRIVATE);
 
-	    applicationStartOnBoot = preferences.getBoolean(PREF_APPLICATION_START_ON_BOOT, false);
+	    applicationStartOnBoot = preferences.getBoolean(PREF_APPLICATION_START_ON_BOOT, true);
 	    applicationActivate = preferences.getBoolean(PREF_APPLICATION_ACTIVATE, true);
 	    applicationActivateWithAlert = preferences.getBoolean(PREF_APPLICATION_ALERT, true);
 	    applicationClose = preferences.getBoolean(PREF_APPLICATION_CLOSE, true);

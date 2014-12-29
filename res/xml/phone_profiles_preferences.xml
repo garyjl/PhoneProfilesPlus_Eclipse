@@ -98,7 +98,7 @@
 		<CheckBoxPreference 
 		    android:key="applicationStartOnBoot"
 		    android:title="@string/phone_profiles_pref_applicationStartOnBoot"
-		    android:defaultValue="false" />
+		    android:defaultValue="true" />
 		<CheckBoxPreference 
 		    android:key="applicationActivate"
 		    android:title="@string/phone_profiles_pref_applicationActivate"
