@@ -1876,6 +1876,7 @@ public class DataWrapper {
 
 		GlobalData.logE("DataWrapper.doEventService","eventStart="+eventStart);
 		GlobalData.logE("DataWrapper.doEventService","restartEvent="+restartEvent);
+		GlobalData.logE("DataWrapper.doEventService","statePause="+statePause);
 		
 		List<EventTimeline> eventTimelineList = getEventTimelineList();
 		

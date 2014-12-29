@@ -60,7 +60,7 @@ public class GlobalData extends Application {
 										 //"@@@ EventDelayBroadcastReceiver|"+
 										 //"@@@ BootUpReceiver|"+
 										 //"@@@ PackageReplacedReceiver|"+
-										 //"@@@ DataWrapper.doEventService|"+
+										 "DataWrapper.doEventService|"+
 										 //"@@@ EventsService|"+
 										 //"@@@ Event|"
 										 //"### ScannerService|"+

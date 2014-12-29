@@ -3326,10 +3326,34 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 
 	// Deleting all events from timeline
-	public void deleteAllEventTimelines() {
+	public void deleteAllEventTimelines(boolean updateEventStatus) {
 		//SQLiteDatabase db = this.getWritableDatabase();
 		SQLiteDatabase db = getMyWritableDatabase();
-		db.delete(TABLE_EVENT_TIMELINE, null,	null);
+
+		ContentValues values = new ContentValues();
+		values.put(KEY_E_STATUS, Event.ESTATUS_PAUSE);
+		
+		db.beginTransaction();
+
+		try {
+			
+			db.delete(TABLE_EVENT_TIMELINE, null, null);
+		
+			if (updateEventStatus)
+			{
+				db.update(TABLE_EVENTS, values, KEY_E_STATUS + " = ?",
+					new String[] { String.valueOf(Event.ESTATUS_RUNNING) });
+			}
+			
+			db.setTransactionSuccessful();
+			
+		} catch (Exception e){
+			//Error in between database transaction
+			Log.e("DatabaseHandler.deleteAllEventTimelines", e.toString());
+		} finally {
+			db.endTransaction();
+		}	
+		
 		//db.close();
 	}
 
