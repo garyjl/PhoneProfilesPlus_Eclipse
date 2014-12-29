@@ -666,7 +666,7 @@ public class EditorProfileListFragment extends Fragment {
 				new DeleteAsyncTask().execute();
 				*/
 				
-				dataWrapper.stopAllEvents(true);
+				dataWrapper.stopAllEvents(true, false);
 				dataWrapper.unlinkAllEvents();
 				profileListAdapter.clearNoNotify();
 				databaseHandler.deleteAllProfiles();

@@ -518,7 +518,7 @@ public class EditorEventListFragment extends Fragment {
 			
 			public void onClick(DialogInterface dialog, int which) {
 				
-				dataWrapper.stopAllEvents(true);
+				dataWrapper.stopAllEvents(true, false);
 				
 				databaseHandler.deleteAllEvents();
 				eventListAdapter.clear();

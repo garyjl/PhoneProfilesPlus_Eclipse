@@ -648,36 +648,56 @@ public class DataWrapper {
 		restartEvents(false, false);
 	}
 	
-	// pauses all events without activating profiles from Timeline
-	public void pauseAllEvents(boolean noSetSystemEvent, boolean blockEvents)
+	// pauses all events
+	public void pauseAllEvents(boolean noSetSystemEvent, boolean blockEvents, boolean activateRetirnProfile)
 	{
 		List<EventTimeline> eventTimelineList = getEventTimelineList();
 
-		for (Event event : getEventList())
+		//for (Event event : getEventList())
+		for (int i = eventTimelineList.size()-1; i >= 0; i--)
 		{
-			int status = event.getStatusFromDB(this);
-			if (status != Event.ESTATUS_STOP)
-				event.pauseEvent(this, eventTimelineList, false, true, noSetSystemEvent, blockEvents);
-			if (status == Event.ESTATUS_RUNNING)
+			EventTimeline eventTimeline = eventTimelineList.get(i);
+			if (eventTimeline != null)
 			{
-				// block only running events
-				if (event._forceRun)
-					setEventBlocked(event, blockEvents);
+				long eventId = eventTimeline._fkEvent;
+				Event event = getEventById(eventId);
+				if (event != null)
+				{
+					int status = event.getStatusFromDB(this);
+					if (status != Event.ESTATUS_STOP)
+						event.pauseEvent(this, eventTimelineList, activateRetirnProfile, true, noSetSystemEvent, blockEvents);
+					if (status == Event.ESTATUS_RUNNING)
+					{
+						// block only running events
+						if (event._forceRun)
+							setEventBlocked(event, blockEvents);
+					}
+				}
 			}
 		}
 
 		GlobalData.setEventsBlocked(context, blockEvents);
 	}
 	
-	// stops all events without activating profiles from Timeline
-	public void stopAllEvents(boolean saveEventStatus)
+	// stops all events
+	public void stopAllEvents(boolean saveEventStatus, boolean activateRetirnProfile)
 	{
 		List<EventTimeline> eventTimelineList = getEventTimelineList();
 		
-		for (Event event : getEventList())
+		//for (Event event : getEventList())
+		for (int i = eventTimelineList.size()-1; i >= 0; i--)
 		{
-			//if (event.getStatusFromDB(this) != Event.ESTATUS_STOP)
-				event.stopEvent(this, eventTimelineList, false, true, saveEventStatus);
+			EventTimeline eventTimeline = eventTimelineList.get(i);
+			if (eventTimeline != null)
+			{
+				long eventId = eventTimeline._fkEvent;
+				Event event = getEventById(eventId);
+				if (event != null)
+				{
+				//if (event.getStatusFromDB(this) != Event.ESTATUS_STOP)
+					event.stopEvent(this, eventTimelineList, activateRetirnProfile, true, saveEventStatus);
+				}
+			}
 		}
 	}
 
@@ -952,8 +972,8 @@ public class DataWrapper {
 
 			ActivateProfileHelper.lockRefresh = true;
 
-			// pause all events
-			pauseAllEvents(false, true);
+			// pause all events, activate return profile
+			pauseAllEvents(false, true, true);
 			
 			ActivateProfileHelper.lockRefresh = false;
 			

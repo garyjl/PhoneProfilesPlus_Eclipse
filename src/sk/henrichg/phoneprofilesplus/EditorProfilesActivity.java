@@ -553,7 +553,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 			{
 				// no setup for next start
 				dataWrapper.removeAllEventDelays();
-				dataWrapper.pauseAllEvents(true, false);
+				dataWrapper.pauseAllEvents(true, false, false);
 				GlobalData.setGlobalEventsRuning(getBaseContext(), false);
 				// stop Wifi scanner
 				WifiScanAlarmBroadcastReceiver.initialize(getBaseContext());
@@ -621,7 +621,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 			GlobalData.setApplicationStarted(getBaseContext(), false);
 			
 			// stop all events
-			getDataWrapper().stopAllEvents(false);
+			getDataWrapper().stopAllEvents(false, false);
 			
 			// zrusenie notifikacie
 			getDataWrapper().getActivateProfileHelper().removeNotification();
@@ -1070,7 +1070,7 @@ public class EditorProfilesActivity extends ActionBarActivity
 			@Override
 			protected Integer doInBackground(Void... params) {
 				
-				this.dataWrapper.stopAllEvents(true);
+				this.dataWrapper.stopAllEvents(true, false);
 				
 				int ret = this.dataWrapper.getDatabaseHandler().importDB(_applicationDataPath);
 				
