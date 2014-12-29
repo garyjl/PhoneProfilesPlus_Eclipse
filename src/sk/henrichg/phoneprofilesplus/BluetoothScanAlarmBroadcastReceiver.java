@@ -140,7 +140,7 @@ public class BluetoothScanAlarmBroadcastReceiver extends BroadcastReceiver {
 
 				Calendar calendar = Calendar.getInstance();
 		        //calendar.setTimeInMillis(System.currentTimeMillis());
-		        calendar.add(Calendar.SECOND, 3);
+		        calendar.add(Calendar.SECOND, 2);
 
 		        long alarmTime = calendar.getTimeInMillis(); 
 		        		

@@ -161,7 +161,7 @@ public class WifiScanAlarmBroadcastReceiver extends BroadcastReceiver {
 				removeAlarm(context, true);
 
 				Calendar calendar = Calendar.getInstance();
-		        calendar.add(Calendar.SECOND, 3);
+		        calendar.add(Calendar.SECOND, 2);
 		        long alarmTime = calendar.getTimeInMillis(); 
 		        		
 			    SimpleDateFormat sdf = new SimpleDateFormat("EE d.MM.yyyy HH:mm:ss:S");
