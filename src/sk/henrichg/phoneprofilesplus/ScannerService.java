@@ -112,6 +112,12 @@ public class ScannerService extends IntentService
 					
 					unregisterReceiver(wifiScanReceiver);
 					
+					try {
+			        	Thread.sleep(200);
+				    } catch (InterruptedException e) {
+				        System.out.println(e);
+				    }
+					
 				}
 			//}
 			//else
