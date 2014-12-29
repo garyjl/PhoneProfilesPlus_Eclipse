@@ -385,7 +385,7 @@
   <string name="event_preferences_category_eventScreenParameters">Paràmetres de la pantalla</string>
   <string name="event_preferences_screen_enabled">Habilitar la pantalla</string>
   <string name="event_preferences_screen_event_type">Tipus d\'esdeveniment</string>
-  <string name="event_preferences_delayStart">Retard (min)</string>
+  <string name="event_preferences_delayStart">Retard (sec)</string>
   <string name="profile_preferences_duration">Durada (min)</string>
   <string name="profile_preferences_afterDurationDo">Després de durada fer</string>
   <string name="array_pref_afterProfileDurationDo_nothing">Res</string>

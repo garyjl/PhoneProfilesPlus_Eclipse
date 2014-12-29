@@ -385,7 +385,7 @@
   <string name="event_preferences_category_eventScreenParameters">Параметри екрану</string>
   <string name="event_preferences_screen_enabled">Активувати</string>
   <string name="event_preferences_screen_event_type">Тип подій</string>
-  <string name="event_preferences_delayStart">Затримка (хвилин)</string>
+  <string name="event_preferences_delayStart">Затримка (сек.)</string>
   <string name="profile_preferences_duration">Тривалість (хвилин)</string>
   <string name="profile_preferences_afterDurationDo">Після тривалість зробити</string>
   <string name="array_pref_afterProfileDurationDo_nothing">Нічого</string>

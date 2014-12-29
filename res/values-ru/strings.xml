@@ -385,7 +385,7 @@
   <string name="event_preferences_category_eventScreenParameters">Параметры экрана</string>
   <string name="event_preferences_screen_enabled">Активировать</string>
   <string name="event_preferences_screen_event_type">Тип события</string>
-  <string name="event_preferences_delayStart">задержка (минут)</string>
+  <string name="event_preferences_delayStart">задержка (сек.)</string>
   <string name="profile_preferences_duration">Продолжительность (минут)</string>
   <string name="profile_preferences_afterDurationDo">После продолжительности сделать</string>
   <string name="array_pref_afterProfileDurationDo_nothing">Ничего</string>

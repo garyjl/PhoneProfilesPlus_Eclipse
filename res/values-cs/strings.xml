@@ -385,7 +385,7 @@
   <string name="event_preferences_category_eventScreenParameters">Parametry obrazovky</string>
   <string name="event_preferences_screen_enabled">Použij obrazovku</string>
   <string name="event_preferences_screen_event_type">Typ události</string>
-  <string name="event_preferences_delayStart">Pozdržení (min.)</string>
+  <string name="event_preferences_delayStart">Pozdržení (sek.)</string>
   <string name="profile_preferences_duration">Trvání (min.)</string>
   <string name="profile_preferences_afterDurationDo">Po uplynutí trvání udělej</string>
   <string name="array_pref_afterProfileDurationDo_nothing">Nic</string>

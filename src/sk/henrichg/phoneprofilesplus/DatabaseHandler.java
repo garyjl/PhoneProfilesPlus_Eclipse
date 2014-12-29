@@ -28,7 +28,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     Context context;
     
 	// Database Version
-	private static final int DATABASE_VERSION = 1165;
+	private static final int DATABASE_VERSION = 1170;
 
 	// Database Name
 	private static final String DATABASE_NAME = "phoneProfilesManager";
@@ -858,7 +858,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		{
 			if (android.os.Build.VERSION.SDK_INT >= 21) // for Android 5.0: adaptive brightness
 			{
-				// updatneme zaznamy  
 				final String selectQuery = "SELECT " + KEY_ID + "," +
 		         		 						KEY_DEVICE_BRIGHTNESS +
 		         		 					" FROM " + TABLE_PROFILES;
@@ -868,7 +867,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 					
 					Cursor cursor = db.rawQuery(selectQuery, null);
 
-					// looping through all rows and adding to list
 					if (cursor.moveToFirst()) {
 						do {
 							long id = Long.parseLong(cursor.getString(0));
@@ -892,7 +890,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 									brightness = Profile.BRIGHTNESS_ADAPTIVE_BRIGHTNESS_NOT_SET+"|"+splits[1]+"|"+splits[2]+"|0";
 								
 								db.execSQL("UPDATE " + TABLE_PROFILES + 
-										     " SET " + KEY_DEVICE_BRIGHTNESS + "=\"" + brightness +"\"" +
+										     " SET " + KEY_DEVICE_BRIGHTNESS + "=\"" + brightness +"\" " +
 											"WHERE " + KEY_ID + "=" + id);
 							}
 							
@@ -919,7 +917,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		
 		if (oldVersion < 1165)
 		{
-			// updatneme zaznamy  
 			final String selectQuery = "SELECT " + KEY_ID + "," +
 	         		 						KEY_DEVICE_BRIGHTNESS +
 	         		 					" FROM " + TABLE_PROFILES;
@@ -929,7 +926,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				
 				Cursor cursor = db.rawQuery(selectQuery, null);
 
-				// looping through all rows and adding to list
 				if (cursor.moveToFirst()) {
 					do {
 						long id = Long.parseLong(cursor.getString(0));
@@ -948,8 +944,39 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 							brightness = perc+"|"+splits[1]+"|"+splits[2]+"|0";
 						
 						db.execSQL("UPDATE " + TABLE_PROFILES + 
-								     " SET " + KEY_DEVICE_BRIGHTNESS + "=\"" + brightness +"\"" +
+								     " SET " + KEY_DEVICE_BRIGHTNESS + "=\"" + brightness +"\" " +
 									"WHERE " + KEY_ID + "=" + id);
+						
+					} while (cursor.moveToNext());
+				}
+				
+				db.setTransactionSuccessful();
+		    } catch (Exception e){
+		        //Error in between database transaction 
+		    } finally {
+		    	db.endTransaction();
+	        }	
+		}
+		
+		if (oldVersion < 1170)
+		{
+			final String selectQuery = "SELECT " + KEY_E_ID + "," +
+	         		 						KEY_E_DELAY_START +
+	         		 					" FROM " + TABLE_EVENTS;
+
+			db.beginTransaction();
+			try {
+				
+				Cursor cursor = db.rawQuery(selectQuery, null);
+
+				if (cursor.moveToFirst()) {
+					do {
+						long id = Long.parseLong(cursor.getString(0));
+						int delayStart = cursor.getInt(1) * 60;  // conversiont to seconds
+						
+						db.execSQL("UPDATE " + TABLE_EVENTS + 
+								     " SET " + KEY_E_DELAY_START + "=" + delayStart + " " +
+									"WHERE " + KEY_E_ID + "=" + id);
 						
 					} while (cursor.moveToNext());
 				}
@@ -3657,6 +3684,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 							long startTime = 0;
 							long endTime = 0;
 							int priority = 0;
+							int delayStart = 0;
 							
 							if (cursorExportedDB.moveToFirst()) {
 								do {
@@ -3701,6 +3729,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 												endTime = cursorExportedDB.getLong(i);
 											if (columnNamesExportedDB[i].equals(KEY_E_PRIORITY))
 												priority = cursorExportedDB.getInt(i);
+											if (columnNamesExportedDB[i].equals(KEY_E_DELAY_START))
+												delayStart = cursorExportedDB.getInt(i);
 											
 											//Log.d("DatabaseHandler.importDB", "cn="+columnNames[i]+" val="+cursor.getString(i));
 										}
@@ -3896,6 +3926,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 										if (exportedDBObj.getVersion() < 1141)
 										{
 											values.put(KEY_E_SMS_START_TIME, 0);
+										}
+
+										if (exportedDBObj.getVersion() < 1170)
+										{
+											values.put(KEY_E_DELAY_START, delayStart * 60); // conversion to seconds
 										}
 										
 										// Inserting Row do db z SQLiteOpenHelper
