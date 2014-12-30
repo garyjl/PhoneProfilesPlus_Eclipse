@@ -25,7 +25,6 @@ public class ActivateProfileActivity extends ActionBarActivity {
 	private float popupMaxHeight;
 	private float popupHeight;
 	private int actionBarHeight;
-	private ImageView eventsRunStopIndicator;
 	
 	@SuppressLint("NewApi")
 	@SuppressWarnings({ "deprecation" })
@@ -137,8 +136,8 @@ public class ActivateProfileActivity extends ActionBarActivity {
 		
 		getSupportActionBar().setTitle(R.string.title_activity_activator);
 
-		eventsRunStopIndicator = (ImageView)findViewById(R.id.act_prof_run_stop_indicator);
-        
+		refreshGUI();
+		
     //-----------------------------------------------------------------------------------------		
 		
 		//Log.d("PhoneProfileActivity.onCreate", "xxxx");
@@ -248,6 +247,8 @@ public class ActivateProfileActivity extends ActionBarActivity {
 
 	public void refreshGUI()
 	{
+		setEventsRunStopIndicator();
+		
 		Fragment fragment = getFragmentManager().findFragmentById(R.id.activate_profile_list);
 		if (fragment != null)
 		{
@@ -257,6 +258,8 @@ public class ActivateProfileActivity extends ActionBarActivity {
 	
     public void setEventsRunStopIndicator()
     {
+		ImageView eventsRunStopIndicator = (ImageView)findViewById(R.id.act_prof_run_stop_indicator);
+    	
 		if (GlobalData.getGlobalEventsRuning(getBaseContext()))
 		{
 			if (GlobalData.getEventsBlocked(getBaseContext()))

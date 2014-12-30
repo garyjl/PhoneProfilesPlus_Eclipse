@@ -142,8 +142,6 @@ public class ActivateProfileListFragment extends Fragment {
 		else
 		{
 			absListView.setAdapter(profileListAdapter);
-			((ActivateProfileActivity)getActivity()).setEventsRunStopIndicator();
-			
 			doOnStart();
 		}
 		
@@ -223,8 +221,6 @@ public class ActivateProfileListFragment extends Fragment {
     				absListView = fragment.gridView;
     			absListView.setAdapter(fragment.profileListAdapter);
     			
-				((ActivateProfileActivity)fragment.getActivity()).setEventsRunStopIndicator();
-    	        
 				fragment.doOnStart();
             }
         }
