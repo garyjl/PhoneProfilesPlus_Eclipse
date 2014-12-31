@@ -60,12 +60,17 @@ public class EventPreferencesBluetooth extends EventPreferences {
 	@Override
 	public String getPreferencesDescription(String description, Context context)
 	{
-		String descr = description + context.getString(R.string.event_type_bluetooth) + ": ";
+		String descr = description;
 		
 		if (!this._enabled)
-			descr = descr + context.getString(R.string.event_preferences_not_enabled);
+		{
+			//descr = descr + context.getString(R.string.event_type_bluetooth) + ": ";
+			//descr = descr + context.getString(R.string.event_preferences_not_enabled);
+		}
 		else
 		{
+			descr = descr + context.getString(R.string.event_type_bluetooth) + ": ";
+			
 			descr = descr + context.getString(R.string.pref_event_bluetooth_connectionType);
 			String[] connectionListTypeNames = context.getResources().getStringArray(R.array.eventBluetoothConnectionTypeArray);
 			String[] connectionListTypes = context.getResources().getStringArray(R.array.eventBluetoothConnectionTypeValues);

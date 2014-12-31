@@ -63,12 +63,17 @@ public class EventPreferencesScreen extends EventPreferences {
 	@Override
 	public String getPreferencesDescription(String description, Context context)
 	{
-		String descr = description + context.getString(R.string.event_type_screen) + ": ";
+		String descr = description;
 		
 		if (!this._enabled)
-			descr = descr + context.getString(R.string.event_preferences_not_enabled);
+		{
+			//descr = descr + context.getString(R.string.event_type_screen) + ": ";
+			//descr = descr + context.getString(R.string.event_preferences_not_enabled);
+		}
 		else
 		{
+			descr = descr + context.getString(R.string.event_type_screen) + ": ";
+			
 			String[] eventListTypeNames = context.getResources().getStringArray(R.array.eventScreenEventTypeArray);
 			String[] eventListTypes = context.getResources().getStringArray(R.array.eventScreenEventTypeValues);
 			int index = Arrays.asList(eventListTypes).indexOf(Integer.toString(this._eventType));

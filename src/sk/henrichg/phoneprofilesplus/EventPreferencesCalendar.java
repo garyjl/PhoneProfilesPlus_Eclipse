@@ -97,12 +97,17 @@ public class EventPreferencesCalendar extends EventPreferences {
 	@Override
 	public String getPreferencesDescription(String description, Context context)
 	{
-		String descr = description + context.getString(R.string.event_type_calendar) + ": ";
+		String descr = description;
 
 		if (!this._enabled)
-			descr = descr + context.getString(R.string.event_preferences_not_enabled);
+		{
+			//descr = descr + context.getString(R.string.event_type_calendar) + ": ";
+			//descr = descr + context.getString(R.string.event_preferences_not_enabled);
+		}
 		else
 		{
+			descr = descr + context.getString(R.string.event_type_calendar) + ": ";
+			
 			String[] searchFields = context.getResources().getStringArray(R.array.eventCalendarSearchFieldArray);
 			descr = descr + searchFields[this._searchField] + "; ";
 			

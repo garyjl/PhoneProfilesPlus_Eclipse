@@ -70,12 +70,17 @@ public class EventPreferencesCall extends EventPreferences {
 	@Override
 	public String getPreferencesDescription(String description, Context context)
 	{
-		String descr = description + context.getString(R.string.event_type_call) + ": ";
+		String descr = description;
 		
 		if (!this._enabled)
-			descr = descr + context.getString(R.string.event_preferences_not_enabled);
+		{
+			//descr = descr + context.getString(R.string.event_type_call) + ": ";
+			//descr = descr + context.getString(R.string.event_preferences_not_enabled);
+		}
 		else
 		{
+			descr = descr + context.getString(R.string.event_type_call) + ": ";
+			
 			descr = descr + context.getString(R.string.pref_event_call_event);
 			String[] callEvents = context.getResources().getStringArray(R.array.eventCallEventsArray);
 			descr = descr + ": " + callEvents[this._callEvent] + "; ";

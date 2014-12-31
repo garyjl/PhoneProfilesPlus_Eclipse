@@ -54,12 +54,17 @@ public class EventPreferencesPeripherals extends EventPreferences {
 	@Override
 	public String getPreferencesDescription(String description, Context context)
 	{
-		String descr = description + context.getString(R.string.event_type_peripheral) + ": ";
+		String descr = description;
 		
 		if (!this._enabled)
-			descr = descr + context.getString(R.string.event_preferences_not_enabled);
+		{
+			//descr = descr + context.getString(R.string.event_type_peripheral) + ": ";
+			//descr = descr + context.getString(R.string.event_preferences_not_enabled);
+		}
 		else
 		{
+			descr = descr + context.getString(R.string.event_type_peripheral) + ": ";
+			
 			String[] peripheralTypes = context.getResources().getStringArray(R.array.eventPeripheralTypeArray);
 			descr = descr + peripheralTypes[this._peripheralType];
 		}

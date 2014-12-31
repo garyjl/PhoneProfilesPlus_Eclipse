@@ -436,21 +436,21 @@ public class Event {
 		description = "";
 		
 		description = _eventPreferencesTime.getPreferencesDescription(description, context);
-		description = description + "\n";
+		if (_eventPreferencesTime._enabled) description = description + "\n";
 		description = _eventPreferencesCalendar.getPreferencesDescription(description, context);
-		description = description + "\n";
+		if (_eventPreferencesCalendar._enabled) description = description + "\n";
 		description = _eventPreferencesBattery.getPreferencesDescription(description, context);
-		description = description + "\n";
+		if (_eventPreferencesBattery._enabled) description = description + "\n";
 		description = _eventPreferencesCall.getPreferencesDescription(description, context);
-		description = description + "\n";
+		if (_eventPreferencesCall._enabled) description = description + "\n";
 		description = _eventPreferencesSMS.getPreferencesDescription(description, context);
-		description = description + "\n";
+		if (_eventPreferencesSMS._enabled) description = description + "\n";
 		description = _eventPreferencesWifi.getPreferencesDescription(description, context);
-		description = description + "\n";
+		if (_eventPreferencesWifi._enabled) description = description + "\n";
 		description = _eventPreferencesBluetooth.getPreferencesDescription(description, context);
-		description = description + "\n";
+		if (_eventPreferencesBluetooth._enabled) description = description + "\n";
 		description = _eventPreferencesPeripherals.getPreferencesDescription(description, context);
-		description = description + "\n";
+		if (_eventPreferencesPeripherals._enabled) description = description + "\n";
 		description = _eventPreferencesScreen.getPreferencesDescription(description, context);
 		
 		//description = description.replace(' ', '\u00A0');
