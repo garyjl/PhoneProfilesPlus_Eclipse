@@ -106,6 +106,7 @@
   <string name="phone_profiles_pref_applicationLanguage_ca">Català</string>
   <string name="phone_profiles_pref_applicationLanguage_es_ES">Español (España)</string>
   <string name="phone_profiles_pref_applicationLanguage_uk">Українська</string>
+  <string name="phone_profiles_pref_applicationLanguage_it">Italiano</string>
   <string name="title_activity_shortcut_creator">PhoneProfilesPlus-odkaz</string>
   <string name="phone_profiles_pref_applicationStartOnBoot">Spustit při startu telefonu</string>
   <string name="array_pref_value_system">system</string>
@@ -117,6 +118,7 @@
   <string name="array_pref_value_ca">ca</string>
   <string name="array_pref_value_es_ES">es-ES</string>
   <string name="array_pref_value_uk">uk</string>
+  <string name="array_pref_value_it">it</string>
   <string name="profile_preferences_device_not_allowed">Není možné</string>
   <string name="menu_export">Export apl. dat</string>
   <string name="menu_import">Import apl. dat</string>

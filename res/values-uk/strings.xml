@@ -106,6 +106,7 @@
   <string name="phone_profiles_pref_applicationLanguage_ca">Català</string>
   <string name="phone_profiles_pref_applicationLanguage_es_ES">Español (España)</string>
   <string name="phone_profiles_pref_applicationLanguage_uk">Українська</string>
+  <string name="phone_profiles_pref_applicationLanguage_it">Italiano</string>
   <string name="title_activity_shortcut_creator">PhoneProfilesPlus-ярлик</string>
   <string name="phone_profiles_pref_applicationStartOnBoot">Відкривати при ввімкненні телефону</string>
   <string name="array_pref_value_system">system</string>
@@ -117,6 +118,7 @@
   <string name="array_pref_value_ca">ca</string>
   <string name="array_pref_value_es_ES">es-ES</string>
   <string name="array_pref_value_uk">uk</string>
+  <string name="array_pref_value_it">it</string>
   <string name="profile_preferences_device_not_allowed">Не дозволено</string>
   <string name="menu_export">Експорт даних</string>
   <string name="menu_import">Імпорт даних</string>
@@ -311,13 +313,13 @@
   <string name="pref_event_call_contacts_selected">Вибрані контакти</string>
   <string name="event_preferences_battery_level_bad_value">Невірне значення</string>
   <string name="event_preferences_eventProfileEnd">Активувати профіль</string>
-  <string name="menu_restart_events">Перезапустить событие</string>
+  <string name="menu_restart_events">Перезапустити події</string>
   <string name="event_preferences_ForceRun">Ігнорувати ручну активацію</string>
   <string name="manual_profile_activation_forceRun_title">Активувати профіль</string>
-  <string name="manual_profile_activation_forceRun_message">Будь-яка подія з опцією \"Ігнорувати ручну активацію\" працює. Активувати в любому випадку?</string>
+  <string name="manual_profile_activation_forceRun_message">Зараз активна подія з опцією \"Ігнорувати ручну активацію\". Продовжувати?</string>
   <string name="restart_events_alert_title">Перезавантаження подій</string>
   <string name="restart_events_alert_message">Ви впевнені?</string>
-  <string name="event_preferences_ForceRun_summary">Ролзпочато подію, незважадючи на те, що він був вручну активованого профілю</string>
+  <string name="event_preferences_ForceRun_summary">Розпочати подію, незважаючи на те, що діє вручну активований профіль</string>
   <string name="event_preferences_category_startofevent">Початок події</string>
   <string name="event_preferences_category_endofevent">Завершення події</string>
   <string name="event_preferences_undoneProfile">Анулювати профіль</string>
