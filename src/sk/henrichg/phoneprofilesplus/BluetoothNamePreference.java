@@ -2,11 +2,7 @@ package sk.henrichg.phoneprofilesplus;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-
 import android.annotation.SuppressLint;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.AsyncTask;

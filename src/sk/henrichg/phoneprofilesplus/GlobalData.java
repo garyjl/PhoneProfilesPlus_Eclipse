@@ -20,7 +20,6 @@ import com.stericson.RootTools.execution.Shell;
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.ActivityInfo;
@@ -37,7 +36,7 @@ public class GlobalData extends Application {
 
 	static String PACKAGE_NAME;
 	
-	private static boolean logIntoLogCat = true;
+	private static boolean logIntoLogCat = false;
 	private static boolean logIntoFile = false;
 	private static boolean rootToolsDebug = false;
 	public static String logFilterTags = //"@@@ BatteryEventBroadcastReceiver|"+

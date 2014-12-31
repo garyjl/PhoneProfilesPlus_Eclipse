@@ -7,10 +7,10 @@ import java.util.List;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -181,6 +181,7 @@ public class EditorProfileListFragment extends Fragment {
 
 	//@Override
 	//public void onActivityCreated(Bundle savedInstanceState)
+	@SuppressLint("InflateParams")
 	public void doOnViewCreated(View view, Bundle savedInstanceState)
 	{
 		//super.onActivityCreated(savedInstanceState);
@@ -602,7 +603,7 @@ public class EditorProfileListFragment extends Fragment {
 		dialogBuilder.setMessage(getResources().getString(R.string.alert_message_delete_all_profiles));
 		//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
 		
-		final Activity activity = getActivity();
+		//final Activity activity = getActivity();
 		
 		dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
 			

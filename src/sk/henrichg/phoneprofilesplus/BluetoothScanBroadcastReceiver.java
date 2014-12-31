@@ -6,7 +6,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Path.FillType;
 import android.support.v4.content.WakefulBroadcastReceiver;
 
 public class BluetoothScanBroadcastReceiver extends WakefulBroadcastReceiver {
