@@ -206,7 +206,7 @@ public class ActivateProfileHelper {
 					}
 					break;
 				case 2 :
-					if (!isBluetoothEnabled)
+					if (isBluetoothEnabled)
 					{
 						isBluetoothEnabled = false;
 						setBluetoothState = true;
