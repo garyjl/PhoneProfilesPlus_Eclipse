@@ -1104,8 +1104,8 @@ public class GlobalData extends Application {
 	static private boolean settingsBinaryExists = false;
 	static private boolean isSELinuxEnforcingChecked = false;
 	static private boolean isSELinuxEnforcing = false;
-	static private String suVersion = null;
-	static private boolean suVersionChecked = false;
+	//static private String suVersion = null;
+	//static private boolean suVersionChecked = false;
 	
 	static boolean isRooted(boolean onlyCheckFlags)
 	{
@@ -1117,8 +1117,8 @@ public class GlobalData extends Application {
 			settingsBinaryChecked = false;
 			isSELinuxEnforcingChecked = false;
 			isSELinuxEnforcing = false;
-			suVersionChecked = false;
-			suVersion = null;
+			//suVersionChecked = false;
+			//suVersion = null;
 			if (!onlyCheckFlags)
 			{
 				rootChecking = true;
@@ -1146,8 +1146,8 @@ public class GlobalData extends Application {
 				rooted = false;
 			}
 		}
-		if (rooted)
-			getSUVersion();
+		//if (rooted)
+		//	getSUVersion();
 		return rooted;
 	}
 	
@@ -1165,8 +1165,8 @@ public class GlobalData extends Application {
 			settingsBinaryChecked = false;
 			isSELinuxEnforcingChecked = false;
 			isSELinuxEnforcing = false;
-			suVersionChecked = false;
-			suVersion = null;
+			//suVersionChecked = false;
+			//suVersion = null;
 			GlobalData.logE("GlobalData.grantRoot", "start isAccessGiven");
 			grantChecking = true;
 			if (RootTools.isAccessGiven())
@@ -1194,8 +1194,8 @@ public class GlobalData extends Application {
 			}*/
 			grantChecking = false;
 		}
-		if (rooted)
-			getSUVersion();
+		//if (rooted)
+		//	getSUVersion();
 		return rootGranted;
 	}
 	
@@ -1272,6 +1272,7 @@ public class GlobalData extends Application {
         return isSELinuxEnforcing;
     }
     
+    /*
     public static String getSELinuxEnforceCommand(String command, Shell.ShellContext context)
     {
     	if ((suVersion != null) && suVersion.contains("SUPERSU"))
@@ -1307,7 +1308,6 @@ public class GlobalData extends Application {
     	return suVersion;
     }
     
-    
 	private static void commandWait(Command cmd) throws Exception {
         int waitTill = 50;
         int waitTillMultiplier = 2;
@@ -1328,7 +1328,8 @@ public class GlobalData extends Application {
         if (!cmd.isFinished()){
             Log.e("GlobaData.commandWait", "Could not finish root command in " + (waitTill/waitTillMultiplier));
         }
-    }    
+    }
+    */    
     
 	//------------------------------------------------------------
 	

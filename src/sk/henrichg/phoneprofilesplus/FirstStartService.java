@@ -29,7 +29,7 @@ public class FirstStartService extends IntentService {
 			if (GlobalData.grantRoot(true))
 			{
 				GlobalData.settingsBinaryExists();
-				GlobalData.getSUVersion();
+				//GlobalData.getSUVersion();
 			}
 		}
 
