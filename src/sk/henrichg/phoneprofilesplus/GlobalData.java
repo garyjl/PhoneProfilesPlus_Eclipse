@@ -13,8 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.stericson.RootShell.execution.Command;
-import com.stericson.RootShell.execution.Shell;
+import com.stericson.RootShell.RootShell;
 import com.stericson.RootTools.RootTools;
 
 import android.annotation.SuppressLint;
@@ -1109,7 +1108,7 @@ public class GlobalData extends Application {
 	
 	static boolean isRooted(boolean onlyCheckFlags)
 	{
-		RootTools.debugMode = rootToolsDebug;
+		RootShell.debugMode = rootToolsDebug;
 
 		if ((!rootChecked) && (!rootChecking))
 		{
@@ -1153,7 +1152,7 @@ public class GlobalData extends Application {
 	
 	static boolean grantRoot(boolean force)
 	{
-		RootTools.debugMode = rootToolsDebug;
+		RootShell.debugMode = rootToolsDebug;
 		
 		GlobalData.logE("GlobalData.grantRoot", "grantChecked="+grantChecked);
 		GlobalData.logE("GlobalData.grantRoot", "force="+force);
@@ -1201,7 +1200,7 @@ public class GlobalData extends Application {
 	
 	static boolean settingsBinaryExists()
 	{
-		RootTools.debugMode = rootToolsDebug;
+		RootShell.debugMode = rootToolsDebug;
 		
 		if ((!settingsBinaryChecked) && (!settingsBinaryChecking))
 		{
@@ -1228,7 +1227,7 @@ public class GlobalData extends Application {
      */
     public static boolean isSELinuxEnforcing()
     {
-    	RootTools.debugMode = rootToolsDebug;
+    	RootShell.debugMode = rootToolsDebug;
     	
         if (!isSELinuxEnforcingChecked)
         {

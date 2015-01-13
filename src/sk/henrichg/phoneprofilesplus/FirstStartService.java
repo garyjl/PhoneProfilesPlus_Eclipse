@@ -24,14 +24,14 @@ public class FirstStartService extends IntentService {
 		GUIData.setLanguage(context);
 		
 		// grant root
-		if (GlobalData.isRooted(false))
-		{
+		//if (GlobalData.isRooted(false))
+		//{
 			if (GlobalData.grantRoot(true))
 			{
 				GlobalData.settingsBinaryExists();
 				//GlobalData.getSUVersion();
 			}
-		}
+		//}
 
 		// start PPHelper
 		//PhoneProfilesHelper.startPPHelper(context);

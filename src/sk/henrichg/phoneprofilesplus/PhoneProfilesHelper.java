@@ -95,12 +95,12 @@ public class PhoneProfilesHelper {
 		boolean OK = true;
         errorNoRoot = false;
 
-		if (!GlobalData.isRooted(false))
+		/*if (!GlobalData.isRooted(false))
 		{
             Log.e("PhoneProfilesHelper.doInstallPPHelper", "Device is not rooted");
             errorNoRoot = true;
 			return false;
-		}
+		}*/
 
 		if (!GlobalData.grantRoot(false))
 		{
@@ -194,7 +194,7 @@ public class PhoneProfilesHelper {
 				//	command1 = GlobalData.getSELinuxEnforceCommad(command1);
 				Command command = new Command(0, false, command1);
 				try {
-					RootTools.getShell(true).add(command);
+					RootTools.getShell(true, Shell.ShellContext.RECOVERY).add(command);
 					OK = commandWait(command);
 					OK = OK && command.getExitCode() == 0;
 				} catch (Exception e) {
@@ -317,12 +317,12 @@ public class PhoneProfilesHelper {
 		boolean OK = false;
         errorNoRoot = false;
 
-		if (!GlobalData.isRooted(false))
+		/*if (!GlobalData.isRooted(false))
 		{
             Log.e("PhoneProfilesHelper.doUninstallPPHelper", "Device is not rooted");
             errorNoRoot = true;
 			return false;
-		}
+		}*/
 
 		if (!GlobalData.grantRoot(false))
 		{
@@ -343,7 +343,9 @@ public class PhoneProfilesHelper {
 		//if (!OK)
 		//	Log.e("PhoneProfilesHelper.doUninstallPPHelper", "remount RW ERROR");
 		//if (OK)
+		Log.e("PhoneProfilesHelper.doUninstallPPHelper", "before delete file");
 		RootTools.deleteFileOrDirectory(destinationFile, true);
+		Log.e("PhoneProfilesHelper.doUninstallPPHelper", "after delete file");
 		OK = true;
 		//if (!OK)
 		//	Log.e("PhoneProfilesHelper.doUninstallPPHelper", "delete file ERROR");
