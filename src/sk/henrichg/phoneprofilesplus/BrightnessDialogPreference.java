@@ -133,11 +133,15 @@ public class BrightnessDialogPreference extends
 		if (defaultProfile == 1)
 			noChangeChBox.setChecked(false);
 
+		/*
 		boolean isAutomatic = (automatic == 1);
 		if (android.os.Build.VERSION.SDK_INT >= 21) // for Android 5.0: adaptive brightness
 			isAutomatic = false;
 		valueText.setEnabled((noChange == 0) && (defaultProfile == 0) && (!isAutomatic));
 		seekBar.setEnabled((noChange == 0) && (defaultProfile == 0) && (!isAutomatic));
+		*/
+		valueText.setEnabled((noChange == 0) && (defaultProfile == 0));
+		seekBar.setEnabled((noChange == 0) && (defaultProfile == 0));
 		automaticChBox.setEnabled((noChange == 0) && (defaultProfile == 0));
 		
 		return view;
@@ -197,16 +201,22 @@ public class BrightnessDialogPreference extends
 
 		//Log.d("SeekBarNoChangeDialogPreference.onCheckedChanged", Boolean.toString(isChecked));
 
+		/*
 		boolean isAutomatic = (automatic == 1);
 		if (android.os.Build.VERSION.SDK_INT >= 21) // for Android 5.0: adaptive brightness
 			isAutomatic = false;  // enable change value via seek bar
+		*/
 		
 		if (buttonView.getId() == R.id.brightnessPrefDialogNoChange)
 		{
 			noChange = (isChecked)? 1 : 0;
 
+			/*
 			valueText.setEnabled((noChange == 0) && (defaultProfile == 0) && (!isAutomatic));
 			seekBar.setEnabled((noChange == 0) && (defaultProfile == 0) && (!isAutomatic));
+			*/
+			valueText.setEnabled((noChange == 0) && (defaultProfile == 0));
+			seekBar.setEnabled((noChange == 0) && (defaultProfile == 0));
 			automaticChBox.setEnabled((noChange == 0) && (defaultProfile == 0));
 			if (isChecked)
 				defaultProfileChBox.setChecked(false);
@@ -216,8 +226,12 @@ public class BrightnessDialogPreference extends
 		{
 			defaultProfile = (isChecked)? 1 : 0;
 
+			/*
 			valueText.setEnabled((noChange == 0) && (defaultProfile == 0) && (!isAutomatic));
 			seekBar.setEnabled((noChange == 0) && (defaultProfile == 0) && (!isAutomatic));
+			*/
+			valueText.setEnabled((noChange == 0) && (defaultProfile == 0));
+			seekBar.setEnabled((noChange == 0) && (defaultProfile == 0));
 			automaticChBox.setEnabled((noChange == 0) && (defaultProfile == 0));
 			if (isChecked)
 				noChangeChBox.setChecked(false);
@@ -227,12 +241,16 @@ public class BrightnessDialogPreference extends
 		{
 			automatic = (isChecked)? 1 : 0;
 
+			/*
 			isAutomatic = (automatic == 1);
 			if (android.os.Build.VERSION.SDK_INT >= 21) // for Android 5.0: adaptive brightness
 				isAutomatic = false;  // enable change value via seek bar
 			
 			valueText.setEnabled((noChange == 0) && (defaultProfile == 0) && (!isAutomatic));
 			seekBar.setEnabled((noChange == 0) && (defaultProfile == 0) && (!isAutomatic));
+			*/
+			valueText.setEnabled((noChange == 0) && (defaultProfile == 0));
+			seekBar.setEnabled((noChange == 0) && (defaultProfile == 0));
 		}
 		
 		// get values from defaultProfile when default profile checkbox is checked
@@ -245,12 +263,14 @@ public class BrightnessDialogPreference extends
 			_noChange = (_defaultProfile.getDeviceBrightnessChange()) ? 0 : 1;
 			_value = _defaultProfile.getDeviceBrightnessValue();
 
+			/*
 			isAutomatic = (_automatic == 1);
 			if (android.os.Build.VERSION.SDK_INT >= 21) // for Android 5.0: adaptive brightness
 				isAutomatic = false;  // enable change value via seek bar
+			*/
 		}
 		
-		if ((isAutomatic) || (_noChange == 1)) 
+		if (/*(isAutomatic) || */(_noChange == 1)) 
 		{
 			Settings.System.putInt(_context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, savedBrightnessMode);
 			Settings.System.putInt(_context.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, savedBrightness);
@@ -389,12 +409,10 @@ public class BrightnessDialogPreference extends
 			if (automatic == 1)
 			{
 				if (android.os.Build.VERSION.SDK_INT >= 21) // for Android 5.0: adaptive brightness
-				{
 					prefVolumeDataSummary = _context.getResources().getString(R.string.preference_profile_adaptiveBrightness);
-					prefVolumeDataSummary = prefVolumeDataSummary + "; " + sValue;
-				}
 				else
 					prefVolumeDataSummary = _context.getResources().getString(R.string.preference_profile_autobrightness);
+				prefVolumeDataSummary = prefVolumeDataSummary + "; " + sValue;
 			}
 			else
 				prefVolumeDataSummary = sValue;

@@ -28,7 +28,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     Context context;
     
 	// Database Version
-	private static final int DATABASE_VERSION = 1170;
+	private static final int DATABASE_VERSION = 1175;
 
 	// Database Name
 	private static final String DATABASE_NAME = "phoneProfilesManager";
@@ -987,6 +987,56 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		    } finally {
 		    	db.endTransaction();
 	        }	
+		}
+		
+		if (oldVersion < 1175)
+		{
+			if (android.os.Build.VERSION.SDK_INT < 21) 
+			{
+				// updatneme zaznamy  
+				final String selectQuery = "SELECT " + KEY_ID + "," +
+		         		 						KEY_DEVICE_BRIGHTNESS +
+		         		 					" FROM " + TABLE_PROFILES;
+	
+				db.beginTransaction();
+				try {
+					
+					Cursor cursor = db.rawQuery(selectQuery, null);
+	
+					// looping through all rows and adding to list
+					if (cursor.moveToFirst()) {
+						do {
+							long id = Long.parseLong(cursor.getString(0));
+							String brightness = cursor.getString(1);
+							
+							//value|noChange|automatic|defaultProfile
+							String[] splits = brightness.split("\\|");
+							
+							if (splits[2].equals("1")) // automatic is set
+							{
+								int perc = 50;
+								
+								// hm, found brightness values without default profile :-/ 
+								if (splits.length == 4)
+									brightness = perc+"|"+splits[1]+"|"+splits[2]+"|"+splits[3];
+								else
+									brightness = perc+"|"+splits[1]+"|"+splits[2]+"|0";
+								
+								db.execSQL("UPDATE " + TABLE_PROFILES + 
+										     " SET " + KEY_DEVICE_BRIGHTNESS + "=\"" + brightness +"\"" +
+											"WHERE " + KEY_ID + "=" + id);
+							}
+							
+						} while (cursor.moveToNext());
+					}
+					
+					db.setTransactionSuccessful();
+			    } catch (Exception e){
+			        //Error in between database transaction 
+			    } finally {
+			    	db.endTransaction();
+		        }
+			}
 		}
 		
 	}
@@ -3581,6 +3631,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 														value = perc+"|"+splits[1]+"|"+splits[2]+"|"+splits[3];
 													else
 														value = perc+"|"+splits[1]+"|"+splits[2]+"|0";
+												}
+											}
+											if (exportedDBObj.getVersion() < 1175)
+											{
+												if (columnNamesExportedDB[i].equals(KEY_DEVICE_BRIGHTNESS))
+												{
+													if (android.os.Build.VERSION.SDK_INT < 21)
+													{
+														//value|noChange|automatic|defaultProfile
+														String[] splits = value.split("\\|");
+														
+														if (splits[2].equals("1")) // automatic is set
+														{
+															int perc = 50;
+															
+															// hm, found brightness values without default profile :-/ 
+															if (splits.length == 4)
+																value = perc+"|"+splits[1]+"|"+splits[2]+"|"+splits[3];
+															else
+																value = perc+"|"+splits[1]+"|"+splits[2]+"|0";
+														}
+													}
 												}
 											}
 											
