@@ -5,6 +5,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import com.stericson.RootShell.execution.Command;
+import com.stericson.RootShell.execution.Shell;
+import com.stericson.RootTools.RootTools;
+
 import sk.henrichg.phoneprofilesplus.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -25,17 +30,11 @@ import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.stericson.RootTools.RootTools;
-import com.stericson.RootTools.execution.Command;
-import com.stericson.RootTools.execution.CommandCapture;
-import com.stericson.RootTools.execution.Shell;
-
-
 public class PhoneProfilesHelper {
 
 	public static int PPHelperVersion = -1;
 
-	public static final int PPHELPER_CURRENT_VERSION = 31;
+	public static final int PPHELPER_CURRENT_VERSION = 35;
 	
 	private static boolean errorNoRoot = false;
 	private static boolean nowPPHelperUninstalled = false; 
@@ -175,16 +174,15 @@ public class PhoneProfilesHelper {
 			//Log.e("PhoneProfilesHelper.doInstallPPHelper", "destionationFile="+destinationFile);
 			
 
-			/*
 			if (GlobalData.isSELinuxEnforcing())
-				Shell.defaultContext = Shell.ShellContext.SYSTEM_APP;
+				Shell.defaultContext = Shell.ShellContext.RECOVERY;
 			OK = RootTools.remount("/system", "RW");
 			if (!OK)
 				Log.e("PhoneProfilesHelper.doInstallPPHelper", "remount RW ERROR");
 			if (OK)
 				RootTools.deleteFileOrDirectory(destinationFile, false);
-			if (!OK)
-				Log.e("PhoneProfilesHelper.doInstallPPHelper", "delete file ERROR");
+			//if (!OK)
+			//	Log.e("PhoneProfilesHelper.doInstallPPHelper", "delete file ERROR");
 			if (OK)
 				OK = RootTools.copyFile(sourceFile, destinationFile, false, false);
 			if (!OK)
@@ -194,7 +192,7 @@ public class PhoneProfilesHelper {
 				String command1 = "chmod 644 "+destinationFile;
 				//if (GlobalData.isSELinuxEnforcing())
 				//	command1 = GlobalData.getSELinuxEnforceCommad(command1);
-				CommandCapture command = new CommandCapture(0, command1);
+				Command command = new Command(0, false, command1);
 				try {
 					RootTools.getShell(true).add(command);
 					OK = commandWait(command);
@@ -221,24 +219,24 @@ public class PhoneProfilesHelper {
 				Log.e("PhoneProfilesHelper.doInstallPPHelper", "PhoneProfilesHelper installed");
 			else
 				Log.e("PhoneProfilesHelper.doInstallPPHelper", "PhoneProfilesHelper installation failed!");
-		    */
-		    
+
+			/*
 			String command1 = "mount -o remount,rw /system"; 			//mounts the system partition to be writeable
 			String command2 = "rm "+destinationFile; 	    			//removes the old systemapp
 			String command3 = "cp "+sourceFile+" "+destinationFile;	//copies the apk of the app to the system-apps folder	
 			String command4 = "chmod 644 "+destinationFile;			//fixes the permissions
 			String command5 = "mount -o remount,ro /system";			//mounts the system partition to be read-only again
-			if (GlobalData.isSELinuxEnforcing())
-			{
-				command1 = GlobalData.getSELinuxEnforceCommand(command1, Shell.ShellContext.RECOVERY);
-				command2 = GlobalData.getSELinuxEnforceCommand(command2, Shell.ShellContext.RECOVERY);
-				command3 = GlobalData.getSELinuxEnforceCommand(command3, Shell.ShellContext.RECOVERY);
-				command4 = GlobalData.getSELinuxEnforceCommand(command4, Shell.ShellContext.RECOVERY);
-				command5 = GlobalData.getSELinuxEnforceCommand(command5, Shell.ShellContext.RECOVERY);
-			}
-			CommandCapture command = new CommandCapture(0, command1, command2, command3, command4, command5);
+			//if (GlobalData.isSELinuxEnforcing())
+			//{
+			//	command1 = GlobalData.getSELinuxEnforceCommand(command1, Shell.ShellContext.RECOVERY);
+			//	command2 = GlobalData.getSELinuxEnforceCommand(command2, Shell.ShellContext.RECOVERY);
+			//	command3 = GlobalData.getSELinuxEnforceCommand(command3, Shell.ShellContext.RECOVERY);
+			//	command4 = GlobalData.getSELinuxEnforceCommand(command4, Shell.ShellContext.RECOVERY);
+			//	command5 = GlobalData.getSELinuxEnforceCommand(command5, Shell.ShellContext.RECOVERY);
+			//}
+			Command command = new Command(0, false, command1, command2, command3, command4, command5);
 			try {
-				RootTools.getShell(true).add(command);
+				RootTools.getShell(true, Shell.ShellContext.RECOVERY).add(command);
 				OK = commandWait(command);
 				//RootTools.closeAllShells();
 				if (OK)
@@ -250,6 +248,7 @@ public class PhoneProfilesHelper {
 				Log.e("PhoneProfilesHelper.doInstallPPHelper", "PhoneProfilesHelper installation failed!");
 				OK = false;
 			}
+			*/
 			
 			if (OK)
 			{
@@ -338,33 +337,36 @@ public class PhoneProfilesHelper {
 		else
 		    destinationFile = "/system/app/"+destinationFile;
 		
-		/*
 		if (GlobalData.isSELinuxEnforcing())
-			Shell.defaultContext = Shell.ShellContext.SYSTEM_APP;
-		OK = RootTools.deleteFileOrDirectory(destinationFile, true);
+			Shell.defaultContext = Shell.ShellContext.RECOVERY;
+		//OK = RootTools.remount("/system", "RW");
+		//if (!OK)
+		//	Log.e("PhoneProfilesHelper.doUninstallPPHelper", "remount RW ERROR");
 		//if (OK)
-		//	Log.e("PhoneProfilesHelper.doInstallPPHelper", "remount RO OK");
-		//try {
-		//	RootTools.closeAllShells();
-		//} catch (Exception e) {
-		//	e.printStackTrace();
-		//}
+		RootTools.deleteFileOrDirectory(destinationFile, true);
+		OK = true;
+		//if (!OK)
+		//	Log.e("PhoneProfilesHelper.doUninstallPPHelper", "delete file ERROR");
+		//if (OK)
+		//	OK = RootTools.remount("/system", "RO");
+		//if (!OK)
+		//	Log.e("PhoneProfilesHelper.doUninstallPPHelper", "remount RO ERROR");
 		if (GlobalData.isSELinuxEnforcing())
 			Shell.defaultContext = Shell.ShellContext.NORMAL;
-		*/
 
+		/*
 		String command1 = "mount -o remount,rw /system";		//mounts the system partition to be writeable
 		String command2 = "rm "+destinationFile;				//removes the old systemapp
 		String command3 = "mount -o remount,ro /system";		//mounts the system partition to be read-only again
-		if (GlobalData.isSELinuxEnforcing())
-		{
-			command1 = GlobalData.getSELinuxEnforceCommand(command1, Shell.ShellContext.RECOVERY);
-			command2 = GlobalData.getSELinuxEnforceCommand(command2, Shell.ShellContext.RECOVERY);
-			command3 = GlobalData.getSELinuxEnforceCommand(command3, Shell.ShellContext.RECOVERY);
-		}
-		CommandCapture command = new CommandCapture(0, command1, command2, command3);
+		//if (GlobalData.isSELinuxEnforcing())
+		//{
+		//	command1 = GlobalData.getSELinuxEnforceCommand(command1, Shell.ShellContext.RECOVERY);
+		//	command2 = GlobalData.getSELinuxEnforceCommand(command2, Shell.ShellContext.RECOVERY);
+		//	command3 = GlobalData.getSELinuxEnforceCommand(command3, Shell.ShellContext.RECOVERY);
+		//}
+		Command command = new Command(0, false, command1, command2, command3);
 		try {
-			RootTools.getShell(true).add(command);
+			RootTools.getShell(true, Shell.ShellContext.RECOVERY).add(command);
 			OK = commandWait(command);
 			//RootTools.closeAllShells();
 			if (OK)
@@ -376,6 +378,7 @@ public class PhoneProfilesHelper {
 			Log.e("PhoneProfilesHelper.doUninstallPPHelper", "PhoneProfilesHelper uninstallation failed!");
 			OK = false;
 		}
+		*/
 		
 		if (OK)
 		{
@@ -483,7 +486,7 @@ public class PhoneProfilesHelper {
             }
         }
         if (!cmd.isFinished()){
-            //Log.e("PhoneProfilesHelper.commandWaid", "Could not finish root command in " + (waitTill/waitTillMultiplier));
+            Log.e("PhoneProfilesHelper.commandWaid", "Could not finish root command in " + (waitTill/waitTillMultiplier));
             OK = false;
         }
         

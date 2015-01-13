@@ -9,13 +9,13 @@ import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.stericson.RootShell.execution.Command;
+import com.stericson.RootShell.execution.Shell;
 import com.stericson.RootTools.RootTools;
-import com.stericson.RootTools.execution.Command;
-import com.stericson.RootTools.execution.CommandCapture;
-import com.stericson.RootTools.execution.Shell;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
@@ -1206,7 +1206,8 @@ public class GlobalData extends Application {
 		if ((!settingsBinaryChecked) && (!settingsBinaryChecking))
 		{
 			settingsBinaryChecking = true;
-			settingsBinaryExists = RootTools.findBinary("settings");
+			List<String> settingsPaths = RootTools.findBinary("settings"); 
+			settingsBinaryExists = settingsPaths.size() > 0;
 			/*try {
 				RootTools.closeAllShells();
 			} catch (IOException e) {
@@ -1227,7 +1228,7 @@ public class GlobalData extends Application {
      */
     public static boolean isSELinuxEnforcing()
     {
-		RootTools.debugMode = rootToolsDebug;
+    	RootTools.debugMode = rootToolsDebug;
     	
         if (!isSELinuxEnforcingChecked)
         {
@@ -1283,13 +1284,15 @@ public class GlobalData extends Application {
     {
     	if (!suVersionChecked)
     	{
-	    	CommandCapture command = new CommandCapture(0, "su -v")
+	    	Command command = new Command(0, false, "su -v")
 	    	{
 	    		@Override
-	    	    public void commandCompleted(int id, int exitcode) {
-	    			//Log.e("GlobalData.getSUVersion","version="+toString());
-	    			suVersion = toString();
-	    	    }
+	    		public void commandOutput(int id, String line) {
+	    			Log.e("GlobalData.getSUVersion","version="+line);
+	    			suVersion = line;
+	    			
+	    			super.commandOutput(id, line);
+	    		}
 	    	}
 	    	;
 			try {
@@ -1308,7 +1311,7 @@ public class GlobalData extends Application {
 	private static void commandWait(Command cmd) throws Exception {
         int waitTill = 50;
         int waitTillMultiplier = 2;
-        int waitTillLimit = 3200; //7 tries, 6350 msec
+        int waitTillLimit = 3200; // 6350 msec (3200 * 2 - 50)
 
         while (!cmd.isFinished() && waitTill<=waitTillLimit) {
             synchronized (cmd) {
