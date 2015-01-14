@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.ListPreference;
+import android.preference.Preference;
 import android.preference.PreferenceManager;
 
 public class EventPreferencesWifi extends EventPreferences {
@@ -88,7 +89,9 @@ public class EventPreferencesWifi extends EventPreferences {
 	{
 		if (key.equals(PREF_EVENT_WIFI_SSID))
 		{	
-	        prefMng.findPreference(key).setSummary(value);
+	        Preference preference = prefMng.findPreference(key);
+	        preference.setSummary(value);
+	    	GUIData.setPreferenceTitleStyle(preference, false, true);
 		}
 		if (key.equals(PREF_EVENT_WIFI_CONNECTION_TYPE))
 		{	

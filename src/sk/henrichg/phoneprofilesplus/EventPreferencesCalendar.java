@@ -18,6 +18,7 @@ import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.net.Uri;
 import android.preference.ListPreference;
+import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.provider.CalendarContract.Instances;
 import android.text.format.DateFormat;
@@ -156,6 +157,11 @@ public class EventPreferencesCalendar extends EventPreferences {
 	@Override
 	public void setSummary(PreferenceManager prefMng, String key, String value, Context context)
 	{
+		if (key.equals(PREF_EVENT_CALENDAR_CALENDARS))
+		{
+			Preference preference = prefMng.findPreference(key);
+	    	GUIData.setPreferenceTitleStyle(preference, false, true);
+		}
 		if (key.equals(PREF_EVENT_CALENDAR_SEARCH_FIELD))
 		{	
 			ListPreference listPreference = (ListPreference)prefMng.findPreference(key);
@@ -165,14 +171,17 @@ public class EventPreferencesCalendar extends EventPreferences {
 		}
 		if (key.equals(PREF_EVENT_CALENDAR_SEARCH_STRING))
 		{
-	        prefMng.findPreference(key).setSummary(value);
+			Preference preference = prefMng.findPreference(key);
+			preference.setSummary(value);
+	    	GUIData.setPreferenceTitleStyle(preference, false, true);
 		}
 	}
 	
 	@Override
 	public void setSummary(PreferenceManager prefMng, String key, SharedPreferences preferences, Context context)
 	{
-		if (key.equals(PREF_EVENT_CALENDAR_SEARCH_FIELD) || 
+		if (key.equals(PREF_EVENT_CALENDAR_CALENDARS) ||
+			key.equals(PREF_EVENT_CALENDAR_SEARCH_FIELD) || 
 			key.equals(PREF_EVENT_CALENDAR_SEARCH_STRING))
 		{
 			setSummary(prefMng, key, preferences.getString(key, ""), context);
@@ -182,6 +191,7 @@ public class EventPreferencesCalendar extends EventPreferences {
 	@Override
 	public void setAllSummary(PreferenceManager prefMng, Context context)
 	{
+		setSummary(prefMng, PREF_EVENT_CALENDAR_CALENDARS, _calendars, context);
 		setSummary(prefMng, PREF_EVENT_CALENDAR_SEARCH_FIELD, Integer.toString(_searchField), context);
 		setSummary(prefMng, PREF_EVENT_CALENDAR_SEARCH_STRING, _searchString, context);
 	}

@@ -16,6 +16,7 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.preference.ListPreference;
+import android.preference.Preference;
 import android.preference.PreferenceManager;
 
 public class Event {
@@ -335,10 +336,14 @@ public class Event {
 	{
 		if (key.equals(PREF_EVENT_NAME))
 		{	
-	        prefMng.findPreference(key).setSummary(value);
+			Preference preference = prefMng.findPreference(key);
+			preference.setSummary(value);
+	        GUIData.setPreferenceTitleStyle(preference, false, true);
 		}
 		if (key.equals(PREF_EVENT_PROFILE_START)||key.equals(PREF_EVENT_PROFILE_END))
 		{
+			Preference preference = prefMng.findPreference(key);
+			
 			String sProfileId = value;
 			long lProfileId;
 			try {
@@ -350,15 +355,17 @@ public class Event {
 		    Profile profile = dataWrapper.getProfileById(lProfileId);
 		    if (profile != null)
 		    {
-    	        prefMng.findPreference(key).setSummary(profile._name);
+		    	preference.setSummary(profile._name);
 		    }
 		    else
 		    {
 		    	if (lProfileId == GlobalData.PROFILE_NO_ACTIVATE)
-		    		prefMng.findPreference(key).setSummary(context.getResources().getString(R.string.profile_preference_profile_end_no_activate));
+		    		preference.setSummary(context.getResources().getString(R.string.profile_preference_profile_end_no_activate));
 		    	else
-		    		prefMng.findPreference(key).setSummary(context.getResources().getString(R.string.profile_preference_profile_not_set));
+		    		preference.setSummary(context.getResources().getString(R.string.profile_preference_profile_not_set));
 		    }
+		    if (key.equals(PREF_EVENT_PROFILE_START))
+		    	GUIData.setPreferenceTitleStyle(preference, false, true);
 		}
 		if (key.equals(PREF_EVENT_NOTIFICATION_SOUND))
 		{

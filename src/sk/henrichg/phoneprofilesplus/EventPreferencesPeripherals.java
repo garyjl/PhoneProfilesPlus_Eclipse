@@ -100,12 +100,6 @@ public class EventPreferencesPeripherals extends EventPreferences {
 	}
 	
 	@Override
-	public boolean isRunable()
-	{
-		return super.isRunable();
-	}
-	
-	@Override
 	public boolean activateReturnProfile()
 	{
 		return true;

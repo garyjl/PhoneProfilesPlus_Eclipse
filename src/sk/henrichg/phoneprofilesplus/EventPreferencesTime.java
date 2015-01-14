@@ -14,6 +14,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.text.format.DateFormat;
 
 public class EventPreferencesTime extends EventPreferences {
@@ -256,6 +258,31 @@ public class EventPreferencesTime extends EventPreferences {
     	return resDayOfWeek;
     }
 
+	@Override
+	public void setSummary(PreferenceManager prefMng, String key, String value, Context context)
+	{
+		if (key.equals(PREF_EVENT_TIME_DAYS))
+		{
+			Preference preference = prefMng.findPreference(key);
+	    	GUIData.setPreferenceTitleStyle(preference, false, true);
+		}
+	}
+	
+	@Override
+	public void setSummary(PreferenceManager prefMng, String key, SharedPreferences preferences, Context context)
+	{
+		if (key.equals(PREF_EVENT_TIME_DAYS))
+		{
+			setSummary(prefMng, key, preferences.getString(key, ""), context);
+		}
+	}
+	
+	@Override
+	public void setAllSummary(PreferenceManager prefMng, Context context)
+	{
+		setSummary(prefMng, PREF_EVENT_TIME_DAYS, "", context);
+	}
+    
 	@Override
 	public boolean isRunable()
 	{

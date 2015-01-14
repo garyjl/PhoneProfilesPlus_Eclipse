@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.ListPreference;
+import android.preference.Preference;
 import android.preference.PreferenceManager;
 
 public class EventPreferencesSMS extends EventPreferences {
@@ -116,12 +117,19 @@ public class EventPreferencesSMS extends EventPreferences {
 			CharSequence summary = (index >= 0) ? listPreference.getEntries()[index] : null;
 			listPreference.setSummary(summary);
 		}
+		if (key.equals(PREF_EVENT_SMS_CONTACTS))
+		{
+			Preference preference = prefMng.findPreference(key);
+	    	GUIData.setPreferenceTitleStyle(preference, false, true);
+		}
 	}
 	
 	@Override
 	public void setSummary(PreferenceManager prefMng, String key, SharedPreferences preferences, Context context)
 	{
-		if (/*key.equals(PREF_EVENT_SMS_EVENT) ||*/ key.equals(PREF_EVENT_SMS_CONTACT_LIST_TYPE))
+		if (/*key.equals(PREF_EVENT_SMS_EVENT) ||*/ 
+			key.equals(PREF_EVENT_SMS_CONTACT_LIST_TYPE) ||
+			key.equals(PREF_EVENT_SMS_CONTACTS))
 		{
 			setSummary(prefMng, key, preferences.getString(key, ""), context);
 		}
@@ -132,6 +140,7 @@ public class EventPreferencesSMS extends EventPreferences {
 	{
 		//setSummary(prefMng, PREF_EVENT_SMS_EVENT, Integer.toString(_smsEvent), context);
 		setSummary(prefMng, PREF_EVENT_SMS_CONTACT_LIST_TYPE, Integer.toString(_contactListType), context);
+		setSummary(prefMng, PREF_EVENT_SMS_CONTACTS, _contacts, context);
 	}
 	
 	@Override

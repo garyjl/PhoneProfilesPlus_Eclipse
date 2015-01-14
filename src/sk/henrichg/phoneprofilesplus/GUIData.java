@@ -8,6 +8,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.preference.Preference;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.CharacterStyle;
+import android.text.style.StyleSpan;
+import android.text.style.UnderlineSpan;
 
 public class GUIData {
 
@@ -149,5 +155,29 @@ public class GUIData {
 		else
 			activity.recreate();
 	}
+	
+	public static void setPreferenceTitleStyle(Preference preference, boolean bold, boolean underline)
+	{
+		CharSequence title = preference.getTitle();
+		Spannable sbt = new SpannableString(title);
+		Object spansToRemove[] = sbt.getSpans(0, title.length(), Object.class);
+	    for(Object span: spansToRemove){
+	        if(span instanceof CharacterStyle)
+	            sbt.removeSpan(span);
+	    }				
+		if (bold || underline)
+		{
+			if (bold)
+				sbt.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, title.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			if (underline)
+				sbt.setSpan(new UnderlineSpan(), 0, title.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			preference.setTitle(sbt);
+		}
+		else
+		{
+			preference.setTitle(sbt);
+		}
+	}
+	
 	
 }

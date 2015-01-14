@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.ListPreference;
+import android.preference.Preference;
 import android.preference.PreferenceManager;
 
 public class EventPreferencesCall extends EventPreferences {
@@ -102,13 +103,19 @@ public class EventPreferencesCall extends EventPreferences {
 			CharSequence summary = (index >= 0) ? listPreference.getEntries()[index] : null;
 			listPreference.setSummary(summary);
 		}
+		if (key.equals(PREF_EVENT_CALL_CONTACTS))
+		{
+			Preference preference = prefMng.findPreference(key);
+	    	GUIData.setPreferenceTitleStyle(preference, false, true);
+		}
 	}
 	
 	@Override
 	public void setSummary(PreferenceManager prefMng, String key, SharedPreferences preferences, Context context)
 	{
 		if (key.equals(PREF_EVENT_CALL_EVENT) || 
-			key.equals(PREF_EVENT_CALL_CONTACT_LIST_TYPE))
+			key.equals(PREF_EVENT_CALL_CONTACT_LIST_TYPE) || 
+			key.equals(PREF_EVENT_CALL_CONTACTS))
 		{
 			setSummary(prefMng, key, preferences.getString(key, ""), context);
 		}
@@ -119,6 +126,7 @@ public class EventPreferencesCall extends EventPreferences {
 	{
 		setSummary(prefMng, PREF_EVENT_CALL_EVENT, Integer.toString(_callEvent), context);
 		setSummary(prefMng, PREF_EVENT_CALL_CONTACT_LIST_TYPE, Integer.toString(_contactListType), context);
+		setSummary(prefMng, PREF_EVENT_CALL_CONTACTS, _contacts, context);
 	}
 	
 	@Override
