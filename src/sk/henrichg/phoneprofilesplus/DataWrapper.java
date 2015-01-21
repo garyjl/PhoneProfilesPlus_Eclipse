@@ -2153,7 +2153,7 @@ public class DataWrapper {
 		
 	}
 	
-	private void doRestartEventsWithAlert()
+	public void restartEventsWithRescan(boolean showToast)
 	{
 		// remove all event delay alarms
 		removeAllEventDelays();
@@ -2177,10 +2177,13 @@ public class DataWrapper {
 			BluetoothScanAlarmBroadcastReceiver.setAlarm(context, true);
 		}
 		
-		Toast msg = Toast.makeText(context, 
-				context.getResources().getString(R.string.toast_events_restarted), 
-				Toast.LENGTH_SHORT);
-		msg.show();
+		if (showToast)
+		{
+			Toast msg = Toast.makeText(context, 
+					context.getResources().getString(R.string.toast_events_restarted), 
+					Toast.LENGTH_SHORT);
+			msg.show();
+		}
 	}
 	
 	public void restartEventsWithAlert(Activity activity)
@@ -2204,7 +2207,7 @@ public class DataWrapper {
 			//dialogBuilder.setIcon(android.R.drawable.ic_dialog_alert);
 			dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
-					doRestartEventsWithAlert();
+					restartEventsWithRescan(true);
 					
 					if (GlobalData.applicationClose && (!(_activity instanceof EditorProfilesActivity)))
 						_activity.finish();
@@ -2215,7 +2218,7 @@ public class DataWrapper {
 		}
 		else
 		{
-			doRestartEventsWithAlert();
+			restartEventsWithRescan(true);
 			
 			if (GlobalData.applicationClose)
 				activity.finish();

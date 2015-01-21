@@ -46,9 +46,15 @@ public class ProfileDurationAlarmBroadcastReceiver extends BroadcastReceiver {
 						{
 							activateProfileId = GlobalData.getActivatedProfileForDuration(context);
 						}
-						
-						dataWrapper.getActivateProfileHelper().initialize(dataWrapper, null, context);
-						dataWrapper.activateProfile(activateProfileId, GlobalData.STARTUP_SOURCE_SERVICE, null, "");
+						if (profile._afterDurationDo == Profile.AFTERDURATIONDO_RESTARTEVENTS)
+						{
+							dataWrapper.restartEventsWithRescan(false);
+						}
+						else
+						{
+							dataWrapper.getActivateProfileHelper().initialize(dataWrapper, null, context);
+							dataWrapper.activateProfile(activateProfileId, GlobalData.STARTUP_SOURCE_SERVICE, null, "");
+						}
 					}
 				}
 				
