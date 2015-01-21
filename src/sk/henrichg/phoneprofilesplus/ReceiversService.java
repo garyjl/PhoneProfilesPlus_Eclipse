@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.WifiManager;
 import android.os.IBinder;
+import android.util.Log;
 
 
 public class ReceiversService extends Service {
@@ -21,6 +22,10 @@ public class ReceiversService extends Service {
 	@Override
     public void onCreate()
 	{
+		// start service for first start
+		Intent eventsServiceIntent = new Intent(getApplicationContext(), FirstStartService.class);
+		getApplicationContext().startService(eventsServiceIntent);
+        
 		IntentFilter intentFilter1 = new IntentFilter();
 		intentFilter1.addAction(Intent.ACTION_BATTERY_CHANGED);
 		registerReceiver(batteryEventReceiver, intentFilter1);
@@ -84,6 +89,14 @@ public class ReceiversService extends Service {
         // stopped, so return sticky.
         return START_STICKY;
     }
+	
+	@Override
+	public void onTaskRemoved(Intent rootIntent)
+	{
+        GlobalData.setApplicationStarted(getApplicationContext(), false);
+        Log.e("ReceiversService.onTaskRemoved","xxx");
+        super.onTaskRemoved(rootIntent);
+	}
 	
 	@Override
 	public IBinder onBind(Intent intent)

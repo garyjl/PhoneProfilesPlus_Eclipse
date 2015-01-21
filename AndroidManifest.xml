@@ -292,7 +292,8 @@
             android:exported="false" >
         </service>
         <service android:name=".ReceiversService"
-            android:exported="false" >
+            android:exported="false"
+    		android:stopWithTask="false" >
         </service>
         <service android:name=".EventsService"
             android:exported="false" >

@@ -17,9 +17,12 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 		
 			if (GlobalData.getApplicationStarted(context))
 			{
+				// start ReceiverService
+				context.startService(new Intent(context.getApplicationContext(), ReceiversService.class));
+				
 				// start service for first start
-				Intent firstStartServiceIntent = new Intent(context, FirstStartService.class);
-				context.startService(firstStartServiceIntent);
+				//Intent firstStartServiceIntent = new Intent(context, FirstStartService.class);
+				//context.startService(firstStartServiceIntent);
 				
 				
 			/*	
