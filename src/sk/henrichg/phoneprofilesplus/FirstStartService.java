@@ -18,12 +18,6 @@ public class FirstStartService extends IntentService {
 	{
 		Context context = getBaseContext();
 		
-		//int startType = intent.getStringExtra(GlobalData.EXTRA_FIRST_START_TYPE);
-		
-		GlobalData.loadPreferences(context);
-		GUIData.setLanguage(context);
-		
-		/*
 		// grant root
 		//if (GlobalData.isRooted(false))
 		//{
@@ -33,8 +27,15 @@ public class FirstStartService extends IntentService {
 				//GlobalData.getSUVersion();
 			}
 		//}
-		*/
-
+		
+		if (GlobalData.getApplicationStarted(context))
+			return;
+		
+		//int startType = intent.getStringExtra(GlobalData.EXTRA_FIRST_START_TYPE);
+		
+		GlobalData.loadPreferences(context);
+		GUIData.setLanguage(context);
+		
 		// start PPHelper
 		//PhoneProfilesHelper.startPPHelper(context);
 		
