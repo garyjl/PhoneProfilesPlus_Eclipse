@@ -17,6 +17,7 @@ import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,10 +26,12 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.AssetManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 public class PhoneProfilesHelper {
 
@@ -277,13 +280,52 @@ public class PhoneProfilesHelper {
 		dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				boolean OK = doInstallPPHelper(_activity);
-				if (OK)
+				
+				class InstallAsyncTask extends AsyncTask<Void, Integer, Boolean> 
 				{
-			    	restartAndroid(_activity, 1, _finishActivity);
+					private ProgressDialog dialog;
+					
+					InstallAsyncTask()
+					{
+				         this.dialog = new ProgressDialog(_activity);
+					}
+					
+					@Override
+					protected void onPreExecute()
+					{
+						super.onPreExecute();
+						
+					     this.dialog.setMessage(_activity.getResources().getString(R.string.phoneprofilehepler_install_title));
+					     this.dialog.show();						
+					}
+					
+					@Override
+					protected Boolean doInBackground(Void... params) {
+						
+						boolean OK = doInstallPPHelper(_activity);
+						
+						return OK;
+					}
+					
+					@Override
+					protected void onPostExecute(Boolean result)
+					{
+						super.onPostExecute(result);
+						
+					    if (dialog.isShowing())
+				            dialog.dismiss();
+						
+						if (result)
+						{
+					    	restartAndroid(_activity, 1, _finishActivity);
+						}
+						else
+							installUnInstallPPhelperErrorDialog(_activity, 1, _finishActivity);
+					}
+					
 				}
-				else
-					installUnInstallPPhelperErrorDialog(_activity, 1, _finishActivity);
+				
+				new InstallAsyncTask().execute();
 			}
 		});
 		dialogBuilder.setNegativeButton(R.string.alert_button_no, new DialogInterface.OnClickListener() {
@@ -408,13 +450,52 @@ public class PhoneProfilesHelper {
 		dialogBuilder.setMessage(activity.getResources().getString(R.string.phoneprofilehepler_uninstall_message));
 		dialogBuilder.setPositiveButton(R.string.alert_button_yes, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
-				boolean OK = doUninstallPPHelper(_activity);
-				if (OK)
+				
+				class UninstallAsyncTask extends AsyncTask<Void, Integer, Boolean> 
 				{
-			    	restartAndroid(_activity, 2, false);
+					private ProgressDialog dialog;
+					
+					UninstallAsyncTask()
+					{
+				         this.dialog = new ProgressDialog(_activity);
+					}
+					
+					@Override
+					protected void onPreExecute()
+					{
+						super.onPreExecute();
+						
+					     this.dialog.setMessage(_activity.getResources().getString(R.string.phoneprofilehepler_uninstall_title));
+					     this.dialog.show();						
+					}
+					
+					@Override
+					protected Boolean doInBackground(Void... params) {
+						
+						boolean OK = doUninstallPPHelper(_activity);
+						
+						return OK;
+					}
+					
+					@Override
+					protected void onPostExecute(Boolean result)
+					{
+						super.onPostExecute(result);
+						
+					    if (dialog.isShowing())
+				            dialog.dismiss();
+						
+						if (result)
+						{
+					    	restartAndroid(_activity, 2, false);
+						}
+						else
+							installUnInstallPPhelperErrorDialog(_activity, 2, false);
+					}
+					
 				}
-				else
-					installUnInstallPPhelperErrorDialog(_activity, 2, false);
+				
+				new UninstallAsyncTask().execute();
 			}
 		});
 		dialogBuilder.setNegativeButton(R.string.alert_button_no, null);
