@@ -17,6 +17,9 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
 		
 			if (GlobalData.getApplicationStarted(context))
 			{
+				// must by false for avoiding starts/pause events before restart events
+				GlobalData.setApplicationStarted(context, false); 
+				
 				// start ReceiverService
 				context.startService(new Intent(context.getApplicationContext(), ReceiversService.class));
 				
