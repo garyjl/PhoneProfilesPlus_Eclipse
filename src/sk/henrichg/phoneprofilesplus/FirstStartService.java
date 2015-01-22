@@ -23,6 +23,7 @@ public class FirstStartService extends IntentService {
 		GlobalData.loadPreferences(context);
 		GUIData.setLanguage(context);
 		
+		/*
 		// grant root
 		//if (GlobalData.isRooted(false))
 		//{
@@ -32,6 +33,7 @@ public class FirstStartService extends IntentService {
 				//GlobalData.getSUVersion();
 			}
 		//}
+		*/
 
 		// start PPHelper
 		//PhoneProfilesHelper.startPPHelper(context);

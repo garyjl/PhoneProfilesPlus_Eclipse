@@ -22,9 +22,22 @@ public class ReceiversService extends Service {
 	@Override
     public void onCreate()
 	{
-		// start service for first start
-		Intent eventsServiceIntent = new Intent(getApplicationContext(), FirstStartService.class);
-		getApplicationContext().startService(eventsServiceIntent);
+		// grant root
+		//if (GlobalData.isRooted(false))
+		//{
+			if (GlobalData.grantRoot(true))
+			{
+				GlobalData.settingsBinaryExists();
+				//GlobalData.getSUVersion();
+			}
+		//}
+		
+		if (!GlobalData.getApplicationStarted(getApplicationContext()))
+		{
+			// start service for first start
+			Intent eventsServiceIntent = new Intent(getApplicationContext(), FirstStartService.class);
+			getApplicationContext().startService(eventsServiceIntent);
+		}
         
 		IntentFilter intentFilter1 = new IntentFilter();
 		intentFilter1.addAction(Intent.ACTION_BATTERY_CHANGED);
