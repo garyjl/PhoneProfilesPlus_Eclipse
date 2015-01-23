@@ -107,6 +107,8 @@
   <string name="phone_profiles_pref_applicationLanguage_es_ES">Español (España)</string>
   <string name="phone_profiles_pref_applicationLanguage_uk">Українська</string>
   <string name="phone_profiles_pref_applicationLanguage_it">Italiano</string>
+  <string name="phone_profiles_pref_applicationLanguage_fr">Français</string>
+  <string name="phone_profiles_pref_applicationLanguage_pl">Polski</string>
   <string name="title_activity_shortcut_creator">PhoneProfilesPlus-ярлык</string>
   <string name="phone_profiles_pref_applicationStartOnBoot">Запускать при загрузке телефона</string>
   <string name="array_pref_value_system">system</string>
@@ -119,6 +121,8 @@
   <string name="array_pref_value_es_ES">es-ES</string>
   <string name="array_pref_value_uk">uk</string>
   <string name="array_pref_value_it">it</string>
+  <string name="array_pref_value_fr">fr</string>
+  <string name="array_pref_value_pl">pl</string>
   <string name="profile_preferences_device_not_allowed">Не разрешено</string>
   <string name="menu_export">Экспорт данных</string>
   <string name="menu_import">Импорт данных</string>
@@ -431,7 +435,7 @@
   <string name="phone_profiles_pref_applicationEventBluetoothRescan">Пересканировать Bluetooth</string>
   <string name="phone_profiles_pref_applicationEventRescan_none">Нет</string>
   <string name="phone_profiles_pref_applicationEventRescan_screenOn">Включение экрана</string>
-  <string name="phone_profiles_pref_applicationEventRescan_restartEvents">&gt;Перезапуск событий</string>
+  <string name="phone_profiles_pref_applicationEventRescan_restartEvents">Перезапуск событий</string>
   <string name="phone_profiles_pref_applicationEventRescan_screenOnAndRestartEvents">Включение экрана &amp; Перезапуск событий</string>
   <string name="array_pref_ringerModeArray_ZenMode">Режимы оповещения</string>
   <string name="profile_preferences_volumeZenMode">(R) Типы режима оповещения</string>
@@ -442,4 +446,5 @@
   <string name="preference_profile_adaptiveBrightness">Адаптивная</string>
   <string name="profile_preferences_deviceKeyguard">Lock screen</string>
   <string name="phone_profiles_pref_applicationWidgetIconHideProfileName">Hide profile name (widget)</string>
+  <string name="array_pref_afterProfileDurationDo_restartEvents">Перезапуск событий</string>
 </resources>

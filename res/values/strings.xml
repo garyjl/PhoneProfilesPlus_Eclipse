@@ -108,6 +108,8 @@
   <string name="phone_profiles_pref_applicationLanguage_es_ES">Español (España)</string>
   <string name="phone_profiles_pref_applicationLanguage_uk">Українська</string>
   <string name="phone_profiles_pref_applicationLanguage_it">Italiano</string>
+  <string name="phone_profiles_pref_applicationLanguage_fr">Français</string>
+  <string name="phone_profiles_pref_applicationLanguage_pl">Polski</string>
   <string name="title_activity_shortcut_creator">PhoneProfilesPlus-shortcut</string>
   <string name="phone_profiles_pref_applicationStartOnBoot">Start on phone boot</string>
   <string name="array_pref_value_system">system</string>
@@ -120,6 +122,8 @@
   <string name="array_pref_value_es_ES">es-ES</string>
   <string name="array_pref_value_uk">uk</string>
   <string name="array_pref_value_it">it</string>
+  <string name="array_pref_value_fr">fr</string>
+  <string name="array_pref_value_pl">pl</string>
   <string name="profile_preferences_device_not_allowed">Not allowed</string>
   <string name="menu_export">Export app. data</string>
   <string name="menu_import">Import app. data</string>

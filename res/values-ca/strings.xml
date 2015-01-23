@@ -98,7 +98,7 @@
   <string name="array_pref_screenTimeoutArray_never_timeout">Immediat</string>
   <string name="phone_profiles_pref_applicationLanguage">Llengua</string>
   <string name="phone_profiles_pref_applicationLanguage_system">Sistema</string>
-  <string name="phone_profiles_pref_applicationLanguage_en">English</string>
+  <string name="phone_profiles_pref_applicationLanguage_en">Anglès</string>
   <string name="phone_profiles_pref_applicationLanguage_sk">Slovenčina</string>
   <string name="phone_profiles_pref_applicationLanguage_cs">Čeština</string>
   <string name="phone_profiles_pref_applicationLanguage_de">Deutsch</string>
@@ -106,7 +106,9 @@
   <string name="phone_profiles_pref_applicationLanguage_ca">Català</string>
   <string name="phone_profiles_pref_applicationLanguage_es_ES">Español (España)</string>
   <string name="phone_profiles_pref_applicationLanguage_uk">Українська</string>
-  <string name="phone_profiles_pref_applicationLanguage_it">Italiano</string>
+  <string name="phone_profiles_pref_applicationLanguage_it">Italià</string>
+  <string name="phone_profiles_pref_applicationLanguage_fr">Français</string>
+  <string name="phone_profiles_pref_applicationLanguage_pl">Polski</string>
   <string name="title_activity_shortcut_creator">Drecera a PhoneProfilesPlus</string>
   <string name="phone_profiles_pref_applicationStartOnBoot">Activar a l\'engegar el telèfon</string>
   <string name="array_pref_value_system">system</string>
@@ -119,6 +121,8 @@
   <string name="array_pref_value_es_ES">es-ES</string>
   <string name="array_pref_value_uk">uk</string>
   <string name="array_pref_value_it">it</string>
+  <string name="array_pref_value_fr">fr</string>
+  <string name="array_pref_value_pl">pl</string>
   <string name="profile_preferences_device_not_allowed">No es permet</string>
   <string name="menu_export">Exportar dades de l\'aplicació</string>
   <string name="menu_import">Importar dades de l\'applicació</string>
@@ -146,8 +150,8 @@
   <string name="phone_profiles_pref_applicationTheme_dark">Fosc</string>
   <string name="phone_profiles_pref_applicationTheme_dlight">Clar amb títol fosc</string>
   <string name="array_pref_value_material">material</string>
-  <string name="array_pref_value_dark">dark</string>
-  <string name="array_pref_value_dlight">dlight</string>
+  <string name="array_pref_value_dark">fosc</string>
+  <string name="array_pref_value_dlight">clar</string>
   <string name="phone_preferences_actionmode_save">Desa</string>
   <string name="phone_preferences_actionmode_cancel">Cancel·la</string>
   <string name="profile_preferences_showInActivator">Mostrar a activador</string>
@@ -442,4 +446,5 @@
   <string name="preference_profile_adaptiveBrightness">Adaptativa</string>
   <string name="profile_preferences_deviceKeyguard">Pantalla de bloqueig</string>
   <string name="phone_profiles_pref_applicationWidgetIconHideProfileName">Amaga el nom de perfil (widget)</string>
+  <string name="array_pref_afterProfileDurationDo_restartEvents">Reiniciar esdeveniments</string>
 </resources>

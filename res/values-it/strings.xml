@@ -107,6 +107,8 @@
   <string name="phone_profiles_pref_applicationLanguage_es_ES">Español (España)</string>
   <string name="phone_profiles_pref_applicationLanguage_uk">Українська</string>
   <string name="phone_profiles_pref_applicationLanguage_it">Italiano</string>
+  <string name="phone_profiles_pref_applicationLanguage_fr">Français</string>
+  <string name="phone_profiles_pref_applicationLanguage_pl">Polski</string>
   <string name="title_activity_shortcut_creator">PhoneProfilesPlus-scorciatoia</string>
   <string name="phone_profiles_pref_applicationStartOnBoot">Avviare al boot del telefono</string>
   <string name="array_pref_value_system">system</string>
@@ -119,6 +121,8 @@
   <string name="array_pref_value_es_ES">es-ES</string>
   <string name="array_pref_value_uk">uk</string>
   <string name="array_pref_value_it">it</string>
+  <string name="array_pref_value_fr">fr</string>
+  <string name="array_pref_value_pl">pl</string>
   <string name="profile_preferences_device_not_allowed">Non consentito</string>
   <string name="menu_export">Esporta dati di app.</string>
   <string name="menu_import">Importa dati di app.</string>
@@ -442,4 +446,5 @@
   <string name="preference_profile_adaptiveBrightness">Adattivo</string>
   <string name="profile_preferences_deviceKeyguard">Schermata di blocco</string>
   <string name="phone_profiles_pref_applicationWidgetIconHideProfileName">Nascondi il nome del profilo (widget)</string>
+  <string name="array_pref_afterProfileDurationDo_restartEvents">Riavvia eventi</string>
 </resources>

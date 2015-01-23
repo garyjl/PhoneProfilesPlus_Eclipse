@@ -76,8 +76,8 @@
   <string name="profile_preferences_deviceAirplaneMode">(R) Flugzeugmodus</string>
   <string name="profile_preferences_deviceWiFi">Wi-Fi</string>
   <string name="profile_preferences_deviceBluetooth">Bluetooth</string>
-  <string name="profile_preferences_deviceGPS">(R) GPS</string>
-  <string name="profile_preferences_deviceNFC">(H) NFC</string>
+  <string name="profile_preferences_deviceGPS">GPS (root)</string>
+  <string name="profile_preferences_deviceNFC">NFC (PPH)</string>
   <string name="profile_preferences_deviceScreenTimeout">Beleuchtungsdauer</string>
   <string name="profile_preferences_deviceBrightness">Bildschirmhelligkeit</string>
   <string name="profile_preferences_deviceWallpaper">Hintergrundbild</string>
@@ -107,6 +107,8 @@
   <string name="phone_profiles_pref_applicationLanguage_es_ES">Español (España)</string>
   <string name="phone_profiles_pref_applicationLanguage_uk">Українська</string>
   <string name="phone_profiles_pref_applicationLanguage_it">Italiano</string>
+  <string name="phone_profiles_pref_applicationLanguage_fr">Français</string>
+  <string name="phone_profiles_pref_applicationLanguage_pl">Polski</string>
   <string name="title_activity_shortcut_creator">PhoneProfilesPlus-schnellstarter</string>
   <string name="phone_profiles_pref_applicationStartOnBoot">Beim Hochfahren starten</string>
   <string name="array_pref_value_system">system</string>
@@ -119,6 +121,8 @@
   <string name="array_pref_value_es_ES">es-ES</string>
   <string name="array_pref_value_uk">uk</string>
   <string name="array_pref_value_it">it</string>
+  <string name="array_pref_value_fr">fr</string>
+  <string name="array_pref_value_pl">pl</string>
   <string name="profile_preferences_device_not_allowed">Nicht möglich</string>
   <string name="menu_export">App-Daten sichern</string>
   <string name="menu_import">Aus Sicherung laden</string>
@@ -184,7 +188,7 @@
   <string name="event_preferences_time_startTime">Startzeit</string>
   <string name="event_preferences_time_useEndTime">Endzeit verwenden</string>
   <string name="event_preferences_time_endTime">Endzeit</string>
-  <string name="array_pref_event_all">Alle</string>
+  <string name="array_pref_event_all">Täglich</string>
   <string name="array_pref_event_sunday">Sonntag</string>
   <string name="array_pref_event_monday">Montag</string>
   <string name="array_pref_event_tuesday">Dienstag</string>
@@ -286,7 +290,7 @@
   <string name="phoneprofilehepler_install_title">PPHelper Installation</string>
   <string name="phoneprofilehepler_install_message">Sicher?</string>
   <string name="phoneprofilehepler_reboot_title">PPHelper Installation</string>
-  <string name="phoneprofilehepler_reboot_message">Für PPHelper Funktionalität ist erforderlich das Gerät neu zu starten. Neu zu starten jetzt?</string>
+  <string name="phoneprofilehepler_reboot_message">Für die PPHelfer-Funktionalität ist es erforderlich, das Gerät neu zu starten. Jetzt neu starten?</string>
   <string name="phoneprofilehepler_uninstall_title">PPHelper Deinstallation</string>
   <string name="phoneprofilehepler_uninstall_message">Sicher?</string>
   <string name="phoneprofilehepler_install_error">Fehler bei der Installation PPHelper</string>
@@ -442,4 +446,5 @@
   <string name="preference_profile_adaptiveBrightness">Adaptiv</string>
   <string name="profile_preferences_deviceKeyguard">Sperrbildschirm</string>
   <string name="phone_profiles_pref_applicationWidgetIconHideProfileName">Profilnamen verstecken (Widget)</string>
+  <string name="array_pref_afterProfileDurationDo_restartEvents">Ereignisse neu starten</string>
 </resources>

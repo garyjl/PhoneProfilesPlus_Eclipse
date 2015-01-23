@@ -107,6 +107,8 @@
   <string name="phone_profiles_pref_applicationLanguage_es_ES">Español (España)</string>
   <string name="phone_profiles_pref_applicationLanguage_uk">Українська</string>
   <string name="phone_profiles_pref_applicationLanguage_it">Italiano</string>
+  <string name="phone_profiles_pref_applicationLanguage_fr">Français</string>
+  <string name="phone_profiles_pref_applicationLanguage_pl">Polski</string>
   <string name="title_activity_shortcut_creator">PhoneProfilesPlus-odkaz</string>
   <string name="phone_profiles_pref_applicationStartOnBoot">Spusti pri štarte telefónu</string>
   <string name="array_pref_value_system">system</string>
@@ -119,6 +121,8 @@
   <string name="array_pref_value_es_ES">es-ES</string>
   <string name="array_pref_value_uk">uk</string>
   <string name="array_pref_value_it">it</string>
+  <string name="array_pref_value_fr">fr</string>
+  <string name="array_pref_value_pl">pl</string>
   <string name="profile_preferences_device_not_allowed">Nie je možné</string>
   <string name="menu_export">Export apl. dát</string>
   <string name="menu_import">Import apl. dát</string>
@@ -442,4 +446,5 @@
   <string name="preference_profile_adaptiveBrightness">Prispôsobenie</string>
   <string name="profile_preferences_deviceKeyguard">Zámok obrazovky</string>
   <string name="phone_profiles_pref_applicationWidgetIconHideProfileName">Skryť názov profilu (miniapl.)</string>
+  <string name="array_pref_afterProfileDurationDo_restartEvents">Reštart udalostí</string>
 </resources>

@@ -107,6 +107,8 @@
   <string name="phone_profiles_pref_applicationLanguage_es_ES">Español (España)</string>
   <string name="phone_profiles_pref_applicationLanguage_uk">Українська</string>
   <string name="phone_profiles_pref_applicationLanguage_it">Italiano</string>
+  <string name="phone_profiles_pref_applicationLanguage_fr">Français</string>
+  <string name="phone_profiles_pref_applicationLanguage_pl">Polski</string>
   <string name="title_activity_shortcut_creator">PhoneProfilesPlus-ярлик</string>
   <string name="phone_profiles_pref_applicationStartOnBoot">Відкривати при ввімкненні телефону</string>
   <string name="array_pref_value_system">system</string>
@@ -119,6 +121,8 @@
   <string name="array_pref_value_es_ES">es-ES</string>
   <string name="array_pref_value_uk">uk</string>
   <string name="array_pref_value_it">it</string>
+  <string name="array_pref_value_fr">fr</string>
+  <string name="array_pref_value_pl">pl</string>
   <string name="profile_preferences_device_not_allowed">Не дозволено</string>
   <string name="menu_export">Експорт даних</string>
   <string name="menu_import">Імпорт даних</string>
@@ -442,4 +446,5 @@
   <string name="preference_profile_adaptiveBrightness">Адаптивна</string>
   <string name="profile_preferences_deviceKeyguard">Заблокувати екран</string>
   <string name="phone_profiles_pref_applicationWidgetIconHideProfileName">Приховати ім\'я профілю (віджет)</string>
+  <string name="array_pref_afterProfileDurationDo_restartEvents">Перезапустити події</string>
 </resources>
