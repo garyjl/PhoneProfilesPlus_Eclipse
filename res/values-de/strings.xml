@@ -76,8 +76,8 @@
   <string name="profile_preferences_deviceAirplaneMode">(R) Flugzeugmodus</string>
   <string name="profile_preferences_deviceWiFi">Wi-Fi</string>
   <string name="profile_preferences_deviceBluetooth">Bluetooth</string>
-  <string name="profile_preferences_deviceGPS">GPS (root)</string>
-  <string name="profile_preferences_deviceNFC">NFC (PPH)</string>
+  <string name="profile_preferences_deviceGPS">(R) GPS</string>
+  <string name="profile_preferences_deviceNFC">(H) NFC</string>
   <string name="profile_preferences_deviceScreenTimeout">Beleuchtungsdauer</string>
   <string name="profile_preferences_deviceBrightness">Bildschirmhelligkeit</string>
   <string name="profile_preferences_deviceWallpaper">Hintergrundbild</string>
