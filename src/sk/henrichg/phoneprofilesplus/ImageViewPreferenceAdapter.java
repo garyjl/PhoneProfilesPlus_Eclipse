@@ -86,6 +86,8 @@ public class ImageViewPreferenceAdapter extends BaseAdapter {
 
 		if (ThumbsIds[position].equals(imageIdentifier) && isImageResourceID)
 			holder.icon.setBackgroundResource(R.color.activityCardSelected_phoneprofilestheme);
+		else
+			holder.icon.setBackgroundResource(0);
 		
 		holder.icon.setImageResource(context.getResources().getIdentifier(ThumbsIds[position], "drawable", context.getPackageName()));
 		
