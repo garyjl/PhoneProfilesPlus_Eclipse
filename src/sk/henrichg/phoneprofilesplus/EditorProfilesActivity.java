@@ -25,6 +25,7 @@ import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnRestartProfile
 import sk.henrichg.phoneprofilesplus.ProfilePreferencesFragment.OnShowActionModeInProfilePreferences;
 
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceScreen;
@@ -641,6 +642,31 @@ public class EditorProfilesActivity extends ActionBarActivity
 			return super.onOptionsItemSelected(item);
 		}
 	}
+	
+	// fix for bug in LG stock ROM Android <= 4.1
+	// https://code.google.com/p/android/issues/detail?id=78154
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	     if ((keyCode == KeyEvent.KEYCODE_MENU) &&
+		      (Build.VERSION.SDK_INT <= 16) &&
+		      (Build.MANUFACTURER.compareTo("LGE") == 0)) {
+		   return true;
+	    }
+	    return super.onKeyDown(keyCode, event);
+	}
+
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+	    if ((keyCode == KeyEvent.KEYCODE_MENU) &&
+		         (Build.VERSION.SDK_INT <= 16) &&
+		         (Build.MANUFACTURER.compareTo("LGE") == 0)) {
+		   openOptionsMenu();
+	     return true;
+	    }
+	    return super.onKeyUp(keyCode, event);
+	}
+	/////
+	
 	
     // ListView click listener in the navigation drawer
     private class DrawerItemClickListener implements
